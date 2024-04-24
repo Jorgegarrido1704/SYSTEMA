@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @if (!empty($cat) && $cat=='plan')
+    <meta http-equiv="refresh" content="5; url={{route('planning')}}">
+    @else
+    <meta http-equiv="refresh" content="5; url={{route('label')}}">
+    @endif
+
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
+    <title>Print labels</title>
+
+</head>
+<body>
+    @if (!empty($corte))
+@for ($i=0; $i < count($corte); $i++)
+<div >
+ <canvas id="barcode{{$i}}" style="width:150px; max-height:30px"></canvas><img src='{{ asset('/dash/img/bergs.jpg')}}' alt='' style="max-height:30px"><b> Cons: {{$corte[$i][3]}}<br>
+    {{$corte[$i][0]}} Cant: {{$corte[$i][12]}}   WO: {{$corte[$i][2]}} AWS: {{$corte[$i][6]}} <br>
+    PN: {{$corte[$i][1]}}  Color: {{$corte[$i][4]}} Tamaño: {{$corte[$i][13]}} <br>
+    Term1: {{$corte[$i][8]}}  Term2: {{$corte[$i][9]}} From: {{$corte[$i][10]}} TO: {{$corte[$i][11]}} </b><br>
+</div>
+<script>
+     var canvas = document.getElementById("barcode"+{{$i}});
+        var ctx = canvas.getContext("2d");
+        var codigos = {{$corte[$i][7]}};
+
+        JsBarcode(canvas, codigos, {
+            format: "CODE128",
+            displayValue: true,
+            fontSize: 12,
+            textMargin: 0
+        });
+</script>
+@endfor
+
+    @endif
+    @if (!empty($labelwo))
+    @for($labelbeg;$labelbeg<=$labelend;$labelbeg++)
+    <div align='center' style="padding-top:5px"><img src='{{ asset('/dash/img/bergs.jpg')}}' alt=''> <br></div>
+    <div align='center' style='padding-top:1px;'><b>{{$cliente}} Wo: {{$labelwo}} Rev: {{$rev}}<br> Part: {{$pn}} Qty: {{$qty}} Cons: {{$labelbeg}}</b><br></div>
+    @endfor
+    @endif
+</body>
+</html>
+<script>
+    window.onload = function() {
+     window.print();
+ };
+</script>

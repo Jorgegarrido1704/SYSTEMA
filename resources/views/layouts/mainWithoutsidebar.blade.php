@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <title>CVTS</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="{{ asset('/dash/vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
+        @yield('css')
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="{{ asset('/dash/css/sb-admin-2.min.css')}}" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+               @include('layouts.header')
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                        @yield('contenido')
+
+
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; by  Jorge Garrido 2024</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" href="login.html">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="{{ asset('/dash/vendor/jquery/jquery.min.js')}}"></script>
+    <script src="{{ asset('/dash/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="{{ asset('/dash/vendor/jquery-easing/jquery.easing.min.js')}}"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="{{ asset('/dash/js/sb-admin-2.min.js')}}"></script>
+
+    <!-- Page level plugins -->
+    <script src="{{ asset('/dash/vendor/chart.js/Chart.min.js')}}"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="{{ asset('/dash/js/demo/chart-area-demo.js')}}"></script>
+    <script src="{{ asset('/dash/js/demo/chart-pie-demo.js')}}"></script>
+    <script src="{{ asset('/dash/js/demo/chart-line-ing.js')}}"></script>
+
+    <script>
+         function changework(action) {
+    var areaToChange = document.getElementById('work');
+    var TableChange = document.getElementById('tableChange');
+    // Clear existing content
+    areaToChange.innerHTML = '';
+    TableChange.innerHTML='';
+
+    // Depending on the selected action, update the area content
+    switch (action) {
+        case 'desviation':
+            areaToChange.innerHTML =`
+            <div class="desv" align="center">
+                            <form  id="formula" action="{{ route('desviation') }}" method="POST">
+                                @csrf
+                    <div class="form-group">
+                        <label for="modelo">Modelo Afectado:</label>
+                        <input type="text" class="form-control" name="modelo" id="modelo" placeholder="B222930" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="numPartOrg">No° de parte original:</label>
+                        <input type="text" class="form-control" name="numPartOrg" id="numPartOrg" placeholder="TT2-171" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="numPartSus">No° parte sustituto:</label>
+                        <input type="text" class="form-control" name="numPartSus" id="numPartSus" placeholder="DT1-17" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="time">Periodo de la desviacion:</label>
+                        <input type="text" class="form-control" name="time" id="time" placeholder="12-12-2023" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cant">Cantidad limitada de piezas a sustituir:</label>
+                        <input type="number" class="form-control" name="cant" id="cant" placeholder="1200" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="text">Causa de desviacion:</label>
+                        <input class="form-control" name="text" id="text" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="acc">Accion preventiva:</label>
+                        <input class="form-control" name="acc" id="acc" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="evi">Evidencia:</label>
+                        <input class="form-control" name="evi" id="evi" rows="3" required></textarea>
+                    </div>
+
+
+                    <input type="submit" class="btn btn-primary" name="enviar" id="enviar" value="Save">
+                </form>            </div>
+
+`; TableChange.innerHTML = `
+<div class="row" >
+                                        <table>
+                                            <thead>
+                                                <th>Folio</th>
+                                                <th>Modelo</th>
+                                                <th>Parte Original</th>
+                                                <th>Parte Sustituto</th>
+                                                <th>Cliente</th>
+                                                <th>Firma Compras</th>
+                                                <th>Firma ingenieria</th>
+                                                <th>Firma Calidad</th>
+                                                <th>Firma Produccion</th>
+                                                <th>Firma Imex</th>
+                                                <th>Fecha</th>
+                                                </thead>
+                                            <tbody>
+                                                @if(!empty($desviations))
+                                          @foreach ( $desviations as $desviation)
+                                                <tr>
+                                                    <td>{{$desviation[0]}}</td>
+                                                    <td>{{$desviation[1]}}</td>
+                                                    <td>{{$desviation[2]}}</td>
+                                                    <td>{{$desviation[3]}}</td>
+                                                    <td>{{$desviation[4]}}</td>
+                                                    <td>{{$desviation[5]}}</td>
+                                                    <td>{{$desviation[6]}}</td>
+                                                    <td>{{$desviation[7]}}</td>
+                                                    <td>{{$desviation[8]}}</td>
+                                                    <td>{{$desviation[9]}}</td>
+                                                    <td>{{$desviation[10]}}</td>
+
+                                                    </tr>
+                                          @endforeach
+                                          @endif
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+`;
+            break;
+        case 'Materials':
+            // Default case: Show default table content
+            areaToChange.innerHTML = `
+            <div align="center">
+            <form id="formula" action="{{ route('material')}}" method="POST">
+                @csrf
+<div style="margin-bottom: 10px;">
+    <label for="cant1" style="margin-right: 10px;">Cantidad</label>
+    <input type="number" style="width: 60px; margin-right: 10px;" name="cant1" id="cant1" min="0" required>
+    <label for="articulo1" style="margin-right: 10px;">Artículo</label>
+    <input type="text" style="width: 200px; margin-right: 10px;" name="articulo1" id="articulo1" required>
+    <label for="notas_adicionales1" style="margin-right: 10px;">Notas adicionales</label>
+    <input type="text" style="width: 200px;" name="notas_adicionales1" id="notas_adicionales1" required>
+</div>
+
+<div style="margin-bottom: 10px;">
+    <label for="cant2" style="margin-right: 10px;">Cantidad</label>
+    <input type="number" style="width: 60px; margin-right: 10px;" name="cant2" id="cant2" min="0" >
+    <label for="articulo2" style="margin-right: 10px;">Artículo</label>
+    <input type="text" style="width: 200px; margin-right: 10px;" name="articulo2" id="articulo2">
+    <label for="notas_adicionales2" style="margin-right: 10px;">Notas adicionales</label>
+    <input type="text" style="width: 200px;" name="notas_adicionales2" id="notas_adicionales2" >
+</div>
+
+<div style="margin-bottom: 10px;">
+    <label for="cant3" style="margin-right: 10px;">Cantidad</label>
+    <input type="number" style="width: 60px; margin-right: 10px;" name="cant3" id="cant3" min="0" >
+    <label for="articulo3" style="margin-right: 10px;">Artículo</label>
+    <input type="text" style="width: 200px; margin-right: 10px;" name="articulo3" id="articulo3">
+    <label for="notas_adicionales3" style="margin-right: 10px;">Notas adicionales</label>
+    <input type="text" style="width: 200px;" name="notas_adicionales3" id="notas_adicionales3" >
+</div>
+
+<div style="margin-bottom: 10px;">
+    <label for="cant4" style="margin-right: 10px;">Cantidad</label>
+    <input type="number" style="width: 60px; margin-right: 10px;" name="cant4" id="cant4" min="0" >
+    <label for="articulo4" style="margin-right: 10px;">Artículo</label>
+    <input type="text" style="width: 200px; margin-right: 10px;" name="articulo4" id="articulo4">
+    <label for="notas_adicionales4" style="margin-right: 10px;">Notas adicionales</label>
+    <input type="text" style="width: 200px;" name="notas_adicionales4" id="notas_adicionales4" >
+</div>
+
+<div style="margin-bottom: 10px;">
+    <label for="cant5" style="margin-right: 10px;">Cantidad</label>
+    <input type="number" style="width: 60px; margin-right: 10px;" name="cant5" id="cant5" min="0" >
+    <label for="articulo5" style="margin-right: 10px;">Artículo</label>
+    <input type="text" style="width: 200px; margin-right: 10px;" name="articulo5" id="articulo5">
+    <label for="notas_adicionales5" style="margin-right: 10px;">Notas adicionales</label>
+    <input type="text" style="width: 200px;" name="notas_adicionales5" id="notas_adicionales5" >
+</div>
+<div ><input type="submit" id="submit" value="Send"></div>
+</form>
+</div>
+
+            `;
+            TableChange.innerHTML = `
+            <div class="row" >
+                                        <table>
+                                            <thead>
+                                                <th>Folio</th>
+                                                <th>Descripcion</th>
+                                                <th>Notas</th>
+                                                <th>Cantidad</th>
+                                                <th>Status</th>
+                                            </thead>
+                                            <tbody>
+                                                @if(!empty($materials))
+                                          @foreach ( $materials as $material)
+                                                <tr>
+                                                    <td>{{$material[0]}}</td>
+                                                    <td>{{$material[1]}}</td>
+                                                    <td>{{$material[2]}}</td>
+                                                    <td>{{$material[3]}}</td>
+                                                    <td>{{$material[4]}}</td>
+
+                                                </tr>
+                                          @endforeach
+                                          @endif
+
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+            `;
+            break;
+        case 'Maint':
+            // Default case: Show default table content
+            areaToChange.innerHTML = `
+            <div class="row" >
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>Equipo</th>
+                                                    <th>Trabajo solicitado</th>
+                                                    <th>Daño</th>
+                                                    <th>Area</th>
+                                                    <th>Guardar </th>
+                                                 </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                      <form action="{{ route('maintanance') }}" method="POST" name="registro" id="form">
+                                        @csrf
+                                       <td align="center"><select name="equipo" id="equipo" onchange="updateSecondSelect()" required >
+                                      <option selected="selected"> </option>
+                                     <option value="Mantenimiento">Mantenimeinto</option>
+                                     <option value="Ingenieria">Ingenieria</option>
+                                     <option value="Calidad">Calidad</option>
+                                     <option value="Almacen">Almacen</option>
+
+                                     </select></td>
+                                                    <td align="center">
+                                                       <input type="text" name="nom_equipo" id="nom_equipo" required>
+                                                    <td align="center">
+                                                        <select name="dano" id="dano"   > </select>
+                                                    </td>
+                                                    <td><select name="area" id="area" required>
+                                                        <option value=""></option>
+                                                        <option value="Tablero_Esther">Tablero Esther</option>
+                                                        <option value="Tablero_Saul">Tableros Saul</option>
+                                                        <option value="Tablero_David">Tableros Jessi</option>
+                                                        <option value="Liberacion">Liberacion</option>
+                                                        <option value="Corte">Corte</option>
+                                                        <option value="Almacen">Alamacen</option>
+                                                        <option value="Tableros_Brandon">Tableros Brandon</option>
+                                                        <option value="Tableros_Alejandra">Tableros Alejenadra</option>
+                                                        <option value="Tableros_Zamarripa">Tableros Zamarripa</option>
+                                                        <option value="Loom">Loom</option>
+                                                        <option value="Calidad">Calidad</option>
+                                                    </select></td>
+                                                       <td align="center"><button type="submit" value="save" id="guardar" name="guardar"  >Guardar</button> </td>
+                                                   </tr>
+                                                </form>
+                                            </tbody>
+                                        </table>
+                                        <br>
+
+                                    <div>
+                                </div>
+                            </div>`; TableChange.innerHTML = `
+            <div class="row" >
+                                        <table>
+                                            <thead>
+                                                <th>Fecha</th>
+                                                <th>Team</th>
+                                                <th>trabajo</th>
+                                                <th>Tipo de reparacion</th>
+                                                <th>Status</th>
+                                            </thead>
+                                            <tbody>
+                                          @if(!empty($paros))
+                                          @foreach ( $paros as $paro)
+                                                <tr>
+                                                    <td>{{$paro[0]}}</td>
+                                                    <td>{{$paro[1]}}</td>
+                                                    <td>{{$paro[2]}}</td>
+                                                    <td>{{$paro[3]}}</td>
+                                                    <td>{{$paro[4]}}</td>
+                                                </tr>
+                                          @endforeach
+                                          @endif
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+            `;
+            break;
+    }
+}
+
+    </script>
+<script>
+    document.forms["formula"].onsubmit= function(){
+        var peri=document.getElementById('time').value;
+        var cantsus=document.getElementById('cant').value
+        var text=document.getElementById('texthidden').value=document.getElementById('text').innerHTML;
+        var model=document.getElementById('modelo').value;
+        var  numPartOrg=document.getElementById('numPartOrg').value;
+        var numPartSus = document.getElementById('numPartSus').value;
+        var evi=document.getElementById('evihidden').value=document.getElementById('evi').innerHTML;
+        var acc=document.getElementById('acchidden').value=document.getElementById('acc').innerHTML;
+        var client = document.getElementById('cliente').value;
+        if(model=='' || text=='' || numPartOrg=='' || numPartSus=='' || client=='' || acc=="" ){
+            alert('Falta de por ingresar alguen dato, por favor verifiquelo');
+            return false;
+        }
+    }
+
+</script>
+<script>
+
+
+        // Populate second select based on the selected option from the first select
+        function updateSecondSelect() {
+        var firstSelect = document.getElementById("equipo");
+        var secondSelect = document.getElementById("dano");
+
+        // Clear existing options
+        secondSelect.innerHTML = "";
+
+        // Populate second select based on the selected option from the first select
+        if (firstSelect.value === "Mantenimiento") {
+
+            var nulo = new Option("Maquina de corte","Maquina de corte");
+            var option1 = new Option("Impresora maquina corte", "Impresora maquina corte");
+            var option2 = new Option("Banda maquina de corte", "Banda maquina de corte");
+            var option_3 = new Option("Falla electrica corte", "Falla electrica corte");
+            var option3 = new Option("Cambio de aplicador", "Cambio de aplicador");
+            var option4 = new Option("Falla electrica aplicador", "Falla electrica aplicador");
+            var option_a = new Option("Ajuste de aplicador", "Ajuste de aplicador");
+            var option_b = new Option("Ajuste de presión", "Ajuste de presión");
+            var option_c = new Option("Colocacion de pernos","Colocacion de pernos")
+            var option_d = new Option("Quitar pernos","Quitar pernos");
+            var option_e = new Option("Empalmadora", "Empalmadora");
+            var option_f = new Option("Banco ajuste de presion", "Banco ajuste de presion");
+            var option_g = new Option("Banco colocacion de herramental","Banco colocacion de herramental")
+            var option_h = new Option("Equipo de computo","Equipo de computo");
+
+            secondSelect.appendChild(nulo);
+            secondSelect.appendChild(option1);
+            secondSelect.appendChild(option2);
+            secondSelect.appendChild(option_3);
+            secondSelect.appendChild(option4);
+            secondSelect.appendChild(option3);
+            secondSelect.appendChild(option_a);
+            secondSelect.appendChild(option_b);
+            secondSelect.appendChild(option_c);
+            secondSelect.appendChild(option_d);
+            secondSelect.appendChild(option_e);
+            secondSelect.appendChild(option_f);
+            secondSelect.appendChild(option_g);
+            secondSelect.appendChild(option_h);
+        } else if (firstSelect.value === "Ingenieria") {
+
+        var option5 = new Option("Soporte ", "Soporte");
+        var option6 = new Option("Colocacion FULL size", "Colocacion FULL size");
+        var option5_1= new Option("Seguimiento de nuevo producto","Seguimiento de nuevo producto");
+
+         secondSelect.appendChild(option5);
+         secondSelect.appendChild(option6);
+         secondSelect.appendChild(option5_1);
+    } else if (firstSelect.value === "Calidad") {
+
+        var option7 = new Option("Validacion de medidas", "Validacion de medidas");
+        var option8 = new Option("Liberacion de terminales","Liberacion de terminales");
+        var option9 = new Option("Pull Test", "Pull Test");
+       ;
+        secondSelect.appendChild(option7);
+         secondSelect.appendChild(option8);
+        secondSelect.appendChild(option9);
+
+    } else if (firstSelect.value === "Almacen") {
+        var option_1a= new Option("Entrega de Kits","Entrega de Kits");
+        secondSelect.appendChild(option_1a);
+
+}
+    }
+    updateSecondSelect();
+</script>
+<script>
+function buscarcodigo1() {
+    const codigoValue = document.getElementById('codigo1').value;
+    const url = '{{ route('buscarcodigo') }}';
+    fetch(url, { method: 'POST',
+        headers: {   'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')  },
+        body: JSON.stringify({ codigo1: codigoValue }),   })
+    .then(response => response.json())
+    .then(data => {  console.log(data);
+        const defecto = data && data.defecto ? data.defecto : '';
+        document.getElementById('rest_code1').value = defecto;    })
+    .catch(error => { console.error('Error:', error);  });}
+    function buscarcodigo2() {
+    const codigoValue = document.getElementById('codigo2').value;
+    const url = '{{ route('buscarcodigo') }}';
+    fetch(url, { method: 'POST',
+        headers: {   'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')  },
+        body: JSON.stringify({ codigo1: codigoValue }),   })
+    .then(response => response.json())
+    .then(data => {  console.log(data);
+        const defecto = data && data.defecto ? data.defecto : '';
+        document.getElementById('rest_code2').value = defecto;    })
+    .catch(error => { console.error('Error:', error);  });}
+    function buscarcodigo3() {
+    const codigoValue = document.getElementById('codigo3').value;
+    const url = '{{ route('buscarcodigo') }}';
+    fetch(url, { method: 'POST',
+        headers: {   'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')  },
+        body: JSON.stringify({ codigo1: codigoValue }),   })
+    .then(response => response.json())
+    .then(data => {  console.log(data);
+        const defecto = data && data.defecto ? data.defecto : '';
+        document.getElementById('rest_code3').value = defecto;    })
+    .catch(error => { console.error('Error:', error);  });}
+    function buscarcodigo4() {
+    const codigoValue = document.getElementById('codigo4').value;
+    const url = '{{ route('buscarcodigo') }}';
+    fetch(url, { method: 'POST',
+        headers: {   'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')  },
+        body: JSON.stringify({ codigo1: codigoValue }),   })
+    .then(response => response.json())
+    .then(data => {  console.log(data);
+        const defecto = data && data.defecto ? data.defecto : '';
+        document.getElementById('rest_code4').value = defecto;    })
+    .catch(error => { console.error('Error:', error);  });}
+    function buscarcodigo5() {
+    const codigoValue = document.getElementById('codigo5').value;
+    const url = '{{ route('buscarcodigo') }}';
+    fetch(url, { method: 'POST',
+        headers: {   'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')  },
+        body: JSON.stringify({ codigo1: codigoValue }),   })
+    .then(response => response.json())
+    .then(data => {  console.log(data);
+        const defecto = data && data.defecto ? data.defecto : '';
+        document.getElementById('rest_code5').value = defecto;    })
+    .catch(error => { console.error('Error:', error);  });}
+</script>
+<script>
+    function updateData() {
+    $.ajax({
+        url: '{{ route("fetchdatacali") }}',
+        method: 'GET',
+        dataType: 'json',
+        success: function(response) {
+            console.log(response);
+            $('#table-body').html(response.tableContent);
+            $('#saldo').html(response.saldo);
+            $('#backlock').html(response.backlock);
+            if (response.labels && response.data) {
+
+  }
+        },
+        error: function(xhr, status, error) {
+            console.error(error);
+        }
+    });
+}
+updateData();
+setInterval(updateData, 90000);
+</script>
+<script>
+    function updateRev() {
+        var rev=document.getElementById('Tipo').value;
+        console.log(rev);
+        if(rev=='PRIM' || rev=='PPAP'){
+            document.getElementById('rev2').value='N/A';
+            document.getElementById('cambios').value='N/A';
+        }else if(rev=='NO PPAP'){
+            document.getElementById('rev2').value='SOLO REGISTRO';
+            document.getElementById('cambios').value='SOLO REGISTRO';
+        }
+
+    }
+</script>
+@if($cat=='plan')
+<script>
+
+    var canvas = document.getElementById('planning');
+    var ctx = canvas.getContext('2d');
+    var datos = <?php echo json_encode($datos); ?>;
+    console.log(datos);
+
+
+    var data = {
+        labels:['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'],
+        datasets: [{
+            label: 'PO registradas',
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1,
+            hoverBackgroundColor: 'rgba(75, 192, 192, 0.4)',
+            data: [datos[0], datos[1], datos[2], datos[3], datos[4], datos[5], datos[6], datos[7], datos[8], datos[9], datos[10], datos[11]]
+        }]
+    };
+
+    var options = {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    };
+
+    var chart = new Chart(ctx, {
+        type: 'bar',
+        data: data,
+        options: options
+    });
+
+</script>
+@endif
+
+
+
+
+
+@yield('scripts')
+
+
+</body>
+
+</html>
