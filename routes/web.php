@@ -4,6 +4,7 @@ use App\Http\Controllers\BossCaliController;
 use App\Http\Controllers\bossController;
 use App\Http\Controllers\caliController;
 use App\Http\Controllers\generalController;
+use App\Http\Controllers\InventarioController;
 use App\Http\Controllers\loginController;
 use App\Http\Controllers\planingController;
 use App\Http\Controllers\PoController;
@@ -102,6 +103,10 @@ Route::controller(BossCaliController::class)->group(function(){
     Route::get('/reference',[BossCaliController::class,'reference'])->name('reference');
 });
 
+Route::controller(InventarioController::class)->group(function(){
+    Route::get('/inventario',InventarioController::class);
+    Route::get('/datos',[InventarioController::class,'savedata'])->name('savedata');
+});
 Route::controller(planingController::class)->group(function(){
 
     Route::get('/planing',[planingController::class,'planning'])->name('planning');

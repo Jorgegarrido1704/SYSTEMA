@@ -45,10 +45,11 @@ $altaQty = $request->input('cant');
 $wo = $request->input('wo');
 $codeWo=$request->input('codigo');
         if (!empty($codeWo)) {
-            $busqWo = DB::table('registro')->where('wo', $codeWo)->first();
+            $busqWo = DB::table('registro')->where('info', $codeWo)->first();
             if ($busqWo) {
                 $woNum = $busqWo->NumPart;
                 $woQty = $busqWo->Qty;
+                $wowo=$busqWo->wo;
 
                 $buscarItems = DB::table('datos')->select('item', 'qty')->where('part_num', '=', $woNum)->get();
                 foreach ($buscarItems as $rowit) {
@@ -57,7 +58,7 @@ $codeWo=$request->input('codigo');
                     $saveitem->articulo = $rowit->item;
                     $saveitem->qty = $rowit->qty * $woQty;
                     $saveitem->movimeinto = "Salida de mercancia(Kit Completo)";
-                    $saveitem->wo = $codeWo;
+                    $saveitem->wo = $wowo;
                     $saveitem->quien = $value;
                     $saveitem->save();
                 }
@@ -90,14 +91,13 @@ if (!empty($altaQty)) {
 
 if (!empty($regpar)) {
 
-    $mostrarWo = DB::table('registro')->select('NumPart', 'Qty')->where('wo', $regpar)->first();
+    $mostrarWo = DB::table('registro')->select('NumPart', 'Qty', 'wo')->where('info', $regpar)->first();
     if ($mostrarWo) {
         $NumWo = $mostrarWo->NumPart;
         $NumWoQty = $mostrarWo->Qty;
+        $word=$mostrarWo->wo;
         $infos = DB::table('datos')->where('part_num', $NumWo)->get();
         foreach ($infos as $rowInf) {
-
-
             $buscarAlmacen=DB::table('almacen')->select('qty')->where('articulo',$rowInf->item)->first();
             if($buscarAlmacen){
                     if((($rowInf->qty * $NumWoQty)-$buscarAlmacen->qty)>0){
@@ -108,7 +108,7 @@ if (!empty($regpar)) {
             $infoPar[$i][1] = $rowInf->qty * $NumWoQty;}
             $i++;
         }
-        return view('almacen', ['infoPar' => $infoPar, 'value' => $value, 'regpar' => $regpar,'listas'=>$listas]);
+        return view('almacen', ['cat'=>$cat,'infoPar' => $infoPar, 'value' => $value, 'regpar' => $regpar,'listas'=>$listas]);
     } else {
         // Handle case where no record is found for the given 'wo'
         return redirect()->back()->with('error', 'No record found for the provided WO.');

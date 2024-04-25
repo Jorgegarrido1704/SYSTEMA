@@ -95,6 +95,9 @@ class loginController extends Controller
                 }else if($categoria=='BCali'){
                     session(['categoria'=>$categoria]);
                     return redirect('/BossCali');
+                }else if($categoria=='inv'){
+                    session(['categoria'=>$categoria]);
+                    return redirect('/inventario');
                 }else {
 
                 // If unable to save login record, redirect back with an error message

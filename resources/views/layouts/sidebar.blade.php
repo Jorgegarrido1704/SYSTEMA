@@ -38,6 +38,7 @@
             </ul>
 </li>
 @endif
+
 @if($cat=='BCali')
 <li class="nav-item active">
     <a class="nav-link" href="/BossCali">
