@@ -105,7 +105,7 @@ Route::controller(BossCaliController::class)->group(function(){
 
 Route::controller(InventarioController::class)->group(function(){
     Route::get('/inventario',InventarioController::class);
-    Route::get('/datos',[InventarioController::class,'savedata'])->name('savedata');
+    Route::post('/datos',[InventarioController::class,'savedataAlm'])->name('savedataAlm');
 });
 Route::controller(planingController::class)->group(function(){
 

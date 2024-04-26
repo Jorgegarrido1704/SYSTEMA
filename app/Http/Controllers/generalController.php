@@ -73,7 +73,7 @@ class generalController extends Controller
             }
 
         }else if($categoria=='libe'){
-            $buscarporid=DB::select("SELECT * FROM registro WHERE count='4' or count='5' or count='2' or count='3' ORDER BY cliente");
+            $buscarporid=DB::select("SELECT * FROM registro WHERE count='4' or count='5'  ORDER BY cliente");
             $registros=[];
             $i=0;
             foreach($buscarporid as $idrow){

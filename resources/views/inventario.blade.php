@@ -96,7 +96,14 @@
                                 </div>
                                 <div class="card-body" style="overflow-y: auto; height: 360px;" id='work'>
                                     <div class="row" >
-                                        <input type="file" id="fileInput" accept=".csv" />
+                                        <form id="uploadForm" action="{{route('savedataAlm')}}" method="POST" enctype="multipart/form-data">
+                                            @csrf
+                                            <input type="file" id="fileInput" name="fileInput" accept=".csv" />
+                                            <input type="hidden" name="set_Data" id="set_Data">
+                                            <input type="hidden" name="set_Qty" id="set_Qty">
+                                            <input type="submit" name="enviar" id="enviar" value="Cargar">
+                                        </form>
+
                                         <table id="dataTable" border="1">
                                           <thead>
                                             <tr>
@@ -171,7 +178,7 @@
                                     reader.onload = function(e) {
                                         const content = e.target.result;
                                         const lines = content.split('\n');
-                                        const data = [];
+                                        const data = qty= [];
                                         const tableBody = document.querySelector('#dataTable tbody');
                                         tableBody.innerHTML = '';
 
@@ -188,7 +195,9 @@
 
                                             g2Cell.textContent = g2Value;
                                             m2Cell.textContent = m2Value;
-                                            data.push({ g2: g2Value, m2: m2Value });
+
+                                            data.push({g2Value});
+                                            qty.push({m2Value});
 
                                             row.appendChild(g2Cell);
                                             row.appendChild(m2Cell);
@@ -196,7 +205,13 @@
                                             tableBody.appendChild(row);
                                         }
                                         }
+
+                                        document.getElementById("set_Data").value=data;
+                                        document.getElementById("set_Qty").value=qty;
+
                                         sendDataToServer(data);
+                                        sendDataToServer(qty);
+
                                     };
 
                                     reader.readAsText(file);
