@@ -310,7 +310,7 @@
                                         @csrf
                                        <td align="center"><select name="equipo" id="equipo" onchange="updateSecondSelect()" required >
                                       <option selected="selected"> </option>
-                                     <option value="Mantenimiento">Mantenimeinto</option>
+                                     <option value="Mantenimiento">Mantenimiento</option>
                                      <option value="Ingenieria">Ingenieria</option>
                                      <option value="Calidad">Calidad</option>
                                      <option value="Almacen">Almacen</option>

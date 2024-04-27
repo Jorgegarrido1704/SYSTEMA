@@ -178,7 +178,8 @@
                                     reader.onload = function(e) {
                                         const content = e.target.result;
                                         const lines = content.split('\n');
-                                        const data = qty= [];
+                                        const data = [];
+            const qty = [];
                                         const tableBody = document.querySelector('#dataTable tbody');
                                         tableBody.innerHTML = '';
 
@@ -196,8 +197,8 @@
                                             g2Cell.textContent = g2Value;
                                             m2Cell.textContent = m2Value;
 
-                                            data.push({g2Value});
-                                            qty.push({m2Value});
+                                            data.push(g2Value);
+                                            qty.push(m2Value);
 
                                             row.appendChild(g2Cell);
                                             row.appendChild(m2Cell);
@@ -206,8 +207,9 @@
                                         }
                                         }
 
-                                        document.getElementById("set_Data").value=data;
-                                        document.getElementById("set_Qty").value=qty;
+                                        document.getElementById("set_Data").value = JSON.stringify(data);
+                                          document.getElementById("set_Qty").value = JSON.stringify(qty);
+
 
                                         sendDataToServer(data);
                                         sendDataToServer(qty);

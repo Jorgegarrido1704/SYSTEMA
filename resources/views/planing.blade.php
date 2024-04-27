@@ -143,7 +143,7 @@
                             <!-- AREAS -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h5 class="m-0 font-weight-bold text-primary">Impresion de consecitivos</h5>
+                                    <h5 class="m-0 font-weight-bold text-primary">Impresion de consecutivos</h5>
                                 </div>
                                 <div class="card-body" style="overflow-y: auto; height: 360px;">
                                     <div class="form-container">
@@ -239,7 +239,7 @@
                             <!-- AREAS -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h5 class="m-0 font-weight-bold text-primary">Ordenes Cargadas por SEMANA </h5>
+                                    <h5 class="m-0 font-weight-bold text-primary">Ordenes Cargadas por Mes</h5>
                                 </div>
                                 <div class="card-body" style="overflow-y: auto; height: 360px;">
                                     <canvas id="planning"></canvas>

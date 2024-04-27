@@ -560,7 +560,7 @@ class generalController extends Controller
 
         // Extract the values from the invoke result
         $value = $invokeResult->getData()['value'];
-        $registros = $invokeResult->get1002707335()['registros'];
+        $registros = $invokeResult->getData()['registros'];
         $week = $invokeResult->getData()['week'];
         $assit = $invokeResult->getData()['assit'];
         $paros=$invokeResult->getData()['paros'];
