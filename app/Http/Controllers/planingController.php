@@ -313,6 +313,7 @@ if(in_array($np,$busqueda)){
             $agegartiempos=new timesHarn;
             $agegartiempos->pn=$np;
             $agegartiempos->wo=$wo;
+            $agegartiempos->cut=$today;
             if (substr($rev, 0, 4) == 'PPAP' || substr($rev, 0, 4) == 'PRIM') {
                 $agegartiempos->bar =  (substr($np, 0, 2) . substr($client, 0, 2) . $qty . substr($wo, 2, 4) . substr($po, 2, 4) . 'R' . substr($rev, 5));
             } else {

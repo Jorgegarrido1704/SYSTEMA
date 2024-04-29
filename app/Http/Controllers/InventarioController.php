@@ -95,6 +95,7 @@ public function savedataAlm(Request $request){
             if($fechaIni=='No aun'){
                $update=DB::table('kits')->where('id','=',$id)->update(['fechaIni'=>$today,'status'=>'Parcial']);
             }else if($fechaIni!='No aun'){
+                $fechaIni=intval($fechaIni);
                 $newDate=$today-$fechaIni;
                 $update=DB::table('kits')->where('id','=',$id)->update(['fechaFin'=>$newDate]);
             }

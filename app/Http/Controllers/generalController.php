@@ -285,6 +285,11 @@ class generalController extends Controller
                 return redirect('general')->with('response', $resp);
             }else if(($donde==='libe' or $donde==='cort') and $count===3){
                 if(substr($rev,0,4)=='PRIM' or substr($rev,0,4)=='PPAP' ){
+                     $buscar=DB::table('timeharn')->select('cut','fecha')->where('bar',$codigo)->first();
+                                $lasDate=$buscar->fecha;
+                                if($buscar->cut==NULL){
+                                    $update = DB::table('timesharn')->where('bar', $codigo)->update(['cut' => $lasDate]);
+                                }
                     $updatetime=DB::table('timesharn')->where('bar',$codigo)->update(['cutF'=>$todays]);
                     $update = DB::table('registro')->where('info', $codigo)->update(['count' => 17, 'donde' => 'En espera de Ingenieria Corte']);
                     if ($update) { $resp = "Waitting for enginney";
@@ -292,6 +297,11 @@ class generalController extends Controller
                     return redirect('general')->with('response', $resp);
                 }else{
                 $count=4;
+                $buscar=DB::table('timeharn')->select('cut','fecha')->where('bar',$codigo)->first();
+                $lasDate=$buscar->fecha;
+                if($buscar->cut==NULL){
+                    $update = DB::table('timesharn')->where('bar', $codigo)->update(['cut' => $lasDate]);
+                }
                 $updatetime=DB::table('timesharn')->where('bar',$codigo)->update(['cutF'=>$todays]);
                 $tiempoUp=DB::table('tiempos')->where('info',$codigo)->update(['corte'=>$todays]);
                 $update = DB::table('registro')->where('info', $codigo)->update(['count' => $count, 'donde' => 'En espera de liberacion']);
@@ -310,6 +320,11 @@ class generalController extends Controller
                     return redirect('general')->with('response', $resp);
             }else if(($donde==='libe' or $donde==='cort') and $count===5){
                     if(substr($rev,0,4)=='PRIM' or substr($rev,0,4)=='PPAP' ){
+                        $buscar=DB::table('timeharn')->select('term','cutF')->where('bar',$codigo)->first();
+                        $lasDate=$buscar->cutF;
+                        if($buscar->term==NULL){
+                            $update = DB::table('timesharn')->where('bar', $codigo)->update(['term' => $lasDate]);
+                        }
                         $updatetime=DB::table('timesharn')->where('bar',$codigo)->update(['termF'=>$todays]);
                         $update = DB::table('registro')->where('info', $codigo)->update(['count' => 16, 'donde' => 'En espera de Ingenieria Liberacion']);
                         if ($update) { $resp = "Waitting for enginney";
@@ -343,6 +358,11 @@ class generalController extends Controller
                         return redirect('general')->with('response', $resp);
                     }else{
                     $count=6;
+                    $buscar=DB::table('timeharn')->select('term','cutF')->where('bar',$codigo)->first();
+                    $lasDate=$buscar->cutF;
+                    if($buscar->term==NULL){
+                        $update = DB::table('timesharn')->where('bar', $codigo)->update(['term' => $lasDate]);
+                    }
                     $updatetime=DB::table('timesharn')->where('bar',$codigo)->update(['termF'=>$todays]);
                     $tiempoUp=DB::table('tiempos')->where('info',$codigo)->update(['liberacion'=>$todays]);
                     $update = DB::table('registro')->where('info', $codigo)->update(['count' => $count, 'donde' => 'En espera de ensamble']);
@@ -425,6 +445,11 @@ class generalController extends Controller
                         return redirect('general')->with('response', $resp);
             }else if($donde==='ensa' and $count===7){
                         if(substr($rev,0,4)=='PRIM' or substr($rev,0,4)=='PPAP' ){
+                            $buscar=DB::table('timeharn')->select('ensa','termF')->where('bar',$codigo)->first();
+                            $lasDate=$buscar->termF;
+                            if($buscar->ensa==NULL){
+                                $update = DB::table('timesharn')->where('bar', $codigo)->update(['ensa' => $lasDate]);
+                            }
                             $updatetime=DB::table('timesharn')->where('bar',$codigo)->update(['ensaF'=>$todays]);
                             $update = DB::table('registro')->where('info', $codigo)->update(['count' => 13, 'donde' => 'En espera de Ingenieria ensamble']);
                             if ($update) { $resp = "Waitting for enginney";
@@ -432,6 +457,11 @@ class generalController extends Controller
                             return redirect('general')->with('response', $resp);
                         }else{
                         $count=8;
+                        $buscar=DB::table('timeharn')->select('ensa','termF')->where('bar',$codigo)->first();
+                        $lasDate=$buscar->termF;
+                        if($buscar->ensa==NULL){
+                            $update = DB::table('timesharn')->where('bar', $codigo)->update(['ensa' => $lasDate]);
+                        }
                         $updatetime=DB::table('timesharn')->where('bar',$codigo)->update(['ensaF'=>$todays]);
                         $tiempoUp=DB::table('tiempos')->where('info',$codigo)->update(['ensamble'=>$todays]);
                         $update = DB::table('registro')->where('info', $codigo)->update(['count' => $count, 'donde' => 'En espera de loom']);
@@ -447,6 +477,11 @@ class generalController extends Controller
                             return redirect('general')->with('response', $resp);
             } else if($donde==='loom' and $count===9){
                             if(substr($rev,0,4)=='PRIM' or substr($rev,0,4)=='PPAP' ){
+                                $buscar=DB::table('timeharn')->select('loom','ensaF')->where('bar',$codigo)->first();
+                                $lasDate=$buscar->ensaF;
+                                if($buscar->loom==NULL){
+                                    $update = DB::table('timesharn')->where('bar', $codigo)->update(['loom' => $lasDate]);
+                                }
                                 $updatetime=DB::table('timesharn')->where('bar',$codigo)->update(['loomF'=>$todays]);
                                 $update = DB::table('registro')->where('info', $codigo)->update(['count' => 14, 'donde' => 'En espera de Ingenieria Loom']);
                                 if ($update) { $resp = "Waitting for enginney";
@@ -457,13 +492,18 @@ class generalController extends Controller
                                 $buscarcalidad=DB::table('calidad')->where("info",$codigo)->first();
                                 if($buscarcalidad){
                                     $count=10;
+                                    $buscar=DB::table('timeharn')->select('loom','ensaF')->where('bar',$codigo)->first();
+                                $lasDate=$buscar->ensaF;
+                                if($buscar->loom==NULL){
+                                    $update = DB::table('timesharn')->where('bar', $codigo)->update(['loom' => $lasDate]);
+                                }
                                     $updatetime=DB::table('timesharn')->where('bar',$codigo)->update(['loomF'=>$todays]);
                                     $tiempoUp=DB::table('tiempos')->where('info',$codigo)->update(['loom'=>$todays]);
                                     $update = DB::table('registro')->where('info', $codigo)->update(['count' => $count, 'donde' => 'En espera de prueba electrica']);
                                     if ($update) { $resp = "This harness was updated to the next station";
                                     } else {   $resp = "Harness not updated, it is in $area";  }
-                                    return redirect('general')->with('response', $resp);  }else{
-
+                                    return redirect('general')->with('response', $resp);
+                                 }else{
                                 $buscarregistro=DB::table('registro')->select('*')->where("info",$codigo)->get();
                                 foreach($buscarregistro as $reg){
                                 $np=$reg->NumPart;
@@ -482,6 +522,11 @@ class generalController extends Controller
                                     $calReg->parcial="No";
                                  if($calReg->save()){
                             $count=10;
+                            $buscar=DB::table('timeharn')->select('loom','ensaF')->where('bar',$codigo)->first();
+                                $lasDate=$buscar->ensaF;
+                                if($buscar->loom==NULL){
+                                    $update = DB::table('timesharn')->where('bar', $codigo)->update(['loom' => $lasDate]);
+                                }
                             $updatetime=DB::table('timesharn')->where('bar',$codigo)->update(['loomF'=>$todays]);
                             $tiempoUp=DB::table('tiempos')->where('info',$codigo)->update(['loom'=>$todays]);
                             $update = DB::table('registro')->where('info', $codigo)->update(['count' => $count, 'donde' => 'En espera de prueba electrica']);
@@ -495,13 +540,17 @@ class generalController extends Controller
                         }}
                 }else if($donde==='cali' and $count===10){
                                 $count=11;
-
                                 $update = DB::table('registro')->where('info', $codigo)->update(['count' => $count, 'donde' => 'Proceso de corte']);
                                 if ($update) { $resp = "Testing process";
                                 } else {   $resp = "Harness not updated, it is in $area";  }
                                 return redirect('general')->with('response', $resp);
                 } else if($donde==='cali' and $count===11){
                                 if(substr($rev,0,4)=='PRIM' or substr($rev,0,4)=='PPAP' ){
+                                    $buscar=DB::table('timeharn')->select('qly','loomF')->where('bar',$codigo)->first();
+                                $lasDate=$buscar->loomF;
+                                if($buscar->qly==NULL){
+                                    $update = DB::table('timesharn')->where('bar', $codigo)->update(['qly' => $lasDate]);
+                                }
                                     $updatetime=DB::table('timesharn')->where('bar',$codigo)->update(['qlyF'=>$todays,'emba'=>$todays]);
                                     $update = DB::table('registro')->where('info', $codigo)->update(['count' => 18, 'donde' => 'En espera de Ingenieria Prueba Electrica']);
                                     if ($update) { $resp = "Waitting for enginney";
@@ -509,6 +558,11 @@ class generalController extends Controller
                                     return redirect('general')->with('response', $resp);
                                 }else{
                                 $count=12;
+                                $buscar=DB::table('timeharn')->select('qly','loomF')->where('bar',$codigo)->first();
+                                $lasDate=$buscar->loomF;
+                                if($buscar->qly==NULL){
+                                    $update = DB::table('timesharn')->where('bar', $codigo)->update(['qly' => $lasDate]);
+                                }
                                 $updatetime=DB::table('timesharn')->where('bar',$codigo)->update(['qlyF'=>$todays,'emba'=>$todays]);
                                 $tiempoUp=DB::table('tiempos')->where('info',$codigo)->update(['calidad'=>$todays]);
                                 $update = DB::table('registro')->where('info', $codigo)->update(['count' => $count, 'donde' => 'En espera de embarque']);
