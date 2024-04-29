@@ -37,20 +37,18 @@
                                                 <th>Articulo</th>
                                                 <th>Cantidad</th>
                                                 <th>Moviemiento</th>
-                                                <th>Wo</th>
-
-
-                                            </thead>
+                                                </thead>
                                             <tbody>
-
-
-
-                                            </tbody>
-                                            <tbody>
-
-
-
-
+                                                @if (!empty($itemOut))
+                                                @foreach ($itemOut as $item)
+                                                <tr>
+                                                    <td>{{ $item[0] }}</td>
+                                                    <td>{{ $item[1] }}</td>
+                                                    <td>{{ $item[2] }}</td>
+                                                    <td>{{ $item[3] }}</td>
+                                                </tr>
+                                                @endforeach
+                                                @endif
                                             </tbody>
                                         </table>
                                     </div>
@@ -64,38 +62,10 @@
                                     <!-- Card scaneer -->
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h5 class="m-0 font-weight-bold text-primary">Registro de entradas</h5>
+                                    <h5 class="m-0 font-weight-bold text-primary"> Carga tu archivo .cvs </h5>
                                 </div>
                                 <div class="card-body" style="overflow-y: auto; height: 360px;">
                                     <div class="chart-pie pt-4 pb-2">
-                                        <div align="center">
-                                            <h1>Carga tu archivo .cvs</h1>
-
-                                            <input type="file" id="file" name="file" accept=".csv" />
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Content Row -->
-                    <div class="row">
-                        <div class="col-lg-6 mb-4">
-                            <!-- AREAS -->
-                            <div class="card shadow mb-4">
-
-
-                                <div
-                                class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                <h5 class="m-0 font-weight-bold text-primary"> Carga tu archivo .cvs   </h5>
-
-                                </div>
-                                <div class="card-body" style="overflow-y: auto; height: 360px;" id='work'>
-                                    <div class="row" >
                                         <form id="uploadForm" action="{{route('savedataAlm')}}" method="POST" enctype="multipart/form-data">
                                             @csrf
                                             <input type="file" id="fileInput" name="fileInput" accept=".csv" />
@@ -114,6 +84,62 @@
                                           <tbody>
 
                                           </tbody>
+                                        </table>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Content Row -->
+                    <div class="row">
+                        <div class="col-lg-6 mb-4">
+                            <!-- AREAS -->
+                            <div class="card shadow mb-4">
+
+
+                                <div
+                                class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h5 class="m-0 font-weight-bold text-primary">Kits por armar   </h5>
+                                </div>
+                                <div class="card-body" style="overflow-y: auto; height: 360px;" id='work'>
+                                    <div class="row" >
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>Numero de parte</th>
+                                                    <th>Cantidad</th>
+                                                    <th>Work Order</th>
+                                                    <th>Status</th>
+                                                    <th>Iniciar</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if (!empty($kitsWo))
+                                                @foreach ($kitsWo as $kit)
+                                                <tr>
+                                                    <td>{{ $kit[0] }}</td>
+                                                    <td>{{ $kit[1] }}</td>
+                                                    <td>{{ $kit[2] }}</td>
+                                                    <td>{{ $kit[3] }}</td>
+                                                    @if ($kit[3] == 'En espera')
+                                                     <td><form action="{{route('kits')}}" method="GET">
+                                                        <input type="hidden" name="id" value="{{ $kit[4] }}">
+                                                        <input type="submit" value="Comenzar">
+                                                     </form>
+                                                        </td>
+                                                    @elseif ($kit[3] == 'Parcial')
+                                                    <td><form action="{{route('kits')}}" method="GET">
+                                                        <input type="hidden" name="id" value="{{ $kit[4] }}">
+                                                        <input type="submit" value="Continuar">
+                                                     </form>
+                                                        </td>
+                                                    @endif
+                                                @endforeach
+                                                @endif
+                                            </tbody>
                                         </table>
 
                                     </div>
@@ -140,19 +166,12 @@
                             <!-- AREAS -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h5 class="m-0 font-weight-bold text-primary"> </h5>
+                                    <h5 class="m-0 font-weight-bold text-primary">vacio </h5>
                                 </div>
                                 <div class="card-body" style="overflow-y: auto; height: 360px;">
                                     <div class="row" >
-                                        <table>
-                                            <thead>
-                                                <th>Item</th>
-                                                <th>Qty</th>
-                                            </thead>
-                                            <tbody>
 
-                                            </tbody>
-                                        </table>
+
                                     </div>
                                 </div>
                             </div>
