@@ -6,6 +6,7 @@ use App\Models\entSalAlamacen;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use App\Models\creacionKit;
 use App\Models\Kits;
 
 
@@ -111,4 +112,29 @@ public function savedataAlm(Request $request){
         return view('almacen/kits',['kits'=>$kits,'value'=>$value,'cat'=>$categoria,'id'=>$id,'today'=>$today]);}
 
     }
+    public function trabajoKits(Request $request){
+        $value=session('user');
+        $categoria=session('categoria');
+        $pn=$request->input('np');
+        $wo=$request->input('wo');
+        $qty=$request->input('qty');
+        $item=$request->input('item');
+        $today=(date('d-m-Y H:i'));
+
+        if($pn!="" and $wo!="" and $qty!="" and $item!=""){
+            for($i=0;$i<count($item);$i++){
+                $nueva = new creacionKit;
+                $nueva->fecha = $today;
+                $nueva->pn = $pn;
+                $nueva->wo = $wo;
+                $nueva->item = $item[$i];
+                $nueva->qty = $qty[$i];
+                $nueva->usuario = $value;
+                $nueva->save();
+
+    }
+    
+}
+}
+
 }
