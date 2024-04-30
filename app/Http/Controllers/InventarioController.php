@@ -65,6 +65,7 @@ public function savedataAlm(Request $request){
                 $cant[$i] = str_replace(['[', ']', '"'], '', $cant[$i]);
                 $cant[$i] = floatval($cant[$i]);
                 if($items[$i]!='NA' and $cant[$i]!=""){
+                $buscar = DB::table('itemsconsumidos')->where('item', '=', $items[$i])->increment('Qty', $cant[$i]);
                 $nueva = new entSalAlamacen();
                 $nueva->item = $items[$i];
                 $nueva->Qty = $cant[$i];

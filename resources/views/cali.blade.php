@@ -197,13 +197,31 @@
                                             <table id="table-sales" class="table-sales">
                                                 <thead >
                                                     <th>Fehca</th>
-                                                    <th>Número de Parte</th>
                                                     <th>cliente</th>
+                                                    <th>Número de Parte</th>
                                                     <th>Qty</th>
                                                     <th>Codigo de falla</th>
                                                     <th>Serial</th>
                                                 </thead>
-                                                <tbody id="table-body"> </tbody>
+                                                <tbody>
+                                                    @if (!empty($registros))
+                                                    @foreach ($registros as $reg)
+
+                                                    <tr>
+                                                        <td>{{$reg[0]}}</td>
+                                                        <td>{{$reg[1]}}</td>
+                                                        <td>{{$reg[2]}}</td>
+                                                        <td>{{$reg[3]}}</td>
+                                                        <td>{{$reg[4]}}</td>
+                                                        <td>{{$reg[5]}}</td>
+                                                    </tr>
+                                                    @endforeach
+
+                                                    @endif
+
+
+
+                                                </tbody>
                                             </table>
                                         </div>
                                     </div>

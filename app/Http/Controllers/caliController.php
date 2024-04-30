@@ -36,6 +36,23 @@ class caliController extends generalController
             $i++;
 
         }
+        $timesReg = strtotime(date("d-m-Y 00:00", strtotime('-1 day')));
+        $registros=[];
+        $i=0;
+        $buscReg=DB::table('regsitrocalidad')->get();
+        foreach($buscReg as $rowReg){
+            if(strtotime($rowReg->fecha)>$timesReg){
+                $registros[$i][0]=$rowReg->fecha;
+                $registros[$i][1]=$rowReg->client;
+                $registros[$i][2]=$rowReg->pn;
+                $registros[$i][3]=$rowReg->resto;
+                $registros[$i][4]=$rowReg->codigo;
+                $registros[$i][5]=$rowReg->prueba;
+                $i++;
+            }
+
+        }
+
 
         $Generalcontroller=new generalController;
         $generalresult=$Generalcontroller->__invoke();
@@ -48,7 +65,7 @@ class caliController extends generalController
 
 
 
-        return view('cali',['cat'=>$cat,'value'=>$value,'calidad'=>$calidad,'week'=>$week,'assit'=>$assit,'paros'=>$paros,'desviations'=>$desviations,'materials'=>$materials]);
+        return view('cali',['registros'=>$registros,'cat'=>$cat,'value'=>$value,'calidad'=>$calidad,'week'=>$week,'assit'=>$assit,'paros'=>$paros,'desviations'=>$desviations,'materials'=>$materials]);
 
         }
     }
@@ -82,6 +99,7 @@ class caliController extends generalController
 
     }
     public function saveData(Request $request){
+        $value = session('user');
         $diff=0;
         $today=date('d-m-Y H:i');
         $info=$request->input("infoCal");
@@ -109,10 +127,10 @@ class caliController extends generalController
         $serial = str_replace('0-', '', $serial);
         $serial = (int)$serial;
         $ini='0-';}
-        $busquedainfo=DB::table('calidad')->select('qty','rev','NumPart','wo')->where('info',$info)->first();
-        $np=$busquedainfo->NumPart;
+        $busquedainfo=DB::table('calidad')->select('qty','wo')->where('info',$info)->first();
+
         $wo=$busquedainfo->wo;
-        $rev=$busquedainfo->rev;
+
         $qty_cal=$busquedainfo->qty;
         $total=$ok+$nok;
         $totalCant=$cant1+$cant2+$cant3+$cant4+$cant5;
@@ -132,6 +150,7 @@ class caliController extends generalController
                 $serial++;
             }else{
             $ok_reg->prueba="";}
+            $ok_reg->usuario=$value;
             $ok_reg->save();}
 
 
@@ -150,6 +169,7 @@ class caliController extends generalController
                         $serial++;
                     }else{
                     $nok_reg->prueba="";}
+                    $nok_reg->usuario=$value;
                     $nok_reg->save();
                 }
             }
@@ -167,6 +187,7 @@ class caliController extends generalController
                         $serial++;
                     }else{
                     $nok_reg->prueba="";}
+                    $nok_reg->usuario=$value;
                     $nok_reg->save();
                 }
             }
@@ -184,6 +205,7 @@ class caliController extends generalController
                         $serial++;
                     }else{
                     $nok_reg->prueba="";}
+                    $nok_reg->usuario=$value;
                     $nok_reg->save();
                 }
             }
@@ -201,6 +223,7 @@ class caliController extends generalController
                         $serial++;
                     }else{
                     $nok_reg->prueba="";}
+                    $nok_reg->usuario=$value;
                     $nok_reg->save();
                 }
             }
@@ -218,6 +241,7 @@ class caliController extends generalController
                         $serial++;
                     }else{
                     $nok_reg->prueba="";}
+                    $nok_reg->usuario=$value;
                     $nok_reg->save();
                 }
             }
@@ -226,6 +250,14 @@ class caliController extends generalController
             $updacalidad=DB::table('calidad')->where("info",$info)->update(['qty'=>$rest]);
             $updateToRegistro=DB::table('registro')->where("info",$info)->update(["paro"=>"Parcial prueba electrica"]);
             if($rest==0){
+                $todays=(date('d-m-Y H:i'));
+                $delteCalidad=DB::table('calidad')->where("info",$info)->delete();
+                $updatetime=DB::table('timesharn')->where('bar',$info)->update(['cutF'=>$todays]);
+                $tiempoUp=DB::table('tiempos')->where('info',$info)->update(['corte'=>$todays]);
+                $updateToEmbarque=DB::table('registro')->where("info",$info)->update(["count"=>12,"donde"=>'En espera de embarque',"paro"=>""]);
+                $buscarReg=DB::table('registro')->where("info",$info)->first();
+                $rev=$buscarReg->rev;
+                $np=$buscarReg->NumPart;
                 if(substr($rev,0,4)=='PPAP' || substr($rev,0,4)=='PRIM'){
                     $subject= 'Salida '.substr($rev, 0, 4).' Numero de parte:'.$np.' Rev: '.substr($rev, 5);
                                 $date = date('d-m-Y');
@@ -251,8 +283,7 @@ class caliController extends generalController
                                    'jlopez@mx.bergstrominc.com'
                                 ];
                                 Mail::to($recipients)->send(new \App\Mail\PPAPING($subject,$content));}
-                $delteCalidad=DB::table('calidad')->where("info",$info)->delete();
-                $updateToEmbarque=DB::table('registro')->where("info",$info)->update(["count"=>12,"donde"=>'En espera de embarque',"paro"=>""]);
+
 
             }
 
