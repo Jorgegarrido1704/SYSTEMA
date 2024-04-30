@@ -8,6 +8,8 @@ use App\Models\calidadRegistro;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Mail\Mailables;
+use Illuminate\Support\Facades\Mail;
 
 
 class caliController extends generalController
@@ -107,7 +109,10 @@ class caliController extends generalController
         $serial = str_replace('0-', '', $serial);
         $serial = (int)$serial;
         $ini='0-';}
-        $busquedainfo=DB::table('calidad')->select('qty')->where('info',$info)->first();
+        $busquedainfo=DB::table('calidad')->select('qty','rev','NumPart','wo')->where('info',$info)->first();
+        $np=$busquedainfo->NumPart;
+        $wo=$busquedainfo->wo;
+        $rev=$busquedainfo->rev;
         $qty_cal=$busquedainfo->qty;
         $total=$ok+$nok;
         $totalCant=$cant1+$cant2+$cant3+$cant4+$cant5;
@@ -221,6 +226,31 @@ class caliController extends generalController
             $updacalidad=DB::table('calidad')->where("info",$info)->update(['qty'=>$rest]);
             $updateToRegistro=DB::table('registro')->where("info",$info)->update(["paro"=>"Parcial prueba electrica"]);
             if($rest==0){
+                if(substr($rev,0,4)=='PPAP' || substr($rev,0,4)=='PRIM'){
+                    $subject= 'Salida '.substr($rev, 0, 4).' Numero de parte:'.$np.' Rev: '.substr($rev, 5);
+                                $date = date('d-m-Y');
+                            $time = date('H:i');
+                            $content = 'Buen día,'."\n\n".'Les comparto que hoy ' . $date . ' a las ' . $time . "\n\n"."Salio la".substr($rev, 0, 4)."\n\n";
+                            $content .= "\n\n"." Del cliente: " . $client;
+                    $content .= "\n\n"." Con número de parte: " . $np;
+                    $content .= "\n\n"." Con Work order: " . $wo;
+                    $content .= "\n\n"." Esto para seguir con el proceso de producción y revision por parte de ingeniería y calidad.";
+
+
+                                $recipients = [
+                                   'jcervera@mx.bergstrominc.com',
+                                    'jcrodriguez@mx.bergstrominc.com',
+                                    'vestrada@mx.bergstrominc.com',
+                                    'david-villa88@outlook.com',
+                                    'egaona@mx.bergstrominc.com',
+                                    'mvaladez@mx.bergstrominc.com',
+                                    'jolaes@mx.bergstrominc.com',
+                                    'lramos@mx.bergstrominc.com',
+                                    'emedina@mx.bergstrominc.com',
+                                   'jgarrido@mx.bergstrominc.com',
+                                   'jlopez@mx.bergstrominc.com'
+                                ];
+                                Mail::to($recipients)->send(new \App\Mail\PPAPING($subject,$content));}
                 $delteCalidad=DB::table('calidad')->where("info",$info)->delete();
                 $updateToEmbarque=DB::table('registro')->where("info",$info)->update(["count"=>12,"donde"=>'En espera de embarque',"paro"=>""]);
 
