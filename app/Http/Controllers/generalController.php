@@ -285,7 +285,7 @@ class generalController extends Controller
                 return redirect('general')->with('response', $resp);
             }else if(($donde==='libe' or $donde==='cort') and $count===3){
                 if(substr($rev,0,4)=='PRIM' or substr($rev,0,4)=='PPAP' ){
-                     $buscar=DB::table('timeharn')->select('cut','fecha')->where('bar',$codigo)->first();
+                     $buscar=DB::table('timesharn')->select('cut','fecha')->where('bar',$codigo)->first();
                                 $lasDate=$buscar->fecha;
                                 if($buscar->cut==NULL){
                                     $update = DB::table('timesharn')->where('bar', $codigo)->update(['cut' => $lasDate]);
@@ -297,7 +297,7 @@ class generalController extends Controller
                     return redirect('general')->with('response', $resp);
                 }else{
                 $count=4;
-                $buscar=DB::table('timeharn')->select('cut','fecha')->where('bar',$codigo)->first();
+                $buscar=DB::table('timesharn')->select('cut','fecha')->where('bar',$codigo)->first();
                 $lasDate=$buscar->fecha;
                 if($buscar->cut==NULL){
                     $update = DB::table('timesharn')->where('bar', $codigo)->update(['cut' => $lasDate]);
@@ -320,7 +320,7 @@ class generalController extends Controller
                     return redirect('general')->with('response', $resp);
             }else if(($donde==='libe' or $donde==='cort') and $count===5){
                     if(substr($rev,0,4)=='PRIM' or substr($rev,0,4)=='PPAP' ){
-                        $buscar=DB::table('timeharn')->select('term','cutF')->where('bar',$codigo)->first();
+                        $buscar=DB::table('timesharn')->select('term','cutF')->where('bar',$codigo)->first();
                         $lasDate=$buscar->cutF;
                         if($buscar->term==NULL){
                             $update = DB::table('timesharn')->where('bar', $codigo)->update(['term' => $lasDate]);
@@ -358,7 +358,7 @@ class generalController extends Controller
                         return redirect('general')->with('response', $resp);
                     }else{
                     $count=6;
-                    $buscar=DB::table('timeharn')->select('term','cutF')->where('bar',$codigo)->first();
+                    $buscar=DB::table('timesharn')->select('term','cutF')->where('bar',$codigo)->first();
                     $lasDate=$buscar->cutF;
                     if($buscar->term==NULL){
                         $update = DB::table('timesharn')->where('bar', $codigo)->update(['term' => $lasDate]);
@@ -445,7 +445,7 @@ class generalController extends Controller
                         return redirect('general')->with('response', $resp);
             }else if($donde==='ensa' and $count===7){
                         if(substr($rev,0,4)=='PRIM' or substr($rev,0,4)=='PPAP' ){
-                            $buscar=DB::table('timeharn')->select('ensa','termF')->where('bar',$codigo)->first();
+                            $buscar=DB::table('timesharn')->select('ensa','termF')->where('bar',$codigo)->first();
                             $lasDate=$buscar->termF;
                             if($buscar->ensa==NULL){
                                 $update = DB::table('timesharn')->where('bar', $codigo)->update(['ensa' => $lasDate]);
@@ -457,7 +457,7 @@ class generalController extends Controller
                             return redirect('general')->with('response', $resp);
                         }else{
                         $count=8;
-                        $buscar=DB::table('timeharn')->select('ensa','termF')->where('bar',$codigo)->first();
+                        $buscar=DB::table('timesharn')->select('ensa','termF')->where('bar',$codigo)->first();
                         $lasDate=$buscar->termF;
                         if($buscar->ensa==NULL){
                             $update = DB::table('timesharn')->where('bar', $codigo)->update(['ensa' => $lasDate]);
@@ -477,7 +477,7 @@ class generalController extends Controller
                             return redirect('general')->with('response', $resp);
             } else if($donde==='loom' and $count===9){
                             if(substr($rev,0,4)=='PRIM' or substr($rev,0,4)=='PPAP' ){
-                                $buscar=DB::table('timeharn')->select('loom','ensaF')->where('bar',$codigo)->first();
+                                $buscar=DB::table('timesharn')->select('loom','ensaF')->where('bar',$codigo)->first();
                                 $lasDate=$buscar->ensaF;
                                 if($buscar->loom==NULL){
                                     $update = DB::table('timesharn')->where('bar', $codigo)->update(['loom' => $lasDate]);
@@ -492,7 +492,7 @@ class generalController extends Controller
                                 $buscarcalidad=DB::table('calidad')->where("info",$codigo)->first();
                                 if($buscarcalidad){
                                     $count=10;
-                                    $buscar=DB::table('timeharn')->select('loom','ensaF')->where('bar',$codigo)->first();
+                                    $buscar=DB::table('timesharn')->select('loom','ensaF')->where('bar',$codigo)->first();
                                 $lasDate=$buscar->ensaF;
                                 if($buscar->loom==NULL){
                                     $update = DB::table('timesharn')->where('bar', $codigo)->update(['loom' => $lasDate]);
@@ -522,7 +522,7 @@ class generalController extends Controller
                                     $calReg->parcial="No";
                                  if($calReg->save()){
                             $count=10;
-                            $buscar=DB::table('timeharn')->select('loom','ensaF')->where('bar',$codigo)->first();
+                            $buscar=DB::table('timesharn')->select('loom','ensaF')->where('bar',$codigo)->first();
                                 $lasDate=$buscar->ensaF;
                                 if($buscar->loom==NULL){
                                     $update = DB::table('timesharn')->where('bar', $codigo)->update(['loom' => $lasDate]);
@@ -546,7 +546,7 @@ class generalController extends Controller
                                 return redirect('general')->with('response', $resp);
                 } else if($donde==='cali' and $count===11){
                                 if(substr($rev,0,4)=='PRIM' or substr($rev,0,4)=='PPAP' ){
-                                    $buscar=DB::table('timeharn')->select('qly','loomF')->where('bar',$codigo)->first();
+                                    $buscar=DB::table('timesharn')->select('qly','loomF')->where('bar',$codigo)->first();
                                 $lasDate=$buscar->loomF;
                                 if($buscar->qly==NULL){
                                     $update = DB::table('timesharn')->where('bar', $codigo)->update(['qly' => $lasDate]);
@@ -558,7 +558,7 @@ class generalController extends Controller
                                     return redirect('general')->with('response', $resp);
                                 }else{
                                 $count=12;
-                                $buscar=DB::table('timeharn')->select('qly','loomF')->where('bar',$codigo)->first();
+                                $buscar=DB::table('timesharn')->select('qly','loomF')->where('bar',$codigo)->first();
                                 $lasDate=$buscar->loomF;
                                 if($buscar->qly==NULL){
                                     $update = DB::table('timesharn')->where('bar', $codigo)->update(['qly' => $lasDate]);
