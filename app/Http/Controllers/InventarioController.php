@@ -93,20 +93,32 @@ public function savedataAlm(Request $request){
             $wo=$busqueda->wo;
             $fechaIni=$busqueda->fechaIni;
             $fechaFin=$busqueda->fechaFin;
-            if($fechaIni=='No aun'){
-               $update=DB::table('kits')->where('id','=',$id)->update(['fechaIni'=>$today,'status'=>'Parcial']);
-            }else if($fechaIni!='No aun'){
-                $fechaIni=intval($fechaIni);
+
+             if($fechaIni!='No Aun' and $fechaFin!='No Aun'){
+                $fechaIni=intval($fechaIni)-intval($fechaFin);
                 $newDate=$today-$fechaIni;
-                $update=DB::table('kits')->where('id','=',$id)->update(['fechaFin'=>$newDate]);
-            }
+                $update=DB::table('kits')->where('id','=',$id)->update(['fechaIni'=>$newDate,'fechaFin'=>$today]);
+            }else if($fechaIni=='No Aun'){
+                $update=DB::table('kits')->where('id','=',$id)->update(['fechaIni'=>$today,'status'=>'Parcial']);}
+
             $values=DB::table('datos')->where('part_num','=',$np)->get();
             foreach($values as $val){
+                $buskit=DB::table('creacionkits')->where('pn','=',$np)->where('item','=',$val->item)->first();
+                if($buskit){
+                $reduce=(intval($val->qty)*$qty)-intval($buskit->qty);
+                if($reduce>0){
                 $kits[$i][0]=$np;
                 $kits[$i][1]=$wo;
                 $kits[$i][2]=$val->item;
-                $kits[$i][3]=intval($val->qty)*$qty;
-                $i++;
+                $kits[$i][3]=$reduce;
+                $i++;}
+                }else{
+                    $kits[$i][0]=$np;
+                    $kits[$i][1]=$wo;
+                    $kits[$i][2]=$val->item;
+                    $kits[$i][3]=intval($val->qty)*$qty;
+                    $i++;
+                }
             }
 
         return view('almacen/kits',['kits'=>$kits,'value'=>$value,'cat'=>$categoria,'id'=>$id,'today'=>$today]);}
@@ -120,7 +132,7 @@ public function savedataAlm(Request $request){
         $qty=$request->input('qty');
         $item=$request->input('item');
         $today=(date('d-m-Y H:i'));
-
+        $fin=strtotime(date('d-m-Y H:i'));
         if($pn!="" and $wo!="" and $qty!="" and $item!=""){
             for($i=0;$i<count($item);$i++){
                 $nueva = new creacionKit;
@@ -132,8 +144,11 @@ public function savedataAlm(Request $request){
                 $nueva->usuario = $value;
                 $nueva->save();
 
+
+    }if($nueva->save()){
+        $update=DB::table('kits')->where('numeroParte','=',$pn)->where('wo','=',$wo)->update(['fechaFin'=>$fin]);
     }
-    
+
 }
 }
 
