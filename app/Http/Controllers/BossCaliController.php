@@ -45,7 +45,6 @@ class BossCaliController extends Controller
             }
             }
             $paretott=$pareto[1]+$pareto[0];
-            
             if ($paretott != 0) {
                 $paretoresult[0]=round(($pareto[0]*100)/$paretott,2);
                 $paretoresult[1]=round(($pareto[1]*100)/$paretott,2);

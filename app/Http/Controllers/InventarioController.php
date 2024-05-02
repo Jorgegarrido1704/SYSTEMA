@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use App\Models\creacionKit;
 use App\Models\Kits;
+use App\Models\itemsConsumidos;
 
 
 
@@ -65,14 +66,32 @@ public function savedataAlm(Request $request){
                 $cant[$i] = str_replace(['[', ']', '"'], '', $cant[$i]);
                 $cant[$i] = floatval($cant[$i]);
                 if($items[$i]!='NA' and $cant[$i]!=""){
-                $buscar = DB::table('itemsconsumidos')->where('item', '=', $items[$i])->increment('Qty', $cant[$i]);
-                $nueva = new entSalAlamacen();
-                $nueva->item = $items[$i];
-                $nueva->Qty = $cant[$i];
-                $nueva->movimiento = 'Entrada';
-                $nueva->usuario = $value;
-                $nueva->fecha = date('d-m-Y H:i');
-            $nueva->save();}
+                    $ExistinIC=DB::table('itemsconsumidos')->where('item', '=', $items[$i])->first();
+                    if($ExistinIC){
+                        $buscar = DB::table('itemsconsumidos')->where('item', '=', $items[$i])->increment('Qty', $cant[$i]);
+                        $nueva = new entSalAlamacen();
+                        $nueva->item = $items[$i];
+                        $nueva->Qty = $cant[$i];
+                        $nueva->movimiento = 'Entrada';
+                        $nueva->usuario = $value;
+                        $nueva->fecha = date('d-m-Y H:i');
+                    $nueva->save();
+                    }else{
+                        $nuevoItem = new itemsConsumidos();
+                        $nuevoItem->item = $items[$i];
+                        $nuevoItem->Qty = $cant[$i];
+                        if($nuevoItem->save()){
+                            $nueva = new entSalAlamacen();
+                            $nueva->item = $items[$i];
+                            $nueva->Qty = $cant[$i];
+                            $nueva->movimiento = 'Entrada';
+                            $nueva->usuario = $value;
+                            $nueva->fecha = date('d-m-Y H:i');
+                            $nueva->save();
+                        }
+
+                    }
+                }
         }
 
         return Redirect::to('inventario')->with('success','Se guardaron los datos exitosamente');

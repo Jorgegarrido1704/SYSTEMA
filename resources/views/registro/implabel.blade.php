@@ -17,10 +17,10 @@
     @if (!empty($corte))
 @for ($i=0; $i < count($corte); $i++)
 <div >
- <canvas id="barcode{{$i}}" style="width:150px; max-height:30px"></canvas><img src='{{ asset('/dash/img/bergs.jpg')}}' alt='' style="max-height:30px"><b> Cons: {{$corte[$i][3]}}<br>
-    {{$corte[$i][0]}} Cant: {{$corte[$i][12]}}   WO: {{$corte[$i][2]}} AWS: {{$corte[$i][6]}} <br>
+ <canvas id="barcode{{$i}}" style="width:120px; max-height:20px"></canvas><img src='{{ asset('/dash/img/bergs.jpg')}}' alt='' style=" width:80px;max-height:20px"><b> Cons: {{$corte[$i][3]}}<br>
+    <h4>  {{$corte[$i][0]}} Cant: {{$corte[$i][12]}}   WO: {{$corte[$i][2]}} AWS: {{$corte[$i][6]}} <br>
     PN: {{$corte[$i][1]}}  Color: {{$corte[$i][4]}} Tamaño: {{$corte[$i][13]}} <br>
-    Term1: {{$corte[$i][8]}}  Term2: {{$corte[$i][9]}} From: {{$corte[$i][10]}} TO: {{$corte[$i][11]}} </b><br>
+    Term1: {{$corte[$i][8]}}  Term2: {{$corte[$i][9]}} From: {{$corte[$i][10]}} TO: {{$corte[$i][11]}}</h4> </b><br>
 </div>
 <script>
      var canvas = document.getElementById("barcode"+{{$i}});
