@@ -45,10 +45,11 @@ class BossCaliController extends Controller
             }
             }
             $paretott=$pareto[1]+$pareto[0];
-            try {
+            
+            if ($paretott != 0) {
                 $paretoresult[0]=round(($pareto[0]*100)/$paretott,2);
                 $paretoresult[1]=round(($pareto[1]*100)/$paretott,2);
-            } catch (\Exception $e) {
+            } else {
                 $paretoresult[0]=0;
                 $paretoresult[1]=0;
             }
@@ -285,10 +286,10 @@ class BossCaliController extends Controller
 
             $paretott=$pareto[1]+$pareto[0];
 
-            try {
+            if ($paretott != 0) {
                 $paretoresult[0]=round(($pareto[0]*100)/$paretott,2);
                 $paretoresult[1]=round(($pareto[1]*100)/$paretott,2);
-            } catch (\Exception $e) {
+            } else {
                 $paretoresult[0]=0;
                 $paretoresult[1]=0;
             }
