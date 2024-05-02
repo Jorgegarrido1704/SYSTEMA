@@ -108,7 +108,6 @@ class generalController extends Controller
                 $registros[$i][8]=$idrow->paro;
                 $buscartime=DB::table('timesharn')->select('loom', 'loomF')->where('wo', $idrow->wo)->first();
 
-
                     $registros[$i][9]=$buscartime->loom;
                     $registros[$i][10]=$buscartime->loomF;
 
