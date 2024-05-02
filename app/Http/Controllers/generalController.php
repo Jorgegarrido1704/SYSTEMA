@@ -93,7 +93,7 @@ class generalController extends Controller
             }
 
         }else if($categoria=='loom'){
-            $buscarporid=DB::select("SELECT * FROM registro WHERE count='9' or count='10' ORDER BY cliente");
+            $buscarporid=DB::select("SELECT * FROM registro WHERE count='8' or count='9' ORDER BY cliente");
             $registros=[];
             $i=0;
             foreach($buscarporid as $idrow){
@@ -107,7 +107,9 @@ class generalController extends Controller
                 $registros[$i][7]=$idrow->donde;
                 $registros[$i][8]=$idrow->paro;
                 $buscartime=DB::table('timesharn')->select('loom', 'loomF')->where('wo', $idrow->wo)->first();
-                if($buscartime->loom!=NULL){
+                    $loom=$buscartime->loom;
+                    $loomF=$buscartime->loomF;
+                    if($loom!=null){
                     $registros[$i][9]=$buscartime->loom;
                     $registros[$i][10]=$buscartime->loomF;
                 }else{
