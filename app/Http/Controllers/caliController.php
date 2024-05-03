@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Mail\Mailables;
 use Illuminate\Support\Facades\Mail;
+use App\Models\timeDead;
 
 
 class caliController extends generalController
@@ -24,6 +25,7 @@ class caliController extends generalController
         $buscarcalidad=DB::select("SELECT * FROM calidad");
         $i=0;
         $calidad=[];
+        $fallas=[];
         foreach($buscarcalidad as $rowcalidad){
             $calidad[$i][0]=$rowcalidad->np;
             $calidad[$i][1]=$rowcalidad->client;
@@ -52,7 +54,18 @@ class caliController extends generalController
             }
 
         }
-
+        $i=0;
+        $buscFallas=DB::table('timedead')->where('area','Calidad')->where('timeFin','=','No Aun')->get();
+        foreach($buscFallas as $Fa){
+            $fallas[$i][0]=$Fa->id;
+            $fallas[$i][1]=$Fa->fecha;
+            $fallas[$i][2]=$Fa->cliente;
+            $fallas[$i][3]=$Fa->np;
+            $fallas[$i][4]=$Fa->codigo;
+            $fallas[$i][5]=$Fa->defecto;
+            $fallas[$i][6]=$Fa->respArea;
+            $i++;
+        }
 
         $Generalcontroller=new generalController;
         $generalresult=$Generalcontroller->__invoke();
@@ -65,7 +78,7 @@ class caliController extends generalController
 
 
 
-        return view('cali',['registros'=>$registros,'cat'=>$cat,'value'=>$value,'calidad'=>$calidad,'week'=>$week,'assit'=>$assit,'paros'=>$paros,'desviations'=>$desviations,'materials'=>$materials]);
+        return view('cali',['fallas'=>$fallas,'registros'=>$registros,'cat'=>$cat,'value'=>$value,'calidad'=>$calidad,'week'=>$week,'assit'=>$assit,'paros'=>$paros,'desviations'=>$desviations,'materials'=>$materials]);
 
         }
     }
@@ -99,6 +112,47 @@ class caliController extends generalController
 
     }
     public function saveData(Request $request){
+        $corteLibe=['Impresion de cable incorrecta','Cable sobrante','Strip fuera de tolerancia','Terminal mal aplicada',
+        'Crimp no centrado',
+        'Cable con exceso de strip',
+        'Cable con strip insuficiente',
+        'Filamentos fuera de la terminal',
+        'Filamentos trozados',
+        'Aislante-InsulaciÃ³n perforada',
+        'Pestanas del cobre agarrando forro',
+        'Sello trozado',
+        'Terminal con exceso de presiÃ³n',
+        'Terminal doblada',
+        'Terminal no abraza forro',
+        'Terminal perforando forro',
+        'Terminal quebrada',
+        'Terminal sin presion',
+        'Empalme Incorrecto',
+        'Diodos invertidos',
+        'Tubo termocontractil mal colocado',
+        'Exceso de soldadura',
+        'Soldadura puenteada',
+        'Escasez de soldadura'
+    ];
+    $loom=['Encintado defectuoso de cables y-o de looming',
+    'Looming Corrugado danado',
+    'Looming Corrugado mal colocado ',
+    'Braid mal colocado y-o danado',
+    'Etiquetas invertidas'
+    ];
+    $ensa=['Cables revueltos en los lotes',
+    'Medidas fuera de tolerancias',
+    'Componente Danado ',
+    'Componente Incorrecto ',
+    'Componente Faltante ',
+    'Ensamble Incorrecto',
+    'Terminal o conector mal asentado',
+    'Salidas invertidas',
+    'Componentes sin atar al arnes',
+    'Cables Invertidos en el conector',
+    ' no tiene Continuidad Electrica',
+    'Arnes con cortocircuito'
+    ];
         $value = session('user');
         $diff=0;
         $today=date('d-m-Y H:i');
@@ -172,7 +226,33 @@ class caliController extends generalController
                     $nok_reg->usuario=$value;
                     $nok_reg->save();
                 }
+                $busndo=DB::table('timedead')->where('codigo','=',$info)->where('defecto','=',$cod1)->first();
+                if(empty($busndo)){
+                    $regTimes= new timedead;
+                    $regTimes->fecha=$today;
+                    $regTimes->cliente=$client;
+                    $regTimes->np=$pn;
+                    $regTimes->codigo=$info;
+                    $regTimes->defecto=$cod1;
+                    $regTimes->timeIni=strtotime($today);
+                    $regTimes->whoDet=$value;
+                    if($cod1=='Mantenimiento'){
+                    $regTimes->respArea="Javier Cervantes";
+                    }else if(in_array($cod1,$loom)){
+                        $regTimes->respArea="Miguel Gonzalez";
+                    }else if(in_array($cod1,$corteLibe)){
+                        $regTimes->respArea="Angel Gonzalez";
+                    }else if(in_array($cod1,$ensa)){
+                        if($client=='BERSTROMG'){
+                            $regTimes->respArea="Alejandra Gaona";
+                    }else if($client=='EL DORADO CALIFORNIA'){
+                        $regTimes->respArea="Saul";
+                }
             }
+            $regTimes->area="Calidad";
+            $regTimes->save();
+        }
+        }
             if(!empty($cant2)){
                 for($i=0;$i<$cant2;$i++){
                     $nok_reg= new calidadRegistro;
@@ -190,6 +270,32 @@ class caliController extends generalController
                     $nok_reg->usuario=$value;
                     $nok_reg->save();
                 }
+                $busndo=DB::table('timedead')->where('codigo','=',$info)->where('defecto','=',$cod2)->first();
+                if(empty($busndo)){
+                    $regTimes= new timedead;
+                    $regTimes->fecha=$today;
+                    $regTimes->cliente=$client;
+                    $regTimes->np=$pn;
+                    $regTimes->codigo=$info;
+                    $regTimes->defecto=$cod2;
+                    $regTimes->timeIni=strtotime($today);
+                    $regTimes->whoDet=$value;
+                    if($cod2=='Mantenimiento'){
+                    $regTimes->respArea="Javier Cervantes";
+                    }else if(in_array($cod2,$loom)){
+                        $regTimes->respArea="Miguel Gonzalez";
+                    }else if(in_array($cod2,$corteLibe)){
+                        $regTimes->respArea="Angel Gonzalez";
+                    }else if(in_array($cod2,$ensa)){
+                        if($client=='BERSTROMG'){
+                            $regTimes->respArea="Alejandra Gaona";
+                    }else if($client=='EL DORADO CALIFORNIA'){
+                        $regTimes->respArea="Saul";
+                }
+            }
+            $regTimes->area="Calidad";
+            $regTimes->save();
+        }
             }
             if(!empty($cant3)){
                 for($i=0;$i<$cant3;$i++){
@@ -208,6 +314,32 @@ class caliController extends generalController
                     $nok_reg->usuario=$value;
                     $nok_reg->save();
                 }
+                $busndo=DB::table('timedead')->where('codigo','=',$info)->where('defecto','=',$cod3)->first();
+                if(empty($busndo)){
+                    $regTimes= new timedead;
+                    $regTimes->fecha=$today;
+                    $regTimes->cliente=$client;
+                    $regTimes->np=$pn;
+                    $regTimes->codigo=$info;
+                    $regTimes->defecto=$cod3;
+                    $regTimes->timeIni=strtotime($today);
+                    $regTimes->whoDet=$value;
+                    if($cod3=='Mantenimiento'){
+                    $regTimes->respArea="Javier Cervantes";
+                    }else if(in_array($cod3,$loom)){
+                        $regTimes->respArea="Miguel Gonzalez";
+                    }else if(in_array($cod3,$corteLibe)){
+                        $regTimes->respArea="Angel Gonzalez";
+                    }else if(in_array($cod3,$ensa)){
+                        if($client=='BERSTROMG'){
+                            $regTimes->respArea="Alejandra Gaona";
+                    }else if($client=='EL DORADO CALIFORNIA'){
+                        $regTimes->respArea="Saul";
+                }
+            }
+            $regTimes->area="Calidad";
+            $regTimes->save();
+        }
             }
             if(!empty($cant4)){
                 for($i=0;$i<$cant4;$i++){
@@ -226,6 +358,32 @@ class caliController extends generalController
                     $nok_reg->usuario=$value;
                     $nok_reg->save();
                 }
+                $busndo=DB::table('timedead')->where('codigo','=',$info)->where('defecto','=',$cod4)->first();
+                if(empty($busndo)){
+                    $regTimes= new timedead;
+                    $regTimes->fecha=$today;
+                    $regTimes->cliente=$client;
+                    $regTimes->np=$pn;
+                    $regTimes->codigo=$info;
+                    $regTimes->defecto=$cod4;
+                    $regTimes->timeIni=strtotime($today);
+                    $regTimes->whoDet=$value;
+                    if($cod4=='Mantenimiento'){
+                    $regTimes->respArea="Javier Cervantes";
+                    }else if(in_array($cod4,$loom)){
+                        $regTimes->respArea="Miguel Gonzalez";
+                    }else if(in_array($cod4,$corteLibe)){
+                        $regTimes->respArea="Angel Gonzalez";
+                    }else if(in_array($cod4,$ensa)){
+                        if($client=='BERSTROMG'){
+                            $regTimes->respArea="Alejandra Gaona";
+                    }else if($client=='EL DORADO CALIFORNIA'){
+                        $regTimes->respArea="Saul";
+                }
+            }
+            $regTimes->area="Calidad";
+            $regTimes->save();
+        }
             }
             if(!empty($cant5)){
                 for($i=0;$i<$cant5;$i++){
@@ -244,6 +402,32 @@ class caliController extends generalController
                     $nok_reg->usuario=$value;
                     $nok_reg->save();
                 }
+                $busndo=DB::table('timedead')->where('codigo','=',$info)->where('defecto','=',$cod5)->first();
+                if(empty($busndo)){
+                    $regTimes= new timedead;
+                    $regTimes->fecha=$today;
+                    $regTimes->cliente=$client;
+                    $regTimes->np=$pn;
+                    $regTimes->codigo=$info;
+                    $regTimes->defecto=$cod5;
+                    $regTimes->timeIni=strtotime($today);
+                    $regTimes->whoDet=$value;
+                    if($cod5=='Mantenimiento'){
+                    $regTimes->respArea="Javier Cervantes";
+                    }else if(in_array($cod5,$loom)){
+                        $regTimes->respArea="Miguel Gonzalez";
+                    }else if(in_array($cod5,$corteLibe)){
+                        $regTimes->respArea="Angel Gonzalez";
+                    }else if(in_array($cod5,$ensa)){
+                        if($client=='BERSTROMG'){
+                            $regTimes->respArea="Alejandra Gaona";
+                    }else if($client=='EL DORADO CALIFORNIA'){
+                        $regTimes->respArea="Saul";
+                }
+            }
+            $regTimes->area="Calidad";
+            $regTimes->save();
+        }
             }
 
             $rest=$qty_cal - ($ok+$nok);
@@ -531,6 +715,17 @@ public function mantCali(Request $request){
             return redirect('/calidad');
 
 
+    }
+
+    public function timesDead(Request $request){
+        $id=$request->input('id');
+        $timeNow=strtotime(date('d-m-Y H:i'));
+        $buscar=DB::table('timedead')->where('id','=',$id)->first();
+        $timeIni=$buscar->timeIni;
+        $Totaltime=$timeNow-$timeIni;
+        $total=round($Totaltime/60,2);
+        $update=DB::table('timedead')->where('id','=',$id)->update(['timeFin'=>$timeNow,'total'=>$total]);
+        return redirect('/calidad');
     }
 
     }

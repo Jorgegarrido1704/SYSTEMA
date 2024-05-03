@@ -299,7 +299,7 @@ if(in_array($np,$busqueda)){
                           if(substr($corte->cons,0,5)=='CORTE'){
                               $ADDcorte->codigo=substr($wo,2)."C".substr($corte->cons,7);
                           }else{
-                          $ADDcorte->codigo=$wo.$corte->cons;}
+                          $ADDcorte->codigo=substr($wo,2).$corte->cons;}
                           $ADDcorte->term1=$corte->terminal1;
                           $ADDcorte->term2=$corte->terminal2;
                           $ADDcorte->dataFrom=$corte->dataFrom;
