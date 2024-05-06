@@ -15,8 +15,7 @@ use App\Models\timeDead;
 
 class caliController extends generalController
 {
-    //
-    public function __invoke(){
+      public function __invoke(){
         $value = session('user');
         $cat = session('categoria');
         if($cat=='' or $value==''){
@@ -41,7 +40,7 @@ class caliController extends generalController
         $timesReg = strtotime(date("d-m-Y 00:00", strtotime('-1 day')));
         $registros=[];
         $i=0;
-        $buscReg=DB::table('regsitrocalidad')->get();
+        $buscReg=DB::table('regsitrocalidad')->orderBy('id','DESC')->get();
         foreach($buscReg as $rowReg){
             if(strtotime($rowReg->fecha)>$timesReg){
                 $registros[$i][0]=$rowReg->fecha;
