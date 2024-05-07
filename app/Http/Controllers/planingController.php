@@ -35,16 +35,16 @@ class planingController extends Controller
        if(!empty($sono)){
        $buscarIguales=DB::table('po')->join('registro','po.po','=', 'registro.po')->where('pn',"LIKE",$sono.'%')->orWhere('pn',"LIKE","%".$sono)->orderBy('pn','asc')->get();
        $desiguales = DB::table('po')
-    ->join('registro', 'po.po', '=', 'registro.po')
-    ->where('po.po', '!=', 'registro.po')->orderBy('pn','asc')
+    ->join('retiradad', 'po.po', '=', 'retiradad.sono')->where('pn',"LIKE",$sono.'%')
+    ->orderBy('pn','asc')
     ->get();
 
        }else if(empty($sono)){
         $buscarIguales=DB::table('po')->join('registro','po.po','=', 'registro.po')->orderBy('pn','asc')->get();
         $desiguales = DB::table('po')
-    ->join('registro', 'po.po', '=', 'registro.po')
-    ->where('po.po', '!=', 'registro.po')->orderBy('pn','asc')
-    ->get();
+        ->join('retiradad', 'po.po', '=', 'retiradad.sono')
+        ->orderBy('pn','asc')
+        ->get();
 
     }
         foreach($buscarIguales as $pos){
