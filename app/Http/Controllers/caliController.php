@@ -141,9 +141,9 @@ class caliController extends generalController
     ];
     $ensa=['Cables revueltos en los lotes',
     'Medidas fuera de tolerancias',
-    'Componente Danado ',
-    'Componente Incorrecto ',
-    'Componente Faltante ',
+    'Componente Danado',
+    'Componente Incorrecto',
+    'Componente Faltante',
     'Ensamble Incorrecto',
     'Terminal o conector mal asentado',
     'Salidas invertidas',
