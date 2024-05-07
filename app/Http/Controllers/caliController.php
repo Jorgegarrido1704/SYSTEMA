@@ -250,7 +250,8 @@ class caliController extends generalController
                         $regTimes->respArea="Brando Olvera";
                     }else if ($client=='UTILIMASTER' OR $client=='ATLAS COPCO'){
                         $regTimes->respArea="Salvador Galvan";
-                    }
+                    }else(
+                        $regTimes->respArea="");
             }
             $regTimes->area="Calidad";
             $regTimes->save();
@@ -298,7 +299,8 @@ class caliController extends generalController
                         $regTimes->respArea="Brando Olvera";
                     }else if ($client=='UTILIMASTER' OR $client=='ATLAS COPCO'){
                         $regTimes->respArea="Salvador Galvan";
-                    }
+                    }else(
+                        $regTimes->respArea="");
             }
             $regTimes->area="Calidad";
             $regTimes->save();
@@ -346,7 +348,8 @@ class caliController extends generalController
                         $regTimes->respArea="Brando Olvera";
                     }else if ($client=='UTILIMASTER' OR $client=='ATLAS COPCO'){
                         $regTimes->respArea="Salvador Galvan";
-                    }
+                    }else(
+                    $regTimes->respArea="");
             }
             $regTimes->area="Calidad";
             $regTimes->save();
@@ -442,7 +445,8 @@ class caliController extends generalController
                         $regTimes->respArea="Brando Olvera";
                     }else if ($client=='UTILIMASTER' OR $client=='ATLAS COPCO'){
                         $regTimes->respArea="Salvador Galvan";
-                    }
+                    }else(
+                        $regTimes->respArea="");
             }
             $regTimes->area="Calidad";
             $regTimes->save();
