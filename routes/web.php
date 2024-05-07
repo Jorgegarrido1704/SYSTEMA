@@ -97,6 +97,7 @@ Route::controller(caliController::class)->group(function(){
         Route::post('/mantCali',[caliController::class, 'mantCali'])->name('maintanance');
     Route::post('/assiscali', [caliController::class, 'assiscali'])->name('ascali');
     Route::post('/matCali',[caliController::class,'matCali'])->name('matCali');
+    Route::get('/timesDead',[caliController::class,'timesDead'])->name('timesDead');
     });
 Route::controller(BossCaliController::class)->group(function(){
     Route::get('/BossCali',BossCaliController::class);

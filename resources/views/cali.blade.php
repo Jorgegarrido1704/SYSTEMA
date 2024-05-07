@@ -324,58 +324,39 @@
                             <!-- AREAS -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h5 class="m-0 font-weight-bold text-primary">Material Request</h5>
+                                    <h5 class="m-0 font-weight-bold text-primary">Tiempo Muerto</h5>
                                 </div>
                                 <div class="card-body" style="overflow-y: auto; height: 360px;" id='work'>
                                     <div align="center">
-                                        <form id="formula" action="{{ route('matCali')}}" method="POST">
-                                            @csrf
-                                            <div style="margin-bottom: 10px;">
-                                                <label for="cant1" style="margin-right: 10px;">Cantidad</label>
-                                                <input type="number" style="width: 60px; margin-right: 10px;" name="cant1" id="cant1" min="0" required>
-                                                <label for="articulo1" style="margin-right: 10px;">Artículo</label>
-                                                <input type="text" style="width: 200px; margin-right: 10px;" name="articulo1" id="articulo1" required>
-                                                <label for="notas_adicionales1" style="margin-right: 10px;">Notas adicionales</label>
-                                                <input type="text" style="width: 200px;" name="notas_adicionales1" id="notas_adicionales1" required>
-                                            </div>
-
-                                            <div style="margin-bottom: 10px;">
-                                                <label for="cant2" style="margin-right: 10px;">Cantidad</label>
-                                                <input type="number" style="width: 60px; margin-right: 10px;" name="cant2" id="cant2" min="0" >
-                                                <label for="articulo2" style="margin-right: 10px;">Artículo</label>
-                                                <input type="text" style="width: 200px; margin-right: 10px;" name="articulo2" id="articulo2">
-                                                <label for="notas_adicionales2" style="margin-right: 10px;">Notas adicionales</label>
-                                                <input type="text" style="width: 200px;" name="notas_adicionales2" id="notas_adicionales2" >
-                                            </div>
-
-                                            <div style="margin-bottom: 10px;">
-                                                <label for="cant3" style="margin-right: 10px;">Cantidad</label>
-                                                <input type="number" style="width: 60px; margin-right: 10px;" name="cant3" id="cant3" min="0" >
-                                                <label for="articulo3" style="margin-right: 10px;">Artículo</label>
-                                                <input type="text" style="width: 200px; margin-right: 10px;" name="articulo3" id="articulo3">
-                                                <label for="notas_adicionales3" style="margin-right: 10px;">Notas adicionales</label>
-                                                <input type="text" style="width: 200px;" name="notas_adicionales3" id="notas_adicionales3" >
-                                            </div>
-
-                                            <div style="margin-bottom: 10px;">
-                                                <label for="cant4" style="margin-right: 10px;">Cantidad</label>
-                                                <input type="number" style="width: 60px; margin-right: 10px;" name="cant4" id="cant4" min="0" >
-                                                <label for="articulo4" style="margin-right: 10px;">Artículo</label>
-                                                <input type="text" style="width: 200px; margin-right: 10px;" name="articulo4" id="articulo4">
-                                                <label for="notas_adicionales4" style="margin-right: 10px;">Notas adicionales</label>
-                                                <input type="text" style="width: 200px;" name="notas_adicionales4" id="notas_adicionales4" >
-                                            </div>
-
-                                            <div style="margin-bottom: 10px;">
-                                                <label for="cant5" style="margin-right: 10px;">Cantidad</label>
-                                                <input type="number" style="width: 60px; margin-right: 10px;" name="cant5" id="cant5" min="0" >
-                                                <label for="articulo5" style="margin-right: 10px;">Artículo</label>
-                                                <input type="text" style="width: 200px; margin-right: 10px;" name="articulo5" id="articulo5">
-                                                <label for="notas_adicionales5" style="margin-right: 10px;">Notas adicionales</label>
-                                                <input type="text" style="width: 200px;" name="notas_adicionales5" id="notas_adicionales5" >
-                                            </div>
-                                            <div ><input type="submit" id="submit" value="Send"></div>
-                                        </form>
+                                        <table>
+                                            <thead>
+                                                <th>Fecha</th>
+                                                <th>Cliente</th>
+                                                <th>Numero de parte</th>
+                                                <th>Codigo de barra</th>
+                                                <th>Codigo de defecto</th>
+                                                <th>Resposable Area</th>
+                                                <th>Detener Proceso</th>
+                                            </thead>
+                                            <tbody>
+                                                @if(!empty($fallas))
+                                                    @foreach($fallas as $falla)
+                                                        <tr>
+                                                            <td>{{$falla[1]}}</td>
+                                                            <td>{{$falla[2]}}</td>
+                                                            <td>{{$falla[3]}}</td>
+                                                            <td>{{$falla[4]}}</td>
+                                                            <td>{{$falla[5]}}</td>
+                                                            <td>{{$falla[6]}}</td>
+                                                            <form action="{{route('timesDead')}}" method='GET'>
+                                                                <td><input type="hidden" name="id" id="id" value={{$falla[0]}}>
+                                                                    <input type="submit" name="enviar" id="enviar" value="Detener"></td>
+                                                            </form>
+                                                        </tr>
+                                                     @endforeach
+                                                @endif
+                                            </tbody>
+                                            </table>
                                     </div>
                                 </div>
                             </div>
