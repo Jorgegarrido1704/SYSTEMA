@@ -454,18 +454,20 @@ class caliController extends generalController
             }
 
             $rest=$qty_cal - ($ok+$nok);
+            if($rest>0){
             $updacalidad=DB::table('calidad')->where("info",$info)->update(['qty'=>$rest]);
             $updateToRegistro=DB::table('registro')->where("info",$info)->update(["paro"=>"Parcial prueba electrica"]);
-            if($rest==0){
+            }else if($rest<=0){
                 $todays=(date('d-m-Y H:i'));
-                $delteCalidad=DB::table('calidad')->where("info",$info)->delete();
-                $updatetime=DB::table('timesharn')->where('bar',$info)->update(['cutF'=>$todays]);
-                $tiempoUp=DB::table('tiempos')->where('info',$info)->update(['corte'=>$todays]);
-                $updateToEmbarque=DB::table('registro')->where("info",$info)->update(["count"=>12,"donde"=>'En espera de embarque',"paro"=>""]);
                 $buscarReg=DB::table('registro')->where("info",$info)->first();
                 $rev=$buscarReg->rev;
                 $np=$buscarReg->NumPart;
                 if(substr($rev,0,4)=='PPAP' || substr($rev,0,4)=='PRIM'){
+                    $delteCalidad=DB::table('calidad')->where("info",$info)->delete();
+                    $updatetime=DB::table('timesharn')->where('bar',$info)->update(['qlyF'=>$todays]);
+                    $tiempoUp=DB::table('tiempos')->where('info',$info)->update(['calidad'=>$todays]);
+                    $updateToEmbarque=DB::table('registro')->where("info",$info)->update(["count"=>18,"donde"=>'En espera de ingenieria',"paro"=>""]);
+
                     $subject= 'Salida '.substr($rev, 0, 4).' Numero de parte:'.$np.' Rev: '.substr($rev, 5);
                                 $date = date('d-m-Y');
                             $time = date('H:i');
@@ -489,14 +491,21 @@ class caliController extends generalController
                                    'jgarrido@mx.bergstrominc.com',
                                    'jlopez@mx.bergstrominc.com'
                                 ];
-                                Mail::to($recipients)->send(new \App\Mail\PPAPING($subject,$content));}
+                                Mail::to($recipients)->send(new \App\Mail\PPAPING($subject,$content));
 
-
+                                return redirect()->route('calidad');
+            }else{
+                $delteCalidad=DB::table('calidad')->where("info",$info)->delete();
+                $updatetime=DB::table('timesharn')->where('bar',$info)->update(['cutF'=>$todays]);
+                $tiempoUp=DB::table('tiempos')->where('info',$info)->update(['calidad'=>$todays]);
+                $updateToEmbarque=DB::table('registro')->where("info",$info)->update(["count"=>12,"donde"=>'En espera de embarque',"paro"=>""]);
+                return redirect()->route('calidad');
             }
+            }
+        }
 
-    }
 
-    return redirect()->route('calidad');
+
     }
 
     public function buscarcodigo(Request $request)
