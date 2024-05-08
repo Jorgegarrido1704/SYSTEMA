@@ -225,8 +225,7 @@ class caliController extends generalController
                     $nok_reg->usuario=$value;
                     $nok_reg->save();
                 }
-                $busndo=DB::table('timedead')->where('codigo','=',$info)->where('defecto','=',$cod1)->first();
-                if(empty($busndo)){
+
                     $regTimes= new timedead;
                     $regTimes->fecha=$today;
                     $regTimes->cliente=$client;
@@ -252,10 +251,10 @@ class caliController extends generalController
                         $regTimes->respArea="Salvador Galvan";
                     }else(
                         $regTimes->respArea="");
-            }
+                    }
             $regTimes->area="Calidad";
             $regTimes->save();
-        }
+
         }
             if(!empty($cant2)){
                 for($i=0;$i<$cant2;$i++){
@@ -274,8 +273,7 @@ class caliController extends generalController
                     $nok_reg->usuario=$value;
                     $nok_reg->save();
                 }
-                $busndo=DB::table('timedead')->where('codigo','=',$info)->where('defecto','=',$cod2)->first();
-                if(empty($busndo)){
+
                     $regTimes= new timedead;
                     $regTimes->fecha=$today;
                     $regTimes->cliente=$client;
@@ -304,7 +302,7 @@ class caliController extends generalController
             }
             $regTimes->area="Calidad";
             $regTimes->save();
-        }
+
             }
             if(!empty($cant3)){
                 for($i=0;$i<$cant3;$i++){
@@ -323,8 +321,7 @@ class caliController extends generalController
                     $nok_reg->usuario=$value;
                     $nok_reg->save();
                 }
-                $busndo=DB::table('timedead')->where('codigo','=',$info)->where('defecto','=',$cod3)->first();
-                if(empty($busndo)){
+
                     $regTimes= new timedead;
                     $regTimes->fecha=$today;
                     $regTimes->cliente=$client;
@@ -353,7 +350,7 @@ class caliController extends generalController
             }
             $regTimes->area="Calidad";
             $regTimes->save();
-        }
+
             }
             if(!empty($cant4)){
                 for($i=0;$i<$cant4;$i++){
@@ -372,8 +369,7 @@ class caliController extends generalController
                     $nok_reg->usuario=$value;
                     $nok_reg->save();
                 }
-                $busndo=DB::table('timedead')->where('codigo','=',$info)->where('defecto','=',$cod4)->first();
-                if(empty($busndo)){
+
                     $regTimes= new timedead;
                     $regTimes->fecha=$today;
                     $regTimes->cliente=$client;
@@ -401,7 +397,7 @@ class caliController extends generalController
             }
             $regTimes->area="Calidad";
             $regTimes->save();
-        }
+
             }
             if(!empty($cant5)){
                 for($i=0;$i<$cant5;$i++){
@@ -420,8 +416,7 @@ class caliController extends generalController
                     $nok_reg->usuario=$value;
                     $nok_reg->save();
                 }
-                $busndo=DB::table('timedead')->where('codigo','=',$info)->where('defecto','=',$cod5)->first();
-                if(empty($busndo)){
+
                     $regTimes= new timedead;
                     $regTimes->fecha=$today;
                     $regTimes->cliente=$client;
@@ -450,7 +445,7 @@ class caliController extends generalController
             }
             $regTimes->area="Calidad";
             $regTimes->save();
-        }
+        
             }
 
             $rest=$qty_cal - ($ok+$nok);
