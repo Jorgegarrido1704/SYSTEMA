@@ -178,7 +178,7 @@ class generalController extends Controller
                 $assit[$i][13]=$rowassis->id;
                 $i++;
             }
-            $buscarparo=DB::table("registro_paro")->select("fecha","equipo","nombreEquipo","dano","atiende")->where('finHora', '=','')->where('quien',"=", $value)->get();
+            $buscarparo=DB::table("registro_paro")->select("fecha","equipo","nombreEquipo","dano","atiende","id")->where('finHora', '=','')->where('quien',"=", $value)->get();
             $i=0;
             $paros=[];
             foreach($buscarparo as $rowparo){
@@ -188,6 +188,7 @@ class generalController extends Controller
                 $paros[$i][3]=$rowparo->dano;
                 if($rowparo->atiende!="Nadie aun"){$paros[$i][4]="En Proceso";}
                 else if($rowparo->atiende=="Nadie aun"){$paros[$i][4]="En espera";     }
+                $paros[$i][5]=$rowparo->id;
                 $i++;
             }
             $buscardesv=DB::table("desvation")->select("*")->where('quien','=',$value)->get();
@@ -680,7 +681,7 @@ class generalController extends Controller
         return redirect('/general')->with('error', 'Failed to save data.');
     }
 }
-    public function maintanance(Request $request){
+    public function maintananceGen(Request $request){
         $value=session('user');
         $equip=$request->input('equipo');
         $NomEq=$request->input('nom_equipo');
@@ -698,7 +699,7 @@ class generalController extends Controller
             'atiende'=>'Nadie aun',
             'trabajo'=>'',
             'Tiempo'=>'',
-            'inimant'=>'',
+            'inimant'=>$today,
             'finhora'=>''
         ]);
 
@@ -909,6 +910,18 @@ class generalController extends Controller
 return redirect('/general');
 }
 
+public function finishWork(Request $request){
+    $id=$request->input('id_but');
+    $today = date('d-m-Y H:i');
+    $uptimes=DB::table('registro_paro')->where('id','=',$id)->update(['finhora'=>$today,'trabajo'=>'Finalizado']);
+return redirect('/general');
 
+
+
+
+
+
+
+}
 
 }

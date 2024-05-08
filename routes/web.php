@@ -58,10 +58,11 @@ Route::controller(generalController::class)->group(function(){
     Route::post('/codigo', [generalController::class, 'codigo'])->name('codigo');
     Route::post('/Bom',[generalController::class,'Bom'])->name('Bom');
     Route::post('/desviation', [generalController::class, 'desviation'])->name('desviation');
-    Route::post('/maintanance',[generalController::class, 'maintanance'])->name('maintanance');
+    Route::post('/maintananceGen',[generalController::class, 'maintananceGen'])->name('maintananceGen');
     Route::post('/assistence', [generalController::class, 'assistence'])->name('assistence');
     Route::post('/material',[generalController::class,'material'])->name('material');
     Route::get('/timesHarn',[generalController::class,'pause'])->name('pause');
+    Route::get('/finishWork',[generalcontroller::class,'finishWork'])->name('finishWork');
 });
 
 Route::controller( PpapIngController::class)->group(function (){

@@ -149,7 +149,7 @@
                                             </thead>
                                             <tbody>
                                             <tr>
-                                      <form action="{{ route('maintanance') }}" method="POST" name="registro" id="form">
+                                      <form action="{{ route('maintananceGen') }}" method="POST" name="registro" id="form">
                                         @csrf
                                        <td align="center"><select name="equipo" id="equipo" onchange="updateSecondSelect()"  >
                                       <option selected="selected"> </option>
@@ -207,7 +207,7 @@
                                                 <th>Team</th>
                                                 <th>trabajo</th>
                                                 <th>Tipo de reparacion</th>
-                                                <th>Status</th>
+                                                <th>Finalizar</th>
                                             </thead>
                                             <tbody>
                                           @if(!empty($paros))
@@ -217,7 +217,11 @@
                                                     <td>{{$paro[1]}}</td>
                                                     <td>{{$paro[2]}}</td>
                                                     <td>{{$paro[3]}}</td>
-                                                    <td>{{$paro[4]}}</td>
+                                                    <td><form action="{{route('finishWork')}}" method="GET">
+                                                        @csrf
+                                                        <input type="hidden" name="id_but" id="id_but" value="{{$paro[5]}}">
+                                                        <input type="submit" value="Finalizar">
+                                                    </form></td>
                                                 </tr>
                                           @endforeach
                                           @endif
