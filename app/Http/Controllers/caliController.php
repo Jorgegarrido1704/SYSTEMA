@@ -445,13 +445,14 @@ class caliController extends generalController
             }
             $regTimes->area="Calidad";
             $regTimes->save();
-        
+
             }
 
             $rest=$qty_cal - ($ok+$nok);
             if($rest>0){
             $updacalidad=DB::table('calidad')->where("info",$info)->update(['qty'=>$rest]);
             $updateToRegistro=DB::table('registro')->where("info",$info)->update(["paro"=>"Parcial prueba electrica"]);
+            return redirect()->route('calidad');
             }else if($rest<=0){
                 $todays=(date('d-m-Y H:i'));
                 $buscarReg=DB::table('registro')->where("info",$info)->first();
