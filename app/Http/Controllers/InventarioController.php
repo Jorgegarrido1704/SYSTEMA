@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use App\Models\creacionKit;
 use App\Models\Kits;
+use App\Models\KitsAlmcen;
 use App\Models\itemsConsumidos;
 
 
@@ -21,7 +22,7 @@ public function __invoke()    {
             return view('login');
         }else{
             $moth=date('m');
-            $itemOut=$kitsWo=[];
+            $itemOut=$kitsWo=$rep=[];
             $i=0;
             $buscaractual=DB::table('movimientosalmacen')->get();
             foreach($buscaractual as $val){
@@ -42,8 +43,18 @@ public function __invoke()    {
                 $kitsWo[$i][4]=$kit->id;
                 $i++;}
             }
+            $i=0;
+        $reporte=DB::table('itemsconsumidos')->get();
+        foreach($reporte as $valrep){
+            $rep[$i][0]=$valrep->NumPart;
+            $rep[$i][1]=$valrep->manofacture;
+            $rep[$i][2]=$valrep->parttype;
+            $rep[$i][3]=$valrep->immex+$valrep->national+$valrep->Bodega;
+            $i++;
+        }
 
-            return view('inventario',['kitsWo'=>$kitsWo,'value'=>$value,'cat'=>$cat,'itemOut'=>$itemOut]);}
+
+            return view('inventario',['rep'=>$rep,'kitsWo'=>$kitsWo,'value'=>$value,'cat'=>$cat,'itemOut'=>$itemOut]);}
 }
 public function savedataAlm(Request $request){
     $value = session('user');
@@ -121,7 +132,7 @@ public function savedataAlm(Request $request){
             }else if($fechaIni=='No Aun'){
                 $update=DB::table('kits')->where('id','=',$id)->update(['usuario'=>$value,'fechaIni'=>$today,'status'=>'Parcial']);}
 
-            $values=DB::table('datos')->where('part_num','=',$np)->get();
+            $values=DB::table('datos')->where('part_num','=',$np)->join('itemsconsumidos','itemsconsumidos.NumPart','=','datos.item')->where('itemsconsumidos.kit', '=', 'yes')->get();
             foreach($values as $val){
                 $buskit=DB::table('creacionkits')->where('pn','=',$np)->where('item','=',$val->item)->first();
                 if($buskit){
@@ -166,7 +177,18 @@ public function savedataAlm(Request $request){
                    $salidaAlmacen->movimiento = 'En kits';
                    $salidaAlmacen->usuario = $value;
                    $salidaAlmacen->fecha = $today;
-                   $salidaAlmacen->save();}
+                   if($salidaAlmacen->save()){
+                    $buscarInfoInve=DB::table('itemsconsumidos')->where('NumPart','=',$item[$i])->first();
+                    if($buscarInfoInve->immex>0){
+                       $decremente=DB::table('itemsconsumidos')->where('NumPart','=',$item[$i])->decrement('immex',$qty[$i]);
+                    }else if($buscarInfoInve->national>0){
+                        $decremente=DB::table('itemsconsumidos')->where('NumPart','=',$item[$i])->decrement('national',$qty[$i]);
+                     }else if($buscarInfoInve->Bodega>0){
+                        $decremente=DB::table('itemsconsumidos')->where('NumPart','=',$item[$i])->decrement('Bodega',$qty[$i]);
+                     }
+                   }
+
+                }
                 }else{
                     if($qty[$i]>0){
                 $nueva = new creacionKit;
@@ -183,13 +205,24 @@ public function savedataAlm(Request $request){
                 $salidaAlmacen->movimiento = 'En kits';
                 $salidaAlmacen->usuario = $value;
                 $salidaAlmacen->fecha = $today;
-                $salidaAlmacen->save();
+                if($salidaAlmacen->save()){
+                    $buscarInfoInve=DB::table('itemsconsumidos')->where('NumPart','=',$item[$i])->first();
+                    if($buscarInfoInve->immex>0){
+                       $decremente=DB::table('itemsconsumidos')->where('NumPart','=',$item[$i])->decrement('immex',$qty[$i]);
+                    }else if($buscarInfoInve->national>0){
+                        $decremente=DB::table('itemsconsumidos')->where('NumPart','=',$item[$i])->decrement('national',$qty[$i]);
+                     }else if($buscarInfoInve->Bodega>0){
+                        $decremente=DB::table('itemsconsumidos')->where('NumPart','=',$item[$i])->decrement('Bodega',$qty[$i]);
+                     }
+                   }
+
                     }}
     }if($salidaAlmacen->save()){
+
         $resultado=0;
         $buscarresulta=DB::table('kits')->where('numeroParte','=',$pn)->where('wo','=',$wo)->first();
         $cantidad=$buscarresulta->qty;
-        $buscardatos=DB::table('datos')->where('part_num','=',$pn)->get();
+        $buscardatos=DB::table('datos')->where('part_num','=',$pn)->join('itemsconsumidos','itemsconsumidos.NumPart','=','datos.item')->where('itemsconsumidos.kit', '=', 'yes')->get();
         foreach($buscardatos as $rowdatos){
             $item=$rowdatos->item;
             $itemQty=$rowdatos->qty*$cantidad;
@@ -203,9 +236,30 @@ public function savedataAlm(Request $request){
 
         }if($resultado>0){
         $update=DB::table('kits')->where('numeroParte','=',$pn)->where('wo','=',$wo)->update(['fechaFin'=>$fin]);
+        $buscarIguales=DB::table('kitenespera')->where('wo','=',$wo)->first();
+        if($buscarIguales==null){
+            $kitsespera= new KitsAlmcen();
+            $kitsespera->np = $pn;
+            $kitsespera->wo = $wo;
+            $kitsespera->status ="Parcial";
+            $kitsespera->fechaCreation = $today;
+            $kitsespera->save();
+        }
         return Redirect::to('inventario')->with('success','Se guardaron los datos exitosamente');
     }else if($resultado==0){
         $update=DB::table('kits')->where('numeroParte','=',$pn)->where('wo','=',$wo)->update(['status'=>'Completo','fechaFin'=>$fin]);
+
+        $buscarIguales=DB::table('kitenespera')->where('wo','=',$wo)->first();
+        if($buscarIguales==null){
+            $kitsespera= new KitsAlmcen();
+            $kitsespera->np = $pn;
+            $kitsespera->wo = $wo;
+            $kitsespera->status ="Completo";
+            $kitsespera->fechaCreation = $today;
+            $kitsespera->save();
+        }else{
+            $update=DB::table('kitenespera')->where('wo','=',$wo)->where('np','=',$pn)->update(['status'=>'Completo','fechaCreation'=>$today]);
+        }
         return Redirect::to('inventario')->with('success','Se guardaron los datos exitosamente');
     }
     }

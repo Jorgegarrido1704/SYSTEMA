@@ -117,7 +117,7 @@ $i=0;
             $date = date('d-m-Y');
         $time = date('H:i');
 
-        $content =  $revin . ' liberada en embarque '."\n\n";
+        $content =  $revin . ' liberada y en embarque '."\n\n";
         $content .= 'Buen día,'."\n\n".'Les comparto que el día ' . $date . ' a las ' . $time . "\n\n"."Salió de prueba la siguiente PPAP:"."\n\n";
 $content .= "\n\n"." Cliente: " . $emailcliente;
 $content .= "\n\n"." Número de parte: " . $emailpn;
