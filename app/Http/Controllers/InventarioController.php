@@ -266,6 +266,7 @@ public function savedataAlm(Request $request){
 
 }else{
     return Redirect::to('inventario');
+    //return
 }
 }
 
