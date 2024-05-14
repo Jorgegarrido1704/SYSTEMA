@@ -21,7 +21,7 @@ class caliController extends generalController
         if($cat=='' or $value==''){
             return view('login');
         }else{
-        $buscarcalidad=DB::table("calidad")->join('registro','calidad.wo','=','registro.wo')->where('registro.count','!=','18')->where('registro.count','!=','14')->where('registro.count','!=','13')->get();
+        $buscarcalidad=DB::table("calidad")->get();
         $i=0;
         $calidad=[];
         $fallas=[];
@@ -89,7 +89,7 @@ class caliController extends generalController
         $assit = $caliresult->getData()['assit'];
         $cat=$caliresult->getData()['cat'];
         $id=$request->input('id');
-        $buscarInfo=DB::select("SELECT * FROM calidad WHERE id='$id'");
+        $buscarInfo=DB::table('calidad')->where('id','=',$id)->get();
         foreach($buscarInfo as $rowInfo){
             $client=$rowInfo->client;
             $pn=$rowInfo->np;
