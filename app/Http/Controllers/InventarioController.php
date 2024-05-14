@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use App\Models\creacionKit;
 use App\Models\Kits;
+use App\Models\KitsAlmcen;
 use App\Models\itemsConsumidos;
 
 
@@ -21,7 +22,7 @@ public function __invoke()    {
             return view('login');
         }else{
             $moth=date('m');
-            $itemOut=$kitsWo=[];
+            $itemOut=$kitsWo=$rep=[];
             $i=0;
             $buscaractual=DB::table('movimientosalmacen')->get();
             foreach($buscaractual as $val){
@@ -42,8 +43,18 @@ public function __invoke()    {
                 $kitsWo[$i][4]=$kit->id;
                 $i++;}
             }
+            $i=0;
+        $reporte=DB::table('itemsconsumidos')->get();
+        foreach($reporte as $valrep){
+            $rep[$i][0]=$valrep->NumPart;
+            $rep[$i][1]=$valrep->manofacture;
+            $rep[$i][2]=$valrep->parttype;
+            $rep[$i][3]=$valrep->immex+$valrep->national+$valrep->Bodega;
+            $i++;
+        }
 
-            return view('inventario',['kitsWo'=>$kitsWo,'value'=>$value,'cat'=>$cat,'itemOut'=>$itemOut]);}
+
+            return view('inventario',['rep'=>$rep,'kitsWo'=>$kitsWo,'value'=>$value,'cat'=>$cat,'itemOut'=>$itemOut]);}
 }
 public function savedataAlm(Request $request){
     $value = session('user');
@@ -119,24 +130,24 @@ public function savedataAlm(Request $request){
                 $newDate=$today-$fechaIni;
                 $update=DB::table('kits')->where('id','=',$id)->update(['fechaIni'=>$newDate,'fechaFin'=>$today]);
             }else if($fechaIni=='No Aun'){
-                $update=DB::table('kits')->where('id','=',$id)->update(['fechaIni'=>$today,'status'=>'Parcial']);}
+                $update=DB::table('kits')->where('id','=',$id)->update(['usuario'=>$value,'fechaIni'=>$today,'status'=>'Parcial']);}
 
-            $values=DB::table('datos')->where('part_num','=',$np)->get();
+            $values=DB::table('datos')->where('part_num','=',$np)->join('itemsconsumidos','itemsconsumidos.NumPart','=','datos.item')->where('itemsconsumidos.kit', '=', 'yes')->get();
             foreach($values as $val){
                 $buskit=DB::table('creacionkits')->where('pn','=',$np)->where('item','=',$val->item)->first();
                 if($buskit){
-                $reduce=(intval($val->qty)*$qty)-intval($buskit->qty);
+                $reduce=(floatval($val->qty)*$qty)-floatval($buskit->qty);
                 if($reduce>0){
                 $kits[$i][0]=$np;
                 $kits[$i][1]=$wo;
                 $kits[$i][2]=$val->item;
-                $kits[$i][3]=$reduce;
+                $kits[$i][3]=floatval($reduce);
                 $i++;}
                 }else{
                     $kits[$i][0]=$np;
                     $kits[$i][1]=$wo;
                     $kits[$i][2]=$val->item;
-                    $kits[$i][3]=intval($val->qty)*$qty;
+                    $kits[$i][3]=floatval($val->qty)*$qty;
                     $i++;
                 }
             }
@@ -155,6 +166,31 @@ public function savedataAlm(Request $request){
         $fin=strtotime(date('d-m-Y H:i'));
         if($pn!="" and $wo!="" and $qty!="" and $item!=""){
             for($i=0;$i<count($item);$i++){
+                $buscardatos=DB::table('creacionkits')->where('wo','=',$wo)->where('pn','=',$pn)->where('item','=',$item[$i])->first();
+                if($buscardatos){
+                    $QtyAnt=$buscardatos->qty;
+                    if($qty[$i]>0){
+                   $updateDatos=DB::table('creacionkits')->where('wo','=',$wo)->where('pn','=',$pn)->where('item','=',$item[$i])->update(['qty'=>$QtyAnt+$qty[$i]]);
+                   $salidaAlmacen= new entSalAlamacen();
+                   $salidaAlmacen->item = $item[$i];
+                   $salidaAlmacen->Qty = $qty[$i];
+                   $salidaAlmacen->movimiento = 'En kits';
+                   $salidaAlmacen->usuario = $value;
+                   $salidaAlmacen->fecha = $today;
+                   if($salidaAlmacen->save()){
+                    $buscarInfoInve=DB::table('itemsconsumidos')->where('NumPart','=',$item[$i])->first();
+                    if($buscarInfoInve->immex>0){
+                       $decremente=DB::table('itemsconsumidos')->where('NumPart','=',$item[$i])->decrement('immex',$qty[$i]);
+                    }else if($buscarInfoInve->national>0){
+                        $decremente=DB::table('itemsconsumidos')->where('NumPart','=',$item[$i])->decrement('national',$qty[$i]);
+                     }else if($buscarInfoInve->Bodega>0){
+                        $decremente=DB::table('itemsconsumidos')->where('NumPart','=',$item[$i])->decrement('Bodega',$qty[$i]);
+                     }
+                   }
+
+                }
+                }else{
+                    if($qty[$i]>0){
                 $nueva = new creacionKit;
                 $nueva->fecha = $today;
                 $nueva->pn = $pn;
@@ -163,12 +199,74 @@ public function savedataAlm(Request $request){
                 $nueva->qty = $qty[$i];
                 $nueva->usuario = $value;
                 $nueva->save();
+                $salidaAlmacen= new entSalAlamacen();
+                $salidaAlmacen->item = $item[$i];
+                $salidaAlmacen->Qty = $qty[$i];
+                $salidaAlmacen->movimiento = 'En kits';
+                $salidaAlmacen->usuario = $value;
+                $salidaAlmacen->fecha = $today;
+                if($salidaAlmacen->save()){
+                    $buscarInfoInve=DB::table('itemsconsumidos')->where('NumPart','=',$item[$i])->first();
+                    if($buscarInfoInve->immex>0){
+                       $decremente=DB::table('itemsconsumidos')->where('NumPart','=',$item[$i])->decrement('immex',$qty[$i]);
+                    }else if($buscarInfoInve->national>0){
+                        $decremente=DB::table('itemsconsumidos')->where('NumPart','=',$item[$i])->decrement('national',$qty[$i]);
+                     }else if($buscarInfoInve->Bodega>0){
+                        $decremente=DB::table('itemsconsumidos')->where('NumPart','=',$item[$i])->decrement('Bodega',$qty[$i]);
+                     }
+                   }
 
+                    }}
+    }if($salidaAlmacen->save()){
 
-    }if($nueva->save()){
+        $resultado=0;
+        $buscarresulta=DB::table('kits')->where('numeroParte','=',$pn)->where('wo','=',$wo)->first();
+        $cantidad=$buscarresulta->qty;
+        $buscardatos=DB::table('datos')->where('part_num','=',$pn)->join('itemsconsumidos','itemsconsumidos.NumPart','=','datos.item')->where('itemsconsumidos.kit', '=', 'yes')->get();
+        foreach($buscardatos as $rowdatos){
+            $item=$rowdatos->item;
+            $itemQty=$rowdatos->qty*$cantidad;
+            $buscarkits=DB::table('creacionkits')->where('pn','=',$pn)->where('item','=',$item)->first();
+            if($buscarkits){
+                $diff=$itemQty-$buscarkits->qty;
+                $resultado=$resultado+$diff;
+            }else if(!$buscarkits){
+            $resultado+=1;
+            }
+
+        }if($resultado>0){
         $update=DB::table('kits')->where('numeroParte','=',$pn)->where('wo','=',$wo)->update(['fechaFin'=>$fin]);
+        $buscarIguales=DB::table('kitenespera')->where('wo','=',$wo)->first();
+        if($buscarIguales==null){
+            $kitsespera= new KitsAlmcen();
+            $kitsespera->np = $pn;
+            $kitsespera->wo = $wo;
+            $kitsespera->status ="Parcial";
+            $kitsespera->fechaCreation = $today;
+            $kitsespera->save();
+        }
+        return Redirect::to('inventario')->with('success','Se guardaron los datos exitosamente');
+    }else if($resultado==0){
+        $update=DB::table('kits')->where('numeroParte','=',$pn)->where('wo','=',$wo)->update(['status'=>'Completo','fechaFin'=>$fin]);
+
+        $buscarIguales=DB::table('kitenespera')->where('wo','=',$wo)->first();
+        if($buscarIguales==null){
+            $kitsespera= new KitsAlmcen();
+            $kitsespera->np = $pn;
+            $kitsespera->wo = $wo;
+            $kitsespera->status ="Completo";
+            $kitsespera->fechaCreation = $today;
+            $kitsespera->save();
+        }else{
+            $update=DB::table('kitenespera')->where('wo','=',$wo)->where('np','=',$pn)->update(['status'=>'Completo','fechaCreation'=>$today]);
+        }
+        return Redirect::to('inventario')->with('success','Se guardaron los datos exitosamente');
+    }
     }
 
+}else{
+    return Redirect::to('inventario');
+    //return
 }
 }
 

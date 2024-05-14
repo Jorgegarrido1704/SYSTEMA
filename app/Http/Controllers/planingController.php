@@ -11,7 +11,7 @@ use App\Models\Wo;
 use PhpParser\Node\Expr\AssignOp\Concat;
 use App\Models\tiempos;
 use App\Models\Corte;
-
+use App\Models\Kits;
 use Illuminate\Mail\Mailables;
 use Illuminate\Support\Facades\Mail;
 
@@ -284,7 +284,16 @@ if(in_array($np,$busqueda)){
                 $times->retrabajof="";
                 $times->totalparos="";
                 $times->save();
-
+                $buscarDatos=DB::table('datos')->where('part_num', '=', $np)->get();
+                if($buscarDatos->count()>0){
+                   $savekits=new kits;
+                   $savekits->numeroParte=$np;
+                   $savekits->qty=$qty;
+                   $savekits->wo=$wo;
+                   $savekits->status="En espera";
+                   $savekits->usuario="En espera";
+                   $savekits->save();
+                }
                 $Buscarcorte=DB::table('listascorte')->where('pn', '=', $np)->get();
                 if($Buscarcorte->count()>0){
                     foreach($Buscarcorte as $corte){

@@ -151,10 +151,32 @@
                             <!-- AREAS -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h5 class="m-0 font-weight-bold text-primary">Entrada de Material </h5>
+                                    <h5 class="m-0 font-weight-bold text-primary">Inventario actual</h5>
                                 </div>
                                 <div class="card-body" style="overflow-y: auto; height: 360px;" id="tableChange">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Item</th>
+                                                <th>Manofatura</th>
+                                                <th>Tipo</th>
+                                                <th>Cantidad</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (!empty($rep))
+                                            @foreach ($rep as $item)
+                                            <tr>
+                                                <td>{{ $item[0] }}</td>
+                                                <td>{{ $item[1] }}</td>
+                                                <td>{{ $item[2] }}</td>
+                                                <td>{{ $item[3] }}</td>
+                                            </tr>
+                                            @endforeach
+                                            @endif
+                                        </tbody>
 
+                                    </table>
                                 </div>
                             </div>
                         </div>

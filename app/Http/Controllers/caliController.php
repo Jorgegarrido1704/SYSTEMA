@@ -21,7 +21,7 @@ class caliController extends generalController
         if($cat=='' or $value==''){
             return view('login');
         }else{
-        $buscarcalidad=DB::select("SELECT * FROM calidad");
+        $buscarcalidad=DB::table("calidad")->join('registro','calidad.wo','=','registro.wo')->where('registro.count','!=','18')->where('registro.count','!=','14')->where('registro.count','!=','13')->get();
         $i=0;
         $calidad=[];
         $fallas=[];
@@ -463,32 +463,6 @@ class caliController extends generalController
                     $updatetime=DB::table('timesharn')->where('bar',$info)->update(['qlyF'=>$todays]);
                     $tiempoUp=DB::table('tiempos')->where('info',$info)->update(['calidad'=>$todays]);
                     $updateToEmbarque=DB::table('registro')->where("info",$info)->update(["count"=>18,"donde"=>'En espera de ingenieria',"paro"=>""]);
-
-                    $subject= 'Salida '.substr($rev, 0, 4).' Numero de parte:'.$np.' Rev: '.substr($rev, 5);
-                                $date = date('d-m-Y');
-                            $time = date('H:i');
-                            $content = 'Buen día,'."\n\n".'Les comparto que hoy ' . $date . ' a las ' . $time . "\n\n"."Salio la".substr($rev, 0, 4)."\n\n";
-                            $content .= "\n\n"." Del cliente: " . $client;
-                    $content .= "\n\n"." Con número de parte: " . $np;
-                    $content .= "\n\n"." Con Work order: " . $wo;
-                    $content .= "\n\n"." Esto para seguir con el proceso de producción y revision por parte de ingeniería y calidad.";
-
-
-                                $recipients = [
-                                   'jcervera@mx.bergstrominc.com',
-                                    'jcrodriguez@mx.bergstrominc.com',
-                                    'vestrada@mx.bergstrominc.com',
-                                    'david-villa88@outlook.com',
-                                    'egaona@mx.bergstrominc.com',
-                                    'mvaladez@mx.bergstrominc.com',
-                                    'jolaes@mx.bergstrominc.com',
-                                    'lramos@mx.bergstrominc.com',
-                                    'emedina@mx.bergstrominc.com',
-                                   'jgarrido@mx.bergstrominc.com',
-                                   'jlopez@mx.bergstrominc.com'
-                                ];
-                                Mail::to($recipients)->send(new \App\Mail\PPAPING($subject,$content));
-
                                 return redirect()->route('calidad');
             }else{
                 $delteCalidad=DB::table('calidad')->where("info",$info)->delete();
@@ -540,7 +514,7 @@ public function codigoCalidad(request $request){
                    if($donde=='cali' and $count=='10'){
                         $count++;
                         $update = DB::table('registro')->where('info', $codigo)->update(['count' => $count, 'donde' => 'Proceso de corte']);
-                        if ($update) { $resp = "TTesting process";
+                        if ($update) { $resp = "Testing process";
                         } else {   $resp = "Harness not updated, it is in $area";  }
                         return redirect('calidad')->with('response', $resp);
                     } else if($donde=='cali' and $count=='11'){
