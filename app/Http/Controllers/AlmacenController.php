@@ -76,26 +76,23 @@ if(!empty($woItem)){
     $buscarItems=DB::table('creacionkits')->where('wo',$woItem)->get();
     if(count($buscarItems)>0){
         foreach($buscarItems as $rowItems){
-            $buscarEntregados=DB::table('almacen')->where('articulo',$rowItems->item)->where('wo',$woItem)->get();
-            if(count($buscarEntregados)>0){
-                $registro= new Almacen();
-                $registro->fecha=$date;
-                $registro->articulo=$rowItems->item;
-                $registro->qty=$rowItems->qty-$buscarEntregados->qty;
-                $registro->movimeinto='Salida a piso';
-                $registro->wo=$woItem;
-                $registro->quien=$value;
-                $registro->save();
+            $item=$rowItems->item;
+            $buscarEntregados=DB::table('almacen')->where('articulo','=',$item)->where('wo','=',$woItem)->first();
+            if(!empty($buscarEntregados)){
+                $diff=$rowItems->qty-$buscarEntregados->qty;
             }else{
+                $diff=$rowItems->qty;
+            }
+            if($diff>0){
                 $registro= new Almacen();
                 $registro->fecha=$date;
                 $registro->articulo=$rowItems->item;
-                $registro->qty=$rowItems->qty;
+                $registro->qty=$diff;
                 $registro->movimeinto='Salida a piso';
                 $registro->wo=$woItem;
                 $registro->quien=$value;
-                $registro->save();
-            }
+                $registro->save();}
+
     }
     if($registro->save()){
         $update= DB::table('kitenespera')->where('wo', $woItem)->update(['Quien' => $value,'fechasalida' => $date]);
