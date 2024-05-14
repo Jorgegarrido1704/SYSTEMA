@@ -24,7 +24,7 @@ public function __invoke()    {
             $moth=date('m');
             $itemOut=$kitsWo=$rep=[];
             $i=0;
-            $buscaractual=DB::table('movimientosalmacen')->get();
+            $buscaractual=DB::table('movimientosalmacen')->orderBy("id", "desc")->get();
             foreach($buscaractual as $val){
                 $itemOut[$i][0]=$val->fecha;
                 $itemOut[$i][1]=$val->item;
@@ -174,9 +174,10 @@ public function savedataAlm(Request $request){
                    $salidaAlmacen= new entSalAlamacen();
                    $salidaAlmacen->item = $item[$i];
                    $salidaAlmacen->Qty = $qty[$i];
-                   $salidaAlmacen->movimiento = 'En kits';
+                   $salidaAlmacen->movimiento = 'Salida - kits';
                    $salidaAlmacen->usuario = $value;
                    $salidaAlmacen->fecha = $today;
+                   $salidaAlmacen->wo = $wo;
                    if($salidaAlmacen->save()){
                     $buscarInfoInve=DB::table('itemsconsumidos')->where('NumPart','=',$item[$i])->first();
                     if($buscarInfoInve->immex>0){
@@ -202,9 +203,10 @@ public function savedataAlm(Request $request){
                 $salidaAlmacen= new entSalAlamacen();
                 $salidaAlmacen->item = $item[$i];
                 $salidaAlmacen->Qty = $qty[$i];
-                $salidaAlmacen->movimiento = 'En kits';
+                $salidaAlmacen->movimiento = 'Salida - kits';
                 $salidaAlmacen->usuario = $value;
                 $salidaAlmacen->fecha = $today;
+                $salidaAlmacen->wo = $wo;
                 if($salidaAlmacen->save()){
                     $buscarInfoInve=DB::table('itemsconsumidos')->where('NumPart','=',$item[$i])->first();
                     if($buscarInfoInve->immex>0){
