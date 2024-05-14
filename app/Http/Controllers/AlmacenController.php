@@ -35,88 +35,82 @@ class AlmacenController extends Controller
         $cat=$reqinvoko->getData()['cat'];
         $value = session('user');
 $infoPar = [];
-$alta = [];
+
 $i = 0;
 $response="";
 $date = date('d-m-Y H:i');
-$regpar = $request->input('codPar');
-$altaItem = $request->input('item');
-$altaQty = $request->input('cant');
-$wo = $request->input('wo');
 $codeWo=$request->input('codigo');
-        if (!empty($codeWo)) {
-            $busqWo = DB::table('registro')->where('info', $codeWo)->first();
-            if ($busqWo) {
-                $woNum = $busqWo->NumPart;
-                $woQty = $busqWo->Qty;
-                $wowo=$busqWo->wo;
+$codeWo=str_replace("'", '-', $codeWo);
+$woItem=$request->input('woitem');
+if(!empty($codeWo)){
+    $i=0;
+    $buscarInfo=DB::table('registro')->join('kitenespera','registro.wo','=','kitenespera.wo')->where('info','=',$codeWo)->first();
+    if(!empty($buscarInfo)){
+        $wo=$buscarInfo->wo;
+        $buscarItems=DB::table('creacionkits')->where('wo',$wo)->get();
+        if(count($buscarItems)>0){
+            foreach($buscarItems as $rowItems){
 
-                $buscarItems = DB::table('datos')->select('item', 'qty')->where('part_num', '=', $woNum)->get();
-                foreach ($buscarItems as $rowit) {
-                    $saveitem = new Almacen;
-                    $saveitem->fecha = $date;
-                    $saveitem->articulo = $rowit->item;
-                    $saveitem->qty = $rowit->qty * $woQty;
-                    $saveitem->movimeinto = "Salida de mercancia(Kit Completo)";
-                    $saveitem->wo = $wowo;
-                    $saveitem->quien = $value;
-                    $saveitem->save();
+
+                $buscarEntregados=DB::table('almacen')->where('articulo',$rowItems->item)->where('wo',$wo)->first();
+                if(!empty($buscarEntregados)){
+                    if(($rowItems->qty-$buscarEntregados->qty)>0){
+                    $infoPar[$i][0] = $rowItems->item;
+                    $infoPar[$i][1] = $rowItems->qty-$buscarEntregados->qty;
+                    $infoPar[$i][2] = $wo;
+                    }
+                }else{
+                    $infoPar[$i][0] = $rowItems->item;
+                    $infoPar[$i][1] = $rowItems->qty;
+                    $infoPar[$i][2] = $wo;
+                    $i++;
                 }
-                $response = "Se Registró correctamente";
-            } else {
-                $response = "No se encontró ningún registro para el código WO proporcionado";
-            }
-            return redirect('almacen')->with('response', $response);
-        }
-if (!empty($altaQty)) {
-    foreach ($altaQty as $index => $qty) {
-        if($altaQty[$index]>0){
-        $updaQty=DB::table('almacen')->select('qty')->where('wo',$wo)->where('articulo', $altaItem[$index])->first();
-        if($updaQty){
-            $cantidad=$updaQty->qty+$qty;
-            $updatableAlm=DB::table('almacen')->where('wo',$wo)->where('articulo', $altaItem[$index])->update(['qty'=>$cantidad]);
-        }else{
-        $saveitem = new Almacen;
-        $saveitem->fecha = $date;
-        $saveitem->articulo = $altaItem[$index];
-        $saveitem->qty = $qty;
-        $saveitem->movimeinto = "Salida de mercancia(Kit Parcial)";
-        $saveitem->wo = $wo;
-        $saveitem->quien = $value;
-        $saveitem->save();
-        }}
-    }
-    return redirect('almacen');
-}
 
-if (!empty($regpar)) {
-
-    $mostrarWo = DB::table('registro')->select('NumPart', 'Qty', 'wo')->where('info', $regpar)->first();
-    if ($mostrarWo) {
-        $NumWo = $mostrarWo->NumPart;
-        $NumWoQty = $mostrarWo->Qty;
-        $word=$mostrarWo->wo;
-        $infos = DB::table('datos')->where('part_num', $NumWo)->get();
-        foreach ($infos as $rowInf) {
-            $buscarAlmacen=DB::table('almacen')->select('qty')->where('articulo',$rowInf->item)->first();
-            if($buscarAlmacen){
-                    if((($rowInf->qty * $NumWoQty)-$buscarAlmacen->qty)>0){
-                $infoPar[$i][0] = $rowInf->item;
-                $infoPar[$i][1] = ($rowInf->qty * $NumWoQty)-$buscarAlmacen->qty;}
-            }else{
-                $infoPar[$i][0] = $rowInf->item;
-            $infoPar[$i][1] = $rowInf->qty * $NumWoQty;}
-            $i++;
         }
-        return view('almacen', ['cat'=>$cat,'infoPar' => $infoPar, 'value' => $value, 'regpar' => $regpar,'listas'=>$listas]);
+      }  return view('almacen', ['cat'=>$cat,'infoPar' => $infoPar, 'value' => $value,'listas'=>$listas]);
     } else {
-        // Handle case where no record is found for the given 'wo'
-        return redirect()->back()->with('error', 'No record found for the provided WO.');
+        return redirect('almacen');
     }
+}
+if(!empty($woItem)){
+    $buscarItems=DB::table('creacionkits')->where('wo',$woItem)->get();
+    if(count($buscarItems)>0){
+        foreach($buscarItems as $rowItems){
+            $buscarEntregados=DB::table('almacen')->where('articulo',$rowItems->item)->where('wo',$woItem)->get();
+            if(count($buscarEntregados)>0){
+                $registro= new Almacen();
+                $registro->fecha=$date;
+                $registro->articulo=$rowItems->item;
+                $registro->qty=$rowItems->qty-$buscarEntregados->qty;
+                $registro->movimeinto='Salida a piso';
+                $registro->wo=$woItem;
+                $registro->quien=$value;
+                $registro->save();
+            }else{
+                $registro= new Almacen();
+                $registro->fecha=$date;
+                $registro->articulo=$rowItems->item;
+                $registro->qty=$rowItems->qty;
+                $registro->movimeinto='Salida a piso';
+                $registro->wo=$woItem;
+                $registro->quien=$value;
+                $registro->save();
+            }
+    }
+    if($registro->save()){
+        $update= DB::table('kitenespera')->where('wo', $woItem)->update(['Quien' => $value,'fechasalida' => $date]);
+        return redirect('almacen');
+    }
+    }}
+
+
+
+
 }
 
 
-    }
+
+
 
     public function BomAlm(Request $request){
         $value=session('user');
