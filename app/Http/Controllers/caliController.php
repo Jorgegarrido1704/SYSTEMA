@@ -245,12 +245,12 @@ class caliController extends generalController
                             $regTimes->respArea="Alejandra Gaona";
                     }else if($client=='EL DORADO CALIFORNIA' OR $client=='BLUE BIRD'){
                         $regTimes->respArea="Saul Castro";
-                    }else if($client=='COLLINS' OR $client=='SHYFT' or $client=='PHOENIX MOTOR CARS' or $client=='PROTERRA'){
+                    }else if($client=='COLLINS' OR $client=='SHYFT' or $client=='PHOENIX MOTOR CARS' or $client=='PROTERRA'or $client=='SPARTAN'){
                         $regTimes->respArea="Brando Olvera";
                     }else if ($client=='UTILIMASTER' OR $client=='ATLAS COPCO'){
                         $regTimes->respArea="Salvador Galvan";
                     }else if ($client=='TICO MANUFACTURING' ){
-                        $regTimes->respArea="David Villa";
+                        $regTimes->respArea="Jessi Sanchez";
                     }else{  $regTimes->respArea="";      }
                     }
             $regTimes->area="Calidad";
@@ -294,12 +294,12 @@ class caliController extends generalController
                             $regTimes->respArea="Alejandra Gaona";
                     }else if($client=='EL DORADO CALIFORNIA' OR $client=='BLUE BIRD'){
                         $regTimes->respArea="Saul Castro";
-                    }else if($client=='COLLINS' OR $client=='SHYFT' or $client=='PHOENIX MOTOR CARS' or $client=='PROTERRA'){
+                    }else if($client=='COLLINS' OR $client=='SHYFT' or $client=='PHOENIX MOTOR CARS' or $client=='PROTERRA'or $client=='SPARTAN'){
                         $regTimes->respArea="Brando Olvera";
                     }else if ($client=='UTILIMASTER' OR $client=='ATLAS COPCO'){
                         $regTimes->respArea="Salvador Galvan";
                     }else if ($client=='TICO MANUFACTURING' ){
-                        $regTimes->respArea="David Villa";
+                        $regTimes->respArea="Jessi Sanchez";
                     }else{  $regTimes->respArea="";      }
             }
             $regTimes->area="Calidad";
@@ -343,12 +343,12 @@ class caliController extends generalController
                             $regTimes->respArea="Alejandra Gaona";
                     }else if($client=='EL DORADO CALIFORNIA' OR $client=='BLUE BIRD'){
                         $regTimes->respArea="Saul Castro";
-                    }else if($client=='COLLINS' OR $client=='SHYFT' or $client=='PHOENIX MOTOR CARS' or $client=='PROTERRA'){
+                    }else if($client=='COLLINS' OR $client=='SHYFT' or $client=='PHOENIX MOTOR CARS' or $client=='PROTERRA'or $client=='SPARTAN'){
                         $regTimes->respArea="Brando Olvera";
                     }else if ($client=='UTILIMASTER' OR $client=='ATLAS COPCO'){
                         $regTimes->respArea="Salvador Galvan";
                     }else if ($client=='TICO MANUFACTURING' ){
-                        $regTimes->respArea="David Villa";
+                        $regTimes->respArea="Jessi Sanchez";
                     }else{  $regTimes->respArea="";      }
             }
             $regTimes->area="Calidad";
@@ -392,12 +392,12 @@ class caliController extends generalController
                             $regTimes->respArea="Alejandra Gaona";
                     }else if($client=='EL DORADO CALIFORNIA' OR $client=='BLUE BIRD'){
                         $regTimes->respArea="Saul Castro";
-                    }else if($client=='COLLINS' OR $client=='SHYFT' or $client=='PHOENIX MOTOR CARS' or $client=='PROTERRA'){
+                    }else if($client=='COLLINS' OR $client=='SHYFT' or $client=='PHOENIX MOTOR CARS' or $client=='PROTERRA'or $client=='SPARTAN'){
                         $regTimes->respArea="Brando Olvera";
                     }else if ($client=='UTILIMASTER' OR $client=='ATLAS COPCO'){
                         $regTimes->respArea="Salvador Galvan";
                     }else if ($client=='TICO MANUFACTURING' ){
-                        $regTimes->respArea="David Villa";
+                        $regTimes->respArea="Jessi Sanchez";
                     }else{  $regTimes->respArea="";      }
             }
             $regTimes->area="Calidad";
@@ -441,12 +441,12 @@ class caliController extends generalController
                             $regTimes->respArea="Alejandra Gaona";
                     }else if($client=='EL DORADO CALIFORNIA' OR $client=='BLUE BIRD'){
                         $regTimes->respArea="Saul Castro";
-                    }else if($client=='COLLINS' OR $client=='SHYFT' or $client=='PHOENIX MOTOR CARS' or $client=='PROTERRA'){
+                    }else if($client=='COLLINS' OR $client=='SHYFT' or $client=='PHOENIX MOTOR CARS' or $client=='PROTERRA'or $client=='SPARTAN'){
                         $regTimes->respArea="Brando Olvera";
                     }else if ($client=='UTILIMASTER' OR $client=='ATLAS COPCO'){
                         $regTimes->respArea="Salvador Galvan";
                     }else if ($client=='TICO MANUFACTURING' ){
-                        $regTimes->respArea="David Villa";
+                        $regTimes->respArea="Jessi Sanchez";
                     }else{  $regTimes->respArea="";      }
             }
             $regTimes->area="Calidad";
