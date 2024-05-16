@@ -252,9 +252,10 @@ if(in_array($np,$busqueda)){
                  }else if(in_array($np,$panel)){
                     $newWo->donde = 'En espera de ensamble';
                     $newWo->count = 6;
-                }
+                }else{
             $newWo->donde = 'En espera de corte';
             $newWo->count = 2;
+                }
             $newWo->tiempoTotal = 0;
             $newWo->paro = '';
             $newWo->description = $desc;
