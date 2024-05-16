@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Almacen;
+use App\Models\entSalAlamacen;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 class AlmacenController extends Controller
@@ -100,15 +101,7 @@ if(!empty($woItem)){
     }
     }}
 
-
-
-
 }
-
-
-
-
-
     public function BomAlm(Request $request){
         $value=session('user');
         $invokeData=new AlmacenController;
@@ -135,16 +128,78 @@ if(!empty($woItem)){
 
         public function entradas(Request $request){
             $value=session('user');
-            $suma=0;
-            $item=$request->input('Art');
-            $qty=$request->input('qtyArt');
-            $buscarItem=DB::table('itemsconsumidos')->where('item',$item)->limit(1)->first();
-            if($buscarItem){
-                $qtySave=$buscarItem->qty;
-                $suma=$qty+$qtySave;
-                $updateItemsConsume=DB::table('itemsconsumidos')->where('item',$item)->update(['qty'=>$suma]);
+            $cat=session('categoria');
+            $work=$request->input('Work');
+            $id_ret=$request->input('id_return');
+            $cant=$request->input('cant');
+        if($cat==''){
+            return view('login');
+        }else{
+            if($work){
+                $table=[];
+                $i=0;
+            $buscar=DB::table('creacionkits')->where('wo','=',$work)->get();
+            foreach($buscar as $bus){
+                $table[$i][0]=$bus->pn;
+                $table[$i][1]=$bus->wo;
+                $table[$i][2]=$bus->item;
+                $table[$i][3]=$bus->qty;
+                $table[$i][4]=$bus->id;
+                $i++;
+            }
+            if(!empty($table)){
+            return view('almacen.retorno')->with(['value'=>$value,'cat'=>$cat,'table'=>$table]);
+        }else{
+            return redirect('almacen');
+        }
+    }else if(count($cant)>0){
+            for($i=0;$i<count($cant);$i++){
+                $buscarCant=DB::table('creacionkits')->where('id','=',$id_ret[$i])->first();
+                $cantDiff=$buscarCant->qty-$cant[$i];
+                $item=$buscarCant->item;
+                $wo=$buscarCant->wo;
+                if($cant[$i]>0){
+
+                $buscarItems=DB::table('itemsconsumidos')->where('NumPart','=',$item)->first();
+                $donde=$buscarItems->Area;
+                $immex=$buscarItems->immex;
+                $nacional=$buscarItems->national;
+                $bodega=$buscarItems->Bodega;
+                if($immex>0 && $nacional==0 && $bodega==0 || $immex>0 && $nacional==0 && $bodega>0 && $donde=='IMMEX' || $immex>0 && $nacional>0 && $bodega==0 && $donde=='IMMEX' || $immex>0 && $nacional>0 && $bodega>0 && $donde=='IMMEX'){
+                    $updateItemsCons=DB::table('itemsconsumidos')->where('NumPart','=',$item)->increment('immex',$cant[$i]);
+                }else if($immex==0 && $nacional>0 && $bodega==0 || $immex==0 && $nacional>0 && $bodega>0 && $donde=='NACIONAL' || $immex>0 && $nacional>0 && $bodega==0 && $donde=='NACIONAL' || $immex>0 && $nacional>0 && $bodega>0 && $donde=='NACIONAL'){
+                    $updateItemsCons=DB::table('itemsconsumidos')->where('NumPart','=',$item)->increment('national',$cant[$i]);
+                }else if($immex==0 && $nacional==0 && $bodega>0){
+                    $updateItemsCons=DB::table('itemsconsumidos')->where('NumPart','=',$item)->increment('Bodega',$cant[$i]);
+                }
+                if($cantDiff>0){
+              $updatekits=DB::table('creacionkits')->where('id','=',$id_ret[$i])->update(['qty'=>$cantDiff]);
+              $movi=new entSalAlamacen();
+              $movi->item=$item;
+              $movi->Qty=$cant[$i];
+              $movi->movimiento='Retorno de kit';
+              $movi->usuario=$value;
+              $movi->fecha=date("d-m-Y H:i");
+              $movi->wo=$wo;
+              $movi->save();
+            }
+             if($cantDiff==0){
+                $movi=new entSalAlamacen();
+                $movi->item=$item;
+                $movi->Qty=$cant[$i];
+                $movi->movimiento='Retorno de kit';
+                $movi->usuario=$value;
+                $movi->fecha=date("d-m-Y H:i");
+                $movi->wo=$wo;
+                if($movi->save()){
+                $delete=DB::table('creacionkits')->where('id','=',$id_ret[$i])->delete();}
             }
 
+            }}
+        return redirect('almacen');
+    }
+
+        }
 
         }
 

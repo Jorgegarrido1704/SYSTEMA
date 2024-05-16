@@ -72,8 +72,7 @@
                                     <!-- Card scaneer -->
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h5 class="m-0 font-weight-bold text-primary">Retorno material</h5>
-
+                                    <h5 class="m-0 font-weight-bold text-primary">Retorno de material </h5>
                                 </div>
 
                                 <div class="card-body" style="overflow-y: auto; height: 360px;">
@@ -81,6 +80,9 @@
                                         <div align="center">
                                             <form action="{{route('entradas')}}" method="GET">
                                                 @csrf
+                                                <label for="Work">Work Order</label>
+                                                <input type="text" name="Work" id="Work" required>
+                                                <input type="submit" name="value" id="value" value="Buscar">
                                               </form>
                                         </div>
 
@@ -138,9 +140,7 @@
                                 </div>
                                 <div class="card-body" style="overflow-y: auto; height: 360px;" id="tableChange">
                                     <div align="center">
-                                      <form action="{{route('entradas')}}" method="GET">
-                                        @csrf
-                                      </form>
+
                                     </div>
 
                                 </div>
