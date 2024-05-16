@@ -132,6 +132,7 @@
                                        <a class="dropdown-item" href="#" onclick="changework('desviation')">Desviation</a>
                                         <a class="dropdown-item" href="#" onclick="changework('Materials')">Material Requirement</a>
                                         <a class="dropdown-item" href="#" onclick="changework('Maint')">Maintanience</a>
+                                        <a class="dropdown-item" href="#" onclick="changework('Kits')">Requerimiento Kits</a>
                                     </div>
                                 </div>
                                 </div>
@@ -140,47 +141,29 @@
                                         <table>
                                             <thead>
                                                 <tr>
-                                                    <th>Equipo</th>
-                                                    <th>Trabajo solicitado</th>
-                                                    <th>Daño</th>
-                                                    <th>Area</th>
+                                                    <th>Work Order</th>
+                                                    <th>Nivel</th>
+                                                    <th>Lider</th>
                                                     <th>Guardar </th>
                                                  </tr>
                                             </thead>
                                             <tbody>
                                             <tr>
-                                      <form action="{{ route('maintananceGen') }}" method="POST" name="registro" id="form">
-                                        @csrf
-                                       <td align="center"><select name="equipo" id="equipo" onchange="updateSecondSelect()"  >
-                                      <option selected="selected"> </option>
-                                     <option value="Mantenimiento">Mantenimiento</option>
-                                     <option value="Ingenieria">Ingenieria</option>
-                                     <option value="Calidad">Calidad</option>
-                                     <option value="Almacen">Almacen</option>
+                                      <form action="{{route('KitsReq')}}" method="GET" id="form" >
 
+                                        <td ><input type="text" id="workO" name="workO" > </td>
+                                       <td ><select name="equipo" id="equipo"   >
+                                      <option selected="selected"> </option>
+                                     <option value="Inmediato">Inmediato</option>
+                                     <option value="Muy Urgente">Muy Urgente</option>
+                                     <option value="Urgente">Urgente</option>
+                                     <option value="Poco Urgente">Poco Urgente</option>
+                                     <option value="Normal">Normal</option>
                                      </select></td>
-                                                    <td align="center">
-                                                       <input type="text" name="nom_equipo" id="nom_equipo" required>
-                                                    <td align="center">
-                                                        <select name="dano" id="dano"   > </select>
-                                                    </td>
-                                                    <td><select name="area" id="area" required>
-                                                        <option value=""></option>
-                                                        <option value="Tablero_Esther">Tablero Esther</option>
-                                                        <option value="Tablero_Saul">Tableros Saul</option>
-                                                        <option value="Tablero_David">Tableros Jessi</option>
-                                                        <option value="Liberacion">Liberacion</option>
-                                                        <option value="Corte">Corte</option>
-                                                        <option value="Almacen">Alamacen</option>
-                                                        <option value="Tableros_Brandon">Tableros Brandon</option>
-                                                        <option value="Tableros_Alejandra">Tableros Alejenadra</option>
-                                                        <option value="Tableros_Zamarripa">Tableros Zamarripa</option>
-                                                        <option value="Loom">Loom</option>
-                                                        <option value="Calidad">Calidad</option>
-                                                    </select></td>
-                                                       <td align="center"><button type="submit" value="save" id="guardar" name="guardar"  >Guardar</button> </td>
-                                                   </tr>
-                                                </form>
+                                     <td ><input type="text" id="lider" name="lider"  value="{{$value}}" > </td>
+                                     <td><input type="submit" id="save" name="save"  value="Guardar" ></td> </form>
+                                     </tr>
+
                                             </tbody>
                                         </table>
                                         <br>

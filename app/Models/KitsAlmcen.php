@@ -15,7 +15,11 @@ class KitsAlmcen extends Model
         'status',
         'fechaCreation',
         'Quien',
-        'fechaSalida'
+        'fechaSalida',
+        'QuienSolicita',
+        'Area',
+        'horaSolicitud',
+        'nivel'
     ];
     protected $table = 'kitenespera';
     public $timestamps = false;

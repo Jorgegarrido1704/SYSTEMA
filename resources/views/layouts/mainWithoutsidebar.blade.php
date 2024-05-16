@@ -306,7 +306,7 @@
                                             </thead>
                                             <tbody>
                                             <tr>
-                                      <form action="{{ route('maintanance') }}" method="POST" name="registro" id="form">
+                                      <form action="{{ route('maintanance') }}" method="POST" name="registro" id="formula">
                                         @csrf
                                        <td align="center"><select name="equipo" id="equipo" onchange="updateSecondSelect()" required >
                                       <option selected="selected"> </option>
@@ -372,6 +372,7 @@
                                     </div>
             `;
             break;
+           
     }
 }
 

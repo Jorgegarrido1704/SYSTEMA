@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\assistence;
+use App\Models\KitsAlmcen;
 use App\Models\listaCalidad;
 use App\Models\material;
 use App\Models\timesHarn;
@@ -915,13 +916,41 @@ public function finishWork(Request $request){
     $today = date('d-m-Y H:i');
     $uptimes=DB::table('registro_paro')->where('id','=',$id)->update(['finhora'=>$today,'trabajo'=>'Finalizado']);
 return redirect('/general');
+}
+
+
+public function KitsReq(Request $request){
+    $cat=session('categoria');
+    $value=session('user');
+    $work=$request->input('workO');
+    $nivel=$request->input('equipo');
+    $time=date('d-m-Y H:i');
+    if(!empty($work) && !empty($equipo)){
+        $buscar=DB::table('kitenespera')->where('wo','=',$work)->first();
+        if(!empty($buscar)){
+            $update=DB::table('kitenespera')->where('wo','=',$work)->update(['QuienSolicita'=>$value,'Area'=>'Ensamble','horaSolicitud'=>$time,'nivel'=>$nivel]);
+        }else{
+            $buscarWOReg=DB::table('registro')->where('wo','=',$work)->first();
+            $np=$buscarWOReg->NumPart;
+            $addKit= new KitsAlmcen();
+            $addKit->np=$np;
+            $addKit->wo=$work;
+            $addKit->status='En espera';
+            $addKit->fechaCreation='No Aun';
+            $addKit->Quien='No Aun';
+            $addKit->fechaSalida='No Aun';
+            $addKit->QuienSolicita=$value;
+            $addKit->Area='Ensamble';
+            $addKit->horaSolicitud=$time;
+            $addKit->nivel=$nivel;
+           if($addKit->save()){
+            return redirect('general');
+           }
 
 
 
-
-
-
-
+        }
+    }
 }
 
 }
