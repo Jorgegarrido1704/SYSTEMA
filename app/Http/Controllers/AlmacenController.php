@@ -138,7 +138,7 @@ if(!empty($woItem)){
             if($work){
                 $table=[];
                 $i=0;
-            $buscar=DB::table('creacionkits')->where('wo','=',$work)->get();
+            $buscar=DB::table('creacionkits')->where('creacionkits.wo','=',$work)->get();
             foreach($buscar as $bus){
                 $table[$i][0]=$bus->pn;
                 $table[$i][1]=$bus->wo;
@@ -174,6 +174,8 @@ if(!empty($woItem)){
                 }
                 if($cantDiff>0){
               $updatekits=DB::table('creacionkits')->where('id','=',$id_ret[$i])->update(['qty'=>$cantDiff]);
+              $updatekitsdenuevo=DB::table('kits')->where('wo','=',$wo)->update(['status'=>'Parcial']);
+                $updenuevo=DB::table('kitenespera')->where('wo','=',$wo)->update(['status'=>'Parcial']);
               $movi=new entSalAlamacen();
               $movi->item=$item;
               $movi->Qty=$cant[$i];
@@ -184,6 +186,8 @@ if(!empty($woItem)){
               $movi->save();
             }
              if($cantDiff==0){
+                $updatekitsdenuevo=DB::table('kits')->where('wo','=',$wo)->update(['status'=>'Parcial']);
+                $updenuevo=DB::table('kitenespera')->where('wo','=',$wo)->update(['status'=>'Parcial']);
                 $movi=new entSalAlamacen();
                 $movi->item=$item;
                 $movi->Qty=$cant[$i];
