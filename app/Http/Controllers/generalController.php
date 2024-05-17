@@ -925,10 +925,11 @@ public function KitsReq(Request $request){
     $work=$request->input('workO');
     $nivel=$request->input('equipo');
     $time=date('d-m-Y H:i');
-    if(!empty($work) && !empty($equipo)){
+    if($work!="" && $nivel!=""){
         $buscar=DB::table('kitenespera')->where('wo','=',$work)->first();
         if(!empty($buscar)){
             $update=DB::table('kitenespera')->where('wo','=',$work)->update(['QuienSolicita'=>$value,'Area'=>'Ensamble','horaSolicitud'=>$time,'nivel'=>$nivel]);
+            return redirect('/general');
         }else{
             $buscarWOReg=DB::table('registro')->where('wo','=',$work)->first();
             $np=$buscarWOReg->NumPart;
@@ -944,7 +945,7 @@ public function KitsReq(Request $request){
             $addKit->horaSolicitud=$time;
             $addKit->nivel=$nivel;
            if($addKit->save()){
-            return redirect('general');
+            return redirect('/general');
            }
 
 

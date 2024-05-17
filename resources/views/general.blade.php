@@ -149,7 +149,7 @@
                                             </thead>
                                             <tbody>
                                             <tr>
-                                      <form action="{{route('KitsReq')}}" method="GET" id="form" >
+                                      <form action="{{route('KitsReq')}}" method="GET"  >
 
                                         <td ><input type="text" id="workO" name="workO" > </td>
                                        <td ><select name="equipo" id="equipo"   >

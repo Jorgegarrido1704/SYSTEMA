@@ -306,7 +306,8 @@
                                             </thead>
                                             <tbody>
                                             <tr>
-                                      <form action="{{ route('maintanance') }}" method="POST" name="registro" id="formula">
+
+                                        <form  action="{{ route('maintananceGen')}}" method="POST">
                                         @csrf
                                        <td align="center"><select name="equipo" id="equipo" onchange="updateSecondSelect()" required >
                                       <option selected="selected"> </option>
@@ -317,11 +318,11 @@
 
                                      </select></td>
                                                     <td align="center">
-                                                       <input type="text" name="nom_equipo" id="nom_equipo" required>
+                                                       <input type="text" name="nom_equipo" id="nom_equipo" >
                                                     <td align="center">
                                                         <select name="dano" id="dano"   > </select>
                                                     </td>
-                                                    <td><select name="area" id="area" required>
+                                                    <td><select name="area" id="area" >
                                                         <option value=""></option>
                                                         <option value="Tablero_Esther">Tablero Esther</option>
                                                         <option value="Tablero_Saul">Tableros Saul</option>
@@ -335,15 +336,15 @@
                                                         <option value="Loom">Loom</option>
                                                         <option value="Calidad">Calidad</option>
                                                     </select></td>
-                                                       <td align="center"><button type="submit" value="save" id="guardar" name="guardar"  >Guardar</button> </td>
+                                                       <td align="center"><input type="submit" id="submit" value="Send"> </td>
+                                                    </form>
                                                    </tr>
-                                                </form>
+
                                             </tbody>
                                         </table>
-                                        <br>
 
-                                    <div>
-                                </div>
+
+
                             </div>`; TableChange.innerHTML = `
             <div class="row" >
                                         <table>
@@ -372,7 +373,7 @@
                                     </div>
             `;
             break;
-           
+
     }
 }
 

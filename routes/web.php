@@ -63,7 +63,7 @@ Route::controller(generalController::class)->group(function(){
     Route::post('/material',[generalController::class,'material'])->name('material');
     Route::get('/timesHarn',[generalController::class,'pause'])->name('pause');
     Route::get('/finishWork',[generalController::class,'finishWork'])->name('finishWork');
-    Route::get('KitsReq',[generalController::class,'KitsReq'])->name('KitsReq');
+    Route::get('/KitsReq',[generalController::class,'KitsReq'])->name('KitsReq');
 });
 
 Route::controller( PpapIngController::class)->group(function (){
