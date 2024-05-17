@@ -134,7 +134,7 @@ foreach($calidad as $regcal){
 
             $recipients = [
                 'jcervera@mx.bergstrominc.com',
-                'vestrada@mx.bergstrominc.com',
+                
                 'jcrodriguez@mx.bergstrominc.com',
                 'egaona@mx.bergstrominc.com',
                 'mvaladez@mx.bergstrominc.com',
@@ -157,22 +157,8 @@ foreach($calidad as $regcal){
         $updateInge=DB::table('registro')->where('id','=',$idIng)->update(['count'=>$count,'donde'=>$donde]);
         return redirect('/ing');
     }
-    public function show(ppapIng $ppapIng)
-    {
 
-    }
-    public function edit(ppapIng $ppapIng)
-    {
-        //
-    }
-    public function update(Request $request, ppapIng $ppapIng)
-    {
-        //
-    }
-    public function destroy(ppapIng $ppapIng)
-    {
-        //
-    }
+
     public function action(Request $request){
         $id=$request->input('id');
         $todayIng=date('d-m-Y H:i');

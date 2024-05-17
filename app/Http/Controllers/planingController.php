@@ -347,7 +347,7 @@ if(in_array($np,$busqueda)){
                             $recipients = [
                                'jcervera@mx.bergstrominc.com',
                                 'jcrodriguez@mx.bergstrominc.com',
-                                'vestrada@mx.bergstrominc.com',
+                                
                                 'david-villa88@outlook.com',
                                 'egaona@mx.bergstrominc.com',
                                 'mvaladez@mx.bergstrominc.com',
