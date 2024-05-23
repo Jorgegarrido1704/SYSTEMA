@@ -92,7 +92,7 @@ $i=0;
             $updateTiempo=DB::table('tiempos')->where('info',$info)->update(['corte'=>$today]);
         }else if($cuenta==14){
             //Registrar a calidad..
-            $buscarReg=DB::table('registro')->where('info','=','$info')->first();
+            $buscarReg=DB::table('registro')->where('info','=',$info)->first();
             $np=$buscarReg->NumPart;
             $cli=$buscarReg->cliente;
             $woreg=$buscarReg->wo;
