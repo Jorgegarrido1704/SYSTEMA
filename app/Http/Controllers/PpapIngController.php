@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Mail\Mailables;
+use App\Models\listaCalidad;
 
 class PpapIngController extends Controller
 {
@@ -89,8 +90,27 @@ $i=0;
 
         if($cuenta==17){$count=4; $donde='En espera de liberacion';$area='Corte';
             $updateTiempo=DB::table('tiempos')->where('info',$info)->update(['corte'=>$today]);
-        }else if($cuenta==14){$count=10;$donde='En espera de prueba electrica';$area='loom';
-            $updateTiempo=DB::table('tiempos')->where('info',$info)->update(['loom'=>$today]);
+        }else if($cuenta==14){
+            //Registrar a calidad..
+            $buscarReg=DB::table('registro')->where('info','=','$info')->first();
+            $np=$buscarReg->NumPart;
+            $cli=$buscarReg->cliente;
+            $woreg=$buscarReg->wo;
+            $poReg=$buscarReg->po;
+            $qtyReg=$buscarReg->Qty;
+            $calReg=new listaCalidad;
+            $calReg->np=$np;
+            $calReg->client=$cli;
+            $calReg->wo=$woreg;
+            $calReg->po=$poReg;
+            $codigo=strtoupper($info);
+            $calReg->info=$codigo;
+            $calReg->qty=$qtyReg;
+            $calReg->parcial="No";
+            if($calReg->save()){
+                $count=10;$donde='En espera de prueba electrica';$area='loom';
+            }
+
         }else if($cuenta==13){$count=8;$donde='En espera de loom';$area='Ensamble';
             $updateTiempo=DB::table('tiempos')->where('info',$info)->update(['ensamble'=>$today]);
         }else if($cuenta==16){$count=6;$donde='En espera de ensamble';$area='Libreracion';
@@ -134,7 +154,7 @@ foreach($calidad as $regcal){
 
             $recipients = [
                 'jcervera@mx.bergstrominc.com',
-                
+
                 'jcrodriguez@mx.bergstrominc.com',
                 'egaona@mx.bergstrominc.com',
                 'mvaladez@mx.bergstrominc.com',

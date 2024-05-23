@@ -415,7 +415,11 @@ class generalController extends Controller
                         $cli=$reg->cliente;
                         $woreg=$reg->wo;
                         $poReg=$reg->po;
-                        $qtyReg=$reg->Qty;}
+                        $qtyReg=$reg->Qty;
+                        $revReg=$reg->rev;
+                    }
+                        //cmabiar la para solo registrar si no es ppap
+                        if(substr($rev,0,4)!='PRIM' or substr($rev,0,4)!='PPAP' ){
                             $calReg=new listaCalidad;
                             $calReg->np=$np;
                             $calReg->client=$cli;
@@ -431,6 +435,11 @@ class generalController extends Controller
                         } else {   $resp = "Harness not updated, it is in $area";  }
                         return redirect('general')->with('response', $resp);}
                         else{$resp = "Call ENGINNER CI (JORGE)";
+                            return redirect('general')->with('response', $resp);
+                        }}else{
+                            $update = DB::table('registro')->where('info', $codigo)->update(['count' => $count, 'donde' => 'Proceso de ensable']);
+                            if ($update) { $resp = "Assembly process";
+                            } else {   $resp = "Harness not updated, it is in $area";  }
                             return redirect('general')->with('response', $resp);
                         }
             } else if($donde==='ensa' and $count===15){
