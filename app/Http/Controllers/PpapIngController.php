@@ -90,6 +90,8 @@ $i=0;
 
         if($cuenta==17){$count=4; $donde='En espera de liberacion';$area='Corte';
             $updateTiempo=DB::table('tiempos')->where('info',$info)->update(['corte'=>$today]);
+            $updateInge=DB::table('registro')->where('id','=',$idIng)->update(['count'=>$count,'donde'=>$donde]);
+            return redirect('/ing');
         }else if($cuenta==14){
             //Registrar a calidad..
             $buscarReg=DB::table('registro')->where('info','=',$info)->first();
@@ -107,13 +109,18 @@ $i=0;
             $calReg->info=$codigo;
             $calReg->qty=$qtyReg;
             $calReg->parcial="No";
-            if($calReg->save()){
+            $calReg->save();
                 $count=10;$donde='En espera de prueba electrica';$area='loom';
-            }
-
+                $updateInge=DB::table('registro')->where('id','=',$idIng)->update(['count'=>$count,'donde'=>$donde]);
+        return redirect('/ing');
         }else if($cuenta==13){$count=8;$donde='En espera de loom';$area='Ensamble';
             $updateTiempo=DB::table('tiempos')->where('info',$info)->update(['ensamble'=>$today]);
+            $updateInge=DB::table('registro')->where('id','=',$idIng)->update(['count'=>$count,'donde'=>$donde]);
+            return redirect('/ing');
         }else if($cuenta==16){$count=6;$donde='En espera de ensamble';$area='Libreracion';
+            $updateTiempo=DB::table('tiempos')->where('info',$info)->update(['liberacion'=>$today]);
+            $updateInge=DB::table('registro')->where('id','=',$idIng)->update(['count'=>$count,'donde'=>$donde]);
+            return redirect('/ing');
         }else if($cuenta==18){$count=12;$donde='En espera de embarque';$area='Prueba electrica';
             $buscarinfo=DB::table('registro')->where('info',$info)->first();
             $revin=substr($buscarinfo->rev,0,4);
