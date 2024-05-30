@@ -34,7 +34,7 @@ class generalController extends Controller
         foreach($buscauser as $rowuser){
             $categoria=$rowuser->category;
         }if($categoria=='ensa'){
-               $buscarporid=DB::select("SELECT * FROM registro WHERE count='6' or count='7' or count='13' ORDER BY cliente");
+               $buscarporid=DB::select("SELECT * FROM registro WHERE count='6' or count='7' ORDER BY cliente");
                 $registros=[];
                 $i=0;
                 foreach($buscarporid as $idrow){
@@ -74,7 +74,7 @@ class generalController extends Controller
             }
 
         }else if($categoria=='libe'){
-            $buscarporid=DB::select("SELECT * FROM registro WHERE count='2' or count='3' or count='4' or count='5' or count='17' or count='16'  ORDER BY cliente");
+            $buscarporid=DB::select("SELECT * FROM registro WHERE count='2' or count='3' or count='4' or count='5'  ORDER BY cliente");
             $registros=[];
             $i=0;
             foreach($buscarporid as $idrow){
@@ -87,28 +87,21 @@ class generalController extends Controller
                 $registros[$i][6]=$idrow->Qty;
                 $registros[$i][7]=$idrow->donde;
                 $registros[$i][8]=$idrow->paro;
-                if($idrow->count=='4' or $idrow->count=='5' ){
+                if($idrow->count=='4' or $idrow->count=='5'){
                 $buscartime=DB::table('timesharn')->select('term', 'termF')->where('wo', $idrow->wo)->first();
                     $registros[$i][9]=$buscartime->term;
                     $registros[$i][10]=$buscartime->termF;
                 $i++;
-            }else if($idrow->count=='2' or $idrow->count=='3' ){
+            }else if($idrow->count=='2' or $idrow->count=='3'){
                 $buscartime=DB::table('timesharn')->select('cut', 'cutF')->where('wo', $idrow->wo)->first();
-
                 $registros[$i][9]=$buscartime->cut;
                 $registros[$i][10]=$buscartime->cutF;
-            }
-                else{
-
-                $registros[$i][9]='';
-                $registros[$i][10]='';
-                }
             $i++;
                 }
-            
+            }
 
         }else if($categoria=='loom'){
-            $buscarporid=DB::select("SELECT * FROM registro WHERE count='8' or count='9' or count='14' ORDER BY cliente");
+            $buscarporid=DB::select("SELECT * FROM registro WHERE count='8' or count='9' ORDER BY cliente");
             $registros=[];
             $i=0;
             foreach($buscarporid as $idrow){
@@ -148,7 +141,7 @@ class generalController extends Controller
             }
 
         }else if($categoria=='cort'){
-            $buscarporid=DB::select("SELECT * FROM registro WHERE count='2' or count='3' or count='17' or count='16'  ORDER BY cliente");
+            $buscarporid=DB::select("SELECT * FROM registro WHERE count='2' or count='3'   ORDER BY cliente");
             $registros=[];
             $i=0;
             foreach($buscarporid as $idrow){
