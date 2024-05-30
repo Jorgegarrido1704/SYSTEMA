@@ -34,7 +34,7 @@ class generalController extends Controller
         foreach($buscauser as $rowuser){
             $categoria=$rowuser->category;
         }if($categoria=='ensa'){
-               $buscarporid=DB::select("SELECT * FROM registro WHERE count='6' or count='7' ORDER BY cliente");
+               $buscarporid=DB::select("SELECT * FROM registro WHERE count='6' or count='7' or count='13' ORDER BY cliente");
                 $registros=[];
                 $i=0;
                 foreach($buscarporid as $idrow){
@@ -74,7 +74,7 @@ class generalController extends Controller
             }
 
         }else if($categoria=='libe'){
-            $buscarporid=DB::select("SELECT * FROM registro WHERE count='2' or count='3' or count='4' or count='5'  ORDER BY cliente");
+            $buscarporid=DB::select("SELECT * FROM registro WHERE count='2' or count='3' or count='4' or count='5' or count='17' or count='16'  ORDER BY cliente");
             $registros=[];
             $i=0;
             foreach($buscarporid as $idrow){
@@ -101,7 +101,7 @@ class generalController extends Controller
             }
 
         }else if($categoria=='loom'){
-            $buscarporid=DB::select("SELECT * FROM registro WHERE count='8' or count='9' ORDER BY cliente");
+            $buscarporid=DB::select("SELECT * FROM registro WHERE count='8' or count='9' or count='14' ORDER BY cliente");
             $registros=[];
             $i=0;
             foreach($buscarporid as $idrow){
@@ -141,7 +141,7 @@ class generalController extends Controller
             }
 
         }else if($categoria=='cort'){
-            $buscarporid=DB::select("SELECT * FROM registro WHERE count='2' or count='3'   ORDER BY cliente");
+            $buscarporid=DB::select("SELECT * FROM registro WHERE count='2' or count='3' or count='17' or count='16'  ORDER BY cliente");
             $registros=[];
             $i=0;
             foreach($buscarporid as $idrow){
