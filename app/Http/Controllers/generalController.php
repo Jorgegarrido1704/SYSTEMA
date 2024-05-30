@@ -94,8 +94,14 @@ class generalController extends Controller
                 $i++;
             }else if($idrow->count=='2' or $idrow->count=='3' or $idrow->count=='17' or $idrow->count=='16'){
                 $buscartime=DB::table('timesharn')->select('cut', 'cutF')->where('wo', $idrow->wo)->first();
+                if($buscartime->cut!=NUll){
                 $registros[$i][9]=$buscartime->cut;
                 $registros[$i][10]=$buscartime->cutF;
+                }else{
+
+                $registros[$i][9]='';
+                $registros[$i][10]='';
+                }
             $i++;
                 }
             }
