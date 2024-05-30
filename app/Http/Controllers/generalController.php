@@ -87,24 +87,25 @@ class generalController extends Controller
                 $registros[$i][6]=$idrow->Qty;
                 $registros[$i][7]=$idrow->donde;
                 $registros[$i][8]=$idrow->paro;
-                if($idrow->count=='4' or $idrow->count=='5' or $idrow->count=='16' or $idrow->count=='17'){
+                if($idrow->count=='4' or $idrow->count=='5' ){
                 $buscartime=DB::table('timesharn')->select('term', 'termF')->where('wo', $idrow->wo)->first();
                     $registros[$i][9]=$buscartime->term;
                     $registros[$i][10]=$buscartime->termF;
                 $i++;
-            }else if($idrow->count=='2' or $idrow->count=='3' or $idrow->count=='17' or $idrow->count=='16'){
+            }else if($idrow->count=='2' or $idrow->count=='3' ){
                 $buscartime=DB::table('timesharn')->select('cut', 'cutF')->where('wo', $idrow->wo)->first();
-                if($buscartime->cut!=NUll){
+
                 $registros[$i][9]=$buscartime->cut;
                 $registros[$i][10]=$buscartime->cutF;
-                }else{
+            }
+                else{
 
                 $registros[$i][9]='';
                 $registros[$i][10]='';
                 }
             $i++;
                 }
-            }
+            
 
         }else if($categoria=='loom'){
             $buscarporid=DB::select("SELECT * FROM registro WHERE count='8' or count='9' or count='14' ORDER BY cliente");
