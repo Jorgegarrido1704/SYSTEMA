@@ -74,7 +74,7 @@ class generalController extends Controller
             }
 
         }else if($categoria=='libe'){
-            $buscarporid=DB::select("SELECT * FROM registro WHERE count='2' or count='3' or count='4' or count='5'  ORDER BY cliente");
+            $buscarporid=DB::select("SELECT * FROM registro WHERE  count='4' or count='5'  ORDER BY cliente");
             $registros=[];
             $i=0;
             foreach($buscarporid as $idrow){
@@ -288,13 +288,13 @@ class generalController extends Controller
                 if ($update) { $resp = "This harness was updated to the next station";
                 } else {   $resp = "Harness not updated, it is in $area";  }
                 return redirect('general')->with('response', $resp); }
-            }else if(($donde==='cort' or $donde==='libe') and $count===2){
+            }else if(($donde==='cort' ) and $count===2){
                 $count=3;
                 $update = DB::table('registro')->where('info', $codigo)->update(['count' => $count, 'donde' => 'Proceso de corte']);
                 if ($update) { $resp = "Cutting process";
                 } else {   $resp = "Harness not updated, it is in $area";  }
                 return redirect('general')->with('response', $resp);
-            }else if(($donde==='libe' or $donde==='cort') and $count===3){
+            }else if(( $donde==='cort') and $count===3){
                 if(substr($rev,0,4)=='PRIM' or substr($rev,0,4)=='PPAP' ){
                      $buscar=DB::table('timesharn')->select('cut','fecha')->where('bar',$codigo)->first();
                                 $lasDate=$buscar->fecha;
@@ -825,7 +825,7 @@ class generalController extends Controller
         if(!empty($id_Cominezo)){
             switch($cat){
                 case 'cort':
-                    $update=DB::table('timesharn')->where('wo','=',$id_Cominezo)->update(['cort'=>$tiempo]);
+                    $update=DB::table('timesharn')->where('wo','=',$id_Cominezo)->update(['cut'=>$tiempo]);
                     break;
                 case 'ensa':
                     $update=DB::table('timesharn')->where('wo','=',$id_Cominezo)->update(['ensa'=>$tiempo]);
@@ -847,7 +847,7 @@ class generalController extends Controller
         if(!empty($id) && $funcion=="pausar"){
             switch($cat){
                 case 'cort':
-                    $update=DB::table('timesharn')->where('wo','=',$id)->update(['cortF'=>$tiempo]);
+                    $update=DB::table('timesharn')->where('wo','=',$id)->update(['cutF'=>$tiempo]);
                     break;
                 case 'ensa':
                     $update=DB::table('timesharn')->where('wo','=',$id)->update(['ensaF'=>$tiempo]);
@@ -873,7 +873,7 @@ class generalController extends Controller
             $fin=$select->cutF;
             $tiempodiff=strtotime($fin) - strtotime($ini);
             $newTime=date('d-m-Y h:i',(strtotime($tiempo)-$tiempodiff));
-            $update=DB::table('timesharn')->where('wo','=',$id)->update(['cut'=>$newTime,'cortF'=>'']);
+            $update=DB::table('timesharn')->where('wo','=',$id)->update(['cut'=>$newTime,'cutF'=>'']);
             break;
         case 'ensa':
             $select=DB::table('timesharn')->where( 'wo','=',$id)->first();
