@@ -15,7 +15,8 @@ class calidadRegistro extends Model
         'info',
         'resto',
         'codigo',
-        'prueba'
+        'prueba',
+        'Responsable',
     ];
     protected $table='regsitrocalidad';
     public $timestamps=false;

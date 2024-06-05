@@ -53,7 +53,10 @@
                                         </div>
                                         @else
                                         <div align="center">
-                                            <h3><span style="margin-right: 30px">Client:  {{$client}}</span> <span style="margin-right: 30px">Part Number: {{$pn}}</span> <span style="margin-right: 30px">Qty: {{$qty}}</span><span style="margin-right: 30px"> Wo: {{$wo}}<span style="margin-right: 30px"> </h3>
+                                            <div class="d-flex justify-content-center" align="center">
+                                                <h3><span style="margin-right: 30px">Client:  {{$client}}</span> <span style="margin-right: 30px">Part Number: {{$pn}}</span> <span style="margin-right: 30px">Qty: {{$qty}}</span><span style="margin-right: 30px"> Wo: {{$wo}}<span style="margin-right: 30px"> </h3>
+                                              </div>
+
                                                     <br>
                                                     <form action="{{route('saveData')}}" method="GET">
                                         <div> <h4>OK<input type="number" style="width:80px;margin-right:80px;" name="ok" id="ok" value="0" onchange="return checkOk()">      NOK<input type="number" style="width: 80px;margin-right:80px" name="nok" id="nok" value="0" onchange="return checkOk()"></h4></div>
@@ -71,46 +74,50 @@
                                                          </script>
                                       <br> <br> <br>
 
-<div>
+<div class="d-flex justify-content-center">
     <h4>Code #1
         <input type="text" style="width:80px;margin-right:10px;" name="codigo1" id="codigo1" onchange="buscarcodigo1()">
         <input type="text" style="width:280px;margin-right:80px;" name="rest_code1" id="rest_code1">
-        Cantidad<input type="number" style="width: 80px;margin-right:80px" name="1" id="1" value="0" onchange="return checkCant()">
+       <input type="hidden" style="width: 80px;margin-right:80px" name="1" id="1" value="0" >
+       Responsable  <input type="text" style="width: 80px;margin-right:80px" name="responsable1" id="responsable1">
     </h4>
 </div>
-<br>
-<div>
+
+<div class="d-flex justify-content-center">
     <h4>Code #2
         <input type="text" style="width:80px;margin-right:10px;" name="codigo2" id="codigo2" onchange="buscarcodigo2()">
         <input type="text" style="width:280px;margin-right:80px;" name="rest_code2" id="rest_code2">
-        Cantidad<input type="number" style="width: 80px;margin-right:80px" name="2" id="2" value="0" onchange="return checkCant()">
+        <input type="hidden" style="width: 80px;margin-right:80px" name="2" id="2" value="0" >
+        Responsable  <input type="text" style="width: 80px;margin-right:80px" name="responsable2" id="responsable2">
     </h4>
 </div>
-<br>
+
 <div>
     <h4>Code #3
         <input type="text" style="width:80px;margin-right:10px;" name="codigo3" id="codigo3" onchange="buscarcodigo3()">
         <input type="text" style="width:280px;margin-right:80px;" name="rest_code3" id="rest_code3">
-        Cantidad<input type="number" style="width: 80px;margin-right:80px" name="3" id="3" value="0" onchange="return checkCant()">
+        <input type="hidden" style="width: 80px;margin-right:80px" name="3" id="3" value="0" >
+        Responsable  <input type="text" style="width: 80px;margin-right:80px" name="responsable3" id="responsable3">
     </h4>
 </div>
-<br>
-<div>
+<div class="d-flex justify-content-center">
     <h4>Code #4
         <input type="text" style="width:80px;margin-right:10px;" name="codigo4" id="codigo4" onchange="buscarcodigo4()">
         <input type="text" style="width:280px;margin-right:80px;" name="rest_code4" id="rest_code4">
-        Cantidad<input type="number" style="width: 80px;margin-right:80px" name="4" id="4" value="0" onchange="return checkCant()">
+        <input type="hidden" style="width: 80px;margin-right:80px" name="4" id="4" value="0" >
+        Responsable  <input type="text" style="width: 80px;margin-right:80px" name="responsable4" id="responsable4">
     </h4>
 </div>
-<br>
-<div>
+<div class="d-flex justify-content-center">
     <h4>Code #5
         <input type="text" style="width:80px;margin-right:10px;" name="codigo5" id="codigo5" onchange="buscarcodigo5()">
         <input type="text" style="width:280px;margin-right:80px;" name="rest_code5" id="rest_code5">
-        Cantidad<input type="number" style="width: 80px;margin-right:80px" name="5" id="5"  value="0" onchange="return checkCant()">
+        <input type="hidden" style="width: 80px;margin-right:80px" name="5" id="5"  value="0" >
+      Responsable  <input type="text" style="width: 80px;margin-right:80px" name="responsable5" id="responsable5">
+
     </h4>
 </div>
-<br>
+
 
                                          <div><h4>Serial <input type="text" style="width: 180px" name="serial" id="serial"> </h4></div>
                                         <br>
