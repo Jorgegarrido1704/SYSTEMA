@@ -37,7 +37,7 @@ class caliController extends generalController
             $i++;
 
         }
-        $timesReg = strtotime(date("d-m-Y 00:00", strtotime('-1 day')));
+        $timesReg = strtotime(date("d-m-Y 00:00"))-86400;
         $registros=[];
         $i=0;
         $buscReg=DB::table('regsitrocalidad')->orderBy('id','DESC')->get();
