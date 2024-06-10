@@ -42,7 +42,7 @@ class caliController extends generalController
         $i=0;
         $buscReg=DB::table('regsitrocalidad')->orderBy('id','DESC')->get();
         foreach($buscReg as $rowReg){
-            if(strtotime($rowReg->fecha)>$timesReg){
+            if(($rowReg->id)>59519){
                 $registros[$i][0]=$rowReg->fecha;
                 $registros[$i][1]=$rowReg->client;
                 $registros[$i][2]=$rowReg->pn;
