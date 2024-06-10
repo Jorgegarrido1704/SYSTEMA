@@ -209,6 +209,7 @@
                                                     <th>Qty</th>
                                                     <th>Codigo de falla</th>
                                                     <th>Serial</th>
+                                                    <th>Responsable</th>
                                                 </thead>
                                                 <tbody>
                                                     @if (!empty($registros))
@@ -221,6 +222,7 @@
                                                         <td>{{$reg[3]}}</td>
                                                         <td>{{$reg[4]}}</td>
                                                         <td>{{$reg[5]}}</td>
+                                                        <td>{{$reg[6]}}</td>
                                                     </tr>
                                                     @endforeach
 

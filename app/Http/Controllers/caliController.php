@@ -49,6 +49,7 @@ class caliController extends generalController
                 $registros[$i][3]=$rowReg->resto;
                 $registros[$i][4]=$rowReg->codigo;
                 $registros[$i][5]=$rowReg->prueba;
+                $registros[$i][6]=$rowReg->Responsable;
                 $i++;
             }
 
