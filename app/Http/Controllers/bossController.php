@@ -11,7 +11,7 @@ class bossController extends Controller
     {
         $value = session('user');
         $cat=session('categoria');
-        if ($value == '') {
+        if ($cat!='Boss' or $value == '') {
             return view('login');
         } else {
             $homeController = new HomeController();

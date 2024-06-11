@@ -162,7 +162,7 @@ select {
                                             <select name="Inge" id="Inge" required>
                                                     <option value=""></option>
                                                     <option value="Jesus C">Jesus Cervera</option>
-                                                   
+
                                                     <option value="Carlos R">Carlos Rodriguez</option>
                                                     <option value="Paola S">Paola Silva</option>
                                                     <option value="Nancy A">Nancy Aldana</option>
@@ -316,7 +316,7 @@ select {
                             <div class="card shadow mb-4">
 
                                 <div  class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                <h5 class="m-0 font-weight-bold text-primary">CREATE PPAP & PRIM</h5>
+                                <h5 class="m-0 font-weight-bold text-primary">CREATE PPAP & PRIM @if(session('error')) <p style="color: #FC4747"> {{session('error')}} </p> @endif</h5>
 
                                 </div>
                                 <div class="card-body" style="overflow-y: auto; height: 760px;" id='work'>

@@ -273,6 +273,12 @@ foreach($calidad as $regcal){
         $cambios=$request->input('cambios');
         $eng=$request->input('quien');
         $today=date('d-m-Y H:i');
+      $buscarIguales=DB::table('ppapandprim')->where('pn',$pn)->where('REV1',$rev1)->where('REV2',$rev2)->first();
+      if($buscarIguales){
+        return redirect('/ing')->with('error','Ya existe esta Revision');
+      }else{
+
+
         if($tipo=='PPAP'){
             $tp='NUEVA PPAP (Hoja Verde)';
         }else if($tipo=='PRIM'){
@@ -305,5 +311,5 @@ foreach($calidad as $regcal){
             return redirect ('/ing');
     }
 }
-
+    }
 }

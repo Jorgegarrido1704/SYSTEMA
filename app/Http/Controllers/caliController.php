@@ -18,7 +18,7 @@ class caliController extends generalController
       public function __invoke(){
         $value = session('user');
         $cat = session('categoria');
-        if($cat=='' or $value==''){
+        if($cat!='cali' or $value==''){
             return view('login');
         }else{
         $buscarcalidad=DB::table("calidad")->get();
