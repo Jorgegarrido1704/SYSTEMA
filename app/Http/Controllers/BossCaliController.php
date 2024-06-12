@@ -11,7 +11,7 @@ class BossCaliController extends Controller
     public function __invoke(){
         $value=session('user');
         $cat=session('categoria');
-        if($cat!='BCali' or  $cat!='cali' or $value==""){
+        if($cat!='BCali' or $value==""){
             return redirect('login');
         }else{
             $datos = $etiq = [];
