@@ -18,9 +18,7 @@ class caliController extends generalController
       public function __invoke(){
         $value = session('user');
         $cat = session('categoria');
-        if($cat!='cali'  or $value==''){
-            return view('login');
-        }else{
+      
         $buscarcalidad=DB::table("calidad")->get();
         $i=0;
         $calidad=[];
@@ -80,7 +78,7 @@ class caliController extends generalController
 
         return view('cali',['fallas'=>$fallas,'registros'=>$registros,'cat'=>$cat,'value'=>$value,'calidad'=>$calidad,'week'=>$week,'assit'=>$assit,'paros'=>$paros,'desviations'=>$desviations,'materials'=>$materials]);
 
-        }
+
     }
         public function baja(Request $request){
         $calicontroller = new generalController();

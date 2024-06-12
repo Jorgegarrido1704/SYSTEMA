@@ -11,9 +11,7 @@ class BossCaliController extends Controller
     public function __invoke(){
         $value=session('user');
         $cat=session('categoria');
-        if($cat!='BCali' or $value==""){
-            return redirect('login');
-        }else{
+       
             $datos = $etiq = [];
             $pareto[0]=$pareto[1]=0;
             $paretoresult[0]=$paretoresult[1]=0;
@@ -162,7 +160,7 @@ class BossCaliController extends Controller
         }
 
             return view('BossCali',['calidadControl'=>$calidadControl,'calidad'=>$calidad,'datosT'=>$datosT,'datosS'=>$datosS,'datosF'=>$datosF,'labelQ'=>$labelQ,'colorQ'=>$colorQ,'value'=>$value,'cat'=>$cat,'datos'=>$datos,'pareto'=>$pareto,'paretoresult'=>$paretoresult,'Qdays'=>$Qdays]);
-        }
+
     }
     public function reference(Request $request){
         $days=$request->input('date');
