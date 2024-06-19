@@ -317,7 +317,18 @@ select {
 
                                 <div  class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                 <h5 class="m-0 font-weight-bold text-primary">CREATE PPAP & PRIM @if(session('error')) <p style="color: #FC4747"> {{session('error')}} </p> @endif</h5>
+                                <div class="dropdown no-arrow">
+                                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                        aria-labelledby="dropdownMenuLink">
+                                       <a class="dropdown-item" href="#" onclick="ingregistro('cronograma')">Cronograma</a>
+                                        <a class="dropdown-item" href="#" onclick="ingregistro('ppap')">Registro de ppap</a>
 
+                                    </div>
+                                </div>
                                 </div>
                                 <div class="card-body" style="overflow-y: auto; height: 760px;" id='work'>
                                     <div class="row" >
@@ -340,6 +351,7 @@ select {
 
                                             /* Input styles */
                                             input[type="text"],
+                                            input[type="date"],
                                             textarea,
                                             select {
                                               width: calc(100% - 20px); /* Subtracting padding */
@@ -369,9 +381,8 @@ select {
                                               background-color: #0056b3;
                                             }
                                           </style>
-                                          </head>
-                                          <body>
-                                          <div class="containerPPAP">
+
+                                          <div class="containerPPAP" id="containerPPAP">
                                             <form action="{{route('RegPPAP')}}" method="GET">
                                             <label for="Tipo">Type of Work</label>
                                             <select name="Tipo" id="Tipo" required  >

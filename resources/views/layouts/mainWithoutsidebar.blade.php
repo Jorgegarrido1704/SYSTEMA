@@ -378,6 +378,125 @@
 }
 
     </script>
+ <script>
+    function ingregistro(action) {
+var areaToChange = document.getElementById('containerPPAP');
+// Clear existing content
+areaToChange.innerHTML = '';
+// Depending on the selected action, update the area content
+switch (action) {
+   case 'ppap':
+       areaToChange.innerHTML =`
+            <form action="{{route('RegPPAP')}}" method="GET">
+                                            <label for="Tipo">Type of Work</label>
+                                            <select name="Tipo" id="Tipo" required  >
+                                              <option value=""></option>
+                                              <option value="PPAP">NEW PPAP</option>
+                                              <option value="PRIM">NEW PRIM</option>
+                                              <option value="Change PPAP">Change PPAP</option>
+                                              <option value="Change PRIM">Change PRIM</option>
+                                              <option value="NO PPAP">NO PPAP</option>
+                                            </select>
+                                            <label for="Client">Client</label>
+                                            <select name="Client" id="Client" required>
+                                              <option value=""></option>
+                                              <option value="DUR-A-LIFT">DUR-A-LIFT</option>
+                                              <option value="BERSTROMG">BERGSTROM</option>
+                                              <option value="BLUE BIRD">BLUE BIRD</option>
+                                                <option value="ATLAS">ATLAS</option>
+                                                <option value="UTILIMASTER">UTILIMASTER</option>
+                                                <option value="CALIFORNIA">CALIFORNIA</option>
+                                                <option value="TICO MANUFACTURING">TICO MANUFACTURING</option>
+                                                <option value="SPARTAN">SPARTAN</option>
+                                                <option value="PHOENIX">PHOENIX</option>
+                                                <option value="FOREST RIVER">FOREST RIVER</option>
+                                                <option value="SHYFT">SHYFT</option>
+                                                <option value="KALMAR">KALMAR</option>
+                                                <option value="MODINE">MODINE</option>
+                                                <option value="NILFISK">NILFISK</option>
+                                                <option value="PLASTIC OMNIUM">PLASTIC OMNIUM</option>
+                                                <option value="ZOELLER">ZOELLER</option>
+                                                <option value="COLLINS">COLLINS</option>
+                                            </select>
+                                            <label for="tipoArnes">Harness Type</label>
+                                            <select name="tipoArnes" id="tipoArnes" required>
+                                              <option value=""></option>
+                                              <option value="Cable de bateria">BATTERY CABLE</option>
+                                                <option value="Arnes">HARNESS</option>
+                                                <option value="Caja">BOX</option>
+                                                <option value="Kit de arneses">HARNESS KIT</option>
+                                                <option value="panel">PANEL</option>
+                                                <option value="componente">COMPONENT</option>
+                                            </select>
+                                            <label for="pn">PN</label>
+                                            <input type="text" name="pn" id="pn" required onchange="updateRev()">
+                                            <label for="rev1">Actual REV or new REV</label>
+                                            <input type="text" name="rev1" id="rev1" required>
+                                            <label for="rev2">New REV</label>
+                                            <input type="text" name="rev2" id="rev2" >
+                                            <label for="cambios">Modification's Descriptions </label>
+                                            <textarea name="cambios" id="cambios" cols="60" rows="2" ></textarea>
+                                            <label for="quien">Engineer</label>
+                                            <select name="quien" id="quien" required>
+                                              <option value=""></option>
+                                                    <option value="Jesus C">Jesus Cervera</option>
+                                                    <option value="Victor E">Victor Estrada</option>
+                                                    <option value="Carlos R">Carlos Rodriguez</option>
+                                                    <option value="Paola S">Paola Silva</option>
+                                                    <option value="Nancy A">Nancy Aldana</option>
+
+                                            </select>
+                                            <input type="submit" value="Submit">
+                                        </form>
+`;
+       break;
+   case 'cronograma':
+       // Default case: Show default table content
+       areaToChange.innerHTML = `
+         <form action="{{route('cronoReg')}}" method="GET">
+
+                                            <label for="Client">Client</label>
+                                            <select name="Client" id="Client" required>
+                                              <option value=""></option>
+                                              <option value="DUR-A-LIFT">DUR-A-LIFT</option>
+                                              <option value="BERSTROMG">BERGSTROM</option>
+                                              <option value="BLUE BIRD">BLUE BIRD</option>
+                                                <option value="ATLAS">ATLAS</option>
+                                                <option value="UTILIMASTER">UTILIMASTER</option>
+                                                <option value="CALIFORNIA">CALIFORNIA</option>
+                                                <option value="TICO MANUFACTURING">TICO MANUFACTURING</option>
+                                                <option value="SPARTAN">SPARTAN</option>
+                                                <option value="PHOENIX">PHOENIX</option>
+                                                <option value="FOREST RIVER">FOREST RIVER</option>
+                                                <option value="SHYFT">SHYFT</option>
+                                                <option value="KALMAR">KALMAR</option>
+                                                <option value="MODINE">MODINE</option>
+                                                <option value="NILFISK">NILFISK</option>
+                                                <option value="PLASTIC OMNIUM">PLASTIC OMNIUM</option>
+                                                <option value="ZOELLER">ZOELLER</option>
+                                                <option value="COLLINS">COLLINS</option>
+                                            </select>
+                                            <label for="pn">PN</label>
+                                            <input type="text" name="pn" id="pn" required >
+
+                                            <label for="rev1"> REV </label>
+                                            <input type="text" name="rev1" id="rev1" required>
+
+                                            <label for="fecha"> FECHA DE ENTRADA </label>
+                                            <input type="date" name="fecha" id="fecha" required>
+                                            <br>
+                                            <input type="submit" value="Submit">
+
+                                        </form>
+       `;
+       break;
+}
+}
+
+</script>
+
+
+
 <script>
     document.forms["formula"].onsubmit= function(){
         var peri=document.getElementById('time').value;

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Mail\Mailables;
 use App\Models\listaCalidad;
+use App\Models\cronograma;
 
 class PpapIngController extends Controller
 {
@@ -312,4 +313,30 @@ foreach($calidad as $regcal){
     }
 }
     }
+public function cronoReg(Request $request){
+    $value=session('user');
+    $client=$request->input('Client');
+    $rev=$request->input('rev1');
+    $pn=$request->input('pn');
+    $fecha_entrega=$request->input('fecha');
+    $fecha_entrega=date('d-m-Y', strtotime($fecha_entrega));
+    $today=date('d-m-Y');
+
+    $crono= new Cronograma;
+    $crono->fill([
+        'cliente'=>$client,
+        'pn'=>$pn,
+        'rev'=>$rev,
+        'fechaReg'=>$today,
+        'fechaCompromiso'=>$fecha_entrega,
+        'fechaCambio'=>$fecha_entrega,
+        'fechaFin'=>'',
+        'quienReg'=>$value,
+        'quienCamb'=>''
+    ]);
+    $crono->save();
+    if($crono){return redirect ('/ing');}
+
+}
+
 }

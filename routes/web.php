@@ -72,6 +72,7 @@ Route::controller( PpapIngController::class)->group(function (){
     Route::get('/action',[PpapIngController::class,'action'])->name('action');
     Route::get('/tareas',[PpapIngController::class,'tareas'])->name('tareas');
     Route::get('/RegPPAP',[PpapIngController::class,'REgPPAP'])->name('RegPPAP');
+    Route::get('/cronoReg',[PpapIngController::class,'cronoReg'])->name('cronoReg');
 });
 
 Route::controller(AlmacenController::class)->group(function (){
