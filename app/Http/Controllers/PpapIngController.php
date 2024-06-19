@@ -71,17 +71,69 @@ $i=0;
         $answer[$i][12]=$respPPAP->compras;
         $answer[$i][13]=$respPPAP->gernete;
         $i++;
+
+        // Obtener el número de días en el mes actual
+        $day_month = date('t');
+        $month = date('m');
+        $year = date('Y');
+
+        // Inicializar el contador para los días que no son sábados ni domingos
+        $dias_mes = [];
+
+        for($i = 1; $i <= $day_month; $i++){
+            // Crear un objeto DateTime para cada día del mes
+            $dateTime = date_create($i . '-' . $month . '-' . $year);
+
+            $dayNumber = date_format($dateTime, 'w');
+            // Si el día no es sábado (6) ni domingo (0), incrementar el contador
+            if($dayNumber != 0 && $dayNumber != 6){
+                $dias_mes[] = $i;
+            }
+        }
+        $cronoGram=[];
+        $i=0;
+        $buscarCrono=DB::table('croning')->where('fechaFin','')->get();
+
+        foreach($buscarCrono as $rowCrono){
+            $cronoGram[$i][0]=$rowCrono->id;
+            $cronoGram[$i][1]=$rowCrono->cliente;
+            $cronoGram[$i][2]=$rowCrono->pn;
+            $cronoGram[$i][3]=$rowCrono->rev;
+            $cronoGram[$i][4]=$rowCrono->fechaReg;
+            $cronoGram[$i][5]=$rowCrono->fechaCompromiso;
+            $cronoGram[$i][6]=$rowCrono->fechaCambio;
+            $cronoGram[$i][7]=$rowCrono->fechaFin;
+            $cronoGram[$i][8]=$rowCrono->quienReg;
+            $cronoGram[$i][9]=$rowCrono->quienCamb;
+            $inicio=intval(substr($rowCrono->fechaReg,0,2));
+            $fin=intval(substr($rowCrono->fechaCambio,0,2));
+            $mescontrol=intval(substr($rowCrono->fechaReg,3,2));
+            $mesFin=intval(substr($rowCrono->fechaCambio,3,2));
+            if($mescontrol==$mesFin ){
+                $controles=($fin-$inicio);
+                $cronoGram[$i][10]=$inicio+$controles;
+                $cronoGram[$i][11]=$inicio;
+            }else if($mescontrol<$mesFin && $mescontrol==intval(date('m'))){
+                $cronoGram[$i][10]=31;
+                $cronoGram[$i][11]=$inicio;
+            }else if($mescontrol<$mesFin && $mescontrol!=intval(date('m'))){
+                $cronoGram[$i][10]=$fin;
+                $cronoGram[$i][11]=1;
+            }
+
+
+
+
+
+            $i++;
         }
 
 
+        return view('/ing',['cat'=>$cat,'inges'=>$inges,'value'=>$value,'enginners'=>$enginners,'answer'=>$answer,'dias_mes'=>$dias_mes,'cronoGram'=>$cronoGram]);    }
 
-        return view('/ing',['cat'=>$cat,'inges'=>$inges,'value'=>$value,'enginners'=>$enginners,'answer'=>$answer]);    }
-
-}
-    public function create()
-    {
-        //
     }
+}
+
     public function store(Request $request)    {
         $value=session('user');
         $idIng=$request->input('iding');

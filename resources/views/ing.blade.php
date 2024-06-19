@@ -459,11 +459,48 @@ select {
                                 <div class="card-header py-3">
                                     <h5 class="m-0 font-weight-bold text-primary">Graficas de informacion </h5>
                                 </div>
-                                <div class="card-body" style="overflow-y: auto; height: 760px;" id="tableChange">
+                                <div class="card-body" style="overflow-y: auto; height: 760px;" id="">
                                     <div class="row" >
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>Cliente</th>
+                                                    <th>No. Parte</th>
+                                                    <th>REV</th>
+                                                    <th>Fecha Compromiso</th>
+                                                    @foreach ($dias_mes as $dias)
+                                                    <th>{{$dias}}</th>
+                                                    @endforeach
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                    @foreach($cronoGram as $cron )
+                                                        <tr>
+                                                            <td>{{$cron[1]}}</td>
+                                                            <td>{{$cron[2]}}</td>
+                                                            <td>{{$cron[3]}}</td>
+                                                            <td>{{$cron[6]}}</td>
+
+                                                            @foreach ($dias_mes as $dias)
+                                                            @if($dias >= $cron[11] && $dias <= $cron[10])
+                                                            <td ><input type="box" name="check" id="check" style="background-color:GREEN; width: 20px; height: 20px;"></td>
+                                                            @else
+                                                            <td ><input type="box" name="check" id="check" style=" width: 20px; height: 20px;"></td>
+                                                            @endif
+                                                            @endforeach
+
+                                                        </tr>
+
+
+                                                    @endforeach
+
+
+                                            </tbody>
+                                        </table>
                                     </div>
-                                    <canvas id="graficasIng"></canvas>
-                                    </div>
+
+                                </div>
                                 </div>
                             </div>
 
