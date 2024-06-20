@@ -373,7 +373,19 @@ public function cronoReg(Request $request){
     $fecha_entrega=$request->input('fecha');
     $fecha_entrega=date('d-m-Y', strtotime($fecha_entrega));
     $today=date('d-m-Y');
-
+    $id_cambio=$request->input('id_cambio');
+    $nuevaFecha=$request->input('nuevaFecha');
+    $id_fin=$request->input('id_fin');
+    if($id_cambio!=''){
+    $nuevaFecha=date('d-m-Y', strtotime($nuevaFecha));
+    $crono=DB::table('croning')->where('id',$id_cambio)->update(['fechaCambio'=>$nuevaFecha,'quienCamb'=>$value]);
+    return redirect ('/ing');
+    }
+    if($id_fin!=''){
+        $crono=DB::table('croning')->where('id',$id_fin)->update(['fechaFin'=>$nuevaFecha,'quienCamb'=>$value]);
+        return redirect ('/ing');
+    }
+    if($pn!="" and $rev!="" and $client!=""){
     $crono= new Cronograma;
     $crono->fill([
         'cliente'=>$client,
@@ -387,7 +399,7 @@ public function cronoReg(Request $request){
         'quienCamb'=>''
     ]);
     $crono->save();
-    if($crono){return redirect ('/ing');}
+    if($crono){return redirect ('/ing');}}
 
 }
 
