@@ -91,6 +91,8 @@ $i=0;
             }
         }
         $cronoGram=[];
+        $graficOnTime=[0,0,0,0,0,0,0,0,0,0,0,0];
+        $graficasLate=[0,0,0,0,0,0,0,0,0,0,0,0];
         $i=0;
         $buscarCrono=DB::table('croning')->where('fechaFin','')->get();
 
@@ -107,29 +109,37 @@ $i=0;
             $cronoGram[$i][9]=$rowCrono->quienCamb;
             $inicio=intval(substr($rowCrono->fechaReg,0,2));
             $fin=intval(substr($rowCrono->fechaCambio,0,2));
+            $fin_org=intval(substr($rowCrono->fechaCompromiso,0,2));
             $mescontrol=intval(substr($rowCrono->fechaReg,3,2));
             $mesFin=intval(substr($rowCrono->fechaCambio,3,2));
+            $mesComp=intval(substr($rowCrono->fechaCompromiso,3,2));
             if($mescontrol==$mesFin ){
                 $controles=($fin-$inicio);
                 $cronoGram[$i][10]=$inicio+$controles;
                 $cronoGram[$i][11]=$inicio;
+                $cronoGram[$i][12]=$fin-$fin_org;
             }else if($mescontrol<$mesFin && $mescontrol==intval(date('m'))){
                 $cronoGram[$i][10]=31;
                 $cronoGram[$i][11]=$inicio;
+                $cronoGram[$i][12]=$fin-$fin_org;
             }else if($mescontrol<$mesFin && $mescontrol!=intval(date('m'))){
                 $cronoGram[$i][10]=$fin;
                 $cronoGram[$i][11]=1;
+                $cronoGram[$i][12]=$fin-$fin_org;
             }
-
-
-
-
 
             $i++;
         }
+        $buscarCrono=DB::table('croning')->get();
+        foreach($buscarCrono as $Crono){
+            if($Crono->fechaCompromiso ==$Crono->fechaCambio){
+                $graficOnTime[$mescontrol]=$graficOnTime[$mescontrol]+1;
+            }else if($Crono->fechaCompromiso !=$Crono->fechaCambio){
+                $graficasLate[$mescontrol]=$graficasLate[$mescontrol]+1;
+            }
 
-
-        return view('/ing',['cat'=>$cat,'inges'=>$inges,'value'=>$value,'enginners'=>$enginners,'answer'=>$answer,'dias_mes'=>$dias_mes,'cronoGram'=>$cronoGram]);    }
+        }
+        return view('/ing',['graficasLate'=>$graficasLate,'graficOnTime'=>$graficOnTime,'cat'=>$cat,'inges'=>$inges,'value'=>$value,'enginners'=>$enginners,'answer'=>$answer,'dias_mes'=>$dias_mes,'cronoGram'=>$cronoGram]);    }
 
     }
 }
@@ -375,14 +385,16 @@ public function cronoReg(Request $request){
     $today=date('d-m-Y');
     $id_cambio=$request->input('id_cambio');
     $nuevaFecha=$request->input('nuevaFecha');
+    $fecha_inicio=$request->input('fecha_in');
     $id_fin=$request->input('id_fin');
+    $fecha_ini=date('d-m-Y', strtotime($fecha_inicio));
     if($id_cambio!=''){
     $nuevaFecha=date('d-m-Y', strtotime($nuevaFecha));
     $crono=DB::table('croning')->where('id',$id_cambio)->update(['fechaCambio'=>$nuevaFecha,'quienCamb'=>$value]);
     return redirect ('/ing');
     }
     if($id_fin!=''){
-        $crono=DB::table('croning')->where('id',$id_fin)->update(['fechaFin'=>$nuevaFecha,'quienCamb'=>$value]);
+        $crono=DB::table('croning')->where('id',$id_fin)->update(['fechaFin'=>$today,'quienCamb'=>$value]);
         return redirect ('/ing');
     }
     if($pn!="" and $rev!="" and $client!=""){
@@ -391,7 +403,7 @@ public function cronoReg(Request $request){
         'cliente'=>$client,
         'pn'=>$pn,
         'rev'=>$rev,
-        'fechaReg'=>$today,
+        'fechaReg'=>$fecha_ini,
         'fechaCompromiso'=>$fecha_entrega,
         'fechaCambio'=>$fecha_entrega,
         'fechaFin'=>'',

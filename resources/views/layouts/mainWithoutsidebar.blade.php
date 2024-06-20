@@ -482,7 +482,10 @@ switch (action) {
                                             <label for="rev1"> REV </label>
                                             <input type="text" name="rev1" id="rev1" required>
 
-                                            <label for="fecha"> FECHA DE ENTRADA </label>
+                                            <label for="fecha_in"> FECHA DE REGISTRO </label>
+                                            <input type="date" name="fecha_in" id="fecha_in" required>
+
+                                            <label for="fecha"> FECHA DE COMPROMISO </label>
                                             <input type="date" name="fecha" id="fecha" required>
                                             <br>
                                             <input type="submit" value="Submit">
@@ -722,9 +725,9 @@ setInterval(updateData, 90000);
 
     }
 </script>
+
 @if($cat=='plan')
 <script>
-
     var canvas = document.getElementById('planning');
     var ctx = canvas.getContext('2d');
     var datos = <?php echo json_encode($datos); ?>;
@@ -759,8 +762,50 @@ setInterval(updateData, 90000);
         options: options
     });
 
-</script>
-@endif
+    </script>
+@endif <script>
+       var reg = document.getElementById('regGraf');
+        var ctx1 = reg.getContext('2d');
+        var datos = @json($graficOnTime);
+        var newDatos = @json($graficasLate);
+        console.log(datos);  // Fix the variable name here to match the JSON data
+        var data = {
+            labels: ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'],
+            datasets: [{
+                label: 'Harness on Time',
+                backgroundColor: 'rgba(13, 238, 67, 0.8)',
+                borderColor: 'rgba(13, 238, 67, 1)',
+                borderWidth: 1,
+                hoverBackgroundColor: 'rgba(13, 238, 67, 0.4)',
+                data: datos
+            },
+            {
+                    label: 'Harness Late',
+                    backgroundColor: 'rgba(13, 33, 238, 0.8)',
+                    borderColor: 'rgba(13, 33, 238, 1)',
+                    borderWidth: 1,
+                    hoverBackgroundColor: 'rgba(13, 33, 238, 0.48)',
+                    data: newDatos
+                }]
+        };
+
+         options = {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        };
+
+        var chart = new Chart(ctx1, {
+            type: 'bar',
+            data: data,
+            options: options
+        });
+
+
+                    </script>
+
 
 
 

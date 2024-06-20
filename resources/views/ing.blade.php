@@ -379,6 +379,8 @@ select {
 
                                             input[type="submit"]:hover {
                                               background-color: #0056b3;
+
+
                                             }
                                           </style>
 
@@ -452,22 +454,47 @@ select {
                     </div>
                </div>
                         </div>
+                        <style>
+                                   /* Add this CSS code to your stylesheet or in a <style> tag in your HTML file */
+        #tiempos {
+            transition: all 0.3s ease; /* Smooth transition effect */
+            width: 100%; /* Initial width */
+            height: auto; /* Initial height */
+            position: relative; /* Ensure normal positioning initially */
+        }
 
-                        <div class="col-lg-6 mb-4">
+        #tiempos:hover {
+            width: 100vw;  /* Make the width 100% of the viewport width */
+            height: 100vh; /* Make the height 100% of the viewport height */
+            position: fixed; /* Fix the position to the viewport */
+            top: 0; /* Align to the top of the viewport */
+            left: 0; /* Align to the left of the viewport */
+            z-index: 9999; /* Bring the element to the front */
+            overflow: auto; /* Ensure overflow is handled */
+            background: white; /* Optional: Set a background color */
+        }
+        canvas {
+            max-height: 50%;
+        }
+                        </style>
+                        <div class="col-lg-6 mb-4" >
                             <!-- AREAS -->
-                            <div class="card shadow mb-4">
+
+                            <div class="card shadow mb-4" id="tiempos">
                                 <div class="card-header py-3">
-                                    <h5 class="m-0 font-weight-bold text-primary">Graficas de informacion </h5>
+                                    <h5 class="m-0 font-weight-bold text-primary">Cronograma de Trabajo ING</h5>
                                 </div>
-                                <div class="card-body" style="overflow-y: auto; height: 760px;" id="">
+                                <div class="card-body" style="overflow-y: auto; height: 760px; " id="">
                                     <div class="row" >
+                                        <div id="table">
                                         <table>
                                             <thead>
                                                 <tr>
                                                     <th>Cliente</th>
                                                     <th>No. Parte</th>
                                                     <th>REV</th>
-                                                    <th>Fecha Compromiso</th>
+                                                    <th>Fecha Fecha Compromiso Inicial</th>
+                                                    <th>Fecha Compromiso con cambios</th>
                                                     @foreach ($dias_mes as $dias)
                                                     <th>{{$dias}}</th>
                                                     @endforeach
@@ -483,13 +510,21 @@ select {
                                                             <td>{{$cron[1]}}</td>
                                                             <td>{{$cron[2]}}</td>
                                                             <td>{{$cron[3]}}</td>
+                                                            <td>{{$cron[5]}}</td>
+                                                            @if ($cron[5] == $cron[6])
+                                                            <td></td>
+                                                             @else
                                                             <td> {{$cron[6]}}</td>
-
+                                                            @endif
                                                             @foreach ($dias_mes as $dias)
                                                             @if($dias >= $cron[11] && $dias <= $cron[10] && $cron[5] == $cron[6])
                                                             <td ><input type="box" name="check" id="check" style="background-color:GREEN; width: 20px; height: 20px;"></td>
                                                             @elseif ($dias >= $cron[11] && $dias <= $cron[10] && $cron[5] != $cron[6])
-                                                            <td ><input type="box" name="check" id="check" style="background-color:lightblue; width: 20px; height: 20px;"></td>
+                                                                @if($dias >= $cron[11] && $dias <= $cron[10]-$cron[12])
+                                                                    <td ><input type="box" name="check" id="check" style="background-color:GREEN; width: 20px; height: 20px;"></td>
+                                                                @else
+                                                                    <td ><input type="box" name="check" id="check" style="background-color:lightblue; width: 20px; height: 20px;"></td>
+                                                                @endif
                                                             @else
                                                             <td ><input type="box" name="check" id="check" style=" width: 20px; height: 20px;"></td>
                                                             @endif
@@ -516,6 +551,9 @@ select {
 
                                             </tbody>
                                         </table>
+                                        <canvas id="regGraf"></canvas>
+                                    </div>
+                                    
                                     </div>
 
                                 </div>
@@ -523,4 +561,6 @@ select {
                             </div>
 
                     </div>
+
+
                     @endsection
