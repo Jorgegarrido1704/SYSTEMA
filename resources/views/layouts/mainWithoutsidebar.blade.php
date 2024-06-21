@@ -763,7 +763,9 @@ setInterval(updateData, 90000);
     });
 
     </script>
-@else if($cat=='inge')
+@endif
+
+@if($cat=='inge')
 
 
 <script>
