@@ -763,7 +763,9 @@ setInterval(updateData, 90000);
     });
 
     </script>
-@endif
+@else if($cat=='inge')
+
+
 <script>
                                             var reg = document.getElementById('regGraf');
                                              var ctx1 = reg.getContext('2d');
@@ -808,7 +810,7 @@ setInterval(updateData, 90000);
                                                          </script>
 
 
-
+@endif
 
 
 
