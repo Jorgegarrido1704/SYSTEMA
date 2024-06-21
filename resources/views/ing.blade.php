@@ -435,6 +435,7 @@ select {
                                             <label for="cambios">Modification's Descriptions </label>
                                             <textarea name="cambios" id="cambios" cols="60" rows="2" ></textarea>
                                             <label for="quien">Engineer</label>
+
                                             <select name="quien" id="quien" required>
                                               <option value=""></option>
                                                     <option value="Jesus C">Jesus Cervera</option>
@@ -552,8 +553,9 @@ select {
                                             </tbody>
                                         </table>
                                         <canvas id="regGraf"></canvas>
+                                        
                                     </div>
-                                    
+
                                     </div>
 
                                 </div>
@@ -561,6 +563,7 @@ select {
                             </div>
 
                     </div>
+
 
 
                     @endsection

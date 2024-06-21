@@ -763,48 +763,49 @@ setInterval(updateData, 90000);
     });
 
     </script>
-@endif <script>
-       var reg = document.getElementById('regGraf');
-        var ctx1 = reg.getContext('2d');
-        var datos = @json($graficOnTime);
-        var newDatos = @json($graficasLate);
-        console.log(datos);  // Fix the variable name here to match the JSON data
-        var data = {
-            labels: ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'],
-            datasets: [{
-                label: 'Harness on Time',
-                backgroundColor: 'rgba(13, 238, 67, 0.8)',
-                borderColor: 'rgba(13, 238, 67, 1)',
-                borderWidth: 1,
-                hoverBackgroundColor: 'rgba(13, 238, 67, 0.4)',
-                data: datos
-            },
-            {
-                    label: 'Harness Late',
-                    backgroundColor: 'rgba(13, 33, 238, 0.8)',
-                    borderColor: 'rgba(13, 33, 238, 1)',
-                    borderWidth: 1,
-                    hoverBackgroundColor: 'rgba(13, 33, 238, 0.48)',
-                    data: newDatos
-                }]
-        };
+@endif
+<script>
+                                            var reg = document.getElementById('regGraf');
+                                             var ctx1 = reg.getContext('2d');
+                                             var datos = <?php echo json_encode($graficOnTime); ?>;
+                                             var newDatos = <?php echo json_encode($graficasLate); ?>;
+                                             console.log(datos);  // Fix the variable name here to match the JSON data
+                                             var data = {
+                                                 labels: ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'],
+                                                 datasets: [{
+                                                     label: 'Harness on Time',
+                                                     backgroundColor: 'rgba(13, 238, 67, 0.8)',
+                                                     borderColor: 'rgba(13, 238, 67, 1)',
+                                                     borderWidth: 1,
+                                                     hoverBackgroundColor: 'rgba(13, 238, 67, 0.4)',
+                                                     data: datos
+                                                 },
+                                                 {
+                                                         label: 'Harness Late',
+                                                         backgroundColor: 'rgba(13, 33, 238, 0.8)',
+                                                         borderColor: 'rgba(13, 33, 238, 1)',
+                                                         borderWidth: 1,
+                                                         hoverBackgroundColor: 'rgba(13, 33, 238, 0.48)',
+                                                         data: newDatos
+                                                     }]
+                                             };
 
-         options = {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        };
+                                              options = {
+                                                 scales: {
+                                                     y: {
+                                                         beginAtZero: true
+                                                     }
+                                                 }
+                                             };
 
-        var chart = new Chart(ctx1, {
-            type: 'bar',
-            data: data,
-            options: options
-        });
+                                             var chart = new Chart(ctx1, {
+                                                 type: 'bar',
+                                                 data: data,
+                                                 options: options
+                                             });
 
 
-                    </script>
+                                                         </script>
 
 
 
