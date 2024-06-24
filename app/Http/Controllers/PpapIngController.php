@@ -71,7 +71,7 @@ $i=0;
         $answer[$i][12]=$respPPAP->compras;
         $answer[$i][13]=$respPPAP->gernete;
         $i++;
-
+        }
         // Obtener el número de días en el mes actual
         $day_month = date('t');
         $month = date('m');
@@ -90,7 +90,7 @@ $i=0;
                 $dias_mes[] = $i;
             }
         }
-    }
+
         $cronoGram=[];
         $graficOnTime=[0,0,0,0,0,0,0,0,0,0,0,0];
         $graficasLate=[0,0,0,0,0,0,0,0,0,0,0,0];
