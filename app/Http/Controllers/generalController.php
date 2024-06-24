@@ -16,6 +16,7 @@ use App\Models\desviation;
 use App\Models\Paros;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Mail\Mailables;
+use App\Models\regfull;
 
 
 class generalController extends Controller
@@ -962,5 +963,32 @@ public function KitsReq(Request $request){
         }
     }
 }
+
+public function regfull(Request $request){
+    $value = session('user');
+    $client=$request->input('cliente');
+    $pn=$request->input('parte');
+    $rev=$request->input('rev');
+    $cant=$request->input('cant');
+    $time=date('d-m-Y H:i');
+    $addfull= new regfull();
+    $addfull->SolicitadoPor=$value;
+    $addfull->fechaSolicitud=$time;
+    $addfull->np=$pn;
+    $addfull->rev=$rev;
+    $addfull->cliente=$client;
+    $addfull->Cuantos=$cant;
+    $addfull->estatus='Pendiente';
+    $addfull->fechaColocacion='No Aun';
+    $addfull->QuienIng='No Aun';
+    $addfull->fechaMant='No Aun';
+    $addfull->fechaPiso='No Aun';
+    $addfull->fechaCalidad='No Aun';
+    if($addfull->save()){
+        return redirect('/general');
+    }
+
+}
+
 
 }

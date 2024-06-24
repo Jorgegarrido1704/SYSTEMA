@@ -116,6 +116,7 @@
          function changework(action) {
     var areaToChange = document.getElementById('work');
     var TableChange = document.getElementById('tableChange');
+
     // Clear existing content
     areaToChange.innerHTML = '';
     TableChange.innerHTML='';
@@ -367,6 +368,67 @@
                                                 </tr>
                                           @endforeach
                                           @endif
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+            `;
+            case ('full'):
+            // Default case: Show default table content
+            areaToChange.innerHTML = `
+
+
+                                        <form  action="{{ route('regfull')}}" method="POST">
+                                        @csrf
+
+                                        <label for="cliente">Cliente:</label>
+                                       <select id="cliente" name="cliente" class="form-select" required>
+                                         <option value=""></option>
+                                              <option value="DUR-A-LIFT">DUR-A-LIFT</option>
+                                              <option value="BERSTROMG">BERGSTROM</option>
+                                              <option value="BLUE BIRD">BLUE BIRD</option>
+                                                <option value="ATLAS">ATLAS</option>
+                                                <option value="UTILIMASTER">UTILIMASTER</option>
+                                                <option value="CALIFORNIA">CALIFORNIA</option>
+                                                <option value="TICO MANUFACTURING">TICO MANUFACTURING</option>
+                                                <option value="SPARTAN">SPARTAN</option>
+                                                <option value="PHOENIX">PHOENIX</option>
+                                                <option value="FOREST RIVER">FOREST RIVER</option>
+                                                <option value="SHYFT">SHYFT</option>
+                                                <option value="KALMAR">KALMAR</option>
+                                                <option value="MODINE">MODINE</option>
+                                                <option value="NILFISK">NILFISK</option>
+                                                <option value="PLASTIC OMNIUM">PLASTIC OMNIUM</option>
+                                                <option value="ZOELLER">ZOELLER</option>
+                                                <option value="COLLINS">COLLINS</option>
+                                            </select>
+
+                                         <label for="parte">Numero de Parte</label>
+                                        <input type="text" id="parte" name="parte" class="form-control" required>
+                                        <label for="rev">Revision</label>
+                                        <input type="text" id="rev" name="rev" class="form-control" required>
+                                        <label for="cant">Cantidad</label>
+                                        <input type="number" id="cant" name="cant" class="form-control" required>
+                                        <input type="submit" id="submit" class="btn btn-primary" value="solicitar">
+                                       </tr>
+                                        </form>
+
+
+                                            `;
+                                            TableChange.innerHTML = `
+            <div class="row" >
+                                        <table>
+                                            <thead>
+                                                <th>Fecha de solicitud</th>
+                                                <th>Cliente</th>
+                                                <th>Numero de Parte</th>
+                                                <th>Revision</th>
+                                                <th>Status</th>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                </tr>
+
                                             </tbody>
                                         </table>
 

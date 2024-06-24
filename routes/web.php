@@ -64,6 +64,7 @@ Route::controller(generalController::class)->group(function(){
     Route::get('/timesHarn',[generalController::class,'pause'])->name('pause');
     Route::get('/finishWork',[generalController::class,'finishWork'])->name('finishWork');
     Route::get('/KitsReq',[generalController::class,'KitsReq'])->name('KitsReq');
+    Route::post('/regfull',[generalController::class,'regfull'])->name('regfull');
 });
 
 Route::controller( PpapIngController::class)->group(function (){

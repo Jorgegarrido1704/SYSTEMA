@@ -19,7 +19,7 @@ class PpapIngController extends Controller
     {
             $value=session('user');
             $cat=session('categoria');
-            if($cat==''){return view('login'); }else if($cat!='inge'){ return view('login');}else{
+            if($cat==''){return view('login'); }else{
         $i=0;
         $inges=[];
         $activ=[];
