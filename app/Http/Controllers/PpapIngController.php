@@ -90,6 +90,7 @@ $i=0;
                 $dias_mes[] = $i;
             }
         }
+    }
         $cronoGram=[];
         $graficOnTime=[0,0,0,0,0,0,0,0,0,0,0,0];
         $graficasLate=[0,0,0,0,0,0,0,0,0,0,0,0];
@@ -137,7 +138,7 @@ $i=0;
             }else if($Crono->fechaCompromiso !=$Crono->fechaCambio){
                 $graficasLate[$mescontrol]=$graficasLate[$mescontrol]+1;
             }        }
-          }
+          
 
 
     return view('/ing',['graficasLate'=>$graficasLate,'graficOnTime'=>$graficOnTime,'cat'=>$cat,'inges'=>$inges,'value'=>$value,'enginners'=>$enginners,'answer'=>$answer,'dias_mes'=>$dias_mes,'cronoGram'=>$cronoGram]);
