@@ -2,10 +2,7 @@
 
 @section('contenido')
  <!-- Page Heading -->
- <style>
-
-
- </style>
+ 
 
  <div class="d-sm-flex align-items-center justify-content-between mb-4">
 
@@ -553,7 +550,7 @@ select {
                                             </tbody>
                                         </table>
                                         <canvas id="regGraf"></canvas>
-                                        
+
                                     </div>
 
                                     </div>
