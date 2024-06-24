@@ -244,8 +244,23 @@ class generalController extends Controller
                 }else if($rowMat->aprovadaComp!='' and $rowMat->negada!=""){
                     $materials[$i][4]="cancelada";
                 }    $i++;      }
-        return view("general",['cat'=>$cat,'value'=>$value,'registros'=>$registros,'week'=>$week,'assit'=>$assit,'paros'=>$paros,'desviations'=>$desviations,'materials'=>$materials]);
-    }}
+                $fulls=[];
+                $i=0;
+        $buscarfull=DB::table('registrofull')->get();
+        foreach($buscarfull as $full){
+            $fulls[$i][0]=$full->fechaSolicitud;
+            $fulls[$i][1]=$full->np;
+            $fulls[$i][2]=$full->rev;
+            $fulls[$i][3]=$full->cliente;
+            $fulls[$i][4]=$full->Cuantos;
+            $fulls[$i][5]=$full->estatus;
+            $i++;
+        }
+
+        return view("general",['fulls'=>$fulls,'cat'=>$cat,'value'=>$value,'registros'=>$registros,'week'=>$week,'assit'=>$assit,'paros'=>$paros,'desviations'=>$desviations,'materials'=>$materials]);
+    }
+
+}
     public function codigo(request $request){
         $cat=session('categoria');
         $value=session('user');
@@ -971,6 +986,8 @@ public function regfull(Request $request){
     $rev=$request->input('rev');
     $cant=$request->input('cant');
     $time=date('d-m-Y H:i');
+    $pn=strtoupper($pn);
+    $rev=strtoupper($rev);
     $addfull= new regfull();
     $addfull->SolicitadoPor=$value;
     $addfull->fechaSolicitud=$time;

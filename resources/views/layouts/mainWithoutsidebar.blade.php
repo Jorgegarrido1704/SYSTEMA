@@ -380,9 +380,9 @@
 
                                         <form  action="{{ route('regfull')}}" method="POST">
                                         @csrf
-
+                                            <div class="form-group">
                                         <label for="cliente">Cliente:</label>
-                                       <select id="cliente" name="cliente" class="form-select" required>
+                                       <select id="cliente" name="cliente" class="form-control" required>
                                          <option value=""></option>
                                               <option value="DUR-A-LIFT">DUR-A-LIFT</option>
                                               <option value="BERSTROMG">BERGSTROM</option>
@@ -402,14 +402,22 @@
                                                 <option value="ZOELLER">ZOELLER</option>
                                                 <option value="COLLINS">COLLINS</option>
                                             </select>
-
+                                            </div>
+                                            <div class="form-group">
                                          <label for="parte">Numero de Parte</label>
                                         <input type="text" id="parte" name="parte" class="form-control" required>
+                                        </div>
+                                        <div class="form-group">
                                         <label for="rev">Revision</label>
                                         <input type="text" id="rev" name="rev" class="form-control" required>
+                                        </div>
+                                        <div class="form-group">
                                         <label for="cant">Cantidad</label>
-                                        <input type="number" id="cant" name="cant" class="form-control" required>
+                                        <input type="number" id="cant" name="cant" class="form-control" min="1" required>
+                                        </div>
+                                        <div class="form-group">
                                         <input type="submit" id="submit" class="btn btn-primary" value="solicitar">
+                                        </div>
                                        </tr>
                                         </form>
 
@@ -423,11 +431,22 @@
                                                 <th>Cliente</th>
                                                 <th>Numero de Parte</th>
                                                 <th>Revision</th>
+                                                <th>Cantidad</th>
                                                 <th>Status</th>
                                             </thead>
                                             <tbody>
+                                          @if(!empty($fulls))
+                                          @foreach ( $fulls as $full)
                                                 <tr>
+                                                    <td>{{$full[0]}}</td>
+                                                    <td>{{$full[3]}}</td>
+                                                    <td>{{$full[1]}}</td>
+                                                    <td>{{$full[2]}}</td>
+                                                    <td>{{$full[4]}}</td>
+                                                    <td>{{$full[5]}}</td>
                                                 </tr>
+                                          @endforeach
+                                          @endif
 
                                             </tbody>
                                         </table>
