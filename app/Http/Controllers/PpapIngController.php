@@ -19,7 +19,7 @@ class PpapIngController extends Controller
     {
             $value=session('user');
             $cat=session('categoria');
-        //    if($cat==''){return view('login'); }else{
+            if($cat==''){return view('login'); }else{
         $i=0;
         $inges=[];
         $activ=[];
@@ -136,14 +136,13 @@ $i=0;
                 $graficOnTime[$mescontrol]=$graficOnTime[$mescontrol]+1;
             }else if($Crono->fechaCompromiso !=$Crono->fechaCambio){
                 $graficasLate[$mescontrol]=$graficasLate[$mescontrol]+1;
-            }
+            }        }
+          }
 
-        }
-        return view('/ing',['graficasLate'=>$graficasLate,'graficOnTime'=>$graficOnTime,'cat'=>$cat,'inges'=>$inges,'value'=>$value,'enginners'=>$enginners,'answer'=>$answer,'dias_mes'=>$dias_mes,'cronoGram'=>$cronoGram]);    }
 
-    //}
+    return view('/ing',['graficasLate'=>$graficasLate,'graficOnTime'=>$graficOnTime,'cat'=>$cat,'inges'=>$inges,'value'=>$value,'enginners'=>$enginners,'answer'=>$answer,'dias_mes'=>$dias_mes,'cronoGram'=>$cronoGram]);
 }
-
+    }
     public function store(Request $request)    {
         $value=session('user');
         $idIng=$request->input('iding');
@@ -410,8 +409,8 @@ public function cronoReg(Request $request){
         'quienReg'=>$value,
         'quienCamb'=>''
     ]);
-    $crono->save();
-    if($crono){return redirect ('/ing');}}
+
+    if($crono->save()){return redirect ('/ing');}}
 
 }
 
