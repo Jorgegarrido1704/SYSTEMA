@@ -19,7 +19,7 @@ class PpapIngController extends Controller
     {
             $value=session('user');
             $cat=session('categoria');
-            if($cat==''){return view('login'); }else{
+        //    if($cat==''){return view('login'); }else{
         $i=0;
         $inges=[];
         $activ=[];
@@ -141,7 +141,7 @@ $i=0;
         }
         return view('/ing',['graficasLate'=>$graficasLate,'graficOnTime'=>$graficOnTime,'cat'=>$cat,'inges'=>$inges,'value'=>$value,'enginners'=>$enginners,'answer'=>$answer,'dias_mes'=>$dias_mes,'cronoGram'=>$cronoGram]);    }
 
-    }
+    //}
 }
 
     public function store(Request $request)    {
