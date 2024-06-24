@@ -827,7 +827,7 @@ setInterval(updateData, 90000);
     </script>
 @endif
 
-@if($cat=='inge')
+
 
 
 <script>
@@ -874,7 +874,7 @@ setInterval(updateData, 90000);
                                                          </script>
 
 
-@endif
+
 
 
 
