@@ -24,7 +24,7 @@ class PpapIngController extends Controller
         $inges=[];
         $activ=[];
         $answer=[];
-        $buscarinfor=DB::table('registro')->select("*")->where('count','=','13')
+        $buscarinfor=DB::table('registro')->where('count','=','13')
         ->orwhere('count','=','17')->orwhere('count','=','14')->orwhere('count','=','16')
         ->orwhere('count','=','18')->get();
         foreach($buscarinfor as $rowInge){
@@ -39,7 +39,7 @@ class PpapIngController extends Controller
             $inges[$i][8]=$rowInge->info;
         $i++;        }
         $i=0;
-        $SearchAct=DB::table('ingactividades')->select("*")->where('count','<','4')->get();
+        $SearchAct=DB::table('ingactividades')->where('count','<','4')->get();
         foreach($SearchAct as $rowAct){
             $enginners[$i][0]=$rowAct->id;
             $enginners[$i][1]=$rowAct->Id_request;
@@ -137,9 +137,9 @@ $i=0;
             }else if($Crono->fechaCompromiso !=$Crono->fechaCambio){
                 $graficasLate[$mescontrol]=$graficasLate[$mescontrol]+1;
             }
-//'graficasLate'=>$graficasLate,'graficOnTime'=>$graficOnTime,
+
         }
-        return view('/ing',['cat'=>$cat,'inges'=>$inges,'value'=>$value,'enginners'=>$enginners,'answer'=>$answer,'dias_mes'=>$dias_mes,'cronoGram'=>$cronoGram]);    }
+        return view('/ing',['graficasLate'=>$graficasLate,'graficOnTime'=>$graficOnTime,'cat'=>$cat,'inges'=>$inges,'value'=>$value,'enginners'=>$enginners,'answer'=>$answer,'dias_mes'=>$dias_mes,'cronoGram'=>$cronoGram]);    }
 
     //}
 }
