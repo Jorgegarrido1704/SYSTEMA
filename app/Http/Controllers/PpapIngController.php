@@ -137,9 +137,9 @@ $i=0;
             }else if($Crono->fechaCompromiso !=$Crono->fechaCambio){
                 $graficasLate[$mescontrol]=$graficasLate[$mescontrol]+1;
             }
-
+//'graficasLate'=>$graficasLate,'graficOnTime'=>$graficOnTime,
         }
-        return view('/ing',['graficasLate'=>$graficasLate,'graficOnTime'=>$graficOnTime,'cat'=>$cat,'inges'=>$inges,'value'=>$value,'enginners'=>$enginners,'answer'=>$answer,'dias_mes'=>$dias_mes,'cronoGram'=>$cronoGram]);    }
+        return view('/ing',['cat'=>$cat,'inges'=>$inges,'value'=>$value,'enginners'=>$enginners,'answer'=>$answer,'dias_mes'=>$dias_mes,'cronoGram'=>$cronoGram]);    }
 
     //}
 }
