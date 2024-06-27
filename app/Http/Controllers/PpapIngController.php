@@ -53,7 +53,7 @@ class PpapIngController extends Controller
             $enginners[$i][5]=$rowAct->fechaEncuesta;
             $i++;
         }
-$i=0;
+        $i=0;
         $busarResp=DB::table('ppapandprim')->where('count','<','2')->get();
         foreach($busarResp as $respPPAP){
         $answer[$i][0]=$respPPAP->tp;
@@ -167,9 +167,25 @@ $i=0;
                 $graficasLate[$mescontrol1-1]=$graficasLate[$mescontrol1-1]+1;
             }        }
 
+       $fullreq=[];
+       $i=0;
+       $buscarfulls=DB::table('registrofull')->where('fechaColocacion','No Aun')->get();
+       foreach($buscarfulls as $full){
+        $fullreq[$i][0]=$full->id;
+        $fullreq[$i][1]=$full->SolicitadoPor;
+        $fullreq[$i][2]=$full->fechaSolicitud;
+        $fullreq[$i][3]=$full->np;
+        $fullreq[$i][4]=$full->rev;
+        $fullreq[$i][5]=$full->cliente;
+        $fullreq[$i][6]=$full->Cuantos;
+        $fullreq[$i][7]=$full->estatus;
+
+        $i++;
+
+       }
 
 
-    return view('/ing',['graficasLate'=>$graficasLate,'graficOnTime'=>$graficOnTime,'cat'=>$cat,'inges'=>$inges,'value'=>$value,'enginners'=>$enginners,'answer'=>$answer,'dias_mes'=>$dias_mes,'cronoGram'=>$cronoGram]);
+    return view('/ing',['fullreq'=>$fullreq,'graficasLate'=>$graficasLate,'graficOnTime'=>$graficOnTime,'cat'=>$cat,'inges'=>$inges,'value'=>$value,'enginners'=>$enginners,'answer'=>$answer,'dias_mes'=>$dias_mes,'cronoGram'=>$cronoGram]);
 }
     }
     public function store(Request $request)    {
@@ -440,6 +456,44 @@ public function cronoReg(Request $request){
     ]);
 
     if($crono->save()){return redirect ('/ing');}}
+
+}
+
+public function modifull(Request $request){
+    $value=session("user");
+    $modistatus=$request->input('estatus');
+    $mod=$request->input('mod');
+    $finAct=$request->input('finAct');
+    if(!empty($mod) and $modistatus=='En proceso'){
+        $buscar=DB::table('registrofull')->where('id',$mod)->first();
+        $fullnp=$buscar->np;
+        $fullRev=$buscar->rev;
+        $fullclient=$buscar->cliente;
+        $fullCuantos=$buscar->Cuantos;
+        $fullFecha=$buscar->fechaSolicitud;
+        $reg=$fullFecha."-".$fullnp."-".$fullRev."-".$fullclient."-".$fullCuantos;
+        $today=date("d-m-Y H:i");
+        $buscarIngAct=DB::table('ingactividades')->where('desciption',$reg)->first();
+        if($buscarIngAct){
+            return redirect('/ing');
+        }else{
+            $addAct=new ingAct;
+            $addAct->Id_request=$value;
+            $addAct->fecha=$today;
+            $addAct->finT="";
+            $addAct->actividades="Colocacion de full size";
+            $addAct->desciption=$reg;
+            $addAct->fechaEncuesta=$modistatus;
+            $addAct->count=1;
+            if($addAct->save()){
+                $update=DB::table('registrofull')->where('id',$mod)->update(['estatus'=>$modistatus]);
+                return redirect('/ing');
+            }
+
+        }
+    }
+
+
 
 }
 

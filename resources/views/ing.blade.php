@@ -12,7 +12,76 @@
                         <!-- Table and Graph -->
                         <div class="col-xl-8 col-lg-7"  >
                             <div class="card shadow mb-4" id="card">
+                            @if($value=="Paola S")
 
+                                <div
+                                class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h5 class="m-0 font-weight-bold text-primary">Requerimeinto de Full Size</h5>
+
+                            </div>
+
+                            <!-- table Body -->
+                            <div class="card-body" style="overflow-y: auto; max-height: 400px;">
+                                <div class="chart-area" id="chart-area">
+                                    <style>
+                                        table {     width: 100%;                     }
+                                        td,th{text-align: center;}
+                                        td {border-bottom: solid 2px lightblue; }
+                                        thead{background-color: #FC4747; color:white;  }
+                                        a{text-decoration: none; color: whitesmoke;  }
+                                        a:hover{ text-decoration: none; color: white; font:bold;}
+                                    </style>
+                                    <table id="table-harness" class="table-harness">
+                                        <thead>
+
+                                            <th>Solcitado por</th>
+                                            <th>Fecha de solictud</th>
+                                            <th>np</th>
+                                            <th>rev</th>
+                                            <th>Cliente</th>
+                                            <th>Cuantos se Requieren</th>
+                                            <th>Estatus</th>
+                                            <th>Modificar</th>
+                                            <th>Finalizar</th>
+
+                                        </thead>
+                                        <tbody>
+                                            @if(!empty($fullreq))
+                                            @foreach ($fullreq as $inge )
+                                                <tr>
+
+                                                        <td>{{$inge[1]}}</td>
+                                                        <td>{{$inge[2]}}</td>
+                                                        <td>{{$inge[3]}}</td>
+                                                        <td>{{$inge[4]}}</td>
+                                                        <td>{{$inge[5]}}</td>
+                                                        <td>{{$inge[6]}}</td>
+                                                        <form action="{{"modifull"}}" method="GET">
+                                                        <td><select name="estatus" id="estatus">
+                                                            <option value="{{$inge[7]}}">{{$inge[7]}}</option>
+                                                            <option value="En proceso">En proceso</option>
+                                                            <option value="Pausado">Pausado</option>
+                                                        </select></td>
+                                                        <td><input type="hidden" id='mod' name='mod' value="{{$inge[0]}}">
+                                                        <input type="submit" name="enviar" id="enviar" value='Modificar'></td>
+                                                    </form>
+                                                       <form action="{{"modifull"}}" method="GET">
+                                                        <td><input type="hidden" id='finAct' name='finAct' value="{{$inge[0]}}">
+                                                        <input type="submit" name="enviar" id="enviar" value='Finalizar'></td>
+                                                    </form>
+                                                </tr>
+
+
+                                            @endforeach
+                                            @endif
+                                        </tbody>
+
+                                    </table>
+                                </div>
+                            </div>
+
+
+                                @else
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                     <h5 class="m-0 font-weight-bold text-primary">CheckPPAP & PRIM</h5>
@@ -86,7 +155,9 @@
                                         </table>
                                     </div>
                                 </div>
+                                @endif
                             </div>
+
                         </div>
 
 
@@ -101,7 +172,8 @@
 
                                 <div class="card-body" style="overflow-y: auto; height: 360px; ">
                                     <div class="row">
-                                        <style>
+
+<style>
 
 label {
   text-align: center;
