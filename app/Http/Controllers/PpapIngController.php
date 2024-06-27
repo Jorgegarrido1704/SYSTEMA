@@ -109,7 +109,7 @@ $i=0;
         $buscarCrono=DB::table('croning')->where('fechaFin','')->get();
 
         foreach($buscarCrono as $rowCrono){
-            if($today==intval(substr($rowCrono->fechaReg,3,2))){
+
             $cronoGram[$i][0]=$rowCrono->id;
             $cronoGram[$i][1]=$rowCrono->cliente;
             $cronoGram[$i][2]=$rowCrono->pn;
@@ -120,12 +120,14 @@ $i=0;
             $cronoGram[$i][7]=$rowCrono->fechaFin;
             $cronoGram[$i][8]=$rowCrono->quienReg;
             $cronoGram[$i][9]=$rowCrono->quienCamb;
+
             $inicio=intval(substr($rowCrono->fechaReg,0,2));
             $fin=intval(substr($rowCrono->fechaCambio,0,2));
             $fin_org=intval(substr($rowCrono->fechaCompromiso,0,2));
             $mescontrol=intval(substr($rowCrono->fechaReg,3,2));
             $mesFin=intval(substr($rowCrono->fechaCambio,3,2));
             $mesComp=intval(substr($rowCrono->fechaCompromiso,3,2));
+            if($today==intval(substr($rowCrono->fechaReg,3,2))){
             if($mescontrol==$mesFin ){
                 $controles=($fin-$inicio);
                 $cronoGram[$i][10]=$inicio+$controles;
@@ -140,8 +142,21 @@ $i=0;
                 $cronoGram[$i][11]=1;
                 $cronoGram[$i][12]=$fin-$fin_org;
             }
-            $i++;
-     }}
+
+     }else{
+        if($mescontrol>$today){
+        $cronoGram[$i][10]=0;
+        $cronoGram[$i][11]=0;
+        $cronoGram[$i][12]=0;
+        }else if($mescontrol<$today){
+            $cronoGram[$i][10]=$fin;
+                $cronoGram[$i][11]=1;
+                $cronoGram[$i][12]=$fin-$fin_org;
+        }
+
+     }
+     $i++;
+    }
 
         $buscarCrono=DB::table('croning')->get();
         foreach($buscarCrono as $Crono){
