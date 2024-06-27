@@ -15,7 +15,7 @@ use App\Models\cronograma;
 class PpapIngController extends Controller
 {
 
-    public function __invoke()
+    public function __invoke(Request $request)
     {
             $value=session('user');
             $cat=session('categoria');
@@ -72,9 +72,19 @@ $i=0;
         $answer[$i][13]=$respPPAP->gernete;
         $i++;
         }
+        $mont=$request->input('mont');
+        if($mont==""){
+            $today=intval(date("m"));
+            $month = date('m');
+        }else{
+            $today=intval(date("m",strtotime("+1 month")));
+            $month = date('m',strtotime("+1 month"));
+        }
+
+
         // Obtener el número de días en el mes actual
         $day_month = date('t');
-        $month = date('m');
+
         $year = date('Y');
 
         // Inicializar el contador para los días que no son sábados ni domingos
@@ -95,11 +105,11 @@ $i=0;
         $graficOnTime=[0,0,0,0,0,0,0,0,0,0,0,0];
         $graficasLate=[0,0,0,0,0,0,0,0,0,0,0,0];
         $i=0;
-        $today=intval(date("m"));
+
         $buscarCrono=DB::table('croning')->where('fechaFin','')->get();
 
         foreach($buscarCrono as $rowCrono){
-
+            if($today==intval(substr($rowCrono->fechaReg,3,2))){
             $cronoGram[$i][0]=$rowCrono->id;
             $cronoGram[$i][1]=$rowCrono->cliente;
             $cronoGram[$i][2]=$rowCrono->pn;
@@ -127,13 +137,12 @@ $i=0;
                 $cronoGram[$i][12]=$fin-$fin_org;
             }else if($mescontrol<$mesFin && $mescontrol!=intval(date('m'))){
                 $cronoGram[$i][10]=$fin;
-                $cronoGram[$i][11]=32;
+                $cronoGram[$i][11]=1;
                 $cronoGram[$i][12]=$fin-$fin_org;
             }
-
             $i++;
+     }}
 
-    }
         $buscarCrono=DB::table('croning')->get();
         foreach($buscarCrono as $Crono){
             $mescontrol1=intval(substr($Crono->fechaReg,3,2));

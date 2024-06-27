@@ -474,6 +474,9 @@ select {
         canvas {
             max-height: 50%;
         }
+        a{
+            color: #007bff;
+        }
                         </style>
                         <div class="col-lg-6 mb-4" >
                             <!-- AREAS -->
@@ -481,6 +484,7 @@ select {
                             <div class="card shadow mb-4" id="tiempos">
                                 <div class="card-header py-3">
                                     <h5 class="m-0 font-weight-bold text-primary">Cronograma de Trabajo ING</h5>
+                                    <button><a href="/ing" >Mes actual</a></button><button><a href="/ing?mont='fr'">Siguiente mes</a></button>
                                 </div>
                                 <div class="card-body" style="overflow-y: auto; height: 760px; " id="">
                                     <div class="row" >
