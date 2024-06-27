@@ -95,9 +95,11 @@ $i=0;
         $graficOnTime=[0,0,0,0,0,0,0,0,0,0,0,0];
         $graficasLate=[0,0,0,0,0,0,0,0,0,0,0,0];
         $i=0;
+        $today=strtotime(date("d-m-Y"));
         $buscarCrono=DB::table('croning')->where('fechaFin','')->get();
 
         foreach($buscarCrono as $rowCrono){
+            if($today>strtotime($rowCrono->fechaReg)){
             $cronoGram[$i][0]=$rowCrono->id;
             $cronoGram[$i][1]=$rowCrono->cliente;
             $cronoGram[$i][2]=$rowCrono->pn;
@@ -130,13 +132,15 @@ $i=0;
             }
 
             $i++;
+        }
 
         $buscarCrono=DB::table('croning')->get();
         foreach($buscarCrono as $Crono){
+            $mescontrol1=intval(substr($Crono->fechaReg,3,2));
             if($Crono->fechaCompromiso ==$Crono->fechaCambio){
-                $graficOnTime[$mescontrol]=$graficOnTime[$mescontrol]+1;
+                $graficOnTime[$mescontrol1]=$graficOnTime[$mescontrol1]+1;
             }else if($Crono->fechaCompromiso !=$Crono->fechaCambio){
-                $graficasLate[$mescontrol]=$graficasLate[$mescontrol]+1;
+                $graficasLate[$mescontrol1]=$graficasLate[$mescontrol1]+1;
             }        }
 
         }
