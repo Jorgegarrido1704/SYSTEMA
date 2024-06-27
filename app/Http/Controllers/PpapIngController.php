@@ -127,7 +127,7 @@ $i=0;
                 $cronoGram[$i][12]=$fin-$fin_org;
             }else if($mescontrol<$mesFin && $mescontrol!=intval(date('m'))){
                 $cronoGram[$i][10]=$fin;
-                $cronoGram[$i][11]=0;
+                $cronoGram[$i][11]=32;
                 $cronoGram[$i][12]=$fin-$fin_org;
             }
 
