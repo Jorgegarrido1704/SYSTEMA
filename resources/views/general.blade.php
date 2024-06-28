@@ -133,44 +133,59 @@
                                     <!-- <a class="dropdown-item" href="#" onclick="changework('Materials')">Material Requirement</a>
                                         <a class="dropdown-item" href="#" onclick="changework('Maint')">Maintanience</a>
                                         <a class="dropdown-item" href="#" onclick="changework('Kits')">Requerimiento Kits</a>-->
-                                        <a class="dropdown-item" href="#" onclick="changework('full')">Requerimiento full size</a>
+                                        <a class="dropdown-item" href="{{'general'}}" onclick="changework('full')">Requerimiento full size</a>
                                     </div>
                                 </div>
                                 </div>
                                 <div class="card-body" style="overflow-y: auto; height: 360px;" id='work'>
                                     <div class="row" >
-                             <!--           <table>
-                                            <thead>
-                                                <tr>
-                                                    <th>Work Order</th>
-                                                    <th>Nivel</th>
-                                                    <th>Lider</th>
-                                                    <th>Guardar </th>
-                                                 </tr>
-                                            </thead>
-                                            <tbody>
-                                            <tr>
-                                      <form action="{{route('KitsReq')}}" method="GET"  >
 
-                                        <td ><input type="text" id="workO" name="workO" > </td>
-                                       <td ><select name="equipo" id="equipo"   >
-                                      <option selected="selected"> </option>
-                                     <option value="Inmediato">Inmediato</option>
-                                     <option value="Muy Urgente">Muy Urgente</option>
-                                     <option value="Urgente">Urgente</option>
-                                     <option value="Poco Urgente">Poco Urgente</option>
-                                     <option value="Normal">Normal</option>
-                                     </select></td>
-                                     <td ><input type="text" id="lider" name="lider"  value="{{$value}}" > </td>
-                                     <td><input type="submit" id="save" name="save"  value="Guardar" ></td> </form>
-                                     </tr>
-
-                                            </tbody>
-                                        </table>-->
-                                        <br>
-
-                                    <div>
-                                </div>
+                                        <form  action="{{ route('regfull')}}" method="POST">
+                                            @csrf
+                                                <div class="form-group">
+                                            <label for="cliente">Cliente:</label>
+                                           <select id="cliente" name="cliente" class="form-control" required>
+                                             <option value=""></option>
+                                                  <option value="DUR-A-LIFT">DUR-A-LIFT</option>
+                                                  <option value="BERSTROMG">BERGSTROM</option>
+                                                  <option value="BLUE BIRD">BLUE BIRD</option>
+                                                    <option value="ATLAS">ATLAS</option>
+                                                    <option value="UTILIMASTER">UTILIMASTER</option>
+                                                    <option value="CALIFORNIA">CALIFORNIA</option>
+                                                    <option value="TICO MANUFACTURING">TICO MANUFACTURING</option>
+                                                    <option value="SPARTAN">SPARTAN</option>
+                                                    <option value="PHOENIX">PHOENIX</option>
+                                                    <option value="FOREST RIVER">FOREST RIVER</option>
+                                                    <option value="SHYFT">SHYFT</option>
+                                                    <option value="KALMAR">KALMAR</option>
+                                                    <option value="MODINE">MODINE</option>
+                                                    <option value="NILFISK">NILFISK</option>
+                                                    <option value="PLASTIC OMNIUM">PLASTIC OMNIUM</option>
+                                                    <option value="ZOELLER">ZOELLER</option>
+                                                    <option value="COLLINS">COLLINS</option>
+                                                </select>
+                                                </div>
+                                                <div class="form-group">
+                                             <label for="parte">Numero de Parte</label>
+                                            <input type="text" id="parte" name="parte" class="form-control" required>
+                                            </div>
+                                            <div class="form-group">
+                                            <label for="rev">Revision</label>
+                                            <input type="text" id="rev" name="rev" class="form-control" required>
+                                            </div>
+                                            <div class="form-group">
+                                            <label for="cant">Cantidad</label>
+                                            <input type="number" id="cant" name="cant" class="form-control" min="1" required>
+                                            </div>
+                                            <div class="form-group">
+                                            <label for="tablero">Linea de Tableros</label>
+                                            <input type="text" id="tablero" name="tablero" class="form-control" required>
+                                            </div>
+                                            <div class="form-group">
+                                            <input type="submit" id="submit" class="btn btn-primary" value="solicitar">
+                                            </div>
+                                           </tr>
+                                            </form>
                             </div>
 
                                 </div>
@@ -185,30 +200,35 @@
                                 </div>
                                 <div class="card-body" style="overflow-y: auto; height: 360px;" id="tableChange">
                                     <div class="row" >
+                                        <style>
+                                            #Pendiente{   color: rgb(179, 179, 12);    }
+                                            #Pausado{ color:  rgb(163, 3, 3);}
+                                            #En_proceso{color: rgb(120, 184, 120);}
+
+                                        </style>
                                         <table>
                                             <thead>
-                                                <th>Fecha</th>
-                                                <th>Team</th>
-                                                <th>trabajo</th>
-                                                <th>Tipo de reparacion</th>
-                                                <th>Finalizar</th>
+                                                <th>Fecha de solicitud</th>
+                                                <th>Cliente</th>
+                                                <th>Numero de Parte</th>
+                                                <th>Revision</th>
+                                                <th>Cantidad</th>
+                                                <th>Status</th>
                                             </thead>
                                             <tbody>
-                                          @if(!empty($paros))
-                                          @foreach ( $paros as $paro)
-                                                <tr>
-                                                    <td>{{$paro[0]}}</td>
-                                                    <td>{{$paro[1]}}</td>
-                                                    <td>{{$paro[2]}}</td>
-                                                    <td>{{$paro[3]}}</td>
-                                                    <td><form action="{{route('finishWork')}}" method="GET">
-                                                        @csrf
-                                                        <input type="hidden" name="id_but" id="id_but" value="{{$paro[5]}}">
-                                                        <input type="submit" value="Finalizar">
-                                                    </form></td>
+                                          @if(!empty($fulls))
+                                          @foreach ( $fulls as $full)
+                                              <tr>
+                                                    <td id="{{$full[5]}}" >{{$full[0]}}</td>
+                                                    <td id="{{$full[5]}}">{{$full[3]}}</td>
+                                                    <td id="{{$full[5]}}">{{$full[1]}}</td>
+                                                    <td id="{{$full[5]}}">{{$full[2]}}</td>
+                                                    <td id="{{$full[5]}}">{{$full[4]}}</td>
+                                                    <td id="{{$full[5]}}">{{$full[5]}}</td>
                                                 </tr>
                                           @endforeach
                                           @endif
+
                                             </tbody>
                                         </table>
 

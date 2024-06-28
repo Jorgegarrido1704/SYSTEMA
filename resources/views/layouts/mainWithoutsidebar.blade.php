@@ -416,6 +416,10 @@
                                         <input type="number" id="cant" name="cant" class="form-control" min="1" required>
                                         </div>
                                         <div class="form-group">
+                                        <label for="tablero">Tablero</label>
+                                        <input type="text" id="tablero" name="tablero" class="form-control" required>
+                                        </div>
+                                        <div class="form-group">
                                         <input type="submit" id="submit" class="btn btn-primary" value="solicitar">
                                         </div>
                                        </tr>
@@ -437,13 +441,22 @@
                                             <tbody>
                                           @if(!empty($fulls))
                                           @foreach ( $fulls as $full)
-                                                <tr>
-                                                    <td>{{$full[0]}}</td>
-                                                    <td>{{$full[3]}}</td>
-                                                    <td>{{$full[1]}}</td>
-                                                    <td>{{$full[2]}}</td>
-                                                    <td>{{$full[4]}}</td>
-                                                    <td>{{$full[5]}}</td>
+                                                <style>
+                                          @if($full[5] == "Pendiente")
+                                               #est{ background-color='ligthblue';}
+                                          @elseif($full[5] == "En proceso")
+                                                <tr style="background-color='ligthgreen'">
+                                          @elseif($full[5] == "Pausado")
+                                                <tr style="background-color='red';">
+                                                 @endif
+                                                 </style>
+                                                 <tr>
+                                                    <td id="est" style="background-color=red;">{{$full[0]}}</td>
+                                                    <td id="est">{{$full[3]}}</td>
+                                                    <td id="est">{{$full[1]}}</td>
+                                                    <td id="est">{{$full[2]}}</td>
+                                                    <td id="est">{{$full[4]}}</td>
+                                                    <td id="est">{{$full[5]}}</td>
                                                 </tr>
                                           @endforeach
                                           @endif

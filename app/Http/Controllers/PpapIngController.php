@@ -179,6 +179,7 @@ class PpapIngController extends Controller
         $fullreq[$i][5]=$full->cliente;
         $fullreq[$i][6]=$full->Cuantos;
         $fullreq[$i][7]=$full->estatus;
+        $fullreq[$i][8]=$full->tablero;
 
         $i++;
 
@@ -367,7 +368,8 @@ foreach($calidad as $regcal){
         $regIng->listaCort='';
         if($regIng->save()){
             if($eng=="Paola S" and ($activiad=='Comida' or $activiad=="Colocacion de full size")){
-                $buscarstatus=DB::table('registrofull')->where('estatus','En proceso')->first();
+                $buscarstatus=DB::table('registrofull')->where('estatus','En_proceso')->first();
+
                 $fullnp=$buscarstatus->np;
         $fullRev=$buscarstatus->rev;
         $fullclient=$buscarstatus->cliente;
@@ -376,7 +378,8 @@ foreach($calidad as $regcal){
         $rep=$fullFecha."-".$fullnp."-".$fullRev."-".$fullclient."-".$fullCuantos;
 
                     $upIng=DB::table('ingactividades')->where('desciption',$rep)->update(['finT'=>$today,'fechaEncuesta'=>'pausado']);
-                    $updateAct=DB::table('registrofull')->where('estatus','En proceso')->update(['estatus'=>'Pausado',]);
+                    $updateAct=DB::table('registrofull')->where('estatus','En_proceso')->update(['estatus'=>'Pausado',]);
+
 
             }
             return redirect ('/ing');
@@ -477,7 +480,7 @@ public function modifull(Request $request){
     $modistatus=$request->input('estatus');
     $mod=$request->input('mod');
     $finAct=$request->input('finAct');
-    if(!empty($mod) and $modistatus=='En proceso'){
+    if(!empty($mod) and $modistatus=='En_proceso'){
         $buscar=DB::table('registrofull')->where('id',$mod)->first();
         $fullnp=$buscar->np;
         $fullRev=$buscar->rev;

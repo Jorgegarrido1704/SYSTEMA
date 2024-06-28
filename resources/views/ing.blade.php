@@ -39,7 +39,8 @@
                                             <th>np</th>
                                             <th>rev</th>
                                             <th>Cliente</th>
-                                            <th>Cuantos se Requieren</th>
+                                            <th>Cantidad requerida</th>
+                                            <th>Tablero</th>
                                             <th>Estatus</th>
                                             <th>Modificar</th>
                                             <th>Finalizar</th>
@@ -56,10 +57,11 @@
                                                         <td>{{$inge[4]}}</td>
                                                         <td>{{$inge[5]}}</td>
                                                         <td>{{$inge[6]}}</td>
+                                                        <td>{{$inge[8]}}</td>
                                                         <form action="{{"modifull"}}" method="GET">
                                                         <td><select name="estatus" id="estatus">
                                                             <option value="{{$inge[7]}}">{{$inge[7]}}</option>
-                                                            <option value="En proceso">En proceso</option>
+                                                            <option value="En_proceso">En proceso</option>
                                                             <option value="Pausado">Pausado</option>
                                                         </select></td>
                                                         <td><input type="hidden" id='mod' name='mod' value="{{$inge[0]}}">

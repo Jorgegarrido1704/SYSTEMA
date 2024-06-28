@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class regfull extends Model
 {
     use HasFactory;
-    public $fillable = ['SolicitadoPor','fechaSolicitud','np', 'rev', 'cliente', 'Cuantos','estatus','fechaColocacion', 'QuienIng','fechaMant','fechaPiso','fechaCalidad'];
+    public $fillable = ['SolicitadoPor','fechaSolicitud','np', 'rev', 'cliente', 'Cuantos','estatus','fechaColocacion', 'QuienIng','fechaMant','fechaPiso','fechaCalidad','tablero'];
     protected $table = 'registrofull';
     public $timestamps = false;
 }

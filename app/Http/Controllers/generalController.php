@@ -246,7 +246,7 @@ class generalController extends Controller
                 }    $i++;      }
                 $fulls=[];
                 $i=0;
-        $buscarfull=DB::table('registrofull')->get();
+        $buscarfull=DB::table('registrofull')->where('estatus','!=','finalizado')->get();
         foreach($buscarfull as $full){
             $fulls[$i][0]=$full->fechaSolicitud;
             $fulls[$i][1]=$full->np;
@@ -985,6 +985,7 @@ public function regfull(Request $request){
     $pn=$request->input('parte');
     $rev=$request->input('rev');
     $cant=$request->input('cant');
+    $tablero=$request->input('tablero');
     $time=date('d-m-Y H:i');
     $pn=strtoupper($pn);
     $rev=strtoupper($rev);
@@ -1001,6 +1002,7 @@ public function regfull(Request $request){
     $addfull->fechaMant='No Aun';
     $addfull->fechaPiso='No Aun';
     $addfull->fechaCalidad='No Aun';
+    $addfull->tablero = $tablero;
     if($addfull->save()){
         return redirect('/general');
     }
