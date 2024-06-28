@@ -246,6 +246,7 @@ select {
                                                     <option value="Colocacion de full size">Colocacion de full size</option>
                                                     <option value="Seguimiento PPAP">Seguimiento PPAP</option>
                                                     <option value="Diseno de piezas 3D">Diseño de piezas 3D</option>
+                                                    <option value="Comida">Comida</option>
                                                     <option value="Retroalimentacion y aclaraciones a clientes">Retroalimentacion y aclaraciones a clientes</option>
                                                     <option value="Juntas">Juntas</option>
                                                     <option value="Otro">Otro</option>

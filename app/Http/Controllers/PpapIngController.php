@@ -366,6 +366,19 @@ foreach($calidad as $regcal){
         $regIng->fechaEncuesta='';
         $regIng->listaCort='';
         if($regIng->save()){
+            if($eng=="Paola S" and ($activiad=='Comida' or $activiad=="Colocacion de full size")){
+                $buscarstatus=DB::table('registrofull')->where('estatus','En proceso')->first();
+                $fullnp=$buscarstatus->np;
+        $fullRev=$buscarstatus->rev;
+        $fullclient=$buscarstatus->cliente;
+        $fullCuantos=$buscarstatus->Cuantos;
+        $fullFecha=$buscarstatus->fechaSolicitud;
+        $rep=$fullFecha."-".$fullnp."-".$fullRev."-".$fullclient."-".$fullCuantos;
+
+                    $upIng=DB::table('ingactividades')->where('desciption',$rep)->update(['finT'=>$today,'fechaEncuesta'=>'pausado']);
+                    $updateAct=DB::table('registrofull')->where('estatus','En proceso')->update(['estatus'=>'Pausado',]);
+
+            }
             return redirect ('/ing');
         }
     }
@@ -475,6 +488,16 @@ public function modifull(Request $request){
         $today=date("d-m-Y H:i");
         $buscarIngAct=DB::table('ingactividades')->where('desciption',$reg)->first();
         if($buscarIngAct){
+            $tiempoFin=strtotime($buscarIngAct->finT);
+            $tiempoIni=strtotime($buscarIngAct->fecha);
+            $tiempo=$tiempoFin-$tiempoIni;
+            $tiempoactual=strtotime($today);
+            $tiempoTotal=$tiempoactual-$tiempo;
+            $resto=date('d-m-Y H:i', $tiempoTotal);
+            $upIng=DB::table('ingactividades')->where('desciption',$reg)->update(['finT'=>'','fechaEncuesta'=>'','fecha'=>$resto]);
+
+          $update=DB::table('registrofull')->where('id',$mod)->update(['estatus'=>$modistatus]);
+
             return redirect('/ing');
         }else{
             $addAct=new ingAct;
@@ -484,17 +507,52 @@ public function modifull(Request $request){
             $addAct->actividades="Colocacion de full size";
             $addAct->desciption=$reg;
             $addAct->fechaEncuesta=$modistatus;
-            $addAct->count=1;
+            $addAct->count=0;
+            $addAct->analisisPlano='';
+            $addAct->bom='';
+            $addAct->AyudasVizuales='';
+            $addAct->bomRmp='';
+            $addAct->fullSize='';
+            $addAct->fechaEncuesta='';
+            $addAct->listaCort='';
             if($addAct->save()){
                 $update=DB::table('registrofull')->where('id',$mod)->update(['estatus'=>$modistatus]);
                 return redirect('/ing');
             }
 
         }
+    }else if(!empty($mod) and $modistatus=='Pausado'){
+        $buscar=DB::table('registrofull')->where('id',$mod)->first();
+        $fullnp=$buscar->np;
+        $fullRev=$buscar->rev;
+        $fullclient=$buscar->cliente;
+        $fullCuantos=$buscar->Cuantos;
+        $fullFecha=$buscar->fechaSolicitud;
+        $reg=$fullFecha."-".$fullnp."-".$fullRev."-".$fullclient."-".$fullCuantos;
+        $today=date("d-m-Y H:i");
+    $upIng=DB::table('ingactividades')->where('desciption',$reg)->update(['finT'=>$today,'fechaEncuesta'=>'pausado']);
+    $update=DB::table('registrofull')->where('id',$mod)->update(['estatus'=>$modistatus]);
+    return redirect('/ing');
     }
 
+    if(!empty($finAct)){
+        $buscar=DB::table('registrofull')->where('id',$finAct)->first();
+        $fullnp=$buscar->np;
+        $fullRev=$buscar->rev;
+        $fullclient=$buscar->cliente;
+        $fullCuantos=$buscar->Cuantos;
+        $fullFecha=$buscar->fechaSolicitud;
+        $reg=$fullFecha."-".$fullnp."-".$fullRev."-".$fullclient."-".$fullCuantos;
+        $today=date("d-m-Y H:i");
+    $upIng=DB::table('ingactividades')->where('desciption',$reg)->update(['finT'=>$today,'fechaEncuesta'=>'finalizado','count'=>4]);
+    $update=DB::table('registrofull')->where('id',$finAct)->update(['estatus'=>'finalizado','fechaColocacion'=>$today,'QuienIng'=>$value]);
+    return redirect('/ing');
 
-
+    }
 }
+
+
+
+
 
 }
