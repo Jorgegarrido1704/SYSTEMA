@@ -550,19 +550,17 @@ foreach($calidad as $regcal){
                 if($enalmacen>=$fullCuantos){
                     $resto=$enalmacen-$fullCuantos;
                     $pisoNuevo=$enpiso+$fullCuantos;
-                }else if($enalmacen<$fullCuantos){
+                }else if($enalmacen<=$fullCuantos){
                         $resto=0;
                         $pisoNuevo=$enpiso+$fullCuantos;
                 }
         $updates=DB::table('fullsizes')->where('np',$fullnp)->where('rev',$fullRev)->update(['enAlmacen'=>$resto,'enPiso'=>$pisoNuevo]);
-
-
+            }else{
+                $nuvonum=
             }
-
         $upIng=DB::table('ingactividades')->where('desciption',$reg)->update(['finT'=>$today,'fechaEncuesta'=>'finalizado','count'=>4]);
         $update=DB::table('registrofull')->where('id',$finAct)->update(['estatus'=>'finalizado','fechaColocacion'=>$today,'QuienIng'=>$value]);
         return redirect('/ing');
-
         }
     }
 
