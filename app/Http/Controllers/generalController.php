@@ -989,6 +989,7 @@ public function regfull(Request $request){
     $time=date('d-m-Y H:i');
     $pn=strtoupper($pn);
     $rev=strtoupper($rev);
+    $tablero=strtoupper($tablero);
     $addfull= new regfull();
     $addfull->SolicitadoPor=$value;
     $addfull->fechaSolicitud=$time;
