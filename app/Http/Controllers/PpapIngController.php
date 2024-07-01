@@ -148,11 +148,14 @@ class PpapIngController extends Controller
         $cronoGram[$i][10]=0;
         $cronoGram[$i][11]=0;
         $cronoGram[$i][12]=0;
-        }else if($mescontrol<$today and $mesComp==$today){
+        }else if($mescontrol<$today and $mesComp>=$today){
             $cronoGram[$i][10]=$fin;
                 $cronoGram[$i][11]=1;
                 $cronoGram[$i][12]=$fin-$fin_org;
-        }
+        }else if($mescontrol<$today and $mesComp<$today){
+            $cronoGram[$i][10]=0;
+                $cronoGram[$i][11]=0;
+                $cronoGram[$i][12]=0;
 
      }
      $i++;
