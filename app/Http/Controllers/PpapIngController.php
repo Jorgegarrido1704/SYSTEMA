@@ -148,7 +148,7 @@ class PpapIngController extends Controller
         $cronoGram[$i][10]=0;
         $cronoGram[$i][11]=0;
         $cronoGram[$i][12]=0;
-        }else if($mescontrol<$today){
+        }else if($mescontrol<$today and $mesComp==$today){
             $cronoGram[$i][10]=$fin;
                 $cronoGram[$i][11]=1;
                 $cronoGram[$i][12]=$fin-$fin_org;
@@ -556,7 +556,7 @@ foreach($calidad as $regcal){
                 }
         $updates=DB::table('fullsizes')->where('np',$fullnp)->where('rev',$fullRev)->update(['enAlmacen'=>$resto,'enPiso'=>$pisoNuevo]);
             }else{
-                $nuvonum=
+               // $nuvonum=
             }
         $upIng=DB::table('ingactividades')->where('desciption',$reg)->update(['finT'=>$today,'fechaEncuesta'=>'finalizado','count'=>4]);
         $update=DB::table('registrofull')->where('id',$finAct)->update(['estatus'=>'finalizado','fechaColocacion'=>$today,'QuienIng'=>$value]);
