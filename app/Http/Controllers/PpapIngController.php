@@ -148,7 +148,7 @@ class PpapIngController extends Controller
         $cronoGram[$i][10]=0;
         $cronoGram[$i][11]=0;
         $cronoGram[$i][12]=0;
-        }else if($mescontrol<$today and $mesComp>=$today){
+        }else if($mescontrol<$today and $mesFin>=$today){
             $cronoGram[$i][10]=$fin;
                 $cronoGram[$i][11]=1;
                 $cronoGram[$i][12]=$fin-$fin_org;
@@ -372,6 +372,7 @@ foreach($calidad as $regcal){
         if($regIng->save()){
             if($eng=="Paola S" and ($activiad=='Comida' or $activiad=="Colocacion de full size")){
                 $buscarstatus=DB::table('registrofull')->where('estatus','En_proceso')->first();
+                if($buscarstatus){
         $fullnp=$buscarstatus->np;
         $fullRev=$buscarstatus->rev;
         $fullclient=$buscarstatus->cliente;
@@ -380,7 +381,7 @@ foreach($calidad as $regcal){
         $rep=$fullFecha."-".$fullnp."-".$fullRev."-".$fullclient."-".$fullCuantos;
         $upIng=DB::table('ingactividades')->where('desciption',$rep)->update(['finT'=>$today,'fechaEncuesta'=>'pausado']);
         $updateAct=DB::table('registrofull')->where('estatus','En_proceso')->update(['estatus'=>'Pausado',]);
-            }
+            }}
             return redirect ('/ing');
         }
     }
