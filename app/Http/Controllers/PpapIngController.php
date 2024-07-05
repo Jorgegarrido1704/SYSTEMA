@@ -24,6 +24,7 @@ class PpapIngController extends Controller
         $inges=[];
         $activ=[];
         $answer=[];
+        $enginners=[];
         $buscarinfor=DB::table('registro')->where('count','=','13')
         ->orwhere('count','=','17')->orwhere('count','=','14')->orwhere('count','=','16')
         ->orwhere('count','=','18')->get();
