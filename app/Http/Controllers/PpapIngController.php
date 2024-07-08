@@ -46,7 +46,7 @@ class PpapIngController extends Controller
             $enginners[$i][1]=$rowAct->Id_request;
             $control=strtotime($rowAct->fecha);
             $dateControl=strtotime(date('d-m-Y H:i'));
-            $controlTotal=round((($dateControl-$control)/60/60),2)." Horas";
+            $controlTotal=(($dateControl-$control)/60).":".(($dateControl-$control)%60) ;
 
             $enginners[$i][2]=$controlTotal;
             $enginners[$i][3]=$rowAct->actividades;
