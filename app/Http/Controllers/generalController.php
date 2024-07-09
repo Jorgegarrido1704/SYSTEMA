@@ -269,6 +269,7 @@ class generalController extends Controller
         }else{
 
            $codigo=$request->input('code-bar');
+            $codigo=str_replace("'","-",$codigo);
             $todays=date('d-m-Y H:i');
             $buscar=DB::select("SELECT count,wo,donde,NumPart,rev FROM registro WHERE info='$codigo'");
             if (!$buscar) {
