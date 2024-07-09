@@ -18,7 +18,7 @@ class caliController extends generalController
       public function __invoke(){
         $value = session('user');
         $cat = session('categoria');
-      
+
         $buscarcalidad=DB::table("calidad")->get();
         $i=0;
         $calidad=[];
@@ -715,33 +715,24 @@ if(strpos($codig1, ',') ) {
 }
 public function codigoCalidad(request $request){
     $codigo=$request->input('code-bar');
+    if(strpos($codigo, "'") ) {
+        $codigo = str_replace("'", "-", $codigo);
+    }
 
     $buscar=DB::select("SELECT count,donde FROM registro WHERE info='$codigo'");
     if (!$buscar) {
         return redirect('calidad')->with('response', 'Record not found');
-    }
-    foreach($buscar as $rowb){
-    $count=$rowb->count;
-    $area=$rowb->donde;
-}
-    $donde='';
-    $sesion=session('user');
-    $sesionBus = DB::table('login')->where('user', $sesion)->pluck('category')->first();
-    $donde = $sesionBus;
-                   if($donde=='cali' and $count=='10'){
-                        $count++;
-                        $update = DB::table('registro')->where('info', $codigo)->update(['count' => $count, 'donde' => 'Proceso de corte']);
-                        if ($update) { $resp = "Testing process";
-                        } else {   $resp = "Harness not updated, it is in $area";  }
-                        return redirect('calidad')->with('response', $resp);
-                    } else if($donde=='cali' and $count=='11'){
-                        $count++;
-                        $update = DB::table('registro')->where('info', $codigo)->update(['count' => $count, 'donde' => 'En espera de embarque']);
-                        if ($update) { $resp = "This harness was updated to the next station";
-                        } else {   $resp = "Harness not updated, it is in $area";  }
-                        return redirect('calidad')->with('response', $resp); }
+    }else{
+        foreach($buscar as $rowb){
+            $count=$rowb->count;
+            $area=$rowb->donde;
 
-                        return redirect('calidad')->with('response', "Record in $area");
+            return redirect('calidad')->with('response', "Record in $area");
+    }
+
+}
+
+
 
 }
 
