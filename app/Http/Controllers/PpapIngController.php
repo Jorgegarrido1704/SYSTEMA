@@ -193,6 +193,7 @@ class PpapIngController extends Controller
     return view('/ing',['fullreq'=>$fullreq,'graficasLate'=>$graficasLate,'graficOnTime'=>$graficOnTime,'cat'=>$cat,'inges'=>$inges,'value'=>$value,'enginners'=>$enginners,'answer'=>$answer,'dias_mes'=>$dias_mes,'cronoGram'=>$cronoGram]);
 }
     }
+
     public function store(Request $request)    {
         $value=session('user');
         $idIng=$request->input('iding');
@@ -326,19 +327,29 @@ foreach($calidad as $regcal){
         $id=$request->input('id');
         $todayIng=date('d-m-Y H:i');
         $id_f=$request->input('id_f');
+        $value=session('user');
 
         if(!empty($id)){
         $buscarIng=DB::table('ingactividades')->where('id',$id)->first();
         if($buscarIng->fechaEncuesta!='pausado'){
         $upIng=DB::table('ingactividades')->where('id',$id)->update(['finT'=>$todayIng,'fechaEncuesta'=>'pausado']);
         }else if($buscarIng->fechaEncuesta=='pausado'){
-            $tiempoFin=strtotime($buscarIng->finT);
-            $tiempoIni=strtotime($buscarIng->fecha);
-            $tiempo=$tiempoFin-$tiempoIni;
-            $tiempoactual=strtotime($todayIng);
-            $tiempoTotal=$tiempoactual-$tiempo;
-            $resto=date('d-m-Y H:i', $tiempoTotal);
-            $upIng=DB::table('ingactividades')->where('id',$id)->update(['finT'=>'','fechaEncuesta'=>'','fecha'=>$resto]);
+           $update=new ingAct;
+           $update->Id_request=$buscarIng->Id_request;
+           $update->fecha=$todayIng;
+           $update->finT='';
+           $update->actividades=$buscarIng->actividades;
+           $update->desciption=$buscarIng->desciption;
+           $update->count=0;
+           $update->analisisPlano='';
+           $update->bom='';
+           $update->AyudasVizuales='';
+           $update->fechaEncuesta='';
+           $update->bomRmp='';
+           $update->fullSize='';
+           $update->listaCort='';
+           $update->save();
+           $upIng=DB::table('ingactividades')->where('id',$id)->update(['count'=>4,'finT'=>$todayIng,'fechaEncuesta'=>'finalizado']);
 
         }
        return redirect ('/ing');
