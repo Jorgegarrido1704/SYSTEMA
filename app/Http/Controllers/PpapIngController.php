@@ -349,16 +349,23 @@ foreach($calidad as $regcal){
            $update->fullSize='';
            $update->listaCort='';
            $update->save();
-           $upIng=DB::table('ingactividades')->where('id',$id)->update(['count'=>4,'finT'=>$todayIng,'fechaEncuesta'=>'finalizado']);
+           $upIng=DB::table('ingactividades')->where('id',$id)->update(['count'=>4,'fechaEncuesta'=>'finalizado']);
 
         }
        return redirect ('/ing');
     }else if(!empty($id_f)){
         $buscarFin=DB::table('ingactividades')->where('id',$id_f)->first();
         if($buscarFin){
-        $upIng=DB::table('ingactividades')->where('id',$id_f)->update(['finT'=>$todayIng,'fechaEncuesta'=>'finalizado','count'=>4]);
+            if($buscarFin->fechaEncuesta=='pausado'){
+                $upIng=DB::table('ingactividades')->where('id',$id_f)->update(['fechaEncuesta'=>'finalizado','count'=>4]);
 
-        return redirect ('/ing');}
+                return redirect ('/ing');
+            }else{
+                $upIng=DB::table('ingactividades')->where('id',$id_f)->update(['finT'=>$todayIng,'fechaEncuesta'=>'finalizado','count'=>4]);
+
+        return redirect ('/ing');
+            }
+        }
     }
 }
     public function tareas(Request $request){
