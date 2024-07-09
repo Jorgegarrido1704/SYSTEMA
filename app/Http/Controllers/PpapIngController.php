@@ -357,11 +357,11 @@ foreach($calidad as $regcal){
         $buscarFin=DB::table('ingactividades')->where('id',$id_f)->first();
         if($buscarFin){
             if($buscarFin->fechaEncuesta=='pausado'){
-                $upIng=DB::table('ingactividades')->where('id',$id_f)->update(['fechaEncuesta'=>'finalizado','count'=>4]);
+                $upIng=DB::table('ingactividades')->where('id',$id_f)->where('count','!=',4)->update(['fechaEncuesta'=>'finalizado','count'=>4]);
 
                 return redirect ('/ing');
             }else{
-                $upIng=DB::table('ingactividades')->where('id',$id_f)->update(['finT'=>$todayIng,'fechaEncuesta'=>'finalizado','count'=>4]);
+                $upIng=DB::table('ingactividades')->where('id',$id_f)->where('count','!=',4)->update(['finT'=>$todayIng,'fechaEncuesta'=>'finalizado','count'=>4]);
 
         return redirect ('/ing');
             }
@@ -398,7 +398,7 @@ foreach($calidad as $regcal){
         $fullCuantos=$buscarstatus->Cuantos;
         $fullFecha=$buscarstatus->fechaSolicitud;
         $rep=$fullFecha."-".$fullnp."-".$fullRev."-".$fullclient."-".$fullCuantos;
-        $upIng=DB::table('ingactividades')->where('desciption',$rep)->update(['finT'=>$today,'fechaEncuesta'=>'pausado']);
+        $upIng=DB::table('ingactividades')->where('desciption',$rep)->where('count','!=','4')->update(['finT'=>$today,'fechaEncuesta'=>'pausado','count'=>4]);
         $updateAct=DB::table('registrofull')->where('estatus','En_proceso')->update(['estatus'=>'Pausado',]);
             }}
             return redirect ('/ing');
@@ -589,7 +589,7 @@ foreach($calidad as $regcal){
             }else{
                // $nuvonum=
             }
-            
+
         $upIng=DB::table('ingactividades')->where('desciption',$reg)->where('count','!=',4)->update(['finT'=>$today,'fechaEncuesta'=>'finalizado','count'=>4]);
         $update=DB::table('registrofull')->where('id',$finAct)->update(['estatus'=>'finalizado','fechaColocacion'=>$today,'QuienIng'=>$value]);
         return redirect('/ing');
