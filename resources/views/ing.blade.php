@@ -470,6 +470,7 @@ select {
                                             <label for="Client">Client</label>
                                             <select name="Client" id="Client" required>
                                               <option value=""></option>
+                                              <option value="BROWN">BROWN</option>
                                               <option value="DUR-A-LIFT">DUR-A-LIFT</option>
                                               <option value="BERSTROMG">BERGSTROM</option>
                                               <option value="BLUE BIRD">BLUE BIRD</option>
