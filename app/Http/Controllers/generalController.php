@@ -621,7 +621,7 @@ class generalController extends Controller
     public function Bom(Request $request){
         $boms = $request->input('partnum');
         $value=session('user');
-        if($value=='Angel_G'){
+        if($value=='Brando O'){
             $results = DB::table('datos')
             ->select('item', 'qty')
             ->where('part_num', '=', $boms)
