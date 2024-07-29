@@ -38,10 +38,9 @@ class caliController extends generalController
         $timesReg = strtotime(date("d-m-Y 00:00"))-86400;
         $registros=[];
         $i=0;
-        $buscReg=DB::table('regsitrocalidad')->orderBy('id','DESC')->get();
+        $buscReg=DB::table('regsitrocalidad')->orderBy('id','DESC')->limit(250)->get();
         foreach($buscReg as $rowReg){
-            if(($rowReg->id)>59519){
-                $registros[$i][0]=$rowReg->fecha;
+               $registros[$i][0]=$rowReg->fecha;
                 $registros[$i][1]=$rowReg->client;
                 $registros[$i][2]=$rowReg->pn;
                 $registros[$i][3]=$rowReg->resto;
@@ -49,8 +48,6 @@ class caliController extends generalController
                 $registros[$i][5]=$rowReg->prueba;
                 $registros[$i][6]=$rowReg->Responsable;
                 $i++;
-            }
-
         }
         $i=0;
         $buscFallas=DB::table('timedead')->where('area','Calidad')->where('timeFin','=','No Aun')->orderBy('id','DESC')->get();
