@@ -11,7 +11,8 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Mail\Mailables;
 use App\Models\listaCalidad;
 use App\Models\cronograma;
-
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 class PpapIngController extends Controller
 {
 
@@ -595,6 +596,72 @@ foreach($calidad as $regcal){
         return redirect('/ing');
         }
     }
+
+public function excel_ing(Request $request)
+{
+    $date = date("d-m-Y");
+
+    $spreadsheet = new Spreadsheet();
+    $sheet = $spreadsheet->getActiveSheet();
+    $t = 2;
+
+    // Set column headers
+    $headers = [
+        'A1' => 'Tipo de Trabajo',
+        'B1' => 'Cliente',
+        'C1' => 'Tipo de Arnes',
+        'D1' => 'Numero de parte',
+        'E1' => 'Revision',
+        'F1' => 'Cambio de revicion',
+        'G1' => 'Cambios',
+        'H1' => 'Fecha de Ingreso',
+        'I1' => 'Quien Registro',
+        'J1' => 'Calidad',
+        'K1' => 'IMEXX',
+        'L1' => 'Pruebas electricas',
+        'M1' => 'Produccion',
+        'N1' => 'Compras',
+        'O1' => 'Planeacion'
+    ];
+
+    foreach ($headers as $cell => $header) {
+        $sheet->setCellValue($cell, $header);
+    }
+
+    // Fetch data from the database
+    $buscarinfo = DB::table('ppapandprim')->get();
+
+    foreach ($buscarinfo as $row) {
+        $sheet->setCellValue('A' . $t, $row->tp);
+        $sheet->setCellValue('B' . $t, $row->client);
+        $sheet->setCellValue('C' . $t, $row->tipo);
+        $sheet->setCellValue('D' . $t, $row->pn);
+        $sheet->setCellValue('E' . $t, $row->REV1);
+        $sheet->setCellValue('F' . $t, $row->REV2);
+        $sheet->setCellValue('G' . $t, $row->cambios);
+        $sheet->setCellValue('H' . $t, $row->fecha);
+        $sheet->setCellValue('I' . $t, $row->eng);
+        $sheet->setCellValue('J' . $t, $row->quality);
+        $sheet->setCellValue('K' . $t, $row->ime);
+        $sheet->setCellValue('L' . $t, $row->test);
+        $sheet->setCellValue('M' . $t, $row->production);
+        $sheet->setCellValue('N' . $t, $row->compras);
+        $sheet->setCellValue('O' . $t, $row->gernete);
+        $t++;
+    }
+
+    // Generate and download the Excel file
+    $writer = new Xlsx($spreadsheet);
+
+    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    header('Content-Disposition: attachment;filename="Reporte PPAP.xlsx"');
+    header('Cache-Control: max-age=0');
+
+    $writer->save('php://output');
+
+    // Optionally, redirect after download if necessary
+    // return redirect('/ing');
+}
 
 
 
