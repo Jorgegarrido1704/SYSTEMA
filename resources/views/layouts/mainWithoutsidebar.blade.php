@@ -111,6 +111,7 @@
     <script src="{{ asset('/dash/js/demo/chart-area-demo.js')}}"></script>
     <script src="{{ asset('/dash/js/demo/chart-pie-demo.js')}}"></script>
     <script src="{{ asset('/dash/js/demo/chart-line-ing.js')}}"></script>
+   
 
     <script>
          function changework(action) {

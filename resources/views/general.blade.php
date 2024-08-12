@@ -52,28 +52,25 @@
                                                     <td>{{ $registro[8] }}</td>
                                                     @if ($registro[9]=="" && $registro[10]=="")
                                                     <td><form action="{{route('pause')}}" method="GET">
-
                                                         <input type="hidden" name="id_butC" id="id_butC" value="{{$registro[4]}}">
                                                         <input type="submit" value="Comenzar">
                                                     </form> </td>
-
                                                     @elseif($registro[10]=="")
-                                                    <td><form action="{{route('pause')}}" method="GET">
-
-                                                        <input type="hidden" name="id_but" id="id_but" value="{{$registro[4]}}">
+                                                    <td><form action="{{ route('pause') }}" method="GET" >
+                                                        <input type="hidden" name="id_but" id="id_but" value="{{ $registro[4] }}">
                                                         <input type="hidden" name="funcion" id="funcion" value="pausar">
-                                                        <input type="submit" value="pausar">
-                                                    </form> </td>
+                                                        <textarea name="motivo" id="motivo" cols="10" rows="2"></textarea>
+                                                        <input type="submit" value="Pausar" >
+                                                    </form>
+                                                </td>
                                                     @else
                                                     <td><form action="{{route('pause')}}" method="GET">
-
                                                         <input type="hidden" name="id_but" id="id_but" value="{{$registro[4]}}">
                                                         <input type="hidden" name="funcion" id="funcion" value="continuar">
                                                         <input type="submit" value="Continuar">
                                                     </form></td>
                                                     @endif
                                                 </tr>
-
 
                                                @endforeach
                                             </tbody>
@@ -366,5 +363,7 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+
 
                     @endsection

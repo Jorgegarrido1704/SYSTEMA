@@ -17,6 +17,8 @@ use App\Models\Paros;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Mail\Mailables;
 use App\Models\regfull;
+use App\Models\ParosProd;
+
 
 
 class generalController extends Controller
@@ -836,9 +838,15 @@ class generalController extends Controller
     public function pause(Request $request){
         $id=$request->input('id_but');
         $funcion=$request->input('funcion');
+        $motivo =$request->input('motivo');
+
         $cat=session('categoria');
         $tiempo=date('d-m-Y H:i');
         $id_Cominezo=$request->input('id_butC');
+        if($motivo==""){
+            $motivo="Sin motivo Por " .$cat;
+
+        }
         if(!empty($id_Cominezo)){
             switch($cat){
                 case 'cort':
@@ -865,21 +873,71 @@ class generalController extends Controller
             switch($cat){
                 case 'cort':
                     $update=DB::table('timesharn')->where('wo','=',$id)->update(['cutF'=>$tiempo]);
+                    $alta=DB::table('registro')->where('wo','=',$id)->update(['paro'=>$motivo]);
+                    $prod= new ParosProd();
+                    $prod->fecha=$tiempo;
+                    $prod->area='Corte';
+                    $prod->trabajo=$motivo;
+                    $prod->finhora='';
+                    $prod->id_request=$id;
+                    $prod->save();
                     break;
                 case 'ensa':
                     $update=DB::table('timesharn')->where('wo','=',$id)->update(['ensaF'=>$tiempo]);
+                    $alta=DB::table('registro')->where('wo','=',$id)->update(['paro'=>$motivo]);
+                    $prod= new ParosProd();
+                    $prod->fecha=$tiempo;
+                    $prod->area='Ensamble';
+                    $prod->trabajo=$motivo;
+                    $prod->finhora='';
+                    $prod->id_request=$id;
+                    $prod->save();
                     break;
                 case 'libe':
                     $update=DB::table('timesharn')->where('wo','=',$id)->update(['termF'=>$tiempo]);
+                    $alta=DB::table('registro')->where('wo','=',$id)->update(['paro'=>$motivo]);
+                    $prod= new ParosProd();
+                    $prod->fecha=$tiempo;
+                    $prod->area='Liberacion';
+                    $prod->trabajo=$motivo;
+                    $prod->finhora='';
+                    $prod->id_request=$id;
+                    $prod->save();
                     break;
                 case 'loom':
             $update=DB::table('timesharn')->where('wo','=',$id)->update(['loomF'=>$tiempo]);
+            $alta=DB::table('registro')->where('wo','=',$id)->update(['paro'=>$motivo]);
+            $prod= new ParosProd();
+                    $prod->fecha=$tiempo;
+                    $prod->area='Loom';
+                    $prod->trabajo=$motivo;
+                    $prod->finhora='';
+                    $prod->id_request=$id;
+                    $prod->save();
             case 'cali':
                 $update=DB::table('timesharn')->where('wo','=',$id)->update(['qlyF'=>$tiempo]);
+                $alta=DB::table('registro')->where('wo','=',$id)->update(['paro'=>$motivo]);
+                $prod= new ParosProd();
+                    $prod->fecha=$tiempo;
+                    $prod->area='Calidad';
+                    $prod->trabajo=$motivo;
+                    $prod->finhora='';
+                    $prod->id_request=$id;
+                    $prod->save();
                 break;
             case 'emba':
         $update=DB::table('timesharn')->where('wo','=',$id)->update(['embaF'=>$tiempo]);
-        break;
+        $alta=DB::table('registro')->where('wo','=',$id)->update(['paro'=>$motivo]);
+        $prod= new ParosProd();
+                    $prod->fecha=$tiempo;
+                    $prod->area='Embarque';
+                    $prod->trabajo=$motivo;
+                    $prod->finhora='';
+                    $prod->id_request=$id;
+                    $prod->save();
+            break;
+        default:
+            break;
 
     }
 }else if(!empty($id) && $funcion=="continuar"){
@@ -891,6 +949,11 @@ class generalController extends Controller
             $tiempodiff=strtotime($fin) - strtotime($ini);
             $newTime=date('d-m-Y h:i',(strtotime($tiempo)-$tiempodiff));
             $update=DB::table('timesharn')->where('wo','=',$id)->update(['cut'=>$newTime,'cutF'=>'']);
+            $buscarReg=DB::table('registro')->where('wo','=',$id)->first();
+            if($buscarReg){
+                $registro=DB::table('registro_paro_corte')->where('id_request','=',$id)->orderBy('id','desc')->limit(1)->update(['finhora'=>$newTime]);
+                $alta=DB::table('registro')->where('wo','=',$id)->update(['paro'=>'']);
+            }
             break;
         case 'ensa':
             $select=DB::table('timesharn')->where( 'wo','=',$id)->first();
@@ -899,6 +962,11 @@ class generalController extends Controller
             $tiempodiff=strtotime($fin) - strtotime($ini);
             $newTime=date('d-m-Y h:i',(strtotime($tiempo)-$tiempodiff));
             $update=DB::table('timesharn')->where('wo','=',$id)->update(['ensa'=>$newTime,'ensaF'=>'']);
+            $buscarReg=DB::table('registro')->where('wo','=',$id)->first();
+            if($buscarReg){
+                $registro=DB::table('registro_paro_corte')->where('id_request','=',$id)->orderBy('id','desc')->limit(1)->update(['finhora'=>$newTime]);
+                $alta=DB::table('registro')->where('wo','=',$id)->update(['paro'=>'']);
+            }
             break;
         case 'libe':
             $select=DB::table('timesharn')->where( 'wo','=',$id)->first();
@@ -907,6 +975,11 @@ class generalController extends Controller
             $tiempodiff=strtotime($fin) - strtotime($ini);
             $newTime=date('d-m-Y h:i',(strtotime($tiempo)-$tiempodiff));
             $update=DB::table('timesharn')->where('wo','=',$id)->update(['term'=>$newTime,'termF'=>'']);
+            $buscarReg=DB::table('registro')->where('wo','=',$id)->first();
+            if($buscarReg){
+                $registro=DB::table('registro_paro_corte')->where('id_request','=',$id)->orderBy('id','desc')->limit(1)->update(['finhora'=>$newTime]);
+                $alta=DB::table('registro')->where('wo','=',$id)->update(['paro'=>'']);
+            }
             break;
         case 'loom':
             $select=DB::table('timesharn')->where( 'wo','=',$id)->first();
@@ -915,6 +988,11 @@ class generalController extends Controller
             $tiempodiff=strtotime($fin) - strtotime($ini);
             $newTime=date('d-m-Y h:i',(strtotime($tiempo)-$tiempodiff));
             $update=DB::table('timesharn')->where('wo','=',$id)->update(['loom'=>$newTime,'loomF'=>'']);
+            $buscarReg=DB::table('registro')->where('wo','=',$id)->first();
+            if($buscarReg){
+                $registro=DB::table('registro_paro_corte')->where('id_request','=',$id)->orderBy('id','desc')->limit(1)->update(['finhora'=>$newTime]);
+                $alta=DB::table('registro')->where('wo','=',$id)->update(['paro'=>'']);
+            }
     case 'cali':
         $select=DB::table('timesharn')->where( 'wo','=',$id)->first();
             $ini=$select->qly;
@@ -922,6 +1000,11 @@ class generalController extends Controller
             $tiempodiff=strtotime($fin) - strtotime($ini);
             $newTime=date('d-m-Y h:i',(strtotime($tiempo)-$tiempodiff));
             $update=DB::table('timesharn')->where('wo','=',$id)->update(['qly'=>$newTime,'qlyF'=>'']);
+            $buscarReg=DB::table('registro')->where('wo','=',$id)->first();
+            if($buscarReg){
+                $registro=DB::table('registro_paro_corte')->where('id_request','=',$id)->orderBy('id','desc')->limit(1)->update(['finhora'=>$newTime]);
+                $alta=DB::table('registro')->where('wo','=',$id)->update(['paro'=>'']);
+            }
         break;
     case 'emba':
         $select=DB::table('timesharn')->where( 'wo','=',$id)->first();
@@ -930,6 +1013,14 @@ class generalController extends Controller
         $tiempodiff=strtotime($fin) - strtotime($ini);
         $newTime=date('d-m-Y h:i',(strtotime($tiempo)-$tiempodiff));
         $update=DB::table('timesharn')->where('wo','=',$id)->update(['emba'=>$newTime,'embaF'=>'']);
+        $buscarReg=DB::table('registro')->where('wo','=',$id)->first();
+        if($buscarReg){
+            $registro=DB::table('registro_paro_corte')->where('id_request','=',$id)->orderBy('id','desc')->limit(1)->update(['finhora'=>$newTime]);
+            $alta=DB::table('registro')->where('wo','=',$id)->update(['paro'=>'']);
+        }
+        break;
+    default:
+        break;
 }
 
 
