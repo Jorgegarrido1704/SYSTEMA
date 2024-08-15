@@ -740,7 +740,7 @@ class generalController extends Controller
         $hora=date('H:i');
         $Paro= new Paros;
         $Paro->fill([
-            'id_maquina'=>'',
+            'id_maquina'=>$NomEq,
             'area'=>$area,
             'tipoMant'=>'',
             'periMant'=>'',
