@@ -246,7 +246,7 @@
                                     <h5 class="m-0 font-weight-bold text-primary">Assistence Request</h5>
                                 </div>
                                 <div class="card-body" style="overflow-y: auto; height: 360px;" id='work'>
-                                    <table>
+   <!--                                 <table>
                                         <thead>
                                             <tr>
                                                 <th>Equipo</th>
@@ -291,7 +291,7 @@
                                                 </form>
                                             </tr>
                                         </tbody>
-                                    </table>
+                                    </table> -->
                                 </div>
                             </div>
                         </div>

@@ -817,30 +817,9 @@ public function mantCali(Request $request){
             'inimant'=>'',
             'finhora'=>''
         ]);
-
-
         if ($maint->save()) {
-            $hoy=date('d-m-Y');
-        $hora=date('H:i');
-        $Paro= new Paros;
-        $Paro->fill([
-            'fecha'=>$hoy,
-            'hora'=>$hora,
-            'equipo'=>$equip,
-            'nombreEquipo'=>$NomEq,
-            'dano'=>$dano,
-            'quien'=>$value,
-            'area'=>$area,
-            'atiende'=>'Nadie aun',
-            'trabajo'=>'',
-            'Tiempo'=>'',
-            'finhora'=>''
-        ]);
-        if ($Paro->save()) {
-            return redirect('/calidad')->with('success', 'Data successfully saved.');
-        } else {
             return redirect('/calidad')->with('error', 'Failed to save data.');
-        }}
+        }
 
 }
     public function matCali(Request $request){

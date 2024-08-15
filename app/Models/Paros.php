@@ -9,18 +9,27 @@ class Paros extends Model
 {
     use HasFactory;
     public $fillable=[
-        'fecha',
-        'hora',
-        'equipo',
-        'nombreEquipo',
-        'dano',
-        'quien',
+        'id_maquina',
         'area',
-        'atiende',
-        'trabajo',
-        'Tiempo',
-        'finhora'
+        'tipoMant',
+        'periMant',
+        'descTrab',
+        'equipo',
+        'estatus',
+        'comentarios',
+        'fechReq',
+        'fechaProg',
+        'fechaEntre',
+        'horaIniServ',
+        'horaFinServ',
+        'ttServ',
+        'solPor',
+        'SupMant',
+        'tecMant',
+        'ValGer',
+        'id_falla',
+
     ];
-    protected $table='registro_paro_corte';
+    protected $table='registro_mant';
     public $timestamps = false;
 }

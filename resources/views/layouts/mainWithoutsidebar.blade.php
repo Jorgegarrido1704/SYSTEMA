@@ -111,16 +111,16 @@
     <script src="{{ asset('/dash/js/demo/chart-area-demo.js')}}"></script>
     <script src="{{ asset('/dash/js/demo/chart-pie-demo.js')}}"></script>
     <script src="{{ asset('/dash/js/demo/chart-line-ing.js')}}"></script>
-   
+
 
     <script>
          function changework(action) {
     var areaToChange = document.getElementById('work');
     var TableChange = document.getElementById('tableChange');
-
     // Clear existing content
     areaToChange.innerHTML = '';
     TableChange.innerHTML='';
+
 
     // Depending on the selected action, update the area content
     switch (action) {
@@ -292,62 +292,34 @@
                                     </div>
             `;
             break;
-        case 'Maint':
+        case 'Maintanience':
             // Default case: Show default table content
             areaToChange.innerHTML = `
             <div class="row" >
-                                        <table>
-                                            <thead>
-                                                <tr>
-                                                    <th>Equipo</th>
-                                                    <th>Trabajo solicitado</th>
-                                                    <th>Daño</th>
-                                                    <th>Area</th>
-                                                    <th>Guardar </th>
-                                                 </tr>
-                                            </thead>
-                                            <tbody>
-                                            <tr>
-
-                                        <form  action="{{ route('maintananceGen')}}" method="POST">
+                                 <form  action="{{ route('maintananceGen')}}" method="POST">
                                         @csrf
-                                       <td align="center"><select name="equipo" id="equipo" onchange="updateSecondSelect()" required >
-                                      <option selected="selected"> </option>
-                                     <option value="Mantenimiento">Mantenimiento</option>
-                                     <option value="Ingenieria">Ingenieria</option>
-                                     <option value="Calidad">Calidad</option>
-                                     <option value="Almacen">Almacen</option>
-
-                                     </select></td>
-                                                    <td align="center">
-                                                       <input type="text" name="nom_equipo" id="nom_equipo" >
-                                                    <td align="center">
-                                                        <select name="dano" id="dano"   > </select>
-                                                    </td>
-                                                    <td><select name="area" id="area" >
-                                                        <option value=""></option>
-                                                        <option value="Tablero_Esther">Tablero Esther</option>
-                                                        <option value="Tablero_Saul">Tableros Saul</option>
-                                                        <option value="Tablero_David">Tableros Jessi</option>
-                                                        <option value="Liberacion">Liberacion</option>
-                                                        <option value="Corte">Corte</option>
-                                                        <option value="Almacen">Alamacen</option>
-                                                        <option value="Tableros_Brandon">Tableros Brandon</option>
-                                                        <option value="Tableros_Alejandra">Tableros Alejenadra</option>
-                                                        <option value="Tableros_Zamarripa">Tableros Zamarripa</option>
-                                                        <option value="Loom">Loom</option>
-                                                        <option value="Calidad">Calidad</option>
-                                                    </select></td>
-                                                       <td align="center"><input type="submit" id="submit" value="Send"> </td>
-                                                    </form>
-                                                   </tr>
-
-                                            </tbody>
-                                        </table>
-
-
-
-                            </div>`; TableChange.innerHTML = `
+                                            <div class="form-group">
+                                        <label for="nom_equipo">Equipo:</label>
+                                       <select id="nom_equipo" name="nom_equipo" class="form-control" required>
+                                         <option value=""></option>
+                                              <option value="S/N">S/N</option>
+                                            </select>
+                                            </div>
+                                            <div class="form-group">
+                                         <label for="dano">Daño del equipo</label>
+                                        <input type="text" id="dano" name="dano" class="form-control" required>
+                                        </div>
+                                        <div class="form-group">
+                                        <label for="quien">Quien solicita</label>
+                                        <input type="text" id="quien" name="quien" class="form-control" required>
+                                        </div>
+                                        <div class="form-group">
+                                        <label for="area">Area que solicita</label>
+                                        <input type="text" id="area" name="area" class="form-control"  required>
+                                        </div>
+                                        </form>
+                            </div>`;
+                             TableChange.innerHTML = `
             <div class="row" >
                                         <table>
                                             <thead>
@@ -377,8 +349,6 @@
             case ('full'):
             // Default case: Show default table content
             areaToChange.innerHTML = `
-
-
                                         <form  action="{{ route('regfull')}}" method="POST">
                                         @csrf
                                             <div class="form-group">

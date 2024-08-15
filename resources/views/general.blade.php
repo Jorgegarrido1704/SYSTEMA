@@ -128,15 +128,40 @@
                                         aria-labelledby="dropdownMenuLink">
                                        <a class="dropdown-item" href="#" onclick="changework('desviation')">Desviation</a>
                                     <!-- <a class="dropdown-item" href="#" onclick="changework('Materials')">Material Requirement</a>
-                                        <a class="dropdown-item" href="#" onclick="changework('Maint')">Maintanience</a>
                                         <a class="dropdown-item" href="#" onclick="changework('Kits')">Requerimiento Kits</a>-->
+                                        <a class="dropdown-item" href="#" onclick="changework('Maintanience')">Maintanience</a>
                                         <a class="dropdown-item" href="{{'general'}}" onclick="changework('full')">Requerimiento full size</a>
                                     </div>
                                 </div>
                                 </div>
                                 <div class="card-body" style="overflow-y: auto; height: 360px;" id='work'>
                                     <div class="row" >
+                                        <form  action="{{ route('maintananceGen')}}" method="POST">
+                                               @csrf
+                                                   <div class="form-group">
+                                               <label for="nom_equipo">Equipo:</label>
+                                              <select id="nom_equipo" name="nom_equipo" class="form-control" required>
+                                                <option value=""></option>
+                                                     <option value="S/N">S/N</option>
+                                                   </select>
+                                                   </div>
+                                                   <div class="form-group">
+                                                <label for="dano">Daño del equipo</label>
+                                               <input type="text" id="dano" name="dano" class="form-control" required>
+                                               </div>
+                                               <div class="form-group">
+                                               <label for="quien">Quien solicita</label>
+                                               <input type="text" id="quien" name="quien" class="form-control" required>
+                                               </div>
+                                               <div class="form-group">
+                                               <label for="area">Area que solicita</label>
+                                               <input type="text" id="area" name="area" class="form-control"  required>
+                                               </div>
 
+                                               <input type="submit" id="submit" value="Send">
+                                               </form>
+                                   </div>
+                                  <!--  <div class="row" >
                                         <form  action="{{ route('regfull')}}" method="POST">
                                             @csrf
                                                 <div class="form-group">
@@ -183,7 +208,7 @@
                                             </div>
                                            </tr>
                                             </form>
-                            </div>
+                            </div> -->
 
                                 </div>
                             </div>

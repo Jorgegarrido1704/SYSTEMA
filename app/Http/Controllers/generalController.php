@@ -712,43 +712,53 @@ class generalController extends Controller
 }
     public function maintananceGen(Request $request){
         $value=session('user');
-        $equip=$request->input('equipo');
         $NomEq=$request->input('nom_equipo');
         $dano=$request->input('dano');
         $area=$request->input('area');
+        $quien=$request->input('quien');
         $today = date('d-m-Y H:i');
         $maint= new Maintanance;
         $maint->fill([
             'fecha'=>$today,
-            'equipo'=>$equip,
+            'equipo'=>'Mantenimiento',
             'nombreEquipo'=>$NomEq,
             'dano'=>$dano,
-            'quien'=>$value,
+            'quien'=>$quien,
             'area'=>$area,
             'atiende'=>'Nadie aun',
             'trabajo'=>'',
             'Tiempo'=>'',
-            'inimant'=>$today,
+            'inimant'=>'',
             'finhora'=>''
         ]);
 
 
         if ($maint->save()) {
+            $idUlt=DB::table('registro_paro')->where('equipo','Mantenimiento')->orderBy('id','desc')->first();
+            $id_f=$idUlt->id;
             $hoy=date('d-m-Y');
         $hora=date('H:i');
         $Paro= new Paros;
         $Paro->fill([
-            'fecha'=>$hoy,
-            'hora'=>$hora,
-            'equipo'=>$equip,
-            'nombreEquipo'=>$NomEq,
-            'dano'=>$dano,
-            'quien'=>$value,
+            'id_maquina'=>'',
             'area'=>$area,
-            'atiende'=>'Nadie aun',
-            'trabajo'=>'',
-            'Tiempo'=>'',
-            'finhora'=>''
+            'tipoMant'=>'',
+            'periMant'=>'',
+            'descTrab'=>'',
+            'equipo'=>$NomEq,
+            'estatus'=>'',
+            'comentarios'=>'',
+            'fechReq'=>$hoy,
+            'fechaProg'=>'',
+            'fechaEntre'=>'',
+            'horaIniServ'=>'',
+            'horaFinServ'=>'',
+            'ttServ'=>0,
+            'solPor'=>$quien,
+            'SupMant'=>'Javier Cervantes',
+            'tecMant'=>'',
+            'ValGer'=>'',
+            'id_falla'=>$id_f
         ]);
         if ($Paro->save()) {
             return redirect('/general')->with('success', 'Data successfully saved.');
