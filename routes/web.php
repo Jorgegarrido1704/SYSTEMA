@@ -120,4 +120,5 @@ Route::controller(planingController::class)->group(function(){
 
     Route::get('/planing',[planingController::class,'planning'])->name('planning');
     Route::get('/pos',[planingController::class,'pos'])->name('pos');
+    Route::get('/codeBarPlan',[planingController::class,'codeBarPlan'])->name('codeBarPlan');
 });

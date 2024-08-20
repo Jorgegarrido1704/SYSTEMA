@@ -239,10 +239,23 @@
                             <!-- AREAS -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h5 class="m-0 font-weight-bold text-primary">Ordenes Cargadas por Mes</h5>
+                                    <h5 class="m-0 font-weight-bold text-primary">Escaneo ordenes</h5>
                                 </div>
                                 <div class="card-body" style="overflow-y: auto; height: 360px;">
-                                    <canvas id="planning"></canvas>
+                                    <form action="{{route('codeBarPlan')}}" method="GET">
+                                        <div class="form-group">
+                                            <label for="wo_scan" class="form-label">Registra la wo a escanear</label>
+                                            </div>
+                                            <div class="form-group">
+                                            <input type="text" name="wo_scan" id="wo_scan" class="form-control" autofocus>
+                                            </div>
+                                            <div class="form-group">
+                                            <button class="btn btn-primary" type="submit"> Escanear</button>
+                                            </div>
+
+                                    </form>
+
+
                                 </div>
                             </div>
                         </div>
@@ -253,13 +266,10 @@
                             <!-- AREAS -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h5 class="m-0 font-weight-bold text-primary">Registros</h5>
+                                    <h5 class="m-0 font-weight-bold text-primary">Registros por mes</h5>
                                 </div>
                                 <div class="card-body" style="overflow-y: auto; height: 360px;" id="tableChange">
-                                    <div class="row" >
-
-
-                                    </div>
+                                    <canvas id="planning"></canvas>
                                 </div>
                             </div>
                         </div>
@@ -277,6 +287,7 @@
                                 </div>
                             </div>
                         </div>-->
+
                         <div class="col-lg-6 mb-4" style="max-width: 40%">
                             <!-- AREAS -->
                             <div class="card shadow mb-4">
@@ -284,10 +295,7 @@
                                     <h5 class="m-0 font-weight-bold text-primary">Table of Works </h5>
                                 </div>
                                 <div class="card-body" style="overflow-y: auto; height: 360px;" id="tableChange">
-                                    <div class="row" >
 
-
-                                    </div>
                                 </div>
                             </div>
                         </div>
