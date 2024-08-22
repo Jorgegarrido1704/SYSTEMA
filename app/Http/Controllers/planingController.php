@@ -335,6 +335,7 @@ return view('planing',['des'=>$des,'value'=>$value,'cat'=>$cat,'post'=>$post,'da
 
 
                             $recipients = [
+                                'emontano@mx.bergstrominc.com',
                                'jcervera@mx.bergstrominc.com',
                                 'jcrodriguez@mx.bergstrominc.com',
 
