@@ -517,6 +517,7 @@ select {
                                                     <option value="Carlos R">Carlos Rodriguez</option>
                                                     <option value="Paola S">Paola Silva</option>
                                                     <option value="Nancy A">Nancy Aldana</option>
+                                                    <option value="Jorge G">Jorge Garrido</option>
 
                                             </select>
                                             <input type="submit" value="Submit">
