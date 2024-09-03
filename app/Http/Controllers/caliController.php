@@ -822,7 +822,7 @@ public function mantCali(Request $request){
         }
 
 }
-    public function matCali(Request $request){
+public function matCali(Request $request){
 
             $value=session('user');
             $today=date("d-m-Y");

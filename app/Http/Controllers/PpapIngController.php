@@ -298,6 +298,7 @@ foreach($calidad as $regcal){
 }
 
             $recipients = [
+                'jguillen@mx.bergstrominc.com',
                 'emontano@mx.bergstrominc.com',
                 'jcervera@mx.bergstrominc.com',
                 'jcrodriguez@mx.bergstrominc.com',

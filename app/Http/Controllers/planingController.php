@@ -335,11 +335,12 @@ return view('planing',['des'=>$des,'value'=>$value,'cat'=>$cat,'post'=>$post,'da
 
 
                             $recipients = [
+                                'jguillen@mx.bergstrominc.com',
+                                'jlopez@mx.bergstrominc.com',
                                 'emontano@mx.bergstrominc.com',
                                'jcervera@mx.bergstrominc.com',
                                 'jcrodriguez@mx.bergstrominc.com',
-
-                                'david-villa88@outlook.com',
+                                'dvillalpando@mx.bergstrominc.com',
                                 'egaona@mx.bergstrominc.com',
                                 'mvaladez@mx.bergstrominc.com',
                                 'jolaes@mx.bergstrominc.com',
