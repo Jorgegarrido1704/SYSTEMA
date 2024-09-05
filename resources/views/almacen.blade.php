@@ -136,11 +136,17 @@
                             <!-- AREAS -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h5 class="m-0 font-weight-bold text-primary"> </h5>
+                                    <h5 class="m-0 font-weight-bold text-primary">Concentrado de materiales</h5>
                                 </div>
                                 <div class="card-body" style="overflow-y: auto; height: 360px;" id="tableChange">
                                     <div align="center">
 
+                                         <form action="{{route('concentrado')}}" method="GET">
+                                           
+                                            <div>     <label for="Works">Work Orders</label>      </div>
+                                            <div> <textarea name="Works" id="Works" cols="30" rows="4" required></textarea></div>
+                                         <div> <input type="submit" name="value" id="value" value="Buscar"> </div>
+                                        </form>
                                     </div>
 
                                 </div>

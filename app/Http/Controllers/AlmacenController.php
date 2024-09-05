@@ -6,6 +6,8 @@ use App\Models\Almacen;
 use App\Models\entSalAlamacen;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 class AlmacenController extends Controller
 {
 
@@ -207,4 +209,51 @@ if(!empty($woItem)){
 
         }
 
+        public function concentrado(Request $request){
+            $works=$request->input('Works');
+            $work=explode(",",$works);
+            $spreadsheet = new Spreadsheet();
+            $sheet = $spreadsheet->getActiveSheet();
+            $t = 2;
+            $headers = [
+                'A1' => 'Numero de parte ',
+                'B1' => 'Work order',
+                'C1' => 'Item',
+                'D1' => 'Cantidad'
+
+            ];
+
+            foreach ($headers as $cell => $header) {
+                $sheet->setCellValue($cell, $header);
+            }
+
+            for ($i=0;$i<count($work);$i++){
+                if(strlen($work[$i])==5){
+                    $work[$i]='0'.$work[$i];
+                }else if (strlen($work[$i])==4){
+                    $work[$i]='00'.$work[$i];
+                }
+                $wo =DB::table('registro')->where('wo', '=', $work[$i])->get();
+                foreach ($wo as $wos){
+                    $np=$wos->NumPart;
+                    $qty_reg=$wos->Qty;
+                }
+                $trabajo=DB::table('datos')->where('part_num', '=', $np)->get();
+                foreach ($trabajo as $trabajos){
+                    $sheet->setCellValue('A' . $t, $np);
+        $sheet->setCellValue('B' . $t, $work[$i]);
+        $sheet->setCellValue('C' . $t, $trabajos->item);
+        $sheet->setCellValue('D' . $t, $trabajos->qty*$qty_reg);
+        $t++;
+                }}
+                $writer = new Xlsx($spreadsheet);
+
+                header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+                header('Content-Disposition: attachment;filename="Explocion de materiales.xlsx"');
+                header('Cache-Control: max-age=0');
+
+                $writer->save('php://output');
+
+        
+        }
 }

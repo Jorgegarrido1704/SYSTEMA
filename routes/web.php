@@ -85,6 +85,7 @@ Route::controller(AlmacenController::class)->group(function (){
     Route::get('/saveparcial',[AlmacenController::class,'store'])->name('saveparcial');
     Route::get('/BomAlm',[AlmacenController::class,'BomAlm'])->name('BomAlm');
     Route::get('/entradas',[AlmacenController::class,'entradas'])->name('entradas');
+    Route::get('/concentrado',[AlmacenController::class,'concentrado'])->name('concentrado');
 
 });
 
