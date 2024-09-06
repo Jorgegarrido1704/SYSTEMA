@@ -211,40 +211,29 @@ if(!empty($woItem)){
 
         public function concentrado(Request $request){
             $works=$request->input('Works');
+            $cant=$request->input('cant');
             $work=explode(",",$works);
+            $cants=explode(",",$cant);
             $spreadsheet = new Spreadsheet();
             $sheet = $spreadsheet->getActiveSheet();
             $t = 2;
             $headers = [
                 'A1' => 'Numero de parte ',
-                'B1' => 'Work order',
-                'C1' => 'Item',
-                'D1' => 'Cantidad'
+                'B1' => 'Item',
+                'C1' => 'Cantidad'
 
             ];
-
             foreach ($headers as $cell => $header) {
                 $sheet->setCellValue($cell, $header);
             }
-
             for ($i=0;$i<count($work);$i++){
-                if(strlen($work[$i])==5){
-                    $work[$i]='0'.$work[$i];
-                }else if (strlen($work[$i])==4){
-                    $work[$i]='00'.$work[$i];
-                }
-                $wo =DB::table('registro')->where('wo', '=', $work[$i])->get();
-                foreach ($wo as $wos){
-                    $np=$wos->NumPart;
-                    $qty_reg=$wos->Qty;
-                }
-                $trabajo=DB::table('datos')->where('part_num', '=', $np)->get();
+
+                $trabajo=DB::table('datos')->where('part_num', '=', $work[$i])->get();
                 foreach ($trabajo as $trabajos){
-                    $sheet->setCellValue('A' . $t, $np);
-        $sheet->setCellValue('B' . $t, $work[$i]);
-        $sheet->setCellValue('C' . $t, $trabajos->item);
-        $sheet->setCellValue('D' . $t, $trabajos->qty*$qty_reg);
-        $t++;
+                    $sheet->setCellValue('A' . $t, $work[$i]);
+                    $sheet->setCellValue('B' . $t, $trabajos->item);
+                    $sheet->setCellValue('C' . $t, $trabajos->qty*$cants[$i]);
+                    $t++;
                 }}
                 $writer = new Xlsx($spreadsheet);
 
@@ -254,6 +243,6 @@ if(!empty($woItem)){
 
                 $writer->save('php://output');
 
-        
+
         }
 }

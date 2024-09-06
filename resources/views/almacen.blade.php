@@ -142,9 +142,10 @@
                                     <div align="center">
 
                                          <form action="{{route('concentrado')}}" method="GET">
-                                           
-                                            <div>     <label for="Works">Work Orders</label>      </div>
+                                            <div>     <label for="Works">Numero de parte</label>      </div>
                                             <div> <textarea name="Works" id="Works" cols="30" rows="4" required></textarea></div>
+                                            <div>     <label for="cant">Cantidad</label>      </div>
+                                            <div> <textarea name="cant" id="cant" cols="30" rows="4" required></textarea></div>
                                          <div> <input type="submit" name="value" id="value" value="Buscar"> </div>
                                         </form>
                                     </div>
