@@ -307,7 +307,8 @@ foreach($calidad as $regcal){
                 'dvillalpando@mx.bergstrominc.com',
                 'jolaes@mx.bergstrominc.com',
                 'lramos@mx.bergstrominc.com',
-                'emedina@mx.bergstrominc.com'
+                'emedina@mx.bergstrominc.com',
+                'vpichardo@mx.bergstrominc.com'
 
             ];
             Mail::to($recipients)->send(new \App\Mail\PPAPING($subject,$content));

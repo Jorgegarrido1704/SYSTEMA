@@ -345,8 +345,8 @@ return view('planing',['des'=>$des,'value'=>$value,'cat'=>$cat,'post'=>$post,'da
                                 'mvaladez@mx.bergstrominc.com',
                                 'jolaes@mx.bergstrominc.com',
                                 'lramos@mx.bergstrominc.com',
-                                'emedina@mx.bergstrominc.com'
-                               /* 'jgarrido@mx.bergstrominc.com'*/
+                                'emedina@mx.bergstrominc.com',
+                                'jgarrido@mx.bergstrominc.com'
 
                             ];
                             Mail::to($recipients)->send(new \App\Mail\PPAPING($subject,$content));}
