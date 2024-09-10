@@ -28,7 +28,40 @@ class AlmacenController extends Controller
             $listas[$i][4]=$rowInfo->wo;
             $i++;
         }
-        return view('almacen',['value'=>$value,'listas'=>$listas,'cat'=>$cat]);}
+        $buscardesv=DB::table("desvation")->select("*")->where('count','!=',4)->where('count','!=',5)->get();
+            $i=0;$desviations=[];
+            foreach($buscardesv as $rowdes){
+                $desviations[$i][0]=$rowdes->id;
+                $desviations[$i][1]=$rowdes->Mafec;
+                $desviations[$i][2]=$rowdes->porg;
+                $desviations[$i][3]=$rowdes->psus;
+                $desviations[$i][4]=$rowdes->cliente;
+                if($rowdes->fcom==""){
+                    $desviations[$i][5]="Sin Firmar";
+                }else{
+                    $desviations[$i][5]="Firmada";
+                }if($rowdes->fing==""){
+                    $desviations[$i][6]="Sin Firmar";
+                }else{
+                    $desviations[$i][6]="Firmada";
+                }if($rowdes->fcal==""){
+                    $desviations[$i][7]="Sin Firmar";
+                }else{
+                    $desviations[$i][7]="Firmada";
+                }if($rowdes->fpro==""){
+                    $desviations[$i][8]="Sin Firmar";
+                }else{
+                    $desviations[$i][8]="Firmada";
+                }
+                if($rowdes->fimm==""){
+                    $desviations[$i][9]="Sin Firmar";
+                }else{
+                    $desviations[$i][9]="Firmada";
+                }
+                $desviations[$i][10]=$rowdes->fecha;
+                $i++;
+            }
+        return view('almacen',['value'=>$value,'listas'=>$listas,'cat'=>$cat,'desviations'=>$desviations]);}
     }
 
     public function store(Request $request)    {
@@ -245,4 +278,52 @@ if(!empty($woItem)){
 
 
         }
-}
+        public function desviationAlm(Request $request){
+            $value = session('user');
+            $modelo = $request->input('modelo');
+            $npo = $request->input('numPartOrg');
+            $nps = $request->input('numPartSus');
+            $time = $request->input('time');
+            $cant = $request->input('cant');
+            $text = $request->input('text');
+            $evi = $request->input('evi');
+            $acc = $request->input('acc');
+            $busclient = DB::select("SELECT client FROM precios WHERE pn='$modelo'");
+            foreach ($busclient as $row) {
+                $cliente = $row->client;    }
+            $user = session('user');
+            $today = date('d-m-Y H:i');
+            $desv = new desviation();
+            if(empty($cliente)){
+                $cliente='';
+            }
+            $desv->fill([
+                'fecha'=>$today,
+                'cliente'=>$cliente,
+                'quien'=>$user,
+                'Mafec' => $modelo,
+                'porg' => $npo,
+                'psus' => $nps,
+                'peridoDesv' => $time,
+                'clsus' => $cant,
+                'Causa' => $text,
+                'accion' => $acc,
+                'evidencia' => $evi,
+                'fcal'=>"",
+                'fcom'=>"",
+                'fpro'=>"",
+                'fing'=>"",
+                'fimm'=>"",
+                'rechazo'=>"",    ]);
+        
+            if ($desv->save()) {
+                return redirect('/almacen')->with('success', 'Data successfully saved.');
+            } else {
+                return redirect('/almacen')->with('error', 'Failed to save data.');
+            }
+        }
+
+
+
+
+    }

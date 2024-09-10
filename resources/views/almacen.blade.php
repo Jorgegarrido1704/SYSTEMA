@@ -154,6 +154,119 @@
                             </div>
                         </div>
 
+                        <div class="col-lg-6 mb-4">
+                            <!-- AREAS  DESVIATION-->
+                            <div class="card shadow mb-4">
+                                <div
+                                class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h5 class="m-0 font-weight-bold text-primary">Set New Work</h5>
+                                <div class="dropdown no-arrow">
+                                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>x
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                        aria-labelledby="dropdownMenuLink">
+                                     <!--  <a class="dropdown-item" href="#" onclick="changework('desviation')">Desviation</a>
+                                     <a class="dropdown-item" href="#" onclick="changework('Materials')">Material Requirement</a>
+                                        <a class="dropdown-item" href="#" onclick="changework('Kits')">Requerimiento Kits</a>
+                                        <a class="dropdown-item" href="{{'general'}}" onclick="changework('Maintanience')">Maintanience</a>
+                                        <a class="dropdown-item" href="#" onclick="changework('full')">Requerimiento full size</a>-->
+                                    </div>
+                                </div>
+                                </div>
+                                <div class="card-body" style="overflow-y: auto; height: 360px;" id='work'>
+                                <div class="desv" align="center">
+                            <form  id="formula" action="{{ route('desviationAlm') }}" method="POST">
+                                @csrf
+                    <div class="form-group">
+                        <label for="modelo">Modelo Afectado:</label>
+                        <input type="text" class="form-control" name="modelo" id="modelo" placeholder="B222930" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="numPartOrg">No° de parte original:</label>
+                        <input type="text" class="form-control" name="numPartOrg" id="numPartOrg" placeholder="TT2-171" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="numPartSus">No° parte sustituto:</label>
+                        <input type="text" class="form-control" name="numPartSus" id="numPartSus" placeholder="DT1-17" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="time">Periodo de la desviacion:</label>
+                        <input type="text" class="form-control" name="time" id="time" placeholder="12-12-2023" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cant">Cantidad limitada de piezas a sustituir:</label>
+                        <input type="number" class="form-control" name="cant" id="cant" placeholder="1200" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="text">Causa de desviacion:</label>
+                        <input class="form-control" name="text" id="text" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="acc">Accion preventiva:</label>
+                        <input class="form-control" name="acc" id="acc" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="evi">Evidencia:</label>
+                        <input class="form-control" name="evi" id="evi" rows="3" required></textarea>
+                    </div>
+
+
+                    <input type="submit" class="btn btn-primary" name="enviar" id="enviar" value="Save">
+                </form>            </div>
+                                  
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 mb-4">
+                            <!-- AREAS -->
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h5 class="m-0 font-weight-bold text-primary"> Tabla desviaciones</h5>
+                                </div>
+                                <div class="card-body" style="overflow-y: auto; height: 360px;">
+                                <div class="row" >
+                                        <table>
+                                            <thead>
+                                                <th>Folio</th>
+                                                <th>Modelo</th>
+                                                <th>Parte Original</th>
+                                                <th>Parte Sustituto</th>
+                                                <th>Cliente</th>
+                                                <th>Firma Compras</th>
+                                                <th>Firma ingenieria</th>
+                                                <th>Firma Calidad</th>
+                                                <th>Firma Produccion</th>
+                                                <th>Firma Imex</th>
+                                                <th>Fecha</th>
+                                                </thead>
+                                            <tbody>
+                                                @if(!empty($desviations))
+                                          @foreach ( $desviations as $desviation)
+                                                <tr>
+                                                    <td>{{$desviation[0]}}</td>
+                                                    <td>{{$desviation[1]}}</td>
+                                                    <td>{{$desviation[2]}}</td>
+                                                    <td>{{$desviation[3]}}</td>
+                                                    <td>{{$desviation[4]}}</td>
+                                                    <td>{{$desviation[5]}}</td>
+                                                    <td>{{$desviation[6]}}</td>
+                                                    <td>{{$desviation[7]}}</td>
+                                                    <td>{{$desviation[8]}}</td>
+                                                    <td>{{$desviation[9]}}</td>
+                                                    <td>{{$desviation[10]}}</td>
+
+                                                    </tr>
+                                          @endforeach
+                                          @endif
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                         <!-- Column 2 -->
 

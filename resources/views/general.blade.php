@@ -126,8 +126,8 @@
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                                         aria-labelledby="dropdownMenuLink">
-                                       <a class="dropdown-item" href="#" onclick="changework('desviation')">Desviation</a>
-                                    <!-- <a class="dropdown-item" href="#" onclick="changework('Materials')">Material Requirement</a>
+                                     <!--  <a class="dropdown-item" href="#" onclick="changework('desviation')">Desviation</a>
+                                     <a class="dropdown-item" href="#" onclick="changework('Materials')">Material Requirement</a>
                                         <a class="dropdown-item" href="#" onclick="changework('Kits')">Requerimiento Kits</a>-->
                                         <a class="dropdown-item" href="{{'general'}}" onclick="changework('Maintanience')">Maintanience</a>
                                         <a class="dropdown-item" href="#" onclick="changework('full')">Requerimiento full size</a>
