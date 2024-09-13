@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Almacen;
 use App\Models\entSalAlamacen;
+use App\Models\desviation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;

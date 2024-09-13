@@ -177,7 +177,7 @@
                                 </div>
                                 <div class="card-body" style="overflow-y: auto; height: 360px;" id='work'>
                                 <div class="desv" align="center">
-                            <form  id="formula" action="{{ route('desviationAlm') }}" method="POST">
+                            <form  id="formula" action="{{ route('desviationAlm') }}" method="GET">
                                 @csrf
                     <div class="form-group">
                         <label for="modelo">Modelo Afectado:</label>
