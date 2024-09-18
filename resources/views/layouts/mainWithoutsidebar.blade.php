@@ -355,6 +355,7 @@
                                         <label for="cliente">Cliente:</label>
                                        <select id="cliente" name="cliente" class="form-control" required>
                                          <option value=""></option>
+                                         <option value="BROWN">BROWN</option>
                                               <option value="DUR-A-LIFT">DUR-A-LIFT</option>
                                               <option value="BERSTROMG">BERGSTROM</option>
                                               <option value="BLUE BIRD">BLUE BIRD</option>
