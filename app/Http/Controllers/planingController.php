@@ -204,8 +204,8 @@ return view('planing',['des'=>$des,'value'=>$value,'cat'=>$cat,'post'=>$post,'da
 
         // Check for duplicate entry
         $duplicate = Po::where('po', $po)->exists();
-
-        if ($duplicate) {
+        $dupreg = Wo::where('wo',$wo)->exists();
+        if ($duplicate or $dupreg) {
             return redirect()->back()->with('error', 'Arnes ya registrado, Revíselo y vuelva a intentarlo');
         }
 
