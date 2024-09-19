@@ -240,9 +240,9 @@ return view('planing',['des'=>$des,'value'=>$value,'cat'=>$cat,'post'=>$post,'da
             $newWo->Barcode = '0';
 
             if (substr($rev, 0, 4) == 'PPAP' || substr($rev, 0, 4) == 'PRIM') {
-                $newWo->info =  (substr($np, 0, 2) . substr($client, 0, 2) . $qty . substr($wo, 2, 4) . substr($po, 2, 4) . 'R' . substr($rev, 5));
+                $newWo->info =  (substr($np, 0, 2) . substr($client, 0, 2) . $qty . substr($wo, 1, 5) . substr($po, 2, 4) . 'R' . substr($rev, 5));
             } else {
-                $newWo->info = (substr($np, 0, 2) . substr($client, 0, 2) . $qty . substr($wo, 2, 4) . substr($po, 2, 4) . 'R' . $rev);
+                $newWo->info = (substr($np, 0, 2) . substr($client, 0, 2) . $qty . substr($wo, 1, 5) . substr($po, 2, 4) . 'R' . $rev);
             }
             $newWo->donde='planeacion';
             $newWo->count = 1;
@@ -258,9 +258,9 @@ return view('planing',['des'=>$des,'value'=>$value,'cat'=>$cat,'post'=>$post,'da
             if ($newWo->save()) {
                 $times=new tiempos;
                 if (substr($rev, 0, 4) == 'PPAP' || substr($rev, 0, 4) == 'PRIM') {
-                    $times->info =  (substr($np, 0, 2) . substr($client, 0, 2) . $qty . substr($wo, 1, 4) . substr($po, 2, 4) . 'R' . substr($rev, 5));
+                    $times->info =  (substr($np, 0, 2) . substr($client, 0, 2) . $qty . substr($wo, 1, 5) . substr($po, 2, 4) . 'R' . substr($rev, 5));
                 } else {
-                    $times->info = (substr($np, 0, 2) . substr($client, 0, 2) . $qty . substr($wo, 1, 4) . substr($po, 2, 4) . 'R' . $rev);
+                    $times->info = (substr($np, 0, 2) . substr($client, 0, 2) . $qty . substr($wo, 1, 5) . substr($po, 2, 4) . 'R' . $rev);
                 }
                 $times->planeacion="";
                 $times->corte="";
@@ -315,9 +315,9 @@ return view('planing',['des'=>$des,'value'=>$value,'cat'=>$cat,'post'=>$post,'da
             $agegartiempos->wo=$wo;
             $agegartiempos->cut=$today;
             if (substr($rev, 0, 4) == 'PPAP' || substr($rev, 0, 4) == 'PRIM') {
-                $agegartiempos->bar =  (substr($np, 0, 2) . substr($client, 0, 2) . $qty . substr($wo, 1, 4) . substr($po, 2, 4) . 'R' . substr($rev, 5));
+                $agegartiempos->bar =  (substr($np, 0, 2) . substr($client, 0, 2) . $qty . substr($wo, 1, 5) . substr($po, 2, 4) . 'R' . substr($rev, 5));
             } else {
-                $agegartiempos->bar = (substr($np, 0, 2) . substr($client, 0, 2) . $qty . substr($wo, 1, 4) . substr($po, 2, 4) . 'R' . $rev);
+                $agegartiempos->bar = (substr($np, 0, 2) . substr($client, 0, 2) . $qty . substr($wo, 1, 5) . substr($po, 2, 4) . 'R' . $rev);
             }
             $agegartiempos->fecha=$today;
             $agegartiempos->save();

@@ -327,8 +327,8 @@ class generalController extends Controller
                     return redirect('general')->with('response', $resp);
                 }else{
                 $count=4;
-                $buscar=DB::table('timesharn')->select('cut','fecha')->where('bar',$codigo)->first();
-                $lasDate=$buscar->fecha;
+                $buscar=DB::table('timesharn')->where('bar',$codigo)->first();
+                                $lasDate=$buscar->fecha;
                 if($buscar->cut==NULL){
                     $update = DB::table('timesharn')->where('bar', $codigo)->update(['cut' => $lasDate]);
                 }
