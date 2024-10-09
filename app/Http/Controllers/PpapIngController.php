@@ -41,7 +41,7 @@ class PpapIngController extends Controller
             $inges[$i][8]=$rowInge->info;
         $i++;        }
         $i=0;
-        $SearchAct=DB::table('ingactividades')->where('count','<','4')->get();
+        $SearchAct=DB::table('ingactividades')->where('count','<','4')->orderby("Id_request")->get();
         foreach($SearchAct as $rowAct){
             $enginners[$i][0]=$rowAct->id;
             $enginners[$i][1]=$rowAct->Id_request;
