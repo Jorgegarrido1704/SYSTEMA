@@ -117,19 +117,19 @@ return view('admin',['value'=>$value,'cat'=>$cat,'client'=>$client]);
     $diario=date("d-m-Y");
     $ochoAm=$sieteAm=$nueveAm=$diesAm=$onceAm=$docePm=$unaPm=$dosPm=$tresPm=$cuatroPm=$cincoPm=$seisPm=$sietePm=0;
 
-    $busPorTiemp=DB::table("regsitrocalidad")->where("fecha","LIKE","$diario%07:%")
-                                            ->orwhere("fecha","LIKE","$diario%08:%")
-                                            ->orwhere("fecha","LIKE","$diario%09:%")
-                                            ->orwhere("fecha","LIKE","$diario%10:%")
-                                            ->orwhere("fecha","LIKE","$diario%11:%")
-                                            ->orwhere("fecha","LIKE","$diario%12:%")
-                                            ->orwhere("fecha","LIKE","$diario%13:%")
-                                            ->orwhere("fecha","LIKE","$diario%14:%")
-                                            ->orwhere("fecha","LIKE","$diario%15:%")
-                                            ->orwhere("fecha","LIKE","$diario%16:%")
-                                            ->orwhere("fecha","LIKE","$diario%17:%")
-                                            ->orwhere("fecha","LIKE","$diario%18:%")
-                                            ->orwhere("fecha","LIKE","$diario%19:%")
+    $busPorTiemp=DB::table("regsitrocalidad")->where("fecha","LIKE","$diario 07:%")
+                                            ->orwhere("fecha","LIKE","$diario 08:%")
+                                            ->orwhere("fecha","LIKE","$diario 09:%")
+                                            ->orwhere("fecha","LIKE","$diario 10:%")
+                                            ->orwhere("fecha","LIKE","$diario 11:%")
+                                            ->orwhere("fecha","LIKE","$diario 12:%")
+                                            ->orwhere("fecha","LIKE","$diario 13:%")
+                                            ->orwhere("fecha","LIKE","$diario 14:%")
+                                            ->orwhere("fecha","LIKE","$diario 15:%")
+                                            ->orwhere("fecha","LIKE","$diario 16:%")
+                                            ->orwhere("fecha","LIKE","$diario 17:%")
+                                            ->orwhere("fecha","LIKE","$diario 18:%")
+                                            ->orwhere("fecha","LIKE","$diario 19:%")
                                                                              ->get();
 
 
@@ -141,23 +141,31 @@ return view('admin',['value'=>$value,'cat'=>$cat,'client'=>$client]);
                 $sieteAm+=$pre->price;}
                 break;
             case '08':
-                $busarPrecio=DB::table('precios')->select('price')->where('pn',$rowstime->pn)->first();
-                $ochoAm+=$busarPrecio->price;
+                $busarPrecio=DB::table('precios')->select('price')->where('pn',$rowstime->pn)->get();
+                foreach($busarPrecio as $pre){
+                    $ochoAm+=$busarPrecio->price;
+                }
+                
                 break;
             case '09':
-                 $busarPrecio=DB::table('precios')->select('price')->where('pn',$rowstime->pn)->first();
+                 $busarPrecio=DB::table('precios')->select('price')->where('pn',$rowstime->pn)->get();
+                 foreach($busarPrecio as $pre){
                     $nueveAm+=$busarPrecio->price;
+                }
+                    
                     break;
-                case '10':
-                     $busarPrecio=DB::table('precios')->select('price')->where('pn',$rowstime->pn)->first();
-                    $diesAm+=$busarPrecio->price;
+            case '10':
+                    $busarPrecio=DB::table('precios')->select('price')->where('pn',$rowstime->pn)->get();
+                    foreach($busarPrecio as $pre){
+                        $diesAm+=$busarPrecio->price;
+                    }
                     break;
                     case '11':
-                         $busarPrecio=DB::table('precios')->select('price')->where('pn',$rowstime->pn)->first();
+                         $busarPrecio=DB::table('precios')->select('price')->where('pn',$rowstime->pn)->get();
                         $onceAm+=$busarPrecio->price;
                         break;
                     case '12':
-                         $busarPrecio=DB::table('precios')->select('price')->where('pn',$rowstime->pn)->first();
+                         $busarPrecio=DB::table('precios')->select('price')->where('pn',$rowstime->pn)->get();
                         $docePm+=$busarPrecio->price;
                         break;
                         case '13':

@@ -327,11 +327,11 @@ return view('planing',['des'=>$des,'value'=>$value,'cat'=>$cat,'post'=>$post,'da
                 $subject= 'ALTA '.substr($rev, 0, 4).' Numero de parte:'.$np.' Rev: '.substr($rev, 5);
                             $date = date('d-m-Y');
                         $time = date('H:i');
-                        $content = 'Buen día,'."\n\n".'Les comparto que hoy ' . $date . ' a las ' . $time . "\n\n"."se libero a piso la".substr($rev, 0, 4)."\n\n";
-                        $content .= "\n\n"." Del cliente: " . $client;
-                $content .= "\n\n"." con número de parte: " . $np;
-                $content .= "\n\n"." Con Work order: " . $wo;
-                $content .= "\n\n"." Esto para seguir con el proceso de producción y revision por parte de ingeniería y calidad.";
+                        $content = 'Buen día,'."\n\t\n".'Les comparto que hoy ' . $date . ' a las ' . $time . "\n\t\n"."se libero a piso la ".substr($rev, 0, 4)."\n\t\n";
+                        $content .= "\n\t\n"." Del cliente: " . $client;
+                $content .= "\n\t\n"." con número de parte: " . $np;
+                $content .= "\n\t\n"." Con Work order: " . $wo;
+                $content .= "\n\t\n"." Esto para seguir con el proceso de producción y revision por parte de ingeniería y calidad.";
 
 
                             $recipients = [
