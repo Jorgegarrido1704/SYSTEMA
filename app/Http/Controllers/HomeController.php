@@ -136,36 +136,37 @@ return view('admin',['value'=>$value,'cat'=>$cat,'client'=>$client]);
     foreach($busPorTiemp as $rowstime){
         switch(substr($rowstime->fecha,11,2)){
             case '07':
-                $busarPrecio=DB::table('precios')->select('price')->where('pn',$rowstime->pn)->get();
-                foreach($busarPrecio as $pre){
-                $sieteAm+=$pre->price;}
+                $busarPrecio=DB::table('precios')->select('price')->where('pn',$rowstime->pn)->first();
+        
+                $sieteAm+=$pre->price;
                 break;
             case '08':
-                $busarPrecio=DB::table('precios')->select('price')->where('pn',$rowstime->pn)->get();
-                foreach($busarPrecio as $pre){
+                $busarPrecio=DB::table('precios')->select('price')->where('pn',$rowstime->pn)->first();
+              
                     $ochoAm+=$busarPrecio->price;
-                }
+        
                 
                 break;
             case '09':
-                 $busarPrecio=DB::table('precios')->select('price')->where('pn',$rowstime->pn)->get();
-                 foreach($busarPrecio as $pre){
-                    $nueveAm+=$busarPrecio->price;
-                }
+                 $busarPrecio=DB::table('precios')->select('price')->where('pn',$rowstime->pn)->first();
+                 
+                  $nueveAm+=$busarPrecio->price;
+                
                     
                     break;
             case '10':
-                    $busarPrecio=DB::table('precios')->select('price')->where('pn',$rowstime->pn)->get();
-                    foreach($busarPrecio as $pre){
-                        $diesAm+=$busarPrecio->price;
-                    }
+                    $busarPrecio=DB::table('precios')->select('price')->where('pn',$rowstime->pn)->first();
+
+                            $diesAm+=$busarPrecio->price;
+                        
                     break;
                     case '11':
-                         $busarPrecio=DB::table('precios')->select('price')->where('pn',$rowstime->pn)->get();
-                        $onceAm+=$busarPrecio->price;
-                        break;
+                         $busarPrecio=DB::table('precios')->select('price')->where('pn',$rowstime->pn)->first();
+                        
+                            $onceAm+=$busarPrecio->price;
+                                                break;
                     case '12':
-                         $busarPrecio=DB::table('precios')->select('price')->where('pn',$rowstime->pn)->get();
+                         $busarPrecio=DB::table('precios')->select('price')->where('pn',$rowstime->pn)->first();
                         $docePm+=$busarPrecio->price;
                         break;
                         case '13':
