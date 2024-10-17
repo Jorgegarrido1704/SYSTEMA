@@ -137,32 +137,32 @@ return view('admin',['value'=>$value,'cat'=>$cat,'client'=>$client]);
         switch(substr($rowstime->fecha,11,2)){
             case '07':
                 $busarPrecio=DB::table('precios')->select('price')->where('pn',$rowstime->pn)->first();
-        
-                $sieteAm+=$pre->price;
+
+                $sieteAm+=$busarPrecio->price;
                 break;
             case '08':
                 $busarPrecio=DB::table('precios')->select('price')->where('pn',$rowstime->pn)->first();
-              
+
                     $ochoAm+=$busarPrecio->price;
-        
-                
+
+
                 break;
             case '09':
                  $busarPrecio=DB::table('precios')->select('price')->where('pn',$rowstime->pn)->first();
-                 
+
                   $nueveAm+=$busarPrecio->price;
-                
-                    
+
+
                     break;
             case '10':
                     $busarPrecio=DB::table('precios')->select('price')->where('pn',$rowstime->pn)->first();
 
                             $diesAm+=$busarPrecio->price;
-                        
+
                     break;
                     case '11':
                          $busarPrecio=DB::table('precios')->select('price')->where('pn',$rowstime->pn)->first();
-                        
+
                             $onceAm+=$busarPrecio->price;
                                                 break;
                     case '12':
