@@ -124,33 +124,29 @@ class planingController extends Controller
 
     }
 
-    $labelswo=$request->input('wk');
-    $labelswo=strtoupper($labelswo);
+    $labelswo = strtoupper($request->input('wk'));
 
-    if(!empty($labelswo)){
+    if (!empty($labelswo)) {
         $corte = [];
         $wor = [];
-        $i = 0;
-        $x = 0;
 
         // Obtén las órdenes de trabajo (work orders)
         $controlCorte = DB::table('wks')->where('wk', $labelswo)->get();
 
         // Construye el array de work orders
         foreach ($controlCorte as $row) {
-            $wor[$x] = $row->wo;
-            $x++;
+            $wor[] = $row->wo;
         }
 
         // Itera sobre cada work order
-        for ($a = 0; $a < count($wor); $a++) {
+        foreach ($wor as $wo) {
             // Realiza la consulta sin orden
             $buscarCorteLabel = DB::table('corte')
-                ->where('wo', 'LIKE', '%' . $wor[$a])
+                ->where('wo', 'LIKE', '%' . $wo)
                 ->get();
 
             // Solo procesa si hay resultados
-            if (count($buscarCorteLabel) > 0) {
+            if ($buscarCorteLabel->isNotEmpty()) {
                 foreach ($buscarCorteLabel as $cort) {
                     // Almacena los valores en el array multidimensional $corte
                     $corte[] = [
@@ -168,17 +164,11 @@ class planingController extends Controller
                         'dataTo' => $cort->dataTo,
                         'qty' => $cort->qty,
                         'tamano' => $cort->tamano,
+                        'conector' => DB::table('listascorte')
+                            ->where('pn', $cort->np)
+                            ->where('cons', $cort->cons)
+                            ->value('conector') ?? null // Obtén el conector o null si no existe
                     ];
-
-                    // Obtén la información adicional del conector desde 'listascorte'
-                    $estampados = DB::table('listascorte')
-                        ->where('pn', $cort->np)
-                        ->where('cons', $cort->cons)
-                        ->first();
-
-                    // Añade el conector al array si existe
-                    $corte[$i]['conector'] = $estampados ? $estampados->conector : null;
-                    $i++;
                 }
             }
         }
@@ -197,12 +187,10 @@ class planingController extends Controller
             return strcmp($a['aws'], $b['aws']);
         });
 
-        // Ahora, el array $corte estará ordenado por 'aws', 'color', y 'tipo'
-
-
-        return view('registro.implabel',['corte'=>$corte,'cat'=>$cat]);
-}
+        // Retorna la vista con los datos ordenados
+        return view('registro.implabel', ['corte' => $corte, 'cat' => $cat]);
     }
+
 
     $checkYear=date('Y');
     $busquedaPo=DB::table('po')->where('fecha','like','%'.$checkYear.'%')->get();
