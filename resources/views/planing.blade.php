@@ -288,17 +288,32 @@
                             </div>
                         </div>-->
 
-                        <div class="col-lg-6 mb-4" style="max-width: 40%">
-                            <!-- AREAS -->
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h5 class="m-0 font-weight-bold text-primary">Table of Works </h5>
-                                </div>
-                                <div class="card-body" style="overflow-y: auto; height: 360px;" id="tableChange">
 
+                            <div class="col-lg-6 mb-4" style="max-width: 33%">
+                                <!-- AREAS -->
+                                <div class="card shadow mb-4">
+                                    <div class="card-header py-3">
+                                        <h5 class="m-0 font-weight-bold text-primary">Impresion Semanal</h5>
+                                    </div>
+                                    <div class="card-body" style="overflow-y: auto; height: 360px;">
+                                        <div class="form-container">
+                                        <form action="{{route('planningw')}}" method="GET">
+                                            <div>
+                                                <label for="tren1">Wo For lables</label>
+                                                @if (!empty($labels))
+                                                <input type="text" name="wk" id="wk" value={{$labels}} required >
+                                                @else
+                                                <input type="text" name="wk" id="wk" required >
+                                                @endif
+                                            </div>
+                                            <input type="submit" name="enviar" id="enviar" value="Imprimir">
+                                        </form>
+                                    </div>
+
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+
 
                     </div>
                     <script>

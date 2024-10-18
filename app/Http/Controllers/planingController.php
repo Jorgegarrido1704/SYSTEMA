@@ -83,7 +83,10 @@ class planingController extends Controller
         $labelend=$request->input('label2');
         $corte=[];
         $i=0;
-        $bucarCorteLabel=DB::table('corte')->where('wo',$labelwo)->orderBy('id', 'ASC')->get();
+        $bucarCorteLabel=DB::table('corte')->where('wo',$labelwo)->orderBy('aws', 'ASC')  // Ordena por 'aws'
+        ->orderBy('color', 'ASC')  // Luego ordena por 'color'
+        ->orderBy('tipo', 'ASC')  // Finalmente ordena por 'tipo'
+        ->get();
         if(count($bucarCorteLabel)>0){
         foreach($bucarCorteLabel as $cort){
             $corte[$i][0]=$cort->cliente;
@@ -100,7 +103,10 @@ class planingController extends Controller
             $corte[$i][11]=$cort->dataTo;
             $corte[$i][12]=$cort->qty;
             $corte[$i][13]=$cort->tamano;
+            $estampados=DB::table('listascorte')->where('pn',$corte[$i][1])->where('cons',$corte[$i][3])->first();
+            $corte[$i][14]=$estampados->conector;
             $i++;        }
+
             return view('registro.implabel',['corte'=>$corte,'cat'=>$cat]);
     }else{
         $buscaWo=DB::select("SELECT * FROM registro WHERE wo='$labelwo'");
@@ -117,6 +123,40 @@ class planingController extends Controller
 
 
     }
+
+    $labelswo=$request->input('wk');
+    if(!empty($labelswo)){
+    $corte=[];
+    $i=0;
+
+    $bucarCorteLabel=DB::table('corte')->where('wo',$labelwo)->orderBy('aws', 'ASC')  // Ordena por 'aws'
+    ->orderBy('color', 'ASC')  // Luego ordena por 'color'
+    ->orderBy('tipo', 'ASC')  // Finalmente ordena por 'tipo'
+    ->get();
+    if(count($bucarCorteLabel)>0){
+    foreach($bucarCorteLabel as $cort){
+        $corte[$i][0]=$cort->cliente;
+        $corte[$i][1]=$cort->np;
+        $corte[$i][2]=$cort->wo;
+        $corte[$i][3]=$cort->cons;
+        $corte[$i][4]=$cort->color;
+        $corte[$i][5]=$cort->tipo;
+        $corte[$i][6]=$cort->aws;
+        $corte[$i][7]=$cort->codigo;
+        $corte[$i][8]=$cort->term1;
+        $corte[$i][9]=$cort->term2;
+        $corte[$i][10]=$cort->dataFrom;
+        $corte[$i][11]=$cort->dataTo;
+        $corte[$i][12]=$cort->qty;
+        $corte[$i][13]=$cort->tamano;
+        $estampados=DB::table('listascorte')->where('pn',$corte[$i][1])->where('cons',$corte[$i][3])->first();
+        $corte[$i][14]=$estampados->conector;
+        $i++;        }
+
+        return view('registro.implabel',['corte'=>$corte,'cat'=>$cat]);
+}
+    }
+
     $checkYear=date('Y');
     $busquedaPo=DB::table('po')->where('fecha','like','%'.$checkYear.'%')->get();
     foreach($busquedaPo as $posFecha){
