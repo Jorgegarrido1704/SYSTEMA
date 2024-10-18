@@ -130,10 +130,11 @@ class planingController extends Controller
     if(!empty($labelswo)){
     $corte=[];
     $i=0;
+    $x=0;
     $controlCorte=DB::table('wks')->where('wk',$labelswo)->get();
     foreach($controlCorte as $row){
-        $wo=$row->wo;
-    $bucarCorteLabel=DB::table('corte')->where('wo','LIKE','%'.$wo)->orderBy('aws', 'ASC')  // Ordena por 'aws'
+        $wo[$x]=$row->wo;
+    $bucarCorteLabel=DB::table('corte')->where('wo','LIKE','%'.$wo[$x])->orderBy('aws', 'ASC')  // Ordena por 'aws'
     ->orderBy('color', 'ASC')  // Luego ordena por 'color'
     ->orderBy('tipo', 'ASC')  // Finalmente ordena por 'tipo'
     ->get();
@@ -155,7 +156,8 @@ class planingController extends Controller
         $corte[$i][13]=$cort->tamano;
         $estampados=DB::table('listascorte')->where('pn',$corte[$i][1])->where('cons',$corte[$i][3])->first();
         $corte[$i][14]=$estampados->conector;
-        $i++;        }}
+        $i++;        }
+        $x++;        }
 
         return view('registro.implabel',['corte'=>$corte,'cat'=>$cat]);
 }
