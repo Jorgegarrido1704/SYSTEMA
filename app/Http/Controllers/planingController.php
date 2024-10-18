@@ -134,8 +134,11 @@ class planingController extends Controller
     $x=0;
     $controlCorte=DB::table('wks')->where('wk',$labelswo)->get();
     foreach($controlCorte as $row){
-        $wor[$x][0]=$row->wo;
-    $bucarCorteLabel=DB::table('corte')->where('wo','LIKE','%'.$wor[$x][0])->orderBy('aws', 'ASC')  // Ordena por 'aws'
+        $wor[$x]=$row->wo;
+        $x++;
+    }
+    for($a=0;$a<count($wor);$a++){
+    $bucarCorteLabel=DB::table('corte')->where('wo','LIKE','%'.$wor[$a])->orderBy('aws', 'ASC')  // Ordena por 'aws'
     ->orderBy('color', 'ASC')  // Luego ordena por 'color'
     ->orderBy('tipo', 'ASC')  // Finalmente ordena por 'tipo'
     ->get();
@@ -158,7 +161,8 @@ class planingController extends Controller
         $estampados=DB::table('listascorte')->where('pn',$corte[$i][1])->where('cons',$corte[$i][3])->first();
         $corte[$i][14]=$estampados->conector;
         $i++;        }
-        $x++;        }
+    }
+    }
 
         return view('registro.implabel',['corte'=>$corte,'cat'=>$cat]);
 }
@@ -211,7 +215,7 @@ class planingController extends Controller
 
 return view('planing',['des'=>$des,'value'=>$value,'cat'=>$cat,'post'=>$post,'datos'=>$datos]);
     }
-}
+
 
     public function pos(Request $request)
     {
