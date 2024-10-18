@@ -121,7 +121,6 @@ Route::controller(InventarioController::class)->group(function(){
 Route::controller(planingController::class)->group(function(){
 
     Route::get('/planing',[planingController::class,'planning'])->name('planning');
-    Route::get('/planingw',[planingController::class,'planningw'])->name('planningw');
     Route::get('/pos',[planingController::class,'pos'])->name('pos');
     Route::get('/codeBarPlan',[planingController::class,'codeBarPlan'])->name('codeBarPlan');
 });

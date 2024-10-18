@@ -297,9 +297,9 @@
                                     </div>
                                     <div class="card-body" style="overflow-y: auto; height: 360px;">
                                         <div class="form-container">
-                                        <form action="{{route('planningw')}}" method="GET">
+                                        <form action="{{route('planning')}}" method="GET">
                                             <div>
-                                                <label for="tren1">Wo For lables</label>
+                                                <label for="wk">week For lables</label>
                                                 @if (!empty($labels))
                                                 <input type="text" name="wk" id="wk" value={{$labels}} required >
                                                 @else
