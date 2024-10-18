@@ -126,14 +126,14 @@ class planingController extends Controller
 
     $labelswo=$request->input('wk');
     $labelswo=strtoupper($labelswo);
-    
+
     if(!empty($labelswo)){
     $corte=[];
     $i=0;
     $controlCorte=DB::table('wks')->where('wk',$labelswo)->get();
     foreach($controlCorte as $row){
         $wo=$row->wo;
-    $bucarCorteLabel=DB::table('corte')->where('wo',$wo)->orderBy('aws', 'ASC')  // Ordena por 'aws'
+    $bucarCorteLabel=DB::table('corte')->where('wo','LIKE','%'.$wo)->orderBy('aws', 'ASC')  // Ordena por 'aws'
     ->orderBy('color', 'ASC')  // Luego ordena por 'color'
     ->orderBy('tipo', 'ASC')  // Finalmente ordena por 'tipo'
     ->get();
