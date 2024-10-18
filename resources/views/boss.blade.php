@@ -352,7 +352,42 @@
 
                         <div class="col-lg-6 mb-4">
 
-                            <!-- AREAS -->
+                                 <!-- AREAS -->
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Tested list</h6>
+                                </div>
+                                        <div class="card-body" style="overflow-y: auto; height: 400px;">
+                                            <div>
+                                                <table class="table-info" style="width:100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">Client</th>
+                                                            <th scope="col">Part number</th>
+                                                            <th scope="col">Count</th>
+                                                            <th scope="col">Price</th>
+                                                            <th scope="col">Total</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @if(!empty($inform))
+                                                        @foreach ($inform as $infs)
+                                                        <tr>
+                                                            <td>{{$infs[0]}}</td>
+                                                            <td>{{$infs[1]}}</td>
+                                                            <td>{{$infs[2]}}</td>
+                                                            <td>{{$infs[3]}}</td>
+                                                            <td>{{$infs[4]}}</td>
+                                                        </tr>
+                                                        @endforeach
+                                                        @endif
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                </div>
+
+                                <!-- AREAS -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
                                     <h6 class="m-0 font-weight-bold text-primary">WO by Area</h6>

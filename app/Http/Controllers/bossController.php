@@ -14,6 +14,7 @@ class bossController extends Controller
         if ($cat!='Boss' or $value == '') {
             return view('login');
         } else {
+            $fechaVenta=date("d-m-Y");
             $homeController = new HomeController();
             $date = $homeController->fetchdata();
             $backlock=0;
@@ -71,6 +72,25 @@ $info=[];
             $info[$i][11]=$rowInf->id;
             $i++;
         }
+        $inform = [];
+        $pnReg = []; 
+        $i = 0;
+//double selector para sumar
+        $buscaprecio = DB::table('regsitrocalidad')->where('fecha', 'like', $fechaVenta . '%')->orderBy('id', 'DESC')->get();
+        foreach ($buscaprecio as $row) {
+
+
+        $inform[$i][0] = $row->client;
+        $inform[$i][1] = $row->pn;
+        $inform[$i][2] = $row->qty;
+
+
+            $i++;
+
+
+        }
+
+
         $countReq=count($info);
             return view('boss', ['value' => $value, 'date' => $date,'countReq'=>$countReq,'cat'=>$cat,'client'=>$client]);
 
