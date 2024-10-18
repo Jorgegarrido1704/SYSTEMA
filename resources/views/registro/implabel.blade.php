@@ -21,11 +21,11 @@
         <canvas id="barcode{{$i}}" || style=" margin-top: 15mm; height: 8mm; width: 150%;transform: rotate(90deg); "></canvas>
 <div>
         <img src="{{ asset('/dash/img/bergs.jpg')}}" alt="" style="width: 80px; max-height: 20px;"><b> Cons: {{$corte[$i][3]}}
-            <h6>{{$corte[$i][0]}} Cant: {{$corte[$i][12]}} WO: {{$corte[$i][2]}} AWS: {{$corte[$i][6]}}
+            <h5>{{$corte[$i][0]}} Cant: {{$corte[$i][12]}} WO: {{$corte[$i][2]}} AWG: {{$corte[$i][6]}}
                 PN: {{$corte[$i][1]}} Color: {{$corte[$i][4]}} Tamaño: {{$corte[$i][13]}}
                 Term1: {{$corte[$i][8]}} Term2: {{$corte[$i][9]}} From: {{$corte[$i][10]}} TO: {{$corte[$i][11]}}
                 Estampado:  {{$corte[$i][14]}}
-            </h6>
+            </h5>
         </b>
     </div>
 </div>
