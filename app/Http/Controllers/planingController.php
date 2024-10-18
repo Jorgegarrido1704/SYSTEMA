@@ -190,7 +190,7 @@ class planingController extends Controller
         // Retorna la vista con los datos ordenados
         return view('registro.implabel', ['corte' => $corte, 'cat' => $cat]);
     }
-
+        }
 
     $checkYear=date('Y');
     $busquedaPo=DB::table('po')->where('fecha','like','%'.$checkYear.'%')->get();
