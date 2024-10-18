@@ -164,14 +164,15 @@ class planingController extends Controller
     }
     }
     usort($corte, function ($a, $b) {
-        // Primero comparamos la posición 6 (aws)
+
         $result = strcmp($a[6], $b[6]);
 
-        // Si 'aws' es igual, comparamos la posición 7 (codigo)
         if ($result === 0) {
-            return strcmp($a[7], $b[7]);
+            $result = strcmp($a[7], $b[7]);
+            if ($result === 0) {
+                return strcmp($a[5], $b[5]);
+            }
         }
-
         return $result;
     });
 
