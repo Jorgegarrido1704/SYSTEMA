@@ -163,6 +163,17 @@ class planingController extends Controller
         $i++;        }
     }
     }
+    usort($corte, function ($a, $b) {
+        // Primero comparamos la posición 6 (aws)
+        $result = strcmp($a[6], $b[6]);
+
+        // Si 'aws' es igual, comparamos la posición 7 (codigo)
+        if ($result === 0) {
+            return strcmp($a[7], $b[7]);
+        }
+
+        return $result;
+    });
 
         return view('registro.implabel',['corte'=>$corte,'cat'=>$cat]);
 }
