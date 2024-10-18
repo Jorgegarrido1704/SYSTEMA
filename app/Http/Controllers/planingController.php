@@ -128,41 +128,77 @@ class planingController extends Controller
     $labelswo=strtoupper($labelswo);
 
     if(!empty($labelswo)){
-    $corte=[];
-    $wor=[];
-    $i=0;
-    $x=0;
-    $controlCorte=DB::table('wks')->where('wk',$labelswo)->get();
-    foreach($controlCorte as $row){
-        $wor[$x]=$row->wo;
-        $x++;
-    }
-    for($a=0;$a<count($wor);$a++){
-    $bucarCorteLabel=DB::table('corte')->where('wo','LIKE','%'.$wor[$a])->orderBy('aws', 'ASC')  // Ordena por 'aws'
-    ->orderBy('color', 'ASC')  // Luego ordena por 'color'
-    ->orderBy('tipo', 'ASC')  // Finalmente ordena por 'tipo'
-    ->get();
-    if(count($bucarCorteLabel)>0){
-    foreach($bucarCorteLabel as $cort){
-        $corte[$i][0]=$cort->cliente;
-        $corte[$i][1]=$cort->np;
-        $corte[$i][2]=$cort->wo;
-        $corte[$i][3]=$cort->cons;
-        $corte[$i][4]=$cort->color;
-        $corte[$i][5]=$cort->tipo;
-        $corte[$i][6]=$cort->aws;
-        $corte[$i][7]=$cort->codigo;
-        $corte[$i][8]=$cort->term1;
-        $corte[$i][9]=$cort->term2;
-        $corte[$i][10]=$cort->dataFrom;
-        $corte[$i][11]=$cort->dataTo;
-        $corte[$i][12]=$cort->qty;
-        $corte[$i][13]=$cort->tamano;
-        $estampados=DB::table('listascorte')->where('pn',$corte[$i][1])->where('cons',$corte[$i][3])->first();
-        $corte[$i][14]=$estampados->conector;
-        $i++;        }
-    }
-    }
+        $corte = [];
+        $wor = [];
+        $i = 0;
+        $x = 0;
+
+        // Obtén las órdenes de trabajo (work orders)
+        $controlCorte = DB::table('wks')->where('wk', $labelswo)->get();
+
+        // Construye el array de work orders
+        foreach ($controlCorte as $row) {
+            $wor[$x] = $row->wo;
+            $x++;
+        }
+
+        // Itera sobre cada work order
+        for ($a = 0; $a < count($wor); $a++) {
+            // Realiza la consulta sin orden
+            $buscarCorteLabel = DB::table('corte')
+                ->where('wo', 'LIKE', '%' . $wor[$a])
+                ->get();
+
+            // Solo procesa si hay resultados
+            if (count($buscarCorteLabel) > 0) {
+                foreach ($buscarCorteLabel as $cort) {
+                    // Almacena los valores en el array multidimensional $corte
+                    $corte[] = [
+                        'cliente' => $cort->cliente,
+                        'np' => $cort->np,
+                        'wo' => $cort->wo,
+                        'cons' => $cort->cons,
+                        'color' => $cort->color,
+                        'tipo' => $cort->tipo,
+                        'aws' => $cort->aws,
+                        'codigo' => $cort->codigo,
+                        'term1' => $cort->term1,
+                        'term2' => $cort->term2,
+                        'dataFrom' => $cort->dataFrom,
+                        'dataTo' => $cort->dataTo,
+                        'qty' => $cort->qty,
+                        'tamano' => $cort->tamano,
+                    ];
+
+                    // Obtén la información adicional del conector desde 'listascorte'
+                    $estampados = DB::table('listascorte')
+                        ->where('pn', $cort->np)
+                        ->where('cons', $cort->cons)
+                        ->first();
+
+                    // Añade el conector al array si existe
+                    $corte[$i]['conector'] = $estampados ? $estampados->conector : null;
+                    $i++;
+                }
+            }
+        }
+
+        // Ordenar el array de resultados después de la búsqueda
+        usort($corte, function ($a, $b) {
+            // Primero ordena por 'aws'
+            if ($a['aws'] == $b['aws']) {
+                // Si 'aws' es igual, ordena por 'color'
+                if ($a['color'] == $b['color']) {
+                    // Si 'color' es igual, ordena por 'tipo'
+                    return strcmp($a['tipo'], $b['tipo']);
+                }
+                return strcmp($a['color'], $b['color']);
+            }
+            return strcmp($a['aws'], $b['aws']);
+        });
+
+        // Ahora, el array $corte estará ordenado por 'aws', 'color', y 'tipo'
+
 
         return view('registro.implabel',['corte'=>$corte,'cat'=>$cat]);
 }
