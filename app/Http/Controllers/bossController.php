@@ -72,27 +72,32 @@ $info=[];
             $info[$i][11]=$rowInf->id;
             $i++;
         }
+        $preReg=[];
         $inform = [];
-        $pnReg = []; 
+        $pnReg = [];
         $i = 0;
+        $x=0;
 //double selector para sumar
-        $buscaprecio = DB::table('regsitrocalidad')->where('fecha', 'like', $fechaVenta . '%')->orderBy('id', 'DESC')->get();
+        $buscaprecio = DB::table('regsitrocalidad')->where('fecha', 'like', $fechaVenta . '%')->distinct('pn')->orderBy('id', 'DESC')->get();
         foreach ($buscaprecio as $row) {
-
-
-        $inform[$i][0] = $row->client;
-        $inform[$i][1] = $row->pn;
-        $inform[$i][2] = $row->qty;
-
-
+            $preReg[$i] = $row->pn;
             $i++;
+        }
+        foreach ($preReg as $pns) {
+        $buscarcant=DB::table('regsitrocalidad')->where('fecha', 'like', $fechaVenta . '%')->where('pn', $pns)->orderBy('id', 'DESC')->get();
+        $buscarPrice=DB::table('precios')->where('pn', $pns)->orderBy('id', 'DESC')->first();
+            $inform[$x][0] = $buscarPrice->client;
+            $inform[$x][1] = $pns;
+            $inform[$x][2] = count($buscarcant);
+            $inform[$x][3] = $buscarPrice->price;
+            $inform[$x][4] = $buscarPrice->price * $inform[$x][2];
+            $x++;
+
 
 
         }
-
-
         $countReq=count($info);
-            return view('boss', ['value' => $value, 'date' => $date,'countReq'=>$countReq,'cat'=>$cat,'client'=>$client]);
+            return view('boss', ['inform'=>$inform,'value' => $value, 'date' => $date,'countReq'=>$countReq,'cat'=>$cat,'client'=>$client]);
 
     }
 }
