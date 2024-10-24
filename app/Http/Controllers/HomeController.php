@@ -58,57 +58,6 @@ return view('admin',['value'=>$value,'cat'=>$cat,'client'=>$client]);
 
     public function fetchData(){
 
-        $fechaVenta=date("d-m-Y");
-        $preReg = [];
-$inform = [];
-$i = 0;
-$x = 0;
-
-// Obtener todos los PN únicos para la fecha dada
-$buscaprecio = DB::table('regsitrocalidad')
-    ->distinct('pn')
-    ->where('fecha', 'like', $fechaVenta . '%')
-    ->orderBy('id', 'DESC')
-    ->get();
-
-// Almacenar los PN únicos en un array
-foreach ($buscaprecio as $row) {
-    $preReg[] = $row->pn;
-}
-$preReg = array_unique($preReg);
-// Recorrer los PN y buscar la cantidad y el precio para cada uno
-foreach ($preReg as $pns) {
-    // Buscar todas las ocurrencias del PN en la misma fecha
-    $buscarcant = DB::table('regsitrocalidad')
-        ->where('fecha', 'like', $fechaVenta . '%')
-        ->where('pn', $pns)
-        ->count(); // Contamos las ocurrencias en lugar de obtener todos los registros
-
-    // Buscar el precio más reciente de ese PN
-    $buscarPrice = DB::table('precios')
-        ->where('pn', $pns)
-        ->orderBy('id', 'DESC')
-        ->first();
-
-    // Si se encuentra un precio, procedemos
-    if ($buscarPrice) {
-        $inform[$x][0] = $buscarPrice->client;  // Cliente del PN
-        $inform[$x][1] = $pns;                 // Número de parte (PN)
-        $inform[$x][2] = $buscarcant;          // Cantidad de ocurrencias
-        $inform[$x][3] = $buscarPrice->price;  // Precio del PN
-        $inform[$x][4] = $buscarPrice->price * $inform[$x][2];  // Total: precio * cantidad
-        $x++;
-    } else {
-        // Si no se encuentra un precio, puedes optar por manejar esto de alguna forma
-        // Ejemplo: establecer valores por defecto o registrar una advertencia.
-        $inform[$x][0] = 'Cliente no encontrado';
-        $inform[$x][1] = $pns;
-        $inform[$x][2] = $buscarcant;
-        $inform[$x][3] = 'Precio no disponible';
-        $inform[$x][4] = 0; // Total sería 0 si no hay precio
-        $x++;
-    }
-}
 
         $backlock=$cal=0;
 
@@ -331,7 +280,7 @@ foreach ($preReg as $pns) {
         'label'=>$label,
         'dato'=>$dato,
         'tiemposPass'=>$tiemposPass,
-        'inform'=>$inform
+        
 
 
     ];
