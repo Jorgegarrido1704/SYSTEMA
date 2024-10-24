@@ -188,88 +188,110 @@
                                 <div class="card-body">
 
 
-
+                                    @if($client[0] != 0)
                                     <h4 class="small font-weight-bold">Bergstrom <span
                                             class="float-right" >{{$client[0]}}%</span></h4>
                                     <div class="progress mb-4">
                                         <div class="progress-bar bg-danger" role="progressbar" style="width: {{$client[0]}}%;"
                                             aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
-
+                                    @endif
+                                    @if($client[1] != 0)
                                     <h4 class="small font-weight-bold">Atlas <span
                                             class="float-right">{{$client[1]}}%</span></h4>
                                     <div class="progress mb-4">
                                         <div class="progress-bar bg-warning" role="progressbar" style="width: {{$client[1]}}%;"
                                             aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
-
-
+                                    @endif
+                                    @if($client[2] != 0)
                                     <h4 class="small font-weight-bold">Blue Bird <span
                                             class="float-right">{{$client[2]}}%</span></h4>
                                     <div class="progress mb-4">
                                         <div class="progress-bar" role="progressbar" style="width: {{$client[2]}}%;"
                                             aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
+                                    @endif
+                                    @if($client[3] != 0)
                                     <h4 class="small font-weight-bold">Collins<span
                                             class="float-right">{{$client[3]}}%</span></h4>
                                     <div class="progress mb-4">
                                         <div class="progress-bar bg-info" role="progressbar" style="width: {{$client[3]}}%;"
                                             aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
+                                    @endif
+                                    @if($client[4] != 0)
                                     <h4 class="small font-weight-bold">El Dorado California<span
                                             class="float-right">{{$client[4]}}%</span></h4>
                                     <div class="progress mb-4">
                                         <div class="progress-bar bg-success" role="progressbar" style="width: {{$client[4]}}%;"
                                             aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
+                                    @endif
+                                    @if($client[5] != 0)
                                     <h4 class="small font-weight-bold">Forest <span
                                             class="float-right">{{$client[5]}}%</span></h4>
                                     <div class="progress mb-4">
                                         <div class="progress-bar bg-danger" role="progressbar" style="width: {{$client[5]}}%;"
                                             aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
+                                    @endif
+                                    @if($client[6] != 0)
                                     <h4 class="small font-weight-bold">Kalmar <span
                                             class="float-right">{{$client[6]}}%</span></h4>
                                     <div class="progress mb-4">
                                         <div class="progress-bar bg-warning" role="progressbar" style="width: {{$client[6]}}%;"
                                             aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
+                                    @endif
+                                    @if($client[7] != 0)
                                     <h4 class="small font-weight-bold">Modine<span
                                             class="float-right">{{$client[7]}}%</span></h4>
                                     <div class="progress mb-4">
                                         <div class="progress-bar" role="progressbar" style="width: {{$client[7]}}%;"
                                             aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
+                                    @endif
+                                    @if($client[8] != 0)
                                     <h4 class="small font-weight-bold">PHOENIX MOTOR CARS<span
                                             class="float-right">{{$client[8]}}%</span></h4>
                                     <div class="progress mb-4">
                                         <div class="progress-bar bg-info" role="progressbar" style="width:{{$client[8]}}%;"
                                             aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
+                                    @endif
+                                    @if($client[9] != 0)
                                     <h4 class="small font-weight-bold">Spartan<span
                                             class="float-right">{{$client[9]}}%</span></h4>
                                     <div class="progress mb-4">
                                         <div class="progress-bar bg-success" role="progressbar" style="width: {{$client[9]}}%;"
                                             aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
+                                    @endif
+                                    @if($client[10] != 0)
                                     <h4 class="small font-weight-bold">TICO MANUFACTURING<span
                                         class="float-right">{{$client[10]}}%</span></h4>
                                 <div class="progress mb-4">
                                     <div class="progress-bar bg-danger" role="progressbar" style="width: {{$client[10]}}%;"
                                         aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
+                                @endif
+                                    @if($client[11] != 0)
                                 <h4 class="small font-weight-bold">Utilimaster<span
                                         class="float-right">{{$client[11]}}%</span></h4>
                                 <div class="progress mb-4">
                                     <div class="progress-bar bg-warning" role="progressbar" style="width: {{$client[11]}}%;"
                                         aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
+                                @endif
+                                    @if($client[12] != 0)
                                 <h4 class="small font-weight-bold">Zoeller <span
                                         class="float-right">{{$client[12]}}%</span></h4>
                                 <div class="progress mb-4">
                                     <div class="progress-bar" role="progressbar" style="width: {{$client[12]}}%;"
                                         aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
+                                @endif
                             <!--    <h4 class="small font-weight-bold">Forest River <span
                                         class="float-right">%</span></h4>
                                 <div class="progress mb-4">
