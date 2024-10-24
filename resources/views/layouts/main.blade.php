@@ -174,6 +174,7 @@ function updateData() {
             $('#table-body').html(response.tableContent);
             $('#saldo').html(response.saldo);
             $('#backlock').html(response.backlock);
+            $('#inform').html(response.inform);
             if (response.labels && response.data) {
                 // Call function to initialize or update the chart with the retrieved data
                 var ctx = document.getElementById("myAreaChart");

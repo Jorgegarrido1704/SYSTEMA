@@ -359,7 +359,7 @@
                                 </div>
                                         <div class="card-body" style="overflow-y: auto; height: 400px;">
                                             <div>
-                                                <table class="table-info" style="width:100%">
+                                                <table class="table-info"  id="inform" style="width:100%">
                                                     <thead>
                                                         <tr>
                                                             <th scope="col">Client</th>
