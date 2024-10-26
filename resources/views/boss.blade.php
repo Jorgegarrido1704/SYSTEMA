@@ -303,7 +303,9 @@
                             </div>
 
                             <!-- Color System-->
+
                             <div class="row">
+
                               <!--  <div class="col-lg-6 mb-4">
                                     <div class="card bg-primary text-white shadow">
                                         <div class="card-body">
@@ -371,7 +373,89 @@
                             </div>
 
                         </div>
+                        <div class="col-lg-6 mb-4">
 
+                            <!-- Project Card Example -->
+                            <div class="card shadow mb-4">
+                                <div  class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Money by Station</h6>
+
+                                </div>
+                                <!--percent section -->
+                                <div class="card-body">
+
+
+                                    @if($ventasStation[0] != 0)
+                                    <h4 class="small font-weight-bold">Planeacion
+                                        <span class="float-right">{{$ventasStation[0]}}</span>
+                                        <span class="float-right">{{$ventasStation[6]*100}}% //</span></h4>
+                                    <div class="progress mb-4">
+                                        <div class="progress-bar bg-danger" role="progressbar" style="width: {{$ventasStation[6]*100}}%;"
+                                            aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    @endif
+                                    @if($ventasStation[1] != 0)
+                                    <h4 class="small font-weight-bold">Corte
+                                        <span class="float-right">{{$ventasStation[1]}}</span>
+                                        <span class="float-right">{{$ventasStation[7]*100}}% //</span></h4>
+                                    <div class="progress mb-4">
+                                        <div class="progress-bar bg-warning" role="progressbar" style="width: {{$ventasStation[7]*100}}%;"
+                                            aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    @endif
+                                    @if($ventasStation[2] != 0)
+                                    <h4 class="small font-weight-bold">Liberacion
+                                        <span class="float-right">{{$ventasStation[2]}}</span>
+                                        <span class="float-right">{{$ventasStation[8]*100}}% // </span></h4>
+                                    <div class="progress mb-4">
+                                        <div class="progress-bar" role="progressbar" style="width: {{$ventasStation[8]*100}}%;"
+                                            aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    @endif
+                                    @if($ventasStation[3] != 0)
+                                    <h4 class="small font-weight-bold">Ensamble
+                                        <span class="float-right">{{$ventasStation[3]}}</span>
+                                        <span class="float-right">{{$ventasStation[9]*100}}% // </span></h4>
+                                    <div class="progress mb-4">
+                                        <div class="progress-bar bg-info" role="progressbar" style="width: {{$ventasStation[9]*100}}%;"
+                                            aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    @endif
+                                    @if($ventasStation[4] != 0)
+                                    <h4 class="small font-weight-bold">Loom
+                                        <span class="float-right">{{$ventasStation[4]}}</span>
+                                        <span class="float-right">{{$ventasStation[10]*100}}% // </span></h4>
+                                    <div class="progress mb-4">
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: {{$ventasStation[10]*100}}%;"
+                                            aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    @endif
+                                    @if($ventasStation[5] != 0)
+                                    <h4 class="small font-weight-bold">Calidad
+                                        <span class="float-right"> {{$ventasStation[5]}}</span>
+                                        <span class="float-right">{{$ventasStation[11]*100}}% // </span></h4>
+                                    <div class="progress mb-4">
+                                        <div class="progress-bar  bg-info" role="progressbar" style="width: {{$ventasStation[11]*100}}%;"
+                                            aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    @endif
+                                    @if($ventasStation[12] != 0)
+                                    <h4 class="small font-weight-bold">Calidad
+                                        <span class="float-right"> {{$ventasStation[12]}}</span>
+                                        <span class="float-right">{{$ventasStation[13]*100}}% // </span></h4>
+                                    <div class="progress mb-4">
+                                        <div class="progress-bar  bg-dark" role="progressbar" style="width: {{$ventasStation[13]*100}}%;"
+                                            aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    @endif
+
+                                </div>
+                            </div>
+
+                            </div>
+                    </div>
+                    <!-- Content Row -->
+                    <div class="row">
                         <div class="col-lg-6 mb-4">
 
                                  <!-- AREAS -->
@@ -408,7 +492,8 @@
                                             </div>
                                         </div>
                                 </div>
-
+                            </div>
+                                <div class="col-lg-6 mb-4">
                                 <!-- AREAS -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
@@ -419,4 +504,13 @@
                                         </div>
                                 </div>
                             </div>
+
+                    </div>
+                    <!-- finish Row -->
+                    <!-- Content Row -->
+                    <div class="row">
+
+
+
+                        </div>
 @endsection

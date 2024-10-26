@@ -54,6 +54,57 @@ class bossController extends Controller
         for($i=0;$i<13;$i++){
             $client[$i]=round((($client[$i]*100)/$backlock),3);
         }
+            //Stations
+        $ventasStation = [];
+        for($i=0;$i<13;$i++){
+            $ventasStation[$i]=0;  }
+        $BuscarVenta=DB::select("SELECT * FROM registro ");
+        foreach($BuscarVenta as $reg){
+            if($reg->count=='1'){
+                $ventasStation[0]+=round($reg->Qty*$reg->price,2);
+        }
+        if($reg->count=='2' or $reg->count=='3' or $reg->count=='17'){
+            $ventasStation[1]+=round($reg->Qty*$reg->price,2);
+        }
+        if($reg->count=='4' or $reg->count=='5' or $reg->count=='16'){
+            $ventasStation[2]+=round($reg->Qty*$reg->price,2);
+        }
+        if($reg->count=='6' or $reg->count=='7' or $reg->count=='13'){
+            $ventasStation[3]+=round($reg->Qty*$reg->price,2);
+        }
+        if($reg->count=='8' or $reg->count=='9' or $reg->count=='14'){
+            $ventasStation[4]+=round($reg->Qty*$reg->price,2);
+        }
+        if($reg->count=='10' or $reg->count=='11' or $reg->count=='18'){
+            $ventasStation[5]+=round($reg->Qty*$reg->price,2);
+        }
+        if($reg->count=='12'){
+            $ventasStation[12]+=round($reg->Qty*$reg->price,2);
+        }
+
+    }
+    if($ventasStation[0]!=0){
+        $ventasStation[6]=round($ventasStation[0]/$backlock,2);
+    }
+    if($ventasStation[1]!=0){
+        $ventasStation[7]=round($ventasStation[1]/$backlock,2);
+    }
+    if($ventasStation[2]!=0){
+        $ventasStation[8]=round($ventasStation[2]/$backlock,2);
+    }
+    if($ventasStation[3]!=0){
+        $ventasStation[9]=round($ventasStation[3]/$backlock,2);
+    }
+    if($ventasStation[4]!=0){
+        $ventasStation[10]=round($ventasStation[4]/$backlock,2);
+    }
+    if($ventasStation[5]!=0){
+        $ventasStation[11]=round($ventasStation[5]/$backlock,2);
+    }
+    if($ventasStation[12]!=0){
+        $ventasStation[13]=round($ventasStation[12]/$backlock,2);
+    }
+        //desviations
 $i=0;
 $info=[];
             $buscarInfo=DB::table('desvation')->where('fpro','')->where('count','!=',5)->orderBy('id','DESC')->get();
@@ -72,6 +123,7 @@ $info=[];
             $info[$i][11]=$rowInf->id;
             $i++;
         }
+        //ventas
         $fechaVenta=date("d-m-Y");
         $preReg = [];
 $inform = [];
@@ -126,7 +178,7 @@ foreach ($preReg as $pns) {
 
 
         $countReq=count($info);
-            return view('boss', ['inform'=>$inform,'value' => $value, 'date' => $date,'countReq'=>$countReq,'cat'=>$cat,'client'=>$client]);
+            return view('boss', ['ventasStation'=>$ventasStation,'inform'=>$inform,'value' => $value, 'date' => $date,'countReq'=>$countReq,'cat'=>$cat,'client'=>$client]);
 
     }
 }
