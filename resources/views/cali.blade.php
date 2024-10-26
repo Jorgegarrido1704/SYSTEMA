@@ -59,7 +59,7 @@
 
                                                     <br>
                                                     <form action="{{route('saveData')}}" method="GET">
-                                        <div> <h4>OK<input type="number" style="width:80px;margin-right:80px;" name="ok" id="ok" value="0" onchange="return checkOk()">      NOK<input type="number" style="width: 80px;margin-right:80px" name="nok" id="nok" value="0" onchange="return checkOk()"></h4></div>
+                                        <div> <h4>OK<input type="number" style="width:80px;margin-right:80px;" name="ok" id="ok" value="0"  max="100" onchange="return checkOk()">      NOK<input type="number" style="width: 80px;margin-right:80px" name="nok" id="nok" value="0"  max="5" onchange="return checkOk()"></h4></div>
                                                          <script>
                                                             function checkOk(){
                                                             var checkOk=document.getElementById('ok').value;
