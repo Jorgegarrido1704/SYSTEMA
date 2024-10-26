@@ -440,7 +440,7 @@
                                     </div>
                                     @endif
                                     @if($ventasStation[12] != 0)
-                                    <h4 class="small font-weight-bold">Calidad
+                                    <h4 class="small font-weight-bold">Embarque
                                         <span class="float-right"> {{$ventasStation[12]}}</span>
                                         <span class="float-right">{{$ventasStation[13]*100}}% // </span></h4>
                                     <div class="progress mb-4">
