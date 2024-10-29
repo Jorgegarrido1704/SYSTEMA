@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Mail\Mailables;
 use App\Models\listaCalidad;
 use App\Models\cronograma;
+use App\Models\errores;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 class PpapIngController extends Controller
@@ -599,6 +600,33 @@ foreach($calidad as $regcal){
         }
     }
 
+public function problemas(Request $request){
+$value=session('user');
+$date = date("d-m-Y");
+$pn=$request->input('pnIs');
+$wo=$request->input('workIs');
+$rev=$request->input('revIs');
+$prob=$request->input('probIs');
+$descIs=$request->input('descIs');
+$answer=$request->input('answer');
+$wo=substr($wo,0,6);
+$addProb=new errores;
+$addProb->pn=$pn;
+$addProb->wo=$wo;
+$addProb->rev=$rev;
+$addProb->problem=$prob;
+$addProb->descriptionIs=$descIs;
+$addProb->resp=$answer;
+$addProb->WhoReg=$value;
+$addProb->DateIs=$date;
+if($addProb->save()){
+    return redirect('/ing');
+}
+
+
+
+
+}
 public function excel_ing(Request $request)
 {
     $date = date("d-m-Y");

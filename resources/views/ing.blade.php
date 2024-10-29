@@ -643,7 +643,70 @@ select {
                             </div>
 
                     </div>
+                   <!-- Reportes -->
+                    <div class="row">
+                        <div class="col-lg-6 mb-4">
+                            <!-- AREAS -->
+                            <div class="card shadow mb-4">
+                                <div  class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h5 class="m-0 font-weight-bold text-primary">Problems on the floor</h5>
 
+                                </div>
+                                <div class="card-body" style="overflow-y: auto; height: 360px;" >
+                                    <form class="row g-3" action="{{route('problemas')}}" method="GET">
+                                        <div class="col-md-6">
+                                          <label for="pnIs" class="form-label">Part Number</label>
+                                          <input type="text" class="form-control" name="pnIs" id="pnIs" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                          <label for="workIs" class="form-label">Work Order</label>
+                                          <input type="text" class="form-control" name="workIs" id="workIs"  minlength="6" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                          <label for="revIs" class="form-label">Revision</label>
+                                          <input type="text" class="form-control" name="revIs" id="revIs" minlength="1" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                          <label for="probIs" class="form-label">Problem</label>
+                                          <select id="probIs"  name="probIs" class="form-select" required>
+                                            <option selected>...</option>
+                                            <option value = "Prosses Error">Prosses Error</option>
+                                            <option value = "Paper work">Paper work</option>
+                                            <option value = "Other">Other</option>
+                                          </select>
+                                        </div>
+                                        <div class="col-md-9">
+                                          <label for="descIs" class="form-label">Description</label>
+                                          <textarea class="form-control"  name="descIs" id="descIs" rows="3"></textarea>
+                                        </div>
+                                        <div class="col-md-3">
+                                          <label for="answer" class="form-label">Have you fixed it</label>
+                                          <select id="answer" name="answer" class="form-select" required>
+                                            <option selected>...</option>
+                                            <option value = "Yes">Yes</option>
+                                            <option value = "No">No</option>
+                                          </select>
+                                          </div>
+                                        <div class="col-12">
+                                          <button type="submit" class="btn btn-primary">Send Info</button>
+                                        </div>
+                                      </form>
+                                </div>
+                            </div>
+                        </div>
 
+                        <!--table of works -->
+                        <div class="col-lg-6 mb-4">
+                            <!-- AREAS -->
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h5 class="m-0 font-weight-bold text-primary">Create</h5>
+                                </div>
+                                <div class="card-body" style="overflow-y: auto; height: 360px;" >
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     @endsection
