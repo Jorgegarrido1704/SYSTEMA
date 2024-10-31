@@ -672,6 +672,7 @@ select {
                                             <option selected>...</option>
                                             <option value = "Prosses Error">Prosses Error</option>
                                             <option value = "Paper work">Paper work</option>
+                                            <option value = "Both(Prosses Error and Paper work)">Both(Prosses Error and Paper work)</option>
                                             <option value = "Other">Other</option>
                                           </select>
                                         </div>
@@ -686,7 +687,12 @@ select {
                                             <option value = "Yes">Yes</option>
                                             <option value = "No">No</option>
                                           </select>
+
+                                          <div class="col-md-12">
+                                            <label for="val" class="form-label">Validation By</label>
+                                            <input type="text" class="form-control" name="val" id="val" minlength="1" required>
                                           </div>
+                                        </div>
                                         <div class="col-12">
                                           <button type="submit" class="btn btn-primary">Send Info</button>
                                         </div>

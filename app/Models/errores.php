@@ -10,7 +10,7 @@ class errores extends Model
 
     use HasFactory;
     public $fillable=[
-        
+
         'pn',
         'wo',
         'rev',
@@ -18,7 +18,8 @@ class errores extends Model
         'descriptionIs',
         'resp',
         'WhoReg',
-        'DateIs'
+        'DateIs',
+        'validator'
     ];
     protected $table = "errores";
     public $timestamps = false;

@@ -300,7 +300,7 @@ foreach($calidad as $regcal){
 
             $recipients = [
                 'jguillen@mx.bergstrominc.com',
-                
+
                 'jcervera@mx.bergstrominc.com',
                 'jcrodriguez@mx.bergstrominc.com',
                 'egaona@mx.bergstrominc.com',
@@ -609,6 +609,7 @@ $rev=$request->input('revIs');
 $prob=$request->input('probIs');
 $descIs=$request->input('descIs');
 $answer=$request->input('answer');
+$val=$request->input('val');
 $wo=substr($wo,0,6);
 $addProb=new errores;
 $addProb->pn=$pn;
@@ -619,6 +620,7 @@ $addProb->descriptionIs=$descIs;
 $addProb->resp=$answer;
 $addProb->WhoReg=$value;
 $addProb->DateIs=$date;
+$addProb->validator=$val;
 if($addProb->save()){
     return redirect('/ing');
 }
