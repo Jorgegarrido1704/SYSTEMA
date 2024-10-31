@@ -132,6 +132,7 @@ return view('admin',['value'=>$value,'cat'=>$cat,'client'=>$client]);
                                             ->orwhere("fecha","LIKE","$diario 17:%")
                                             ->orwhere("fecha","LIKE","$diario 18:%")
                                             ->orwhere("fecha","LIKE","$diario 19:%")
+                                            ->orwhere("fecha","LIKE","$diario 20:%")
                                                                              ->get();
 
 
@@ -190,6 +191,10 @@ return view('admin',['value'=>$value,'cat'=>$cat,'client'=>$client]);
                                          $busarPrecio=DB::table('precios')->select('price')->where('pn',$rowstime->pn)->first();
                                         $sietePm+=$busarPrecio->price;
                                         break;
+                                        case '20':
+                                            $busarPrecio=DB::table('precios')->select('price')->where('pn',$rowstime->pn)->first();
+                                           $sietePm+=$busarPrecio->price;
+                                           break;    
 
             }
     }

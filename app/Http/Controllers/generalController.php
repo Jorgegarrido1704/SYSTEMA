@@ -371,7 +371,7 @@ class generalController extends Controller
 
 
                             $recipients = [
-                                'emontano@mx.bergstrominc.com',
+                                
                                'jcervera@mx.bergstrominc.com',
                                 'dvillalpando@mx.bergstrominc.com',
                                 'egaona@mx.bergstrominc.com',
@@ -410,10 +410,10 @@ class generalController extends Controller
 
 
                         $recipients = [
-                          'emontano@mx.bergstrominc.com',
+                          
                            'jcervera@mx.bergstrominc.com',
                            'jcrodriguez@mx.bergstrominc.com',
-                            
+                            'jguillen@mx.bergstrominc.com',
                             'jolaes@mx.bergstrominc.com',
                             'dvillalpando@mx.bergstrominc.com',
                             'lramos@mx.bergstrominc.com',

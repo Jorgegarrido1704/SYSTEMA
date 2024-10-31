@@ -390,7 +390,7 @@ return view('planing',['des'=>$des,'value'=>$value,'cat'=>$cat,'post'=>$post,'da
                 $subject= 'ALTA '.substr($rev, 0, 4).' Numero de parte:'.$np.' Rev: '.substr($rev, 5);
                             $date = date('d-m-Y');
                         $time = date('H:i');
-                        $content = 'Buen día,'."\n\t\n".'Les comparto que hoy ' . $date . ' a las ' . $time . "\n\t\n"."se libero a piso la ".substr($rev, 0, 4)."\n\t\n";
+                        $content = 'Buen día,'."\n\t\n".'Les comparto que hoy ' . $date . ' a las ' . $time . "\n\t\n"." se libero a piso la ".substr($rev, 0, 4)."\n\t\n";
                         $content .= "\n\t\n"." Del cliente: " . $client;
                 $content .= "\n\t\n"." con número de parte: " . $np;
                 $content .= "\n\t\n"." Con Work order: " . $wo;
@@ -400,7 +400,7 @@ return view('planing',['des'=>$des,'value'=>$value,'cat'=>$cat,'post'=>$post,'da
                             $recipients = [
                                 'jguillen@mx.bergstrominc.com',
                                 'jlopez@mx.bergstrominc.com',
-                                'emontano@mx.bergstrominc.com',
+                                
                                'jcervera@mx.bergstrominc.com',
                                 'jcrodriguez@mx.bergstrominc.com',
                                 'dvillalpando@mx.bergstrominc.com',
