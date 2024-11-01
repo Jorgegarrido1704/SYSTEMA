@@ -5,6 +5,7 @@ use App\Http\Controllers\bossController;
 use App\Http\Controllers\caliController;
 use App\Http\Controllers\generalController;
 use App\Http\Controllers\InventarioController;
+use App\Http\Controllers\juntasController;
 use App\Http\Controllers\loginController;
 use App\Http\Controllers\planingController;
 use App\Http\Controllers\PoController;
@@ -124,4 +125,9 @@ Route::controller(planingController::class)->group(function(){
     Route::get('/planing',[planingController::class,'planning'])->name('planning');
     Route::get('/pos',[planingController::class,'pos'])->name('pos');
     Route::get('/codeBarPlan',[planingController::class,'codeBarPlan'])->name('codeBarPlan');
+});
+
+Route::controller(juntasController::class)->group(function(){
+Route::get(    '/juntas',   [juntasController::class, 'index_junta'])->name('index_junta');
+Route::get(    'juntas/calidad',   [juntasController::class, 'calidad_junta'])->name('calidad_junta');
 });

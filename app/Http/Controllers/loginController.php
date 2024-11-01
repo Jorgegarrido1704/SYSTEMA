@@ -98,7 +98,11 @@ class loginController extends Controller
                 }else if($categoria=='inv'){
                     session(['categoria'=>$categoria]);
                     return redirect('/inventario');
-                }else {
+                }else if($categoria=='junta'){
+                    session(['categoria'=>$categoria]);
+                    return redirect('/juntas');
+                }
+                else {
 
                 // If unable to save login record, redirect back with an error message
                 return redirect()->back()->with("error", "Failed to save login information");
