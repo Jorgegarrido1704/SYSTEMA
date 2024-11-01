@@ -285,7 +285,7 @@ updateData();
 
 setInterval(updateData, 60000);
     </script>
-
+@if (!empty($labelss) && !empty($datoss))
     <script>
         var etiquetas= {!! json_encode($labelss) !!};
         var datos1= {!! json_encode($datoss) !!};
@@ -319,6 +319,7 @@ setInterval(updateData, 60000);
         },
     });
     </script>
+    @endif
     @if (!empty($datos))
 
 <script>
