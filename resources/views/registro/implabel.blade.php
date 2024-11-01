@@ -25,26 +25,34 @@
                 TIPO: {{$corte[$i][5]}} PN: {{$corte[$i][1]}} Color: {{$corte[$i][4]}} Tamaño: {{$corte[$i][13]}}
                 Term1: {{$corte[$i][8]}} Term2: {{$corte[$i][9]}} From: {{$corte[$i][10]}} TO: {{$corte[$i][11]}}
                 Estampado:  {{$corte[$i][14]}}
+            <canvas id="bcode{{$i}}" style="height: 7mm; width: 80%;"></canvas>
+
             </h5>
-        </b>
+        </div>
     </div>
-</div>
-<script>
-     var canvas = document.getElementById("barcode"+{{$i}});
-        var ctx = canvas.getContext("2d");
-        var codigos = {{$corte[$i][7]}};
+    <script>
+        // Generate barcode for the main canvas
+        (function() {
+            var canvas = document.getElementById("barcode{{$i}}");
+            var codigos = {{$corte[$i][7]}}; // Convert to JavaScript-friendly format
+            JsBarcode(canvas, codigos, {
+                format: "CODE128",
+                displayValue: true,
+                fontSize: 12,
+                textMargin: 0
+            });
 
-
-        JsBarcode(canvas, codigos, {
-            format: "CODE128",
-            displayValue: true,
-            fontSize: 12,
-            textMargin: 0
-        });
-
-
-
-</script>
+            // Generate barcode for the secondary canvas
+            var canvas1 = document.getElementById("bcode{{$i}}");
+            var codigos1 = "{{$corte[$i][14]}}"; // Example text, adjust as needed
+            JsBarcode(canvas1, codigos1, {
+                format: "CODE128",
+                displayValue: true,
+                fontSize: 12,
+                textMargin: 0
+            });
+        })();
+    </script>
 @endfor
 
     @endif
