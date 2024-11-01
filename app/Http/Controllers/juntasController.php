@@ -359,10 +359,10 @@ foreach ($preReg as $pns) {
     }
     $dato=[$plan,$cort,$libe,$ensa,$espc,$loom,$cali];
     $label=['Plannig','Cutting','Terminals','Assembly','Special Wire','Looming','Quality'];
-    $labels=['07:00','08:00','09:00','10:00','11:00','12:00','13:00','14:00','15::00','16:00','17:00','18:00','19:00'];
+    $labelss=['07:00','08:00','09:00','10:00','11:00','12:00','13:00','14:00','15::00','16:00','17:00','18:00','19:00'];
 
         $tiemposPass[0]=$tiemposPass[1]=$tiemposPass[2]=0;
-    $datos=[$sieteAm,$ochoAm,$nueveAm,$diesAm,$onceAm,$docePm,$unaPm,$dosPm,$tresPm,$cuatroPm,$cincoPm,$seisPm,$sietePm];
+    $datoss=[$sieteAm,$ochoAm,$nueveAm,$diesAm,$onceAm,$docePm,$unaPm,$dosPm,$tresPm,$cuatroPm,$cincoPm,$seisPm,$sietePm];
     $saldo=$sieteAm+$ochoAm+$nueveAm+$diesAm+$onceAm+$docePm+$unaPm+$dosPm+$tresPm+$cuatroPm+$cincoPm+$seisPm+$sietePm;
     $buscarPassView=DB::table('registro')->select('*')->get();
     foreach($buscarPassView as $rowPass){
@@ -384,8 +384,8 @@ return view('juntas')->with(['ventasStation'=>$ventasStation,'inform'=>$inform,'
         'tableContent' => $tableContent,
         'saldo'=> $saldo,
         'backlock'=> $backlock,
-        'labels'=>$labels,
-        'data'=>$datos,
+        'labelss'=>$labelss,
+        'datoss'=>$datoss,
         'label'=>$label,
         'dato'=>$dato,
         'tiemposPass'=>$tiemposPass]);

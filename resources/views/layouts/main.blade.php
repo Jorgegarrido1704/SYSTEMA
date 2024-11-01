@@ -287,8 +287,8 @@ setInterval(updateData, 60000);
     </script>
 
     <script>
-        var etiquetas= {!! json_encode($labels) !!};
-        var datos1= {!! json_encode($dato) !!};
+        var etiquetas= {!! json_encode($labelss) !!};
+        var datos1= {!! json_encode($datoss) !!};
         var ctx = document.getElementById("myAreaCharts");
     var lineChart = new Chart(ctx, {
         type: 'line',
