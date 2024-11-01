@@ -184,7 +184,7 @@ foreach ($preReg as $pns) {
             $backlock+=($price*$cant);
         }
     $today = strtotime(date("d-m-Y 00:00", strtotime('-1 days')));
-    $count = $preciot = $saldo = 0;
+    $count = $preciot = $saldos = 0;
     $fecha = $info = $cliente = $pn = $cantidad = [];
     $tested = DB::select('SELECT * FROM regsitrocalidad ORDER BY id DESC'  );
 
@@ -216,7 +216,7 @@ foreach ($preReg as $pns) {
         $precioparte = $pn[$i];
         $precio = DB::select("SELECT price FROM precios WHERE pn=?", [$precioparte]);
         foreach ($precio as $pricepn) {
-            //$saldo += $pricepn->price * $cantidad[$i];
+            //$saldos += $pricepn->price * $cantidad[$i];
         }
     }
 
@@ -363,7 +363,7 @@ foreach ($preReg as $pns) {
 
         $tiemposPass[0]=$tiemposPass[1]=$tiemposPass[2]=0;
     $datoss=[$sieteAm,$ochoAm,$nueveAm,$diesAm,$onceAm,$docePm,$unaPm,$dosPm,$tresPm,$cuatroPm,$cincoPm,$seisPm,$sietePm];
-    $saldo=$sieteAm+$ochoAm+$nueveAm+$diesAm+$onceAm+$docePm+$unaPm+$dosPm+$tresPm+$cuatroPm+$cincoPm+$seisPm+$sietePm;
+    $saldos=$sieteAm+$ochoAm+$nueveAm+$diesAm+$onceAm+$docePm+$unaPm+$dosPm+$tresPm+$cuatroPm+$cincoPm+$seisPm+$sietePm;
     $buscarPassView=DB::table('registro')->select('*')->get();
     foreach($buscarPassView as $rowPass){
         $fecha=strtotime(date("d-m-Y"));
@@ -382,7 +382,7 @@ foreach ($preReg as $pns) {
 
 return view('juntas')->with(['ventasStation'=>$ventasStation,'inform'=>$inform,'value' => $value,'countReq'=>$countReq,'cat'=>$cat,'client'=>$client,
         'tableContent' => $tableContent,
-        'saldo'=> $saldo,
+        'saldos'=> $saldos,
         'backlock'=> $backlock,
         'labelss'=>$labelss,
         'datoss'=>$datoss,
