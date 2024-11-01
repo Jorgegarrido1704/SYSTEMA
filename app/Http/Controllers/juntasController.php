@@ -15,7 +15,7 @@ public function index_junta(){
         if ($cat!='junta' or $value == '') {
             return view('login');
         } else {
-            $backlock=0;
+            $backlock=$cal=0;
         for($i=0;$i<13;$i++){
             $client[$i]=0;  }
         $buscarregistros=DB::select("SELECT * FROM registro WHERE Qty>'0'");
@@ -176,14 +176,14 @@ foreach ($preReg as $pns) {
 
 
         $countReq=count($info);
-    $backlock=$cal=0;
-        $buscarregistros=DB::select("SELECT * FROM registro WHERE Qty>'0'");
-        foreach($buscarregistros as $reg){
+
+        $buscarregistross=DB::select("SELECT * FROM registro WHERE Qty>'0'");
+        foreach($buscarregistross as $reg){
             $price=$reg->price;
             $cant=$reg->Qty;
             $backlock+=($price*$cant);
         }
-    $today = strtotime(date("d-m-Y 00:00"));
+    $today = strtotime(date("d-m-Y 00:00", strtotime('-1 days')));
     $count = $preciot = $saldo = 0;
     $fecha = $info = $cliente = $pn = $cantidad = [];
     $tested = DB::select('SELECT * FROM regsitrocalidad ORDER BY id DESC'  );
