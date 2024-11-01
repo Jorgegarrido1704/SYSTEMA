@@ -231,7 +231,7 @@ foreach ($preReg as $pns) {
         $tableContent .= '<td>' . $cantidad[$i] . '</td>';
         $tableContent .= '</tr>';
     }
-    $diario=date("d-m-Y", strtotime('-1 days'));
+    $diario=date("d-m-Y", strtotime('-1 day'));
     $ochoAm=$sieteAm=$nueveAm=$diesAm=$onceAm=$docePm=$unaPm=$dosPm=$tresPm=$cuatroPm=$cincoPm=$seisPm=$sietePm=0;
 
     $busPorTiemp=DB::table("regsitrocalidad")->where("fecha","LIKE","$diario 07:%")
