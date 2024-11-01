@@ -123,7 +123,7 @@
                                 <!-- Card Body -->
                                 <div class="card-body" style="overflow-y: auto; max-height: 400px;">
                                     <div class="chart-area" id="chart-area">
-                                        <canvas id="myAreaChart" height=40%></canvas>
+                                        <canvas id="myAreaCharts" height=40%></canvas>
                                     </div>
                                 </div>
                             </div>
