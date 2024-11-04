@@ -34,7 +34,7 @@
 
         (function() {
             var canvas = document.getElementById("barcode{{$i}}");
-            var codigos = {{$corte[$i][7]}};
+            var codigos = "{{$corte[$i][7]}}";
             JsBarcode(canvas, codigos, {
                 format: "CODE128",
                 displayValue: true,
@@ -43,7 +43,7 @@
             });
 
             var canvas1 = document.getElementById("bcode{{$i}}");
-            var codigos1 = "{{$corte[$i][14]}}"; 
+            var codigos1 = "{{$corte[$i][14]}}";
             JsBarcode(canvas1, codigos1, {
                 format: "CODE128",
                 displayValue: true,
