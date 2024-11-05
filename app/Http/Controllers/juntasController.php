@@ -357,12 +357,23 @@ foreach ($preReg as $pns) {
 
              }
     }
+    for($i=0;$i<=13;$i++){
+        $lieaVenta[$i]=0;
+    }
+
     $dato=[$plan,$cort,$libe,$ensa,$espc,$loom,$cali];
     $label=['Plannig','Cutting','Terminals','Assembly','Special Wire','Looming','Quality'];
     $labelss=['07:00','08:00','09:00','10:00','11:00','12:00','13:00','14:00','15::00','16:00','17:00','18:00','19:00'];
 
         $tiemposPass[0]=$tiemposPass[1]=$tiemposPass[2]=0;
+
     $datoss=[$sieteAm,$ochoAm,$nueveAm,$diesAm,$onceAm,$docePm,$unaPm,$dosPm,$tresPm,$cuatroPm,$cincoPm,$seisPm,$sietePm];
+    for($i=0;$i<count($datoss);$i++){
+       for($j=0;$j<=$i;$j++){
+        $lieaVenta[$i]+=$datoss[$j];
+       }
+    }
+
     $saldos=$sieteAm+$ochoAm+$nueveAm+$diesAm+$onceAm+$docePm+$unaPm+$dosPm+$tresPm+$cuatroPm+$cincoPm+$seisPm+$sietePm;
     $buscarPassView=DB::table('registro')->select('*')->get();
     foreach($buscarPassView as $rowPass){
@@ -388,7 +399,8 @@ return view('juntas')->with(['ventasStation'=>$ventasStation,'inform'=>$inform,'
         'datoss'=>$datoss,
         'label'=>$label,
         'dato'=>$dato,
-        'tiemposPass'=>$tiemposPass]);
+        'tiemposPass'=>$tiemposPass,
+        'lieaVenta'=>$lieaVenta]);
 }
 
 
