@@ -307,7 +307,7 @@ setInterval(updateData, 60000);
                     backgroundColor: ['#f6c23e'],
                     hoverBackgroundColor: ['#f1b31c'],
                     hoverBorderColor: "rgba(255, 206, 86, 1)",
-                }],],
+                }],
         },
         options: {
             maintainAspectRatio: false,
