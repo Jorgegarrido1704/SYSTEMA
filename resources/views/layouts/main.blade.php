@@ -300,6 +300,7 @@ setInterval(updateData, 60000);
                 backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
                 hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
                 hoverBorderColor: "rgba(234, 236, 244, 1)",
+                tension: 0.4
             },
             {
                     label: 'Linea Venta',  // Adding LineaVenta as a second line
@@ -307,6 +308,7 @@ setInterval(updateData, 60000);
                     backgroundColor: ['#f6c23e'],
                     hoverBackgroundColor: ['#f1b31c'],
                     hoverBorderColor: "rgba(255, 206, 86, 1)",
+                    tension: 0
                 }],
         },
         options: {
