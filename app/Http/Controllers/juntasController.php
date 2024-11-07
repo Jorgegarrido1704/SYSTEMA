@@ -577,42 +577,42 @@ $buscarDatos=DB::table('registro')
 }else if($id=="corte"){
     $buscarDatos=DB::table('registro')
     ->where('count','=','2')
-    ->where('count','=','3')
-    ->where('count','=','17')
+    ->Orwhere('count','=','3')
+    ->Orwhere('count','=','17')
     ->orderBy('cliente','ASC')
     ->get();
     }else if($id=="liberacion"){
         $buscarDatos=DB::table('registro')
         ->where('count','=','4')
-        ->where('count','=','5')
-        ->where('count','=','16')
+        ->Orwhere('count','=','5')
+        ->Orwhere('count','=','16')
         ->orderBy('cliente','ASC')
         ->get();
         }else if($id=="ensamble"){
             $buscarDatos=DB::table('registro')
             ->where('count','=','6')
-            ->where('count','=','7')
-            ->where('count','=','13')
+            ->Orwhere('count','=','7')
+            ->Orwhere('count','=','13')
             ->orderBy('cliente','ASC')
             ->get();
             }else if($id=="loom"){
                 $buscarDatos=DB::table('registro')
                 ->where('count','=','8')
-                ->where('count','=','9')
-                ->where('count','=','14')
+                ->Orwhere('count','=','9')
+                ->Orwhere('count','=','14')
                 ->orderBy('cliente','ASC')
                 ->get();
                 }else if($id=="prueba"){
                     $buscarDatos=DB::table('registro')
                     ->where('count','=','10')
-                    ->where('count','=','11')
-                    ->where('count','=','18')
+                    ->Orwhere('count','=','11')
+                    ->Orwhere('count','=','18')
                     ->orderBy('cliente','ASC')
                     ->get();
                     }else if($id=="embarque"){
                         $buscarDatos=DB::table('registro')
                         ->where('count','=','12')
-                        ->where('count','=','20')
+                        ->Orwhere('count','=','20')
                         ->orderBy('cliente','ASC')
                         ->get();
                         }

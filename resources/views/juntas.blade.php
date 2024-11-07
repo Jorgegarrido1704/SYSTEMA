@@ -395,7 +395,7 @@
                                     </div>
                                     @endif
                                     @if($ventasStation[1] != 0)
-                                    <h4 class="small font-weight-bold"><a href="#" class="text-warning">Corte</a>
+                                    <h4 class="small font-weight-bold"><a href="{{route('litas_junta','corte')}}" class="text-warning">Corte</a>
                                         <span class="float-right">{{$ventasStation[1]}}</span>
                                         <span class="float-right">{{$ventasStation[7]*100}}% // $</span></h4>
                                     <div class="progress mb-4">
@@ -404,7 +404,7 @@
                                     </div>
                                     @endif
                                     @if($ventasStation[2] != 0)
-                                    <h4 class="small font-weight-bold"><a href="#" class="text-bar">Liberacion</a>
+                                    <h4 class="small font-weight-bold"><a href="{{route('litas_junta','liberacion')}}" class="text-bar">Liberacion</a>
                                         <span class="float-right">{{$ventasStation[2]}}</span>
                                         <span class="float-right">{{$ventasStation[8]*100}}% // $</span></h4>
                                     <div class="progress mb-4">
@@ -413,7 +413,7 @@
                                     </div>
                                     @endif
                                     @if($ventasStation[3] != 0)
-                                    <h4 class="small font-weight-bold"><a href="#" class="text-info">Ensamble</a>
+                                    <h4 class="small font-weight-bold"><a href="{{route('litas_junta','ensamble')}}" class="text-info">Ensamble</a>
                                         <span class="float-right">{{$ventasStation[3]}}</span>
                                         <span class="float-right">{{$ventasStation[9]*100}}% // $</span></h4>
                                     <div class="progress mb-4">
@@ -422,7 +422,7 @@
                                     </div>
                                     @endif
                                     @if($ventasStation[4] != 0)
-                                    <h4 class="small font-weight-bold"><a href="#" class="text-success">Loom</a>
+                                    <h4 class="small font-weight-bold"><a href="{{route('litas_junta','loom')}}" class="text-success">Loom</a>
                                         <span class="float-right">{{$ventasStation[4]}}</span>
                                         <span class="float-right">{{$ventasStation[10]*100}}% // $</span></h4>
                                     <div class="progress mb-4">
@@ -431,7 +431,7 @@
                                     </div>
                                     @endif
                                     @if($ventasStation[5] != 0)
-                                    <h4 class="small font-weight-bold"><a href="#" class="text-info">Calidad</a>
+                                    <h4 class="small font-weight-bold"><a href="{{route('litas_junta','prueba')}}" class="text-info">Calidad</a>
                                         <span class="float-right"> {{$ventasStation[5]}}</span>
                                         <span class="float-right">{{$ventasStation[11]*100}}% // $</span></h4>
                                     <div class="progress mb-4">
@@ -440,7 +440,7 @@
                                     </div>
                                     @endif
                                     @if($ventasStation[12] != 0)
-                                    <h4 class="small font-weight-bold"><a href="#" class="text-dark">Embarque</a>
+                                    <h4 class="small font-weight-bold"><a href="{{route('litas_junta','embarque')}}" class="text-dark">Embarque</a>
                                         <span class="float-right"> {{$ventasStation[12]}}</span>
                                         <span class="float-right">{{$ventasStation[13]*100}}% // $</span></h4>
                                     <div class="progress mb-4">
