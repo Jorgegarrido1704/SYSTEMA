@@ -365,7 +365,7 @@ foreach ($preReg as $pns) {
     $label=['Plannig','Cutting','Terminals','Assembly','Special Wire','Looming','Quality'];
     $labelss=['07:00','08:00','09:00','10:00','11:00','12:00','13:00','14:00','15::00','16:00','17:00','18:00','19:00'];
 
-        $tiemposPass[0]=$tiemposPass[1]=$tiemposPass[2]=0;
+        $tiemposPas[0]=$tiemposPas[1]=$tiemposPas[2]=0;
 
     $datoss=[$sieteAm,$ochoAm,$nueveAm,$diesAm,$onceAm,$docePm,$unaPm,$dosPm,$tresPm,$cuatroPm,$cincoPm,$seisPm,$sietePm];
     for($i=0;$i<count($datoss);$i++){
@@ -381,12 +381,12 @@ foreach ($preReg as $pns) {
         $entrega=strtotime($rowPass->reqday);
         $fecha7 = strtotime('+7 days');
         if($fecha>$entrega){
-            $tiemposPass[0]+=1;
+            $tiemposPas[0]+=1;
         }
         else if($fecha<=$entrega and $fecha7>=$entrega){
-            $tiemposPass[1]+=1;
+            $tiemposPas[1]+=1;
         }else if($fecha7<$entrega){
-            $tiemposPass[2]+=1;
+            $tiemposPas[2]+=1;
         }
     }
 
@@ -399,7 +399,7 @@ return view('juntas')->with(['ventasStation'=>$ventasStation,'inform'=>$inform,'
         'datoss'=>$datoss,
         'label'=>$label,
         'dato'=>$dato,
-        'tiemposPass'=>$tiemposPass,
+        'tiemposPas'=>$tiemposPas,
         'lieaVenta'=>$lieaVenta]);
 }
 

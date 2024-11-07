@@ -154,17 +154,17 @@
                                 <!-- Card Body -->
                                 <div class="card-body">
                                     <div class="chart-pie pt-4 pb-2">
-                                        <canvas id="pie"></canvas>
+                                        <canvas id="pies"></canvas>
                                     </div>
                                     <div class="mt-4 text-center small">
                                         <span class="mr-2">
-                                            <i class="fas fa-circle text-primary" ></i> Delay.
+                                            <i class="fas fa-circle text-danger" ></i> <a href="#" class="text-danger">Delay.</a>
                                         </span>
                                         <span class="mr-2">
-                                            <i class="fas fa-circle text-success"></i> On Time.
+                                            <i class="fas fa-circle text-warning"></i> <a href="#" class="text-warning">On Time.</a>
                                         </span>
                                         <span class="mr-2">
-                                            <i class="fas fa-circle text-info"></i> Great Time.
+                                            <i class="fas fa-circle text-success"></i> <a href="#" class="text-success">Great Time.</a>
                                         </span>
                                     </div>
                                 </div>
@@ -189,7 +189,7 @@
 
 
                                     @if($client[0] != 0)
-                                    <h4 class="small font-weight-bold">Bergstrom <span
+                                    <h4 class="small font-weight-bold"><a href="#" class="text-danger">Bergstrom</a> <span
                                             class="float-right" >{{$client[0]}}%</span></h4>
                                     <div class="progress mb-4">
                                         <div class="progress-bar bg-danger" role="progressbar" style="width: {{$client[0]}}%;"
@@ -197,7 +197,7 @@
                                     </div>
                                     @endif
                                     @if($client[1] != 0)
-                                    <h4 class="small font-weight-bold">Atlas <span
+                                    <h4 class="small font-weight-bold"><a href="#" class="text-warning">Atlas</a> <span
                                             class="float-right">{{$client[1]}}%</span></h4>
                                     <div class="progress mb-4">
                                         <div class="progress-bar bg-warning" role="progressbar" style="width: {{$client[1]}}%;"
@@ -205,7 +205,7 @@
                                     </div>
                                     @endif
                                     @if($client[2] != 0)
-                                    <h4 class="small font-weight-bold">Blue Bird <span
+                                    <h4 class="small font-weight-bold"><a href="#" class="text-bar">Blue Bird</a> <span
                                             class="float-right">{{$client[2]}}%</span></h4>
                                     <div class="progress mb-4">
                                         <div class="progress-bar" role="progressbar" style="width: {{$client[2]}}%;"
@@ -213,7 +213,7 @@
                                     </div>
                                     @endif
                                     @if($client[3] != 0)
-                                    <h4 class="small font-weight-bold">Collins<span
+                                    <h4 class="small font-weight-bold"><a href="#" class="text-info">Collins</a><span
                                             class="float-right">{{$client[3]}}%</span></h4>
                                     <div class="progress mb-4">
                                         <div class="progress-bar bg-info" role="progressbar" style="width: {{$client[3]}}%;"
@@ -221,7 +221,7 @@
                                     </div>
                                     @endif
                                     @if($client[4] != 0)
-                                    <h4 class="small font-weight-bold">El Dorado California<span
+                                    <h4 class="small font-weight-bold"><a href="#" class="text-success">El Dorado California</a><span
                                             class="float-right">{{$client[4]}}%</span></h4>
                                     <div class="progress mb-4">
                                         <div class="progress-bar bg-success" role="progressbar" style="width: {{$client[4]}}%;"
@@ -229,7 +229,7 @@
                                     </div>
                                     @endif
                                     @if($client[5] != 0)
-                                    <h4 class="small font-weight-bold">Forest <span
+                                    <h4 class="small font-weight-bold"><a href="#" class="text-danger">Forest</a> <span
                                             class="float-right">{{$client[5]}}%</span></h4>
                                     <div class="progress mb-4">
                                         <div class="progress-bar bg-danger" role="progressbar" style="width: {{$client[5]}}%;"
@@ -237,7 +237,7 @@
                                     </div>
                                     @endif
                                     @if($client[6] != 0)
-                                    <h4 class="small font-weight-bold">Kalmar <span
+                                    <h4 class="small font-weight-bold"><a href="#" class="text-warning">Kalmar</a> <span
                                             class="float-right">{{$client[6]}}%</span></h4>
                                     <div class="progress mb-4">
                                         <div class="progress-bar bg-warning" role="progressbar" style="width: {{$client[6]}}%;"
@@ -245,7 +245,7 @@
                                     </div>
                                     @endif
                                     @if($client[7] != 0)
-                                    <h4 class="small font-weight-bold">Modine<span
+                                    <h4 class="small font-weight-bold"><a href="#" class="text-bar">Modine</a><span
                                             class="float-right">{{$client[7]}}%</span></h4>
                                     <div class="progress mb-4">
                                         <div class="progress-bar" role="progressbar" style="width: {{$client[7]}}%;"
@@ -253,7 +253,7 @@
                                     </div>
                                     @endif
                                     @if($client[8] != 0)
-                                    <h4 class="small font-weight-bold">PHOENIX MOTOR CARS<span
+                                    <h4 class="small font-weight-bold"><a href="#" class="text-info">Phoenix Motor Cars</a><span
                                             class="float-right">{{$client[8]}}%</span></h4>
                                     <div class="progress mb-4">
                                         <div class="progress-bar bg-info" role="progressbar" style="width:{{$client[8]}}%;"
@@ -261,7 +261,7 @@
                                     </div>
                                     @endif
                                     @if($client[9] != 0)
-                                    <h4 class="small font-weight-bold">Spartan<span
+                                    <h4 class="small font-weight-bold"><a href="#" class="text-success">Spartan</a><span
                                             class="float-right">{{$client[9]}}%</span></h4>
                                     <div class="progress mb-4">
                                         <div class="progress-bar bg-success" role="progressbar" style="width: {{$client[9]}}%;"
@@ -269,7 +269,7 @@
                                     </div>
                                     @endif
                                     @if($client[10] != 0)
-                                    <h4 class="small font-weight-bold">TICO MANUFACTURING<span
+                                    <h4 class="small font-weight-bold"><a href="#" class="text-danger">Tico Manufacturing</a><span
                                         class="float-right">{{$client[10]}}%</span></h4>
                                 <div class="progress mb-4">
                                     <div class="progress-bar bg-danger" role="progressbar" style="width: {{$client[10]}}%;"
@@ -277,7 +277,7 @@
                                 </div>
                                 @endif
                                     @if($client[11] != 0)
-                                <h4 class="small font-weight-bold">Utilimaster<span
+                                <h4 class="small font-weight-bold"><a href="#" class="text-warning">Utilimaster</a><span
                                         class="float-right">{{$client[11]}}%</span></h4>
                                 <div class="progress mb-4">
                                     <div class="progress-bar bg-warning" role="progressbar" style="width: {{$client[11]}}%;"
@@ -285,7 +285,7 @@
                                 </div>
                                 @endif
                                     @if($client[12] != 0)
-                                <h4 class="small font-weight-bold">Zoeller <span
+                                <h4 class="small font-weight-bold"><a href="#" class="text-bar">Zoeller</a> <span
                                         class="float-right">{{$client[12]}}%</span></h4>
                                 <div class="progress mb-4">
                                     <div class="progress-bar" role="progressbar" style="width: {{$client[12]}}%;"
@@ -386,43 +386,43 @@
 
 
                                     @if($ventasStation[0] != 0)
-                                    <h4 class="small font-weight-bold">Planeacion
+                                    <h4 class="small font-weight-bold"><a href="#" class="text-danger">Planeacion</a>
                                         <span class="float-right">{{$ventasStation[0]}}</span>
-                                        <span class="float-right">{{$ventasStation[6]*100}}% //</span></h4>
+                                        <span class="float-right">{{$ventasStation[6]*100}}% // $</span></h4>
                                     <div class="progress mb-4">
                                         <div class="progress-bar bg-danger" role="progressbar" style="width: {{$ventasStation[6]*100}}%;"
                                             aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
                                     @endif
                                     @if($ventasStation[1] != 0)
-                                    <h4 class="small font-weight-bold">Corte
+                                    <h4 class="small font-weight-bold"><a href="#" class="text-warning">Corte</a>
                                         <span class="float-right">{{$ventasStation[1]}}</span>
-                                        <span class="float-right">{{$ventasStation[7]*100}}% //</span></h4>
+                                        <span class="float-right">{{$ventasStation[7]*100}}% // $</span></h4>
                                     <div class="progress mb-4">
                                         <div class="progress-bar bg-warning" role="progressbar" style="width: {{$ventasStation[7]*100}}%;"
                                             aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
                                     @endif
                                     @if($ventasStation[2] != 0)
-                                    <h4 class="small font-weight-bold">Liberacion
+                                    <h4 class="small font-weight-bold"><a href="#" class="text-bar">Liberacion</a>
                                         <span class="float-right">{{$ventasStation[2]}}</span>
-                                        <span class="float-right">{{$ventasStation[8]*100}}% // </span></h4>
+                                        <span class="float-right">{{$ventasStation[8]*100}}% // $</span></h4>
                                     <div class="progress mb-4">
                                         <div class="progress-bar" role="progressbar" style="width: {{$ventasStation[8]*100}}%;"
                                             aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
                                     @endif
                                     @if($ventasStation[3] != 0)
-                                    <h4 class="small font-weight-bold">Ensamble
+                                    <h4 class="small font-weight-bold"><a href="#" class="text-info">Ensamble</a>
                                         <span class="float-right">{{$ventasStation[3]}}</span>
-                                        <span class="float-right">{{$ventasStation[9]*100}}% // </span></h4>
+                                        <span class="float-right">{{$ventasStation[9]*100}}% // $</span></h4>
                                     <div class="progress mb-4">
                                         <div class="progress-bar bg-info" role="progressbar" style="width: {{$ventasStation[9]*100}}%;"
                                             aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
                                     @endif
                                     @if($ventasStation[4] != 0)
-                                    <h4 class="small font-weight-bold">Loom
+                                    <h4 class="small font-weight-bold"><a href="#" class="text-success">Loom</a>
                                         <span class="float-right">{{$ventasStation[4]}}</span>
                                         <span class="float-right">{{$ventasStation[10]*100}}% // </span></h4>
                                     <div class="progress mb-4">
@@ -431,7 +431,7 @@
                                     </div>
                                     @endif
                                     @if($ventasStation[5] != 0)
-                                    <h4 class="small font-weight-bold">Calidad
+                                    <h4 class="small font-weight-bold"><a href="#" class="text-info">Calidad</a>
                                         <span class="float-right"> {{$ventasStation[5]}}</span>
                                         <span class="float-right">{{$ventasStation[11]*100}}% // </span></h4>
                                     <div class="progress mb-4">
@@ -440,7 +440,7 @@
                                     </div>
                                     @endif
                                     @if($ventasStation[12] != 0)
-                                    <h4 class="small font-weight-bold">Embarque
+                                    <h4 class="small font-weight-bold"><a href="#" class="text-dark">Embarque</a>
                                         <span class="float-right"> {{$ventasStation[12]}}</span>
                                         <span class="float-right">{{$ventasStation[13]*100}}% // </span></h4>
                                     <div class="progress mb-4">

@@ -328,6 +328,39 @@ setInterval(updateData, 60000);
             },
         },
     });
+    var ctx = document.getElementById("pies");
+    var tiemposPas = {!! json_encode($tiemposPas) !!};
+var myPieChart = new Chart(ctx, {
+  type: 'doughnut',
+  data: {
+    labels: ["Delay", "On Time", "Great Time"],
+    datasets: [{
+      data: [tiemposPas[0],tiemposPas[1], tiemposPas[2]],
+      backgroundColor: ['#FF4141', '#FFE641', '#27B744'],
+      hoverBackgroundColor: ['#DE1818', '#FCDE37', '#50B727'],
+      hoverBorderColor: "rgba(234, 236, 244, 1)",
+    }],
+  },
+  options: {
+    maintainAspectRatio: false,
+    tooltips: {
+      backgroundColor: "rgb(255,255,255)",
+      bodyFontColor: "#858796",
+      borderColor: '#dddfeb',
+      borderWidth: 1,
+      xPadding: 15,
+      yPadding: 15,
+      displayColors: false,
+      caretPadding: 10,
+    },
+    legend: {
+      display: false
+    },
+    cutoutPercentage: 80,
+
+  },
+});
+
     </script>
     @endif
     @if (!empty($datos))
