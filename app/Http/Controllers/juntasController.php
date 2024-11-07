@@ -564,4 +564,77 @@ public function calidad_junta(){
 
 }
 
+public function litas_junta($id){
+$value=session('user');
+$cat=session('categoria');
+if($id==""){
+    redirect()->route('juntas');
+}else if($id=="planeacion"){
+$buscarDatos=DB::table('registro')
+->where('count','=','1')
+->orderBy('cliente','ASC')
+->get();
+}else if($id=="corte"){
+    $buscarDatos=DB::table('registro')
+    ->where('count','=','2')
+    ->where('count','=','3')
+    ->where('count','=','17')
+    ->orderBy('cliente','ASC')
+    ->get();
+    }else if($id=="liberacion"){
+        $buscarDatos=DB::table('registro')
+        ->where('count','=','4')
+        ->where('count','=','5')
+        ->where('count','=','16')
+        ->orderBy('cliente','ASC')
+        ->get();
+        }else if($id=="ensamble"){
+            $buscarDatos=DB::table('registro')
+            ->where('count','=','6')
+            ->where('count','=','7')
+            ->where('count','=','13')
+            ->orderBy('cliente','ASC')
+            ->get();
+            }else if($id=="loom"){
+                $buscarDatos=DB::table('registro')
+                ->where('count','=','8')
+                ->where('count','=','9')
+                ->where('count','=','14')
+                ->orderBy('cliente','ASC')
+                ->get();
+                }else if($id=="prueba"){
+                    $buscarDatos=DB::table('registro')
+                    ->where('count','=','10')
+                    ->where('count','=','11')
+                    ->where('count','=','18')
+                    ->orderBy('cliente','ASC')
+                    ->get();
+                    }else if($id=="embarque"){
+                        $buscarDatos=DB::table('registro')
+                        ->where('count','=','12')
+                        ->where('count','=','20')
+                        ->orderBy('cliente','ASC')
+                        ->get();
+                        }
+
+if($buscarDatos){
+    $datosTabla=[];
+    $i=0;
+    foreach($buscarDatos as $rows){
+        $datosTabla[$i][0]=$rows->cliente;
+        $datosTabla[$i][1]=$rows->NumPart;
+        $datosTabla[$i][2]=$rows->wo;
+        $datosTabla[$i][3]=$rows->Qty;
+        $datosTabla[$i][4]=$rows->tiempototal;
+        $datosTabla[$i][5]=$rows->price;
+        $datosTabla[$i][6]=$rows->Qty*$rows->price;
+        $datosTabla[$i][7]=$rows->reqday;
+        $i++;
+    }
+
+}
+return view('juntas/lista',['value'=>$value,'cat'=>$cat,'buscarDatos'=>$buscarDatos,'datosTabla'=>$datosTabla]);
+
+}
+
 }

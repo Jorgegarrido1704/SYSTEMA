@@ -386,7 +386,7 @@
 
 
                                     @if($ventasStation[0] != 0)
-                                    <h4 class="small font-weight-bold"><a href="#" class="text-danger">Planeacion</a>
+                                    <h4 class="small font-weight-bold"><a href="{{route('litas_junta','planeacion')}}" class="text-danger">Planeacion</a>
                                         <span class="float-right">{{$ventasStation[0]}}</span>
                                         <span class="float-right">{{$ventasStation[6]*100}}% // $</span></h4>
                                     <div class="progress mb-4">
@@ -424,7 +424,7 @@
                                     @if($ventasStation[4] != 0)
                                     <h4 class="small font-weight-bold"><a href="#" class="text-success">Loom</a>
                                         <span class="float-right">{{$ventasStation[4]}}</span>
-                                        <span class="float-right">{{$ventasStation[10]*100}}% // </span></h4>
+                                        <span class="float-right">{{$ventasStation[10]*100}}% // $</span></h4>
                                     <div class="progress mb-4">
                                         <div class="progress-bar bg-success" role="progressbar" style="width: {{$ventasStation[10]*100}}%;"
                                             aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
@@ -433,7 +433,7 @@
                                     @if($ventasStation[5] != 0)
                                     <h4 class="small font-weight-bold"><a href="#" class="text-info">Calidad</a>
                                         <span class="float-right"> {{$ventasStation[5]}}</span>
-                                        <span class="float-right">{{$ventasStation[11]*100}}% // </span></h4>
+                                        <span class="float-right">{{$ventasStation[11]*100}}% // $</span></h4>
                                     <div class="progress mb-4">
                                         <div class="progress-bar  bg-info" role="progressbar" style="width: {{$ventasStation[11]*100}}%;"
                                             aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
@@ -442,7 +442,7 @@
                                     @if($ventasStation[12] != 0)
                                     <h4 class="small font-weight-bold"><a href="#" class="text-dark">Embarque</a>
                                         <span class="float-right"> {{$ventasStation[12]}}</span>
-                                        <span class="float-right">{{$ventasStation[13]*100}}% // </span></h4>
+                                        <span class="float-right">{{$ventasStation[13]*100}}% // $</span></h4>
                                     <div class="progress mb-4">
                                         <div class="progress-bar  bg-dark" role="progressbar" style="width: {{$ventasStation[13]*100}}%;"
                                             aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
