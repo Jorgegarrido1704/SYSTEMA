@@ -572,48 +572,48 @@ if($id==""){
 }else if($id=="planeacion"){
 $buscarDatos=DB::table('registro')
 ->where('count','=','1')
-->orderBy('cliente','ASC')
+->orderBy('tiempototal','DESC')
 ->get();
 }else if($id=="corte"){
     $buscarDatos=DB::table('registro')
     ->where('count','=','2')
     ->Orwhere('count','=','3')
     ->Orwhere('count','=','17')
-    ->orderBy('cliente','ASC')
+    ->orderBy('tiempototal','DESC')
     ->get();
     }else if($id=="liberacion"){
         $buscarDatos=DB::table('registro')
         ->where('count','=','4')
         ->Orwhere('count','=','5')
         ->Orwhere('count','=','16')
-        ->orderBy('cliente','ASC')
+        ->orderBy('tiempototal','DESC')
         ->get();
         }else if($id=="ensamble"){
             $buscarDatos=DB::table('registro')
             ->where('count','=','6')
             ->Orwhere('count','=','7')
             ->Orwhere('count','=','13')
-            ->orderBy('cliente','ASC')
+            ->orderBy('tiempototal','DESC')
             ->get();
             }else if($id=="loom"){
                 $buscarDatos=DB::table('registro')
                 ->where('count','=','8')
                 ->Orwhere('count','=','9')
                 ->Orwhere('count','=','14')
-                ->orderBy('cliente','ASC')
+                ->orderBy('tiempototal','DESC')
                 ->get();
                 }else if($id=="prueba"){
                     $buscarDatos=DB::table('registro')
                     ->where('count','=','10')
                     ->Orwhere('count','=','11')
                     ->Orwhere('count','=','18')
-                    ->orderBy('cliente','ASC')
+                    ->orderBy('tiempototal','DESC')
                     ->get();
                     }else if($id=="embarque"){
                         $buscarDatos=DB::table('registro')
                         ->where('count','=','12')
                         ->Orwhere('count','=','20')
-                        ->orderBy('cliente','ASC')
+                        ->orderBy('tiempototal','DESC')
                         ->get();
                         }
 

@@ -626,7 +626,9 @@ class generalController extends Controller
 
                 } else if($cantidad==0 or $cantidad==NULL){
                     return redirect('general')->with('response', "Harness not updated");  }
-    }
+            }else{
+                return redirect('general')->with('response', "Harness is in $area");
+            }
 }
 }
 
