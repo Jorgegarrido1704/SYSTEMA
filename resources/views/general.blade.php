@@ -95,8 +95,18 @@
                                         <form action="{{ route('codigo') }}" method="POST">
                                             @csrf
                                             <div class="form-group">
-                                                <h2 class="mb-3">Scan Your Code</h2>
-                                                <input type="text" class="form-control" name="code-bar" id="code-bar" placeholder="Enter code here">
+                                                <div class="label">
+                                                    <label for="cantidad" class="form-label">Qty scanned</label>
+                                                </div>
+                                                <div class="input-group">
+                                                    <input type="number" class="form-control" name="cantidad" id="cantidad" value="0"  required>
+                                                </div>
+                                                <div class="label">
+                                                    <label for="code-bar" class="form-label">Scan Your Code</label>
+                                                </div>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" name="code-bar" id="code-bar" placeholder="Enter code here" required>
+                                                </div>
                                             </div>
                                             <button type="submit" class="btn btn-primary">Submit</button>
                                         </form>

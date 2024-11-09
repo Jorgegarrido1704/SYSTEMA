@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Mail\Mailables;
 use App\Models\regfull;
 use App\Models\ParosProd;
+use App\Models\regPar;
+use App\Models\regParTime;
 
 
 
@@ -269,11 +271,12 @@ class generalController extends Controller
         if($cat=='' OR $value==''){
             return view('login');
         }else{
-
+            $cantidad=$request->input('cantidad');
            $codigo=$request->input('code-bar');
             $codigo=str_replace("'","-",$codigo);
+
             $todays=date('d-m-Y H:i');
-            $buscar=DB::select("SELECT count,wo,donde,NumPart,rev FROM registro WHERE info='$codigo'");
+            $buscar=DB::select("SELECT count,wo,donde,NumPart,rev,Qty FROM registro WHERE info='$codigo'");
             if (!$buscar) {
                 return redirect('general')->with('response', 'Record not found');
             }
@@ -283,43 +286,54 @@ class generalController extends Controller
             $pnReg=$rowb->NumPart;
             $rev=$rowb->rev;
             $wo=$rowb->wo;
+
+            $orgQty=$rowb->Qty;
         }
+        function updateCount($codigo,$upCant,$sesion,$donde,$todays){
+            $registroTiempo=new regParTime();
+                    $registroTiempo->codeBar=$codigo;
+                    $registroTiempo->qtyPar=$upCant;
+                    $registroTiempo->area=$sesion.'/'.$donde;
+                    $registroTiempo->fechaReg=$todays;
+                    $registroTiempo->save();
+        }
+
             $donde='';
             $sesion=session('user');
             $sesionBus = DB::table('login')->select('category')->where('user', $sesion)->limit(1)->first();
             $donde = $sesionBus->category;
-            if(($donde==='plan' or $donde==='Admin') and $count===1){
-                $count=2;
-                $tiempoUp=DB::table('tiempos')->where('info',$codigo)->update(['planeacion'=>$todays]);
-                $busqueda = array('2664-GG5A-007','621180','1002707335','1001233873','1001234967','1001333091','910985','910987','91304','90863','90843','90844','910966','911021','91318','60744','60745','91267','910958','91277','90833','910988','910992','90836','91315','920628','40742','90943','910956','40741','91175','91164','910980','910982','90834','910508','91194','90835','91583','910968','910350','910651','911028','91195','910886','910965','910962','910824','910887','910964','910659','40304','91222','91518','91518-1','910957','91135','910974','910577','91138','91221','910792','910978','90841','90842','910908','910910','910444','91525','910981','910967','40601','91211','91682','910621','90798','91517','91516','91681','91133','91212','91224','910975','910325','910347','910907','910909','910979','910326','910960','91137','910511','910821','910940','91139','90839','90877','91223','910400','910410','910955','90837','910953','90840','910678','910914','40199','40200','910971','910399','910969','91165','910661','40488','910972','40640','40599','910411','910913','91177','910973','40639','910954','910348','910650','911022','40602','91162','91163','910666','40600','910951','91176','910349','911024','910984','910702','910580','910784','910952','911023','910983','910970','910581','910733','910785','910976','910579','910701','910601','910611','910977','910610','910598','910786','910959','910609','910608','910961','910597','910600','910599','910536','910820','910664','910735','910512','910513','40747','910912','61522','90838','910911','91136','910390','910668','40801','60977','61615','61820','61821','90860','90886','90942','91132','91134','91143','91144','91145','91171','91173','91203','91232','91233','91278','91279','91305','91306','91307','91308','91309','91313','91314','91317','910324','920040','920041','920042','920043','910327','910439','910440','910441','910442','910443','910509','910510','910515','910516','910564','910568','910578','910585','910586','910596','910622','910637','910654','910655','910656','910657','910658','910662','910663','910665','910674','910679','910788','910832','910939','910963','910989','910990','910991','911025','911026','911027','CTT00002437','146-4448','40297A','CTT00002437');
-             if(in_array($pnReg,$busqueda)){
-                $update = DB::table('registro')->where('info', $codigo)->update(['count' => 15, 'donde' => 'En espera de Cables Especiales']);
-                if ($update) { $resp = "This harness was updated to the next station";
-                } else {   $resp = "Harness not updated, it is in $area";  }
-                return redirect('general')->with('response', $resp);
-            }else { $panel=array('26013301','0031539-104','0032192-70','0032192-175');
-            if(in_array($pnReg,$panel)){  $update = DB::table('registro')->where('info', $codigo)->update(['count' => 6, 'donde' => 'En espera de Ensamble']);
-                if ($update) { $resp = "This harness was updated to the next station";
-                } else {   $resp = "Harness not updated, it is in $area";  }
-                return redirect('general')->with('response', $resp);
-            }
-                $update = DB::table('registro')->where('info', $codigo)->update(['count' => $count, 'donde' => 'En espera de corte']);
-                if ($update) { $resp = "This harness was updated to the next station";
-                } else {   $resp = "Harness not updated, it is in $area";  }
-                return redirect('general')->with('response', $resp); }
-            }else if(($donde==='cort' or $donde==='libe' ) and $count===2){
+             if(($donde==='cort' or $donde==='libe' ) and $count===2){
                 $count=3;
                 $update = DB::table('registro')->where('info', $codigo)->update(['count' => $count, 'donde' => 'Proceso de corte']);
                 if ($update) { $resp = "Cutting process";
                 } else {   $resp = "Harness not updated, it is in $area";  }
                 return redirect('general')->with('response', $resp);
-            }else if(( $donde==='cort' or $donde==='libe' ) and $count===3){
+            }else if(( $donde==='cort' or $donde==='libe' ) and $count===3 ){
+                $buscarResto=DB::table('registroparcial')->where('codeBar','=',$codigo)->first();
+                $cantRegPrev=$buscarResto->cortPar;
+                $sigRegPrev=$buscarResto->libePar;
+                if($cantidad>0 and $cantidad<($cantRegPrev)){
+                    $upCant=$cantidad;
+                    $restoAnt=$cantRegPrev-$upCant;
+                    $nuevo=$sigRegPrev+$upCant;
+                    $update = DB::table('registroparcial')->where('codeBar', "=",$codigo)->update(['cortPar' => $restoAnt,'libePar' => $nuevo]);
+                    updateCount($codigo,$upCant,$sesion,$donde,$todays);
+                    if ($update) { $resp = "Cutting process";
+                    } else {   $resp = "Harness not updated, it is in $area";  }
+                    return redirect('general')->with('response', $resp);
+                }else if($cantidad>0 and $cantidad>=($cantRegPrev)){
+
                 if(substr($rev,0,4)=='PRIM' or substr($rev,0,4)=='PPAP' ){
                      $buscar=DB::table('timesharn')->select('cut','fecha')->where('bar',$codigo)->first();
                                 $lasDate=$buscar->fecha;
                                 if($buscar->cut==NULL){
                                     $update = DB::table('timesharn')->where('bar', $codigo)->update(['cut' => $lasDate]);
                                 }
+                                $upCant=$cantRegPrev;
+                                $nuevo=$sigRegPrev+$upCant;
+                                $update = DB::table('registroparcial')->where('codeBar', "=",$codigo)->update(['cortPar' => '0','libePar' => $nuevo]);
+                                updateCount($codigo,$upCant,$sesion,$donde,$todays);
+
                     $updatetime=DB::table('timesharn')->where('bar',$codigo)->update(['cutF'=>$todays]);
                     $update = DB::table('registro')->where('info', $codigo)->update(['count' => 17, 'donde' => 'En espera de Ingenieria Corte']);
                     if ($update) { $resp = "Waitting for enginney";
@@ -332,12 +346,21 @@ class generalController extends Controller
                 if($buscar->cut==NULL){
                     $update = DB::table('timesharn')->where('bar', $codigo)->update(['cut' => $lasDate]);
                 }
+                $upCant=$cantRegPrev;
+                $nuevo=$sigRegPrev+$upCant;
+                $update = DB::table('registroparcial')->where('codeBar', "=",$codigo)->update(['cortPar' => '0','libePar' => $nuevo]);
+                updateCount($codigo,$upCant,$sesion,$donde,$todays);
+
                 $updatetime=DB::table('timesharn')->where('bar',$codigo)->update(['cutF'=>$todays]);
                 $tiempoUp=DB::table('tiempos')->where('info',$codigo)->update(['corte'=>$todays]);
                 $update = DB::table('registro')->where('info', $codigo)->update(['count' => $count, 'donde' => 'En espera de liberacion']);
                 if ($update) { $resp = "This harness was updated to the next station";
                 } else {   $resp = "Harness not updated, it is in $area";  }
                 return redirect('general')->with('response', $resp);}
+            }else if($cantidad==0 or $cantidad==NULL){
+                return redirect('general')->with('response', "Harness not updated");
+            }
+
             }else if(($donde==='libe' or $donde==='cort') and $count===4){
                     $count=5;
                     $update = DB::table('registro')->where('info', $codigo)->update(['count' => $count, 'donde' => 'Proceso de liberacion']);
@@ -349,12 +372,30 @@ class generalController extends Controller
                     } else {   $resp = "Harness not updated, it is in $area";  }
                     return redirect('general')->with('response', $resp);
             }else if(($donde==='libe' or $donde==='cort') and $count===5){
+                $buscarResto=DB::table('registroparcial')->where('codeBar','=',$codigo)->first();
+                $cantRegPrev=$buscarResto->libePar;
+                $sigRegPrev=$buscarResto->ensaPar;
+                if($cantidad>0 and $cantidad<($cantRegPrev)){
+                    $upCant=$cantidad;
+                    $restoAnt=$cantRegPrev-$upCant;
+                    $nuevo=$sigRegPrev+$upCant;
+                    $update = DB::table('registroparcial')->where('codeBar', "=",$codigo)->update(['libePar' => $restoAnt,'ensaPar' => $nuevo]);
+                    updateCount($codigo,$upCant,$sesion,$donde,$todays);
+                    if ($update) { $resp = "Cutting process";
+                    } else {   $resp = "Harness not updated, it is in $area";  }
+                    return redirect('general')->with('response', $resp);
+                }else if($cantidad>0 and $cantidad>=($cantRegPrev)){
                     if(substr($rev,0,4)=='PRIM' or substr($rev,0,4)=='PPAP' ){
                         $buscar=DB::table('timesharn')->select('term','cutF')->where('bar',$codigo)->first();
                         $lasDate=$buscar->cutF;
                         if($buscar->term==NULL){
                             $update = DB::table('timesharn')->where('bar', $codigo)->update(['term' => $lasDate]);
                         }
+                        $upCant=$cantRegPrev;
+                        $nuevo=$sigRegPrev+$upCant;
+                        $update = DB::table('registroparcial')->where('codeBar', "=",$codigo)->update(['libePar' => '0','ensaPar' => $nuevo]);
+                        updateCount($codigo,$upCant,$sesion,$donde,$todays);
+
                         $updatetime=DB::table('timesharn')->where('bar',$codigo)->update(['termF'=>$todays]);
                         $update = DB::table('registro')->where('info', $codigo)->update(['count' => 16, 'donde' => 'En espera de Ingenieria Liberacion']);
                         if ($update) { $resp = "Waitting for enginney";
@@ -371,7 +412,7 @@ class generalController extends Controller
 
 
                             $recipients = [
-                                
+
                                'jcervera@mx.bergstrominc.com',
                                 'dvillalpando@mx.bergstrominc.com',
                                 'egaona@mx.bergstrominc.com',
@@ -381,18 +422,23 @@ class generalController extends Controller
                                 'emedina@mx.bergstrominc.com',
                                 'jgarrido@mx.bergstrominc.com',
                                 'jlopez@mx.bergstrominc.com'
-                                
+
                             ];
                             Mail::to($recipients)->send(new \App\Mail\PPAPING($subject,$content));}
                         } else {   $resp = "Harness not updated, it is in $area";  }
                         return redirect('general')->with('response', $resp);
-                    }else{
+                    }else {
                     $count=6;
                     $buscar=DB::table('timesharn')->select('term','cutF')->where('bar',$codigo)->first();
                     $lasDate=$buscar->cutF;
                     if($buscar->term==NULL){
                         $update = DB::table('timesharn')->where('bar', $codigo)->update(['term' => $lasDate]);
                     }
+                    $upCant=$cantRegPrev;
+                    $nuevo=$sigRegPrev+$upCant;
+                    $update = DB::table('registroparcial')->where('codeBar', "=",$codigo)->update(['libePar' => '0','ensaPar' => $nuevo]);
+                    updateCount($codigo,$upCant,$sesion,$donde,$todays);
+
                     $updatetime=DB::table('timesharn')->where('bar',$codigo)->update(['termF'=>$todays]);
                     $tiempoUp=DB::table('tiempos')->where('info',$codigo)->update(['liberacion'=>$todays]);
                     $update = DB::table('registro')->where('info', $codigo)->update(['count' => $count, 'donde' => 'En espera de ensamble']);
@@ -410,7 +456,7 @@ class generalController extends Controller
 
 
                         $recipients = [
-                          
+
                            'jcervera@mx.bergstrominc.com',
                            'jcrodriguez@mx.bergstrominc.com',
                             'jguillen@mx.bergstrominc.com',
@@ -426,7 +472,10 @@ class generalController extends Controller
                         Mail::to($recipients)->send(new \App\Mail\PPAPING($subject,$content));}
                         $resp = "This harness was updated to the next station";
                     } else { $resp = "Harness not updated, it is in $area";
-                    }  return redirect('general')->with('response', $resp);  }
+                    }  return redirect('general')->with('response', $resp);
+
+                    }}else if($cantidad==0 or $cantidad==NULL){
+                        return redirect('general')->with('response', "Harness not updated");}
             }else if($donde==='ensa' and $count===6){
                         $count=7;
                         $buscarregistro=DB::table('registro')->select('*')->where("info",$codigo)->get();
