@@ -205,6 +205,13 @@ class caliController extends generalController
 
         $qty_cal=$busquedainfo->qty;
         $total=$ok+$nok;
+        $buscarPartial=DB::table('registroparcial')->where('codeBar','=',$info)->get();
+        foreach($buscarPartial as $row){
+            $test=$row->testPar;
+            $emba=$row->embPar;
+        }
+        $upPartial=DB::table('registroparcial')->where('codeBar','=',$info)->update(['testPar'=>$test-$total,'embPar'=>$emba+$total]);
+
         $totalCant=$cant1+$cant2+$cant3+$cant4+$cant5;
         if($total<=$qty_cal and $totalCant==$nok){
             //insert ok
@@ -647,7 +654,7 @@ $regTimes->save();}
 }
 
             $rest=$qty_cal - ($ok+$nok);
-            
+
             if($rest>0){
             $updacalidad=DB::table('calidad')->where("info",$info)->update(['qty'=>$rest]);
             $updateToRegistro=DB::table('registro')->where("info",$info)->update(["paro"=>"Parcial prueba electrica"]);
