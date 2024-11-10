@@ -131,4 +131,5 @@ Route::controller(juntasController::class)->group(function(){
 Route::get(    '/juntas',   [juntasController::class, 'index_junta'])->name('index_junta');
 Route::get(    'juntas/calidad',   [juntasController::class, 'calidad_junta'])->name('calidad_junta');
 Route::get(    'juntas/lista/{id}',   [juntasController::class, 'litas_junta'])->name('litas_junta');
+Route::get(    'juntas/reg',   [juntasController::class, 'litas_reg'])->name('litas_reg');
 });

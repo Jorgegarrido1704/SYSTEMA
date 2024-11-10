@@ -122,7 +122,11 @@ $info=[];
             $i++;
         }
         //ventas
+        if(date('N')==1){
+            $fechaVenta=date("d-m-Y",strtotime("-3 days"));
+        }else{}
         $fechaVenta=date("d-m-Y",strtotime("-1 days"));
+    }
         $preReg = [];
 $inform = [];
 $i = 0;
@@ -183,7 +187,11 @@ foreach ($preReg as $pns) {
             $cant=$reg->Qty;
             $backlock+=($price*$cant);
         }
-    $today = strtotime(date("d-m-Y 00:00", strtotime('-1 days')));
+        if(date("N")==1){
+    $today = strtotime(date("d-m-Y 00:00", strtotime('-3 days')));
+        }else{
+            $today = strtotime(date("d-m-Y 00:00", strtotime('-1 days')));
+        }
     $count = $preciot = $saldos = 0;
     $fecha = $info = $cliente = $pn = $cantidad = [];
     $tested = DB::select('SELECT * FROM regsitrocalidad ORDER BY id DESC'  );
@@ -231,7 +239,11 @@ foreach ($preReg as $pns) {
         $tableContent .= '<td>' . $cantidad[$i] . '</td>';
         $tableContent .= '</tr>';
     }
-    $diario=date("d-m-Y", strtotime('-1 day'));
+    if(date("N")==1){
+    $diario=date("d-m-Y", strtotime('-3 day'));
+    }else{
+        $diario=date("d-m-Y", strtotime('-1 day'));
+    }
     $ochoAm=$sieteAm=$nueveAm=$diesAm=$onceAm=$docePm=$unaPm=$dosPm=$tresPm=$cuatroPm=$cincoPm=$seisPm=$sietePm=0;
 
     $busPorTiemp=DB::table("regsitrocalidad")->where("fecha","LIKE","$diario 07:%")
@@ -402,10 +414,6 @@ return view('juntas')->with(['ventasStation'=>$ventasStation,'inform'=>$inform,'
         'tiemposPas'=>$tiemposPas,
         'lieaVenta'=>$lieaVenta]);
 }
-
-
-}
-
 public function calidad_junta(){
     $value=session('user');
     $cat=session('categoria');
@@ -636,5 +644,31 @@ if($buscarDatos){
 return view('juntas/lista',['value'=>$value,'cat'=>$cat,'buscarDatos'=>$buscarDatos,'datosTabla'=>$datosTabla]);
 
 }
+public function litas_reg(  Request $request){
+$value=session('user');
+$cat=session('categoria');
+$buscarRegsitro=DB::table('registroparcial')->get();
+if($buscarRegsitro){
+$datosTabla=[];
+$i=0;
+foreach($buscarRegsitro as $rows){
+    $datosTabla[$i][0]=$rows->pn;
+    $datosTabla[$i][1]=$rows->wo;
+    $datosTabla[$i][2]=$rows->orgQty;
+    $datosTabla[$i][3]=$rows->cortPar;
+    $datosTabla[$i][4]=$rows->libePar;
+    $datosTabla[$i][5]=$rows->ensaPar;
+    $datosTabla[$i][6]=$rows->espWPar;
+    $datosTabla[$i][7]=$rows->loomPar;
+    $datosTabla[$i][8]=$rows->testPar;
+    $datosTabla[$i][9]=$rows->embPar;
+    $i++;
 
+}
+}
+return view('juntas/reg',['value'=>$value,'cat'=>$cat,'datosTabla'=>$datosTabla]);
+
+
+
+}
 }
