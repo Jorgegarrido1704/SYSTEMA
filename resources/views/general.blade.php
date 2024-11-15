@@ -141,6 +141,7 @@
                                         <a class="dropdown-item" href="#" onclick="changework('Kits')">Requerimiento Kits</a>-->
                                         <a class="dropdown-item" href="{{'general'}}" onclick="changework('Maintanience')">Maintanience</a>
                                         <a class="dropdown-item" href="#" onclick="changework('full')">Requerimiento full size</a>
+                                        <a class="dropdown-item" href="#" onclick="changework('help')">Requierimiento de ingenieria</a>
                                     </div>
                                 </div>
                                 </div>

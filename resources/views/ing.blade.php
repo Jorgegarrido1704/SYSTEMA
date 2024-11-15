@@ -686,6 +686,7 @@ select {
                                             <option selected>...</option>
                                             <option value = "Yes">Yes</option>
                                             <option value = "No">No</option>
+                                            <option value = 'No yet'>No yet</option>
                                           </select>
 
                                           <div class="col-md-12">

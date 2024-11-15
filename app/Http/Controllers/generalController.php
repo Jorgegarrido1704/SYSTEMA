@@ -20,6 +20,7 @@ use App\Models\regfull;
 use App\Models\ParosProd;
 use App\Models\regPar;
 use App\Models\regParTime;
+use App\Models\errores;
 
 
 
@@ -1125,6 +1126,35 @@ public function regfull(Request $request){
     }
 
 }
+public function problemas_general(Request $request){
+$value=session('user');
+$date = date("d-m-Y");
+$pn=$request->input('pnIs');
+$wo=$request->input('workIs');
+$rev=$request->input('revIs');
+$prob=$request->input('probIs');
+$descIs=$request->input('descIs');
+$answer=$request->input('answer');
+$val=$request->input('val');
 
+$wo=substr($wo,0,6);
+$addProb=new errores;
+$addProb->pn=$pn;
+$addProb->wo=$wo;
+$addProb->rev=$rev;
+$addProb->problem=$prob;
+if($prob=="Paper work" || $prob="Both(Prosses Error and Paper work)"){
+    $addProb->mostrar_ing=1;
+}
+$addProb->descriptionIs=$descIs;
+$addProb->resp=$answer;
+$addProb->WhoReg=$value;
+$addProb->DateIs=$date;
+$addProb->validator=$val;
+if($addProb->save()){
+    return redirect('/general');
+
+}
+}
 
 }

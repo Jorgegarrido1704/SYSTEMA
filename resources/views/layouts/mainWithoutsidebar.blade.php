@@ -439,6 +439,97 @@
                                     </div>
             `;
             break;
+            case ('help'):
+            // Default case: Show default table content
+            areaToChange.innerHTML = `
+                                       <form class="row g-3" action="{{route('problemas_general')}}" method="POST">
+                                       @csrf
+                                        <div class="col-md-6">
+                                          <label for="pnIs" class="form-label">Part Number</label>
+                                          <input type="text" class="form-control" name="pnIs" id="pnIs" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                          <label for="workIs" class="form-label">Work Order</label>
+                                          <input type="text" class="form-control" name="workIs" id="workIs"  minlength="6" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                          <label for="revIs" class="form-label">Revision</label>
+                                          <input type="text" class="form-control" name="revIs" id="revIs" minlength="1" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                          <label for="probIs" class="form-label">Problem</label>
+                                          <select id="probIs"  name="probIs" class="form-select" required>
+                                            <option selected>...</option>
+                                            <option value = "Prosses Error">Prosses Error</option>
+                                            <option value = "Paper work">Paper work</option>
+                                            <option value = "Both(Prosses Error and Paper work)">Both(Prosses Error and Paper work)</option>
+                                            <option value = "Other">Other</option>
+                                          </select>
+                                        </div>
+                                        <div class="col-md-9">
+                                          <label for="descIs" class="form-label">Description</label>
+                                          <textarea class="form-control"  name="descIs" id="descIs" rows="3"></textarea>
+                                        </div>
+                                        <div class="col-md-3">
+                                          <label for="answer" class="form-label">Was the problem fixed it</label>
+                                          <select id="answer" name="answer" class="form-select" required>
+                                            <option selected>...</option>
+                                            <option value = "Yes">Yes</option>
+                                            <option value = "No">No</option>
+                                            <option value = 'No yet'>No yet</option>
+                                          </select>
+
+                                          <div class="col-md-12">
+                                            <label for="val" class="form-label">Validation By</label>
+
+                                          </div>
+                                        </div>
+                                        <div class="col-12">
+                                          <button type="submit" class="btn btn-primary">Send Info</button>
+                                        </div>
+                                      </form>
+                                            `;
+                                            TableChange.innerHTML = `
+            <div class="row" >
+                                        <table>
+                                            <thead>
+                                                <th>Fecha de solicitud</th>
+                                                <th>Cliente</th>
+                                                <th>Numero de Parte</th>
+                                                <th>Revision</th>
+                                                <th>Cantidad</th>
+                                                <th>Status</th>
+                                            </thead>
+                                            <tbody>
+                                          @if(!empty($fulls))
+                                          @foreach ( $fulls as $full)
+                                                <style>
+                                          @if($full[5] == "Pendiente")
+                                               #est{ background-color='ligthblue';}
+                                          @elseif($full[5] == "En proceso")
+                                                <tr style="background-color='ligthgreen'">
+                                          @elseif($full[5] == "Pausado")
+                                                <tr style="background-color='red';">
+                                                 @endif
+                                                 </style>
+                                                 <tr>
+                                                    <td id="est" style="background-color=red;">{{$full[0]}}</td>
+                                                    <td id="est">{{$full[3]}}</td>
+                                                    <td id="est">{{$full[1]}}</td>
+                                                    <td id="est">{{$full[2]}}</td>
+                                                    <td id="est">{{$full[4]}}</td>
+                                                    <td id="est">{{$full[5]}}</td>
+                                                </tr>
+                                          @endforeach
+                                          @endif
+
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+            `;
+            break;
+
 
     }
 }
