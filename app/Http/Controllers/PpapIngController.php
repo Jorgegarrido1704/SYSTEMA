@@ -228,6 +228,7 @@ class PpapIngController extends Controller
         $regIng->save();
             return redirect('/ing');
         }else if($cuenta==14){
+
             //Registrar a calidad..
             $buscarReg=DB::table('registro')->where('info','=',$info)->first();
             $np=$buscarReg->NumPart;
@@ -235,6 +236,8 @@ class PpapIngController extends Controller
             $woreg=$buscarReg->wo;
             $poReg=$buscarReg->po;
             $qtyReg=$buscarReg->Qty;
+            //cantidad de parciales
+            $updateCantidad=DB::table('registroparcial')->where('codeBar','=',$info)->update(['loomPar'=>0,'testPar'=>$qtyReg]);
             $calReg=new listaCalidad;
             $calReg->np=$np;
             $calReg->client=$cli;
