@@ -190,9 +190,23 @@ class PpapIngController extends Controller
         $i++;
 
        }
+       $i=0;
+       $soporte=[];
+       $buscarfulls=DB::table('errores')->where('mostrar_ing','=',1)->get();
+       foreach($buscarfulls as $sop){
+        $soporte[$i][0]=$sop->id;
+        $soporte[$i][1]=$sop->pn;
+        $soporte[$i][2]=$sop->wo;
+        $soporte[$i][3]=$sop->rev;
+        $soporte[$i][4]=$sop->descriptionls;
+        $soporte[$i][5]=$sop->WhoReg;
+        $soporte[$i][6]=$sop->Datels;
+        $i++;
+
+       }
 
 
-    return view('/ing',['fullreq'=>$fullreq,'graficasLate'=>$graficasLate,'graficOnTime'=>$graficOnTime,'cat'=>$cat,'inges'=>$inges,'value'=>$value,'enginners'=>$enginners,'answer'=>$answer,'dias_mes'=>$dias_mes,'cronoGram'=>$cronoGram]);
+    return view('/ing',['soporte'=>$soporte,'fullreq'=>$fullreq,'graficasLate'=>$graficasLate,'graficOnTime'=>$graficOnTime,'cat'=>$cat,'inges'=>$inges,'value'=>$value,'enginners'=>$enginners,'answer'=>$answer,'dias_mes'=>$dias_mes,'cronoGram'=>$cronoGram]);
 }
     }
 

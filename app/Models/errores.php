@@ -19,7 +19,10 @@ class errores extends Model
         'resp',
         'WhoReg',
         'DateIs',
-        'validator'
+        'validator',
+        'obs_req',
+        'obs_val',
+        'mostrar_ing'
     ];
     protected $table = "errores";
     public $timestamps = false;

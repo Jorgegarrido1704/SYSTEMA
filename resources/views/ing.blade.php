@@ -12,98 +12,39 @@
                         <!-- Table and Graph -->
                         <div class="col-xl-8 col-lg-7"  >
                             <div class="card shadow mb-4" id="card">
-                            @if($value=="Paola S")
-
-                                <div
-                                class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                <h5 class="m-0 font-weight-bold text-primary">Requerimeinto de Full Size</h5>
-
-                            </div>
-
-                            <!-- table Body -->
-                            <div class="card-body" style="overflow-y: auto; max-height: 400px;">
-                                <div class="chart-area" id="chart-area">
-                                    <style>
-                                        table {     width: 100%;                     }
-                                        td,th{text-align: center;}
-                                        td {border-bottom: solid 2px lightblue; }
-                                        thead{background-color: #FC4747; color:white;  }
-                                        a{text-decoration: none; color: whitesmoke;  }
-                                        a:hover{ text-decoration: none; color: white; font:bold;}
-                                    </style>
-                                    <table id="table-harness" class="table-harness">
-                                        <thead>
-
-                                            <th>Solcitado por</th>
-                                            <th>Fecha de solictud</th>
-                                            <th>np</th>
-                                            <th>rev</th>
-                                            <th>Cliente</th>
-                                            <th>Cantidad requerida</th>
-                                            <th>Tablero</th>
-                                            <th>Estatus</th>
-                                            <th>Modificar</th>
-                                            <th>Finalizar</th>
-
-                                        </thead>
-                                        <tbody>
-                                            @if(!empty($fullreq))
-                                            @foreach ($fullreq as $inge )
-                                                <tr>
-
-                                                        <td>{{$inge[1]}}</td>
-                                                        <td>{{$inge[2]}}</td>
-                                                        <td>{{$inge[3]}}</td>
-                                                        <td>{{$inge[4]}}</td>
-                                                        <td>{{$inge[5]}}</td>
-                                                        <td>{{$inge[6]}}</td>
-                                                        <td>{{$inge[8]}}</td>
-                                                        <form action="{{"modifull"}}" method="GET">
-                                                        <td><select name="estatus" id="estatus">
-                                                            <option value="{{$inge[7]}}">{{$inge[7]}}</option>
-                                                            <option value="En_proceso">En proceso</option>
-                                                            <option value="Pausado">Pausado</option>
-                                                        </select></td>
-                                                        <td><input type="hidden" id='mod' name='mod' value="{{$inge[0]}}">
-                                                        <input type="submit" name="enviar" id="enviar" value='Modificar'></td>
-                                                    </form>
-                                                       <form action="{{"modifull"}}" method="GET">
-                                                        <td><input type="hidden" id='finAct' name='finAct' value="{{$inge[0]}}">
-                                                        <input type="submit" name="enviar" id="enviar" value='Finalizar'></td>
-                                                    </form>
-                                                </tr>
-
-
-                                            @endforeach
-                                            @endif
-                                        </tbody>
-
-                                    </table>
-                                </div>
-                            </div>
-
-
-                                @else
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h5 class="m-0 font-weight-bold text-primary">CheckPPAP & PRIM</h5>
-
+                                    <h5 class="m-0 font-weight-bold text-primary">Trabajos ingenieria</h5>
                                 </div>
 
                                 <!-- table Body -->
                                 <div class="card-body" style="overflow-y: auto; max-height: 400px;">
                                     <div class="chart-area" id="chart-area">
                                         <style>
+                                            .ppap {  text-align: center; font-weight: bold; background-color: rgb(53, 243, 75); }
+                                            .prim{  text-align: center; font-weight: bold; background-color: rgb(240, 243, 53); }
+                                            .table-header {  text-align: center; font-weight: bold; background-color: rgb(235, 83, 202); }
                                             table {     width: 100%;                     }
                                             td,th{text-align: center;}
                                             td {border-bottom: solid 2px lightblue; }
-                                            thead{background-color: #FC4747; color:white;  }
+                                            thead{background-color: #bd0606; color:white;  }
                                             a{text-decoration: none; color: whitesmoke;  }
                                             a:hover{ text-decoration: none; color: white; font:bold;}
+                                            .soporte{text-align: center; font-weight: bold; background-color: rgb(88, 8, 247); }
                                         </style>
                                         <table id="table-harness" class="table-harness">
                                             <thead>
-
+                                                <tr>
+                                                    <th class="ppap"></th>
+                                                    <th class="ppap"></th>
+                                                    <th class="ppap">PPAP</th>
+                                                    <th class="ppap"></th>
+                                                    <th class="prim"> </th>
+                                                    <th class="prim"> </th>
+                                                    <th class="prim">PRIM </th>
+                                                    <th class="prim"> </th>
+                                                </tr>
+                                                <tr>
                                                 <th>Part Number</th>
                                                 <th>Client</th>
                                                 <th>REV</th>
@@ -112,10 +53,9 @@
                                                 <th>Qty</th>
                                                 <th>Area</th>
                                                 <th>Sign</th>
-
+                                                </tr>
                                             </thead>
                                             <tbody>
-                                                @if(!empty($inges))
                                                 @foreach ($inges as $inge )
                                                     <tr>
                                                         <form action="{{route('autorizar')}}" method="GET">
@@ -143,21 +83,106 @@
                                                             <input type="submit" name="enviar" id="enviar" value='Autorizar'></td>
                                                         </form>
                                                     </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                        <table id="table-harness" class="table-harness">
+                                            <thead>
+                                                <tr>
+                                                    <th class="table-header"></th>
+                                                    <th class="table-header"></th>
+                                                    <th class="table-header"></th>
+                                                    <th class="table-header"></th>
+                                                    <th class="table-header"></th>
+                                                    <th class="table-header">FULL SIZE </th>
+                                                    <th class="table-header"> </th>
+                                                    <th class="table-header"> </th>
+                                                    <th class="table-header"> </th>
+                                                    <th class="table-header"> </th>
+                                                </tr>
+                                                <tr>
+                                                <th>Solcitado por</th>
+                                                <th>Fecha de solictud</th>
+                                                <th>np</th>
+                                                <th>rev</th>
+                                                <th>Cliente</th>
+                                                <th>Cantidad requerida</th>
+                                                <th>Tablero</th>
+                                                <th>Estatus</th>
+                                                <th>Modificar</th>
+                                                <th>Finalizar</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($fullreq as $inge )
+                                                    <tr>
+                                                            <td>{{$inge[1]}}</td>
+                                                            <td>{{$inge[2]}}</td>
+                                                            <td>{{$inge[3]}}</td>
+                                                            <td>{{$inge[4]}}</td>
+                                                            <td>{{$inge[5]}}</td>
+                                                            <td>{{$inge[6]}}</td>
+                                                            <td>{{$inge[8]}}</td>
+                                                            <form action="{{"modifull"}}" method="GET">
+                                                            <td><select name="estatus" id="estatus">
+                                                                <option value="{{$inge[7]}}">{{$inge[7]}}</option>
+                                                                <option value="En_proceso">En proceso</option>
+                                                                <option value="Pausado">Pausado</option>
+                                                            </select></td>
+                                                            <td><input type="hidden" id='mod' name='mod' value="{{$inge[0]}}">
+                                                            <input type="submit" name="enviar" id="enviar" value='Modificar'></td>
+                                                        </form>
+                                                           <form action="{{"modifull"}}" method="GET">
+                                                            <td><input type="hidden" id='finAct' name='finAct' value="{{$inge[0]}}">
+                                                            <input type="submit" name="enviar" id="enviar" value='Finalizar'></td>
+                                                        </form>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th class="soporte"></th>
+                                                    <th class="soporte"></th>
+                                                    <th class="soporte"></th>
+                                                    <th class="soporte">SOPORTE EN PISO</th>
+                                                    <th class="soporte"></th>
+                                                    <th class="soporte"></th>
+                                                    <th class="soporte"></th>
 
+                                                </tr>
+                                                <tr>
+                                                    <th>Part Number</th>
+                                                    <th>WO</th>
+                                                    <th>REV</th>
+                                                    <th>Problem</th>
+                                                    <th>Who requested</th>
+                                                    <th>Date</th>
+                                                    <th>Take action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($soporte as $sop )
+                                                <tr>
+                                                    <td>{{$sop[1]}}</td>
+                                                    <td>{{$sop[2]}}</td>
+                                                    <td>{{$sop[3]}}</td>
+                                                    <td>{{$sop[4]}}</td>
+                                                    <td>{{$sop[5]}}</td>
+                                                    <td>{{$sop[6]}}</td>
+                                                    <td><form action="#">
+                                                        <button type="submit">iniciar</button>
+                                                    </form></td>
+                                                </tr>
 
                                                 @endforeach
-                                                @endif
                                             </tbody>
-                                            <tbody>
 
-
-
-
-                                            </tbody>
                                         </table>
                                     </div>
                                 </div>
-                                @endif
+
                             </div>
 
                         </div>
