@@ -314,8 +314,10 @@ class generalController extends Controller
             $sesion=session('user');
             $sesionBus = DB::table('login')->select('category')->where('user', $sesion)->limit(1)->first();
             $donde = $sesionBus->category;
-
-             if(($donde==='libe' or $donde==='cort') and $count===2){
+            if($count===1){
+                return redirect('general')->with('response', 'Plannig Station, Harness Not update');
+            }
+             elseif(($donde==='libe' or $donde==='cort') and $count===2){
                 $count=3;
                 $update = DB::table('registro')->where('info', $codigo)->update(['count' => $count, 'donde' => 'Proceso de corte']);
                 if ($update) { $resp = "Cutting process";
