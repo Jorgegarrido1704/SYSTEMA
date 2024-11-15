@@ -56,30 +56,17 @@ public function index_junta(){
         $ventasStation = [];
         for($i=0;$i<13;$i++){
             $ventasStation[$i]=0;  }
-        $BuscarVenta=DB::select("SELECT * FROM registro ");
+            $BuscarVenta=DB::select("SELECT * FROM registro  WHERE Qty>'0' and count='1'");
+            foreach($BuscarVenta as $reg){
+                if($reg->count=='1'){   $ventasStation[0]+=round($reg->Qty*$reg->price,2);}}
+        $BuscarVenta=DB::select("SELECT * FROM registro JOIN registroparcial ON registro.info=registroparcial.codeBar");
         foreach($BuscarVenta as $reg){
-            if($reg->count=='1'){
-                $ventasStation[0]+=round($reg->Qty*$reg->price,2);
-        }
-        if($reg->count=='2' or $reg->count=='3' or $reg->count=='17'){
-            $ventasStation[1]+=round($reg->Qty*$reg->price,2);
-        }
-        if($reg->count=='4' or $reg->count=='5' or $reg->count=='16'){
-            $ventasStation[2]+=round($reg->Qty*$reg->price,2);
-        }
-        if($reg->count=='6' or $reg->count=='7' or $reg->count=='13'){
-            $ventasStation[3]+=round($reg->Qty*$reg->price,2);
-        }
-        if($reg->count=='8' or $reg->count=='9' or $reg->count=='14'){
-            $ventasStation[4]+=round($reg->Qty*$reg->price,2);
-        }
-        if($reg->count=='10' or $reg->count=='11' or $reg->count=='18'){
-            $ventasStation[5]+=round($reg->Qty*$reg->price,2);
-        }
-        if($reg->count=='12'){
-            $ventasStation[12]+=round($reg->Qty*$reg->price,2);
-        }
-
+        if($reg->cortPar>0){ $ventasStation[1]+=round($reg->cortPar*$reg->price,2); }
+        if($reg->libePar>0){ $ventasStation[2]+=round($reg->libePar*$reg->price,2);        }
+        if($reg->ensaPar>0){ $ventasStation[3]+=round($reg->ensaPar*$reg->price,2);}
+        if($reg->loomPar>0){ $ventasStation[4]+=round($reg->loomPar*$reg->price,2);        }
+        if($reg->testPar>0){ $ventasStation[5]+=round($reg->testPar*$reg->price,2);        }
+        if($reg->embPar>0){ $ventasStation[12]+=round($reg->embPar*$reg->price,2);        }
     }
     if($ventasStation[0]!=0){
         $ventasStation[6]=round($ventasStation[0]/$backlock,2);
