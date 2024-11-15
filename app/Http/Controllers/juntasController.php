@@ -68,27 +68,13 @@ public function index_junta(){
         if($reg->testPar>0){ $ventasStation[5]+=round($reg->testPar*$reg->price,2);        }
         if($reg->embPar>0){ $ventasStation[12]+=round($reg->embPar*$reg->price,2);        }
     }
-    if($ventasStation[0]!=0){
-        $ventasStation[6]=round($ventasStation[0]/$backlock,2);
-    }
-    if($ventasStation[1]!=0){
-        $ventasStation[7]=round($ventasStation[1]/$backlock,2);
-    }
-    if($ventasStation[2]!=0){
-        $ventasStation[8]=round($ventasStation[2]/$backlock,2);
-    }
-    if($ventasStation[3]!=0){
-        $ventasStation[9]=round($ventasStation[3]/$backlock,2);
-    }
-    if($ventasStation[4]!=0){
-        $ventasStation[10]=round($ventasStation[4]/$backlock,2);
-    }
-    if($ventasStation[5]!=0){
-        $ventasStation[11]=round($ventasStation[5]/$backlock,2);
-    }
-    if($ventasStation[12]!=0){
-        $ventasStation[13]=round($ventasStation[12]/$backlock,2);
-    }
+    if($ventasStation[0]!=0){ $ventasStation[6]=round($ventasStation[0]/$backlock,2);   }
+    if($ventasStation[1]!=0){        $ventasStation[7]=round($ventasStation[1]/$backlock,2);    }
+    if($ventasStation[2]!=0){        $ventasStation[8]=round($ventasStation[2]/$backlock,2);    }
+    if($ventasStation[3]!=0){        $ventasStation[9]=round($ventasStation[3]/$backlock,2);    }
+    if($ventasStation[4]!=0){        $ventasStation[10]=round($ventasStation[4]/$backlock,2);    }
+    if($ventasStation[5]!=0){        $ventasStation[11]=round($ventasStation[5]/$backlock,2);    }
+    if($ventasStation[12]!=0){        $ventasStation[13]=round($ventasStation[12]/$backlock,2);    }
         //desviations
 $i=0;
 $info=[];
