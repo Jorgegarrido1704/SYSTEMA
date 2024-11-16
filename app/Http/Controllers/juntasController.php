@@ -73,8 +73,8 @@ public function index_junta(){
     if($ventasStation[2]!=0){        $ventasStation[8]=round($ventasStation[2]/$backlock,2);    }
     if($ventasStation[3]!=0){        $ventasStation[9]=round($ventasStation[3]/$backlock,2);    }
     if($ventasStation[4]!=0){        $ventasStation[10]=round($ventasStation[4]/$backlock,2);    }
-    if($ventasStation[5]!=0){        $ventasStation[11]=round($ventasStation[5]/$backlock,2);    }
-    if($ventasStation[12]!=0){        $ventasStation[13]=round($ventasStation[12]/$backlock,2);    }
+    if($ventasStation[5]!=0){       $ventasStation[11]=round($ventasStation[5]/$backlock,2);    }
+    if($ventasStation[12]!=0){        $ventasStation[13]=round($ventasStation[12]/$backlock,2);  }
         //desviations
 $i=0;
 $info=[];
@@ -548,6 +548,7 @@ public function calidad_junta(){
 public function litas_junta($id){
 $value=session('user');
 $cat=session('categoria');
+$datosTabla=[];
 if($id==""){
     redirect()->route('juntas');
 }else if($id=="planeacion"){
@@ -557,63 +558,108 @@ $buscarDatos=DB::table('registro')
 ->get();
 }else if($id=="corte"){
     $buscarDatos=DB::table('registro')
-    ->where('count','=','2')
-    ->Orwhere('count','=','3')
-    ->Orwhere('count','=','17')
-    ->orderBy('tiempototal','DESC')
+    ->join('registroparcial','registro.info','=','registroparcial.codeBar')
+    ->where('cortPar','!=','0')
     ->get();
-    }else if($id=="liberacion"){
-        $buscarDatos=DB::table('registro')
-        ->where('count','=','4')
-        ->Orwhere('count','=','5')
-        ->Orwhere('count','=','16')
-        ->orderBy('tiempototal','DESC')
-        ->get();
-        }else if($id=="ensamble"){
-            $buscarDatos=DB::table('registro')
-            ->where('count','=','6')
-            ->Orwhere('count','=','7')
-            ->Orwhere('count','=','13')
-            ->orderBy('tiempototal','DESC')
-            ->get();
-            }else if($id=="loom"){
-                $buscarDatos=DB::table('registro')
-                ->where('count','=','8')
-                ->Orwhere('count','=','9')
-                ->Orwhere('count','=','14')
-                ->orderBy('tiempototal','DESC')
-                ->get();
-                }else if($id=="prueba"){
-                    $buscarDatos=DB::table('registro')
-                    ->where('count','=','10')
-                    ->Orwhere('count','=','11')
-                    ->Orwhere('count','=','18')
-                    ->orderBy('tiempototal','DESC')
-                    ->get();
-                    }else if($id=="embarque"){
-                        $buscarDatos=DB::table('registro')
-                        ->where('count','=','12')
-                        ->Orwhere('count','=','20')
-                        ->orderBy('tiempototal','DESC')
-                        ->get();
-                        }
-
-if($buscarDatos){
-    $datosTabla=[];
     $i=0;
     foreach($buscarDatos as $rows){
         $datosTabla[$i][0]=$rows->cliente;
         $datosTabla[$i][1]=$rows->NumPart;
         $datosTabla[$i][2]=$rows->wo;
-        $datosTabla[$i][3]=$rows->Qty;
+        $datosTabla[$i][3]=$rows->cortPar;
         $datosTabla[$i][4]=$rows->tiempototal;
         $datosTabla[$i][5]=$rows->price;
-        $datosTabla[$i][6]=$rows->Qty*$rows->price;
+        $datosTabla[$i][6]=$rows->cortPar*$rows->price;
         $datosTabla[$i][7]=$rows->reqday;
         $i++;
     }
+    }else if($id=="liberacion"){
+        $buscarDatos=DB::table('registro')
+        ->join('registroparcial','registro.info','=','registroparcial.codeBar')
+        ->where('libePar','!=','0')
+        ->get();
+        $i=0;
+        foreach($buscarDatos as $rows){
+            $datosTabla[$i][0]=$rows->cliente;
+            $datosTabla[$i][1]=$rows->NumPart;
+            $datosTabla[$i][2]=$rows->wo;
+            $datosTabla[$i][3]=$rows->libePar;
+            $datosTabla[$i][4]=$rows->tiempototal;
+            $datosTabla[$i][5]=$rows->price;
+            $datosTabla[$i][6]=$rows->libePar*$rows->price;
+            $datosTabla[$i][7]=$rows->reqday;
+            $i++;
+        }
+        }else if($id=="ensamble"){
+            $buscarDatos=DB::table('registro')
+            ->join('registroparcial','registro.info','=','registroparcial.codeBar')
+            ->where('ensaPar','!=','0')
+    ->get();
+    $i=0;
+    foreach($buscarDatos as $rows){
+        $datosTabla[$i][0]=$rows->cliente;
+        $datosTabla[$i][1]=$rows->NumPart;
+        $datosTabla[$i][2]=$rows->wo;
+        $datosTabla[$i][3]=$rows->ensaPar;
+        $datosTabla[$i][4]=$rows->tiempototal;
+        $datosTabla[$i][5]=$rows->price;
+        $datosTabla[$i][6]=$rows->ensaPar*$rows->price;
+        $datosTabla[$i][7]=$rows->reqday;
+        $i++;
+    }
+            }else if($id=="loom"){
+                $buscarDatos=DB::table('registro')
+                ->join('registroparcial','registro.info','=','registroparcial.codeBar')
+                ->where('loomPar','!=','0')
+                ->get();
+                $i=0;
+                foreach($buscarDatos as $rows){
+                    $datosTabla[$i][0]=$rows->cliente;
+                    $datosTabla[$i][1]=$rows->NumPart;
+                    $datosTabla[$i][2]=$rows->wo;
+                    $datosTabla[$i][3]=$rows->loomPar;
+                    $datosTabla[$i][4]=$rows->tiempototal;
+                    $datosTabla[$i][5]=$rows->price;
+                    $datosTabla[$i][6]=$rows->loomPar*$rows->price;
+                    $datosTabla[$i][7]=$rows->reqday;
+                    $i++;
+                }
+                }else if($id=="prueba"){
+                    $buscarDatos=DB::table('registro')
+                    ->join('registroparcial','registro.info','=','registroparcial.codeBar')
+                    ->where('testPar','!=','0')
+                    ->get();
+                    $i=0;
+                    foreach($buscarDatos as $rows){
+                        $datosTabla[$i][0]=$rows->cliente;
+                        $datosTabla[$i][1]=$rows->NumPart;
+                        $datosTabla[$i][2]=$rows->wo;
+                        $datosTabla[$i][3]=$rows->testPar;
+                        $datosTabla[$i][4]=$rows->tiempototal;
+                        $datosTabla[$i][5]=$rows->price;
+                        $datosTabla[$i][6]=$rows->testPar*$rows->price;
+                        $datosTabla[$i][7]=$rows->reqday;
+                        $i++;
+                    }
+                    }else if($id=="embarque"){
+                        $buscarDatos=DB::table('registro')
+                        ->join('registroparcial','registro.info','=','registroparcial.codeBar')
+                        ->where('embPar','!=','0')
+                        ->get();
+                        $i=0;
+                        foreach($buscarDatos as $rows){
+                            $datosTabla[$i][0]=$rows->cliente;
+                            $datosTabla[$i][1]=$rows->NumPart;
+                            $datosTabla[$i][2]=$rows->wo;
+                            $datosTabla[$i][3]=$rows->embPar;
+                            $datosTabla[$i][4]=$rows->tiempototal;
+                            $datosTabla[$i][5]=$rows->price;
+                            $datosTabla[$i][6]=$rows->embPar*$rows->price;
+                            $datosTabla[$i][7]=$rows->reqday;
+                            $i++;
+                        }
+                        }
 
-}
 return view('juntas/lista',['value'=>$value,'cat'=>$cat,'buscarDatos'=>$buscarDatos,'datosTabla'=>$datosTabla]);
 
 }
