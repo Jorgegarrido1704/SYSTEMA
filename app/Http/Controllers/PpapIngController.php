@@ -198,9 +198,9 @@ class PpapIngController extends Controller
         $soporte[$i][1]=$sop->pn;
         $soporte[$i][2]=$sop->wo;
         $soporte[$i][3]=$sop->rev;
-        $soporte[$i][4]=$sop->descriptionls;
+        $soporte[$i][4]=$sop->descriptionIs;
         $soporte[$i][5]=$sop->WhoReg;
-        $soporte[$i][6]=$sop->Datels;
+        $soporte[$i][6]=$sop->DateIs;
         $i++;
 
        }
