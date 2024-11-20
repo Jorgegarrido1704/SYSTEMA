@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Mail\Mailables;
 use Illuminate\Support\Facades\Mail;
 use App\Models\timeDead;
+use App\Models\regParTime;
 
 
 class caliController extends generalController
@@ -205,12 +206,6 @@ class caliController extends generalController
 
         $qty_cal=$busquedainfo->qty;
         $total=$ok+$nok;
-        $buscarPartial=DB::table('registroparcial')->where('codeBar','=',$info)->get();
-        foreach($buscarPartial as $row){
-            $test=$row->testPar;
-            $emba=$row->embPar;
-        }
-        $upPartial=DB::table('registroparcial')->where('codeBar','=',$info)->update(['testPar'=>$test-$total,'embPar'=>$emba+$total]);
 
         $totalCant=$cant1+$cant2+$cant3+$cant4+$cant5;
         if($total<=$qty_cal and $totalCant==$nok){
@@ -654,6 +649,19 @@ $regTimes->save();}
 }
 
             $rest=$qty_cal - ($ok+$nok);
+            $buscarPartial=DB::table('registroparcial')->where('codeBar','=',$info)->get();
+        foreach($buscarPartial as $row){
+            $test=$row->testPar;
+            $emba=$row->embPar;
+        }
+        $upPartial=DB::table('registroparcial')->where('codeBar','=',$info)->update(['testPar'=>$test-$total,'embPar'=>$emba+$total]);
+        $regTimePar= new regParTime;
+        $regTimePar->codeBar=$info;
+        $regTimePar->qtyPar=$total;
+        $regTimePar->area=$value;
+        $regTimePar->fechaReg=$today;
+        $regTimePar->save();
+
 
             if($rest>0){
             $updacalidad=DB::table('calidad')->where("info",$info)->update(['qty'=>$rest]);
