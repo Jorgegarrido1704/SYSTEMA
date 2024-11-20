@@ -11,6 +11,7 @@ class Corte extends Model
     protected $fillable = [
         'np',
         'cliente',
+        'rev',
         'wo',
         'cons',
         'color',
@@ -22,7 +23,8 @@ class Corte extends Model
         'dataFrom',
         'dataTo',
         'qty',
-        'tamano'
+        'tamano',
+        'conector'
     ];
 
     protected $table = 'corte'; // Adjust the table name if it's different

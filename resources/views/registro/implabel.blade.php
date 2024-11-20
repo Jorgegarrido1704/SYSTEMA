@@ -22,7 +22,7 @@
 <div>
         <img src="{{ asset('/dash/img/bergs.jpg')}}" alt="" style="width: 80px; max-height: 20px;"><b> Cons: {{$corte[$i][3]}}
             <h5>{{$corte[$i][0]}} Cant: {{$corte[$i][12]}} WO: {{$corte[$i][2]}} AWG: {{$corte[$i][6]}}
-                TIPO: {{$corte[$i][5]}} PN: {{$corte[$i][1]}} Color: {{$corte[$i][4]}} Tamaño: {{$corte[$i][13]}}
+                TIPO: {{$corte[$i][5]}} PN: {{$corte[$i][1]}} REV: {{$corte[$i][15]}} Color: {{$corte[$i][4]}} Tamaño: {{$corte[$i][13]}}
                 Term1: {{$corte[$i][8]}} Term2: {{$corte[$i][9]}} From: {{$corte[$i][10]}} TO: {{$corte[$i][11]}}
                 Estampado:  {{$corte[$i][14]}}
             <canvas id="bcode{{$i}}" style="height: 7mm; width: 80%;"></canvas>

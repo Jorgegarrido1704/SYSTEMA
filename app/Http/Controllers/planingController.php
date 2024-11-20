@@ -104,8 +104,8 @@ class planingController extends Controller
             $corte[$i][11]=$cort->dataTo;
             $corte[$i][12]=$cort->qty;
             $corte[$i][13]=$cort->tamano;
-            $estampados=DB::table('listascorte')->where('pn',$corte[$i][1])->where('cons',$corte[$i][3])->first();
-            $corte[$i][14]=$estampados->conector;
+            $corte[$i][14]=$cort->conector;
+            $corte[$i][15]=$cort->rev;
             $i++;        }
 
             return view('registro.implabel',['corte'=>$corte,'cat'=>$cat]);
@@ -159,8 +159,8 @@ class planingController extends Controller
         $corte[$i][11]=$cort->dataTo;
         $corte[$i][12]=$cort->qty;
         $corte[$i][13]=$cort->tamano;
-        $estampados=DB::table('listascorte')->where('pn',$corte[$i][1])->where('cons',$corte[$i][3])->first();
-        $corte[$i][14]=$estampados->conector;
+        $corte[$i][14]=$cort->conector;
+        $corte[$i][15]=$cort->rev;
         $i++;        }
     }
     }
@@ -355,6 +355,7 @@ return view('planing',['des'=>$des,'value'=>$value,'cat'=>$cat,'post'=>$post,'da
                         $ADDcorte=new Corte;
                           $ADDcorte->np=$np;
                           $ADDcorte->cliente=$client;
+                          $ADDcorte->rev=$rev;
                           $ADDcorte->wo=$wo;
                           $ADDcorte->cons=$corte->cons;
                           $ADDcorte->color=$corte->color;
@@ -370,6 +371,7 @@ return view('planing',['des'=>$des,'value'=>$value,'cat'=>$cat,'post'=>$post,'da
                           $ADDcorte->dataTo=$corte->dataTo;
                           $ADDcorte->qty=$qty;
                           $ADDcorte->tamano=$corte->tamano;
+                          $ADDcorte->conector=$corte->conector;
                             $ADDcorte->save();
                 }
 
