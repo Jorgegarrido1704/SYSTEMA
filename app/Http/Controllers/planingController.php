@@ -355,7 +355,7 @@ return view('planing',['des'=>$des,'value'=>$value,'cat'=>$cat,'post'=>$post,'da
                         $ADDcorte=new Corte;
                           $ADDcorte->np=$np;
                           $ADDcorte->cliente=$client;
-                          $ADDcorte->rev=$rev;
+                          $ADDcorte->rev=$corte->rev;
                           $ADDcorte->wo=$wo;
                           $ADDcorte->cons=$corte->cons;
                           $ADDcorte->color=$corte->color;
