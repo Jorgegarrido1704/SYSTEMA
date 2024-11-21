@@ -349,8 +349,12 @@ return view('planing',['des'=>$des,'value'=>$value,'cat'=>$cat,'post'=>$post,'da
                    $savekits->usuario="En espera";
                    $savekits->save();
                 }
-                $Buscarcorte=DB::table('listascorte')->where('pn', '=', $np)->get();
-                if($Buscarcorte->count()>0){
+               if(substr($rev, 0, 4) == 'PPAP' || substr($rev, 0, 4) == 'PRIM'){
+                $revn=substr($rev,5);}
+                else{$revn=$rev;}
+                $Buscarcorte=DB::table('listascorte')
+                ->where('pn', '=', $np,'and','rev','=',$revn)
+                ->get();
                     foreach($Buscarcorte as $corte){
                         $ADDcorte=new Corte;
                           $ADDcorte->np=$np;
@@ -373,8 +377,6 @@ return view('planing',['des'=>$des,'value'=>$value,'cat'=>$cat,'post'=>$post,'da
                           $ADDcorte->tamano=$corte->tamano;
                           $ADDcorte->conector=$corte->conector;
                             $ADDcorte->save();
-                }
-
             }
             $agegartiempos=new timesHarn;
             $agegartiempos->pn=$np;
