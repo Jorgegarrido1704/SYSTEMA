@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\getPnDetailsController;
 use App\Http\Controllers\AlmacenController;
-
+use App\Http\Controllers\AdminSupControlloer;
 
 
 /*
@@ -127,6 +127,11 @@ Route::controller(planingController::class)->group(function(){
     Route::get('/pos',[planingController::class,'pos'])->name('pos');
     Route::get('/codeBarPlan',[planingController::class,'codeBarPlan'])->name('codeBarPlan');
 });
+
+Route::controller(AdminSupControlloer::class)->group(function(){
+    Route::get('/SupAdmin',[AdminSupControlloer::class,'__invoke'])->name('SupAdmin');
+});
+
 
 Route::controller(juntasController::class)->group(function(){
 Route::get(    '/juntas',   [juntasController::class, 'index_junta'])->name('index_junta');

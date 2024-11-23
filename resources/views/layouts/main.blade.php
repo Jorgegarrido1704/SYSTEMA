@@ -101,69 +101,20 @@
     <!-- Bootstrap core JavaScript-->
     <script src="{{ asset('/dash/vendor/jquery/jquery.min.js')}}"></script>
     <script src="{{ asset('/dash/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
-
     <!-- Core plugin JavaScript-->
     <script src="{{ asset('/dash/vendor/jquery-easing/jquery.easing.min.js')}}"></script>
-
     <!-- Custom scripts for all pages-->
     <script src="{{ asset('/dash/js/sb-admin-2.min.js')}}"></script>
-
     <!-- Page level plugins -->
     <script src="{{ asset('/dash/vendor/chart.js/Chart.min.js')}}"></script>
-
     <!-- Page level custom scripts -->
     <script src="{{ asset('/dash/js/demo/chart-area-demo.js')}}"></script>
     <script src="{{ asset('/dash/js/demo/chart-pie-demo.js')}}"></script>
+    <script src="{{ asset('/dash/js/up-info.js')}}"></script>
 
-    <script>
-         // Function to change the area based on the selected action
- function changeArea(action) {
-    var areaToChange = document.getElementById('chart-area');
-
-    // Clear existing content
-    areaToChange.innerHTML = '';
-
-    // Depending on the selected action, update the area content
-    switch (action) {
-        case 'lines':
-            areaToChange.innerHTML =`
-
-    <canvas id="myAreaChart" height=40%></canvas>
-`;
-Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
-Chart.defaults.global.defaultFontColor = '#858796';
-
-
-
-            break;
-        case 'table':
-            // Default case: Show default table content
-            areaToChange.innerHTML = `
-            <style>
-                                            table {     width: 100%;                     }
-                                            td {border-bottom: solid 2px lightblue; }
-                                            thead{background-color: #FC4747; color:white;  }
-                                            a{text-decoration: none; color: whitesmoke;  }
-                                            a:hover{ text-decoration: none; color: white; font:bold;}
-                                        </style>
-                                        <table id="table-sales" class="table-sales">
-                                            <thead>
-                                                <th>Time</th>
-                                                <th>Part Number</th>
-                                                <th>Revision</th>
-                                                <th>Qty</th>
-                                                <th>Price</th>
-                                            </thead>
-                                            <tbody id="table-body"> </tbody>
-                                        </table>
-
-            `;
-            break;
-    }
-}
-
+<script>
     // Function to update the data
-function updateData() {
+    function updateData() {
     $.ajax({
         url: '{{ route("fetchdata") }}',
         method: 'GET',
@@ -207,85 +158,89 @@ function updateData() {
         },
     });
 
-    var ctx = document.getElementById("pie");
-var myPieChart = new Chart(ctx, {
-  type: 'doughnut',
-  data: {
-    labels: ["Delay", "On Time", "Great Time"],
-    datasets: [{
-      data: [response.tiemposPass[0], response.tiemposPass[1], response.tiemposPass[2]],
-      backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
-      hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
-      hoverBorderColor: "rgba(234, 236, 244, 1)",
-    }],
-  },
-  options: {
-    maintainAspectRatio: false,
-    tooltips: {
-      backgroundColor: "rgb(255,255,255)",
-      bodyFontColor: "#858796",
-      borderColor: '#dddfeb',
-      borderWidth: 1,
-      xPadding: 15,
-      yPadding: 15,
-      displayColors: false,
-      caretPadding: 10,
+        var ctx = document.getElementById("pie");
+        var myPieChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+        labels: ["Delay", "On Time", "Great Time"],
+        datasets: [{
+        data: [response.tiemposPass[0], response.tiemposPass[1], response.tiemposPass[2]],
+        backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
+        hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
+        hoverBorderColor: "rgba(234, 236, 244, 1)",
+        }],
     },
-    legend: {
-      display: false
-    },
-    cutoutPercentage: 80,
-  },
-});
-
- // Set default font family and color
- Chart.defaults.global.defaultFontFamily = 'Nunito';
-Chart.defaults.global.defaultFontColor = '#858796';
-
-
-// Bar Chart Example
-var ctx = document.getElementById("bar");
-var myBarChart = new Chart(ctx, {
-  type: 'bar',
-  data: {
-    labels: response.label,
-    datasets: [{
-      label: "WO by Area",
-      backgroundColor: "rgb(243, 19, 1)",
-      data: response.dato,
-    }],
-  },
-  options: {
-    maintainAspectRatio: false,
-    scales: {
-      yAxes: [{
-
-      }]
-    },
-    tooltips: {
-      callbacks: {
-        label: function(tooltipItem, chart) {
-          return chart.datasets[tooltipItem.datasetIndex].label +" "+  tooltipItem.yLabel.toFixed(0);
-        }
-      }
-    }
-  }
-});
-  }
+    options: {
+        maintainAspectRatio: false,
+        tooltips: {
+        backgroundColor: "rgb(255,255,255)",
+        bodyFontColor: "#858796",
+        borderColor: '#dddfeb',
+        borderWidth: 1,
+        xPadding: 15,
+        yPadding: 15,
+        displayColors: false,
+        caretPadding: 10,
         },
-        error: function(xhr, status, error) {
-            console.error(error);
-        }
+        legend: {
+        display: false
+        },
+        cutoutPercentage: 80,
+    },
     });
-}
 
-// Initial call to update data
-updateData();
+    // Set default font family and color
+    Chart.defaults.global.defaultFontFamily = 'Nunito';
+    Chart.defaults.global.defaultFontColor = '#858796';
 
 
-setInterval(updateData, 60000);
-    </script>
-@if (!empty($labelss) && !empty($datoss))
+    // Bar Chart Example
+    var ctx = document.getElementById("bar");
+    var myBarChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: response.label,
+        datasets: [{
+        label: "WO by Area",
+        backgroundColor: "rgb(243, 19, 1)",
+        data: response.dato,
+        }],
+    },
+    options: {
+        maintainAspectRatio: false,
+        scales: {
+        yAxes: [{
+
+        }]
+        },
+        tooltips: {
+        callbacks: {
+            label: function(tooltipItem, chart) {
+            return chart.datasets[tooltipItem.datasetIndex].label +" "+  tooltipItem.yLabel.toFixed(0);
+            }
+        }
+        }
+    }
+    });
+    }
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+            }
+        });
+    }
+
+    // Initial call to update data
+    updateData();
+
+
+    setInterval(updateData, 60000);
+
+
+
+</script>
+
+         @if (!empty($labelss) && !empty($datoss))
     <script>
         var etiquetas= {!! json_encode($labelss) !!};
         var datos1= {!! json_encode($datoss) !!};
@@ -330,7 +285,7 @@ setInterval(updateData, 60000);
     });
     var ctx = document.getElementById("pies");
     var tiemposPas = {!! json_encode($tiemposPas) !!};
-var myPieChart = new Chart(ctx, {
+    var myPieChart = new Chart(ctx, {
   type: 'doughnut',
   data: {
     labels: ["Delay", "On Time", "Great Time"],
@@ -360,7 +315,6 @@ var myPieChart = new Chart(ctx, {
 
   },
 });
-
     </script>
     @endif
     @if (!empty($datos))

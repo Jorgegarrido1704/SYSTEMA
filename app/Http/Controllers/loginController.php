@@ -101,6 +101,9 @@ class loginController extends Controller
                 }else if($categoria=='junta'){
                     session(['categoria'=>$categoria]);
                     return redirect('/juntas');
+                }else if($categoria=='SupAdmin'){
+                    session(['categoria'=>$categoria]);
+                    return redirect('/SupAdmin');
                 }
                 else {
 
