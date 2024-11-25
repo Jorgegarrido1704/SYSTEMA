@@ -21,7 +21,7 @@
 
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h5 class="m-0 font-weight-bold text-primary">Month Incidences</h5>
+                                    <h5 class="m-0 font-weight-bold text-primary">Daily Incidences</h5>
 
                                 </div>
 
@@ -40,7 +40,7 @@
                                     <!-- Card scaneer -->
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h5 class="m-0 font-weight-bold text-primary">Month Pareto           Good:{{$paretoresult[0]}} Bad:{{$paretoresult[1]}}</h5>
+                                    <h5 class="m-0 font-weight-bold text-primary">Daily Pareto Good:{{$paretoresult[0]}}% Bad:{{$paretoresult[1]}}%</h5>
 
                                 </div>
 
@@ -61,7 +61,7 @@
                             <!-- AREAS -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h5 class="m-0 font-weight-bold text-primary">Quality issue</h5>
+                                    <h5 class="m-0 font-weight-bold text-primary">Quality issue last day</h5>
                                 </div>
                                 <div class="card-body" style="overflow-y: auto; height: 360px;">
                                     <canvas id="Q"></canvas>
@@ -75,7 +75,7 @@
                             <!-- AREAS -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h5 class="m-0 font-weight-bold text-primary">Top 3 incidence</h5>
+                                    <h5 class="m-0 font-weight-bold text-primary">Top 3 incidence daily</h5>
                                 </div>
                                 <div class="card-body" style="overflow-y: auto; height: 360px;">
                                     <table>
