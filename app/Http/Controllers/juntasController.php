@@ -394,6 +394,8 @@ public function calidad_junta(){
         $datos = $etiq = [];
         $pareto[0]=$pareto[1]=0;
         $paretoresult[0]=$paretoresult[1]=0;
+        $monthAndYear = date("m-Y");
+
         if(date("N")==1){
             $datecontrol = strtotime(date("d-m-Y 00:00", strtotime("-3 days")));
         }else{

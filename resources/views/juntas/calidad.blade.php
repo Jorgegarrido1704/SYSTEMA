@@ -21,7 +21,7 @@
 
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h5 class="m-0 font-weight-bold text-primary">Daily Incidences</h5>
+                                    <h5 class="m-0 font-weight-bold text-primary">Month Incidences</h5>
 
                                 </div>
 
