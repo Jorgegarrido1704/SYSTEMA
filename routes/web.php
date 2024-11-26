@@ -130,6 +130,7 @@ Route::controller(planingController::class)->group(function(){
 
 Route::controller(AdminSupControlloer::class)->group(function(){
     Route::get('/SupAdmin',[AdminSupControlloer::class,'__invoke'])->name('SupAdmin');
+    Route::get('/mostrarWO', [AdminSupControlloer::class, 'mostrarWO'])->name('mostrarWO');
 });
 
 

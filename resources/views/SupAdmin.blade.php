@@ -2,6 +2,9 @@
 
 @section('contenido')
  <!-- Page Heading -->
+ <script>
+    const routeMostrarWo = @json(route('mostrarWO'));
+</script>
  <meta http-equiv="refresh" content="60">
 
  <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -15,16 +18,29 @@
 
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h5 class="m-0 font-weight-bold text-primary">Incidences</h5>
+                                    <h5 class="m-0 font-weight-bold text-primary">Part Numbers</h5>
                                     <div class="dropdown no-arrow">
-                                        <label for="buscarWo" class="form-label">Buscar por Work Order</label>
-                                        <input type="text" name="buscarWo" id="buscarWo" class="form-control " onchange="alert(this.value)">
+                                        <label for="buscarWo" class="form-label">Search</label>
+                                        <input type="text" name="buscarWo" id="buscarWo" class="form-control " onchange="mostrarWo(this.value)">
                                     </div>
                                 </div>
 
-                                <!-- table Body -->
                                 <div class="card-body" style="overflow-y: auto; max-height: 400px;">
-
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>PN</th>
+                                                <th>WO</th>
+                                                <th>Cutting</th>
+                                                <th>Terminals</th>
+                                                <th>Assembly</th>
+                                                <th>Lomming</th>
+                                                <th>Testing</th>
+                                                <th>Shipping</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="table-harness">  </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>

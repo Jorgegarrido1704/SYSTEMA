@@ -111,7 +111,7 @@
     <script src="{{ asset('/dash/js/demo/chart-area-demo.js')}}"></script>
     <script src="{{ asset('/dash/js/demo/chart-pie-demo.js')}}"></script>
     <script src="{{ asset('/dash/js/up-info.js')}}"></script>
-
+    <script src="{{ asset('/dash/js/mostrarWo.js')}}"></script>
 <script>
     // Function to update the data
     function updateData() {
@@ -239,6 +239,8 @@
 
 
 </script>
+
+
 
          @if (!empty($labelss) && !empty($datoss))
     <script>
