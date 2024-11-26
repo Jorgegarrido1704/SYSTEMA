@@ -10,159 +10,171 @@ class BossCaliController extends Controller
 {
     public function __invoke(){
         $value=session('user');
-        $cat=session('categoria');
-       
-            $datos = $etiq = [];
-            $pareto[0]=$pareto[1]=0;
-            $paretoresult[0]=$paretoresult[1]=0;
-            $monthAndYear = date("m-Y");
-            $datecontrol = strtotime(date("01-$monthAndYear 00:00"));
-            $buscarValoresMes = DB::table('regsitrocalidad')->get();
-            foreach ($buscarValoresMes as $rows) {
-                if (strtotime($rows->fecha) > $datecontrol) {
-                    if($rows->codigo!='TODO BIEN'){
-                    if (in_array($rows->codigo, $etiq)) {
-                        $index = array_search($rows->codigo, $etiq);
-                        $datos[$etiq[$index]] += $rows->resto;
-                    } else {
-                        $etiq[] = $rows->codigo;
-                        $index = count($etiq) - 1; // Index of the last added element
-                        $datos[$etiq[$index]] = $rows->resto;
-                         }
-                    }
+    $cat=session('categoria');
+
+        $datos = $etiq = [];
+        $pareto[0]=$pareto[1]=0;
+        $paretoresult[0]=$paretoresult[1]=0;
+        $monthAndYear = date("m-Y");
+        $today=date('d-m-Y 00:00');
+        if(date("N")==1){
+            $datecontrol = strtotime(date("d-m-Y 00:00", strtotime("-3 days")));
+
+        }else{
+        $datecontrol = strtotime(date("d-m-Y 00:00", strtotime("-1 days")));
+    }
+        $buscarValoresMes = DB::table('regsitrocalidad')->get();
+        foreach ($buscarValoresMes as $rows) {
+            if ((strtotime($rows->fecha) > $datecontrol) AND (strtotime($rows->fecha) < strtotime($today))) {
+                if($rows->codigo!='TODO BIEN'){
+                if (in_array($rows->codigo, $etiq)) {
+                    $index = array_search($rows->codigo, $etiq);
+                    $datos[$etiq[$index]] += $rows->resto;
+                } else {
+                    $etiq[] = $rows->codigo;
+                    $index = count($etiq) - 1; // Index of the last added element
+                    $datos[$etiq[$index]] = $rows->resto;
+                     }
                 }
             }
-            $buscarValorespareto=DB::table('regsitrocalidad')->get();
-            foreach($buscarValorespareto as $rowPareto){
-                if (strtotime($rowPareto->fecha) > $datecontrol) {
-                if($rowPareto->codigo=='TODO BIEN'){
-                    $pareto[0]+=1;
-                }else{
-                    $pareto[1]+=1;
-                }
+        }
+        $buscarValorespareto=DB::table('regsitrocalidad')->get();
+        foreach($buscarValorespareto as $rowPareto){
+            if ((strtotime($rowPareto->fecha) > $datecontrol)AND (strtotime($rowPareto->fecha) < strtotime($today))) {
+            if($rowPareto->codigo=='TODO BIEN'){
+                $pareto[0]+=1;
+            }else{
+                $pareto[1]+=1;
             }
-            }
-            $paretott=$pareto[1]+$pareto[0];
-            if ($paretott != 0) {
-                $paretoresult[0]=round(($pareto[0]*100)/$paretott,2);
-                $paretoresult[1]=round(($pareto[1]*100)/$paretott,2);
-            } else {
-                $paretoresult[0]=0;
-                $paretoresult[1]=0;
-            }
-
-
-           arsort($datos);
-
-           $firstKey = key($datos);
-
-           $i = 0;
-           $datosF = [];
-
-           // Query the database to retrieve records where 'codigo' column matches the $firstKey
-           $buscardatosClientes = DB::table('regsitrocalidad')->where('codigo', $firstKey)->get();
-           foreach ($buscardatosClientes as $rowDatos) {
-               $fechaControl = strtotime($rowDatos->fecha);
-               if ($fechaControl > $datecontrol) {
-                   if (in_array($rowDatos->client, array_column($datosF, 0))) {
-                       $index = array_search($rowDatos->client, array_column($datosF, 0));
-                       $datosF[$index][2] += $rowDatos->resto;
-                   } else {
-                       $datosF[$i][0] = $rowDatos->client;
-                       $datosF[$i][1] = $rowDatos->codigo;
-                       $datosF[$i][2] = $rowDatos->resto;
-
-                       $i++;
-                   }
-               }
-           }
-
-           // Reset $i before the second loop
-           $i = 0;
-           $datosS = [];
-
-           next($datos);
-           $secondKey = key($datos);
-           // Query the database to retrieve records where 'codigo' column matches the $secondKey
-           $buscardatosClientes2 = DB::table('regsitrocalidad')->where('codigo', $secondKey)->get();
-           foreach ($buscardatosClientes2 as $rowDatos2) {
-               $fechaControl2 = strtotime($rowDatos2->fecha);
-               if ($fechaControl2 > $datecontrol) {
-                   if (in_array($rowDatos2->client, array_column($datosS, 0))) {
-                       $index = array_search($rowDatos2->client, array_column($datosS, 0));
-                       $datosS[$index][2] += $rowDatos2->resto;
-                   } else {
-                       $datosS[$i][0] = $rowDatos2->client;
-                       $datosS[$i][1] = $rowDatos2->codigo;
-                       $datosS[$i][2] = $rowDatos2->resto;
-
-                       $i++;
-                   }
-               }
-           }
-
-           // Reset $i before the third loop
-           $i = 0;
-           $datosT = [];
-
-           next($datos);
-           $thirdKey = key($datos);
-           // Query the database to retrieve records where 'codigo' column matches the $thirdKey
-           $buscardatosClientes3 = DB::table('regsitrocalidad')->where('codigo', $thirdKey)->get();
-           foreach ($buscardatosClientes3 as $rowDatos3) {
-               $fechaControl3 = strtotime($rowDatos3->fecha);
-               if ($fechaControl3 > $datecontrol) {
-                   if (in_array($rowDatos3->client, array_column($datosT, 0))) {
-                       $index = array_search($rowDatos3->client, array_column($datosT, 0));
-                       $datosT[$index][2] += $rowDatos3->resto;
-                   } else {
-                       $datosT[$i][0] = $rowDatos3->client;
-                       $datosT[$i][1] = $rowDatos3->codigo;
-                       $datosT[$i][2] = $rowDatos3->resto;
-
-                       $i++;
-                   }
-               }
-           }
-
-//quality Q
-        $Qdays=$colorQ=$labelQ=[];
-        $maxDays = cal_days_in_month(CAL_GREGORIAN, date('m'), date('Y'));
-        for($i=0;$i<$maxDays;$i++){
-            $Qdays[$i]=1;
-            $labelQ[$i]=$i+1;
-                }
-                $todayD=date('d');
-            for($i=0;$i<$todayD;$i++)
-                if($labelQ[$i]==32){
-                    $colorQ[$i]='red';
-                }else{
-                    $colorQ[$i]='green';
-                }
-
-                ksort($datosT);
-                ksort($datosS);
-                ksort($datosF);
-
-        $buscarCalidadRows=new caliController;
-        $buscadorCal =$buscarCalidadRows->__invoke();
-        $calidad=$buscadorCal->getData()['calidad'];
-        $calidadControl=[];
-        $j=0;
-        $buscadorCal = DB::table('regsitrocalidad')->where('codigo','!=','TODO BIEN')->orderBy('id','DESC')->get();
-        foreach ($buscadorCal as $rows) {
-            $calidadControl[$j][0]=$rows->fecha;
-            $calidadControl[$j][1]=$rows->client;
-            $calidadControl[$j][2]=$rows->pn;
-            $calidadControl[$j][3]=$rows->resto;
-            $calidadControl[$j][4]=$rows->codigo;
-            $j++;
+        }
+        }
+        $paretott=$pareto[1]+$pareto[0];
+        if ($paretott != 0) {
+            $paretoresult[0]=round(($pareto[0]*100)/$paretott,2);
+            $paretoresult[1]=round(($pareto[1]*100)/$paretott,2);
+        } else {
+            $paretoresult[0]=0;
+            $paretoresult[1]=0;
         }
 
-            return view('BossCali',['calidadControl'=>$calidadControl,'calidad'=>$calidad,'datosT'=>$datosT,'datosS'=>$datosS,'datosF'=>$datosF,'labelQ'=>$labelQ,'colorQ'=>$colorQ,'value'=>$value,'cat'=>$cat,'datos'=>$datos,'pareto'=>$pareto,'paretoresult'=>$paretoresult,'Qdays'=>$Qdays]);
+
+       arsort($datos);
+
+       $firstKey = key($datos);
+
+       $i = 0;
+       $datosF = [];
+
+       // Query the database to retrieve records where 'codigo' column matches the $firstKey
+       $buscardatosClientes = DB::table('regsitrocalidad')->where('codigo', $firstKey)->get();
+       foreach ($buscardatosClientes as $rowDatos) {
+           $fechaControl = strtotime($rowDatos->fecha);
+           if (($fechaControl > $datecontrol)AND ($fechaControl < strtotime($today))) {
+               if (in_array($rowDatos->client, array_column($datosF, 0))) {
+                   $index = array_search($rowDatos->client, array_column($datosF, 0));
+                   $datosF[$index][2] += $rowDatos->resto;
+               } else {
+                   $datosF[$i][0] = $rowDatos->client;
+                   $datosF[$i][1] = $rowDatos->codigo;
+                   $datosF[$i][2] = $rowDatos->resto;
+
+                   $i++;
+               }
+           }
+       }
+
+       // Reset $i before the second loop
+       $i = 0;
+       $datosS = [];
+
+       next($datos);
+       $secondKey = key($datos);
+       // Query the database to retrieve records where 'codigo' column matches the $secondKey
+       $buscardatosClientes2 = DB::table('regsitrocalidad')->where('codigo', $secondKey)->get();
+       foreach ($buscardatosClientes2 as $rowDatos2) {
+           $fechaControl2 = strtotime($rowDatos2->fecha);
+           if (($fechaControl2 > $datecontrol) AND ($fechaControl2 < strtotime($today))) {
+               if (in_array($rowDatos2->client, array_column($datosS, 0))) {
+                   $index = array_search($rowDatos2->client, array_column($datosS, 0));
+                   $datosS[$index][2] += $rowDatos2->resto;
+               } else {
+                   $datosS[$i][0] = $rowDatos2->client;
+                   $datosS[$i][1] = $rowDatos2->codigo;
+                   $datosS[$i][2] = $rowDatos2->resto;
+
+                   $i++;
+               }
+           }
+       }
+
+       // Reset $i before the third loop
+       $i = 0;
+       $datosT = [];
+
+       next($datos);
+       $thirdKey = key($datos);
+       // Query the database to retrieve records where 'codigo' column matches the $thirdKey
+       $buscardatosClientes3 = DB::table('regsitrocalidad')->where('codigo', $thirdKey)->get();
+       foreach ($buscardatosClientes3 as $rowDatos3) {
+           $fechaControl3 = strtotime($rowDatos3->fecha);
+           if (($fechaControl3 > $datecontrol) AND ($fechaControl3 < strtotime($today))) {
+               if (in_array($rowDatos3->client, array_column($datosT, 0))) {
+                   $index = array_search($rowDatos3->client, array_column($datosT, 0));
+                   $datosT[$index][2] += $rowDatos3->resto;
+               } else {
+                   $datosT[$i][0] = $rowDatos3->client;
+                   $datosT[$i][1] = $rowDatos3->codigo;
+                   $datosT[$i][2] = $rowDatos3->resto;
+
+                   $i++;
+               }
+           }
+       }
+
+//quality Q
+    $Qdays=$colorQ=$labelQ=[];
+    $maxDays = cal_days_in_month(CAL_GREGORIAN, date('m'), date('Y'));
+    for($i=0;$i<$maxDays;$i++){
+        $Qdays[$i]=1;
+        $labelQ[$i]=$i+1;
+            }
+            $todayD=date('d');
+        for($i=0;$i<$todayD;$i++)
+            if($labelQ[$i]==32){
+                $colorQ[$i]='red';
+            }else{
+                $colorQ[$i]='green';
+            }
+
+            ksort($datosT);
+            ksort($datosS);
+            ksort($datosF);
+
+    $buscarCalidadRows=new caliController;
+    $buscadorCal =$buscarCalidadRows->__invoke();
+    $calidad=$buscadorCal->getData()['calidad'];
+    $calidadControl=[];
+    $j=0;
+    $buscadorCal = DB::table('regsitrocalidad')
+    ->where('codigo','!=','TODO BIEN')
+    ->where('fecha','LIKE',date('d-m-Y', strtotime("-1 days")).'%')
+    ->orderBy('id','DESC')->get();
+    foreach ($buscadorCal as $rows) {
+        $calidadControl[$j][0]=$rows->fecha;
+        $calidadControl[$j][1]=$rows->client;
+        $calidadControl[$j][2]=$rows->pn;
+        $calidadControl[$j][3]=$rows->resto;
+        $calidadControl[$j][4]=$rows->codigo;
+        $j++;
+    }
+
+        return view('BossCali',['calidadControl'=>$calidadControl,'calidad'=>$calidad,'datosT'=>$datosT,'datosS'=>$datosS,'datosF'=>$datosF,'labelQ'=>$labelQ,'colorQ'=>$colorQ,'value'=>$value,'cat'=>$cat,'datos'=>$datos,'pareto'=>$pareto,'paretoresult'=>$paretoresult,'Qdays'=>$Qdays]);
+
+
+
 
     }
-    public function reference(Request $request){
+   /* public function reference(Request $request){
         $days=$request->input('date');
         $value=session('user');
         $cat=session('categoria');
@@ -611,5 +623,5 @@ if ($days=='Today' or $days=='today') {
         }
 
     }
-
+*/
 }

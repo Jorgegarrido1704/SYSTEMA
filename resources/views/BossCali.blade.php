@@ -10,6 +10,13 @@
     a{text-decoration: none; color: whitesmoke;  }
     a:hover{ text-decoration: none; color: white; font:bold;}
 </style>
+<script>
+    var datos = {!! json_encode($datos) !!};
+    var pareto = {!! json_encode($pareto) !!};
+    var Qdays={!! json_encode($Qdays) !!}
+var colorQ={!! json_encode($colorQ) !!}
+var labelQ={!! json_encode($labelQ)!!}
+</script>
  <div class="d-sm-flex align-items-center justify-content-between mb-4">
 
                     </div>
@@ -21,7 +28,7 @@
 
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h5 class="m-0 font-weight-bold text-primary">Month Incidences</h5>
+                                    <h5 class="m-0 font-weight-bold text-primary">Incidences</h5>
 
                                 </div>
 
@@ -40,7 +47,7 @@
                                     <!-- Card scaneer -->
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h5 class="m-0 font-weight-bold text-primary">Month Pareto           Good:{{$paretoresult[0]}} Bad:{{$paretoresult[1]}}</h5>
+                                    <h5 class="m-0 font-weight-bold text-primary"> Pareto           Good:{{$paretoresult[0]}} Bad:{{$paretoresult[1]}}</h5>
 
                                 </div>
 

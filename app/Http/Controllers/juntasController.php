@@ -395,15 +395,16 @@ public function calidad_junta(){
         $pareto[0]=$pareto[1]=0;
         $paretoresult[0]=$paretoresult[1]=0;
         $monthAndYear = date("m-Y");
-
+        $today=date('d-m-Y 00:00');
         if(date("N")==1){
             $datecontrol = strtotime(date("d-m-Y 00:00", strtotime("-3 days")));
+
         }else{
         $datecontrol = strtotime(date("d-m-Y 00:00", strtotime("-1 days")));
     }
         $buscarValoresMes = DB::table('regsitrocalidad')->get();
         foreach ($buscarValoresMes as $rows) {
-            if (strtotime($rows->fecha) > $datecontrol) {
+            if ((strtotime($rows->fecha) > $datecontrol) AND (strtotime($rows->fecha) < strtotime($today))) {
                 if($rows->codigo!='TODO BIEN'){
                 if (in_array($rows->codigo, $etiq)) {
                     $index = array_search($rows->codigo, $etiq);
@@ -418,7 +419,7 @@ public function calidad_junta(){
         }
         $buscarValorespareto=DB::table('regsitrocalidad')->get();
         foreach($buscarValorespareto as $rowPareto){
-            if (strtotime($rowPareto->fecha) > $datecontrol) {
+            if ((strtotime($rowPareto->fecha) > $datecontrol)AND (strtotime($rowPareto->fecha) < strtotime($today))) {
             if($rowPareto->codigo=='TODO BIEN'){
                 $pareto[0]+=1;
             }else{
@@ -447,7 +448,7 @@ public function calidad_junta(){
        $buscardatosClientes = DB::table('regsitrocalidad')->where('codigo', $firstKey)->get();
        foreach ($buscardatosClientes as $rowDatos) {
            $fechaControl = strtotime($rowDatos->fecha);
-           if ($fechaControl > $datecontrol) {
+           if (($fechaControl > $datecontrol) AND ($fechaControl < strtotime($today))) {
                if (in_array($rowDatos->client, array_column($datosF, 0))) {
                    $index = array_search($rowDatos->client, array_column($datosF, 0));
                    $datosF[$index][2] += $rowDatos->resto;
@@ -471,7 +472,7 @@ public function calidad_junta(){
        $buscardatosClientes2 = DB::table('regsitrocalidad')->where('codigo', $secondKey)->get();
        foreach ($buscardatosClientes2 as $rowDatos2) {
            $fechaControl2 = strtotime($rowDatos2->fecha);
-           if ($fechaControl2 > $datecontrol) {
+           if (($fechaControl2 > $datecontrol) AND ($fechaControl2 < strtotime($today))) {
                if (in_array($rowDatos2->client, array_column($datosS, 0))) {
                    $index = array_search($rowDatos2->client, array_column($datosS, 0));
                    $datosS[$index][2] += $rowDatos2->resto;
@@ -495,7 +496,7 @@ public function calidad_junta(){
        $buscardatosClientes3 = DB::table('regsitrocalidad')->where('codigo', $thirdKey)->get();
        foreach ($buscardatosClientes3 as $rowDatos3) {
            $fechaControl3 = strtotime($rowDatos3->fecha);
-           if ($fechaControl3 > $datecontrol) {
+           if (($fechaControl3 > $datecontrol) AND ($fechaControl3 < strtotime($today))) {
                if (in_array($rowDatos3->client, array_column($datosT, 0))) {
                    $index = array_search($rowDatos3->client, array_column($datosT, 0));
                    $datosT[$index][2] += $rowDatos3->resto;
@@ -533,7 +534,10 @@ public function calidad_junta(){
     $calidad=$buscadorCal->getData()['calidad'];
     $calidadControl=[];
     $j=0;
-    $buscadorCal = DB::table('regsitrocalidad')->where('codigo','!=','TODO BIEN')->orderBy('id','DESC')->get();
+    $buscadorCal = DB::table('regsitrocalidad')
+    ->where('codigo','!=','TODO BIEN')
+    ->where('fecha','LIKE',date('d-m-Y', strtotime("-1 days")).'%')
+    ->orderBy('id','DESC')->get();
     foreach ($buscadorCal as $rows) {
         $calidadControl[$j][0]=$rows->fecha;
         $calidadControl[$j][1]=$rows->client;
@@ -542,7 +546,6 @@ public function calidad_junta(){
         $calidadControl[$j][4]=$rows->codigo;
         $j++;
     }
-
         return view('juntas/calidad',['calidadControl'=>$calidadControl,'calidad'=>$calidad,'datosT'=>$datosT,'datosS'=>$datosS,'datosF'=>$datosF,'labelQ'=>$labelQ,'colorQ'=>$colorQ,'value'=>$value,'cat'=>$cat,'datos'=>$datos,'pareto'=>$pareto,'paretoresult'=>$paretoresult,'Qdays'=>$Qdays]);
 
 }
