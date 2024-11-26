@@ -558,6 +558,18 @@ $buscarDatos=DB::table('registro')
 ->where('count','=','1')
 ->orderBy('tiempototal','DESC')
 ->get();
+$i=0;
+foreach($buscarDatos as $rows){
+    $datosTabla[$i][0]=$rows->cliente;
+    $datosTabla[$i][1]=$rows->NumPart;
+    $datosTabla[$i][2]=$rows->wo;
+    $datosTabla[$i][3]=$rows->Qty;
+    $datosTabla[$i][4]=$rows->tiempototal;
+    $datosTabla[$i][5]=$rows->price;
+    $datosTabla[$i][6]=$rows->Qty*$rows->price;
+    $datosTabla[$i][7]=$rows->reqday;
+    $i++;
+}
 }else if($id=="corte"){
     $buscarDatos=DB::table('registro')
     ->join('registroparcial','registro.info','=','registroparcial.codeBar')
