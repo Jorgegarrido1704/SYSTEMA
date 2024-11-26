@@ -497,8 +497,8 @@ select {
                                             <select name="Client" id="Client" required>
                                               <option value=""></option>
                                               <option value="MORGAN OLSON">MORGAN OLSON</option>
-                                              <option value="JHON DEERE">JHON DEERE</option>
-                                              <option value="OP MOVILITY">OP MOVILITY</option>
+                                              <option value="JOHN DEERE">JOHN DEERE</option>
+                                              <option value="OP MOBILITY">OP MOBILITY</option>
                                               <option value="BROWN">BROWN</option>
                                               <option value="DUR-A-LIFT">DUR-A-LIFT</option>
                                               <option value="BERSTROMG">BERGSTROM</option>
