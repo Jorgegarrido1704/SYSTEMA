@@ -3,7 +3,13 @@ var pareto ;
 var Qdays;
 var colorQ;
 var labelQ;
-
+var totalp=[];
+var paretoKeys = Object.keys(pareto);
+var paretoValues = Object.values(pareto);
+var totalParetos =paretoKeys.length;
+for (var i = 0; i < totalParetos; i++) {
+totalp[i]=97;
+}
 var keys = Object.keys(datos);
 var values = Object.values(datos);
 var color=color1 = [];
@@ -51,35 +57,68 @@ options: {
 },
 });
 
-console.log(pareto);
+
 var ctx2 = document.getElementById("pareto");
 var calidadPareto = new Chart(ctx2, {
-type: 'bar',
-data: {
-    labels: ['Good', 'Bad'],
-    datasets: [{
-        data: [pareto[0],pareto[1]],
-        backgroundColor: [ '#1cc88a','red'],
-        hoverBackgroundColor: ['#1cc89a', '#ff1a1a'],
-        hoverBorderColor: "rgba(234, 236, 244, 1)",
-    }],
-},
-options: {
-    maintainAspectRatio: false,
-    tooltips: {
-        backgroundColor: "rgb(255,255,255)",
-        bodyFontColor: "#858796",
-        borderColor: '#dddfeb',
-        borderWidth: 1,
-        xPadding: 15,
-        yPadding: 15,
-        displayColors: false,
-        caretPadding: 10,
+    type: 'line',
+    data: {
+        labels: paretoKeys,
+        datasets: [
+            {
+                label: 'FTQ',
+                data: paretoValues,
+                backgroundColor: ['#1cc88a', 'red'],
+                hoverBackgroundColor: ['#1cc89a', '#ff1a1a'],
+                borderColor: '#1cc88a',
+                fill: false, // Evita rellenar el área debajo de la línea
+                borderWidth: 2
+            },
+            {
+                label: 'Goal',
+                data: totalp,
+                borderColor: '#FFCC00',
+                borderDash: [5, 5],
+                pointRadius: 0,
+                fill: false,
+                borderWidth: 2
+            }
+        ]
     },
-    legend: {
-        display: false
-    },
-},
+    options: {
+        maintainAspectRatio: false,
+        tooltips: {
+            backgroundColor: "rgb(255,255,255)",
+            bodyFontColor: "#858796",
+            borderColor: '#dddfeb',
+            borderWidth: 1,
+            xPadding: 15,
+            yPadding: 15,
+            displayColors: false,
+            caretPadding: 10,
+        },
+        legend: {
+            display: true
+        },
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true,
+                    min: 90, // Limitar mínimo
+                    max: 100, // Limitar máximo
+                    stepSize: 1, // Intervalos de 5 en 5
+                },
+                gridLines: {
+                    color: '#e3e3e3',
+                    drawBorder: false,
+                },
+            }],
+            xAxes: [{
+                gridLines: {
+                    display: false,
+                },
+            }]
+        }
+    }
 });
 
 // Set default font family and color

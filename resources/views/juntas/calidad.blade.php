@@ -24,12 +24,12 @@ var labelQ={!! json_encode($labelQ)!!}
                     <div class="row">
 
                         <!-- Table and Graph -->
-                        <div class="col-xl-8 col-lg-7">
+                        <div class="col-xl-6 col-lg-6">
                             <div class="card shadow mb-4">
 
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h5 class="m-0 font-weight-bold text-primary">Month Incidences</h5>
+                                    <h5 class="m-0 font-weight-bold text-primary"> Incidences</h5>
 
                                 </div>
 
@@ -44,18 +44,18 @@ var labelQ={!! json_encode($labelQ)!!}
                         </div>
 
 
-                        <div class="col-xl-4 col-lg-5">
+                        <div class="col-xl-6 col-lg-6">
                             <div class="card shadow mb-4">
                                     <!-- Card scaneer -->
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h5 class="m-0 font-weight-bold text-primary">Daily Pareto Good:{{$paretoresult[0]}}% Bad:{{$paretoresult[1]}}%</h5>
+                                    <h5 class="m-0 font-weight-bold text-primary">Daily pareto</h5>
 
                                 </div>
 
                                 <div class="card-body" style="overflow-y: auto; height: 360px;">
                                     <div class="chart-pie pt-4 pb-2">
-                                        <canvas id="pareto"></canvas>
+                                        <canvas id="pareto" style="width: 50%; height: 100%;"></canvas>
 
                                     </div>
 
