@@ -441,17 +441,17 @@ public function calidad_junta(){
                 else if (substr($rowPareto->fecha, 0, 10) == $datosl) {  if($rowPareto->codigo=='TODO BIEN'){ $reglg+=1; }else{$reglb+=1;}  }
             }try{
             $paretott=$regvg+$regvb;
-            $pareto[$datosv]=round($regvb/$paretott,2)*100;
+            $pareto[$datosv]=round($regvb/$paretott,2*100);
             $paretott=$regjg+$regjb;
-            $pareto[$datosj]=round($regjb/$paretott,2)*100;
+            $pareto[$datosj]=round($regjb/$paretott,2*100);
             $paretott=$regmg+$regmb;
-            $pareto[$datosm]=round($regmb/$paretott,2)*100;
+            $pareto[$datosm]=round($regmb/$paretott,2*100);
             $paretott=$regmtg+$regmtb;
-            $pareto[$datosmt]=round($regmtb/$paretott,2)*100;
+            $pareto[$datosmt]=round($regmtb/$paretott,2*100);
             $paretott=$reglg+$reglb;
-            $pareto[$datosl]=round($reglb/$paretott,2)*100;
+            $pareto[$datosl]=round($reglb/$paretott,2*100);
             }catch(Exception $e){
-                $pareto[4]=$pareto[3]=$pareto[2]=$pareto[1]=$pareto[0]=0;
+                $pareto[$datosv]=$pareto[$datosj]=$pareto[$datosm]=$pareto[$datosmt]=$pareto[$datosl]=0;
             }
         }else if(date("N")==2){
             $datosl = (date("d-m-Y", strtotime("-1 days")));
@@ -463,9 +463,9 @@ public function calidad_junta(){
             }
             try{
             $paretott=$reglg+$reglb;
-            $pareto[0]=round($reglg/$paretott,2)*100;
+            $pareto[$datosl]=round($reglg/$paretott,2*100);
             }catch(Exception $e){
-                $pareto[0]=0;
+                $pareto[$datosl]=0;
             }
 
         }elseif(date("N")==3){
@@ -481,10 +481,14 @@ public function calidad_junta(){
                  if (substr($rowPareto->fecha, 0, 10) == $datosl) {
                      if($rowPareto->codigo=='TODO BIEN'){ $reglg+=1; }else{$reglb+=1;}  }
             }
+            try{
             $paretott=$regmtg+$regmtb;
-            $pareto[$datosmt]=$regmtg/$paretott*100;
+            $pareto[$datosmt]=round($regmtg/$paretott*100,2);
             $paretott=$reglg+$reglb;
-            $pareto[$datosl]=$reglg/$paretott*100;
+            $pareto[$datosl]=round($reglg/$paretott*100,2);
+            }catch(Exception $e){
+                $pareto[$datosmt]=$pareto[$datosl]=0;
+            }
 
         }elseif(date("N")==4){
             $datosl = strtotime(date("d-m-Y", strtotime("-1 days")));
@@ -502,13 +506,13 @@ public function calidad_junta(){
             }
             try{
             $paretott=$regmg+$regmb;
-            $pareto[2]=round($regmb/$paretott,2)*100;
+            $pareto[$datosm]=round($regmb/$paretott,2)*100;
             $paretott=$regmtg+$regmtb;
-            $pareto[1]=round($regmtb/$paretott,2)*100;
+            $pareto[$datosmt]=round($regmtb/$paretott,2)*100;
             $paretott=$reglg+$reglb;
-            $pareto[0]=round($reglb/$paretott,2)*100;
+            $pareto[$datosl]=round($reglb/$paretott,2)*100;
             }catch(Exception $e){
-                $pareto[2]=$pareto[1]=$pareto[0]=0;
+                $pareto[$datosm]=$pareto[$datosmt]=$pareto[$datosl]=0;
             }
         }elseif(date("N")==5){
             $datosl = strtotime(date("d-m-Y", strtotime("-1 days")));
@@ -529,15 +533,15 @@ public function calidad_junta(){
             }
             try{
             $paretott=$regjg+$regjb;
-            $pareto[3]=round($regjb/$paretott,2)*100;
+            $pareto[$datosj]=round($regjb/$paretott,2)*100;
             $paretott=$regmg+$regmb;
-            $pareto[2]=round($regmb/$paretott,2)*100;
+            $pareto[$datosm]=round($regmb/$paretott,2)*100;
             $paretott=$regmtg+$regmtb;
-            $pareto[1]=round($regmtb/$paretott,2)*100;
+            $pareto[$datosmt]=round($regmtb/$paretott,2)*100;
             $paretott=$reglg+$reglb;
-            $pareto[0]=round($reglb/$paretott,2)*100;
+            $pareto[$datosl]=round($reglb/$paretott,2)*100;
             }catch(Exception $e){
-                $pareto[3]=$pareto[2]=$pareto[1]=$pareto[0]=0;
+               $pareto[$datosj]=$pareto[$datosm]=$pareto[$datosmt]=$pareto[$datosl]=0;
             }
         }
 
