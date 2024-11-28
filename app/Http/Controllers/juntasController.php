@@ -506,11 +506,11 @@ public function calidad_junta(){
             }
             try{
             $paretott=$regmg+$regmb;
-            $pareto[$datosm]=round($regmb/$paretott,2)*100;
+            $pareto[$datosm]=($regmg/$paretott)*100;
             $paretott=$regmtg+$regmtb;
-            $pareto[$datosmt]=round($regmtb/$paretott,2)*100;
+            $pareto[$datosmt]=($regmtg/$paretott)*100;
             $paretott=$reglg+$reglb;
-            $pareto[$datosl]=round($reglb/$paretott,2)*100;
+            $pareto[$datosl]=($reglg/$paretott)*100;
             }catch(Exception $e){
                 $pareto[$datosm]=$pareto[$datosmt]=$pareto[$datosl]=0;
             }
@@ -533,17 +533,27 @@ public function calidad_junta(){
             }
             try{
             $paretott=$regjg+$regjb;
-            $pareto[$datosj]=round($regjb/$paretott,2)*100;
+            $pareto[$datosj]=($regjg /$paretott)*100;
             $paretott=$regmg+$regmb;
-            $pareto[$datosm]=round($regmb/$paretott,2)*100;
+            $pareto[$datosm]=($regmg/$paretott)*100;
             $paretott=$regmtg+$regmtb;
-            $pareto[$datosmt]=round($regmtb/$paretott,2)*100;
-            $paretott=$reglg+$reglb;
-            $pareto[$datosl]=round($reglb/$paretott,2)*100;
+            $pareto[$datosmt]=($regmtg/$paretott)*100;
+            $paretott=$reglg+$reglg;
+            $pareto[$datosl]=($reglb/$paretott)*100;
             }catch(Exception $e){
                $pareto[$datosj]=$pareto[$datosm]=$pareto[$datosmt]=$pareto[$datosl]=0;
             }
         }
+        $monthAndYearPareto = [];
+        $monthAndYear=date("-m-Y");
+        $YearParto=date("-Y");
+        $buscarValorPareto=DB::table('regsitrocalidad')
+        ->where('fecha', 'LIKE', "%$YearParto%");
+        foreach($buscarValorPareto as $rowPareto){
+
+        }
+
+
 
        arsort($datos);
 
@@ -654,6 +664,9 @@ public function calidad_junta(){
         $calidadControl[$j][4]=$rows->codigo;
         $j++;
     }
+
+
+
         return view('juntas/calidad',['calidadControl'=>$calidadControl,'calidad'=>$calidad,'datosT'=>$datosT,'datosS'=>$datosS,'datosF'=>$datosF,'labelQ'=>$labelQ,'colorQ'=>$colorQ,'value'=>$value,'cat'=>$cat,'datos'=>$datos,'pareto'=>$pareto,'Qdays'=>$Qdays]);
 
 }

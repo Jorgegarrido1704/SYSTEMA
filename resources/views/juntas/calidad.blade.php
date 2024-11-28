@@ -9,6 +9,19 @@
     thead{background-color: #FC4747; color:white;  }
     a{text-decoration: none; color: whitesmoke;  }
     a:hover{ text-decoration: none; color: white; font:bold;}
+
+    .chart-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .chart-area {
+        flex: 1;
+        margin: 0 10px;
+    }
+
+
 </style>
 
 <script>
@@ -24,7 +37,7 @@ var labelQ={!! json_encode($labelQ)!!}
                     <div class="row">
 
                         <!-- Table and Graph -->
-                        <div class="col-xl-6 col-lg-6">
+                        <div class="col-xl-12 col-lg-12">
                             <div class="card shadow mb-4">
 
                                 <div
@@ -37,14 +50,13 @@ var labelQ={!! json_encode($labelQ)!!}
                                 <div class="card-body" style="overflow-y: auto; max-height: 400px;">
                                     <div class="chart-area" id="chart-area">
                                         <canvas id="BarCali"></canvas>
-
                                     </div>
                                 </div>
                             </div>
                         </div>
 
 
-                        <div class="col-xl-6 col-lg-6">
+                        <div class="col-xl-12 col-lg-12">
                             <div class="card shadow mb-4">
                                     <!-- Card scaneer -->
                                 <div
@@ -53,13 +65,19 @@ var labelQ={!! json_encode($labelQ)!!}
 
                                 </div>
 
-                                <div class="card-body" style="overflow-y: auto; height: 360px;">
-                                    <div class="chart-pie pt-4 pb-2">
-                                        <canvas id="pareto" style="width: 50%; height: 100%;"></canvas>
-
+                                <div class="card-body" style="overflow-y: auto; max-height: 400px;">
+                                   <div style="display: flex; justify-content: space-between; align-items: center; height: 100%;">
+                                    <!-- Primera gráfica: 60% del espacio -->
+                                    <div class="chart-area" style="flex: 0 0 60%; margin-right: 10%;">
+                                        <canvas id="pareto"></canvas>
                                     </div>
-
+                                    <!-- Segunda gráfica: 30% del espacio -->
+                                    <div class="chart-area" style="flex: 0 0 30%;">
+                                        <canvas id="barPareto"></canvas>
+                                    </div>
                                 </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>

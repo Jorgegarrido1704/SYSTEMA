@@ -40,6 +40,7 @@ data: {
     }],
 },
 options: {
+
     maintainAspectRatio: false,
     tooltips: {
         backgroundColor: "rgb(255,255,255)",
@@ -54,6 +55,24 @@ options: {
     legend: {
         display: false
     },
+    scales: {
+        yAxes: [{
+            ticks: {
+                beginAtZero: true,
+                min: 0,
+                stepSize: 1,
+            },
+            gridLines: {
+                color: '#e3e3e3',
+                drawBorder: false,
+            },
+        }],
+        xAxes: [{
+            gridLines: {
+                display: false,
+            },
+        }]
+    }
 },
 });
 
@@ -71,7 +90,7 @@ var calidadPareto = new Chart(ctx2, {
                 hoverBackgroundColor: ['#1cc89a', '#ff1a1a'],
                 borderColor: '#1cc88a',
                 fill: false, // Evita rellenar el área debajo de la línea
-                borderWidth: 2
+                borderWidth: 4
             },
             {
                 label: 'Goal',
@@ -98,6 +117,76 @@ var calidadPareto = new Chart(ctx2, {
         },
         legend: {
             display: true
+        },
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true,
+                    min: 90,
+                    max: 100,
+                    stepSize: 1,
+                },
+                gridLines: {
+                    color: '#e3e3e3',
+                    drawBorder: false,
+                },
+            }],
+            xAxes: [{
+                gridLines: {
+                    display: false,
+                },
+            }]
+        }
+    }
+});
+
+//Bar pareto
+var ctx2 = document.getElementById("barPareto");
+var calidadPareto = new Chart(ctx2, {
+    type: 'bar',
+    data: {
+        labels: ['Month','Year'],
+        datasets: [
+            {
+                label: 'FTQ',
+                data: [98,99],
+                backgroundColor: ['#1cc88a', 'red'],
+                hoverBackgroundColor: ['#1cc89a', 'red'],
+                borderColor: '#1cc88a',
+                fill: false, // Evita rellenar el área debajo de la línea
+                borderWidth: 1
+            },]
+    },
+    options: {
+        maintainAspectRatio: false,
+        tooltips: {
+            backgroundColor: "rgb(255,255,255)",
+            bodyFontColor: "#858796",
+            borderColor: '#dddfeb',
+            borderWidth: 1,
+            xPadding: 15,
+            yPadding: 15,
+            displayColors: false,
+            caretPadding: 10,
+        },
+        responsive: true,
+        plugins: {
+            legend: {
+                display: true, // Mostrar leyendas
+                labels: {
+                    usePointStyle: true, // Cambiar íconos de las etiquetas a cuadrados
+                    pointStyle: 'rect', // Configura los íconos a rectángulos
+                    generateLabels: function(chart) {
+                        const datasets = chart.data.datasets[0];
+                        return chart.data.labels.map((label, index) => ({
+                            text: label,
+                            fillStyle: datasets.backgroundColor[index], // Color del cuadro
+                            strokeStyle: datasets.backgroundColor[index], // Color del borde
+                            hidden: false
+                        }));
+                    }
+                }
+            }
         },
         scales: {
             yAxes: [{
