@@ -60,11 +60,13 @@
                                         <thead>
                                             <tr>
                                                 <th>PN</th>
+                                                <th>Rev</th>
                                                 <th>WO</th>
                                                 <th>Qty</th>
+                                                <th>Tiempo</th>
                                             </tr>
                                         </thead>
-                                        <tbody id="table-harness">  </tbody>
+                                        <tbody id="table-retiradas">  </tbody>
                                     </table>
 
                                 </div>

@@ -9,6 +9,7 @@ function mostrarWo(workOrder) {
         success: function(response) {
             console.log(response);
             $('#table-harness').html(response.tableContent);
+            $('#table-retiradas').html(response.tableReg);
         },
         error: function(xhr, status, error) {
             console.error(error);
