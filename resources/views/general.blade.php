@@ -2,13 +2,55 @@
 
 @section('contenido')
  <!-- Page Heading -->
- <div class="d-sm-flex align-items-center justify-content-between mb-4">
+ <div class="d-sm-flex align-items-center justify-content-between mb-4">  </div>
 
-                    </div>
+ <div class="row">
+
+    <!-- Escanner -->
+    <div class="col-xl-12 col-lg-4" >
+        <div class="card shadow mb-4">
+
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" style="max-height: 25px">
+                <h6 class="m-0 font-weight-bold text-primary">Scanner Barcode</h6>
+            </div>
+
+            <!-- table Body -->
+            <div class="card-body" style=" height: 100px;">
+                <div class="chart-pie pt-4 pb-2">
+                    <form action="{{ route('codigo') }}" method="POST">
+                        @csrf
+                        <div class="form-group" style="display: flex; flex-wrap: wrap; gap: 15px; align-items: center;">
+                            <!-- Cantidad -->
+                            <div class="input-group" style="flex: 1; min-width: 150px;">
+                                <label for="cantidad" class="form-label" style="padding-right: 10px;"><b>Qty scanned</b></label>
+                                <input type="number" class="form-control" name="cantidad" id="cantidad" value="0" required>
+                            </div>
+
+                            <!-- Código de Barras -->
+                            <div class="input-group" style="flex: 2; min-width: 200px;">
+                                <label for="code-bar" class="form-label" style="padding-right: 10px;"><b>Scan Your Code</b></label>
+                                <input type="text" class="form-control" name="code-bar" id="code-bar" placeholder="Enter code here" required>
+                            </div>
+
+                            <!-- Botón de Enviar -->
+                            <div style="flex: 0 0 auto;">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                    <hr>
+                    <br>
+                    <h3 align="center">{{ session('response') }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+ </div>
+
                     <div class="row">
 
-                        <!-- Table and Graph -->
-                        <div class="col-xl-8 col-lg-7">
+                        <!-- Active Work -->
+                        <div class="col-xl-6 col-lg-4">
                             <div class="card shadow mb-4">
 
                                 <div
@@ -21,7 +63,7 @@
                                 <div class="card-body" style="overflow-y: auto; max-height: 400px;">
                                     <div class="chart-area" id="chart-area">
                                         <style>
-                                            table {     width: 100%;                     }
+                                            table {     width: 100%;   text-align: center                  }
                                             td {border-bottom: solid 2px lightblue; }
                                             thead{background-color: #FC4747; color:white;  }
                                             a{text-decoration: none; color: whitesmoke;  }
@@ -29,35 +71,30 @@
                                         </style>
                                         <table id="table-harness" class="table-harness">
                                             <thead>
-                                                <th>Part Number</th>
-                                                <th>Client</th>
-                                                <th>REV</th>
+                                                <th>PN and Rev</th>
                                                 <th>WO</th>
-                                                <th>PO</th>
                                                 <th>Qty</th>
-                                                <th>Station</th>
-                                                <th>issue</th>
+                                                <th>Issue</th>
+                                                <th>Time in proccess</th>
                                                 <th>pausa/continuar</th>
                                             </thead>
                                             <tbody>
                                                @foreach ($registros as $registro )
                                                 <tr>
-                                                    <td>{{ $registro[1] }}</td>
-                                                    <td>{{ $registro[2] }}</td>
+                                                    <td>{{ $registro[1] }} <br>REV {{ $registro[2] }}</td>
                                                     <td>{{ $registro[3] }}</td>
                                                     <td>{{ $registro[4] }}</td>
                                                     <td>{{ $registro[5] }}</td>
                                                     <td>{{ $registro[6] }}</td>
-                                                    <td>{{ $registro[7] }}</td>
-                                                    <td>{{ $registro[8] }}</td>
-                                                    @if ($registro[9]=="" && $registro[10]=="")
+
+                                                    @if ($registro[5]=="" )
                                                     <td><form action="{{route('pause')}}" method="GET">
-                                                        <input type="hidden" name="id_butC" id="id_butC" value="{{$registro[4]}}">
+                                                        <input type="hidden" name="id_butC" id="id_butC" value="{{$registro[3]}}">
                                                         <input type="submit" value="Comenzar">
                                                     </form> </td>
-                                                    @elseif($registro[10]=="")
+                                                    @elseif($registro[5]=="En proceso")
                                                     <td><form action="{{ route('pause') }}" method="GET" >
-                                                        <input type="hidden" name="id_but" id="id_but" value="{{ $registro[4] }}">
+                                                        <input type="hidden" name="id_but" id="id_but" value="{{ $registro[3] }}">
                                                         <input type="hidden" name="funcion" id="funcion" value="pausar">
                                                         <textarea name="motivo" id="motivo" cols="10" rows="2"></textarea>
                                                         <input type="submit" value="Pausar" >
@@ -65,7 +102,7 @@
                                                 </td>
                                                     @else
                                                     <td><form action="{{route('pause')}}" method="GET">
-                                                        <input type="hidden" name="id_but" id="id_but" value="{{$registro[4]}}">
+                                                        <input type="hidden" name="id_but" id="id_but" value="{{$registro[3]}}">
                                                         <input type="hidden" name="funcion" id="funcion" value="continuar">
                                                         <input type="submit" value="Continuar">
                                                     </form></td>
@@ -80,47 +117,7 @@
                             </div>
                         </div>
 
-
-                        <div class="col-xl-4 col-lg-5">
-                            <div class="card shadow mb-4">
-                                    <!-- Card scaneer -->
-                                <div
-                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h5 class="m-0 font-weight-bold text-primary">Scanner Barcode</h5>
-
-                                </div>
-
-                                <div class="card-body" style="overflow-y: auto; height: 360px;">
-                                    <div class="chart-pie pt-4 pb-2">
-                                        <form action="{{ route('codigo') }}" method="POST">
-                                            @csrf
-                                            <div class="form-group">
-                                                <div class="label">
-                                                    <label for="cantidad" class="form-label">Qty scanned</label>
-                                                </div>
-                                                <div class="input-group">
-                                                    <input type="number" class="form-control" name="cantidad" id="cantidad" value="0"  required>
-                                                </div>
-                                                <div class="label">
-                                                    <label for="code-bar" class="form-label">Scan Your Code</label>
-                                                </div>
-                                                <div class="input-group">
-                                                    <input type="text" class="form-control" name="code-bar" id="code-bar" placeholder="Enter code here" required>
-                                                </div>
-                                            </div>
-                                            <button type="submit" class="btn btn-primary">Submit</button>
-                                        </form>
-                                        <br>
-                                        <h3 align="center">{{ session('response') }}</h3>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Content Row -->
-                    <div class="row">
+                    <!-- Table Work -->
                         <div class="col-lg-6 mb-4">
                             <!-- AREAS -->
                             <div class="card shadow mb-4">
@@ -128,7 +125,7 @@
 
                                 <div
                                 class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                <h5 class="m-0 font-weight-bold text-primary">Set New Work</h5>
+                                <h5 class="m-0 font-weight-bold text-primary">Report Issue</h5>
                                 <div class="dropdown no-arrow">
                                     <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -221,58 +218,15 @@
                                                <input type="submit" id="submit" value="Send">
                                                </form>
                                    </div>
-                                  <!--  <div class="row" >
-                                        <form  action="{{ route('regfull')}}" method="POST">
-                                            @csrf
-                                                <div class="form-group">
-                                            <label for="cliente">Cliente:</label>
-                                           <select id="cliente" name="cliente" class="form-control" required>
-                                             <option value=""></option>
-                                                  <option value="DUR-A-LIFT">DUR-A-LIFT</option>
-                                                  <option value="BERSTROMG">BERGSTROM</option>
-                                                  <option value="BLUE BIRD">BLUE BIRD</option>
-                                                    <option value="ATLAS">ATLAS</option>
-                                                    <option value="UTILIMASTER">UTILIMASTER</option>
-                                                    <option value="CALIFORNIA">CALIFORNIA</option>
-                                                    <option value="TICO MANUFACTURING">TICO MANUFACTURING</option>
-                                                    <option value="SPARTAN">SPARTAN</option>
-                                                    <option value="PHOENIX">PHOENIX</option>
-                                                    <option value="FOREST RIVER">FOREST RIVER</option>
-                                                    <option value="SHYFT">SHYFT</option>
-                                                    <option value="KALMAR">KALMAR</option>
-                                                    <option value="MODINE">MODINE</option>
-                                                    <option value="NILFISK">NILFISK</option>
-                                                    <option value="PLASTIC OMNIUM">PLASTIC OMNIUM</option>
-                                                    <option value="ZOELLER">ZOELLER</option>
-                                                    <option value="COLLINS">COLLINS</option>
-                                                </select>
-                                                </div>
-                                                <div class="form-group">
-                                             <label for="parte">Numero de Parte</label>
-                                            <input type="text" id="parte" name="parte" class="form-control" required>
-                                            </div>
-                                            <div class="form-group">
-                                            <label for="rev">Revision</label>
-                                            <input type="text" id="rev" name="rev" class="form-control" required>
-                                            </div>
-                                            <div class="form-group">
-                                            <label for="cant">Cantidad</label>
-                                            <input type="number" id="cant" name="cant" class="form-control" min="1" required>
-                                            </div>
-                                            <div class="form-group">
-                                            <label for="tablero">Linea de Tableros</label>
-                                            <input type="text" id="tablero" name="tablero" class="form-control" required>
-                                            </div>
-                                            <div class="form-group">
-                                            <input type="submit" id="submit" class="btn btn-primary" value="solicitar">
-                                            </div>
-                                           </tr>
-                                            </form>
-                            </div> -->
 
                                 </div>
                             </div>
                         </div>
+                    </div>
+
+                    <!-- Content Row -->
+                    <div class="row">
+
                         <!--table of works -->
                         <div class="col-lg-6 mb-4">
                             <!-- AREAS -->

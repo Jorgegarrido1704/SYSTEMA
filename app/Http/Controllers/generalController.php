@@ -40,131 +40,80 @@ class generalController extends Controller
         foreach($buscauser as $rowuser){
             $categoria=$rowuser->category;
         }if($categoria=='ensa'){
-               $buscarporid=DB::select("SELECT * FROM registro WHERE count='6' or count='7' ORDER BY cliente");
+               $buscarporid=DB::select("SELECT * FROM registro INNER JOIN registroparcial ON registro.info=registroparcial.codeBar WHERE ensaPar>0  ORDER BY NumPart");
                 $registros=[];
                 $i=0;
                 foreach($buscarporid as $idrow){
                     $registros[$i][0]=$idrow->id;
                     $registros[$i][1]=$idrow->NumPart;
-                    $registros[$i][2]=$idrow->cliente;
-                    $registros[$i][3]=$idrow->rev;
-                    $registros[$i][4]=$idrow->wo;
-                    $registros[$i][5]=$idrow->po;
-                    $registros[$i][6]=$idrow->Qty;
-                    $registros[$i][7]=$idrow->donde;
-                    $registros[$i][8]=$idrow->paro;
-                    $buscartime=DB::table('timesharn')->select('ensa', 'ensaF')->where('wo', $idrow->wo)->first();
-                    $registros[$i][9]=$buscartime->ensa;
-                    $registros[$i][10]=$buscartime->ensaF;
+                    $registros[$i][2]=$idrow->rev;
+                    $registros[$i][3]=$idrow->wo;
+                    $registros[$i][4]=$idrow->ensaPar;
+                    $registros[$i][5]=$idrow->paro;
+                    $registros[$i][6]=$idrow->tiempototal;
                     $i++;
                 }
 
         }else if($categoria=='emba'){
-            $buscarporid=DB::select("SELECT * FROM registro WHERE count='12' or paro!=''  ORDER BY cliente");
+            $buscarporid=DB::select("SELECT * FROM registro INNER JOIN registroparcial ON registro.info=registroparcial.codeBar WHERE embPar>0  ORDER BY NumPart");
             $registros=[];
             $i=0;
             foreach($buscarporid as $idrow){
                 $registros[$i][0]=$idrow->id;
                 $registros[$i][1]=$idrow->NumPart;
-                $registros[$i][2]=$idrow->cliente;
-                $registros[$i][3]=$idrow->rev;
-                $registros[$i][4]=$idrow->wo;
-                $registros[$i][5]=$idrow->po;
-                $registros[$i][6]=$idrow->Qty;
-                $registros[$i][7]=$idrow->donde;
-                $registros[$i][8]=$idrow->paro;
-                $buscartime=DB::table('timesharn')->select('emba', 'embaF')->where('wo', $idrow->wo)->first();
-                    $registros[$i][9]=$buscartime->emba;
-                    $registros[$i][10]=$buscartime->embaF;
+                $registros[$i][2]=$idrow->rev;
+                $registros[$i][3]=$idrow->wo;
+                $registros[$i][4]=$idrow->embPar;
+                $registros[$i][5]=$idrow->paro;
+                $registros[$i][6]=$idrow->tiempototal;
                 $i++;
             }
 
         }else if($categoria=='libe'){
-            $buscarporid=DB::select("SELECT * FROM registro WHERE  count='4' or count='5' or count='2' or count='3'  ORDER BY cliente");
-            $registros=[];
-            $i=0;
-            foreach($buscarporid as $idrow){
-                $registros[$i][0]=$idrow->id;
-                $registros[$i][1]=$idrow->NumPart;
-                $registros[$i][2]=$idrow->cliente;
-                $registros[$i][3]=$idrow->rev;
-                $registros[$i][4]=$idrow->wo;
-                $registros[$i][5]=$idrow->po;
-                $registros[$i][6]=$idrow->Qty;
-                $registros[$i][7]=$idrow->donde;
-                $registros[$i][8]=$idrow->paro;
-                if($idrow->count=='4' or $idrow->count=='5'){
-                $buscartime=DB::table('timesharn')->select('term', 'termF')->where('wo', $idrow->wo)->first();
-                    $registros[$i][9]=$buscartime->term;
-                    $registros[$i][10]=$buscartime->termF;
-                $i++;
-            }else if($idrow->count=='2' or $idrow->count=='3'){
-                $buscartime=DB::table('timesharn')->select('cut', 'cutF')->where('wo', $idrow->wo)->first();
-                $registros[$i][9]=$buscartime->cut;
-                $registros[$i][10]=$buscartime->cutF;
-            $i++;
+            $buscarporid=DB::select("SELECT * FROM registro INNER JOIN registroparcial ON registro.info=registroparcial.codeBar WHERE libePar>0  ORDER BY NumPart");
+                $registros=[];
+                $i=0;
+                foreach($buscarporid as $idrow){
+                    $registros[$i][0]=$idrow->id;
+                    $registros[$i][1]=$idrow->NumPart;
+                    $registros[$i][2]=$idrow->rev;
+                    $registros[$i][3]=$idrow->wo;
+                    $registros[$i][4]=$idrow->libePar;
+                    $registros[$i][5]=$idrow->paro;
+                    $registros[$i][6]=$idrow->tiempototal;
+                    $i++;
                 }
-            }
 
         }else if($categoria=='loom'){
-            $buscarporid=DB::select("SELECT * FROM registro WHERE count='8' or count='9' ORDER BY cliente");
+            $buscarporid=DB::select("SELECT * FROM registro INNER JOIN registroparcial ON registro.info=registroparcial.codeBar WHERE loomPar>0  ORDER BY NumPart");
             $registros=[];
             $i=0;
             foreach($buscarporid as $idrow){
                 $registros[$i][0]=$idrow->id;
                 $registros[$i][1]=$idrow->NumPart;
-                $registros[$i][2]=$idrow->cliente;
-                $registros[$i][3]=$idrow->rev;
-                $registros[$i][4]=$idrow->wo;
-                $registros[$i][5]=$idrow->po;
-                $registros[$i][6]=$idrow->Qty;
-                $registros[$i][7]=$idrow->donde;
-                $registros[$i][8]=$idrow->paro;
-                $buscartime=DB::table('timesharn')->select('loom', 'loomF')->where('wo', $idrow->wo)->first();
-
-                    $registros[$i][9]=$buscartime->loom;
-                    $registros[$i][10]=$buscartime->loomF;
-
+                $registros[$i][2]=$idrow->rev;
+                $registros[$i][3]=$idrow->wo;
+                $registros[$i][4]=$idrow->loomPar;
+                $registros[$i][5]=$idrow->paro;
+                $registros[$i][6]=$idrow->tiempototal;
                 $i++;
             }
 
-
-        }else if($categoria=='plan'){
-            $buscarporid=DB::select("SELECT * FROM registro WHERE count='1'   ORDER BY cliente");
-            $registros=[];
-            $i=0;
-            foreach($buscarporid as $idrow){
-                $registros[$i][0]=$idrow->id;
-                $registros[$i][1]=$idrow->NumPart;
-                $registros[$i][2]=$idrow->cliente;
-                $registros[$i][3]=$idrow->rev;
-                $registros[$i][4]=$idrow->wo;
-                $registros[$i][5]=$idrow->po;
-                $registros[$i][6]=$idrow->Qty;
-                $registros[$i][7]=$idrow->donde;
-                $registros[$i][8]=$idrow->paro;
-                $i++;
-            }
 
         }else if($categoria=='cort'){
-            $buscarporid=DB::select("SELECT * FROM registro WHERE count='2' or count='3'   ORDER BY cliente");
-            $registros=[];
-            $i=0;
-            foreach($buscarporid as $idrow){
-                $registros[$i][0]=$idrow->id;
-                $registros[$i][1]=$idrow->NumPart;
-                $registros[$i][2]=$idrow->cliente;
-                $registros[$i][3]=$idrow->rev;
-                $registros[$i][4]=$idrow->wo;
-                $registros[$i][5]=$idrow->po;
-                $registros[$i][6]=$idrow->Qty;
-                $registros[$i][7]=$idrow->donde;
-                $registros[$i][8]=$idrow->paro;
-                $buscartime=DB::table('timesharn')->select('cut', 'cutF')->where('wo', $idrow->wo)->first();
-                    $registros[$i][9]=$buscartime->cut;
-                    $registros[$i][10]=$buscartime->cutF;
-                $i++;
-            }
+            $buscarporid=DB::select("SELECT * FROM registro INNER JOIN registroparcial ON registro.info=registroparcial.codeBar WHERE cortPar>0  ORDER BY NumPart");
+                $registros=[];
+                $i=0;
+                foreach($buscarporid as $idrow){
+                    $registros[$i][0]=$idrow->id;
+                    $registros[$i][1]=$idrow->NumPart;
+                    $registros[$i][2]=$idrow->rev;
+                    $registros[$i][3]=$idrow->wo;
+                    $registros[$i][4]=$idrow->cortPar;
+                    $registros[$i][5]=$idrow->paro;
+                    $registros[$i][6]=$idrow->tiempototal;
+                    $i++;
+                }
         } $assis=DB::select("SELECT * FROM assistence WHERE week='$week' and  lider='$value'");
             $i=0;
             $assit=[];
@@ -880,7 +829,6 @@ class generalController extends Controller
                 case 'ensa':
                     $update=DB::table('timesharn')->where('wo','=',$id_Cominezo)->update(['ensa'=>$tiempo]);
 
-                    break;
                 case 'libe':
                     $update=DB::table('timesharn')->where('wo','=',$id_Cominezo)->update(['term'=>$tiempo]);
                     break;
@@ -892,7 +840,8 @@ class generalController extends Controller
             case 'emba':
         $update=DB::table('timesharn')->where('wo','=',$id_Cominezo)->update(['emba'=>$tiempo]);
         break;
-    }
+    } $alta=DB::table('registro')->where('wo','=',$id_Cominezo)->update(['paro'=>'En proceso']);
+
         }
         if(!empty($id) && $funcion=="pausar"){
             switch($cat){
@@ -963,8 +912,8 @@ class generalController extends Controller
             break;
         default:
             break;
-
     }
+
 }else if(!empty($id) && $funcion=="continuar"){
     switch($cat){
         case 'cort':
@@ -977,7 +926,7 @@ class generalController extends Controller
             $buscarReg=DB::table('registro')->where('wo','=',$id)->first();
             if($buscarReg){
                 $registro=DB::table('registro_paro_corte')->where('id_request','=',$id)->orderBy('id','desc')->limit(1)->update(['finhora'=>$newTime]);
-                $alta=DB::table('registro')->where('wo','=',$id)->update(['paro'=>'']);
+                $alta=DB::table('registro')->where('wo','=',$id)->update(['paro'=>'En proceso']);
             }
             break;
         case 'ensa':
@@ -990,7 +939,7 @@ class generalController extends Controller
             $buscarReg=DB::table('registro')->where('wo','=',$id)->first();
             if($buscarReg){
                 $registro=DB::table('registro_paro_corte')->where('id_request','=',$id)->orderBy('id','desc')->limit(1)->update(['finhora'=>$newTime]);
-                $alta=DB::table('registro')->where('wo','=',$id)->update(['paro'=>'']);
+                $alta=DB::table('registro')->where('wo','=',$id)->update(['paro'=>'En proceso']);
             }
             break;
         case 'libe':
@@ -1003,7 +952,7 @@ class generalController extends Controller
             $buscarReg=DB::table('registro')->where('wo','=',$id)->first();
             if($buscarReg){
                 $registro=DB::table('registro_paro_corte')->where('id_request','=',$id)->orderBy('id','desc')->limit(1)->update(['finhora'=>$newTime]);
-                $alta=DB::table('registro')->where('wo','=',$id)->update(['paro'=>'']);
+                $alta=DB::table('registro')->where('wo','=',$id)->update(['paro'=>'En proceso']);
             }
             break;
         case 'loom':
@@ -1016,7 +965,7 @@ class generalController extends Controller
             $buscarReg=DB::table('registro')->where('wo','=',$id)->first();
             if($buscarReg){
                 $registro=DB::table('registro_paro_corte')->where('id_request','=',$id)->orderBy('id','desc')->limit(1)->update(['finhora'=>$newTime]);
-                $alta=DB::table('registro')->where('wo','=',$id)->update(['paro'=>'']);
+                $alta=DB::table('registro')->where('wo','=',$id)->update(['paro'=>'En proceso']);
             }
     case 'cali':
         $select=DB::table('timesharn')->where( 'wo','=',$id)->first();
@@ -1028,7 +977,7 @@ class generalController extends Controller
             $buscarReg=DB::table('registro')->where('wo','=',$id)->first();
             if($buscarReg){
                 $registro=DB::table('registro_paro_corte')->where('id_request','=',$id)->orderBy('id','desc')->limit(1)->update(['finhora'=>$newTime]);
-                $alta=DB::table('registro')->where('wo','=',$id)->update(['paro'=>'']);
+                $alta=DB::table('registro')->where('wo','=',$id)->update(['paro'=>'En proceso']);
             }
         break;
     case 'emba':
@@ -1041,7 +990,7 @@ class generalController extends Controller
         $buscarReg=DB::table('registro')->where('wo','=',$id)->first();
         if($buscarReg){
             $registro=DB::table('registro_paro_corte')->where('id_request','=',$id)->orderBy('id','desc')->limit(1)->update(['finhora'=>$newTime]);
-            $alta=DB::table('registro')->where('wo','=',$id)->update(['paro'=>'']);
+            $alta=DB::table('registro')->where('wo','=',$id)->update(['paro'=>'En proceso']);
         }
         break;
     default:
