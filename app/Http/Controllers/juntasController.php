@@ -469,8 +469,8 @@ public function calidad_junta(){
             }
 
         }elseif(date("N")==3){
-            $datosl = (date("d-m-Y", strtotime("-1 days")));
-            $datosmt = (date("d-m-Y", strtotime("-2 days")));
+            $datosl = (date("d-m-Y", strtotime("-2 days")));
+            $datosmt = (date("d-m-Y", strtotime("-1 days")));
             $buscarValorespareto=DB::table('regsitrocalidad')
             ->Where('fecha', 'LIKE', "$datosmt%")
             ->orWhere('fecha', 'LIKE', "$datosl%")
@@ -491,9 +491,9 @@ public function calidad_junta(){
             }
 
         }elseif(date("N")==4){
-            $datosl = (date("d-m-Y", strtotime("-1 days")));
+            $datosl = (date("d-m-Y", strtotime("-3 days")));
             $datosmt = (date("d-m-Y", strtotime("-2 days")));
-            $datosm = (date("d-m-Y", strtotime("-3 days")));
+            $datosm = (date("d-m-Y", strtotime("-1 days")));
             $buscarValorespareto=DB::table('regsitrocalidad')
             ->Where('fecha', 'LIKE', "$datosm%")
             ->orWhere('fecha', 'LIKE', "$datosmt%")
@@ -510,7 +510,7 @@ public function calidad_junta(){
                 $paretott=$regmtg+$regmtb;
                 $pareto[$datosmt]=round($regmtg/$paretott*100,2);
                 $paretott=$reglg+$reglb;
-                $pareto[$datosl]=round($reglg/$paretott*100,2);
+                $pareto[$datosl]=round($reglg/($paretott*100),2);
 
             }catch(Exception $e){
                 $pareto[$datosm]=$pareto[$datosmt]=$pareto[$datosl]=0;
