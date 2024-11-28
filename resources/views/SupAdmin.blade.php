@@ -13,7 +13,7 @@
                     <div class="row">
 
                         <!-- Table and Graph -->
-                        <div class="col-xl-8 col-lg-7">
+                        <div class="col-xl-6 col-lg-7">
                             <div class="card shadow mb-4">
 
                                 <div
@@ -25,7 +25,7 @@
                                     </div>
                                 </div>
 
-                                <div class="card-body" style="overflow-y: auto; max-height: 400px;">
+                                <div class="card-body" style="overflow-y: auto; max-height: 350px;">
                                     <table class="table">
                                         <thead>
                                             <tr>
@@ -46,17 +46,26 @@
                         </div>
 
 
-                        <div class="col-xl-4 col-lg-5">
+                        <div class="col-xl-6 col-lg-7">
                             <div class="card shadow mb-4">
                                     <!-- Card scaneer -->
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h5 class="m-0 font-weight-bold text-primary">Part numbers </h5>
+                                    <h5 class="m-0 font-weight-bold text-primary">Production Records </h5>
 
                                 </div>
 
-                                <div class="card-body" style="overflow-y: auto; height: 360px;">
-
+                                <div class="card-body" style="overflow-y: auto; height: 350px;">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>PN</th>
+                                                <th>WO</th>
+                                                <th>Qty</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="table-harness">  </tbody>
+                                    </table>
 
                                 </div>
                             </div>
