@@ -3,6 +3,9 @@ var pareto ;
 var Qdays;
 var colorQ;
 var labelQ;
+var pyl=Object.keys(paretoYear);
+var pyv=Object.values(paretoYear);
+
 var totalp=[];
 var paretoKeys = Object.keys(pareto);
 var paretoValues = Object.values(pareto);
@@ -146,11 +149,11 @@ var ctx2 = document.getElementById("barPareto");
 var calidadPareto = new Chart(ctx2, {
     type: 'bar',
     data: {
-        labels: ['Month','Year'],
+        labels: pyl,
         datasets: [
             {
                 label: 'FTQ',
-                data: [98,99],
+                data: pyv,
                 backgroundColor: ['#1cc88a', 'red'],
                 hoverBackgroundColor: ['#1cc89a', 'red'],
                 borderColor: '#1cc88a',
@@ -193,9 +196,9 @@ var calidadPareto = new Chart(ctx2, {
             yAxes: [{
                 ticks: {
                     beginAtZero: true,
-                    min: 90, // Limitar mínimo
+                    min: 95, // Limitar mínimo
                     max: 100, // Limitar máximo
-                    stepSize: 1, // Intervalos de 5 en 5
+                    stepSize: .5, // Intervalos de 5 en 5
                 },
                 gridLines: {
                     color: '#e3e3e3',
@@ -223,7 +226,7 @@ labels: labelQ,
 datasets: [{
   data: Qdays,
   backgroundColor: colorQ,
-  hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
+ // hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
   hoverBorderColor: "rgba(234, 236, 244, 1)",
 }],
 },
@@ -244,4 +247,5 @@ legend: {
 },
 cutoutPercentage: 80,
 },
+
 });

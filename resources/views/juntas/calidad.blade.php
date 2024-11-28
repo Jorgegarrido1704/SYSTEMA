@@ -30,6 +30,7 @@
     var Qdays={!! json_encode($Qdays) !!}
 var colorQ={!! json_encode($colorQ) !!}
 var labelQ={!! json_encode($labelQ)!!}
+var paretoYear={!! json_encode($monthAndYearPareto) !!};
 </script>
  <div class="d-sm-flex align-items-center justify-content-between mb-4">
 
@@ -61,7 +62,7 @@ var labelQ={!! json_encode($labelQ)!!}
                                     <!-- Card scaneer -->
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h5 class="m-0 font-weight-bold text-primary">Daily pareto</h5>
+                                    <h5 class="m-0 font-weight-bold text-primary">FTQ(First Time Quality)</h5>
 
                                 </div>
 

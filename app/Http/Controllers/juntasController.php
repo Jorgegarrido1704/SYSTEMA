@@ -435,21 +435,21 @@ public function calidad_junta(){
             ->get();
             foreach($buscarValorespareto as $rowPareto){
                 if (substr($rowPareto->fecha, 0, 10) == $datosv) {  if($rowPareto->codigo=='TODO BIEN'){ $regvg+=1; }else{$regvb+=1;}  }
-                else if (substr($rowPareto->fecha, 0, 10) == $datosj) {  if($rowPareto->codigo=='TODO BIEN'){ $regjg+=1; }else{$regjb+=1;}  }
-                else if (substr($rowPareto->fecha, 0, 10) == $datosm) {  if($rowPareto->codigo=='TODO BIEN'){ $regmg+=1; }else{$regmb+=1;}  }
-                else if (substr($rowPareto->fecha, 0, 10) == $datosmt) {  if($rowPareto->codigo=='TODO BIEN'){ $regmtg+=1; }else{$regmtb+=1;}  }
-                else if (substr($rowPareto->fecha, 0, 10) == $datosl) {  if($rowPareto->codigo=='TODO BIEN'){ $reglg+=1; }else{$reglb+=1;}  }
+                if (substr($rowPareto->fecha, 0, 10) == $datosj) {  if($rowPareto->codigo=='TODO BIEN'){ $regjg+=1; }else{$regjb+=1;}  }
+                if (substr($rowPareto->fecha, 0, 10) == $datosm) {  if($rowPareto->codigo=='TODO BIEN'){ $regmg+=1; }else{$regmb+=1;}  }
+                if (substr($rowPareto->fecha, 0, 10) == $datosmt) {  if($rowPareto->codigo=='TODO BIEN'){ $regmtg+=1; }else{$regmtb+=1;}  }
+                if (substr($rowPareto->fecha, 0, 10) == $datosl) {  if($rowPareto->codigo=='TODO BIEN'){ $reglg+=1; }else{$reglb+=1;}  }
             }try{
             $paretott=$regvg+$regvb;
-            $pareto[$datosv]=round($regvb/$paretott,2*100);
+            $pareto[$datosv]=round($regvg/$paretott,2*100);
             $paretott=$regjg+$regjb;
-            $pareto[$datosj]=round($regjb/$paretott,2*100);
+            $pareto[$datosj]=round($regjg/$paretott,2*100);
             $paretott=$regmg+$regmb;
-            $pareto[$datosm]=round($regmb/$paretott,2*100);
+            $pareto[$datosm]=round($regmg/$paretott,2*100);
             $paretott=$regmtg+$regmtb;
-            $pareto[$datosmt]=round($regmtb/$paretott,2*100);
+            $pareto[$datosmt]=round($regmtg/$paretott,2*100);
             $paretott=$reglg+$reglb;
-            $pareto[$datosl]=round($reglb/$paretott,2*100);
+            $pareto[$datosl]=round($reglg/$paretott,2*100);
             }catch(Exception $e){
                 $pareto[$datosv]=$pareto[$datosj]=$pareto[$datosm]=$pareto[$datosmt]=$pareto[$datosl]=0;
             }
@@ -469,8 +469,8 @@ public function calidad_junta(){
             }
 
         }elseif(date("N")==3){
-            $datosl = (date("d-m-Y", strtotime("-2 days")));
-            $datosmt = (date("d-m-Y", strtotime("-1 days")));
+            $datosl = (date("d-m-Y", strtotime("-1 days")));
+            $datosmt = (date("d-m-Y", strtotime("-2 days")));
             $buscarValorespareto=DB::table('regsitrocalidad')
             ->Where('fecha', 'LIKE', "$datosmt%")
             ->orWhere('fecha', 'LIKE', "$datosl%")
@@ -495,22 +495,22 @@ public function calidad_junta(){
             $datosmt = (date("d-m-Y", strtotime("-2 days")));
             $datosm = (date("d-m-Y", strtotime("-1 days")));
             $buscarValorespareto=DB::table('regsitrocalidad')
-            ->Where('fecha', 'LIKE', "$datosm%")
+            ->Where('fecha', 'LIKE', "$datosl%")
             ->orWhere('fecha', 'LIKE', "$datosmt%")
-            ->orWhere('fecha', 'LIKE', "$datosl%")
+            ->orWhere('fecha', 'LIKE', "$datosm%")
             ->get();
             foreach($buscarValorespareto as $rowPareto){
-                if (substr($rowPareto->fecha, 0, 10) == $datosm) {  if($rowPareto->codigo=='TODO BIEN'){ $regmg+=1; }else{$regmb+=1;}  }
-                if (substr($rowPareto->fecha, 0, 10) == $datosmt) {  if($rowPareto->codigo=='TODO BIEN'){ $regmtg+=1; }else{$regmtb+=1;}  }
                  if (substr($rowPareto->fecha, 0, 10) == $datosl) {  if($rowPareto->codigo=='TODO BIEN'){ $reglg+=1; }else{$reglb+=1;}  }
-            }
+                 if (substr($rowPareto->fecha, 0, 10) == $datosmt) {  if($rowPareto->codigo=='TODO BIEN'){ $regmtg+=1; }else{$regmtb+=1;}  }
+                 if (substr($rowPareto->fecha, 0, 10) == $datosm) {  if($rowPareto->codigo=='TODO BIEN'){ $regmg+=1; }else{$regmb+=1;}  }
+                }
             try{
                 $paretott=$regmg+$regmb;
-                $pareto[$datosm]=round($regmb/$paretott*100,2);
+                $pareto[$datosm]=round($regmg/$paretott*100,2);
                 $paretott=$regmtg+$regmtb;
                 $pareto[$datosmt]=round($regmtg/$paretott*100,2);
                 $paretott=$reglg+$reglb;
-                $pareto[$datosl]=round($reglg/($paretott*100),2);
+                $pareto[$datosl]=round($reglg/$paretott*100,2);
 
             }catch(Exception $e){
                 $pareto[$datosm]=$pareto[$datosmt]=$pareto[$datosl]=0;
@@ -528,9 +528,9 @@ public function calidad_junta(){
             ->get();
             foreach($buscarValorespareto as $rowPareto){
                 if (substr($rowPareto->fecha, 0, 10) == $datosj) {  if($rowPareto->codigo=='TODO BIEN'){ $regjg+=1; }else{$regjb+=1;}  }
-                else if (substr($rowPareto->fecha, 0, 10) == $datosm) {  if($rowPareto->codigo=='TODO BIEN'){ $regmg+=1; }else{$regmb+=1;}  }
-                else if (substr($rowPareto->fecha, 0, 10) == $datosmt) {  if($rowPareto->codigo=='TODO BIEN'){ $regmtg+=1; }else{$regmtb+=1;}  }
-                else if (substr($rowPareto->fecha, 0, 10) == $datosl) {  if($rowPareto->codigo=='TODO BIEN'){ $reglg+=1; }else{$reglb+=1;}  }
+                if (substr($rowPareto->fecha, 0, 10) == $datosm) {  if($rowPareto->codigo=='TODO BIEN'){ $regmg+=1; }else{$regmb+=1;}  }
+                if (substr($rowPareto->fecha, 0, 10) == $datosmt) {  if($rowPareto->codigo=='TODO BIEN'){ $regmtg+=1; }else{$regmtb+=1;}  }
+                if (substr($rowPareto->fecha, 0, 10) == $datosl) {  if($rowPareto->codigo=='TODO BIEN'){ $reglg+=1; }else{$reglb+=1;}  }
             }
             try{
             $paretott=$regjg+$regjb;
@@ -545,15 +545,23 @@ public function calidad_junta(){
                $pareto[$datosj]=$pareto[$datosm]=$pareto[$datosmt]=$pareto[$datosl]=0;
             }
         }
-        /*$monthAndYearPareto = [];
-        $monthAndYear=date("-m-Y");
-        $YearParto=date("-Y");
+        $monthAndYearPareto = [];
+        $yearGood=$yearBad=$monthGood=$monthBad=0;
+        $monthAndYear=date("m-Y");
+        $YearParto=date("Y");
         $buscarValorPareto=DB::table('regsitrocalidad')
-        ->where('fecha', 'LIKE', "%$YearParto%");
+        ->where('fecha', 'LIKE', "%$YearParto%")
+        ->get();
         foreach($buscarValorPareto as $rowPareto){
+         if($rowPareto->codigo=='TODO BIEN'){$yearGood+=1;}else{$yearBad+=1;}
+            if(substr($rowPareto->fecha, 3, 7) == $monthAndYear){
+                if($rowPareto->codigo=='TODO BIEN'){$monthGood+=1;}else{$monthBad+=1;}}
+            }
+        $monthAndYearPareto[$monthAndYear]=round($monthGood/($monthGood+$monthBad)*100,2);
+        $monthAndYearPareto[$YearParto]=round($yearGood/($yearGood+$yearBad)*100,2);
 
-        }*/
-
+arsort($monthAndYearPareto);
+arsort($pareto);
 
 
        arsort($datos);
@@ -638,7 +646,7 @@ public function calidad_junta(){
             }
             $todayD=date('d');
         for($i=0;$i<$todayD;$i++)
-            if($labelQ[$i]==32){
+            if($labelQ[$i]==12){
                 $colorQ[$i]='red';
             }else{
                 $colorQ[$i]='green';
@@ -668,7 +676,7 @@ public function calidad_junta(){
 
 
 
-        return view('juntas/calidad',['calidadControl'=>$calidadControl,'calidad'=>$calidad,'datosT'=>$datosT,'datosS'=>$datosS,'datosF'=>$datosF,'labelQ'=>$labelQ,'colorQ'=>$colorQ,'value'=>$value,'cat'=>$cat,'datos'=>$datos,'pareto'=>$pareto,'Qdays'=>$Qdays]);
+        return view('juntas/calidad',['calidadControl'=>$calidadControl,'monthAndYearPareto'=>$monthAndYearPareto,'calidad'=>$calidad,'datosT'=>$datosT,'datosS'=>$datosS,'datosF'=>$datosF,'labelQ'=>$labelQ,'colorQ'=>$colorQ,'value'=>$value,'cat'=>$cat,'datos'=>$datos,'pareto'=>$pareto,'Qdays'=>$Qdays]);
 
 }
 
