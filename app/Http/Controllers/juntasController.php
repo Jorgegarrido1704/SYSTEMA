@@ -544,14 +544,14 @@ public function calidad_junta(){
                $pareto[$datosj]=$pareto[$datosm]=$pareto[$datosmt]=$pareto[$datosl]=0;
             }
         }
-        $monthAndYearPareto = [];
+        /*$monthAndYearPareto = [];
         $monthAndYear=date("-m-Y");
         $YearParto=date("-Y");
         $buscarValorPareto=DB::table('regsitrocalidad')
         ->where('fecha', 'LIKE', "%$YearParto%");
         foreach($buscarValorPareto as $rowPareto){
 
-        }
+        }*/
 
 
 
