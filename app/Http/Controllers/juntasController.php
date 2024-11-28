@@ -491,9 +491,9 @@ public function calidad_junta(){
             }
 
         }elseif(date("N")==4){
-            $datosl = strtotime(date("d-m-Y", strtotime("-1 days")));
-            $datosmt = strtotime(date("d-m-Y", strtotime("-2 days")));
-            $datosm = strtotime(date("d-m-Y", strtotime("-3 days")));
+            $datosl = (date("d-m-Y", strtotime("-1 days")));
+            $datosmt = (date("d-m-Y", strtotime("-2 days")));
+            $datosm = (date("d-m-Y", strtotime("-3 days")));
             $buscarValorespareto=DB::table('regsitrocalidad')
             ->Where('fecha', 'LIKE', "$datosm%")
             ->orWhere('fecha', 'LIKE', "$datosmt%")
