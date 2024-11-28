@@ -501,16 +501,17 @@ public function calidad_junta(){
             ->get();
             foreach($buscarValorespareto as $rowPareto){
                 if (substr($rowPareto->fecha, 0, 10) == $datosm) {  if($rowPareto->codigo=='TODO BIEN'){ $regmg+=1; }else{$regmb+=1;}  }
-                else if (substr($rowPareto->fecha, 0, 10) == $datosmt) {  if($rowPareto->codigo=='TODO BIEN'){ $regmtg+=1; }else{$regmtb+=1;}  }
-                else if (substr($rowPareto->fecha, 0, 10) == $datosl) {  if($rowPareto->codigo=='TODO BIEN'){ $reglg+=1; }else{$reglb+=1;}  }
+                if (substr($rowPareto->fecha, 0, 10) == $datosmt) {  if($rowPareto->codigo=='TODO BIEN'){ $regmtg+=1; }else{$regmtb+=1;}  }
+                 if (substr($rowPareto->fecha, 0, 10) == $datosl) {  if($rowPareto->codigo=='TODO BIEN'){ $reglg+=1; }else{$reglb+=1;}  }
             }
             try{
-            $paretott=$regmg+$regmb;
-            $pareto[$datosm]=($regmg/$paretott)*100;
-            $paretott=$regmtg+$regmtb;
-            $pareto[$datosmt]=($regmtg/$paretott)*100;
-            $paretott=$reglg+$reglb;
-            $pareto[$datosl]=($reglg/$paretott)*100;
+                $paretott=$regmg+$regmb;
+                $pareto[$datosm]=round($regmb/$paretott*100,2);
+                $paretott=$regmtg+$regmtb;
+                $pareto[$datosmt]=round($regmtg/$paretott*100,2);
+                $paretott=$reglg+$reglb;
+                $pareto[$datosl]=round($reglg/$paretott*100,2);
+
             }catch(Exception $e){
                 $pareto[$datosm]=$pareto[$datosmt]=$pareto[$datosl]=0;
             }
