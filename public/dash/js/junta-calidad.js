@@ -141,6 +141,7 @@ var calidadPareto = new Chart(ctx2, {
 });
 
 //Bar pareto
+console.log(pareto);
 var ctx2 = document.getElementById("barPareto");
 var calidadPareto = new Chart(ctx2, {
     type: 'bar',
