@@ -32,18 +32,16 @@
                                             <tbody align="center">
                                                 @foreach ($calidad as $cal)
                                                 <tr>
-                                                    <form action="{{route('baja')}}" method="GET" id="forma">
+                                                    <form action="{{route('baja')}}" method="POST" id="forma">
+                                                        @csrf
                                     <td id="np">{{$cal[0]}}</td>
                                     <td id="client">{{$cal[1]}}</td>
                                     <td id="wo">{{$cal[2]}}</td>
                                     <td id="po">{{$cal[3]}}</td>
                                         <td id="cant">{{$cal[4]}}</td>
                                         <td id="parcial">{{$cal[5]}}</td>
-
                                     <td align="center">
-                                        <form action="{{route('baja')}}" method="GET" id="forma">
                                             <input type="hidden" name="id" id="id" value="{{$cal[6]}}">
-
                                             <button type="submit" id="enviar">Calidad</button></td>
                                 </form>
                                                     </tr>
@@ -58,7 +56,7 @@
                                               </div>
 
                                                     <br>
-                                                    <form action="{{route('saveData')}}" method="GET">
+                                                    <form action="{{route('saveData')}}" method="post">
                                         <div> <h4>OK<input type="number" style="width:80px;margin-right:80px;" name="ok" id="ok" value="0"  max="100" onchange="return checkOk()">      NOK<input type="number" style="width: 80px;margin-right:80px" name="nok" id="nok" value="0"  max="5" onchange="return checkOk()"></h4></div>
                                                          <script>
                                                             function checkOk(){

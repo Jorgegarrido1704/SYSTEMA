@@ -100,8 +100,8 @@ Route::controller(bossController::class)->group(function(){
 
 Route::controller(caliController::class)->group(function(){
         Route::get('/calidad',caliController::class)->name('calidad');
-        Route::get('/baja','baja')->name('baja');
-        Route::get('/saveData',[caliController::class,'saveData'])->name('saveData');
+        Route::post('/baja',[caliController::class,'baja'])->name('baja');
+        Route::post('/saveData',[caliController::class,'saveData'])->name('saveData');
         Route::post('/buscarcodigo', [caliController::class, 'buscarcodigo'])->name('buscarcodigo');
         Route::post('/codigoCalidad',[caliController::class,'codigoCalidad'])->name('codigoCalidad');
         Route::get('/calidadfetchdatacali', [caliController::class, 'fetchDatacali'])->name('fetchdatacali');

@@ -86,7 +86,9 @@ class caliController extends generalController
         $assit = $caliresult->getData()['assit'];
         $cat=$caliresult->getData()['cat'];
         $id=$request->input('id');
-        
+            if($id==''){
+                return redirect('cali');
+            }else{
         $buscarInfo=DB::table('calidad')->where('id','=',$id)->get();
         foreach($buscarInfo as $rowInfo){
             $client=$rowInfo->client;
@@ -106,6 +108,7 @@ class caliController extends generalController
                     'assit'=>$assit,
                     'cat'=>$cat
                 ]);
+            }
 
     }
     public function saveData(Request $request){
