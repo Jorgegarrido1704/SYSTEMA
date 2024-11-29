@@ -86,6 +86,7 @@ class caliController extends generalController
         $assit = $caliresult->getData()['assit'];
         $cat=$caliresult->getData()['cat'];
         $id=$request->input('id');
+        
         $buscarInfo=DB::table('calidad')->where('id','=',$id)->get();
         foreach($buscarInfo as $rowInfo){
             $client=$rowInfo->client;
@@ -108,6 +109,8 @@ class caliController extends generalController
 
     }
     public function saveData(Request $request){
+        $cat=session('categoria');
+        if($cat=='cali'){
         $corteLibe=['Impresion de cable incorrecta','Cable sobrante','Strip fuera de tolerancia','Terminal mal aplicada',
         'Crimp no centrado',
         'Cable con exceso de strip',
@@ -690,7 +693,9 @@ $regTimes->save();}
             return redirect()->route('calidad');
         }
 
-
+    }else{
+        return redirect()->route('calidad');
+    }
 
     }
 
