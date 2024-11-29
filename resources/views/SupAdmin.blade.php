@@ -5,7 +5,7 @@
  <script>
     const routeMostrarWo = @json(route('mostrarWO'));
 </script>
- <meta http-equiv="refresh" content="60">
+
 
  <div class="d-sm-flex align-items-center justify-content-between mb-4">
 
@@ -13,7 +13,7 @@
                     <div class="row">
 
                         <!-- Table and Graph -->
-                        <div class="col-xl-6 col-lg-7">
+                        <div class="col-xl-7 col-lg-7">
                             <div class="card shadow mb-4">
 
                                 <div
@@ -46,7 +46,7 @@
                         </div>
 
 
-                        <div class="col-xl-6 col-lg-7">
+                        <div class="col-xl-5 col-lg-7">
                             <div class="card shadow mb-4">
                                     <!-- Card scaneer -->
                                 <div
@@ -60,7 +60,7 @@
                                         <thead>
                                             <tr>
                                                 <th>PN</th>
-                                                <th>Rev</th>
+                                              
                                                 <th>WO</th>
                                                 <th>Qty</th>
                                                 <th>Tiempo</th>
@@ -83,7 +83,22 @@
                                     <h5 class="m-0 font-weight-bold text-primary">Quality issue</h5>
                                 </div>
                                 <div class="card-body" style="overflow-y: auto; height: 360px;">
-
+                                    <div style="text-align: center">
+                                    <h3>Testing Quality   OK: <span id="tok"></span> NG: <span id="tng"></span> FTQ: <span id="tftq"></span></h3>
+                                    </div>
+                                    <hr>
+                                    <div>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                  <th>Issue code</th>
+                                                  <th>Quantity</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="table-ftq">
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>

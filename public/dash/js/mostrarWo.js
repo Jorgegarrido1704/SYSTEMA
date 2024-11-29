@@ -8,8 +8,15 @@ function mostrarWo(workOrder) {
         dataType: 'json',
         success: function(response) {
             console.log(response);
+            ok=response.paretos[0];
+            nog=response.paretos[1];
+            paretos=response.paretos[2]+ '%';
             $('#table-harness').html(response.tableContent);
             $('#table-retiradas').html(response.tableReg);
+            $('#table-ftq').html(response.tableftq);
+            $('#tok').html(ok);
+            $('#tng').html(nog);
+            $('#tftq').html(paretos);
         },
         error: function(xhr, status, error) {
             console.error(error);

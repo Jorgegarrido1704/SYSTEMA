@@ -19,9 +19,9 @@ class AdminSupControlloer extends Controller
     public function mostrarWO(Request $request)
     {
         $buscarWo = $request->input('buscarWo');
-        $datosWo =$datosPass=$pnReg= [];
-        $tableContent=$tableReg = '';
-        $i=0;
+        $datosWo =$datosPass=$pnReg=$regftq=$paretos= [];
+        $tableContent=$tableReg = $tableftq='';
+        $i=$ok=$nog=0;
 
         $buscar = DB::table('registroparcial')
             ->orwhere('pn', 'like', $buscarWo.'%')
@@ -46,20 +46,49 @@ class AdminSupControlloer extends Controller
 
            foreach($pnReg as $pnR){
             $buscarR = DB::table('retiradad')
-            ->join('po', 'po.pn', '=', 'retiradad.np')
-            ->where('pn', '=', $pnR)
+            ->where('np', '=', $pnR)
             ->get();
             foreach ($buscarR as $rowR) {
                 $tableReg .= '<tr>';
                 $tableReg .= '<td>' . $rowR->np . '</td>';
-                $tableReg .= '<td>' . $rowR->rev . '</td>';
                 $tableReg .= '<td>' . $rowR->wo . '</td>';
                 $tableReg .= '<td>' . $rowR->qty . '</td>';
                 $tableReg .= '<td>' . $rowR->fechaout . '</td>';
                 $tableReg .= '</tr>';
             }
+
+        $registroftq=DB::table('regsitrocalidad')
+        ->where('pn', '=', $pnR)
+        ->get();
+        foreach ($registroftq as $rowftq) {
+           $codigo=$rowftq->codigo;
+           if($codigo=='TODO BIEN'){
+        $ok++;
+        }else{
+            $nog++;
         }
+
+           if(in_array($codigo , array_keys($regftq))){
+               $regftq[$codigo]++;
+           }else{
+               $regftq[$codigo]=1;
+
+           }
+        }
+        foreach($regftq as $key => $value){
+            $tableftq .= '<tr>';
+            $tableftq .= '<td>' .$key. '</td>';
+            $tableftq .= '<td>' . $value . '</td>';
+            $tableftq .= '</tr>';
+        }
+    }
+        $paretos[0]=$ok;
+        $paretos[1]=$nog;
+        $paretos[2]=round($ok/($ok+$nog)*100,2);
+
             return response()->json([
+                'paretos' => $paretos,
+                'tableftq' => $tableftq,
                 'tableContent' => $tableContent,
                 'tableReg' => $tableReg,
             ]);
