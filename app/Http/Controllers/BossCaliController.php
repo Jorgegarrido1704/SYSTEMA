@@ -16,13 +16,9 @@ class BossCaliController extends Controller
         $pareto[0]=$pareto[1]=0;
         $paretoresult[0]=$paretoresult[1]=0;
         $monthAndYear = date("m-Y");
-        $today=date('d-m-Y 00:00');
-        if(date("N")==1){
-            $datecontrol = strtotime(date("d-m-Y 00:00", strtotime("-3 days")));
+        $today=date('d-m-Y 23:59');
 
-        }else{
-        $datecontrol = strtotime(date("d-m-Y 00:00", strtotime("-1 days")));
-    }
+        $datecontrol = strtotime(date("d-m-Y 00:00"));
         $buscarValoresMes = DB::table('regsitrocalidad')->get();
         foreach ($buscarValoresMes as $rows) {
             if ((strtotime($rows->fecha) > $datecontrol) AND (strtotime($rows->fecha) < strtotime($today))) {
@@ -157,7 +153,7 @@ class BossCaliController extends Controller
     $j=0;
     $buscadorCal = DB::table('regsitrocalidad')
     ->where('codigo','!=','TODO BIEN')
-    ->where('fecha','LIKE',date('d-m-Y', strtotime("-1 days")).'%')
+    ->where('fecha','LIKE',date('d-m-Y').'%')
     ->orderBy('id','DESC')->get();
     foreach ($buscadorCal as $rows) {
         $calidadControl[$j][0]=$rows->fecha;
