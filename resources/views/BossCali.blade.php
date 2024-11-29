@@ -47,7 +47,7 @@
                                     <!-- Card scaneer -->
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h5 class="m-0 font-weight-bold text-primary"> Pareto           Good:{{$paretoresult[0]}} Bad:{{$paretoresult[1]}}</h5>
+                                    <h5 class="m-0 font-weight-bold text-primary"> FTQ(First Time Quality)</h5>
 
                                 </div>
 
