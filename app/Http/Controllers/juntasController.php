@@ -516,10 +516,10 @@ public function calidad_junta(){
                 $pareto[$datosm]=$pareto[$datosmt]=$pareto[$datosl]=0;
             }
         }elseif(date("N")==5){
-            $datosl = strtotime(date("d-m-Y", strtotime("-1 days")));
-            $datosmt = strtotime(date("d-m-Y", strtotime("-2 days")));
-            $datosm = strtotime(date("d-m-Y", strtotime("-3 days")));
-            $datosj = strtotime(date("d-m-Y", strtotime("-4 days")));
+            $datosl = (date("d-m-Y", strtotime("-1 days")));
+            $datosmt = (date("d-m-Y", strtotime("-2 days")));
+            $datosm = (date("d-m-Y", strtotime("-3 days")));
+            $datosj = (date("d-m-Y", strtotime("-4 days")));
             $buscarValorespareto=DB::table('regsitrocalidad')
             ->Where('fecha', 'LIKE', "$datosj%")
             ->orWhere('fecha', 'LIKE', "$datosm%")
@@ -533,14 +533,14 @@ public function calidad_junta(){
                 if (substr($rowPareto->fecha, 0, 10) == $datosl) {  if($rowPareto->codigo=='TODO BIEN'){ $reglg+=1; }else{$reglb+=1;}  }
             }
             try{
-            $paretott=$regjg+$regjb;
-            $pareto[$datosj]=($regjg /$paretott)*100;
-            $paretott=$regmg+$regmb;
-            $pareto[$datosm]=($regmg/$paretott)*100;
-            $paretott=$regmtg+$regmtb;
-            $pareto[$datosmt]=($regmtg/$paretott)*100;
-            $paretott=$reglg+$reglg;
-            $pareto[$datosl]=($reglb/$paretott)*100;
+                $paretott=$regjg+$regjb;
+                $pareto[$datosj]=round($regjg/$paretott*100,2);
+                $paretott=$regmg+$regmb;
+                $pareto[$datosm]=round($regmg/$paretott*100,2);
+                $paretott=$regmtg+$regmtb;
+                $pareto[$datosmt]=round($regmtg/$paretott*100,2);
+                $paretott=$reglg+$reglb;
+                $pareto[$datosl]=round($reglg/$paretott*100,2);
             }catch(Exception $e){
                $pareto[$datosj]=$pareto[$datosm]=$pareto[$datosmt]=$pareto[$datosl]=0;
             }
