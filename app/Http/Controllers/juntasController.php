@@ -11,12 +11,14 @@ use Exception;
 
 class juntasController extends Controller
 {
-public function index_junta(){
+public function index_junta(Request $request){
     $value = session('user');
         $cat=session('categoria');
         if ($cat!='junta' or $value == '') {
             return view('login');
         } else {
+            $dia=$request->input('dia');
+
             $backlock=$cal=0;
         for($i=0;$i<13;$i++){
             $client[$i]=0;  }
@@ -97,11 +99,21 @@ $info=[];
             $i++;
         }
         //ventas
+        if($dia!=""){
+            $fechaVenta=substr($dia,0,2)."-".substr($dia,3,2)."-".substr($dia,6,4);
+            if(date('N',strtotime($fechaVenta))==1){
+                $fechaVenta=date("d-m-Y",strtotime("-3 days"));
+            }else{
+            $fechaVenta=date("d-m-Y",strtotime("-1 days"));
+            }
+        }else{
         if(date('N')==1){
             $fechaVenta=date("d-m-Y",strtotime("-3 days"));
-        }else{}
+        }else{
         $fechaVenta=date("d-m-Y",strtotime("-1 days"));
+        }
     }
+
         $preReg = [];
 $inform = [];
 $i = 0;
@@ -214,11 +226,19 @@ foreach ($preReg as $pns) {
         $tableContent .= '<td>' . $cantidad[$i] . '</td>';
         $tableContent .= '</tr>';
     }
+    if($dia!=""){
+        $diario=substr($dia,0,2)."-".substr($dia,3,2)."-".substr($dia,6,4);
+        if(date('N')==1){
+            $diario=date("d-m-Y",strtotime("-3 days"));
+        }else{}
+        $diario=date("d-m-Y",strtotime("-1 days"));
+
+    }else{
     if(date("N")==1){
     $diario=date("d-m-Y", strtotime('-3 day'));
     }else{
         $diario=date("d-m-Y", strtotime('-1 day'));
-    }
+    } }
     $ochoAm=$sieteAm=$nueveAm=$diesAm=$onceAm=$docePm=$unaPm=$dosPm=$tresPm=$cuatroPm=$cincoPm=$seisPm=$sietePm=0;
 
     $busPorTiemp=DB::table("regsitrocalidad")->where("fecha","LIKE","$diario 07:%")
@@ -389,7 +409,8 @@ return view('juntas')->with(['ventasStation'=>$ventasStation,'inform'=>$inform,'
         'tiemposPas'=>$tiemposPas,
         'lieaVenta'=>$lieaVenta]);
 }
-public function calidad_junta(){
+}
+public function calidad_junta(Request $request){
     $value=session('user');
     $cat=session('categoria');
 
@@ -420,6 +441,7 @@ public function calidad_junta(){
         }
 
         $regvg=$regvb=$regjg=$regjb=$regmg=$regmb=$regmtg=$regmtb=$reglg=$reglb=0;
+        $pareto=[];
         if(date("N")==1){
             $datosv = (date("d-m-Y", strtotime("-3 days")));
             $datosj = (date("d-m-Y", strtotime("-4 days")));

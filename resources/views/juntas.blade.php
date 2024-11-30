@@ -81,19 +81,29 @@
                         <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card border-left-warning shadow h-100 py-2">
                                 <div class="card-body">
-                                    <a href="#" > <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
+                                    <div class="row align-items-center">
+                                        <div class="col">
                                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                                Pending Requests</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
+                                                Select Date
+                                            </div>
+                                            <form action="{{route('index_junta')}}" method="get" class="form-inline" formtarget="_blank">
+                                                <input type="date"
+                                                       name="dia"
+                                                       id="dia"
+                                                       class="form-control mt-1"
+                                                       onchange="this.form.submit()"
+                                                       style="width: 100%;"
+                                                       aria-label="Select a date">
+                                            </form>
                                         </div>
                                         <div class="col-auto">
-                                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                            <i class="fas fa-calendar-alt fa-2x text-gray-300"></i>
                                         </div>
-                                    </div></a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+
                     </div>
 
                     <!-- Content Row -->
