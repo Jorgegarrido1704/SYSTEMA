@@ -12,7 +12,7 @@ class BossCaliController extends Controller
     public function __invoke(){
         $value = session('user');
         $cat=session('categoria');
-        if ($cat!='junta' or $cat != 'Bosscali') {
+        if ($cat=='' or $cat != 'BCali') {
             return view('login');
         } else {
             $backlock=$cal=0;
