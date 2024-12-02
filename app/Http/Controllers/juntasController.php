@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Exception;
+use ZeroDivisionError;
+
 
 
 class juntasController extends Controller
@@ -579,8 +581,18 @@ public function calidad_junta(Request $request){
             if(substr($rowPareto->fecha, 3, 7) == $monthAndYear){
                 if($rowPareto->codigo=='TODO BIEN'){$monthGood+=1;}else{$monthBad+=1;}}
             }
-        $monthAndYearPareto[$monthAndYear]=round($monthGood/($monthGood+$monthBad)*100,2);
-        $monthAndYearPareto[$YearParto]=round($yearGood/($yearGood+$yearBad)*100,2);
+            try{
+                if ($monthGood == 0) {
+                    throw new Exception("Cannot divide by zero.");
+                }else{
+                $monthAndYearPareto[$monthAndYear]=round($monthGood/($monthGood+$monthBad)*100,2);
+                $monthAndYearPareto[$YearParto]=round($yearGood/($yearGood+$yearBad)*100,2);
+                }
+            }catch(Exception $e){
+                $monthAndYearPareto[$monthAndYear]=0;
+                $monthAndYearPareto[$YearParto]=0;
+            }
+
 
 arsort($monthAndYearPareto);
 arsort($pareto);
