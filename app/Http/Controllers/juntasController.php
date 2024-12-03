@@ -709,7 +709,9 @@ arsort($pareto);
         $calidadControl[$j][4]=$rows->codigo;
         $j++;
     }
+    $totalb=$totalm=0;
 $totalb=DB::table('regsitrocalidad')
+->where('fecha','LIKE',$crtl.'%')
 ->where('fecha','LIKE',$crtl.'%')
 ->count();
 $totalm=DB::table('regsitrocalidad')
