@@ -412,7 +412,7 @@ return view('juntas')->with(['ventasStation'=>$ventasStation,'inform'=>$inform,'
         'lieaVenta'=>$lieaVenta]);
 }
 }
-public function calidad_junta(Request $request){
+public function calidad_junta(){
     $value=session('user');
     $cat=session('categoria');
 
@@ -422,9 +422,11 @@ public function calidad_junta(Request $request){
         $today=date('d-m-Y 00:00');
         if(date("N")==1){
             $datecontrol = strtotime(date("d-m-Y 00:00", strtotime("-3 days")));
+            $crtl=date("d-m-Y", strtotime("-3 days"));
 
         }else{
         $datecontrol = strtotime(date("d-m-Y 00:00", strtotime("-1 days")));
+        $crtl=date("d-m-Y", strtotime("-1 days"));
     }
         $buscarValoresMes = DB::table('regsitrocalidad')->get();
         foreach ($buscarValoresMes as $rows) {
@@ -707,10 +709,15 @@ arsort($pareto);
         $calidadControl[$j][4]=$rows->codigo;
         $j++;
     }
+$totalb=DB::table('regsitrocalidad')
+->where('fecha','LIKE',$crtl.'%')
+->count();
+$totalm=DB::table('regsitrocalidad')
+->where('codigo','!=','TODO BIEN')
+->where('fecha','LIKE',$crtl.'%')
+->count();
 
-
-
-        return view('juntas/calidad',['calidadControl'=>$calidadControl,'monthAndYearPareto'=>$monthAndYearPareto,'calidad'=>$calidad,'datosT'=>$datosT,'datosS'=>$datosS,'datosF'=>$datosF,'labelQ'=>$labelQ,'colorQ'=>$colorQ,'value'=>$value,'cat'=>$cat,'datos'=>$datos,'pareto'=>$pareto,'Qdays'=>$Qdays]);
+        return view('juntas/calidad',['totalm'=>$totalm,'totalb'=>$totalb,'calidadControl'=>$calidadControl,'monthAndYearPareto'=>$monthAndYearPareto,'calidad'=>$calidad,'datosT'=>$datosT,'datosS'=>$datosS,'datosF'=>$datosF,'labelQ'=>$labelQ,'colorQ'=>$colorQ,'value'=>$value,'cat'=>$cat,'datos'=>$datos,'pareto'=>$pareto,'Qdays'=>$Qdays]);
 
 }
 
