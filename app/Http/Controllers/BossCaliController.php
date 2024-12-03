@@ -26,8 +26,10 @@ class BossCaliController extends Controller
                 $datos=$caliInfo->getData()['datos'];
                 $pareto=$caliInfo->getData()['pareto'];
                 $Qdays=$caliInfo->getData()['Qdays'];
+                $totalm=$caliInfo->getData()['totalm'];
+                $totalb=$caliInfo->getData()['totalb'];
 
-                return view('juntas/calidad',['calidadControl'=>$calidadControl,'monthAndYearPareto'=>$monthAndYearPareto,'calidad'=>$calidad,'datosT'=>$datosT,'datosS'=>$datosS,'datosF'=>$datosF,'labelQ'=>$labelQ,'colorQ'=>$colorQ,'value'=>$value,'cat'=>$cat,'datos'=>$datos,'pareto'=>$pareto,'Qdays'=>$Qdays]);
+                return view('juntas/calidad',['totalm'=>$totalm,'totalb'=>$totalb,'calidadControl'=>$calidadControl,'monthAndYearPareto'=>$monthAndYearPareto,'calidad'=>$calidad,'datosT'=>$datosT,'datosS'=>$datosS,'datosF'=>$datosF,'labelQ'=>$labelQ,'colorQ'=>$colorQ,'value'=>$value,'cat'=>$cat,'datos'=>$datos,'pareto'=>$pareto,'Qdays'=>$Qdays]);
 
         }
     }
