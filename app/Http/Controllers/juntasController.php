@@ -487,7 +487,7 @@ public function calidad_junta(Request $request){
             }
             try{
             $paretott=$reglg+$reglb;
-            $pareto[$datosl]=round($reglg/$paretott,2*100);
+            $pareto[$datosl]=round($reglg/$paretott,2)*100;
             }catch(Exception $e){
                 $pareto[$datosl]=0;
             }

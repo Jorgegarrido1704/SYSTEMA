@@ -2,7 +2,7 @@
 
 @section('contenido')
  <!-- Page Heading -->
- <meta http-equiv="refresh" content="90">
+ <meta http-equiv="refresh" content="180">
  <style>
     table {     width: 100%;    text-align: center;  }
     td {border-bottom: solid 2px lightblue; }
@@ -13,9 +13,10 @@
 <script>
     var datos = {!! json_encode($datos) !!};
     var pareto = {!! json_encode($pareto) !!};
-    var Qdays={!! json_encode($Qdays) !!};
-    var colorQ={!! json_encode($colorQ) !!};
-    var labelQ={!! json_encode($labelQ)!!};
+    var Qdays={!! json_encode($Qdays) !!}
+var colorQ={!! json_encode($colorQ) !!}
+var labelQ={!! json_encode($labelQ)!!}
+var paretoYear={!! json_encode($monthAndYearPareto) !!};
 </script>
  <div class="d-sm-flex align-items-center justify-content-between mb-4">
 
