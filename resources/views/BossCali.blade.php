@@ -2,14 +2,28 @@
 
 @section('contenido')
  <!-- Page Heading -->
- <meta http-equiv="refresh" content="180">
+ <meta http-equiv="refresh" content="90">
  <style>
     table {     width: 100%;    text-align: center;  }
     td {border-bottom: solid 2px lightblue; }
     thead{background-color: #FC4747; color:white;  }
     a{text-decoration: none; color: whitesmoke;  }
     a:hover{ text-decoration: none; color: white; font:bold;}
+
+    .chart-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .chart-area {
+        flex: 1;
+        margin: 0 10px;
+    }
+
+
 </style>
+
 <script>
     var datos = {!! json_encode($datos) !!};
     var pareto = {!! json_encode($pareto) !!};
@@ -24,12 +38,12 @@ var paretoYear={!! json_encode($monthAndYearPareto) !!};
                     <div class="row">
 
                         <!-- Table and Graph -->
-                        <div class="col-xl-8 col-lg-7">
+                        <div class="col-xl-12 col-lg-12">
                             <div class="card shadow mb-4">
 
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h5 class="m-0 font-weight-bold text-primary">Incidences</h5>
+                                    <h5 class="m-0 font-weight-bold text-primary"> Incidences</h5>
 
                                 </div>
 
@@ -43,22 +57,28 @@ var paretoYear={!! json_encode($monthAndYearPareto) !!};
                         </div>
 
 
-                        <div class="col-xl-4 col-lg-5">
+                        <div class="col-xl-12 col-lg-12">
                             <div class="card shadow mb-4">
                                     <!-- Card scaneer -->
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h5 class="m-0 font-weight-bold text-primary"> FTQ(First Time Quality)</h5>
+                                    <h5 class="m-0 font-weight-bold text-primary">FTQ(First Time Quality)</h5>
 
                                 </div>
 
-                                <div class="card-body" style="overflow-y: auto; height: 360px;">
-                                    <div class="chart-pie pt-4 pb-2">
+                                <div class="card-body" style="overflow-y: auto; max-height: 400px;">
+                                   <div style="display: flex; justify-content: space-between; align-items: center; height: 100%;">
+                                    <!-- Primera gráfica: 60% del espacio -->
+                                    <div class="chart-area" style="flex: 0 0 60%; margin-right: 10%;">
                                         <canvas id="pareto"></canvas>
-
                                     </div>
-
+                                    <!-- Segunda gráfica: 30% del espacio -->
+                                    <div class="chart-area" style="flex: 0 0 30%;">
+                                        <canvas id="barPareto"></canvas>
+                                    </div>
                                 </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -69,7 +89,7 @@ var paretoYear={!! json_encode($monthAndYearPareto) !!};
                             <!-- AREAS -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h5 class="m-0 font-weight-bold text-primary">Quality issue</h5>
+                                    <h5 class="m-0 font-weight-bold text-primary">Quality issue last day</h5>
                                 </div>
                                 <div class="card-body" style="overflow-y: auto; height: 360px;">
                                     <canvas id="Q"></canvas>
@@ -83,7 +103,7 @@ var paretoYear={!! json_encode($monthAndYearPareto) !!};
                             <!-- AREAS -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h5 class="m-0 font-weight-bold text-primary">Top 3 incidence</h5>
+                                    <h5 class="m-0 font-weight-bold text-primary">Top 3 incidence daily</h5>
                                 </div>
                                 <div class="card-body" style="overflow-y: auto; height: 360px;">
                                     <table>
@@ -125,8 +145,10 @@ var paretoYear={!! json_encode($monthAndYearPareto) !!};
 
                     </div>
                     <div class="row">
+
+                       <!-- // total Harness
                         <div class="col-lg-6 mb-4" style="max-width: 60%">
-                            <!-- AREAS -->
+                            <-- AREAS --
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
                                     <h5 class="m-0 font-weight-bold text-primary">Registros</h5>
@@ -167,7 +189,7 @@ var paretoYear={!! json_encode($monthAndYearPareto) !!};
                                 </div>
                             </div>
                         </div>
-                       <!-- <div class="col-lg-6 mb-4" style="max-width: 33.33%">
+                        <div class="col-lg-6 mb-4" style="max-width: 33.33%">
                              AREAS
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
