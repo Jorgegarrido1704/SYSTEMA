@@ -854,30 +854,91 @@ return view('juntas/lista',['value'=>$value,'cat'=>$cat,'buscarDatos'=>$buscarDa
 
 }
 public function litas_reg(  Request $request){
-$value=session('user');
-$cat=session('categoria');
-$buscarRegsitro=DB::table('registroparcial')->get();
-if($buscarRegsitro){
-$datosTabla=[];
-$i=0;
-foreach($buscarRegsitro as $rows){
-    $datosTabla[$i][0]=$rows->pn;
-    $datosTabla[$i][1]=$rows->wo;
-    $datosTabla[$i][2]=$rows->orgQty;
-    $datosTabla[$i][3]=$rows->cortPar;
-    $datosTabla[$i][4]=$rows->libePar;
-    $datosTabla[$i][5]=$rows->ensaPar;
-    $datosTabla[$i][6]=$rows->espWPar;
-    $datosTabla[$i][7]=$rows->loomPar;
-    $datosTabla[$i][8]=$rows->testPar;
-    $datosTabla[$i][9]=$rows->embPar;
-    $i++;
+
+    return view('juntas/reg',['value'=>session('user'),'cat'=>session('categoria')]);
 
 }
+public function mostrarWOJ(Request $request)
+    {
+        $buscarWo = $request->input('buscarWo');
+        $datosWo =$datosPass=$pnReg=$regftq=$paretos= [];
+        $tableContent=$tableReg = $tableftq='';
+        $i=$ok=$nog=0;
+
+        $buscar = DB::table('registroparcial')
+            ->orwhere('pn', 'like', $buscarWo.'%')
+            ->orWhere('pn', 'like', '%'.$buscarWo)
+            ->orWhere('pn', 'like', '%'.$buscarWo.'%')
+            ->get();
+            foreach ($buscar as $row) {
+                $tableContent .= '<tr>';
+                $tableContent .= '<td>' . $row->pn . '</td>';
+                $tableContent .= '<td>' . $row->wo . '</td>';
+                $tableContent .= '<td>' . $row->cortPar . '</td>';
+                $tableContent .= '<td>' . $row->libePar . '</td>';
+                $tableContent .= '<td>' . $row->ensaPar . '</td>';
+                $tableContent .= '<td>' . $row->loomPar . '</td>';
+                $tableContent .= '<td>' . $row->testPar . '</td>';
+                $tableContent .= '<td>' . $row->embPar . '</td>';
+                $tableContent .= '</tr>';
+                $pnReg[$i]=$row->pn;
+                $i++;
+            }
+           $pnReg = array_unique($pnReg);
+
+           foreach($pnReg as $pnR){
+            $buscarR = DB::table('retiradad')
+            ->where('np', '=', $pnR)
+            ->get();
+            foreach ($buscarR as $rowR) {
+                $tableReg .= '<tr>';
+                $tableReg .= '<td>' . $rowR->np . '</td>';
+                $tableReg .= '<td>' . $rowR->wo . '</td>';
+                $tableReg .= '<td>' . $rowR->qty . '</td>';
+                $tableReg .= '<td>' . $rowR->fechaout . '</td>';
+                $tableReg .= '</tr>';
+            }
+
+        $registroftq=DB::table('regsitrocalidad')
+        ->where('pn', '=', $pnR)
+        ->get();
+        foreach ($registroftq as $rowftq) {
+           $codigo=$rowftq->codigo;
+           if($codigo=='TODO BIEN'){
+        $ok++;
+        }else{
+            $nog++;
+        }
+
+           if(in_array($codigo , array_keys($regftq))){
+               $regftq[$codigo]++;
+           }else{
+               $regftq[$codigo]=1;
+
+           }
+        }
+        foreach($regftq as $key => $value){
+            $tableftq .= '<tr>';
+            $tableftq .= '<td>' .$key. '</td>';
+            $tableftq .= '<td>' . $value . '</td>';
+            $tableftq .= '</tr>';
+        }
+    }
+        $paretos[0]=$ok;
+        $paretos[1]=$nog;
+        $paretos[2]=round($ok/($ok+$nog)*100,2);
+
+            return response()->json([
+                'paretos' => $paretos,
+                'tableftq' => $tableftq,
+                'tableContent' => $tableContent,
+                'tableReg' => $tableReg,
+            ]);
 }
-return view('juntas/reg',['value'=>$value,'cat'=>$cat,'datosTabla'=>$datosTabla]);
 
 
 
-}
+
+
+
 }

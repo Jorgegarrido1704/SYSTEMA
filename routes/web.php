@@ -139,4 +139,5 @@ Route::get(    '/juntas',   [juntasController::class, 'index_junta'])->name('ind
 Route::get(    'juntas/calidad',   [juntasController::class, 'calidad_junta'])->name('calidad_junta');
 Route::get(    'juntas/lista/{id}',   [juntasController::class, 'litas_junta'])->name('litas_junta');
 Route::get(    'juntas/reg',   [juntasController::class, 'litas_reg'])->name('litas_reg');
+Route::get(    'juntas/mostrarWO',   [juntasController::class, 'mostrarWOJ'])->name('mostrarWOJ');
 });
