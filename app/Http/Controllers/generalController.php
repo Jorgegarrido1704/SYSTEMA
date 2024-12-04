@@ -267,13 +267,13 @@ class generalController extends Controller
             if($count===1){
                 return redirect('general')->with('response', 'Plannig Station, Harness Not update');
             }
-             elseif(($donde==='libe' or $donde==='cort') and $count===2){
+             elseif(($donde==='cort') and $count===2){
                 $count=3;
                 $update = DB::table('registro')->where('info', $codigo)->update(['count' => $count, 'donde' => 'Proceso de corte']);
                 if ($update) { $resp = "Cutting process";
                 } else {   $resp = "Harness not updated, it is in $area";  }
                 return redirect('general')->with('response', $resp);
-            }else if((( $donde==='libe' or $donde==='cort' ) and $count===3 ) or (( $donde==='libe' or $donde==='cort' ) and $cortePar>0)){
+            }else if(((  $donde==='cort' ) and $count===3 ) or ((  $donde==='cort' ) and $cortePar>0)){
 
                 if($cantidad>0 and $cantidad<($cortePar)){
                     $upCant=$cantidad;

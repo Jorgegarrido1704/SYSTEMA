@@ -870,6 +870,7 @@ public function mostrarWOJ(Request $request)
             ->orWhere('pn', 'like', '%'.$buscarWo)
             ->orWhere('pn', 'like', '%'.$buscarWo.'%')
             ->get();
+           
             foreach ($buscar as $row) {
                 $tableContent .= '<tr>';
                 $tableContent .= '<td>' . $row->pn . '</td>';
@@ -927,6 +928,7 @@ public function mostrarWOJ(Request $request)
         $paretos[0]=$ok;
         $paretos[1]=$nog;
         $paretos[2]=round($ok/($ok+$nog)*100,2);
+
 
             return response()->json([
                 'paretos' => $paretos,
