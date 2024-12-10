@@ -445,7 +445,7 @@ public function calidad_junta(){
         }
 
         $regvg=$regvb=$regjg=$regjb=$regmg=$regmb=$regmtg=$regmtb=$reglg=$reglb=0;
-        $pareto=[];
+        $pareto=$monthAndYearPareto = [];
         if(date("N")==1){
             $datosv = (date("d-m-Y", strtotime("-3 days")));
             $datosj = (date("d-m-Y", strtotime("-4 days")));
@@ -467,15 +467,15 @@ public function calidad_junta(){
                 if (substr($rowPareto->fecha, 0, 10) == $datosl) {  if($rowPareto->codigo=='TODO BIEN'){ $reglg+=1; }else{$reglb+=1;}  }
             }try{
             $paretott=$regvg+$regvb;
-            $pareto[$datosv]=round($regvg/$paretott,2*100);
+            $pareto[$datosv]=round($regvg/$paretott,2)*100;
             $paretott=$regjg+$regjb;
-            $pareto[$datosj]=round($regjg/$paretott,2*100);
+            $pareto[$datosj]=round($regjg/$paretott,2)*100;
             $paretott=$regmg+$regmb;
-            $pareto[$datosm]=round($regmg/$paretott,2*100);
+            $pareto[$datosm]=round($regmg/$paretott,2)*100;
             $paretott=$regmtg+$regmtb;
-            $pareto[$datosmt]=round($regmtg/$paretott,2*100);
+            $pareto[$datosmt]=round($regmtg/$paretott,2)*100;
             $paretott=$reglg+$reglb;
-            $pareto[$datosl]=round($reglg/$paretott,2*100);
+            $pareto[$datosl]=round($reglg/$paretott,2)*100;
             }catch(Exception $e){
                 $pareto[$datosv]=$pareto[$datosj]=$pareto[$datosm]=$pareto[$datosmt]=$pareto[$datosl]=0;
             }
@@ -509,9 +509,9 @@ public function calidad_junta(){
             }
             try{
             $paretott=$regmtg+$regmtb;
-            $pareto[$datosmt]=round($regmtg/$paretott*100,2);
+            $pareto[$datosmt]=round($regmtg/$paretott,2)*100;
             $paretott=$reglg+$reglb;
-            $pareto[$datosl]=round($reglg/$paretott*100,2);
+            $pareto[$datosl]=round($reglg/$paretott,2)*100;
             }catch(Exception $e){
                 $pareto[$datosmt]=$pareto[$datosl]=0;
             }
@@ -532,11 +532,11 @@ public function calidad_junta(){
                 }
             try{
                 $paretott=$regmg+$regmb;
-                $pareto[$datosm]=round($regmg/$paretott*100,2);
+                $pareto[$datosm]=round($regmg/$paretott,2)*100;
                 $paretott=$regmtg+$regmtb;
-                $pareto[$datosmt]=round($regmtg/$paretott*100,2);
+                $pareto[$datosmt]=round($regmtg/$paretott,2)*100;
                 $paretott=$reglg+$reglb;
-                $pareto[$datosl]=round($reglg/$paretott*100,2);
+                $pareto[$datosl]=round($reglg/$paretott,2)*100;
 
             }catch(Exception $e){
                 $pareto[$datosm]=$pareto[$datosmt]=$pareto[$datosl]=0;
@@ -560,18 +560,18 @@ public function calidad_junta(){
             }
             try{
                 $paretott=$regjg+$regjb;
-                $pareto[$datosj]=round($regjg/$paretott*100,2);
+                $pareto[$datosj]=round($regjg/$paretott,2)*100;
                 $paretott=$regmg+$regmb;
-                $pareto[$datosm]=round($regmg/$paretott*100,2);
+                $pareto[$datosm]=round($regmg/$paretott,2)*100;
                 $paretott=$regmtg+$regmtb;
-                $pareto[$datosmt]=round($regmtg/$paretott*100,2);
+                $pareto[$datosmt]=round($regmtg/$paretott,2)*100;
                 $paretott=$reglg+$reglb;
-                $pareto[$datosl]=round($reglg/$paretott*100,2);
+                $pareto[$datosl]=round($reglg/$paretott,2)*100;
             }catch(Exception $e){
                $pareto[$datosj]=$pareto[$datosm]=$pareto[$datosmt]=$pareto[$datosl]=0;
             }
         }
-        $monthAndYearPareto = [];
+
         $yearGood=$yearBad=$monthGood=$monthBad=0;
         $monthAndYear=date("m-Y");
         $YearParto=date("Y");
@@ -711,7 +711,6 @@ arsort($pareto);
     }
     $totalb=$totalm=0;
 $totalb=DB::table('regsitrocalidad')
-->where('fecha','LIKE',$crtl.'%')
 ->where('fecha','LIKE',$crtl.'%')
 ->count();
 $totalm=DB::table('regsitrocalidad')
@@ -870,7 +869,7 @@ public function mostrarWOJ(Request $request)
             ->orWhere('pn', 'like', '%'.$buscarWo)
             ->orWhere('pn', 'like', '%'.$buscarWo.'%')
             ->get();
-           
+
             foreach ($buscar as $row) {
                 $tableContent .= '<tr>';
                 $tableContent .= '<td>' . $row->pn . '</td>';
