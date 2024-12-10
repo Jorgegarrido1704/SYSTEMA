@@ -48,6 +48,7 @@ class AdminSupControlloer extends Controller
             $buscarR = DB::table('retiradad')
             ->where('np', '=', $pnR)
             ->get();
+            if(count($buscarR)>0){
             foreach ($buscarR as $rowR) {
                 $tableReg .= '<tr>';
                 $tableReg .= '<td>' . $rowR->np . '</td>';
@@ -56,10 +57,19 @@ class AdminSupControlloer extends Controller
                 $tableReg .= '<td>' . $rowR->fechaout . '</td>';
                 $tableReg .= '</tr>';
             }
+        }else{
+            $tableReg .= '<tr>';
+            $tableReg .= '<td></td>';
+            $tableReg .= '<td>' . '0' . '</td>';
+            $tableReg .= '<td>' . '0' . '</td>';
+            $tableReg .= '<td>' . '0' . '</td>';
+            $tableReg .= '</tr>';
+        }
 
         $registroftq=DB::table('regsitrocalidad')
         ->where('pn', '=', $pnR)
         ->get();
+        if(count($registroftq)>0){
         foreach ($registroftq as $rowftq) {
            $codigo=$rowftq->codigo;
            if($codigo=='TODO BIEN'){
@@ -67,24 +77,33 @@ class AdminSupControlloer extends Controller
         }else{
             $nog++;
         }
-
+    }
            if(in_array($codigo , array_keys($regftq))){
                $regftq[$codigo]++;
-           }else{
-               $regftq[$codigo]=1;
+           }else{        $regftq[$codigo]=1;   }
 
-           }
-        }
         foreach($regftq as $key => $value){
             $tableftq .= '<tr>';
             $tableftq .= '<td>' .$key. '</td>';
             $tableftq .= '<td>' . $value . '</td>';
             $tableftq .= '</tr>';
         }
-    }
+
         $paretos[0]=$ok;
         $paretos[1]=$nog;
-        $paretos[2]=round($ok/($ok+$nog)*100,2);
+        $paretos[2]=round($ok/($ok+$nog)*100,2);}
+    else{
+        $paretos[0]=0;
+        $paretos[1]=0;
+        $paretos[2]=0;
+        $tableftq .= '<tr>';
+        $tableftq .= '<td>' . '0' . '</td>';
+        $tableftq .= '<td>' . '0' . '</td>';
+        $tableftq .= '</tr>';
+        $regftq['no se encontro']=0;
+
+
+    }}
 
             return response()->json([
                 'paretos' => $paretos,
@@ -92,6 +111,6 @@ class AdminSupControlloer extends Controller
                 'tableContent' => $tableContent,
                 'tableReg' => $tableReg,
             ]);
-}
 
-}
+
+    }}
