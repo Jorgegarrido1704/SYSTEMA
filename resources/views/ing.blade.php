@@ -262,6 +262,8 @@ select {
                                                     <option value="Carlos R">Carlos Rodriguez</option>
                                                     <option value="Paola S">Paola Silva</option>
                                                     <option value="Nancy A">Nancy Aldana</option>
+                                                    <option value="Alejandro V">Alejandro Vargas</option>
+                                                    <option value="Brandon S">Brandon Sanchez</option>
                                                     <option value="Todos">Todos El equipo</option>
                                                 </select>
 
@@ -547,6 +549,9 @@ select {
                                                     <option value="Paola S">Paola Silva</option>
                                                     <option value="Nancy A">Nancy Aldana</option>
                                                     <option value="Jorge G">Jorge Garrido</option>
+                                                    <option value="Alejandro V">Alejandro Vargas</option>
+                                                    <option value="Brandon S">Brandon Sanchez</option>
+
 
                                             </select>
                                             <input type="submit" value="Submit">
