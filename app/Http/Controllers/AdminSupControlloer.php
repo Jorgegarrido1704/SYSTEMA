@@ -20,8 +20,10 @@ class AdminSupControlloer extends Controller
     {
         $buscarWo = $request->input('buscarWo');
         $datosWo =$datosPass=$pnReg=$regftq=$paretos= [];
-        $tableContent=$tableReg = $tableftq='';
+        $tableContent=$tableReg = $tableftq=$pullTest='';
         $i=$ok=$nog=0;
+
+
 
         $buscar = DB::table('registroparcial')
             ->orwhere('pn', 'like', $buscarWo.'%')
@@ -91,8 +93,29 @@ class AdminSupControlloer extends Controller
 
         $paretos[0]=$ok;
         $paretos[1]=$nog;
-        $paretos[2]=round($ok/($ok+$nog)*100,2);}
-    else{
+        $paretos[2]=round($ok/($ok+$nog)*100,2);
+
+        $buscarRegistroPull=DB::table('registro_pull')
+    ->where('Num_part', '=', $pnR)
+    ->orderBy('id', 'desc')
+    ->get();
+    if(count($buscarRegistroPull)>0){
+    foreach ($buscarRegistroPull as $rowPull) {
+
+        $pullTest .= '<tr>';
+        $pullTest .= '<td>' . $rowPull->fecha . '</td>';
+        $pullTest .= '<td>' . $rowPull->Num_part . '</td>';
+        $pullTest .= '<td>' . $rowPull->calibre . '</td>';
+        $pullTest .= '<td>' . $rowPull->presion . '</td>';
+        $pullTest .= '<td>' . $rowPull->forma . '</td>';
+        $pullTest .= '<td>' . $rowPull->cont . '</td>';
+        $pullTest .= '<td>' . $rowPull->quien . '</td>';
+        $pullTest .= '<td>' . $rowPull->val . '</td>';
+        $pullTest .= '<td>' . $rowPull->tipo . '</td>';}
+    }else{
+        $pullTest='';
+    }
+}else{
         $paretos[0]=0;
         $paretos[1]=0;
         $paretos[2]=0;
@@ -101,16 +124,18 @@ class AdminSupControlloer extends Controller
         $tableftq .= '<td>' . '0' . '</td>';
         $tableftq .= '</tr>';
         $regftq['no se encontro']=0;
+        $pullTest='';
 
+    }
+}
 
-    }}
 
             return response()->json([
+                'pullTest' => $pullTest,
                 'paretos' => $paretos,
                 'tableftq' => $tableftq,
                 'tableContent' => $tableContent,
                 'tableReg' => $tableReg,
             ]);
-
 
     }}

@@ -76,15 +76,15 @@
 
                     <!-- Content Row -->
                     <div class="row">
-                        <div class="col-lg-6 mb-4">
+                        <div class="col-lg-4 mb-4">
                             <!-- AREAS -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h5 class="m-0 font-weight-bold text-primary">Quality issue</h5>
+                                    <h5 class="m-0 font-weight-bold text-primary">Quality issueFTQ: <span id="tftq"></span>)</h5>
                                 </div>
                                 <div class="card-body" style="overflow-y: auto; height: 360px;">
                                     <div style="text-align: center">
-                                    <h3>Testing Quality   OK: <span id="tok"></span> NG: <span id="tng"></span> FTQ: <span id="tftq"></span></h3>
+                                    <h3>Testing   OK: <span id="tok"></span> NG: <span id="tng"></span></h3>
                                     </div>
                                     <hr>
                                     <div>
@@ -104,14 +104,29 @@
                         </div>
                         <!-- Column 2 -->
 
-                        <div class="col-lg-6 mb-4">
+                        <div class="col-lg-8 mb-4">
                             <!-- AREAS -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h5 class="m-0 font-weight-bold text-primary">Top 3 incidence </h5>
+                                    <h5 class="m-0 font-weight-bold text-primary">Pull Test</h5>
                                 </div>
                                 <div class="card-body" style="overflow-y: auto; height: 360px;">
-
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                               <th>Date</th>
+                                               <th>PN</th>
+                                               <th>AWG</th>
+                                               <th>Pressure</th>
+                                               <th>Applicated form</th>
+                                               <th>Terminal</th>
+                                               <th>Operatior</th>
+                                               <th>Quality</th>
+                                               <th>Result</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="table-pulltest">  </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>

@@ -17,6 +17,7 @@ function mostrarWo(workOrder) {
             $('#tok').html(ok);
             $('#tng').html(nog);
             $('#tftq').html(paretos);
+            $('#table-pulltest').html(response.pullTest);
         },
         error: function(xhr, status, error) {
             console.error(error);
