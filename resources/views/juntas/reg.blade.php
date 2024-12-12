@@ -111,7 +111,7 @@
                                     <h5 class="m-0 font-weight-bold text-primary">Pull Test</h5>
                                 </div>
                                 <div class="card-body" style="overflow-y: auto; height: 360px;">
-                                    <table>
+                                    <table class="table">
                                         <thead>
                                             <tr>
                                                <th>Date</th>
