@@ -482,7 +482,7 @@ public function calidad_junta(){
             }catch(Exception $e){
                 $pareto[$datosv]=$pareto[$datosj]=$pareto[$datosm]=$pareto[$datosmt]=$pareto[$datosl]=0;
             }
-        }else if(date("N")==6){
+        }else if(date("N")==2){
             $datosl = (date("d-m-Y", strtotime("-1 days")));
             $buscarValorespareto=DB::table('regsitrocalidad')
             ->Where('fecha', 'LIKE', "$datosl%")
