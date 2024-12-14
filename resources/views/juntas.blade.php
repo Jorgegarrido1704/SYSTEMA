@@ -84,17 +84,8 @@
                                     <div class="row align-items-center">
                                         <div class="col">
                                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                                Select Date
-                                            </div>
-                                            <form action="{{route('index_junta')}}" method="get" class="form-inline" formtarget="_blank">
-                                                <input type="date"
-                                                       name="dia"
-                                                       id="dia"
-                                                       class="form-control mt-1"
-                                                       onchange="this.form.submit()"
-                                                       style="width: 100%;"
-                                                       aria-label="Select a date">
-                                            </form>
+                                           </div>
+                                            
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-calendar-alt fa-2x text-gray-300"></i>
