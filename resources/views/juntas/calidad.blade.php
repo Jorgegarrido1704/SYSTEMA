@@ -116,21 +116,21 @@ var paretoYear={!! json_encode($monthAndYearPareto) !!};
                                                 @if (!empty($datosF))
                                                 @foreach ($datosF as $datoF)
                                                 <tr>
-                                                    <td>{{$datoF[0]}}</td>
+                                                    <td>{{$datoF[0]}}<br>{{$datoF[3]}}</td>
                                                     <td>{{$datoF[1]}}</td>
                                                     <td>{{$datoF[2]}}</td>
                                                 </tr>
                                                 @endforeach
                                                 @foreach ($datosS as $datoS)
                                                 <tr>
-                                                    <td>{{$datoS[0]}}</td>
+                                                    <td>{{$datoS[0]}}<br>{{$datoS[3]}}</td>
                                                     <td>{{$datoS[1]}}</td>
                                                     <td>{{$datoS[2]}}</td>
                                                 </tr>
                                                 @endforeach
                                                 @foreach ($datosT as $datoT)
                                                 <tr>
-                                                    <td>{{$datoT[0]}}</td>
+                                                    <td>{{$datoT[0]}}<br>{{$datoT[3]}}</td>
                                                     <td>{{$datoT[1]}}</td>
                                                     <td>{{$datoT[2]}}</td>
                                                 </tr>
@@ -151,10 +151,29 @@ var paretoYear={!! json_encode($monthAndYearPareto) !!};
                             <!-- AREAS -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h5 class="m-0 font-weight-bold text-primary">Table of Works </h5>
+                                    <h5 class="m-0 font-weight-bold text-primary">FTQ Now </h5>
                                 </div>
                                 <div class="card-body" style="overflow-y: auto; height: 360px;" id="tableChange">
                                     <div class="row" >
+                                        <table>
+                                            <thead>
+                                                <th>Client</th>
+                                                <th>Issue</th>
+                                                <th>Quantity</th>
+                                            </thead>
+                                                <tbody>
+                                                    @if (!empty($datosHoy))
+                                                    @foreach ($datosHoy as $datoHoy)
+                                                    <tr>
+                                                        <td>{{$datoHoy[0]}}</td>
+                                                        <td>{{$datoHoy[1]}}</td>
+                                                        <td>{{$datoHoy[2]}}</td>
+                                                    </tr>
+                                                    @endforeach
+                                                    @endif
+
+                                                </tbody>
+                                        </table>
 
 
                                     </div>

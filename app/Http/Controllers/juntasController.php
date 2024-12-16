@@ -419,6 +419,7 @@ public function calidad_junta(){
         $datos = $etiq = [];
         $totalb=$totalm=0;
 
+
         $monthAndYear = date("m-Y");
         $today=date('d-m-Y 00:00');
         if(date("N")==1){
@@ -479,6 +480,8 @@ public function calidad_junta(){
             $pareto[$datosmt]=round($regmtg/$paretott,2)*100;
             $paretott=$reglg+$reglb;
             $pareto[$datosl]=round($reglg/$paretott,2)*100;
+            $totalm=$regvb;
+            $totalb=$regvg;
             }catch(Exception $e){
                 $pareto[$datosv]=$pareto[$datosj]=$pareto[$datosm]=$pareto[$datosmt]=$pareto[$datosl]=0;
             }
@@ -493,6 +496,8 @@ public function calidad_junta(){
             try{
             $paretott=$reglg+$reglb;
             $pareto[$datosl]=round($reglg/$paretott,2)*100;
+            $totalm=$reglb;
+            $totalb=$reglg;
             }catch(Exception $e){
                 $pareto[$datosl]=0;
             }
@@ -515,6 +520,8 @@ public function calidad_junta(){
             $pareto[$datosmt]=round($regmtg/$paretott,2)*100;
             $paretott=$reglg+$reglb;
             $pareto[$datosl]=round($reglg/$paretott,2)*100;
+            $totalm=$regmtb;
+            $totalb=$regmtg;
             }catch(Exception $e){
                 $pareto[$datosmt]=$pareto[$datosl]=0;
             }
@@ -540,6 +547,8 @@ public function calidad_junta(){
                 $pareto[$datosmt]=round($regmtg/$paretott,2)*100;
                 $paretott=$reglg+$reglb;
                 $pareto[$datosl]=round($reglg/$paretott,2)*100;
+                $totalm=$regmb;
+                $totalb=$regmg;
 
             }catch(Exception $e){
                 $pareto[$datosm]=$pareto[$datosmt]=$pareto[$datosl]=0;
@@ -570,6 +579,8 @@ public function calidad_junta(){
                 $pareto[$datosmt]=round($regmtg/$paretott,2)*100;
                 $paretott=$reglg+$reglb;
                 $pareto[$datosl]=round($reglg/$paretott,2)*100;
+                $totalm=$regjb;
+                $totalb=$regjg;
             }catch(Exception $e){
                $pareto[$datosj]=$pareto[$datosm]=$pareto[$datosmt]=$pareto[$datosl]=0;
             }
@@ -597,41 +608,34 @@ public function calidad_junta(){
                 $monthAndYearPareto[$monthAndYear]=0;
                 $monthAndYearPareto[$YearParto]=0;
             }
-
-
-arsort($monthAndYearPareto);
-
-
-
+        arsort($monthAndYearPareto);
+        ksort($pareto);
        arsort($datos);
-
        $firstKey = key($datos);
-
        $i = 0;
-       $datosF = [];
-
+       $datosF = $pnrs=[];
        // Query the database to retrieve records where 'codigo' column matches the $firstKey
        $buscardatosClientes = DB::table('regsitrocalidad')->where('codigo', $firstKey)->get();
        foreach ($buscardatosClientes as $rowDatos) {
            $fechaControl = strtotime($rowDatos->fecha);
            if (($fechaControl > $datecontrol) AND ($fechaControl < strtotime($today))) {
-               if (in_array($rowDatos->client, array_column($datosF, 0))) {
+               if ((in_array($rowDatos->client, array_column($datosF, 0))and in_array($rowDatos->pn, array_column($datosF, 3)))) {
                    $index = array_search($rowDatos->client, array_column($datosF, 0));
                    $datosF[$index][2] += $rowDatos->resto;
                } else {
                    $datosF[$i][0] = $rowDatos->client;
                    $datosF[$i][1] = $rowDatos->codigo;
                    $datosF[$i][2] = $rowDatos->resto;
+                   $datosF[$i][3] = $rowDatos->pn;
+
 
                    $i++;
                }
            }
        }
-
        // Reset $i before the second loop
        $i = 0;
        $datosS = [];
-
        next($datos);
        $secondKey = key($datos);
        // Query the database to retrieve records where 'codigo' column matches the $secondKey
@@ -639,23 +643,22 @@ arsort($monthAndYearPareto);
        foreach ($buscardatosClientes2 as $rowDatos2) {
            $fechaControl2 = strtotime($rowDatos2->fecha);
            if (($fechaControl2 > $datecontrol) AND ($fechaControl2 < strtotime($today))) {
-               if (in_array($rowDatos2->client, array_column($datosS, 0))) {
+               if ((in_array($rowDatos2->client, array_column($datosS, 0)) and (in_array($rowDatos->pn, array_column($datosS, 3))))) {
                    $index = array_search($rowDatos2->client, array_column($datosS, 0));
                    $datosS[$index][2] += $rowDatos2->resto;
                } else {
                    $datosS[$i][0] = $rowDatos2->client;
                    $datosS[$i][1] = $rowDatos2->codigo;
                    $datosS[$i][2] = $rowDatos2->resto;
+                   $datosS[$i][3] = $rowDatos->pn;
 
                    $i++;
                }
            }
        }
-
        // Reset $i before the third loop
        $i = 0;
        $datosT = [];
-
        next($datos);
        $thirdKey = key($datos);
        // Query the database to retrieve records where 'codigo' column matches the $thirdKey
@@ -663,20 +666,21 @@ arsort($monthAndYearPareto);
        foreach ($buscardatosClientes3 as $rowDatos3) {
            $fechaControl3 = strtotime($rowDatos3->fecha);
            if (($fechaControl3 > $datecontrol) AND ($fechaControl3 < strtotime($today))) {
-               if (in_array($rowDatos3->client, array_column($datosT, 0))) {
+               if ((in_array($rowDatos3->client, array_column($datosT, 0)))and  (in_array($rowDatos->pn, array_column($datosS, 3)))){
                    $index = array_search($rowDatos3->client, array_column($datosT, 0));
                    $datosT[$index][2] += $rowDatos3->resto;
                } else {
                    $datosT[$i][0] = $rowDatos3->client;
                    $datosT[$i][1] = $rowDatos3->codigo;
                    $datosT[$i][2] = $rowDatos3->resto;
+                   $datosT[$i][3] = $rowDatos3->resto;
 
                    $i++;
                }
            }
        }
 
-//quality Q
+    //quality Q
     $Qdays=$colorQ=$labelQ=[];
     $maxDays = cal_days_in_month(CAL_GREGORIAN, date('m'), date('Y'));
     for($i=0;$i<$maxDays;$i++){
@@ -694,31 +698,31 @@ arsort($monthAndYearPareto);
             ksort($datosT);
             ksort($datosS);
             ksort($datosF);
+         $datosHoy=[];
+         $i=0;
 
-    $buscarCalidadRows=new caliController;
-    $buscadorCal =$buscarCalidadRows->__invoke();
-    $calidad=$buscadorCal->getData()['calidad'];
-    $calidadControl=[];
-    $j=0;
-    $buscadorCal = DB::table('regsitrocalidad')
-    ->where('codigo','!=','TODO BIEN')
-    ->where('fecha','LIKE',date('d-m-Y', strtotime("-1 days")).'%')
-    ->orderBy('id','DESC')->get();
-    foreach ($buscadorCal as $rows) {
-        $calidadControl[$j][0]=$rows->fecha;
-        $calidadControl[$j][1]=$rows->client;
-        $calidadControl[$j][2]=$rows->pn;
-        $calidadControl[$j][3]=$rows->resto;
-        $calidadControl[$j][4]=$rows->codigo;
-        $j++;
-    }
+        $issues=DB::table('regsitrocalidad')
+        ->where('fecha','LIKE',date('d-m-Y')."%")
+        ->where('codigo','!=','TODO BIEN')
+        ->get();
+        foreach($issues as $issue){
+           if(in_array($issue->codigo, array_column($datosHoy, 1))){
+            $datosHoy[array_search($issue->codigo, array_column($datosHoy, 1))][2]+=$issue->resto;
 
 
+            }else{
+                $datosHoy[$i][0]=$issue->client;
+                $datosHoy[$i][1]=$issue->codigo;
+                $datosHoy[$i][2]=$issue->resto;
+                $i++;
+            }
+        }
+
+ksort($datosHoy);
 
 
 
-
-        return view('juntas/calidad',['totalm'=>$totalm,'totalb'=>$totalb,'calidadControl'=>$calidadControl,'monthAndYearPareto'=>$monthAndYearPareto,'calidad'=>$calidad,'datosT'=>$datosT,'datosS'=>$datosS,'datosF'=>$datosF,'labelQ'=>$labelQ,'colorQ'=>$colorQ,'value'=>$value,'cat'=>$cat,'datos'=>$datos,'pareto'=>$pareto,'Qdays'=>$Qdays]);
+        return view('juntas/calidad',['datosHoy'=>$datosHoy,'totalm'=>$totalm,'totalb'=>$totalb,'monthAndYearPareto'=>$monthAndYearPareto,'datosT'=>$datosT,'datosS'=>$datosS,'datosF'=>$datosF,'labelQ'=>$labelQ,'colorQ'=>$colorQ,'value'=>$value,'cat'=>$cat,'datos'=>$datos,'pareto'=>$pareto,'Qdays'=>$Qdays]);
 
 }
 
