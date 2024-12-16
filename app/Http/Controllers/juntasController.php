@@ -685,7 +685,7 @@ arsort($monthAndYearPareto);
             }
             $todayD=date('d');
         for($i=0;$i<$todayD;$i++)
-            if($labelQ[$i]==5 or $labelQ[$i]==10){
+            if($labelQ[$i]==5 or $labelQ[$i]==10 or $labelQ[$i]==13){
                 $colorQ[$i]='red';
             }else{
                 $colorQ[$i]='green';
