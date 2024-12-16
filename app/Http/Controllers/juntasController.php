@@ -417,6 +417,7 @@ public function calidad_junta(){
     $cat=session('categoria');
 
         $datos = $etiq = [];
+        $totalb=$totalm=0;
 
         $monthAndYear = date("m-Y");
         $today=date('d-m-Y 00:00');
@@ -428,9 +429,11 @@ public function calidad_junta(){
         $datecontrol = strtotime(date("d-m-Y 00:00", strtotime("-1 days")));
         $crtl=date("d-m-Y", strtotime("-1 days"));
     }
-        $buscarValoresMes = DB::table('regsitrocalidad')->get();
+        $buscarValoresMes = DB::table('regsitrocalidad')
+
+        ->get();
         foreach ($buscarValoresMes as $rows) {
-            if ((strtotime($rows->fecha) > $datecontrol) AND (strtotime($rows->fecha) < strtotime($today))) {
+        if ((strtotime($rows->fecha) > $datecontrol) AND (strtotime($rows->fecha) < strtotime($today))) {
                 if($rows->codigo!='TODO BIEN'){
                 if (in_array($rows->codigo, $etiq)) {
                     $index = array_search($rows->codigo, $etiq);
@@ -479,7 +482,7 @@ public function calidad_junta(){
             }catch(Exception $e){
                 $pareto[$datosv]=$pareto[$datosj]=$pareto[$datosm]=$pareto[$datosmt]=$pareto[$datosl]=0;
             }
-        }else if(date("N")==2){
+        }else if(date("N")==6){
             $datosl = (date("d-m-Y", strtotime("-1 days")));
             $buscarValorespareto=DB::table('regsitrocalidad')
             ->Where('fecha', 'LIKE', "$datosl%")
@@ -597,7 +600,7 @@ public function calidad_junta(){
 
 
 arsort($monthAndYearPareto);
-arsort($pareto);
+
 
 
        arsort($datos);
@@ -709,14 +712,11 @@ arsort($pareto);
         $calidadControl[$j][4]=$rows->codigo;
         $j++;
     }
-    $totalb=$totalm=0;
-$totalb=DB::table('regsitrocalidad')
-->where('fecha','LIKE',$crtl.'%')
-->count();
-$totalm=DB::table('regsitrocalidad')
-->where('codigo','!=','TODO BIEN')
-->where('fecha','LIKE',$crtl.'%')
-->count();
+
+
+
+
+
 
         return view('juntas/calidad',['totalm'=>$totalm,'totalb'=>$totalb,'calidadControl'=>$calidadControl,'monthAndYearPareto'=>$monthAndYearPareto,'calidad'=>$calidad,'datosT'=>$datosT,'datosS'=>$datosS,'datosF'=>$datosF,'labelQ'=>$labelQ,'colorQ'=>$colorQ,'value'=>$value,'cat'=>$cat,'datos'=>$datos,'pareto'=>$pareto,'Qdays'=>$Qdays]);
 

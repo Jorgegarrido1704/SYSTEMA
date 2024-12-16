@@ -39,19 +39,6 @@
 </li>
 @endif
 
-@if($cat=='BCali')
-<li class="nav-item active">
-    <a class="nav-link" href="/BossCali">
-        <i class="fas fa-fw fa-tachometer-alt"></i>
-        <span>Quality Reports by</span></a>
-        <ul class="submenu" id="submenu">
-            <li class="submenu" id="submenu"><a style="color:white;" href="{{ route ('reference',['date'=>'Today'])}}">Today</a></li>
-            <li class="submenu" id="submenu"><a style="color:white;" href="{{ route ('reference',['date'=>'Yesterday'])}}">yesterday</a></li>
-            <li class="submenu" id="submenu"><a style="color:white;" href="{{ route ('reference',['date'=>'Week'])}}">This week</a></li>
-            <li class="submenu" id="submenu"><a style="color:white;" href="{{ route ('reference',['date'=>'Month'])}}">This month</a></li>
-            </ul>
-</li>
-@endif
 @if($cat=='junta')
 <li class="nav-item active">
     <a class="nav-link" href="/BossCali">
@@ -60,8 +47,8 @@
         <ul class="submenu" id="submenu">
             <li class="submenu" id="submenu"><a style="color:white;" href="{{ route ('index_junta')}}">Sales</a></li>
             <li class="submenu" id="submenu"><a style="color:white;" href="{{ route ('calidad_junta')}}">Quality</a></li>
-            <li class="submenu" id="submenu"><a style="color:white;" href="#">This week</a></li>
-            <li class="submenu" id="submenu"><a style="color:white;" href="#">This month</a></li>
+            <li class="submenu" id="submenu"><a style="color:white;" href="#"></a></li>
+            <li class="submenu" id="submenu"><a style="color:white;" href="#"></a></li>
             </ul>
 </li>
 
