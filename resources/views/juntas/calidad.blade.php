@@ -184,11 +184,26 @@ var paretoYear={!! json_encode($monthAndYearPareto) !!};
                             <!-- AREAS -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h5 class="m-0 font-weight-bold text-primary">Table of Works </h5>
+                                    <h5 class="m-0 font-weight-bold text-primary">Reworks Responsible Now </h5>
                                 </div>
                                 <div class="card-body" style="overflow-y: auto; height: 360px;" id="tableChange">
                                     <div class="row" >
+                                        <table>
+                                            <thead>
+                                                <th>Responsable</th>
+                                                <th>Quantity</th>
+                                            </thead>
+                                                <tbody>
+                                                    @if (!empty($gulty))
+                                                    @foreach ($gulty as $datoGulty)
+                                                    <tr>
+                                                        <td>{{$datoGulty[0]}}</td>
+                                                        <td>{{$datoGulty[1]}}</td>
 
+                                                    </tr>
+                                                    @endforeach
+                                                    @endif
+                                        </table>
 
                                     </div>
                                 </div>
@@ -198,11 +213,26 @@ var paretoYear={!! json_encode($monthAndYearPareto) !!};
                             <!-- AREAS -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h5 class="m-0 font-weight-bold text-primary">Table of Works </h5>
+                                    <h5 class="m-0 font-weight-bold text-primary">Reworks Responsible Yesterday </h5>
                                 </div>
                                 <div class="card-body" style="overflow-y: auto; height: 360px;" id="tableChange">
                                     <div class="row" >
+                                        <table>
+                                            <thead>
+                                                <th>Responsable</th>
+                                                <th>Quantity</th>
+                                            </thead>
+                                                <tbody>
+                                                    @if (!empty($gultyY))
+                                                    @foreach ($gultyY as $datoGultyY)
+                                                    <tr>
+                                                        <td>{{$datoGultyY[0]}}</td>
+                                                        <td>{{$datoGultyY[1]}}</td>
 
+                                                    </tr>
+                                                    @endforeach
+                                                    @endif
+                                        </table>
 
                                     </div>
                                 </div>

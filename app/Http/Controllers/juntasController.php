@@ -416,8 +416,8 @@ public function calidad_junta(){
     $value=session('user');
     $cat=session('categoria');
 
-        $datos = $etiq = [];
-        $totalb=$totalm=0;
+        $datos = $etiq = $gultyY=[];
+        $totalb=$totalm=$j=0;
 
 
         $monthAndYear = date("m-Y");
@@ -431,11 +431,10 @@ public function calidad_junta(){
         $crtl=date("d-m-Y", strtotime("-1 days"));
     }
         $buscarValoresMes = DB::table('regsitrocalidad')
-
+        ->where('codigo', '!=', "TODO BIEN")
+        ->where('fecha','LIKE',$crtl.'%')
         ->get();
         foreach ($buscarValoresMes as $rows) {
-        if ((strtotime($rows->fecha) > $datecontrol) AND (strtotime($rows->fecha) < strtotime($today))) {
-                if($rows->codigo!='TODO BIEN'){
                 if (in_array($rows->codigo, $etiq)) {
                     $index = array_search($rows->codigo, $etiq);
                     $datos[$etiq[$index]] += $rows->resto;
@@ -444,8 +443,16 @@ public function calidad_junta(){
                     $index = count($etiq) - 1; // Index of the last added element
                     $datos[$etiq[$index]] = $rows->resto;
                      }
-                }
-            }
+                if(in_array($rows->Responsable, array_column($gultyY, 0))){
+                        $gultyY[array_search($rows->Responsable, array_column($gultyY, 0))][1]+=$rows->resto;
+                    }else{
+                        $gultyY[$j][0]=$rows->Responsable;
+                        $gultyY[$j][1]=$rows->resto;
+                        $j++;
+                    }
+
+
+
         }
 
         $regvg=$regvb=$regjg=$regjb=$regmg=$regmb=$regmtg=$regmtb=$reglg=$reglb=0;
@@ -698,8 +705,8 @@ public function calidad_junta(){
             ksort($datosT);
             ksort($datosS);
             ksort($datosF);
-         $datosHoy=[];
-         $i=0;
+         $datosHoy=$gulty=[];
+         $i=$x=0;
 
         $issues=DB::table('regsitrocalidad')
         ->where('fecha','LIKE',date('d-m-Y')."%")
@@ -708,21 +715,29 @@ public function calidad_junta(){
         foreach($issues as $issue){
            if(in_array($issue->codigo, array_column($datosHoy, 1))){
             $datosHoy[array_search($issue->codigo, array_column($datosHoy, 1))][2]+=$issue->resto;
-
-
             }else{
                 $datosHoy[$i][0]=$issue->client;
                 $datosHoy[$i][1]=$issue->codigo;
                 $datosHoy[$i][2]=$issue->resto;
                 $i++;
             }
+            if(in_array($issue->Responsable, array_column($gulty, 0))){
+                $gulty[array_search($issue->Responsable, array_column($gulty, 0))][1]+=$issue->resto;
+            }else{
+                $gulty[$x][0]=$issue->Responsable;
+                $gulty[$x][1]=$issue->resto;
+                $x++;
+            }
+
+
         }
 
 ksort($datosHoy);
+arsort($gulty[1]);
+arsort($gultyY[1]);
 
 
-
-        return view('juntas/calidad',['datosHoy'=>$datosHoy,'totalm'=>$totalm,'totalb'=>$totalb,'monthAndYearPareto'=>$monthAndYearPareto,'datosT'=>$datosT,'datosS'=>$datosS,'datosF'=>$datosF,'labelQ'=>$labelQ,'colorQ'=>$colorQ,'value'=>$value,'cat'=>$cat,'datos'=>$datos,'pareto'=>$pareto,'Qdays'=>$Qdays]);
+        return view('juntas/calidad',['gultyY'=>$gultyY,'gulty'=>$gulty,'datosHoy'=>$datosHoy,'totalm'=>$totalm,'totalb'=>$totalb,'monthAndYearPareto'=>$monthAndYearPareto,'datosT'=>$datosT,'datosS'=>$datosS,'datosF'=>$datosF,'labelQ'=>$labelQ,'colorQ'=>$colorQ,'value'=>$value,'cat'=>$cat,'datos'=>$datos,'pareto'=>$pareto,'Qdays'=>$Qdays]);
 
 }
 
