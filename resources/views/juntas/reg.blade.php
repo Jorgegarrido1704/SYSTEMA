@@ -80,7 +80,7 @@
                             <!-- AREAS -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h5 class="m-0 font-weight-bold text-primary">Quality issueFTQ: <span id="tftq"></span>)</h5>
+                                    <h5 class="m-0 font-weight-bold text-primary">Quality issue (FTQ: <span id="tftq"></span>)</h5>
                                 </div>
                                 <div class="card-body" style="overflow-y: auto; height: 360px;">
                                     <div style="text-align: center">
@@ -120,7 +120,7 @@
                                                <th>Pressure</th>
                                                <th>Applicated form</th>
                                                <th>Terminal</th>
-                                               <th>Operatior</th>
+                                               <th>Operator</th>
                                                <th>Quality</th>
                                                <th>Result</th>
                                             </tr>
