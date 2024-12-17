@@ -733,8 +733,11 @@ public function calidad_junta(){
         }
 
 ksort($datosHoy);
+if(!empty($gulty)){
 arsort($gulty[1]);
-arsort($gultyY[1]);
+}
+if(!empty($gultyY)){
+arsort($gultyY[1]);}
 
 
         return view('juntas/calidad',['gultyY'=>$gultyY,'gulty'=>$gulty,'datosHoy'=>$datosHoy,'totalm'=>$totalm,'totalb'=>$totalb,'monthAndYearPareto'=>$monthAndYearPareto,'datosT'=>$datosT,'datosS'=>$datosS,'datosF'=>$datosF,'labelQ'=>$labelQ,'colorQ'=>$colorQ,'value'=>$value,'cat'=>$cat,'datos'=>$datos,'pareto'=>$pareto,'Qdays'=>$Qdays]);
