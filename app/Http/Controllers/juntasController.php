@@ -527,8 +527,8 @@ public function calidad_junta(){
             $pareto[$datosmt]=round($regmtg/$paretott,2)*100;
             $paretott=$reglg+$reglb;
             $pareto[$datosl]=round($reglg/$paretott,2)*100;
-            $totalm=$regmtb;
-            $totalb=$regmtg;
+            $totalm=$reglb;
+            $totalb=$reglg;
             }catch(Exception $e){
                 $pareto[$datosmt]=$pareto[$datosl]=0;
             }
@@ -586,8 +586,8 @@ public function calidad_junta(){
                 $pareto[$datosmt]=round($regmtg/$paretott,2)*100;
                 $paretott=$reglg+$reglb;
                 $pareto[$datosl]=round($reglg/$paretott,2)*100;
-                $totalm=$regjb;
-                $totalb=$regjg;
+                $totalm=$reglb;
+                $totalb=$reglg;
             }catch(Exception $e){
                $pareto[$datosj]=$pareto[$datosm]=$pareto[$datosmt]=$pareto[$datosl]=0;
             }
