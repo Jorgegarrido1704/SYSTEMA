@@ -212,6 +212,9 @@ class caliController extends generalController
 
         $qty_cal=$busquedainfo->qty;
         $total=$ok+$nok;
+        if($total>100){
+            return redirect('calidad')->with('response', "No update you need to update 100 or less");
+        }
 
         $totalCant=$cant1+$cant2+$cant3+$cant4+$cant5;
         if($total<=$qty_cal and $totalCant==$nok){
