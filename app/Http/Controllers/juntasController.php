@@ -622,7 +622,9 @@ public function calidad_junta(){
        $i = 0;
        $datosF = $pnrs=[];
        // Query the database to retrieve records where 'codigo' column matches the $firstKey
-       $buscardatosClientes = DB::table('regsitrocalidad')->where('codigo', $firstKey)->get();
+       $buscardatosClientes = DB::table('regsitrocalidad')->where('codigo', $firstKey)
+       ->where('fecha','LIKE',$crtl.'%')
+       ->get();
        foreach ($buscardatosClientes as $rowDatos) {
            $fechaControl = strtotime($rowDatos->fecha);
            if (($fechaControl > $datecontrol) AND ($fechaControl < strtotime($today))) {
@@ -646,7 +648,9 @@ public function calidad_junta(){
        next($datos);
        $secondKey = key($datos);
        // Query the database to retrieve records where 'codigo' column matches the $secondKey
-       $buscardatosClientes2 = DB::table('regsitrocalidad')->where('codigo', $secondKey)->get();
+       $buscardatosClientes2 = DB::table('regsitrocalidad')->where('codigo', $secondKey)
+       ->where('fecha','LIKE',$crtl.'%')
+       ->get();
        foreach ($buscardatosClientes2 as $rowDatos2) {
            $fechaControl2 = strtotime($rowDatos2->fecha);
            if (($fechaControl2 > $datecontrol) AND ($fechaControl2 < strtotime($today))) {
@@ -669,7 +673,9 @@ public function calidad_junta(){
        next($datos);
        $thirdKey = key($datos);
        // Query the database to retrieve records where 'codigo' column matches the $thirdKey
-       $buscardatosClientes3 = DB::table('regsitrocalidad')->where('codigo', $thirdKey)->get();
+       $buscardatosClientes3 = DB::table('regsitrocalidad')->where('codigo', $thirdKey)
+       ->where('fecha','LIKE',$crtl.'%')
+       ->get();
        foreach ($buscardatosClientes3 as $rowDatos3) {
            $fechaControl3 = strtotime($rowDatos3->fecha);
            if (($fechaControl3 > $datecontrol) AND ($fechaControl3 < strtotime($today))) {
