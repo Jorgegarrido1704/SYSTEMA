@@ -5,6 +5,7 @@
  <script>
     const routeMostrarWo = @json(route('mostrarWOJ'));
 </script>
+<script src="{{ asset('/dash/js/mostrarWo.js')}}"></script>
 
 
  <div class="d-sm-flex align-items-center justify-content-between mb-4">

@@ -2,10 +2,12 @@
 
 @section('contenido')
  <!-- Page Heading -->
- <meta http-equiv="refresh" content="120">
+ <meta http-equiv="refresh" content="180">
+
  <script>
- const datos = <?php echo json_encode($datos); ?>;
+ const datos =  {{json_encode($datos)}};
 </script>
+<script src="{{ asset('/dash/js/demo/plan-grafic.js')}}"></script>
  <style>
     table {     width: 100%;    text-align: center;  }
     td {border-bottom: solid 2px lightblue; }
