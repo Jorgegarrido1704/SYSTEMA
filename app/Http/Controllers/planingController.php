@@ -41,35 +41,40 @@ class planingController extends Controller
        ->orderBy('NumPart','asc')->get();
        $desiguales = DB::table('retiradad')
     ->where('np',"LIKE",'%'.$sono.'%')
-    ->where('np',"LIKE",$sono.'%')
-    ->where('np',"LIKE",'%'.$sono)
-    ->orderBy('np','asc')
-    ->get();
-
+    ->orwhere('np',"LIKE",$sono.'%')
+    ->orwhere('np',"LIKE",'%'.$sono)
+    ->orderBy('np','asc')->get();
        }else if(empty($sono)){
-        $buscarIguales=DB::table('po')->join('registro','po.po','=', 'registro.po')->orderBy('pn','asc')->get();
-        $desiguales = DB::table('po')
-        ->join('retiradad', 'po.po', '=', 'retiradad.sono')
-        ->orderBy('pn','asc')
-        ->get();
-
+        $buscarIguales=DB::table('registro')
+        ->orderBy('NumPart','asc')->get();
+        $desiguales = DB::table('retiradad')
+        ->orderBy('np','asc')->get();
     }
         foreach($buscarIguales as $pos){
-            $post[$i][0]=$pos->pn;
+            $post[$i][0]=$pos->NumPart;
             $post[$i][1]=$pos->rev;
             $post[$i][2]=$pos->po;
-            $post[$i][3]=$pos->qty;
+            $post[$i][3]=$pos->Qty;
             $post[$i][4]=$pos->fecha;
             $post[$i][5]=$pos->donde;
             $post[$i][6]=$pos->wo;
             $i++;
         }
         foreach($desiguales as $rowdes){
-            $des[$j][0]=$rowdes->pn;
-            $des[$j][1]=$rowdes->rev;
-            $des[$j][2]=$rowdes->po;
+            $des[$j][0]=$rowdes->np;
+            $rev = substr($rowdes->codigo, -4);
+            $pos = strpos($rev, "R");
+            if ($pos !== false) {
+                $rev = substr($rev, $pos + 1);
+            } else { $rev="-"; }
+            $des[$j][1]=$rev;
+            $des[$j][2]=$rowdes->sono;
             $des[$j][3]=$rowdes->qty;
-            $des[$j][4]=$rowdes->fecha;
+            $des[$j][4]=$rowdes->fechaing;
+            if($rowdes->wo!=""){
+            $des[$j][5]=$rowdes->wo;
+            }else{
+                $des[$j][5]="Ya se fue";}
             $j++;
         }
 
