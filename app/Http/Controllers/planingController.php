@@ -23,8 +23,8 @@ class planingController extends Controller
     public function planning(Request $request){
         $post=[];
         $des=[];
-        $datos[0]=0;$datos[1]=0;$datos[2]=0;$datos[3]=0;$datos[5]=0;$datos[10]=0;
-        $datos[6]=0;$datos[8]=0;$datos[9]=0;$datos[4]=0;$datos[7]=0;$datos[11]=0;
+        $datosP[0]=0;$datosP[1]=0;$datosP[2]=0;$datosP[3]=0;$datosP[5]=0;$datosP[10]=0;
+        $datosP[6]=0;$datosP[8]=0;$datosP[9]=0;$datosP[4]=0;$datosP[7]=0;$datosP[11]=0;
         $i=0;
         $j=0;
         $value=session('user');
@@ -199,45 +199,45 @@ class planingController extends Controller
         $check=substr($postF,3,2);
         switch($check){
             case '01':
-                $datos[0]+=1;
+                $datosP[0]+=1;
                 break;
             case '02':
-                $datos[1]+=1;
+                $datosP[1]+=1;
                 break;
             case '03':
-                $datos[2]+=1;
+                $datosP[2]+=1;
                 break;
             case '04':
-                $datos[3]+=1;
+                $datosP[3]+=1;
                 break;
             case '05':
-                $datos[4]+=1;
+                $datosP[4]+=1;
                 break;
             case '06':
-                $datos[5]+=1;
+                $datosP[5]+=1;
                 break;
             case '07':
-                $datos[6]+=1;
+                $datosP[6]+=1;
                 break;
             case '08':
-                $datos[7]+=1;
+                $datosP[7]+=1;
                 break;
             case '09':
-                $datos[8]+=1;
+                $datosP[8]+=1;
                 break;
             case '10':
-                $datos[9]+=1;
+                $datosP[9]+=1;
                 break;
             case '11':
-                $datos[10]+=1;
+                $datosP[10]+=1;
                 break;
             case '12':
-                $datos[11]+=1;
+                $datosP[11]+=1;
                 break;
         }
     }
 
-return view('planing',['des'=>$des,'value'=>$value,'cat'=>$cat,'post'=>$post,'datos'=>$datos]);
+return view('planing',['des'=>$des,'value'=>$value,'cat'=>$cat,'post'=>$post,'datosP'=>$datosP]);
     }
 
 

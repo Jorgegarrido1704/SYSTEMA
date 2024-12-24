@@ -5,9 +5,9 @@
  <meta http-equiv="refresh" content="180">
 
  <script>
- const datos =  {{json_encode($datos)}};
+var dat = {!! json_encode($datosP) !!};
 </script>
-<script src="{{ asset('/dash/js/demo/plan-grafic.js')}}"></script>
+
  <style>
     table {     width: 100%;    text-align: center;  }
     td {border-bottom: solid 2px lightblue; }
@@ -275,6 +275,8 @@
                                 </div>
                                 <div class="card-body" style="overflow-y: auto; height: 360px;" id="tableChange">
                                     <canvas id="planning"></canvas>
+
+
                                 </div>
                             </div>
                         </div>
