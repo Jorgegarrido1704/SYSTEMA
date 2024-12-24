@@ -112,7 +112,9 @@
     <script src="{{ asset('/dash/js/demo/chart-pie-demo.js')}}"></script>
     <script src="{{ asset('/dash/js/up-info.js')}}"></script>
     <script src="{{ asset('/dash/js/mostrarWo.js')}}"></script>
-
+    @if($cat=='plan')
+    <script src="{{ asset('/dash/js/demo/plan-grafic.js')}}"></script>
+    @endif
 <script>
     // Function to update the data
     function updateData() {

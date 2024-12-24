@@ -1,8 +1,11 @@
-@extends('layouts.mainwithoutsidebar')
+@extends('layouts.main')
 
 @section('contenido')
  <!-- Page Heading -->
  <meta http-equiv="refresh" content="120">
+ <script>
+ const datos = <?php echo json_encode($datos); ?>;
+</script>
  <style>
     table {     width: 100%;    text-align: center;  }
     td {border-bottom: solid 2px lightblue; }

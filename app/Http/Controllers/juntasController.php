@@ -16,7 +16,7 @@ class juntasController extends Controller
 public function index_junta(Request $request){
     $value = session('user');
         $cat=session('categoria');
-        if ($cat!='junta' or $value == '') {
+        if ($cat=='' or $value == '') {
             return view('login');
         } else {
             $dia=$request->input('dia');

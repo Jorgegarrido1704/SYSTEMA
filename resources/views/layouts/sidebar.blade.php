@@ -39,11 +39,15 @@
 </li>
 @endif
 
-@if($cat=='junta')
+
 <li class="nav-item active">
-    <a class="nav-link" href="/BossCali">
+    @if($cat=="junta")
+    <a class="nav-link" href="/juntas">
+    @elseif($cat=="plan")
+    <a class="nav-link" href="/planing">
+    @endif
         <i class="fas fa-fw fa-tachometer-alt"></i>
-        <span>Reports By</span></a>
+        <span>Home</span></a>
         <ul class="submenu" id="submenu">
             <li class="submenu" id="submenu"><a style="color:white;" href="{{ route ('index_junta')}}">Sales</a></li>
             <li class="submenu" id="submenu"><a style="color:white;" href="{{ route ('calidad_junta')}}">Quality</a></li>
@@ -52,7 +56,7 @@
             </ul>
 </li>
 
-@endif
+
 
 @endif
 
