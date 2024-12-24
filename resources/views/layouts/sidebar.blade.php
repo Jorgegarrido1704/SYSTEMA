@@ -45,6 +45,8 @@
     <a class="nav-link" href="/juntas">
     @elseif($cat=="plan")
     <a class="nav-link" href="/planing">
+    @elseif($cat=="cali")
+    <a class="nav-link"  href="/calidad">
     @endif
         <i class="fas fa-fw fa-tachometer-alt"></i>
         <span>Home</span></a>
