@@ -7,7 +7,6 @@ function mostrarWo(workOrder) {
         data: { buscarWo: workOrder },
         dataType: 'json',
         success: function(response) {
-            console.log(response);
             ok=response.paretos[0];
             nog=response.paretos[1];
             paretos=response.paretos[2]+ '%';

@@ -1,6 +1,11 @@
 @extends('layouts.main')
 
 @section('contenido')
+
+    <script>
+        const fetchDta = @json(route('fetchdata'));
+    </script>
+<script src="{{ asset('/dash/js/demo/fetchDta.js')}}"></script>
  <!-- Page Heading -->
  <div class="d-sm-flex align-items-center justify-content-between mb-4">
                       <!--  <h1 class="h3 mb-0 text-gray-800"></h1>
@@ -85,7 +90,7 @@
                                         <div class="col">
                                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                            </div>
-                                            
+
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-calendar-alt fa-2x text-gray-300"></i>
