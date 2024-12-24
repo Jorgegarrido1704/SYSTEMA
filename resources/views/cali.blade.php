@@ -1,8 +1,12 @@
-@extends('layouts.mainWithoutsidebar')
+@extends('layouts.main')
 
 @section('contenido')
  <!-- Page Heading -->
-
+ <meta http-equiv="refresh" content="90">
+ <script src="{{ asset('/dash/js/calidadReg.js')}}"></script>
+<script>
+    const modificacionsCali = @json(route('buscarcodigo'));
+</script>
                     <!-- Content Row -->
                     <div class="row">
                         <!-- Content Column -->
@@ -24,9 +28,9 @@
                                                 <th>Número de parte</th>
                                                 <th>Cliente</th>
                                                 <th>WO</th>
-                                                <th>PO</th>
+
                                                 <th>Cantidad</th>
-                                                <th>Parcial</th>
+
                                                 <th>Iniciar test</th>
                                             </thead>
                                             <tbody align="center">
@@ -37,9 +41,7 @@
                                     <td id="np">{{$cal[0]}}</td>
                                     <td id="client">{{$cal[1]}}</td>
                                     <td id="wo">{{$cal[2]}}</td>
-                                    <td id="po">{{$cal[3]}}</td>
                                         <td id="cant">{{$cal[4]}}</td>
-                                        <td id="parcial">{{$cal[5]}}</td>
                                     <td align="center">
                                             <input type="hidden" name="id" id="id" value="{{$cal[6]}}">
                                             <button type="submit" id="enviar">Calidad</button></td>
@@ -77,7 +79,7 @@
         <input type="text" style="width:80px;margin-right:10px;" name="codigo1" id="codigo1" onchange="buscarcodigo1()">
         <input type="text" style="width:280px;margin-right:80px;" name="rest_code1" id="rest_code1">
        <input type="hidden" style="width: 80px;margin-right:80px" name="1" id="1" value="0" >
-       Responsable  <input type="text" style="width: 80px;margin-right:80px" name="responsable1" id="responsable1">
+       Responsable  <input type="text" style="width: 80px;margin-right:80px" name="responsable1" id="responsable1" value="0">
     </h4>
 </div>
 
@@ -86,7 +88,7 @@
         <input type="text" style="width:80px;margin-right:10px;" name="codigo2" id="codigo2" onchange="buscarcodigo2()">
         <input type="text" style="width:280px;margin-right:80px;" name="rest_code2" id="rest_code2">
         <input type="hidden" style="width: 80px;margin-right:80px" name="2" id="2" value="0" >
-        Responsable  <input type="text" style="width: 80px;margin-right:80px" name="responsable2" id="responsable2">
+        Responsable  <input type="text" style="width: 80px;margin-right:80px" name="responsable2" id="responsable2" value="0">
     </h4>
 </div>
 
@@ -95,7 +97,7 @@
         <input type="text" style="width:80px;margin-right:10px;" name="codigo3" id="codigo3" onchange="buscarcodigo3()">
         <input type="text" style="width:280px;margin-right:80px;" name="rest_code3" id="rest_code3">
         <input type="hidden" style="width: 80px;margin-right:80px" name="3" id="3" value="0" >
-        Responsable  <input type="text" style="width: 80px;margin-right:80px" name="responsable3" id="responsable3">
+        Responsable  <input type="text" style="width: 80px;margin-right:80px" name="responsable3" id="responsable3" value="0">
     </h4>
 </div>
 <div class="d-flex justify-content-center">
@@ -103,7 +105,7 @@
         <input type="text" style="width:80px;margin-right:10px;" name="codigo4" id="codigo4" onchange="buscarcodigo4()">
         <input type="text" style="width:280px;margin-right:80px;" name="rest_code4" id="rest_code4">
         <input type="hidden" style="width: 80px;margin-right:80px" name="4" id="4" value="0" >
-        Responsable  <input type="text" style="width: 80px;margin-right:80px" name="responsable4" id="responsable4">
+        Responsable  <input type="text" style="width: 80px;margin-right:80px" name="responsable4" id="responsable4" value="0">
     </h4>
 </div>
 <div class="d-flex justify-content-center">
@@ -111,7 +113,7 @@
         <input type="text" style="width:80px;margin-right:10px;" name="codigo5" id="codigo5" onchange="buscarcodigo5()">
         <input type="text" style="width:280px;margin-right:80px;" name="rest_code5" id="rest_code5">
         <input type="hidden" style="width: 80px;margin-right:80px" name="5" id="5"  value="0" >
-      Responsable  <input type="text" style="width: 80px;margin-right:80px" name="responsable5" id="responsable5">
+      Responsable  <input type="text" style="width: 80px;margin-right:80px" name="responsable5" id="responsable5" value="0">
 
     </h4>
 </div>

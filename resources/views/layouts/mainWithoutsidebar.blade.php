@@ -745,131 +745,16 @@
         }
         updateSecondSelect();
 </script>
-<script>
-            function buscarcodigo1() {
-                const codigoValue = document.getElementById('codigo1').value;
-                const url = '{{ route('buscarcodigo') }}';
-                fetch(url, { method: 'POST',
-                    headers: {   'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')  },
-                    body: JSON.stringify({ codigo1: codigoValue }),   })
-                .then(response => response.json())
-                .then(data => {  console.log(data);
-                    const defecto = data && data.defecto ? data.defecto : '';
-                    document.getElementById('1').value = 1;
-                    var Nok=parseInt(document.getElementById('nok').value);
-                    document.getElementById('nok').value = Nok+1;
-                    if(defecto!=""){
-                    document.getElementById('rest_code1').value = defecto;
-                    }else{
-                    document.getElementById('rest_code1').value = data;
-                    }
-                })
-                .catch(error => { console.error('Error:', error);  });}
-                function buscarcodigo2() {
-                const codigoValue = document.getElementById('codigo2').value;
 
-                const url = '{{ route('buscarcodigo') }}';
-                fetch(url, { method: 'POST',
-                    headers: {   'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')  },
-                    body: JSON.stringify({ codigo1: codigoValue }),   })
-                .then(response => response.json())
-                .then(data => {  console.log(data);
-                    const defecto = data && data.defecto ? data.defecto : '';
 
-                    document.getElementById('2').value = 1;
-                    var Nok=parseInt(document.getElementById('nok').value);
-                    document.getElementById('nok').value = Nok+1;
-                    if(defecto!=""){
-                    document.getElementById('rest_code2').value = defecto;
-                    }else{
-                    document.getElementById('rest_code2').value = data;
-                    }   })
-                .catch(error => { console.error('Error:', error);  });}
-                function buscarcodigo3() {
-                const codigoValue = document.getElementById('codigo3').value;
-                const url = '{{ route('buscarcodigo') }}';
-                fetch(url, { method: 'POST',
-                    headers: {   'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')  },
-                    body: JSON.stringify({ codigo1: codigoValue }),   })
-                .then(response => response.json())
-                .then(data => {  console.log(data);
-                    const defecto = data && data.defecto ? data.defecto : '';
-                    document.getElementById('3').value = 1;
-                    var Nok=parseInt(document.getElementById('nok').value);
-                    document.getElementById('nok').value = Nok+1;
-                    if(defecto!=""){
-                    document.getElementById('rest_code3').value = defecto;
-                    }else{
-                    document.getElementById('rest_code3').value = data;
-                    }   })
-                .catch(error => { console.error('Error:', error);  });}
-                function buscarcodigo4() {
-                const codigoValue = document.getElementById('codigo4').value;
-                const url = '{{ route('buscarcodigo') }}';
-                fetch(url, { method: 'POST',
-                    headers: {   'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')  },
-                    body: JSON.stringify({ codigo1: codigoValue }),   })
-                .then(response => response.json())
-                .then(data => {  console.log(data);
-                    const defecto = data && data.defecto ? data.defecto : '';
-                    document.getElementById('4').value = 1;
-                    var Nok=parseInt(document.getElementById('nok').value);
-                    document.getElementById('nok').value = Nok+1;
-                    if(defecto!=""){
-                    document.getElementById('rest_code4').value = defecto;
-                    }else{
-                    document.getElementById('rest_code4').value = data;
-                    } })
-                .catch(error => { console.error('Error:', error);  });}
-                function buscarcodigo5() {
-                const codigoValue = document.getElementById('codigo5').value;
-                const url = '{{ route('buscarcodigo') }}';
-                fetch(url, { method: 'POST',
-                    headers: {   'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')  },
-                    body: JSON.stringify({ codigo1: codigoValue }),   })
-                .then(response => response.json())
-                .then(data => {  console.log(data);
-                    const defecto = data && data.defecto ? data.defecto : '';
-                    document.getElementById('5').value = 1;
-                    var Nok=parseInt(document.getElementById('nok').value);
-                    document.getElementById('nok').value = Nok+1;
-                    if(defecto!=""){
-                    document.getElementById('rest_code5').value = defecto;
-                    }else{
-                    document.getElementById('rest_code5').value = data;
-                    }   })
-                .catch(error => { console.error('Error:', error);    });}
-            </script>
-            <script>
-                function updateData() {
-                $.ajax({
-                    url: '{{ route("fetchdatacali") }}',
-                    method: 'GET',
-                    dataType: 'json',
-                    success: function(response) {
-                        console.log(response);
-                        $('#table-body').html(response.tableContent);
-                        $('#saldo').html(response.saldo);
-                        $('#backlock').html(response.backlock);
-                        if (response.labels && response.data) {
 
-            }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(error);
-                    }
-                });
-            }
-            updateData();
-            setInterval(updateData, 90000);
-            </script>
-            <script>
-                function updateRev() {
+
+
+        @if($cat=='inge')
+
+
+        <script>
+                 function updateRev() {
                     var rev=document.getElementById('Tipo').value;
                     console.log(rev);
                     if(rev=='PRIM' || rev=='PPAP'){
@@ -881,14 +766,9 @@
                     }
 
                 }
-</script>
-
-       
-
-        @if($cat=='inge')
 
 
-        <script>
+
                                                     var reg = document.getElementById('regGraf');
                                                     var ctx1 = reg.getContext('2d');
                                                     var datos = <?php echo json_encode($graficOnTime); ?>;

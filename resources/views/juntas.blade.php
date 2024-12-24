@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('contenido')
-
+<meta http-equiv="refresh" content="120">
     <script>
         const fetchDta = @json(route('fetchdata'));
     </script>
