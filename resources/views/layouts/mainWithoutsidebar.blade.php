@@ -111,6 +111,7 @@
     <script src="{{ asset('/dash/js/demo/chart-area-demo.js')}}"></script>
     <script src="{{ asset('/dash/js/demo/chart-pie-demo.js')}}"></script>
     <script src="{{ asset('/dash/js/demo/chart-line-ing.js')}}"></script>
+    <script src="{{ asset('/dash/js/gandGraph.js')}}"></script>
 
 
  <script>
@@ -771,8 +772,8 @@
 
                                                     var reg = document.getElementById('regGraf');
                                                     var ctx1 = reg.getContext('2d');
-                                                    var datos = <?php echo json_encode($graficOnTime); ?>;
-                                                    var newDatos = <?php echo json_encode($graficasLate); ?>;
+                                                    var datos = {!! json_encode($graficOnTime)!!};
+                                                    var newDatos = {!! json_encode($graficasLate) !!};
                                                     console.log(datos);  // Fix the variable name here to match the JSON data
                                                     var data = {
                                                         labels: ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'],

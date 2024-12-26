@@ -3,7 +3,6 @@
 @section('contenido')
  <!-- Page Heading -->
 
-
  <div class="d-sm-flex align-items-center justify-content-between mb-4">
 
                     </div>
@@ -743,7 +742,7 @@ select {
                                     <h5 class="m-0 font-weight-bold text-primary">Create</h5>
                                 </div>
                                 <div class="card-body" style="overflow-y: auto; height: 360px;" >
-
+                                    <canvas id="myChart1" style="width: 100%; height: 100%;"></canvas>
                                 </div>
                             </div>
                         </div>
