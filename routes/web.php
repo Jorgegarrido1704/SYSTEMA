@@ -4,6 +4,7 @@ use App\Http\Controllers\BossCaliController;
 use App\Http\Controllers\bossController;
 use App\Http\Controllers\caliController;
 use App\Http\Controllers\generalController;
+use App\Http\Controllers\globalInventario;
 use App\Http\Controllers\InventarioController;
 use App\Http\Controllers\juntasController;
 use App\Http\Controllers\loginController;
@@ -131,6 +132,12 @@ Route::controller(planingController::class)->group(function(){
 Route::controller(AdminSupControlloer::class)->group(function(){
     Route::get('/SupAdmin',[AdminSupControlloer::class,'__invoke'])->name('SupAdmin');
     Route::get('/mostrarWO', [AdminSupControlloer::class, 'mostrarWO'])->name('mostrarWO');
+});
+
+Route::controller(globalInventario::class)->group(function(){
+    Route::get('/globalInventario',[globalInventario::class,'index_inventario'])->name('index_inventario');
+    Route::get('/globalInventario/itmes', [globalInventario::class, 'indItems'])->name('indItems');
+    Route::get('/globalInventario/WO', [globalInventario::class, 'WOitems'])->name('WOitems');
 });
 
 
