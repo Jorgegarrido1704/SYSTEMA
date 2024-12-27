@@ -28,7 +28,7 @@
                     @foreach ($items as $item)
                     <tr>
                     <td> <input type="disabled" name="items[]" id="items" value="{{ $item[0] }}" required></td>
-                    <td><input type="number" name="qty[]" id="qty" value="{{ $item[1] }}" min=0 step="0.01" required class="form-control"></td>
+                    <td><input type="number" name="qty[]" id="qty" value="{{ $item[1] }}"  required class="form-control"></td>
                         <input type="hidden" name="wo" id="wo" value="{{ $wo }}">
 
 
@@ -49,7 +49,7 @@
                     </div>
                     <div class="form-group">
                         <label for="qty_pn">Quantity</label>
-                        <input type="number" name="qty_pn" id="qty_pn" min="1" required class="form-control">
+                        <input type="number" name="qty_pn" id="qty_pn" min="0" required class="form-control">
                     </div>
                     <input type="submit" name="enviar" id="enviar" value="Buscar" class="btn btn-primary">
                 </form>
