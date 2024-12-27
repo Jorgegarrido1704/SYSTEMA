@@ -28,7 +28,7 @@
                     @foreach ($items as $item)
                     <tr>
                     <td> <input type="disabled" name="items[]" id="items" value="{{ $item[0] }}" required></td>
-                    <td><input type="number" name="qty[]" id="qty" value="{{ $item[1] }}" min="0" step="0.00" required class="form-control"></td>
+                    <td><input type="number" name="qty[]" id="qty" value="{{ $item[1] }}" min=0 step="0.01" required class="form-control"></td>
                         <input type="hidden" name="wo" id="wo" value="{{ $wo }}">
 
 
