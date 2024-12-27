@@ -21,7 +21,7 @@ class globalInventario extends Controller
             ->where('part_num',$wo)->get();
             foreach($buscarItems as $rowItems){
                 $items[$i][0]=$rowItems->item;
-                $items[$i][1]=$rowItems->qty*$qt;
+                $items[$i][1]=round($rowItems->qty*$qt,2);
                 $i++;
             }
 

@@ -27,8 +27,9 @@
                     <form action="{{ route('WOitems') }}" method="GET">
                     @foreach ($items as $item)
                     <tr>
-                    <td> <input type="disabled" name="items[]" id="items" value="{{ $item[0] }}" required></td>
-                    <td><input type="number" name="qty[]" id="qty" value="{{ $item[1] }}"  required class="form-control"></td>
+                    <td> <input type="hidden" name="items[]" id="items" value="{{ $item[0] }}" >
+                    <input type="text" name="demo" id="demo" value="{{ $item[0] }}" disabled></td>
+                    <td><input type="number" name="qty[]" id="qty" value="{{ $item[1] }}" step="0.01" required class="form-control"></td>
                         <input type="hidden" name="wo" id="wo" value="{{ $wo }}">
 
 
