@@ -16,9 +16,25 @@ class globalInventario extends Controller
         $items=[];
         $i=0;
         if(DB::table('datos')->where('part_num',$wo)->exists()){
-
+            if($user=="Andrea"){
             $buscarItems=DB::table('datos')
-            ->where('part_num',$wo)->get();
+            ->where('part_num',$wo)
+            ->where('item','NOT LIKE','TAPE%')
+            ->where('item','NOT LIKE','LW%')
+            ->where('item','NOT LIKE','%T5-%')
+            ->where('item','NOT LIKE','%T4-%')
+            ->where('item','NOT LIKE','%T1-%')
+            ->where('item','NOT LIKE','%T2-%')
+            ->where('item','NOT LIKE','%T3-%')
+            ->where('item','NOT LIKE','LTP%')
+            ->where('item','NOT LIKE','WGX%')
+            ->where('item','NOT LIKE','WSG%')
+            ->where('item','NOT LIKE','WTX%')
+            ->where('item','NOT LIKE','SK%')
+            ->get();
+        }else{
+            $buscarItems=DB::table('datos')
+            ->where('part_num',$wo)->get();}
             foreach($buscarItems as $rowItems){
                 $items[$i][0]=$rowItems->item;
                 $items[$i][1]=round($rowItems->qty*$qt,2);
