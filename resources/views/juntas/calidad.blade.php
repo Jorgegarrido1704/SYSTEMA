@@ -121,23 +121,13 @@ var paretoYear={!! json_encode($monthAndYearPareto) !!};
                                                     <td>{{$datoF[2]}}</td>
                                                 </tr>
                                                 @endforeach
-                                               <!-- @foreach ($datosS as $datoS)
+                                                @foreach ($datosS as $datoS)
                                                 <tr>
                                                     <td>{{$datoS[0]}}<br>{{$datoS[3]}}</td>
                                                     <td>{{$datoS[1]}}</td>
                                                     <td>{{$datoS[2]}}</td>
                                                 </tr>
-                                                @endforeach-->
-                                                <tr>
-                                                <td>TICO MANUFACTURING<br>620804</td>
-                                                    <td>Cables Invertidos en el conector</td>
-                                                    <td>1</td>
-                                                </tr>
-                                                <tr>
-                                                <td>BERGSTROM<br>1001488939</td>
-                                                    <td>Cables Invertidos en el conector</td>
-                                                    <td>1</td>
-                                                </tr>
+                                                @endforeach
                                                 @foreach ($datosT as $datoT)
                                                 <tr>
                                                     <td>{{$datoT[0]}}<br>{{$datoT[3]}}</td>

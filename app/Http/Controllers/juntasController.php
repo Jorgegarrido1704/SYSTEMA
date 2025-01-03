@@ -415,21 +415,17 @@ return view('juntas')->with(['ventasStation'=>$ventasStation,'inform'=>$inform,'
 public function calidad_junta(){
     $value=session('user');
     $cat=session('categoria');
-
         $datos = $etiq = $gultyY=[];
         $totalb=$totalm=$j=0;
-
-
         $monthAndYear = date("m-Y");
         $today=date('d-m-Y 00:00');
         if(date("N")==1){
             $datecontrol = strtotime(date("d-m-Y 00:00", strtotime("-3 days")));
             $crtl=date("d-m-Y", strtotime("-3 days"));
-
         }else{
         $datecontrol = strtotime(date("d-m-Y 00:00", strtotime("-1 days")));
         $crtl=date("d-m-Y", strtotime("-1 days"));
-    }
+        }
         $buscarValoresMes = DB::table('regsitrocalidad')
         ->where('codigo', '!=', "TODO BIEN")
         ->where('fecha','LIKE',$crtl.'%')
@@ -449,12 +445,7 @@ public function calidad_junta(){
                         $gultyY[$j][0]=$rows->Responsable;
                         $gultyY[$j][1]=$rows->resto;
                         $j++;
-                    }
-
-
-
-        }
-
+                    }        }
         $regvg=$regvb=$regjg=$regjb=$regmg=$regmb=$regmtg=$regmtb=$reglg=$reglb=0;
         function Paretos($regb,$regM){
             $regB=$regb;
@@ -482,40 +473,24 @@ public function calidad_junta(){
                 if (substr($rowPareto->fecha, 0, 10) == $datosj) {  if($rowPareto->codigo=='TODO BIEN'){ $regjg+=1; }else{$regjb+=1;}  }
                 if (substr($rowPareto->fecha, 0, 10) == $datosm) {  if($rowPareto->codigo=='TODO BIEN'){ $regmg+=1; }else{$regmb+=1;}  }
                 if (substr($rowPareto->fecha, 0, 10) == $datosmt) {  if($rowPareto->codigo=='TODO BIEN'){ $regmtg+=1; }else{$regmtb+=1;}  }
-                if (substr($rowPareto->fecha, 0, 10) == $datosl) {  if($rowPareto->codigo=='TODO BIEN'){ $reglg+=1; }else{$reglb+=1;}  }
-            }try{
-            
+                if (substr($rowPareto->fecha, 0, 10) == $datosl) {  if($rowPareto->codigo=='TODO BIEN'){ $reglg+=1; }else{$reglb+=1;}  } }
             $pareto[$datosv]=Paretos($regvg,$regvb);
-            $paretott=$regjg+$regjb;
-            $pareto[$datosj]=round($regjg/$paretott,2)*100;
-            $paretott=$regmg+$regmb;
-            $pareto[$datosm]=round($regmg/$paretott,2)*100;
-            $paretott=$regmtg+$regmtb;
-            $pareto[$datosmt]=round($regmtg/$paretott,2)*100;
-            $paretott=$reglg+$reglb;
-            $pareto[$datosl]=round($reglg/$paretott,2)*100;
+            $pareto[$datosj]=Paretos($regjg,$regjb);
+            $pareto[$datosm]=Paretos($regmg,$regmb);
+            $pareto[$datosmt]=Paretos($regmtg,$regmtb);
+            $pareto[$datosl]=Paretos($reglg,$reglb);
             $totalm=$regvb;
             $totalb=$regvg;
-            }catch(Exception $e){
-                $pareto[$datosv]=$pareto[$datosj]=$pareto[$datosm]=$pareto[$datosmt]=$pareto[$datosl]=0;
-            }
         }else if(date("N")==2){
             $datosl = (date("d-m-Y", strtotime("-1 days")));
             $buscarValorespareto=DB::table('regsitrocalidad')
             ->Where('fecha', 'LIKE', "$datosl%")
             ->get();
             foreach($buscarValorespareto as $rowPareto){
-               if (substr($rowPareto->fecha, 0, 10) == $datosl) {  if($rowPareto->codigo=='TODO BIEN'){ $reglg+=1; }else{$reglb+=1;}  }
-            }
-            try{
-            $paretott=$reglg+$reglb;
-            $pareto[$datosl]=round($reglg/$paretott,2)*100;
+               if (substr($rowPareto->fecha, 0, 10) == $datosl) {  if($rowPareto->codigo=='TODO BIEN'){ $reglg+=1; }else{$reglb+=1;}  } }
+            $pareto[$datosl]=Paretos($reglg,$reglb);
             $totalm=$reglb;
             $totalb=$reglg;
-            }catch(Exception $e){
-                $pareto[$datosl]=0;
-            }
-
         }elseif(date("N")==3){
             $datosl = (date("d-m-Y", strtotime("-1 days")));
             $datosmt = (date("d-m-Y", strtotime("-2 days")));
@@ -527,19 +502,11 @@ public function calidad_junta(){
                  if (substr($rowPareto->fecha, 0, 10) == $datosmt) {
                     if($rowPareto->codigo=='TODO BIEN'){ $regmtg+=1; }else{$regmtb+=1;}  }
                  if (substr($rowPareto->fecha, 0, 10) == $datosl) {
-                     if($rowPareto->codigo=='TODO BIEN'){ $reglg+=1; }else{$reglb+=1;}  }
-            }
-            try{
-            $paretott=$regmtg+$regmtb;
-            $pareto[$datosmt]=round($regmtg/$paretott,2)*100;
-            $paretott=$reglg+$reglb;
-            $pareto[$datosl]=round($reglg/$paretott,2)*100;
+                     if($rowPareto->codigo=='TODO BIEN'){ $reglg+=1; }else{$reglb+=1;}  } }
+            $pareto[$datosmt]=Paretos($regmtg,$regmtb);
+            $pareto[$datosl]=Paretos($reglg,$reglb);
             $totalm=$reglb;
             $totalb=$reglg;
-            }catch(Exception $e){
-                $pareto[$datosmt]=$pareto[$datosl]=0;
-            }
-
         }elseif(date("N")==4){
             $datosl = (date("d-m-Y", strtotime("-3 days")));
             $datosmt = (date("d-m-Y", strtotime("-2 days")));
@@ -554,14 +521,10 @@ public function calidad_junta(){
                  if (substr($rowPareto->fecha, 0, 10) == $datosmt) {  if($rowPareto->codigo=='TODO BIEN'){ $regmtg+=1; }else{$regmtb+=1;}  }
                  if (substr($rowPareto->fecha, 0, 10) == $datosm) {  if($rowPareto->codigo=='TODO BIEN'){ $regmg+=1; }else{$regmb+=1;}  }
                 }
-            try{
                 $pareto[$datosm]=Paretos($regmg,$regmb);
                 $pareto[$datosmt]=Paretos($regmtg,$regmtb);
                 $pareto[$datosl]=Paretos($reglg,$reglb);
                 $totalm=$regmb; $totalb=$regmg;
-            }catch(Exception $e){
-                $pareto[$datosm]=$pareto[$datosmt]=$pareto[$datosl]=0;
-            }
         }elseif(date("N")==5){
             $datosl = (date("d-m-Y", strtotime("-1 days")));
             $datosmt = (date("d-m-Y", strtotime("-2 days")));
@@ -577,19 +540,14 @@ public function calidad_junta(){
                 if (substr($rowPareto->fecha, 0, 10) == $datosj) {  if($rowPareto->codigo=='TODO BIEN'){ $regjg+=1; }else{$regjb+=1;}  }
                 if (substr($rowPareto->fecha, 0, 10) == $datosm) {  if($rowPareto->codigo=='TODO BIEN'){ $regmg+=1; }else{$regmb+=1;}  }
                 if (substr($rowPareto->fecha, 0, 10) == $datosmt) {  if($rowPareto->codigo=='TODO BIEN'){ $regmtg+=1; }else{$regmtb+=1;}  }
-                if (substr($rowPareto->fecha, 0, 10) == $datosl) {  if($rowPareto->codigo=='TODO BIEN'){ $reglg+=1; }else{$reglb+=1;}  }
-            }
-         
-            
+                if (substr($rowPareto->fecha, 0, 10) == $datosl) {  if($rowPareto->codigo=='TODO BIEN'){ $reglg+=1; }else{$reglb+=1;}  } }
                 $pareto[$datosj]=Paretos($regjg,$regjb);
                 $pareto[$datosm]=Paretos($regmg,$regmb);
                 $pareto[$datosmt]=Paretos($regmtg,$regmtb);
                 $pareto[$datosl]=Paretos($reglg,$reglb);
                 $totalm=$reglb;
                 $totalb=$reglg;
-           
         }
-
         $yearGood=$yearBad=$monthGood=$monthBad=0;
         $monthAndYear=date("m-Y");
         $YearParto=date("Y");
@@ -616,76 +574,43 @@ public function calidad_junta(){
         ksort($pareto);
        arsort($datos);
        $firstKey = key($datos);
-       $i = 0;
-       $datosF = $pnrs=[];
+       $datosF = $pnrs=$datosT = $datosS =[];
        // Query the database to retrieve records where 'codigo' column matches the $firstKey
-       $buscardatosClientes = DB::table('regsitrocalidad')->where('codigo', $firstKey)
-       ->where('fecha','LIKE',$crtl.'%')
-       ->get();
+       $buscardatosClientes = DB::table('regsitrocalidad')->where('codigo', '=',$firstKey)
+       ->where('fecha','LIKE',$crtl.'%')     ->get();
        foreach ($buscardatosClientes as $rowDatos) {
-          
                if ((in_array($rowDatos->client, array_column($datosF, 0))and in_array($rowDatos->pn, array_column($datosF, 3)))) {
-                   $index = array_search($rowDatos->client, array_column($datosF, 0));
-                   $datosF[$index][2] += $rowDatos->resto;
+                  $datosF[$rowDatos->client][2] += $rowDatos->resto;
                } else {
-                   $datosF[$index][0] = $rowDatos->client;
-                   $datosF[$index][1] = $rowDatos->codigo;
-                   $datosF[$index][2] = $rowDatos->resto;
-                   $datosF[$index][3] = $rowDatos->pn;
-                   
-               }
-               $i++;
-            }
-       
-       // Reset $i before the second loop
-       $i = 0;
-       $datosS = [];
+                   $datosF[$rowDatos->client][0] = $rowDatos->client;
+                   $datosF[$rowDatos->client][1] = $rowDatos->codigo;
+                   $datosF[$rowDatos->client][2] = $rowDatos->resto;
+                   $datosF[$rowDatos->client][3] = $rowDatos->pn;               }            }
        next($datos);
        $secondKey = key($datos);
-       // Query the database to retrieve records where 'codigo' column matches the $secondKey
-       $buscardatosClientes2 = DB::table('regsitrocalidad')->where('codigo', $secondKey)
-       ->where('fecha','LIKE',$crtl.'%')
-       ->where('codigo','!=',$firstKey)
-       
-       ->get();
+       $buscardatosClientes2 = DB::table('regsitrocalidad')->where('codigo', '=',$secondKey)
+       ->where('fecha','LIKE',$crtl.'%')       ->get();
        foreach ($buscardatosClientes2 as $rowDatos2) {
-               if ((in_array($rowDatos2->client, array_column($datosS, 0)) and (in_array($rowDatos->pn, array_column($datosS, 3))))) {
-                   $index = array_search($rowDatos2->client, array_column($datosS, 0));
-                   $datosS[$index][2] += $rowDatos2->resto;
+               if ((in_array($rowDatos2->client, array_column($datosS, 0)) and (in_array($rowDatos2->pn, array_column($datosS, 3))))) {
+                   $datosS[$rowDatos2->client][2] += $rowDatos2->resto;
                } else {
-                   $datosS[$index][0] = $rowDatos2->client;
-                   $datosS[$index][1] = $rowDatos2->codigo;
-                   $datosS[$index][2] = $rowDatos2->resto;
-                   $datosS[$index][3] = $rowDatos->pn;
-               }
-              
-            }
-       
-       // Reset $i before the third loop
-       $i = 0;
-       $datosT = [];
+                   $datosS[$rowDatos2->client][0] = $rowDatos2->client;
+                   $datosS[$rowDatos2->client][1] = $rowDatos2->codigo;
+                   $datosS[$rowDatos2->client][2] = $rowDatos2->resto;
+                   $datosS[$rowDatos2->client][3] = $rowDatos2->pn;               }            }
        next($datos);
        $thirdKey = key($datos);
-       // Query the database to retrieve records where 'codigo' column matches the $thirdKey
        $buscardatosClientes3 = DB::table('regsitrocalidad')->where('codigo', $thirdKey)
-       ->where('fecha','LIKE',$crtl.'%')
-       ->get();
+       ->where('fecha','LIKE',$crtl.'%')       ->get();
        foreach ($buscardatosClientes3 as $rowDatos3) {
-           $fechaControl3 = strtotime($rowDatos3->fecha);
-           if (($fechaControl3 > $datecontrol) AND ($fechaControl3 < strtotime($today))) {
-               if ((in_array($rowDatos3->client, array_column($datosT, 0)))and  (in_array($rowDatos->pn, array_column($datosS, 3)))){
-                   $index = array_search($rowDatos3->client, array_column($datosT, 0));
-                   $datosT[$index][2] += $rowDatos3->resto;
+               if ((in_array($rowDatos3->client, array_column($datosT, 0)))and  (in_array($rowDatos3->pn, array_column($datosS, 3)))){
+                    $datosT[$rowDatos3->client][2] += $rowDatos3->resto;
                } else {
-                   $datosT[$index][0] = $rowDatos3->client;
-                   $datosT[$index][1] = $rowDatos3->codigo;
-                   $datosT[$index][2] = $rowDatos3->resto;
-                   $datosT[$index][3] = $rowDatos3->pn;
-               }
-               $i++;
-           }
-       }
-
+                   $datosT[$rowDatos3->client][0] = $rowDatos3->client;
+                   $datosT[$rowDatos3->client][1] = $rowDatos3->codigo;
+                   $datosT[$rowDatos3->client][2] = $rowDatos3->resto;
+                   $datosT[$rowDatos3->client][3] = $rowDatos3->pn;
+               }     }
     //quality Q
     $Qdays=$colorQ=$labelQ=[];
     $maxDays = cal_days_in_month(CAL_GREGORIAN, date('m'), date('Y'));
@@ -698,20 +623,21 @@ public function calidad_junta(){
             if($labelQ[$i]==32 or $labelQ[$i]==33 or $labelQ[$i]==34 or $labelQ[$i]==37){
                 $colorQ[$i]='red';
             }else{
-                $colorQ[$i]='green';
-            }
-
+                $colorQ[$i]='green';            }
             ksort($datosT);
             ksort($datosS);
             ksort($datosF);
          $datosHoy=$gulty=[];
-         $i=$x=0;
-
+         $i=$x=$hoyb=$hoymal=$parhoy=0;
         $issues=DB::table('regsitrocalidad')
         ->where('fecha','LIKE',date('d-m-Y')."%")
-        ->where('codigo','!=','TODO BIEN')
         ->get();
         foreach($issues as $issue){
+            if($issue->codigo=='TODO BIEN'){
+                $hoyb+=$issue->resto;
+            }else{
+                $hoymal+=$issue->resto;
+
            if(in_array($issue->codigo, array_column($datosHoy, 1))){
             $datosHoy[array_search($issue->codigo, array_column($datosHoy, 1))][2]+=$issue->resto;
             }else{
@@ -726,21 +652,16 @@ public function calidad_junta(){
                 $gulty[$x][0]=$issue->Responsable;
                 $gulty[$x][1]=$issue->resto;
                 $x++;
-            }
-
-
-        }
-
+            }        }      }
+            $parhoy=round($hoyb/($hoyb+$hoymal)*100,2);
             ksort($datosHoy);
             if(!empty($gulty)){
             arsort($gulty);
             }
             if(!empty($gultyY)){
-            arsort($gultyY);}
-
-
-        return view('juntas/calidad',['gultyY'=>$gultyY,'gulty'=>$gulty,'datosHoy'=>$datosHoy,'totalm'=>$totalm,'totalb'=>$totalb,'monthAndYearPareto'=>$monthAndYearPareto,'datosT'=>$datosT,'datosS'=>$datosS,'datosF'=>$datosF,'labelQ'=>$labelQ,'colorQ'=>$colorQ,'value'=>$value,'cat'=>$cat,'datos'=>$datos,'pareto'=>$pareto,'Qdays'=>$Qdays]);
-
+            arsort($gultyY);
+        }
+        return view('juntas/calidad',['hoyb'=>$hoyb,'hoymal'=>$hoymal,'parhoy'=>$parhoy,'gultyY'=>$gultyY,'gulty'=>$gulty,'datosHoy'=>$datosHoy,'totalm'=>$totalm,'totalb'=>$totalb,'monthAndYearPareto'=>$monthAndYearPareto,'datosT'=>$datosT,'datosS'=>$datosS,'datosF'=>$datosF,'labelQ'=>$labelQ,'colorQ'=>$colorQ,'value'=>$value,'cat'=>$cat,'datos'=>$datos,'pareto'=>$pareto,'Qdays'=>$Qdays]);
 }
 
 public function litas_junta($id){
