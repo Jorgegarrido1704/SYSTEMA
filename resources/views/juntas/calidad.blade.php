@@ -151,7 +151,7 @@ var paretoYear={!! json_encode($monthAndYearPareto) !!};
                             <!-- AREAS -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h5 class="m-0 font-weight-bold text-primary">FTQ Now </h5>
+                                    <h5 class="m-0 font-weight-bold text-primary">FTQ Now (Good: {{$hoyb}} Bad: {{$hoymal}} FTQ: {{$parhoy}}) </h5>
                                 </div>
                                 <div class="card-body" style="overflow-y: auto; height: 360px;" id="tableChange">
                                     <div class="row" >
