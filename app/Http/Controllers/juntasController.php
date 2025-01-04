@@ -653,7 +653,7 @@ public function calidad_junta(){
                 $gulty[$x][1]=$issue->resto;
                 $x++;
             }        }      }
-            $parhoy=round($hoyb/($hoyb+$hoymal)*100,2);
+            $parhoy=Paretos($hoyb,$hoymal);
             ksort($datosHoy);
             if(!empty($gulty)){
             arsort($gulty);
