@@ -2,7 +2,12 @@
 
 @section('contenido')
  <!-- Page Heading -->
-
+<script>
+    var paola=@json($paola);
+    var paoDesc=@json($paoDesc);
+    console.log(paola);
+    console.log(paoDesc);
+</script>
  <div class="d-sm-flex align-items-center justify-content-between mb-4">
 
                     </div>

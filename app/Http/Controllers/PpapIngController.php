@@ -23,10 +23,7 @@ class PpapIngController extends Controller
             $cat=session('categoria');
             if($cat==''){return view('login'); }else{
         $i=0;
-        $inges=[];
-        $activ=[];
-        $answer=[];
-        $enginners=[];
+        $inges=$activ=$answer=$enginners=[];
         $buscarinfor=DB::table('registro')->where('count','=','13')
         ->orwhere('count','=','17')->orwhere('count','=','14')->orwhere('count','=','16')
         ->orwhere('count','=','18')->get();
@@ -83,37 +80,23 @@ class PpapIngController extends Controller
             $today=intval(date("m",strtotime("+1 month")));
             $month = date('m',strtotime("+1 month"));
         }
-
-
-        // Obtener el número de días en el mes actual
         $day_month = date('t');
-
         $year = date('Y');
-
-        // Inicializar el contador para los días que no son sábados ni domingos
         $dias_mes = [];
-
         for($i = 1; $i <= $day_month; $i++){
-            // Crear un objeto DateTime para cada día del mes
             $dateTime = date_create($i . '-' . $month . '-' . $year);
-
             $dayNumber = date_format($dateTime, 'w');
-            // Si el día no es sábado (6) ni domingo (0), incrementar el contador
             if($dayNumber != 0 && $dayNumber != 6){
                 $dias_mes[] = $i;
             }
         }
-
         $cronoGram=[];
         $graficOnTime=[0,0,0,0,0,0,0,0,0,0,0,0];
         $graficasLate=[0,0,0,0,0,0,0,0,0,0,0,0];
         $i=0;
-
         $buscarCrono=DB::table('croning')->where('fechaFin','')->get();
-
         foreach($buscarCrono as $rowCrono){
-
-            $cronoGram[$i][0]=$rowCrono->id;
+         $cronoGram[$i][0]=$rowCrono->id;
             $cronoGram[$i][1]=$rowCrono->cliente;
             $cronoGram[$i][2]=$rowCrono->pn;
             $cronoGram[$i][3]=$rowCrono->rev;
@@ -123,7 +106,6 @@ class PpapIngController extends Controller
             $cronoGram[$i][7]=$rowCrono->fechaFin;
             $cronoGram[$i][8]=$rowCrono->quienReg;
             $cronoGram[$i][9]=$rowCrono->quienCamb;
-
             $inicio=intval(substr($rowCrono->fechaReg,0,2));
             $fin=intval(substr($rowCrono->fechaCambio,0,2));
             $fin_org=intval(substr($rowCrono->fechaCompromiso,0,2));
@@ -204,9 +186,33 @@ class PpapIngController extends Controller
         $i++;
 
        }
+       $paola=$paoDesc=[];
+       $dia=date('d/m/Y');
+       $i=0;
+       function min($da){
+        $init=strtotime(date('d-m-Y 07:30'));
+        $fin=strtotime(date('d-m-Y '.$da));
+        $dif=$fin-$init;
+        if($dif>0){
+        $min=round($dif/60);
+        }else{
+            $min=0;
+        }
+        return $min;
+       }
+       $buscartateas=DB::table('weekactivities')->where('dateDay','=',$dia)->get();
+       foreach($buscartateas as $tat){
+        if($tat->id_eng=='Paola S'){
+            $paola[$i][0]=min($tat->iniTime);
+            $paola[$i][1]=min($tat->endTime);
+            $paoDesc[$i][0]=$tat->actDesc;
+            $i++;
+        }
+
+       }
 
 
-    return view('/ing',['soporte'=>$soporte,'fullreq'=>$fullreq,'graficasLate'=>$graficasLate,'graficOnTime'=>$graficOnTime,'cat'=>$cat,'inges'=>$inges,'value'=>$value,'enginners'=>$enginners,'answer'=>$answer,'dias_mes'=>$dias_mes,'cronoGram'=>$cronoGram]);
+    return view('/ing',['paola'=>$paola,'paoDesc'=>$paoDesc,'soporte'=>$soporte,'fullreq'=>$fullreq,'graficasLate'=>$graficasLate,'graficOnTime'=>$graficOnTime,'cat'=>$cat,'inges'=>$inges,'value'=>$value,'enginners'=>$enginners,'answer'=>$answer,'dias_mes'=>$dias_mes,'cronoGram'=>$cronoGram]);
 }
     }
 

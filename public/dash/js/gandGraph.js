@@ -1,63 +1,39 @@
-// Assuming your data is in the format:
-// [
-//     { time: '07:30', value: 10 },
-//     { time: '07:35', value: 12 },
-//     { time: '07:40', value: 15 },
-//     // ... more data points
-// ]
-
-function processDataForChart(data) {
-    const labels = [];
-    const values = [];
-
-    // Group data into half-hour intervals
-    const groupedData = {};
-    data.forEach(point => {
-        const hour = parseInt(point.time.split(':')[0]);
-        const minute = parseInt(point.time.split(':')[1]);
-        const halfHour = minute >= 30 ? `${hour}:${30}` : `${hour}:00`;
-
-        if (!groupedData[halfHour]) {
-            groupedData[halfHour] = [];
-        }
-        groupedData[halfHour].push(point.value);
-    });
-
-    // Calculate average for each half-hour interval
-    for (const [halfHour, values] of Object.entries(groupedData)) {
-        labels.push(halfHour);
-        values.push(values.reduce((a, b) => a + b, 0) / values.length);
-    }
-
-    return { labels, values };
-}
-
-// Example usage:
-const myData = [
-    // ... your data here
-];
-
-const { labels, values } = processDataForChart(myData);
-
+var paola;
+var paoDesc;
 var gann = document.getElementById('myChart1').getContext('2d');
 var myChart = new Chart(gann, {
     type: 'bar',
     data: {
-        labels: labels,
-        datasets: [{
-            label: 'Dataset 1',
-            data: values,
-            borderColor: ['rgba(255, 99, 132, 1)'],
-            backgroundColor: ['rgba(255, 99, 132, 0.2)'],
-        }]
+        labels: paoDesc, // Labels for the Y-axis (tasks)
+        datasets: [
+            {
+                label: 'Paola S',
+                data: paola, // Data for the X-axis
+                borderColor: ['rgba(255, 99, 132, 0.2)'],
+                backgroundColor: ['rgba(255, 99, 132, 0.2)'],
+            },
+        ],
     },
     options: {
+        indexAxis: 'y', // Horizontal bar chart
         responsive: true,
         maintainAspectRatio: false,
         scales: {
-            y: {
+            x: {
                 beginAtZero: true,
-            }
-        }
-    }
+                ticks: {
+                    stepSize: 30, // Step every 30 minutes
+                    callback: function (value) {
+                        // Convert numeric value to time format
+                        let startHour = 7; // Starting hour
+                        let startMinute = 30; // Starting minute
+                        let totalMinutes = startHour * 60 + startMinute + value; // Add the value to the base time
+                        let hours = Math.floor(totalMinutes / 60);
+                        let minutes = totalMinutes % 60;
+                        return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+                    },
+                },
+            },
+        },
+    },
 });
