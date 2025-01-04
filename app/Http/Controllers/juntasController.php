@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Exception;
 use ZeroDivisionError;
+use Carbon\Carbon;
 
 
 
@@ -548,9 +549,10 @@ public function calidad_junta(){
                 $totalm=$reglb;
                 $totalb=$reglg;
         }
-        $yearGood=$yearBad=$monthGood=$monthBad=0;
+        $yearGood=$yearBad=$monthGood=$monthBad=$weekGood=$weekBad=0;
         $monthAndYear=date("m-Y");
         $YearParto=date("Y");
+        $weekslas="Week ".date("W",strtotime("-1 weeks"));
         $buscarValorPareto=DB::table('regsitrocalidad')
         ->where('fecha', 'LIKE', "%$YearParto%")
         ->get();
@@ -559,17 +561,25 @@ public function calidad_junta(){
             if(substr($rowPareto->fecha, 3, 7) == $monthAndYear){
                 if($rowPareto->codigo=='TODO BIEN'){$monthGood+=1;}else{$monthBad+=1;}}
             }
-            try{
-                if ($monthGood == 0) {
-                    throw new Exception("Cannot divide by zero.");
-                }else{
-                $monthAndYearPareto[$monthAndYear]=round($monthGood/($monthGood+$monthBad)*100,2);
-                $monthAndYearPareto[$YearParto]=round($yearGood/($yearGood+$yearBad)*100,2);
-                }
-            }catch(Exception $e){
-                $monthAndYearPareto[$monthAndYear]=0;
-                $monthAndYearPareto[$YearParto]=0;
-            }
+       $monthAndYearPareto[$monthAndYear]=Paretos($monthGood,$monthBad);
+                $monthAndYearPareto[$YearParto]=Paretos($yearGood,$yearBad);
+                function getDaysForWeek() {
+                    $days = [];
+                    for ($day = 1; $day <= 7; $day++) {
+                        $weekNumber = date("W", strtotime("-1 weeks"));
+                        $year = date("Y") ;
+                        $date = Carbon::now()
+                            ->setISODate($year, $weekNumber, $day);
+                        $days[] = $date->toDateString();
+                    } return $days;     }
+                $days = getDaysForWeek();
+        $weevalues=DB::table('regsitrocalidad')->get();
+        foreach($weevalues as $rowParetos){
+            if(strtotime($rowParetos->fecha) >= strtotime($days[0]) and strtotime($rowParetos->fecha) <= strtotime($days[6])){
+            if($rowParetos->codigo=='TODO BIEN'){$weekGood+=1;}else{$weekBad+=1;}
+        }}
+        $monthAndYearPareto[$weekslas]=Paretos($weekGood,$weekBad);
+
         arsort($monthAndYearPareto);
         ksort($pareto);
        arsort($datos);
