@@ -258,8 +258,32 @@ class generalController extends Controller
                     $registroTiempo->area=$sesion.'/'.$donde;
                     $registroTiempo->fechaReg=$todays;
                     $registroTiempo->save();
-        }
 
+        }
+        function upRegistros($action,$count,$codigo,$process,$upCant,$todays,$place){
+            if($action=="start"){
+                $count+=1;
+                $update = DB::table('registro')->where('info', $codigo)->update(['count' => $count, 'donde' => $process]);
+                $updatetime=DB::table('timesharn')->where('bar',$codigo)->update([$place=>$todays]);
+                 $buscarCantidad=DB::table('registroparcial')->where('codeBar','=',$codigo)->get();
+                    if(!$buscarCantidad){
+                        $resp="Harness in plannig or not found";
+                    }else{
+                    foreach($buscarCantidad as $rowCantidad){
+                        $part=$rowCantidad->pn;
+                        $cortePar=$rowCantidad->cortPar;
+                        $libePar=$rowCantidad->libePar;
+                        $ensaPar=$rowCantidad->ensaPar;
+                        $loomPar=$rowCantidad->loomPar;
+                        $testPar=$rowCantidad->testPar;
+                        $embPar=$rowCantidad->embPar;
+                    }
+                    $resp="Cutting: $cortePar, Terminals: $libePar, Assembly: $ensaPar,
+                    Looming: $loomPar, Testing: $testPar, Shipping: $embPar. ";
+                }
+                return $resp;
+            }else($action=="update");{   }
+        }
             $donde='';
             $sesion=session('user');
             $sesionBus = DB::table('login')->select('category')->where('user', $sesion)->limit(1)->first();
@@ -267,11 +291,9 @@ class generalController extends Controller
             if($count===1){
                 return redirect('general')->with('response', 'Plannig Station, Harness Not update');
             }
-             elseif(($donde==='cort') and $count===2){
-                $count=3;
-                $update = DB::table('registro')->where('info', $codigo)->update(['count' => $count, 'donde' => 'Proceso de corte']);
-                if ($update) { $resp = "Cutting process";
-                } else {   $resp = "Harness not updated, it is in $area";  }
+             elseif(($donde==='cort') and $count==2){
+                $upCant=0;$action="start";$process="Cutting Process";
+                $resp=upRegistros($action,$count,$codigo,$process,$upCant,$todays,'cut');
                 return redirect('general')->with('response', $resp);
             }else if(((  $donde==='cort' ) and $count===3 ) or ((  $donde==='cort' ) and $cortePar>0)){
 
@@ -284,6 +306,7 @@ class generalController extends Controller
                     if ($update) { $resp = "Partial update, cutting process";
                     } else {   $resp = "Harness not updated, it is in $area";  }
                     return redirect('general')->with('response', $resp);
+
                 }else if($cantidad>0 and $cantidad>=($cortePar)){
 
                 if(substr($rev,0,4)=='PRIM' or substr($rev,0,4)=='PPAP' ){
@@ -323,15 +346,9 @@ class generalController extends Controller
             }else if($cantidad==0 or $cantidad==NULL){
                 return redirect('general')->with('response', "Harness not updated");  }
             }else if(($donde==='libe' or $donde==='cort') and $count===4){
-                    $count=5;
-                    $update = DB::table('registro')->where('info', $codigo)->update(['count' => $count, 'donde' => 'Proceso de liberacion']);
-                    if ($update) {
-                        $buscarinfo=DB::table('registro_pull')->where('wo',substr($wo,2))
-                        ->orWhere('wo',$wo)->get();
-                        if(count($buscarinfo)<=0){$resp = "Precaution You need to make a Pull Test";}
-                        else{$resp = "Terminal Process";}
-                    } else {   $resp = "Harness not updated, it is in $area";  }
-                    return redirect('general')->with('response', $resp);
+                $upCant=0;$action="start";$process="Terminals Process";
+                $resp=upRegistros($action,$count,$codigo,$process,$upCant,$todays,'term');
+                return redirect('general')->with('response', $resp);
             }else if((($donde==='libe' or $donde==='cort') and $count===5) or (($donde==='libe' or $donde==='cort') and $libePar>0)){
 
                 if($cantidad>0 and $cantidad<($libePar)){
@@ -367,11 +384,10 @@ class generalController extends Controller
                         $content = 'Buen día,'."\n\n".'Les comparto que el día ' . $date . ' a las ' . $time . "\n\n"."Salió de liberacion el"."\n\n";
                 $content .= "\n\n"." número de parte: " . $pnReg;
                 $content .= "\n\n"." Con Work order: " . $wo;
-                $content .= "\n\n"." Se solicita de su apoyo para revisar el motivo por el cual no se realizo la prueba";
+                $content .= "\n\n"." Se solicita de su apoyo para revisar el motivo por el cual no se realizo la prueba de pull";
 
 
                             $recipients = [
-
                                'jcervera@mx.bergstrominc.com',
                                 'dvillalpando@mx.bergstrominc.com',
                                 'egaona@mx.bergstrominc.com',
@@ -381,7 +397,6 @@ class generalController extends Controller
                                 'emedina@mx.bergstrominc.com',
                                 'jgarrido@mx.bergstrominc.com',
                                 'jlopez@mx.bergstrominc.com'
-
                             ];
                             Mail::to($recipients)->send(new \App\Mail\PPAPING($subject,$content));}
                         } else {   $resp = "Harness not updated, it is in $area";  }
@@ -411,7 +426,7 @@ class generalController extends Controller
                     $content = 'Buen día,'."\n\n".'Les comparto que el día ' . $date . ' a las ' . $time . "\n\n"."Salió de liberacion el"."\n\n";
             $content .= "\n\n"." número de parte: " . $pnReg;
             $content .= "\n\n"." Con Work order: " . $wo;
-            $content .= "\n\n"." Se solicita de su apoyo para revisar el motivo por el cual no se realizo la prueba";
+            $content .= "\n\n"." Se solicita de su apoyo para revisar el motivo por el cual no se realizo la prueba de pull";
 
 
                         $recipients = [
@@ -436,17 +451,13 @@ class generalController extends Controller
                     }}else if($cantidad==0 or $cantidad==NULL){
                         return redirect('general')->with('response', "Harness not updated");}
             }else if(($donde==='ensa' and $count===6) ){
-                        $count=7;
-                        $update = DB::table('registro')->where('info', $codigo)->update(['count' => $count, 'donde' => 'Proceso de ensable']);
-                        if ($update) { $resp = "Assembly process";
-                        } else {   $resp = "Harness not updated, it is in $area";  }
-                        return redirect('general')->with('response', $resp);
-
+                $upCant=0;$action="start";$process="Assembly Process";
+                $resp=upRegistros($action,$count,$codigo,$process,$upCant,$todays,'ensa');
+                return redirect('general')->with('response', $resp);
             } else if($donde==='ensa' and $count===15){
-                        $update = DB::table('registro')->where('info', $codigo)->update(['count' => 7, 'donde' => 'Proceso de Cables especiales']);
-                        if ($update) { $resp = "Assembly process";
-                        } else {   $resp = "Harness not updated, it is in $area";  }
-                        return redirect('general')->with('response', $resp);
+                $count=6;$upCant=0;$action="start";$process="Assembly Process";
+                $resp=upRegistros($action,$count,$codigo,$process,$upCant,$todays,'ensa');
+                return redirect('general')->with('response', $resp);
             }else if(($donde==='ensa' and $count===7) or ($donde==='ensa' and $ensaPar>0)){
                 if($cantidad>0 and $cantidad<($ensaPar)){
                     $upCant=$cantidad;
@@ -495,11 +506,9 @@ class generalController extends Controller
                     }else if($cantidad==0 or $cantidad==NULL){
                         return redirect('general')->with('response', "Harness not updated");  }
             }else if($donde==='loom' and $count===8){
-                            $count=9;
-                            $update = DB::table('registro')->where('info', $codigo)->update(['count' => $count, 'donde' => 'Proceso de loom']);
-                            if ($update) { $resp = "Looming process";
-                            } else {   $resp = "Harness not updated, it is in $area";  }
-                            return redirect('general')->with('response', $resp);
+                $upCant=0;$action="start";$process="Looming Process";
+                $resp=upRegistros($action,$count,$codigo,$process,$upCant,$todays,'loom');
+                return redirect('general')->with('response', $resp);
             } else if(($donde==='loom' and $count===9) or ($donde==='loom' and $loomPar>0)){
                 $count=10;
                             if(substr($rev,0,4)=='PRIM' or substr($rev,0,4)=='PPAP' ){

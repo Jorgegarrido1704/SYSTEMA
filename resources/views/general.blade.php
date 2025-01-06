@@ -12,11 +12,11 @@
 
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" style="max-height: 25px">
                 <h6 class="m-0 font-weight-bold text-primary">Scanner Barcode</h6>
-                <h3 align="left">{{ session('response') }}</h3>
+
             </div>
 
             <!-- table Body -->
-            <div class="card-body" style=" height: 100px;">
+            <div class="card-body" style=" height: 180px;">
                 <div class="chart-pie pt-4 pb-2">
                     <form action="{{ route('codigo') }}" method="POST">
                         @csrf
@@ -41,7 +41,7 @@
                     </form>
                     <hr>
                     <br>
-                    <h3 align="left">{{ session('response') }}</h3>
+                    <h3 align="center">{{ session('response') }}</h3>
                 </div>
             </div>
         </div>
