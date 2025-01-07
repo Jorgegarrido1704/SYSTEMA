@@ -216,31 +216,27 @@ class generalController extends Controller
 
 }
     public function codigo(request $request){
-        $cat=session('categoria');
-        $value=session('user');
-        if($cat=='' OR $value==''){
+        $cat=session('categoria');        $value=session('user');        if($cat=='' OR $value==''){
             return view('login');
         }else{
-            $cantidad=$request->input('cantidad');
-           $codigo=$request->input('code-bar');
-            $codigo=str_replace("'","-",$codigo);
-            $buscarCantidad=DB::table('registroparcial')->where('codeBar','=',$codigo)->get();
+        $cantidad=$request->input('cantidad');
+        $codigo=$request->input('code-bar');
+        $codigo=str_replace("'","-",$codigo);
+        $buscarCantidad=DB::table('registroparcial')->where('codeBar','=',$codigo)->get();
+        if(empty($buscarCantidad)){ $resp="Recod not found";}
+        else{
             foreach($buscarCantidad as $rowCantidad){
                 $cortePar=$rowCantidad->cortPar;
                 $libePar=$rowCantidad->libePar;
                 $ensaPar=$rowCantidad->ensaPar;
-                $espWPar=$rowCantidad->espWPar;
                 $loomPar=$rowCantidad->loomPar;
                 $testPar=$rowCantidad->testPar;
                 $embPar=$rowCantidad->embPar;
-            }
-
-
+            $resp="Cutting: $cortePar, Terminals: $libePar, Assembly: $ensaPar, Looming: $loomPar, Testing: $testPar, Shipping: $embPar";
+        }}
             $todays=date('d-m-Y H:i');
             $buscar=DB::select("SELECT count,wo,donde,NumPart,rev,Qty,po,cliente FROM registro WHERE info='$codigo'");
-            if (!$buscar) {
-                return redirect('general')->with('response', 'Record not found');
-            }
+            if (!$buscar) { return redirect('general')->with('response', 'Record not found');  }else{
             foreach($buscar as $rowb){
             $count=$rowb->count;
             $area=$rowb->donde;
@@ -250,7 +246,7 @@ class generalController extends Controller
             $orgQty=$rowb->Qty;
             $cli=$rowb->cliente;
             $poReg=$rowb->po;
-        }
+        }}
         function updateCount($codigo,$upCant,$sesion,$donde,$todays){
             $registroTiempo=new regParTime();
                     $registroTiempo->codeBar=$codigo;
@@ -258,123 +254,101 @@ class generalController extends Controller
                     $registroTiempo->area=$sesion.'/'.$donde;
                     $registroTiempo->fechaReg=$todays;
                     $registroTiempo->save();
-
         }
-        function upRegistros($action,$count,$codigo,$process,$upCant,$todays,$place){
-            if($action=="start"){
-                $count+=1;
+        function upRegistros($count,$codigo,$process,$todays,$place){
                 $update = DB::table('registro')->where('info', $codigo)->update(['count' => $count, 'donde' => $process]);
                 $updatetime=DB::table('timesharn')->where('bar',$codigo)->update([$place=>$todays]);
-                 $buscarCantidad=DB::table('registroparcial')->where('codeBar','=',$codigo)->get();
-                    if(!$buscarCantidad){
-                        $resp="Harness in plannig or not found";
-                    }else{
-                    foreach($buscarCantidad as $rowCantidad){
-                        $part=$rowCantidad->pn;
-                        $cortePar=$rowCantidad->cortPar;
-                        $libePar=$rowCantidad->libePar;
-                        $ensaPar=$rowCantidad->ensaPar;
-                        $loomPar=$rowCantidad->loomPar;
-                        $testPar=$rowCantidad->testPar;
-                        $embPar=$rowCantidad->embPar;
                     }
-                    $resp="Cutting: $cortePar, Terminals: $libePar, Assembly: $ensaPar,
-                    Looming: $loomPar, Testing: $testPar, Shipping: $embPar. ";
-                }
-                return $resp;
-            }else($action=="update");{   }
+        function Resp($codigo){
+            $buscarCantidad=DB::table('registroparcial')->where('codeBar','=',$codigo)->get();
+            if(empty($buscarCantidad)){ $resp="Recod not found";}
+            else{
+                foreach($buscarCantidad as $rowCantidad){
+                    $cortePar=$rowCantidad->cortPar;
+                    $libePar=$rowCantidad->libePar;
+                    $ensaPar=$rowCantidad->ensaPar;
+                    $loomPar=$rowCantidad->loomPar;
+                    $testPar=$rowCantidad->testPar;
+                    $embPar=$rowCantidad->embPar;
+                $resp="Cutting: $cortePar, Terminals: $libePar, Assembly: $ensaPar, Looming: $loomPar, Testing: $testPar, Shipping: $embPar";
+            }}
+            return $resp;
         }
             $donde='';
             $sesion=session('user');
             $sesionBus = DB::table('login')->select('category')->where('user', $sesion)->limit(1)->first();
             $donde = $sesionBus->category;
-            if($count===1){
-                return redirect('general')->with('response', 'Plannig Station, Harness Not update');
-            }
-             elseif(($donde==='cort') and $count==2){
-                $upCant=0;$action="start";$process="Cutting Process";
-                $resp=upRegistros($action,$count,$codigo,$process,$upCant,$todays,'cut');
-                return redirect('general')->with('response', $resp);
-            }else if(((  $donde==='cort' ) and $count===3 ) or ((  $donde==='cort' ) and $cortePar>0)){
-
-                if($cantidad>0 and $cantidad<($cortePar)){
-                    $upCant=$cantidad;
-                    $restoAnt=$cortePar-$upCant;
-                    $nuevo=$libePar+$upCant;
-                    $update = DB::table('registroparcial')->where('codeBar', "=",$codigo)->update(['cortPar' => $restoAnt,'libePar' => $nuevo]);
-                    updateCount($codigo,$upCant,$sesion,$donde,$todays);
-                    if ($update) { $resp = "Partial update, cutting process";
-                    } else {   $resp = "Harness not updated, it is in $area";  }
-                    return redirect('general')->with('response', $resp);
-
-                }else if($cantidad>0 and $cantidad>=($cortePar)){
-
-                if(substr($rev,0,4)=='PRIM' or substr($rev,0,4)=='PPAP' ){
-                     $buscar=DB::table('timesharn')->select('cut','fecha')->where('bar',$codigo)->first();
-                                $lasDate=$buscar->fecha;
-                                if($buscar->cut==NULL){
-                                    $update = DB::table('timesharn')->where('bar', $codigo)->update(['cut' => $lasDate]);
+                 if($cantidad<=0 or $cantidad==NULL){
+                    return redirect('general')->with('response', "Harness not updated");  }
+            if(($donde==='loom' and $count===9) or ($donde==='loom' and $loomPar>0)){
+                           if( $cantidad>=($loomPar)){
+                                if(substr($rev,0,4)=='PRIM' or substr($rev,0,4)=='PPAP' ){
+                                    upRegistros(14,$codigo,'En espera de Ingenieria Loom',$todays,'loomF');
+                                    $resp=Resp($codigo);
+                                    return redirect('general')->with('response', $resp);
+                                }else{
+                                 $nuevo=$testPar+$loomPar;
+                                $update = DB::table('registroparcial')->where('codeBar', "=",$codigo)->update(['loomPar' => '0','testPar' => $nuevo]);
+                                updateCount($codigo,$cantidad, $sesion,$donde,$todays);
+                                upRegistros(10,$codigo,'Testing Process',$todays,'loomF');
+                                  $tiempoUp=DB::table('tiempos')->where('info',$codigo)->update(['loom'=>$todays]);
                                 }
-                                $upCant=$cortePar;
-                                $nuevo=$libePar+$upCant;
-                                $update = DB::table('registroparcial')->where('codeBar', "=",$codigo)->update(['cortPar' => '0','libePar' => $nuevo]);
-                                updateCount($codigo,$upCant,$sesion,$donde,$todays);
-
-                    $updatetime=DB::table('timesharn')->where('bar',$codigo)->update(['cutF'=>$todays]);
-                    $update = DB::table('registro')->where('info', $codigo)->update(['count' => 17, 'donde' => 'En espera de Ingenieria Corte']);
-                    if ($update) { $resp = "Waitting for enginney";
-                    } else {   $resp = "Harness not updated, it is in $area";  }
-                    return redirect('general')->with('response', $resp);
-                }else{
-                $count=4;
-                $buscar=DB::table('timesharn')->where('bar',$codigo)->first();
-                                $lasDate=$buscar->fecha;
-                if($buscar->cut==NULL){
-                    $update = DB::table('timesharn')->where('bar', $codigo)->update(['cut' => $lasDate]);
+                } else  if($cantidad<($loomPar) and (substr($rev,0,4)!='PRIM' or substr($rev,0,4)!='PPAP' )){
+                    $restoAnt=$loomPar-$cantidad; $nuevo=$testPar+$cantidad;
+                    $update = DB::table('registroparcial')->where('codeBar', "=",$codigo)->update(['loomPar' => $restoAnt,'testPar' => $nuevo]);
+                    updateCount($codigo,$cantidad,$sesion,$donde,$todays);
                 }
-                $upCant=$cortePar;
-                $nuevo=$libePar+$upCant;
-                $update = DB::table('registroparcial')->where('codeBar', "=",$codigo)->update(['cortPar' => '0','libePar' => $nuevo]);
-                updateCount($codigo,$upCant,$sesion,$donde,$todays);
-
-                $updatetime=DB::table('timesharn')->where('bar',$codigo)->update(['cutF'=>$todays]);
-                $tiempoUp=DB::table('tiempos')->where('info',$codigo)->update(['corte'=>$todays]);
-                $update = DB::table('registro')->where('info', $codigo)->update(['count' => $count, 'donde' => 'En espera de liberacion']);
-                if ($update) { $resp = "This harness was updated to the next station";
-                } else {   $resp = "Harness not updated, it is in $area";  }
-                return redirect('general')->with('response', $resp);}
-            }else if($cantidad==0 or $cantidad==NULL){
-                return redirect('general')->with('response', "Harness not updated");  }
-            }else if(($donde==='libe' or $donde==='cort') and $count===4){
-                $upCant=0;$action="start";$process="Terminals Process";
-                $resp=upRegistros($action,$count,$codigo,$process,$upCant,$todays,'term');
-                return redirect('general')->with('response', $resp);
-            }else if((($donde==='libe' or $donde==='cort') and $count===5) or (($donde==='libe' or $donde==='cort') and $libePar>0)){
-
-                if($cantidad>0 and $cantidad<($libePar)){
-                    $upCant=$cantidad;
-                    $restoAnt=$libePar-$upCant;
-                    $nuevo=$ensaPar+$upCant;
+                $buscarcalidad=DB::table('calidad')->where("info",$codigo)->first();
+                if($buscarcalidad){
+                    $regcalidad=$buscarcalidad->qty;
+                    $nueva=$regcalidad+$cantidad;
+                    $update = DB::table('calidad')->where('info', $codigo)->update(['qty' => $nueva]);
+                }else{
+                    $calReg=new listaCalidad;
+                    $calReg->np=$pnReg;
+                    $calReg->client=$cli;
+                    $calReg->wo=$wo;
+                    $calReg->po=$poReg;
+                    $codigo=strtoupper($codigo);
+                    $calReg->info=$codigo;
+                    $calReg->qty=$cantidad;
+                    $calReg->parcial="Si";
+                    $calReg->save();
+                }
+            }else if($donde==='loom' and $count===8){
+                upRegistros(9,$codigo,"Looming Process",$todays,'loom');
+            }else if(($donde==='ensa' and $count===7) or ($donde==='ensa' and $ensaPar>0)){
+                if( $cantidad<($ensaPar) and (substr($rev,0,4)!='PRIM' or substr($rev,0,4)!='PPAP' )){
+                    $restoAnt=$ensaPar-$cantidad;             $nuevo=$loomPar+$cantidad;
+                    $update = DB::table('registroparcial')->where('codeBar', "=",$codigo)->update(['ensaPar' => $restoAnt,'loomPar' => $nuevo]);
+                    updateCount($codigo,$cantidad,$sesion,$donde,$todays);
+                }else if($cantidad>=($ensaPar)){
+                        if(substr($rev,0,4)=='PRIM' or substr($rev,0,4)=='PPAP' ){
+                            $ensaPar;     $nuevo=$loomPar+$cantidad;
+                            $update = DB::table('registroparcial')->where('codeBar', "=",$codigo)->update(['ensaPar' => '0','loomPar' => $nuevo]);
+                            updateCount($codigo,$cantidad,$sesion,$donde,$todays);
+                            upRegistros(13,$codigo,'En espera de Ingenieria ensamble',$todays,'ensaF');
+                            $resp=Resp($codigo); return redirect('general')->with('response', $resp);
+                        }else{
+                        $nuevo=$loomPar+$ensaPar;
+                        $update = DB::table('registroparcial')->where('codeBar', "=",$codigo)->update(['ensaPar' => '0','loomPar' => $nuevo]);
+                        updateCount($codigo,$cantidad,$sesion,$donde,$todays);
+                        upRegistros(8,$codigo,'Looming Process',$todays,'ensaF');
+                        $tiempoUp=DB::table('tiempos')->where('info',$codigo)->update(['ensamble'=>$todays]);
+                    }    }
+            }else if($donde==='ensa' and ($count===6 or $count===15) ){
+                upRegistros(7,$codigo,'Assembly Process',$todays,'ensa');
+            } else if((($donde==='libe' ) and $count===5) or (($donde==='libe') and $libePar>0)){
+                if( $cantidad<($libePar) and (substr($rev,0,4)!='PRIM' or substr($rev,0,4)!='PPAP' )){
+                    $restoAnt=$libePar-$cantidad; $nuevo=$ensaPar+$cantidad;
                     $update = DB::table('registroparcial')->where('codeBar', "=",$codigo)->update(['libePar' => $restoAnt,'ensaPar' => $nuevo]);
-                    updateCount($codigo,$upCant,$sesion,$donde,$todays);
-                    if ($update) { $resp = "Partial update Terminals Process";
-                    } else {   $resp = "Harness not updated, it is in $area";  }
-                    return redirect('general')->with('response', $resp);
-                }else if($cantidad>0 and $cantidad>=($libePar)){
+                    updateCount($codigo,$cantidad,$sesion,$donde,$todays);
+                }else if( $cantidad>=($libePar)){
+                    $restoAnt=0; $nuevo=$ensaPar+$libePar;
                     if(substr($rev,0,4)=='PRIM' or substr($rev,0,4)=='PPAP' ){
-                        $buscar=DB::table('timesharn')->select('term','cutF')->where('bar',$codigo)->first();
-                        $lasDate=$buscar->cutF;
-                        if($buscar->term==NULL){
-                            $update = DB::table('timesharn')->where('bar', $codigo)->update(['term' => $lasDate]);
-                        }
-                        $upCant=$libePar;
-                        $nuevo=$ensaPar+$upCant;
-                        $update = DB::table('registroparcial')->where('codeBar', "=",$codigo)->update(['libePar' => '0','ensaPar' => $nuevo]);
-                        updateCount($codigo,$upCant,$sesion,$donde,$todays);
-
-                        $updatetime=DB::table('timesharn')->where('bar',$codigo)->update(['termF'=>$todays]);
-                        $update = DB::table('registro')->where('info', $codigo)->update(['count' => 16, 'donde' => 'En espera de Ingenieria Liberacion']);
-                        if ($update) { $resp = "Waitting for enginney";
+                        $update = DB::table('registroparcial')->where('codeBar', "=",$codigo)->update(['libePar' => $restoAnt,'ensaPar' => $nuevo]);
+                        updateCount($codigo,$cantidad,$sesion,$donde,$todays);
+                        if ( upRegistros(16,$codigo,'Engineering Terminals',$todays,'termF')) {
                             $buscarinfo=DB::table('registro_pull')->where('wo',substr($wo,2))
                             ->orWhere('wo',$wo)->get();
                             if(count($buscarinfo)<=0){
@@ -385,8 +359,6 @@ class generalController extends Controller
                 $content .= "\n\n"." número de parte: " . $pnReg;
                 $content .= "\n\n"." Con Work order: " . $wo;
                 $content .= "\n\n"." Se solicita de su apoyo para revisar el motivo por el cual no se realizo la prueba de pull";
-
-
                             $recipients = [
                                'jcervera@mx.bergstrominc.com',
                                 'dvillalpando@mx.bergstrominc.com',
@@ -399,24 +371,12 @@ class generalController extends Controller
                                 'jlopez@mx.bergstrominc.com'
                             ];
                             Mail::to($recipients)->send(new \App\Mail\PPAPING($subject,$content));}
-                        } else {   $resp = "Harness not updated, it is in $area";  }
+                        }  $resp=Resp($codigo);
                         return redirect('general')->with('response', $resp);
                     }else {
-                    $count=6;
-                    $buscar=DB::table('timesharn')->select('term','cutF')->where('bar',$codigo)->first();
-                    $lasDate=$buscar->cutF;
-                    if($buscar->term==NULL){
-                        $update = DB::table('timesharn')->where('bar', $codigo)->update(['term' => $lasDate]);
-                    }
-                    $upCant=$libePar;
-                    $nuevo=$ensaPar+$upCant;
-                    $update = DB::table('registroparcial')->where('codeBar', "=",$codigo)->update(['libePar' => '0','ensaPar' => $nuevo]);
-                    updateCount($codigo,$upCant,$sesion,$donde,$todays);
-
-                    $updatetime=DB::table('timesharn')->where('bar',$codigo)->update(['termF'=>$todays]);
-                    $tiempoUp=DB::table('tiempos')->where('info',$codigo)->update(['liberacion'=>$todays]);
-                    $update = DB::table('registro')->where('info', $codigo)->update(['count' => $count, 'donde' => 'En espera de ensamble']);
-                    if ($update) {
+                    $update = DB::table('registroparcial')->where('codeBar', "=",$codigo)->update(['libePar' => $restoAnt,'ensaPar' => $nuevo]);
+                    updateCount($codigo,$cantidad,$sesion,$donde,$todays);
+                    if (upRegistros(6,$codigo,'Waiting Assembly',$todays,'termF')) {
                         $buscarinfo=DB::table('registro_pull')->where('wo',substr($wo,2))
                         ->orWhere('wo',$wo)->get();
                         if(count($buscarinfo)<=0){
@@ -444,152 +404,35 @@ class generalController extends Controller
 
                         ];
                         Mail::to($recipients)->send(new \App\Mail\PPAPING($subject,$content));}
-                        $resp = "This harness was updated to the next station";
-                    } else { $resp = "Harness not updated, it is in $area";
-                    }  return redirect('general')->with('response', $resp);
-
-                    }}else if($cantidad==0 or $cantidad==NULL){
-                        return redirect('general')->with('response', "Harness not updated");}
-            }else if(($donde==='ensa' and $count===6) ){
-                $upCant=0;$action="start";$process="Assembly Process";
-                $resp=upRegistros($action,$count,$codigo,$process,$upCant,$todays,'ensa');
-                return redirect('general')->with('response', $resp);
-            } else if($donde==='ensa' and $count===15){
-                $count=6;$upCant=0;$action="start";$process="Assembly Process";
-                $resp=upRegistros($action,$count,$codigo,$process,$upCant,$todays,'ensa');
-                return redirect('general')->with('response', $resp);
-            }else if(($donde==='ensa' and $count===7) or ($donde==='ensa' and $ensaPar>0)){
-                if($cantidad>0 and $cantidad<($ensaPar)){
-                    $upCant=$cantidad;
-                    $restoAnt=$ensaPar-$upCant;
-                    $nuevo=$loomPar+$upCant;
-                    $update = DB::table('registroparcial')->where('codeBar', "=",$codigo)->update(['ensaPar' => $restoAnt,'loomPar' => $nuevo]);
-                    updateCount($codigo,$upCant,$sesion,$donde,$todays);
-                    if ($update) { $resp = "Partial update, cutting process";
-                    } else {   $resp = "Harness not updated, it is in $area";  }
+                    }
+                    }}
+            }else if(($donde==='libe') and $count===4){
+                upRegistros($count,$codigo,"Terminals Process",$todays,'term');
+            } else if(((  $donde==='cort' or $donde==='libe' ) and $count===3 ) or ((  $donde==='cort' or $donde==='libe') and $cortePar>0)){
+                if( $cantidad<$cortePar and (substr($rev,0,4)!='PRIM' or substr($rev,0,4)!='PPAP' )){
+                    $restoAnt=$cortePar-$cantidad;      $nuevo=$libePar+$cantidad;
+                    updateCount($codigo,$cantidad,$sesion,$donde,$todays);
+                    $update = DB::table('registroparcial')->where('codeBar', "=",$codigo)->update(['cortPar'=> $restoAnt,'libePar' => $nuevo]);
+                }else if( $cantidad>=($cortePar)){
+                    $restoAnt=0; $nuevo=$libePar+$cortePar;
+                if(substr($rev,0,4)=='PRIM' or substr($rev,0,4)=='PPAP' ){
+                    updateCount($codigo,$cantidad,$sesion,$donde,$todays);
+                    $update = DB::table('registroparcial')->where('codeBar', "=",$codigo)->update(['cortPar'=> $restoAnt,'libePar' => $nuevo]);
+                    upRegistros(17,$codigo,'Engineering Cutting',$todays,'cutF');
+                    $resp=Resp($codigo);
                     return redirect('general')->with('response', $resp);
-                }else if($cantidad>0 and $cantidad>=($ensaPar)){
-                        if(substr($rev,0,4)=='PRIM' or substr($rev,0,4)=='PPAP' ){
-                            $buscar=DB::table('timesharn')->select('ensa','termF')->where('bar',$codigo)->first();
-                            $lasDate=$buscar->termF;
-                            if($buscar->ensa==NULL){
-                                $update = DB::table('timesharn')->where('bar', $codigo)->update(['ensa' => $lasDate]);
-                            }
-                            $upCant=$ensaPar;
-                            $nuevo=$loomPar+$upCant;
-                            $update = DB::table('registroparcial')->where('codeBar', "=",$codigo)->update(['ensaPar' => '0','loomPar' => $nuevo]);
-                            updateCount($codigo,$upCant,$sesion,$donde,$todays);
-
-                            $updatetime=DB::table('timesharn')->where('bar',$codigo)->update(['ensaF'=>$todays]);
-                            $update = DB::table('registro')->where('info', $codigo)->update(['count' => 13, 'donde' => 'En espera de Ingenieria ensamble']);
-                            if ($update) { $resp = "Waitting for enginney";
-                            } else {   $resp = "Harness not updated, it is in $area";  }
-                            return redirect('general')->with('response', $resp);
-                        }else{
-                        $count=8;
-                        $buscar=DB::table('timesharn')->select('ensa','termF')->where('bar',$codigo)->first();
-                        $lasDate=$buscar->termF;
-                        if($buscar->ensa==NULL){
-                            $update = DB::table('timesharn')->where('bar', $codigo)->update(['ensa' => $lasDate]);
-                        }
-                        $upCant=$ensaPar;
-                        $nuevo=$loomPar+$upCant;
-                        $update = DB::table('registroparcial')->where('codeBar', "=",$codigo)->update(['ensaPar' => '0','loomPar' => $nuevo]);
-                        updateCount($codigo,$upCant,$sesion,$donde,$todays);
-
-                        $updatetime=DB::table('timesharn')->where('bar',$codigo)->update(['ensaF'=>$todays]);
-                        $tiempoUp=DB::table('tiempos')->where('info',$codigo)->update(['ensamble'=>$todays]);
-                        $update = DB::table('registro')->where('info', $codigo)->update(['count' => $count, 'donde' => 'En espera de loom']);
-                        if ($update) { $resp = "This harness was updated to the next station";
-                        } else {   $resp = "Harness not updated, it is in $area";  }
-                        return redirect('general')->with('response', $resp); }
-                    }else if($cantidad==0 or $cantidad==NULL){
-                        return redirect('general')->with('response', "Harness not updated");  }
-            }else if($donde==='loom' and $count===8){
-                $upCant=0;$action="start";$process="Looming Process";
-                $resp=upRegistros($action,$count,$codigo,$process,$upCant,$todays,'loom');
-                return redirect('general')->with('response', $resp);
-            } else if(($donde==='loom' and $count===9) or ($donde==='loom' and $loomPar>0)){
-                $count=10;
-                            if(substr($rev,0,4)=='PRIM' or substr($rev,0,4)=='PPAP' ){
-                                $buscar=DB::table('timesharn')->select('loom','ensaF')->where('bar',$codigo)->first();
-                                $lasDate=$buscar->ensaF;
-                                if($buscar->loom==NULL){
-                                    $update = DB::table('timesharn')->where('bar', $codigo)->update(['loom' => $lasDate]);
-                                }
-                                $updatetime=DB::table('timesharn')->where('bar',$codigo)->update(['loomF'=>$todays]);
-                                $update = DB::table('registro')->where('info', $codigo)->update(['count' => 14, 'donde' => 'En espera de Ingenieria Loom']);
-                                if ($update) { $resp = "Waitting for enginney";
-                                } else {   $resp = "Harness not updated, it is in $area";  }
-                                return redirect('general')->with('response', $resp);
-                            }elseif($cantidad>0 and $cantidad<($loomPar)){
-                                $upCant=$cantidad;
-                                $restoAnt=$loomPar-$upCant;
-                                $nuevo=$testPar+$upCant;
-                                $update = DB::table('registroparcial')->where('codeBar', "=",$codigo)->update(['loomPar' => $restoAnt,'testPar' => $nuevo]);
-                                updateCount($codigo,$upCant,$sesion,$donde,$todays);
-                                $buscarcalidad=DB::table('calidad')->where("info",$codigo)->first();
-                                if($buscarcalidad){
-                                    $regcalidad=$buscarcalidad->qty;
-                                    $nueva=$regcalidad+$upCant;
-                                    $update = DB::table('calidad')->where('info', $codigo)->update(['qty' => $nueva]);
-                                }else{
-                                    $calReg=new listaCalidad;
-                                    $calReg->np=$pnReg;
-                                    $calReg->client=$cli;
-                                    $calReg->wo=$wo;
-                                    $calReg->po=$poReg;
-                                    $codigo=strtoupper($codigo);
-                                    $calReg->info=$codigo;
-                                    $calReg->qty=$upCant;
-                                    $calReg->parcial="Si";
-                                    $calReg->save();
-                                }
-
-                                if ($update) { $resp = "Partial update, cutting process";
-                                } else {   $resp = "Harness not updated, it is in $area";  }
-                                return redirect('general')->with('response', $resp);
-                            }else if($cantidad>0 and $cantidad>=($loomPar)){
-
-                                $upCant=$loomPar;
-                                $nuevo=$testPar+$upCant;
-                                $update = DB::table('registroparcial')->where('codeBar', "=",$codigo)->update(['loomPar' => '0','testPar' => $nuevo]);
-                                updateCount($codigo,$upCant,$sesion,$donde,$todays);
-                                $buscarcalidad=DB::table('calidad')->where("info",$codigo)->first();
-                                if($buscarcalidad){
-                                    $regcalidad=$buscarcalidad->qty;
-                                    $nueva=$regcalidad+$upCant;
-                                    $update = DB::table('calidad')->where('info', $codigo)->update(['qty' => $nueva]);
-                                }else{
-                                    $calReg=new listaCalidad;
-                                    $calReg->np=$pnReg;
-                                    $calReg->client=$cli;
-                                    $calReg->wo=$wo;
-                                    $calReg->po=$poReg;
-                                    $codigo=strtoupper($codigo);
-                                    $calReg->info=$codigo;
-                                    $calReg->qty=$upCant;
-                                    $calReg->parcial="Si";
-                                    $calReg->save();
-                                }
-
-                                    $buscar=DB::table('timesharn')->select('loom','ensaF')->where('bar',$codigo)->first();
-                                $lasDate=$buscar->ensaF;
-                                if($buscar->loom==NULL){
-                                    $update = DB::table('timesharn')->where('bar', $codigo)->update(['loom' => $lasDate]);
-                                }
-                                    $updatetime=DB::table('timesharn')->where('bar',$codigo)->update(['loomF'=>$todays]);
-                                    $tiempoUp=DB::table('tiempos')->where('info',$codigo)->update(['loom'=>$todays]);
-                                    $update = DB::table('registro')->where('info', $codigo)->update(['count' => $count, 'donde' => 'En espera de prueba electrica']);
-                                    if ($update) { $resp = "This harness was updated to the next station";
-                                    } else {   $resp = "Harness not updated, it is in $area";  }
-                                    return redirect('general')->with('response', $resp);
-
-                } else if($cantidad==0 or $cantidad==NULL){
-                    return redirect('general')->with('response', "Harness not updated");  }
-            }else{
-                return redirect('general')->with('response', "Harness is in $area");
+                }else{
+                    updateCount($codigo,$cantidad,$sesion,$donde,$todays);
+                    $update = DB::table('registroparcial')->where('codeBar', "=",$codigo)->update(['cortPar'=> $restoAnt,'libePar' => $nuevo]);
+                    upRegistros(4,$codigo,'Waitting for Terminals',$todays,'cutF');
+                    $tiempoUp=DB::table('tiempos')->where('info',$codigo)->update(['corte'=>$todays]);
+                    }} }
+           else if(($donde==='cort' or $donde==='libe') and $count==2){
+                upRegistros(3,$codigo,"Cutting Process",$todays,'cut');
+            }else  if($count===1){ return redirect('general')->with('response', 'Plannig Station, Harness Not update');
             }
+            $resp = Resp($codigo);
+            return redirect('general')->with('response', $resp);
 }
 }
 
