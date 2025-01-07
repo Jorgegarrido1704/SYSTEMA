@@ -186,9 +186,9 @@ class PpapIngController extends Controller
         $i++;
 
        }
-       $paola=$paoDesc=[];
+       $paola=$alex=$alexDesc=$paoDesc=[];
        $dia=date('d/m/Y');
-       $i=0;
+       $i=$j=0;
        function min($da){
         $init=strtotime(date('d-m-Y 07:30'));
         $fin=strtotime(date('d-m-Y '.$da));
@@ -207,12 +207,17 @@ class PpapIngController extends Controller
             $paola[$i][1]=min($tat->endTime);
             $paoDesc[$i][0]=$tat->actDesc;
             $i++;
+        }else if($tat->id_eng=='Alex V'){
+            $alex[$j][0]=min($tat->iniTime);
+            $alex[$j][1]=min($tat->endTime);
+            $alexDesc[$j][0]=$tat->actDesc;
+            $j++;
         }
 
        }
 
 
-    return view('/ing',['paola'=>$paola,'paoDesc'=>$paoDesc,'soporte'=>$soporte,'fullreq'=>$fullreq,'graficasLate'=>$graficasLate,'graficOnTime'=>$graficOnTime,'cat'=>$cat,'inges'=>$inges,'value'=>$value,'enginners'=>$enginners,'answer'=>$answer,'dias_mes'=>$dias_mes,'cronoGram'=>$cronoGram]);
+    return view('/ing',['alex'=>$alex,'alexDesc'=>$alexDesc,'paola'=>$paola,'paoDesc'=>$paoDesc,'soporte'=>$soporte,'fullreq'=>$fullreq,'graficasLate'=>$graficasLate,'graficOnTime'=>$graficOnTime,'cat'=>$cat,'inges'=>$inges,'value'=>$value,'enginners'=>$enginners,'answer'=>$answer,'dias_mes'=>$dias_mes,'cronoGram'=>$cronoGram]);
 }
     }
 

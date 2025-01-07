@@ -5,8 +5,10 @@
 <script>
     var paola=@json($paola);
     var paoDesc=@json($paoDesc);
-    console.log(paola);
-    console.log(paoDesc);
+    var alex=@json($alex);
+    var alexDesc=@json($alexDesc);
+    console.log(paola + paoDesc);
+    console.log(alex + alexDesc);
 </script>
  <div class="d-sm-flex align-items-center justify-content-between mb-4">
 
@@ -601,7 +603,8 @@ select {
                                     <h5 class="m-0 font-weight-bold text-primary">Cronograma Diario</h5>
                                 </div>
                                 <div class="card-body" style="overflow-y: auto; height: 660px;" >
-                                    <canvas id="myChart1" style="width: 100%; height: 100%;"></canvas>
+                                    <canvas id="Paola S" style="width: 100%; height: 100%;"></canvas>
+                                    <canvas id="Alex V" style="width: 100%; height: 100%;"></canvas>
                                 </div>
                             </div>
                         </div>
