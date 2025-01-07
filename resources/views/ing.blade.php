@@ -7,8 +7,11 @@
     var paoDesc=@json($paoDesc);
     var alex=@json($alex);
     var alexDesc=@json($alexDesc);
-    console.log(paola + paoDesc);
-    console.log(alex + alexDesc);
+    var paoT=@json($paolaT);
+    var alexT=@json($alexT);
+    var paoTd=@json($paolaTdesc);
+    console.log( paoT + paoTd);
+    console.log( alex + alexDesc);
 </script>
  <div class="d-sm-flex align-items-center justify-content-between mb-4">
 

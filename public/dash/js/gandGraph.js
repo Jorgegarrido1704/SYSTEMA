@@ -2,17 +2,26 @@ var paola;
 var paoDesc;
 var alex;
 var alexDesc;
+var paoT;
+var alexT;
 var gann = document.getElementById('Paola S').getContext('2d');
 var myChart = new Chart(gann, {
     type: 'bar',
     data: {
-        labels: paoDesc, // Labels for the Y-axis (tasks)
+        labels: paoDesc,// Labels for the Y-axis (tasks)
         datasets: [
             {
                 label: 'Paola S',
-                data: paola, // Data for the X-axis
-                borderColor: ['rgba(154, 4, 117, 0.2)'],
-                backgroundColor: ['rgba(252, 124, 152, 0.2)'],
+                data: paola,
+                backgroundColor: 'rgba(147, 147, 147, 0.4)',
+
+            },
+
+            {
+                label: 'Paola S Actual',
+                data: paoT,
+                backgroundColor: 'rgba(255, 11, 157, 0.81)',
+
             },
         ],
     },
@@ -39,8 +48,7 @@ var myChart1 = new Chart(gann1, {
             {
                 label: 'Alex V',
                 data: alex, // Data for the X-axis
-                borderColor: ['rgba(38, 142, 4, 0.2)'],
-                backgroundColor: ['rgba(43, 148, 22, 0.2)'],
+                backgroundColor: 'rgba(147, 147, 147, 0.4)',
             },
         ],
     },

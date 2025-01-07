@@ -41,6 +41,7 @@ class PpapIngController extends Controller
         $i=0;
         $SearchAct=DB::table('ingactividades')->where('count','<','4')->orderby("Id_request")->get();
         foreach($SearchAct as $rowAct){
+
             $enginners[$i][0]=$rowAct->id;
             $enginners[$i][1]=$rowAct->Id_request;
             $control=strtotime($rowAct->fecha);
@@ -200,6 +201,29 @@ class PpapIngController extends Controller
         }
         return $min;
        }
+       //engineers similituds
+       $inip=$inia=0;
+       $paolaT=$alexT=$paolaTdesc=$alexTdesc=[];
+         $todaying=date('d-m-Y');
+       $enginners1=DB::table('ingactividades')->where('fecha','LIKE',$todaying.'%')->get();
+       foreach($enginners1 as $eng1){
+            if(intval(strtotime($eng1->fecha))>intval(strtotime(date('d-m-Y 07:30')))){
+                $inicio=(((strtotime($eng1->fecha))-(strtotime(date('d-m-Y 07:30'))))/60);
+            }else{        $inicio=0;       }
+            $fin=(((strtotime($eng1->finT))-(strtotime(date('d-m-Y 07:30'))))/60);
+            if($eng1->Id_request=='Paola S'){
+                $paolaT[$inip][0]=$inicio;
+                $paolaT[$inip][1]=$fin;
+                $paolaTdesc[$inia][0]=$eng1->desciption;
+                $inip++;
+
+            }else if($eng1->Id_request==='Alejandro V'){
+                $alexT[$inip][0]=$inicio;
+                $alexT[$inip][1]=$fin;
+                $inip++;
+            }
+    }
+       //weekly activities
        $buscartateas=DB::table('weekactivities')->where('dateDay','=',$dia)->get();
        foreach($buscartateas as $tat){
         if($tat->id_eng=='Paola S'){
@@ -217,7 +241,7 @@ class PpapIngController extends Controller
        }
 
 
-    return view('/ing',['alex'=>$alex,'alexDesc'=>$alexDesc,'paola'=>$paola,'paoDesc'=>$paoDesc,'soporte'=>$soporte,'fullreq'=>$fullreq,'graficasLate'=>$graficasLate,'graficOnTime'=>$graficOnTime,'cat'=>$cat,'inges'=>$inges,'value'=>$value,'enginners'=>$enginners,'answer'=>$answer,'dias_mes'=>$dias_mes,'cronoGram'=>$cronoGram]);
+    return view('/ing',['paolaTdesc'=>$paolaTdesc,'alexTdesc'=>$alexTdesc,'paolaT'=>$paolaT,'alexT'=>$alexT,'alex'=>$alex,'alexDesc'=>$alexDesc,'paola'=>$paola,'paoDesc'=>$paoDesc,'soporte'=>$soporte,'fullreq'=>$fullreq,'graficasLate'=>$graficasLate,'graficOnTime'=>$graficOnTime,'cat'=>$cat,'inges'=>$inges,'value'=>$value,'enginners'=>$enginners,'answer'=>$answer,'dias_mes'=>$dias_mes,'cronoGram'=>$cronoGram]);
 }
     }
 
