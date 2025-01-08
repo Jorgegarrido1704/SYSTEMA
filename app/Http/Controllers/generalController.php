@@ -274,22 +274,26 @@ class generalController extends Controller
             }}
             return $resp;
         }
-            $donde='';
+            $donde=$rep='';
             $sesion=session('user');
             $sesionBus = DB::table('login')->select('category')->where('user', $sesion)->limit(1)->first();
             $donde = $sesionBus->category;
                  if($cantidad<=0 or $cantidad==NULL){
-                     if($donde==='loom' and $count===8){
+                    if($donde==='loom' and $count===8){
+                        $rep="Looming Process";
                         upRegistros(9,$codigo,"Looming Process",$todays,'loom');
                     }else if($donde==='ensa' and ($count===6 or $count===15) ){
+                        $rep="Assembly Process";
                         upRegistros(7,$codigo,'Assembly Process',$todays,'ensa');
                     }else if(($donde==='libe') and $count===4){
+                        $rep="Looming Process";
                         upRegistros($count,$codigo,"Terminals Process",$todays,'term');
                     }else if(($donde==='cort' or $donde==='libe') and $count==2){
+                        $rep="Looming Process";
                         upRegistros(3,$codigo,"Cutting Process",$todays,'cut');
                     }else  if($count===1){ return redirect('general')->with('response', 'Plannig Station, Harness Not update');
                     }
-                    $resp = Resp($codigo);
+                    $resp = Resp($codigo)."  ".$rep;
                     return redirect('general')->with('response', $resp);
                       }
             if(($donde==='loom' and $count===9) or ($donde==='loom' and $loomPar>0)){
@@ -435,15 +439,19 @@ class generalController extends Controller
                     }}
                 }else  if($count===1){ return redirect('general')->with('response', 'Plannig Station, Harness Not update');
             }else  if($donde==='loom' and $count===8){
+                $rep="Looming Process";
                 upRegistros(9,$codigo,"Looming Process",$todays,'loom');
             }else if($donde==='ensa' and ($count===6 or $count===15) ){
+                $rep="Assembly Process";
                 upRegistros(7,$codigo,'Assembly Process',$todays,'ensa');
             }else if(($donde==='libe') and $count===4){
+                $rep="Looming Process";
                 upRegistros($count,$codigo,"Terminals Process",$todays,'term');
             }else if(($donde==='cort' or $donde==='libe') and $count==2){
+                $rep="Looming Process";
                 upRegistros(3,$codigo,"Cutting Process",$todays,'cut');
             }
-            $resp = Resp($codigo);
+            $resp = Resp($codigo)."  ".$rep;
             return redirect('general')->with('response', $resp);
 }
 }
