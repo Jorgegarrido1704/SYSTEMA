@@ -279,7 +279,8 @@ class generalController extends Controller
             $sesionBus = DB::table('login')->select('category')->where('user', $sesion)->limit(1)->first();
             $donde = $sesionBus->category;
                  if($cantidad<=0 or $cantidad==NULL){
-                    if($donde==='loom' and $count===8){
+                    if($count===1){ return redirect('general')->with('response', 'Plannig Station, Harness Not update');
+                    }else  if($donde==='loom' and $count===8){
                         $rep="Looming Process";
                         upRegistros(9,$codigo,"Looming Process",$todays,'loom');
                     }else if($donde==='ensa' and ($count===6 or $count===15) ){
@@ -291,12 +292,12 @@ class generalController extends Controller
                     }else if(($donde==='cort' or $donde==='libe') and $count==2){
                         $rep="Looming Process";
                         upRegistros(3,$codigo,"Cutting Process",$todays,'cut');
-                    }else  if($count===1){ return redirect('general')->with('response', 'Plannig Station, Harness Not update');
-                    }
+                    } 
                     $resp = Resp($codigo)."  ".$rep;
                     return redirect('general')->with('response', $resp);
-                      }
-            if(($donde==='loom' and $count===9) or ($donde==='loom' and $loomPar>0)){
+                      }else{
+                          if($count===1){ return redirect('general')->with('response', 'Plannig Station, Harness Not update');
+                        }else if(($donde==='loom' and $count===9) or ($donde==='loom' and $loomPar>0)){
                            if( $cantidad>=($loomPar)){
                                 if(substr($rev,0,4)=='PRIM' or substr($rev,0,4)=='PPAP' ){
                                     upRegistros(14,$codigo,'En espera de Ingenieria Loom',$todays,'loomF');
@@ -309,35 +310,35 @@ class generalController extends Controller
                                 upRegistros(10,$codigo,'Testing Process',$todays,'loomF');
                                   $tiempoUp=DB::table('tiempos')->where('info',$codigo)->update(['loom'=>$todays]);
                                 }
-                } else  if($cantidad<($loomPar) and (substr($rev,0,4)!='PRIM' or substr($rev,0,4)!='PPAP' )){
-                    $restoAnt=$loomPar-$cantidad; $nuevo=$testPar+$cantidad;
-                    $update = DB::table('registroparcial')->where('codeBar', "=",$codigo)->update(['loomPar' => $restoAnt,'testPar' => $nuevo]);
-                    updateCount($codigo,$cantidad,$sesion,$donde,$todays);
-                }
-                $buscarcalidad=DB::table('calidad')->where("info",$codigo)->first();
-                if($buscarcalidad){
-                    $regcalidad=$buscarcalidad->qty;
-                    $nueva=$regcalidad+$cantidad;
-                    $update = DB::table('calidad')->where('info', $codigo)->update(['qty' => $nueva]);
-                }else{
-                    $calReg=new listaCalidad;
-                    $calReg->np=$pnReg;
-                    $calReg->client=$cli;
-                    $calReg->wo=$wo;
-                    $calReg->po=$poReg;
-                    $codigo=strtoupper($codigo);
-                    $calReg->info=$codigo;
-                    $calReg->qty=$cantidad;
-                    $calReg->parcial="Si";
-                    $calReg->save();
-                }
-            }else if(($donde==='ensa' and $count===7) or ($donde==='ensa' and $ensaPar>0)){
-                if( $cantidad<($ensaPar) and (substr($rev,0,4)!='PRIM' or substr($rev,0,4)!='PPAP' )){
-                    $restoAnt=$ensaPar-$cantidad;             $nuevo=$loomPar+$cantidad;
-                    $update = DB::table('registroparcial')->where('codeBar', "=",$codigo)->update(['ensaPar' => $restoAnt,'loomPar' => $nuevo]);
-                    updateCount($codigo,$cantidad,$sesion,$donde,$todays);
-                }else if($cantidad>=($ensaPar)){
-                        if(substr($rev,0,4)=='PRIM' or substr($rev,0,4)=='PPAP' ){
+                        } else  if($cantidad<($loomPar) and (substr($rev,0,4)!='PRIM' or substr($rev,0,4)!='PPAP' )){
+                            $restoAnt=$loomPar-$cantidad; $nuevo=$testPar+$cantidad;
+                            $update = DB::table('registroparcial')->where('codeBar', "=",$codigo)->update(['loomPar' => $restoAnt,'testPar' => $nuevo]);
+                            updateCount($codigo,$cantidad,$sesion,$donde,$todays);
+                        }
+                        $buscarcalidad=DB::table('calidad')->where("info",$codigo)->first();
+                        if($buscarcalidad){
+                            $regcalidad=$buscarcalidad->qty;
+                            $nueva=$regcalidad+$cantidad;
+                            $update = DB::table('calidad')->where('info', $codigo)->update(['qty' => $nueva]);
+                        }else{
+                            $calReg=new listaCalidad;
+                            $calReg->np=$pnReg;
+                            $calReg->client=$cli;
+                            $calReg->wo=$wo;
+                            $calReg->po=$poReg;
+                            $codigo=strtoupper($codigo);
+                            $calReg->info=$codigo;
+                            $calReg->qty=$cantidad;
+                            $calReg->parcial="Si";
+                            $calReg->save();
+                        }
+                    }else if(($donde==='ensa' and $count===7) or ($donde==='ensa' and $ensaPar>0)){
+                        if( $cantidad<($ensaPar) and (substr($rev,0,4)!='PRIM' or substr($rev,0,4)!='PPAP' )){
+                            $restoAnt=$ensaPar-$cantidad;             $nuevo=$loomPar+$cantidad;
+                            $update = DB::table('registroparcial')->where('codeBar', "=",$codigo)->update(['ensaPar' => $restoAnt,'loomPar' => $nuevo]);
+                            updateCount($codigo,$cantidad,$sesion,$donde,$todays);
+                        }else if($cantidad>=($ensaPar)){
+                            if(substr($rev,0,4)=='PRIM' or substr($rev,0,4)=='PPAP' ){
                             $ensaPar;     $nuevo=$loomPar+$cantidad;
                             $update = DB::table('registroparcial')->where('codeBar', "=",$codigo)->update(['ensaPar' => '0','loomPar' => $nuevo]);
                             updateCount($codigo,$cantidad,$sesion,$donde,$todays);
@@ -396,28 +397,28 @@ class generalController extends Controller
                         $date = date('d-m-Y');
                     $time = date('H:i');
                     $content = 'Buen día,'."\n\n".'Les comparto que el día ' . $date . ' a las ' . $time . "\n\n"."Salió de liberacion el"."\n\n";
-            $content .= "\n\n"." número de parte: " . $pnReg;
-            $content .= "\n\n"." Con Work order: " . $wo;
-            $content .= "\n\n"." Se solicita de su apoyo para revisar el motivo por el cual no se realizo la prueba de pull";
+                    $content .= "\n\n"." número de parte: " . $pnReg;
+                    $content .= "\n\n"." Con Work order: " . $wo;
+                    $content .= "\n\n"." Se solicita de su apoyo para revisar el motivo por el cual no se realizo la prueba de pull";
 
 
-                        $recipients = [
+                                $recipients = [
 
-                           'jcervera@mx.bergstrominc.com',
-                           'jcrodriguez@mx.bergstrominc.com',
-                            'jguillen@mx.bergstrominc.com',
-                            'jolaes@mx.bergstrominc.com',
-                            'dvillalpando@mx.bergstrominc.com',
-                            'lramos@mx.bergstrominc.com',
-                            'emedina@mx.bergstrominc.com',
-                            'jgarrido@mx.bergstrominc.com',
-                            'jlopez@mx.bergstrominc.com'
+                                'jcervera@mx.bergstrominc.com',
+                                'jcrodriguez@mx.bergstrominc.com',
+                                    'jguillen@mx.bergstrominc.com',
+                                    'jolaes@mx.bergstrominc.com',
+                                    'dvillalpando@mx.bergstrominc.com',
+                                    'lramos@mx.bergstrominc.com',
+                                    'emedina@mx.bergstrominc.com',
+                                    'jgarrido@mx.bergstrominc.com',
+                                    'jlopez@mx.bergstrominc.com'
 
 
-                        ];
-                        Mail::to($recipients)->send(new \App\Mail\PPAPING($subject,$content));}
-                    }
-                    }}
+                                ];
+                                Mail::to($recipients)->send(new \App\Mail\PPAPING($subject,$content));}
+                            }
+                            }}
             }else if(((  $donde==='cort' or $donde==='libe' ) and $count===3 ) or ((  $donde==='cort' or $donde==='libe') and $cortePar>0)){
                 if( $cantidad<$cortePar and (substr($rev,0,4)!='PRIM' or substr($rev,0,4)!='PPAP' )){
                     $restoAnt=$cortePar-$cantidad;      $nuevo=$libePar+$cantidad;
@@ -437,8 +438,7 @@ class generalController extends Controller
                     upRegistros(4,$codigo,'Waitting for Terminals',$todays,'cutF');
                     $tiempoUp=DB::table('tiempos')->where('info',$codigo)->update(['corte'=>$todays]);
                     }}
-                }else  if($count===1){ return redirect('general')->with('response', 'Plannig Station, Harness Not update');
-            }else  if($donde==='loom' and $count===8){
+                }else  if($donde==='loom' and $count===8){
                 $rep="Looming Process";
                 upRegistros(9,$codigo,"Looming Process",$todays,'loom');
             }else if($donde==='ensa' and ($count===6 or $count===15) ){
@@ -453,9 +453,9 @@ class generalController extends Controller
             }
             $resp = Resp($codigo)."  ".$rep;
             return redirect('general')->with('response', $resp);
-}
-}
-
+                }
+                }
+    }
     public function Bom(Request $request){
         $boms = $request->input('partnum');
         $value=session('user');
