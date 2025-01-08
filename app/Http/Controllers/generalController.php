@@ -279,7 +279,19 @@ class generalController extends Controller
             $sesionBus = DB::table('login')->select('category')->where('user', $sesion)->limit(1)->first();
             $donde = $sesionBus->category;
                  if($cantidad<=0 or $cantidad==NULL){
-                    return redirect('general')->with('response', "Harness not updated");  }
+                     if($donde==='loom' and $count===8){
+                        upRegistros(9,$codigo,"Looming Process",$todays,'loom');
+                    }else if($donde==='ensa' and ($count===6 or $count===15) ){
+                        upRegistros(7,$codigo,'Assembly Process',$todays,'ensa');
+                    }else if(($donde==='libe') and $count===4){
+                        upRegistros($count,$codigo,"Terminals Process",$todays,'term');
+                    }else if(($donde==='cort' or $donde==='libe') and $count==2){
+                        upRegistros(3,$codigo,"Cutting Process",$todays,'cut');
+                    }else  if($count===1){ return redirect('general')->with('response', 'Plannig Station, Harness Not update');
+                    }
+                    $resp = Resp($codigo);
+                    return redirect('general')->with('response', $resp);
+                      }
             if(($donde==='loom' and $count===9) or ($donde==='loom' and $loomPar>0)){
                            if( $cantidad>=($loomPar)){
                                 if(substr($rev,0,4)=='PRIM' or substr($rev,0,4)=='PPAP' ){
@@ -315,8 +327,6 @@ class generalController extends Controller
                     $calReg->parcial="Si";
                     $calReg->save();
                 }
-            }else if($donde==='loom' and $count===8){
-                upRegistros(9,$codigo,"Looming Process",$todays,'loom');
             }else if(($donde==='ensa' and $count===7) or ($donde==='ensa' and $ensaPar>0)){
                 if( $cantidad<($ensaPar) and (substr($rev,0,4)!='PRIM' or substr($rev,0,4)!='PPAP' )){
                     $restoAnt=$ensaPar-$cantidad;             $nuevo=$loomPar+$cantidad;
@@ -336,9 +346,7 @@ class generalController extends Controller
                         upRegistros(8,$codigo,'Looming Process',$todays,'ensaF');
                         $tiempoUp=DB::table('tiempos')->where('info',$codigo)->update(['ensamble'=>$todays]);
                     }    }
-            }else if($donde==='ensa' and ($count===6 or $count===15) ){
-                upRegistros(7,$codigo,'Assembly Process',$todays,'ensa');
-            } else if((($donde==='libe' ) and $count===5) or (($donde==='libe') and $libePar>0)){
+            }else if((($donde==='libe' ) and $count===5) or (($donde==='libe') and $libePar>0)){
                 if( $cantidad<($libePar) and (substr($rev,0,4)!='PRIM' or substr($rev,0,4)!='PPAP' )){
                     $restoAnt=$libePar-$cantidad; $nuevo=$ensaPar+$cantidad;
                     $update = DB::table('registroparcial')->where('codeBar', "=",$codigo)->update(['libePar' => $restoAnt,'ensaPar' => $nuevo]);
@@ -406,9 +414,7 @@ class generalController extends Controller
                         Mail::to($recipients)->send(new \App\Mail\PPAPING($subject,$content));}
                     }
                     }}
-            }else if(($donde==='libe') and $count===4){
-                upRegistros($count,$codigo,"Terminals Process",$todays,'term');
-            } else if(((  $donde==='cort' or $donde==='libe' ) and $count===3 ) or ((  $donde==='cort' or $donde==='libe') and $cortePar>0)){
+            }else if(((  $donde==='cort' or $donde==='libe' ) and $count===3 ) or ((  $donde==='cort' or $donde==='libe') and $cortePar>0)){
                 if( $cantidad<$cortePar and (substr($rev,0,4)!='PRIM' or substr($rev,0,4)!='PPAP' )){
                     $restoAnt=$cortePar-$cantidad;      $nuevo=$libePar+$cantidad;
                     updateCount($codigo,$cantidad,$sesion,$donde,$todays);
@@ -426,10 +432,16 @@ class generalController extends Controller
                     $update = DB::table('registroparcial')->where('codeBar', "=",$codigo)->update(['cortPar'=> $restoAnt,'libePar' => $nuevo]);
                     upRegistros(4,$codigo,'Waitting for Terminals',$todays,'cutF');
                     $tiempoUp=DB::table('tiempos')->where('info',$codigo)->update(['corte'=>$todays]);
-                    }} }
-           else if(($donde==='cort' or $donde==='libe') and $count==2){
+                    }}
+                }else  if($count===1){ return redirect('general')->with('response', 'Plannig Station, Harness Not update');
+            }else  if($donde==='loom' and $count===8){
+                upRegistros(9,$codigo,"Looming Process",$todays,'loom');
+            }else if($donde==='ensa' and ($count===6 or $count===15) ){
+                upRegistros(7,$codigo,'Assembly Process',$todays,'ensa');
+            }else if(($donde==='libe') and $count===4){
+                upRegistros($count,$codigo,"Terminals Process",$todays,'term');
+            }else if(($donde==='cort' or $donde==='libe') and $count==2){
                 upRegistros(3,$codigo,"Cutting Process",$todays,'cut');
-            }else  if($count===1){ return redirect('general')->with('response', 'Plannig Station, Harness Not update');
             }
             $resp = Resp($codigo);
             return redirect('general')->with('response', $resp);
