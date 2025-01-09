@@ -653,12 +653,13 @@ public function calidad_junta(){
             }else{
                 $hoymal+=$issue->resto;
 
-           if(in_array($issue->codigo, array_column($datosHoy, 1))){
-            $datosHoy[array_search($issue->codigo, array_column($datosHoy, 1))][2]+=$issue->resto;
+           if((in_array($issue->codigo, array_column($datosHoy, 1)))and (in_array($issue->pn, array_column($datosHoy, 3)))){
+            $datosHoy[$issue->codigo."-".$issue->pn][2]+=$issue->resto;
             }else{
-                $datosHoy[$i][0]=$issue->client;
-                $datosHoy[$i][1]=$issue->codigo;
-                $datosHoy[$i][2]=$issue->resto;
+                $datosHoy[$issue->codigo."-".$issue->pn][0]=$issue->client;
+                $datosHoy[$issue->codigo."-".$issue->pn][1]=$issue->codigo;
+                $datosHoy[$issue->codigo."-".$issue->pn][2]=$issue->resto;
+                $datosHoy[$issue->codigo."-".$issue->pn][3]=$issue->pn;
                 $i++;
             }
             if(in_array($issue->Responsable, array_column($gulty, 0))){
