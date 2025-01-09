@@ -166,7 +166,7 @@ var dias={!! json_encode($days) !!};
                                                     @if (!empty($datosHoy))
                                                     @foreach ($datosHoy as $datoHoy)
                                                     <tr>
-                                                        <td>{{$datoHoy[0]}}</td>
+                                                        <td>{{$datoHoy[0]}}<br>{{$datoHoy[3]}}</td>
                                                         <td>{{$datoHoy[1]}}</td>
                                                         <td>{{$datoHoy[2]}}</td>
                                                     </tr>
