@@ -545,7 +545,7 @@ public function calidad_junta(){
                 if (substr($rowPareto->fecha, 0, 10) == $datosj) {  if($rowPareto->codigo=='TODO BIEN'){ $regjg+=1; }else{$regjb+=1;}  }
                 if (substr($rowPareto->fecha, 0, 10) == $datosm) {  if($rowPareto->codigo=='TODO BIEN'){ $regmg+=1; }else{$regmb+=1;}  }
                 if (substr($rowPareto->fecha, 0, 10) == $datosmt) {  if($rowPareto->codigo=='TODO BIEN'){ $regmtg+=1; }else{$regmtb+=1;}  }
-                if (substr($rowPareto->fecha, 0, 10) == $datosl) {  if($rowPareto->codigo=='TODO BIEN'){ $reglg+=1; }else{$reglb+=1;}  } }                
+                if (substr($rowPareto->fecha, 0, 10) == $datosl) {  if($rowPareto->codigo=='TODO BIEN'){ $reglg+=1; }else{$reglb+=1;}  } }
                 $pareto[$datosl]=Paretos($reglg,$reglb);
                 $pareto[$datosmt]=Paretos($regmtg,$regmtb);
                 $pareto[$datosm]=Paretos($regmg,$regmb);
@@ -590,39 +590,40 @@ public function calidad_junta(){
        $datosF = $pnrs=$datosT = $datosS =[];
        // Query the database to retrieve records where 'codigo' column matches the $firstKey
        $buscardatosClientes = DB::table('regsitrocalidad')->where('codigo', '=',$firstKey)
-       ->where('fecha','LIKE',$crtl.'%')     ->get();
+       ->where('fecha','LIKE',$crtl.'%')->orderBy('pn')->get();
        foreach ($buscardatosClientes as $rowDatos) {
-               if ((in_array($rowDatos->client, array_column($datosF, 0))and in_array($rowDatos->pn, array_column($datosF, 3)))) {
-                  $datosF[$rowDatos->client][2] += $rowDatos->resto;
+               if ((in_array($rowDatos->client, array_column($datosF, 0)) and (in_array($rowDatos->pn, array_column($datosF, 3))))) {
+                  $datosF[$rowDatos->pn][2] += $rowDatos->resto;
                } else {
-                   $datosF[$rowDatos->client][0] = $rowDatos->client;
-                   $datosF[$rowDatos->client][1] = $rowDatos->codigo;
-                   $datosF[$rowDatos->client][2] = $rowDatos->resto;
-                   $datosF[$rowDatos->client][3] = $rowDatos->pn;               }            }
+                   $datosF[$rowDatos->pn][0] = $rowDatos->client;
+                   $datosF[$rowDatos->pn][1] = $rowDatos->codigo;
+                   $datosF[$rowDatos->pn][2] = $rowDatos->resto;
+                   $datosF[$rowDatos->pn][3] = $rowDatos->pn;
+                       }            }
        next($datos);
        $secondKey = key($datos);
        $buscardatosClientes2 = DB::table('regsitrocalidad')->where('codigo', '=',$secondKey)
-       ->where('fecha','LIKE',$crtl.'%')       ->get();
+       ->where('fecha','LIKE',$crtl.'%') ->orderBy('pn')     ->get();
        foreach ($buscardatosClientes2 as $rowDatos2) {
                if ((in_array($rowDatos2->client, array_column($datosS, 0)) and (in_array($rowDatos2->pn, array_column($datosS, 3))))) {
-                   $datosS[$rowDatos2->client][2] += $rowDatos2->resto;
+                   $datosS[$rowDatos2->pn][2] += $rowDatos2->resto;
                } else {
-                   $datosS[$rowDatos2->client][0] = $rowDatos2->client;
-                   $datosS[$rowDatos2->client][1] = $rowDatos2->codigo;
-                   $datosS[$rowDatos2->client][2] = $rowDatos2->resto;
-                   $datosS[$rowDatos2->client][3] = $rowDatos2->pn;               }            }
+                   $datosS[$rowDatos2->pn][0] = $rowDatos2->client;
+                   $datosS[$rowDatos2->pn][1] = $rowDatos2->codigo;
+                   $datosS[$rowDatos2->pn][2] = $rowDatos2->resto;
+                   $datosS[$rowDatos2->pn][3] = $rowDatos2->pn;               }            }
        next($datos);
        $thirdKey = key($datos);
        $buscardatosClientes3 = DB::table('regsitrocalidad')->where('codigo', $thirdKey)
-       ->where('fecha','LIKE',$crtl.'%')       ->get();
+       ->where('fecha','LIKE',$crtl.'%')->orderBy('pn')  ->get();
        foreach ($buscardatosClientes3 as $rowDatos3) {
                if ((in_array($rowDatos3->client, array_column($datosT, 0)))and  (in_array($rowDatos3->pn, array_column($datosS, 3)))){
-                    $datosT[$rowDatos3->client][2] += $rowDatos3->resto;
+                    $datosT[$rowDatos3->pn][2] += $rowDatos3->resto;
                } else {
-                   $datosT[$rowDatos3->client][0] = $rowDatos3->client;
-                   $datosT[$rowDatos3->client][1] = $rowDatos3->codigo;
-                   $datosT[$rowDatos3->client][2] = $rowDatos3->resto;
-                   $datosT[$rowDatos3->client][3] = $rowDatos3->pn;
+                   $datosT[$rowDatos3->pn][0] = $rowDatos3->client;
+                   $datosT[$rowDatos3->pn][1] = $rowDatos3->codigo;
+                   $datosT[$rowDatos3->pn][2] = $rowDatos3->resto;
+                   $datosT[$rowDatos3->pn][3] = $rowDatos3->pn;
                }     }
     //quality Q
     $Qdays=$colorQ=$labelQ=[];
@@ -637,9 +638,9 @@ public function calidad_junta(){
                 $colorQ[$i]='red';
             }else{
                 $colorQ[$i]='green';            }
-            ksort($datosT);
-            ksort($datosS);
-            ksort($datosF);
+            rsort($datosT);
+            asort($datosS);
+            rsort($datosF);
          $datosHoy=$gulty=[];
          $i=$x=$hoyb=$hoymal=$parhoy=0;
         $issues=DB::table('regsitrocalidad')
