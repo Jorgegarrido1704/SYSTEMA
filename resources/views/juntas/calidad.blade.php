@@ -31,6 +31,7 @@
 var colorQ={!! json_encode($colorQ) !!}
 var labelQ={!! json_encode($labelQ)!!}
 var paretoYear={!! json_encode($monthAndYearPareto) !!};
+var dias={!! json_encode($days) !!};
 </script>
  <div class="d-sm-flex align-items-center justify-content-between mb-4">
 

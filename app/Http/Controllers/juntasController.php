@@ -573,7 +573,8 @@ public function calidad_junta(){
                         $year = date("Y") ;
                         $date = Carbon::now()
                             ->setISODate($year, $weekNumber, $day);
-                        $days[] = $date->toDateString();
+                        $days[] = $date->format('d-m-Y');
+
                     } return $days;     }
                 $days = getDaysForWeek();
         $weevalues=DB::table('regsitrocalidad')->get();
@@ -675,7 +676,7 @@ public function calidad_junta(){
             if(!empty($gultyY)){
             arsort($gultyY);
         }
-        return view('juntas/calidad',['hoyb'=>$hoyb,'hoymal'=>$hoymal,'parhoy'=>$parhoy,'gultyY'=>$gultyY,'gulty'=>$gulty,'datosHoy'=>$datosHoy,'totalm'=>$totalm,'totalb'=>$totalb,'monthAndYearPareto'=>$monthAndYearPareto,'datosT'=>$datosT,'datosS'=>$datosS,'datosF'=>$datosF,'labelQ'=>$labelQ,'colorQ'=>$colorQ,'value'=>$value,'cat'=>$cat,'datos'=>$datos,'pareto'=>$pareto,'Qdays'=>$Qdays]);
+        return view('juntas/calidad',['days'=>$days,'hoyb'=>$hoyb,'hoymal'=>$hoymal,'parhoy'=>$parhoy,'gultyY'=>$gultyY,'gulty'=>$gulty,'datosHoy'=>$datosHoy,'totalm'=>$totalm,'totalb'=>$totalb,'monthAndYearPareto'=>$monthAndYearPareto,'datosT'=>$datosT,'datosS'=>$datosS,'datosF'=>$datosF,'labelQ'=>$labelQ,'colorQ'=>$colorQ,'value'=>$value,'cat'=>$cat,'datos'=>$datos,'pareto'=>$pareto,'Qdays'=>$Qdays]);
 }
 
 public function litas_junta($id){
