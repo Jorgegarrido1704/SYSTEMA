@@ -315,10 +315,15 @@ class generalController extends Controller
                             $update = DB::table('registroparcial')->where('codeBar', "=",$codigo)->update(['loomPar' => $restoAnt,'testPar' => $nuevo]);
                             updateCount($codigo,$cantidad,$sesion,$donde,$todays);
                         }
+                        if($cantidad<$loomPar){
+                            $nuevo=$cantidad;
+                        }else if($cantidad>=$loomPar){
+                            $nuevo=$loomPar;                            
+                        }
                         $buscarcalidad=DB::table('calidad')->where("info",$codigo)->first();
                         if($buscarcalidad){
                             $regcalidad=$buscarcalidad->qty;
-                            $nueva=$regcalidad+$cantidad;
+                            $nueva=$regcalidad+$nuevo;
                             $update = DB::table('calidad')->where('info', $codigo)->update(['qty' => $nueva]);
                         }else{
                             $calReg=new listaCalidad;
@@ -328,7 +333,7 @@ class generalController extends Controller
                             $calReg->po=$poReg;
                             $codigo=strtoupper($codigo);
                             $calReg->info=$codigo;
-                            $calReg->qty=$cantidad;
+                            $calReg->qty=$nuevo;
                             $calReg->parcial="Si";
                             $calReg->save();
                         }
