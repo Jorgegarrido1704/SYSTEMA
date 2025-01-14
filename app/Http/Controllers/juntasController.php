@@ -653,7 +653,7 @@ public function calidad_junta(){
             }else{
                 $hoymal+=$issue->resto;
 
-           if((in_array($issue->codigo, array_column($datosHoy, 1)))and (in_array($issue->pn, array_column($datosHoy, 3)))){
+           if(key_exists($issue->codigo."-".$issue->pn,$datosHoy)){
             $datosHoy[$issue->codigo."-".$issue->pn][2]+=$issue->resto;
             }else{
                 $datosHoy[$issue->codigo."-".$issue->pn][0]=$issue->client;
