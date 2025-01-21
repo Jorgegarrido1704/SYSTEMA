@@ -90,7 +90,7 @@ var dias={!! json_encode($days) !!};
                             <!-- AREAS -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h5 class="m-0 font-weight-bold text-primary">Quality issue last day</h5>
+                                    <h5 class="m-0 font-weight-bold text-primary">Customer complains</h5>
                                 </div>
                                 <div class="card-body" style="overflow-y: auto; height: 360px;">
                                     <canvas id="Q"></canvas>
