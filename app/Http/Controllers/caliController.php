@@ -283,7 +283,8 @@ class caliController extends generalController
 ['2180','Brandon ','Practicante','','JCervera'],
 ['2182','Christian Alejandro ','Practicante','','JCervera'],
     ];
-        $value = session('user');
+        $val = session('user');
+        $value=str($val);
         $diff=0;
         $today=date('d-m-Y H:i');
         $info=$request->input("infoCal");
@@ -365,7 +366,10 @@ class caliController extends generalController
             $ok_reg->save();}
 
             if(!empty($cant1)){
-
+                foreach($personal as $key=>$var){
+                    if($responsable1==$personal[$key][0]){
+                        $responsable1=($personal[$key][1]);
+                        break;     }   }
                     $nok_reg= new calidadRegistro;
                     $nok_reg->fecha=$today;
                     $nok_reg->client=$client;
@@ -374,12 +378,12 @@ class caliController extends generalController
                     $nok_reg->resto=1;
                     $nok_reg->codigo=$cod1;
                     if(!empty($serial)){
-                        $nok_reg->prueba=$serial;
+                        $nok_reg->prueba="0-0".$serial;
                         $serial++;
                     }else{
                     $nok_reg->prueba="";}
                     $nok_reg->usuario=$value;
-                    $nok_reg->Responsable=$responsable1;
+                     $nok_reg->Responsable=$responsable1;
                     $nok_reg->save();
                     if(strpos($cod1, ';') ) {
                         $cod = explode(';', $cod1);
@@ -392,25 +396,14 @@ class caliController extends generalController
                     $regTimes->defecto=$cod[$i];
                     $regTimes->timeIni=strtotime($today);
                     $regTimes->whoDet=$value;
-                    if($cod[$i]=='Mantenimiento'){
-                    $regTimes->respArea="Javier Cervantes";
-                    }else if(in_array($cod[$i],$loom)){
-                        $regTimes->respArea="Miguel Gonzalez";
+                    if(in_array($cod[$i],$loom)){
+                        $regTimes->respArea="Jesus Zamarripa";
                     }else if(in_array($cod[$i],$corteLibe)){
-                        $regTimes->respArea="Angel Gonzalez";
+                        $regTimes->respArea="Juan Olaes";
                     }else if(in_array($cod[$i],$ensa)){
-                        if($client=='BERGSTROM' OR $client=='KALMAR' OR $client=='MODINE'){
-                            $regTimes->respArea="Alejandra Gaona";
-                    }else if($client=='EL DORADO CALIFORNIA' OR $client=='BLUE BIRD'){
-                        $regTimes->respArea="Saul Castro";
-                    }else if($client=='COLLINS' OR $client=='SHYFT' or $client=='PHOENIX MOTOR CARS' or $client=='PROTERRA'or $client=='SPARTAN'){
-                        $regTimes->respArea="Brando Olvera";
-                    }else if ($client=='UTILIMASTER' OR $client=='ATLAS COPCO'){
-                        $regTimes->respArea="Salvador Galvan";
-                    }else if ($client=='TICO MANUFACTURING' ){
-                        $regTimes->respArea="Jessi Sanchez";
+                        $regTimes->respArea="David Villalpando";
                     }else{  $regTimes->respArea="";      }
-                    }
+
             $regTimes->area="Calidad";
             $regTimes->save();
 
@@ -425,30 +418,23 @@ class caliController extends generalController
                     $regTimes->defecto=$cod1;
                     $regTimes->timeIni=strtotime($today);
                     $regTimes->whoDet=$value;
-                    if($cod1=='Mantenimiento'){
-                    $regTimes->respArea="Javier Cervantes";
-                    }else if(in_array($cod1,$loom)){
-                        $regTimes->respArea="Miguel Gonzalez";
+                    if(in_array($cod1,$loom)){
+                        $regTimes->respArea="Jesus Zamarripa";
                     }else if(in_array($cod1,$corteLibe)){
-                        $regTimes->respArea="Angel Gonzalez";
+                        $regTimes->respArea="Juan Olaes";
                     }else if(in_array($cod1,$ensa)){
-                        if($client=='BERGSTROM' OR $client=='KALMAR' OR $client=='MODINE'){
-                            $regTimes->respArea="Alejandra Gaona";
-                    }else if($client=='EL DORADO CALIFORNIA' OR $client=='BLUE BIRD'){
-                        $regTimes->respArea="Saul Castro";
-                    }else if($client=='COLLINS' OR $client=='SHYFT' or $client=='PHOENIX MOTOR CARS' or $client=='PROTERRA'or $client=='SPARTAN'){
-                        $regTimes->respArea="Brando Olvera";
-                    }else if ($client=='UTILIMASTER' OR $client=='ATLAS COPCO'){
-                        $regTimes->respArea="Salvador Galvan";
-                    }else if ($client=='TICO MANUFACTURING' ){
-                        $regTimes->respArea="Jessi Sanchez";
+                        $regTimes->respArea="David Villalpando";
                     }else{  $regTimes->respArea="";      }
-                    }
+
             $regTimes->area="Calidad";
             $regTimes->save();}
 
         }
             if(!empty($cant2)){
+                foreach($personal as $key=>$var){
+                    if($responsable2==$personal[$key][0]){
+                        $responsable2=($personal[$key][1]);
+                        break;     }   }
 
                     $nok_reg= new calidadRegistro;
                     $nok_reg->fecha=$today;
@@ -477,25 +463,14 @@ class caliController extends generalController
                 $regTimes->defecto=$cod[$i];
                 $regTimes->timeIni=strtotime($today);
                 $regTimes->whoDet=$value;
-                if($cod[$i]=='Mantenimiento'){
-                $regTimes->respArea="Javier Cervantes";
-                }else if(in_array($cod[$i],$loom)){
-                    $regTimes->respArea="Miguel Gonzalez";
+                if(in_array($cod[$i],$loom)){
+                    $regTimes->respArea="Jesus Zamarripa";
                 }else if(in_array($cod[$i],$corteLibe)){
-                    $regTimes->respArea="Angel Gonzalez";
+                    $regTimes->respArea="Juan Olaes";
                 }else if(in_array($cod[$i],$ensa)){
-                    if($client=='BERGSTROM' OR $client=='KALMAR' OR $client=='MODINE'){
-                        $regTimes->respArea="Alejandra Gaona";
-                }else if($client=='EL DORADO CALIFORNIA' OR $client=='BLUE BIRD'){
-                    $regTimes->respArea="Saul Castro";
-                }else if($client=='COLLINS' OR $client=='SHYFT' or $client=='PHOENIX MOTOR CARS' or $client=='PROTERRA'or $client=='SPARTAN'){
-                    $regTimes->respArea="Brando Olvera";
-                }else if ($client=='UTILIMASTER' OR $client=='ATLAS COPCO'){
-                    $regTimes->respArea="Salvador Galvan";
-                }else if ($client=='TICO MANUFACTURING' ){
-                    $regTimes->respArea="Jessi Sanchez";
+                    $regTimes->respArea="David Villalpando";
                 }else{  $regTimes->respArea="";      }
-                }
+
         $regTimes->area="Calidad";
         $regTimes->save();
 
@@ -510,30 +485,22 @@ class caliController extends generalController
                 $regTimes->defecto=$cod2;
                 $regTimes->timeIni=strtotime($today);
                 $regTimes->whoDet=$value;
-                if($cod2=='Mantenimiento'){
-                $regTimes->respArea="Javier Cervantes";
-                }else if(in_array($cod2,$loom)){
-                    $regTimes->respArea="Miguel Gonzalez";
+                if(in_array($cod2,$loom)){
+                    $regTimes->respArea="Jesus Zamarripa";
                 }else if(in_array($cod2,$corteLibe)){
-                    $regTimes->respArea="Angel Gonzalez";
+                    $regTimes->respArea="Juan Olaes";
                 }else if(in_array($cod2,$ensa)){
-                    if($client=='BERGSTROM' OR $client=='KALMAR' OR $client=='MODINE'){
-                        $regTimes->respArea="Alejandra Gaona";
-                }else if($client=='EL DORADO CALIFORNIA' OR $client=='BLUE BIRD'){
-                    $regTimes->respArea="Saul Castro";
-                }else if($client=='COLLINS' OR $client=='SHYFT' or $client=='PHOENIX MOTOR CARS' or $client=='PROTERRA'or $client=='SPARTAN'){
-                    $regTimes->respArea="Brando Olvera";
-                }else if ($client=='UTILIMASTER' OR $client=='ATLAS COPCO'){
-                    $regTimes->respArea="Salvador Galvan";
-                }else if ($client=='TICO MANUFACTURING' ){
-                    $regTimes->respArea="Jessi Sanchez";
+                    $regTimes->respArea="David Villalpando";
                 }else{  $regTimes->respArea="";      }
-                }
+
         $regTimes->area="Calidad";
         $regTimes->save();}
             }
             if(!empty($cant3)){
-
+                foreach($personal as $key=>$var){
+                    if($responsable3==$personal[$key][0]){
+                        $responsable3=($personal[$key][1]);
+                        break;     }   }
                 $nok_reg= new calidadRegistro;
                 $nok_reg->fecha=$today;
                 $nok_reg->client=$client;
@@ -561,25 +528,14 @@ class caliController extends generalController
             $regTimes->defecto=$cod[$i];
             $regTimes->timeIni=strtotime($today);
             $regTimes->whoDet=$value;
-            if($cod[$i]=='Mantenimiento'){
-            $regTimes->respArea="Javier Cervantes";
-            }else if(in_array($cod[$i],$loom)){
-                $regTimes->respArea="Miguel Gonzalez";
+            if(in_array($cod[$i],$loom)){
+                $regTimes->respArea="Jesus Zamarripa";
             }else if(in_array($cod[$i],$corteLibe)){
-                $regTimes->respArea="Angel Gonzalez";
+                $regTimes->respArea="Juan Olaes";
             }else if(in_array($cod[$i],$ensa)){
-                if($client=='BERGSTROM' OR $client=='KALMAR' OR $client=='MODINE'){
-                    $regTimes->respArea="Alejandra Gaona";
-            }else if($client=='EL DORADO CALIFORNIA' OR $client=='BLUE BIRD'){
-                $regTimes->respArea="Saul Castro";
-            }else if($client=='COLLINS' OR $client=='SHYFT' or $client=='PHOENIX MOTOR CARS' or $client=='PROTERRA'or $client=='SPARTAN'){
-                $regTimes->respArea="Brando Olvera";
-            }else if ($client=='UTILIMASTER' OR $client=='ATLAS COPCO'){
-                $regTimes->respArea="Salvador Galvan";
-            }else if ($client=='TICO MANUFACTURING' ){
-                $regTimes->respArea="Jessi Sanchez";
+                $regTimes->respArea="David Villalpando";
             }else{  $regTimes->respArea="";      }
-            }
+
     $regTimes->area="Calidad";
     $regTimes->save();
 
@@ -594,30 +550,21 @@ class caliController extends generalController
             $regTimes->defecto=$cod3;
             $regTimes->timeIni=strtotime($today);
             $regTimes->whoDet=$value;
-            if($cod3=='Mantenimiento'){
-            $regTimes->respArea="Javier Cervantes";
-            }else if(in_array($cod3,$loom)){
-                $regTimes->respArea="Miguel Gonzalez";
+            if(in_array($cod3,$loom)){
+                $regTimes->respArea="Jesus Zamarripa";
             }else if(in_array($cod3,$corteLibe)){
-                $regTimes->respArea="Angel Gonzalez";
+                $regTimes->respArea="Juan Olaes";
             }else if(in_array($cod3,$ensa)){
-                if($client=='BERGSTROM' OR $client=='KALMAR' OR $client=='MODINE'){
-                    $regTimes->respArea="Alejandra Gaona";
-            }else if($client=='EL DORADO CALIFORNIA' OR $client=='BLUE BIRD'){
-                $regTimes->respArea="Saul Castro";
-            }else if($client=='COLLINS' OR $client=='SHYFT' or $client=='PHOENIX MOTOR CARS' or $client=='PROTERRA'or $client=='SPARTAN'){
-                $regTimes->respArea="Brando Olvera";
-            }else if ($client=='UTILIMASTER' OR $client=='ATLAS COPCO'){
-                $regTimes->respArea="Salvador Galvan";
-            }else if ($client=='TICO MANUFACTURING' ){
-                $regTimes->respArea="Jessi Sanchez";
+                $regTimes->respArea="David Villalpando";
             }else{  $regTimes->respArea="";      }
-            }
     $regTimes->area="Calidad";
     $regTimes->save();}
         }
         if(!empty($cant4)){
-
+            foreach($personal as $key=>$var){
+                if($responsable4==$personal[$key][0]){
+                    $responsable4=($personal[$key][1]);
+                    break;     }   }
             $nok_reg= new calidadRegistro;
             $nok_reg->fecha=$today;
             $nok_reg->client=$client;
@@ -645,25 +592,13 @@ class caliController extends generalController
         $regTimes->defecto=$cod[$i];
         $regTimes->timeIni=strtotime($today);
         $regTimes->whoDet=$value;
-        if($cod[$i]=='Mantenimiento'){
-        $regTimes->respArea="Javier Cervantes";
-        }else if(in_array($cod[$i],$loom)){
-            $regTimes->respArea="Miguel Gonzalez";
+        if(in_array($cod[$i],$loom)){
+            $regTimes->respArea="Jesus Zamarripa";
         }else if(in_array($cod[$i],$corteLibe)){
-            $regTimes->respArea="Angel Gonzalez";
+            $regTimes->respArea="Juan Olaes";
         }else if(in_array($cod[$i],$ensa)){
-            if($client=='BERGSTROM' OR $client=='KALMAR' OR $client=='MODINE'){
-                $regTimes->respArea="Alejandra Gaona";
-        }else if($client=='EL DORADO CALIFORNIA' OR $client=='BLUE BIRD'){
-            $regTimes->respArea="Saul Castro";
-        }else if($client=='COLLINS' OR $client=='SHYFT' or $client=='PHOENIX MOTOR CARS' or $client=='PROTERRA'or $client=='SPARTAN'){
-            $regTimes->respArea="Brando Olvera";
-        }else if ($client=='UTILIMASTER' OR $client=='ATLAS COPCO'){
-            $regTimes->respArea="Salvador Galvan";
-        }else if ($client=='TICO MANUFACTURING' ){
-            $regTimes->respArea="Jessi Sanchez";
+            $regTimes->respArea="David Villalpando";
         }else{  $regTimes->respArea="";      }
-        }
 $regTimes->area="Calidad";
 $regTimes->save();
 
@@ -678,30 +613,21 @@ $regTimes->save();
         $regTimes->defecto=$cod4;
         $regTimes->timeIni=strtotime($today);
         $regTimes->whoDet=$value;
-        if($cod4=='Mantenimiento'){
-        $regTimes->respArea="Javier Cervantes";
-        }else if(in_array($cod4,$loom)){
-            $regTimes->respArea="Miguel Gonzalez";
+        if(in_array($cod4,$loom)){
+            $regTimes->respArea="Jesus Zamarripa";
         }else if(in_array($cod4,$corteLibe)){
-            $regTimes->respArea="Angel Gonzalez";
+            $regTimes->respArea="Juan Olaes";
         }else if(in_array($cod4,$ensa)){
-            if($client=='BERGSTROM' OR $client=='KALMAR' OR $client=='MODINE'){
-                $regTimes->respArea="Alejandra Gaona";
-        }else if($client=='EL DORADO CALIFORNIA' OR $client=='BLUE BIRD'){
-            $regTimes->respArea="Saul Castro";
-        }else if($client=='COLLINS' OR $client=='SHYFT' or $client=='PHOENIX MOTOR CARS' or $client=='PROTERRA'or $client=='SPARTAN'){
-            $regTimes->respArea="Brando Olvera";
-        }else if ($client=='UTILIMASTER' OR $client=='ATLAS COPCO'){
-            $regTimes->respArea="Salvador Galvan";
-        }else if ($client=='TICO MANUFACTURING' ){
-            $regTimes->respArea="Jessi Sanchez";
+            $regTimes->respArea="David Villalpando";
         }else{  $regTimes->respArea="";      }
-        }
 $regTimes->area="Calidad";
 $regTimes->save();}
     }
     if(!empty($cant5)){
-
+        foreach($personal as $key=>$var){
+            if($responsable5==$personal[$key][0]){
+                $responsable5=($personal[$key][1]);
+                break;     }   }
         $nok_reg= new calidadRegistro;
         $nok_reg->fecha=$today;
         $nok_reg->client=$client;
@@ -729,25 +655,13 @@ $regTimes->save();}
     $regTimes->defecto=$cod[$i];
     $regTimes->timeIni=strtotime($today);
     $regTimes->whoDet=$value;
-    if($cod[$i]=='Mantenimiento'){
-    $regTimes->respArea="Javier Cervantes";
-    }else if(in_array($cod[$i],$loom)){
-        $regTimes->respArea="Miguel Gonzalez";
+    if(in_array($cod[$i],$loom)){
+        $regTimes->respArea="Jesus Zamarripa";
     }else if(in_array($cod[$i],$corteLibe)){
-        $regTimes->respArea="Angel Gonzalez";
+        $regTimes->respArea="Juan Olaes";
     }else if(in_array($cod[$i],$ensa)){
-        if($client=='BERGSTROM' OR $client=='KALMAR' OR $client=='MODINE'){
-            $regTimes->respArea="Alejandra Gaona";
-    }else if($client=='EL DORADO CALIFORNIA' OR $client=='BLUE BIRD'){
-        $regTimes->respArea="Saul Castro";
-    }else if($client=='COLLINS' OR $client=='SHYFT' or $client=='PHOENIX MOTOR CARS' or $client=='PROTERRA'or $client=='SPARTAN'){
-        $regTimes->respArea="Brando Olvera";
-    }else if ($client=='UTILIMASTER' OR $client=='ATLAS COPCO'){
-        $regTimes->respArea="Salvador Galvan";
-    }else if ($client=='TICO MANUFACTURING' ){
-        $regTimes->respArea="Jessi Sanchez";
+        $regTimes->respArea="David Villalpando";
     }else{  $regTimes->respArea="";      }
-    }
 $regTimes->area="Calidad";
 $regTimes->save();
 
@@ -762,25 +676,13 @@ $regTimes->save();
     $regTimes->defecto=$cod5;
     $regTimes->timeIni=strtotime($today);
     $regTimes->whoDet=$value;
-    if($cod5=='Mantenimiento'){
-    $regTimes->respArea="Javier Cervantes";
-    }else if(in_array($cod5,$loom)){
-        $regTimes->respArea="Miguel Gonzalez";
+    if(in_array($cod5,$loom)){
+        $regTimes->respArea="Jesus Zamarripa";
     }else if(in_array($cod5,$corteLibe)){
-        $regTimes->respArea="Angel Gonzalez";
+        $regTimes->respArea="Juan Olaes";
     }else if(in_array($cod5,$ensa)){
-        if($client=='BERGSTROM' OR $client=='KALMAR' OR $client=='MODINE'){
-            $regTimes->respArea="Alejandra Gaona";
-    }else if($client=='EL DORADO CALIFORNIA' OR $client=='BLUE BIRD'){
-        $regTimes->respArea="Saul Castro";
-    }else if($client=='COLLINS' OR $client=='SHYFT' or $client=='PHOENIX MOTOR CARS' or $client=='PROTERRA'or $client=='SPARTAN'){
-        $regTimes->respArea="Brando Olvera";
-    }else if ($client=='UTILIMASTER' OR $client=='ATLAS COPCO'){
-        $regTimes->respArea="Salvador Galvan";
-    }else if ($client=='TICO MANUFACTURING' ){
-        $regTimes->respArea="Jessi Sanchez";
+        $regTimes->respArea="David Villalpando";
     }else{  $regTimes->respArea="";      }
-    }
 $regTimes->area="Calidad";
 $regTimes->save();}
 }
