@@ -110,6 +110,7 @@ Route::controller(caliController::class)->group(function(){
     Route::post('/assiscali', [caliController::class, 'assiscali'])->name('ascali');
     Route::post('/matCali',[caliController::class,'matCali'])->name('matCali');
     Route::get('/timesDead',[caliController::class,'timesDead'])->name('timesDead');
+    Route::get('/accepted',[caliController::class,'accepted'])->name('accepted');
     });
 Route::controller(BossCaliController::class)->group(function(){
     Route::get('/BossCali',BossCaliController::class);

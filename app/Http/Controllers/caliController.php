@@ -970,6 +970,14 @@ public function matCali(Request $request){
         $update=DB::table('timedead')->where('id','=',$id)->update(['timeFin'=>$timeNow,'total'=>$total]);
         return redirect('/calidad');
     }
+    public function accepted(Request $request){
+        $id=$request->input('id');
+        $cat=session('categoria');
+        $value = session('user');
+        if(empty($id)){
+            return view('preorder',['value'=>$value,'cat'=>$cat]);
 
     }
 
+ }
+}
