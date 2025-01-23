@@ -16,7 +16,7 @@ use App\Models\regParTime;
 
 class caliController extends generalController
 {
-      public function __invoke(){
+    public function __invoke(){
         $value = session('user');
         $cat = session('categoria');
 
@@ -77,8 +77,8 @@ class caliController extends generalController
         return view('cali',['fallas'=>$fallas,'registros'=>$registros,'cat'=>$cat,'value'=>$value,'calidad'=>$calidad,'week'=>$week,'assit'=>$assit,'paros'=>$paros,'desviations'=>$desviations,'materials'=>$materials]);
 
 
-    }
-        public function baja(Request $request){
+     }
+    public function baja(Request $request){
         $calicontroller = new generalController();
         $caliresult = $calicontroller->__invoke();
         $value = $caliresult->getData()['value'];
@@ -135,258 +135,454 @@ class caliController extends generalController
         'Exceso de soldadura',
         'Soldadura puenteada',
         'Escasez de soldadura'
-    ];
-    $loom=['Encintado defectuoso de cables y-o de looming',
-    'Looming Corrugado danado',
-    'Looming Corrugado mal colocado ',
-    'Braid mal colocado y-o danado',
-    'Etiquetas invertidas'
-    ];
-    $ensa=['Cables revueltos en los lotes',
-    'Medidas fuera de tolerancias',
-    'Componente Danado',
-    'Componente Incorrecto',
-    'Componente Faltante',
-    'Ensamble Incorrecto',
-    'Terminal o conector mal asentado',
-    'Salidas invertidas',
-    'Componentes sin atar al arnes',
-    'Cables Invertidos en el conector',
-    ' no tiene Continuidad Electrica',
-    'Arnes con cortocircuito'
-    ];
-    $personal=[
-        ['2001','Jesus  Zamarripa Rodriguez','Lider Producción','Ensamble','DVillalpando'],
-['2002','Rosario Hernandez Lopez','Inspector Calidad','','EVillegas'],
-['2003','Andrea Pacheco','Supervisor Almacen','','JGUILLEN'],
-['2004','Fabiola  Alonso','Inspector Calidad','','EVillegas'],
-['2005','Martha Carpio','Operador C','Liberación','AGonzalez'],
-['2006','Maria Alejandra Gaona Alvarado','Operador A','Ensamble','SGalvan'],
-['2007','Adan Bravo Martinez','Operador A','Liberación','AGonzalez'],
-['2008','Lidia Susana Rico Hernadez','Operador D','Ensamble','JSanchez'],
-['2009','Ma Estela Gaona Alvarado','Planeador Producción','','MVALADEZ'],
-['2010','Leonardo Rafael Mireles','Supervisor de embarque','','FGOMEZ'],
-['2013','Fernando Martin Segovia','Aux Lider','Corte','COlvera'],
-['2014','Salvador Galvan Davila','Lider Producción','Ensamble','DVillalpando'],
-['2015','Maria Esther Mandujano ','Aux Lider','Ensamble','JSanchez'],
-['2016','Jose Manuel Zacarias Jimenez','Operador A','Ensamble','JZamarripa'],
-['2017','Jennifer Alejandra Gomez','Operador C','Liberación','AGonzalez'],
-['2018','David Salvador Rodriguez','Operador D','Ensamble','JZamarripa'],
-['2019','Efrain Vera Villegas','Supervisor de calidad','','EMedina'],
-['2020','Laura Alejandra Contreras','Operador A','Ensamble','JZamarripa'],
-['2021','Rosalba Ramirez Oliva','Operador C','Liberación','AGonzalez'],
-['2022','Maria Berenice Serrano ','Operador C','Liberación','AGonzalez'],
-['2023','Didier Maldonado Lopez','Aux Almacen B','','APacheco'],
-['2024','Aury Cecilia Aguilar Castillo','Tec Pruebas','','EMedina'],
-['2025','Maria Magdalena Villanueva','Operador C','Ensamble','JSanchez'],
-['2026','Samantha Montserrat Aranda','Operador D','Ensamble','JSanchez'],
-['2030','Jose Luis Ruiz Valdivia','Tec Pruebas','','EMedina'],
-['2031','Jessica Lizbeth Sanchez','Lider Producción','Ensamble','DVillalpando'],
-['2032','Martha Aranda Palacios','Operador A','Ensamble','SGalvan'],
-['2033','Alma Delia Perez Martin','Operador B','Ensamble','JSanchez'],
-['2034','Jessica Sarahi Torres P','Operador C','Ensamble','JSanchez'],
-['2035','Neri Leticia Cervantes ','Operador B','Ensamble','JSanchez'],
-['2037','Christian De Jesus Olvera','Lider Producción','Corte','JOlaes'],
-['2038','Beatriz Elena Regalado ','Operador B','Ensamble','JZamarripa'],
-['2041','Edward Medina Flores','Ing Calidad','','LRAMOS'],
-['2042','Martha Evelia Trujillo ','Operador C','Ensamble','JZamarripa'],
-['2043','Mayra Daniela Montes P','Operador C','Liberación','AGonzalez'],
-['2044','Sanjuana Estela Mosqueda','Operador C','Ensamble','SCastro'],
-['2046','Ma. De los Angeles   Flores Ortiz','Operador C','Ensamble','JSanchez'],
-['2047','Maricela Alferes Montes','Intendencia B','','PAGUILAR'],
-['2049','Jessica Estefania Galvan','Operador C','Ensamble','JSanchez'],
-['2051','Sergio Vera Castillo','Inspector Calidad','','EVillegas'],
-['2052','Erick Nuñez Vazquez','Aux Almacén A','','APacheco'],
-['2054','Cristina Jacquelin Godinez Ortiz','Operador C','Ensamble','JZamarripa'],
-['2056','Sobeida Amaya Mercado','Operador D','Ensamble','SCastro'],
-['2057','Daniela Goretti Rocha C','Aux Calidad','','EMedina'],
-['2058','Maria Barbara Castillo ','Operador C','Ensamble','JSanchez'],
-['2060','Marisol Anahi Perez M','Aux Almacen B','','APacheco'],
-['2062','Alejandro Daniel Robledo','Operador C','Corte','COlvera'],
-['2065','Brenda Cecilia Galvan S','Operador D','Ensamble','SCastro'],
-['2066','Patricia Castro Gomez','Operador C','Ensamble','SGalvan'],
-['2067','Mariana Alferes Montes','Intendencia A','','PAGUILAR'],
-['2068','Noemi Guadalupe Rangel ','Operador D','Liberación','AGonzalez'],
-['2071','Luis  Segoviano','Tec Mantinimiento D','','JCERVANTES'],
-['2073','Cinthya Veronica Galvan','Operador D','Ensamble','SGalvan'],
-['2074','Yahir Alejandro Chacon ','Operador C','Ensamble','JZamarripa'],
-['2075','Fatima De La Luz Garcia','Operador D','Ensamble','SGalvan'],
-['2077','Marcos Enrique Delgado ','Operador D','Liberación','AGonzalez'],
-['2079','Jesus Ernesto Castro R','Inspector Calidad','','EVillegas'],
-['2080','Francisco Javier Melend','Operador C','Liberación','AGonzalez'],
-['2081','Claudia Ivett Gonzalez ','Operador D','Liberación','AGonzalez'],
-['2082','Annel Ivonne Castro E','Operador D','Ensamble','SCastro'],
-['2085','Maria Guadalupe Valdes ','Operador C','Ensamble','JSanchez'],
-['2087','Maria Teresa Jimenez R','Operador D','Liberación','AGonzalez'],
-['2089','Silvia Edith Negrete M','Operador D','Ensamble','SCastro'],
-['2090','Milagros Jazmin Sanchez','Operador D','Ensamble','JSanchez'],
-['2091','Jhoana Jocelyn Lopez J','Tec procesos Calidad','','EMedina'],
-['2098','Fernando Moises Barajas','Operador C','Corte','COlvera'],
-['2101','Jorge Arturo Garrido M','Ingeniero','','JCERVERA'],
-['2106','Luis Adrian Rodriguez A','Operador D','Corte','COlvera'],
-['2108','Carmen Patricia Vera C','Operador D','Liberación','AGonzalez'],
-['2111','Esteban Marajim Vazquez','Operador D','Corte','COlvera'],
-['2112','Karla Jacqueline Martin','Operador D','Liberación','AGonzalez'],
-['2113','Martin Baez Aguilar','Seguridad B','','JCERVANTES'],
-['2114','Ma  Del Rosario','Operador D','Ensamble','JSanchez'],
-['2116','Mario Alberto Delgado C','Seguridad B','','JCERVANTES'],
-['2117','Gerardo Calvillo Martin','Seguridad B','','JCERVANTES'],
-['2118','Daniela Karen Elizabeth Ojeda Ramirez','Inspector Calidad','','Evillegas'],
-['2119','Sofia Sanchez Amezquita','Operador D','Ensamble','SCastro'],
-['2120','Ana Ivette Lira Perez','Operador D','Ensamble','JSanchez'],
-['2123','Saul Castro Ordaz','Lider Producción','Ensamble','DVillalpando'],
-['2125','Fatima Yaireth Suarez Flores','Aux Comercio','','RFANDIÑO'],
-['2127','Jonathan Ismael Falcon ','Tec Mantinimiento D','','AGonzalez'],
-['2128','Jared Alejandro Moreno ','Tec OP B','','JGUILLEN'],
-['2130','Indihra Paulina Martine','Aux Comercio','','RFANDIÑO'],
-['2132','Maricruz Alonso Torres','Operador A','Ensamble','SGalvan'],
-['2133','Sofia Alonso Torres','Operador D','Liberación','AGonzalez'],
-['2134','Cecilia Del Rocio Rangel B','Operador C','Ensamble','JZamarripa'],
-['2136','Cassandra Elizabeth Monjaraz Reyna','Operador C','Ensamble','JSanchez'],
-['2137','Graciela Lopez Cervera','Operador C','Liberación','AGonzalez'],
-['2138','Blanca Esthela Carpio R','Operador C','Ensamble','JZamarripa'],
-['2139','Lizbeth Natali Sanchez ','Operador C','Ensamble','SGalvan'],
-['2142','Marintia Fernanda Lugo ','Operador D','Liberación','AGonzalez'],
-['2144','Nancy Noelia Aldana Rios','Ingeniero','','JCERVERA'],
-['2145','Martin Aléman Gutierrez','Coordinador de sist de calidad','','LRAMOS'],
-['2146','Javier Santos Cervantes','Supervisor Mantenimiento','','JGUILLEN'],
-['2147','Jose de Jesus Cervera Lopez','Sup Ingeniería','','JGUILLEN'],
-['2150','Rocio Fandiño','Coordinadora de immex','','JGUILLEN'],
-['2152','Francisco  Gomez','Supervisor de embarque','','RFANDIÑO'],
-['2153','Angel Gonzalez','Lider de producción','Liberación','JOlaes'],
-['2157','Juan  Olaes','Sup de producción','Corte y Liberación','Jguillén'],
-['2158','Edwin  Ortega','Contralor financiero','','APotter'],
-['2159','Jesus Pereida Ordaz','Ingeniero','','JCERVANTES'],
-['2160','Valeria Fernanda Pichardo','Compras','','JGUILLEN'],
-['2161','Luis Alberto Ramos Cedeño','Gte Calidad','','GUmhoefer'],
-['2162','Miriam Vanessa Reyes Araujo','Ctas por pagar','','EORTEGA'],
-['2164','Jose Carlos Rodriguez G','Ingeniero','','JCERVERA'],
-['2165','Paola Valeria Silva Vega','Ingeniero','','JCERVERA'],
-['2166','Juliet Marlenne Torres ','Enfermera','','PAGUILAR'],
-['2167','Mario Enrique Valadez V','Servicio al cliente','','JGUILLEN'],
-['2169','David Villalpando Rodriguez','Sup de producción','Ensamble','Jguillén'],
-['2170','Ana Paola Aguilar Hernandez','Gte RH','','JSchmit'],
-['2171','Robert Melvin Smith','Dir de negocios','','JElliot'],
-['2172','Jose Roberto Olivares A','Operador C','Liberación','AGonzalez'],
-['2174','Maria De Los Angeles Bañuelos','Analista RH','','PAGUILAR'],
-['2175','Juan Jose Guillen Miranda','Gte Operaciones','Operaciones','JElliot'],
-['2181','Rodrigo  Ponce A','Practicante','','JCervantes'],
-['2177','Juan Antonio ','Operador D','Ensamble','SGalvan'],
-['2178','Juan Francisco ','Operador D','Liberación','AGonzalez'],
-['2143','Carlos Samuel ','Operador D','Ensamble','JZamarripa'],
-['2184','Yair ','Operador D','Corte','COlvera'],
-['2183','Jonathan Ismael ','Operador D','Ensamble','SGalvan'],
-['2185','Valeria ','Operador D','Ensamble','SGalvan'],
-['2186','SanJuana ','Operador D','Ensamble','SGalvan'],
-['2187','Sebastian ','Lider Mantenimiento','','JCervantes'],
-['2188','Dafne ','Practicante','','VPichardo'],
-['2180','Brandon ','Practicante','','JCervera'],
-['2182','Christian Alejandro ','Practicante','','JCervera'],
-    ];
-        $val = session('user');
-        $value=str($val);
-        $diff=0;
-        $today=date('d-m-Y H:i');
-        $info=$request->input("infoCal");
-        $pn=$request->input("pn_cali");
-        $client=$request->input("clienteErr");
-        $ok=$request->input('ok');
-        $nok=$request->input('nok');
-        $cod1=$request->input('rest_code1');
-        $cod2=$request->input('rest_code2');
-        $cod3=$request->input('rest_code3');
-        $cod4=$request->input('rest_code4');
-        $cod5=$request->input('rest_code5');
-        $cant1=$request->input('1');
-        $cant2=$request->input('2');
-        $cant3=$request->input('3');
-        $cant4=$request->input('4');
-        $cant5=$request->input('5');
-        $serial=$request->input('serial');
-        $responsable1=$request->input('responsable1');
-        $responsable2=$request->input('responsable2');
-        $responsable3=$request->input('responsable3');
-        $responsable4=$request->input('responsable4');
-        $responsable5=$request->input('responsable5');
-        if(strpos($responsable1,',')){
-            $responsable1=str_replace(',',';',$responsable1);
-        }
-        if(strpos($responsable1,',')){
-            $responsable1=str_replace(',',';',$responsable1);
-        }
-        if(strpos($responsable2,',')){
-            $responsable2=str_replace(',',';',$responsable2);
-        }
-        if(strpos($responsable3,',')){
-            $responsable3=str_replace(',',';',$responsable3);
-        }
-        if(strpos($responsable4,',')){
-            $responsable4=str_replace(',',';',$responsable4);
-        }
-        if(strpos($responsable5,',')){
-            $responsable5=str_replace(',',';',$responsable5);
-        }
-        if(substr($serial,0,2)=='0-0'){
-            $ini='0-0';
-            $serial = str_replace('0-0', '', $serial);
-            $serial = (int)$serial;
+                ];
+                $loom=['Encintado defectuoso de cables y-o de looming',
+                'Looming Corrugado danado',
+                'Looming Corrugado mal colocado ',
+                'Braid mal colocado y-o danado',
+                'Etiquetas invertidas'
+                ];
+                $ensa=['Cables revueltos en los lotes',
+                'Medidas fuera de tolerancias',
+                'Componente Danado',
+                'Componente Incorrecto',
+                'Componente Faltante',
+                'Ensamble Incorrecto',
+                'Terminal o conector mal asentado',
+                'Salidas invertidas',
+                'Componentes sin atar al arnes',
+                'Cables Invertidos en el conector',
+                ' no tiene Continuidad Electrica',
+                'Arnes con cortocircuito'
+                ];
+                $personal=[
+                    ['2001','Jesus  Zamarripa Rodriguez','Lider Producción','Ensamble','DVillalpando'],
+            ['2002','Rosario Hernandez Lopez','Inspector Calidad','','EVillegas'],
+            ['2003','Andrea Pacheco','Supervisor Almacen','','JGUILLEN'],
+            ['2004','Fabiola  Alonso','Inspector Calidad','','EVillegas'],
+            ['2005','Martha Carpio','Operador C','Liberación','AGonzalez'],
+            ['2006','Maria Alejandra Gaona Alvarado','Operador A','Ensamble','SGalvan'],
+            ['2007','Adan Bravo Martinez','Operador A','Liberación','AGonzalez'],
+            ['2008','Lidia Susana Rico Hernadez','Operador D','Ensamble','JSanchez'],
+            ['2009','Ma Estela Gaona Alvarado','Planeador Producción','','MVALADEZ'],
+            ['2010','Leonardo Rafael Mireles','Supervisor de embarque','','FGOMEZ'],
+            ['2013','Fernando Martin Segovia','Aux Lider','Corte','COlvera'],
+            ['2014','Salvador Galvan Davila','Lider Producción','Ensamble','DVillalpando'],
+            ['2015','Maria Esther Mandujano ','Aux Lider','Ensamble','JSanchez'],
+            ['2016','Jose Manuel Zacarias Jimenez','Operador A','Ensamble','JZamarripa'],
+            ['2017','Jennifer Alejandra Gomez','Operador C','Liberación','AGonzalez'],
+            ['2018','David Salvador Rodriguez','Operador D','Ensamble','JZamarripa'],
+            ['2019','Efrain Vera Villegas','Supervisor de calidad','','EMedina'],
+            ['2020','Laura Alejandra Contreras','Operador A','Ensamble','JZamarripa'],
+            ['2021','Rosalba Ramirez Oliva','Operador C','Liberación','AGonzalez'],
+            ['2022','Maria Berenice Serrano ','Operador C','Liberación','AGonzalez'],
+            ['2023','Didier Maldonado Lopez','Aux Almacen B','','APacheco'],
+            ['2024','Aury Cecilia Aguilar Castillo','Tec Pruebas','','EMedina'],
+            ['2025','Maria Magdalena Villanueva','Operador C','Ensamble','JSanchez'],
+            ['2026','Samantha Montserrat Aranda','Operador D','Ensamble','JSanchez'],
+            ['2030','Jose Luis Ruiz Valdivia','Tec Pruebas','','EMedina'],
+            ['2031','Jessica Lizbeth Sanchez','Lider Producción','Ensamble','DVillalpando'],
+            ['2032','Martha Aranda Palacios','Operador A','Ensamble','SGalvan'],
+            ['2033','Alma Delia Perez Martin','Operador B','Ensamble','JSanchez'],
+            ['2034','Jessica Sarahi Torres P','Operador C','Ensamble','JSanchez'],
+            ['2035','Neri Leticia Cervantes ','Operador B','Ensamble','JSanchez'],
+            ['2037','Christian De Jesus Olvera','Lider Producción','Corte','JOlaes'],
+            ['2038','Beatriz Elena Regalado ','Operador B','Ensamble','JZamarripa'],
+            ['2041','Edward Medina Flores','Ing Calidad','','LRAMOS'],
+            ['2042','Martha Evelia Trujillo ','Operador C','Ensamble','JZamarripa'],
+            ['2043','Mayra Daniela Montes P','Operador C','Liberación','AGonzalez'],
+            ['2044','Sanjuana Estela Mosqueda','Operador C','Ensamble','SCastro'],
+            ['2046','Ma. De los Angeles   Flores Ortiz','Operador C','Ensamble','JSanchez'],
+            ['2047','Maricela Alferes Montes','Intendencia B','','PAGUILAR'],
+            ['2049','Jessica Estefania Galvan','Operador C','Ensamble','JSanchez'],
+            ['2051','Sergio Vera Castillo','Inspector Calidad','','EVillegas'],
+            ['2052','Erick Nuñez Vazquez','Aux Almacén A','','APacheco'],
+            ['2054','Cristina Jacquelin Godinez Ortiz','Operador C','Ensamble','JZamarripa'],
+            ['2056','Sobeida Amaya Mercado','Operador D','Ensamble','SCastro'],
+            ['2057','Daniela Goretti Rocha C','Aux Calidad','','EMedina'],
+            ['2058','Maria Barbara Castillo ','Operador C','Ensamble','JSanchez'],
+            ['2060','Marisol Anahi Perez M','Aux Almacen B','','APacheco'],
+            ['2062','Alejandro Daniel Robledo','Operador C','Corte','COlvera'],
+            ['2065','Brenda Cecilia Galvan S','Operador D','Ensamble','SCastro'],
+            ['2066','Patricia Castro Gomez','Operador C','Ensamble','SGalvan'],
+            ['2067','Mariana Alferes Montes','Intendencia A','','PAGUILAR'],
+            ['2068','Noemi Guadalupe Rangel ','Operador D','Liberación','AGonzalez'],
+            ['2071','Luis  Segoviano','Tec Mantinimiento D','','JCERVANTES'],
+            ['2073','Cinthya Veronica Galvan','Operador D','Ensamble','SGalvan'],
+            ['2074','Yahir Alejandro Chacon ','Operador C','Ensamble','JZamarripa'],
+            ['2075','Fatima De La Luz Garcia','Operador D','Ensamble','SGalvan'],
+            ['2077','Marcos Enrique Delgado ','Operador D','Liberación','AGonzalez'],
+            ['2079','Jesus Ernesto Castro R','Inspector Calidad','','EVillegas'],
+            ['2080','Francisco Javier Melend','Operador C','Liberación','AGonzalez'],
+            ['2081','Claudia Ivett Gonzalez ','Operador D','Liberación','AGonzalez'],
+            ['2082','Annel Ivonne Castro E','Operador D','Ensamble','SCastro'],
+            ['2085','Maria Guadalupe Valdes ','Operador C','Ensamble','JSanchez'],
+            ['2087','Maria Teresa Jimenez R','Operador D','Liberación','AGonzalez'],
+            ['2089','Silvia Edith Negrete M','Operador D','Ensamble','SCastro'],
+            ['2090','Milagros Jazmin Sanchez','Operador D','Ensamble','JSanchez'],
+            ['2091','Jhoana Jocelyn Lopez J','Tec procesos Calidad','','EMedina'],
+            ['2098','Fernando Moises Barajas','Operador C','Corte','COlvera'],
+            ['2101','Jorge Arturo Garrido M','Ingeniero','','JCERVERA'],
+            ['2106','Luis Adrian Rodriguez A','Operador D','Corte','COlvera'],
+            ['2108','Carmen Patricia Vera C','Operador D','Liberación','AGonzalez'],
+            ['2111','Esteban Marajim Vazquez','Operador D','Corte','COlvera'],
+            ['2112','Karla Jacqueline Martin','Operador D','Liberación','AGonzalez'],
+            ['2113','Martin Baez Aguilar','Seguridad B','','JCERVANTES'],
+            ['2114','Ma  Del Rosario','Operador D','Ensamble','JSanchez'],
+            ['2116','Mario Alberto Delgado C','Seguridad B','','JCERVANTES'],
+            ['2117','Gerardo Calvillo Martin','Seguridad B','','JCERVANTES'],
+            ['2118','Daniela Karen Elizabeth Ojeda Ramirez','Inspector Calidad','','Evillegas'],
+            ['2119','Sofia Sanchez Amezquita','Operador D','Ensamble','SCastro'],
+            ['2120','Ana Ivette Lira Perez','Operador D','Ensamble','JSanchez'],
+            ['2123','Saul Castro Ordaz','Lider Producción','Ensamble','DVillalpando'],
+            ['2125','Fatima Yaireth Suarez Flores','Aux Comercio','','RFANDIÑO'],
+            ['2127','Jonathan Ismael Falcon ','Tec Mantinimiento D','','AGonzalez'],
+            ['2128','Jared Alejandro Moreno ','Tec OP B','','JGUILLEN'],
+            ['2130','Indihra Paulina Martine','Aux Comercio','','RFANDIÑO'],
+            ['2132','Maricruz Alonso Torres','Operador A','Ensamble','SGalvan'],
+            ['2133','Sofia Alonso Torres','Operador D','Liberación','AGonzalez'],
+            ['2134','Cecilia Del Rocio Rangel B','Operador C','Ensamble','JZamarripa'],
+            ['2136','Cassandra Elizabeth Monjaraz Reyna','Operador C','Ensamble','JSanchez'],
+            ['2137','Graciela Lopez Cervera','Operador C','Liberación','AGonzalez'],
+            ['2138','Blanca Esthela Carpio R','Operador C','Ensamble','JZamarripa'],
+            ['2139','Lizbeth Natali Sanchez ','Operador C','Ensamble','SGalvan'],
+            ['2142','Marintia Fernanda Lugo ','Operador D','Liberación','AGonzalez'],
+            ['2144','Nancy Noelia Aldana Rios','Ingeniero','','JCERVERA'],
+            ['2145','Martin Aléman Gutierrez','Coordinador de sist de calidad','','LRAMOS'],
+            ['2146','Javier Santos Cervantes','Supervisor Mantenimiento','','JGUILLEN'],
+            ['2147','Jose de Jesus Cervera Lopez','Sup Ingeniería','','JGUILLEN'],
+            ['2150','Rocio Fandiño','Coordinadora de immex','','JGUILLEN'],
+            ['2152','Francisco  Gomez','Supervisor de embarque','','RFANDIÑO'],
+            ['2153','Angel Gonzalez','Lider de producción','Liberación','JOlaes'],
+            ['2157','Juan  Olaes','Sup de producción','Corte y Liberación','Jguillén'],
+            ['2158','Edwin  Ortega','Contralor financiero','','APotter'],
+            ['2159','Jesus Pereida Ordaz','Ingeniero','','JCERVANTES'],
+            ['2160','Valeria Fernanda Pichardo','Compras','','JGUILLEN'],
+            ['2161','Luis Alberto Ramos Cedeño','Gte Calidad','','GUmhoefer'],
+            ['2162','Miriam Vanessa Reyes Araujo','Ctas por pagar','','EORTEGA'],
+            ['2164','Jose Carlos Rodriguez G','Ingeniero','','JCERVERA'],
+            ['2165','Paola Valeria Silva Vega','Ingeniero','','JCERVERA'],
+            ['2166','Juliet Marlenne Torres ','Enfermera','','PAGUILAR'],
+            ['2167','Mario Enrique Valadez V','Servicio al cliente','','JGUILLEN'],
+            ['2169','David Villalpando Rodriguez','Sup de producción','Ensamble','Jguillén'],
+            ['2170','Ana Paola Aguilar Hernandez','Gte RH','','JSchmit'],
+            ['2171','Robert Melvin Smith','Dir de negocios','','JElliot'],
+            ['2172','Jose Roberto Olivares A','Operador C','Liberación','AGonzalez'],
+            ['2174','Maria De Los Angeles Bañuelos','Analista RH','','PAGUILAR'],
+            ['2175','Juan Jose Guillen Miranda','Gte Operaciones','Operaciones','JElliot'],
+            ['2181','Rodrigo  Ponce A','Practicante','','JCervantes'],
+            ['2177','Juan Antonio ','Operador D','Ensamble','SGalvan'],
+            ['2178','Juan Francisco ','Operador D','Liberación','AGonzalez'],
+            ['2143','Carlos Samuel ','Operador D','Ensamble','JZamarripa'],
+            ['2184','Yair ','Operador D','Corte','COlvera'],
+            ['2183','Jonathan Ismael ','Operador D','Ensamble','SGalvan'],
+            ['2185','Valeria ','Operador D','Ensamble','SGalvan'],
+            ['2186','SanJuana ','Operador D','Ensamble','SGalvan'],
+            ['2187','Sebastian ','Lider Mantenimiento','','JCervantes'],
+            ['2188','Dafne ','Practicante','','VPichardo'],
+            ['2180','Brandon ','Practicante','','JCervera'],
+            ['2182','Christian Alejandro ','Practicante','','JCervera'],
+                ];
+                    $val = session('user');
+                    $value=str($val);
+                    $diff=0;
+                    $today=date('d-m-Y H:i');
+                    $info=$request->input("infoCal");
+                    $pn=$request->input("pn_cali");
+                    $client=$request->input("clienteErr");
+                    $ok=$request->input('ok');
+                    $nok=$request->input('nok');
+                    $cod1=$request->input('rest_code1');
+                    $cod2=$request->input('rest_code2');
+                    $cod3=$request->input('rest_code3');
+                    $cod4=$request->input('rest_code4');
+                    $cod5=$request->input('rest_code5');
+                    $cant1=$request->input('1');
+                    $cant2=$request->input('2');
+                    $cant3=$request->input('3');
+                    $cant4=$request->input('4');
+                    $cant5=$request->input('5');
+                    $serial=$request->input('serial');
+                    $responsable1=$request->input('responsable1');
+                    $responsable2=$request->input('responsable2');
+                    $responsable3=$request->input('responsable3');
+                    $responsable4=$request->input('responsable4');
+                    $responsable5=$request->input('responsable5');
+                    if(strpos($responsable1,',')){
+                        $responsable1=str_replace(',',';',$responsable1);
+                    }
+                    if(strpos($responsable1,',')){
+                        $responsable1=str_replace(',',';',$responsable1);
+                    }
+                    if(strpos($responsable2,',')){
+                        $responsable2=str_replace(',',';',$responsable2);
+                    }
+                    if(strpos($responsable3,',')){
+                        $responsable3=str_replace(',',';',$responsable3);
+                    }
+                    if(strpos($responsable4,',')){
+                        $responsable4=str_replace(',',';',$responsable4);
+                    }
+                    if(strpos($responsable5,',')){
+                        $responsable5=str_replace(',',';',$responsable5);
+                    }
+                    if(substr($serial,0,2)=='0-0'){
+                        $ini='0-0';
+                        $serial = str_replace('0-0', '', $serial);
+                        $serial = (int)$serial;
 
-        }else if(substr($serial,0,1)=='0-') {
-        $serial = str_replace('0-', '', $serial);
-        $serial = (int)$serial;
-        $ini='0-';}
-        $busquedainfo=DB::table('calidad')->select('qty','wo')->where('info',$info)->first();
+                    }else if(substr($serial,0,1)=='0-') {
+                    $serial = str_replace('0-', '', $serial);
+                    $serial = (int)$serial;
+                    $ini='0-';}
+                    $busquedainfo=DB::table('calidad')->select('qty','wo')->where('info',$info)->first();
 
-        $wo=$busquedainfo->wo;
+                    $wo=$busquedainfo->wo;
 
-        $qty_cal=$busquedainfo->qty;
-        $total=$ok+$nok;
-        if($total>100){
-            return redirect('calidad')->with('response', "No update you need to update 100 or less");
-        }
+                    $qty_cal=$busquedainfo->qty;
+                    $total=$ok+$nok;
+                    if($total>100){
+                        return redirect('calidad')->with('response', "No update you need to update 100 or less");
+                    }
 
-        $totalCant=$cant1+$cant2+$cant3+$cant4+$cant5;
-        if($total<=$qty_cal and $totalCant==$nok){
-            //insert ok
-            for($i=0;$i<$ok;$i++){
+                    $totalCant=$cant1+$cant2+$cant3+$cant4+$cant5;
+                    if($total<=$qty_cal and $totalCant==$nok){
+                        //insert ok
+                        for($i=0;$i<$ok;$i++){
 
-            $ok_reg= new calidadRegistro;
-            $ok_reg->fecha=$today;
-            $ok_reg->client=$client;
-            $ok_reg->pn=$pn;
-            $ok_reg->info=$info;
-            $ok_reg->resto=1;
-            $ok_reg->codigo="TODO BIEN";
-            if(!empty($serial)){
-                $ok_reg->prueba=$serial;
-                $serial++;
-            }else{
-            $ok_reg->prueba="";}
-            $ok_reg->usuario=$value;
-            $ok_reg->save();}
+                        $ok_reg= new calidadRegistro;
+                        $ok_reg->fecha=$today;
+                        $ok_reg->client=$client;
+                        $ok_reg->pn=$pn;
+                        $ok_reg->info=$info;
+                        $ok_reg->resto=1;
+                        $ok_reg->codigo="TODO BIEN";
+                        if(!empty($serial)){
+                            $ok_reg->prueba=$serial;
+                            $serial++;
+                        }else{
+                        $ok_reg->prueba="";}
+                        $ok_reg->usuario=$value;
+                        $ok_reg->save();}
 
-            if(!empty($cant1)){
-                foreach($personal as $key=>$var){
-                    if($responsable1==$personal[$key][0]){
-                        $responsable1=($personal[$key][1]);
-                        break;     }   }
-                    $nok_reg= new calidadRegistro;
-                    $nok_reg->fecha=$today;
-                    $nok_reg->client=$client;
-                    $nok_reg->pn=$pn;
-                    $nok_reg->info=$info;
-                    $nok_reg->resto=1;
-                    $nok_reg->codigo=$cod1;
-                    if(!empty($serial)){
-                        $nok_reg->prueba="0-0".$serial;
-                        $serial++;
-                    }else{
-                    $nok_reg->prueba="";}
-                    $nok_reg->usuario=$value;
-                     $nok_reg->Responsable=$responsable1;
-                    $nok_reg->save();
-                    if(strpos($cod1, ';') ) {
-                        $cod = explode(';', $cod1);
+                        if(!empty($cant1)){
+                            foreach($personal as $key=>$var){
+                                if($responsable1==$personal[$key][0]){
+                                    $responsable1=($personal[$key][1]);
+                                    break;     }   }
+                                $nok_reg= new calidadRegistro;
+                                $nok_reg->fecha=$today;
+                                $nok_reg->client=$client;
+                                $nok_reg->pn=$pn;
+                                $nok_reg->info=$info;
+                                $nok_reg->resto=1;
+                                $nok_reg->codigo=$cod1;
+                                if(!empty($serial)){
+                                    $nok_reg->prueba="0-0".$serial;
+                                    $serial++;
+                                }else{
+                                $nok_reg->prueba="";}
+                                $nok_reg->usuario=$value;
+                                $nok_reg->Responsable=$responsable1;
+                                $nok_reg->save();
+                                if(strpos($cod1, ';') ) {
+                                    $cod = explode(';', $cod1);
+                                    for ($i = 0; $i < count($cod); $i++) {
+                                        $regTimes= new timedead;
+                                $regTimes->fecha=$today;
+                                $regTimes->cliente=$client;
+                                $regTimes->np=$pn;
+                                $regTimes->codigo=$info;
+                                $regTimes->defecto=$cod[$i];
+                                $regTimes->timeIni=strtotime($today);
+                                $regTimes->whoDet=$value;
+                                if(in_array($cod[$i],$loom)){
+                                    $regTimes->respArea="Jesus Zamarripa";
+                                }else if(in_array($cod[$i],$corteLibe)){
+                                    $regTimes->respArea="Juan Olaes";
+                                }else if(in_array($cod[$i],$ensa)){
+                                    $regTimes->respArea="David Villalpando";
+                                }else{  $regTimes->respArea="";      }
+
+                        $regTimes->area="Calidad";
+                        $regTimes->save();
+
+                                    }
+                                }
+                                    else{
+                                $regTimes= new timedead;
+                                $regTimes->fecha=$today;
+                                $regTimes->cliente=$client;
+                                $regTimes->np=$pn;
+                                $regTimes->codigo=$info;
+                                $regTimes->defecto=$cod1;
+                                $regTimes->timeIni=strtotime($today);
+                                $regTimes->whoDet=$value;
+                                if(in_array($cod1,$loom)){
+                                    $regTimes->respArea="Jesus Zamarripa";
+                                }else if(in_array($cod1,$corteLibe)){
+                                    $regTimes->respArea="Juan Olaes";
+                                }else if(in_array($cod1,$ensa)){
+                                    $regTimes->respArea="David Villalpando";
+                                }else{  $regTimes->respArea="";      }
+
+                        $regTimes->area="Calidad";
+                        $regTimes->save();}
+
+                    }
+                        if(!empty($cant2)){
+                            foreach($personal as $key=>$var){
+                                if($responsable2==$personal[$key][0]){
+                                    $responsable2=($personal[$key][1]);
+                                    break;     }   }
+
+                                $nok_reg= new calidadRegistro;
+                                $nok_reg->fecha=$today;
+                                $nok_reg->client=$client;
+                                $nok_reg->pn=$pn;
+                                $nok_reg->info=$info;
+                                $nok_reg->resto=1;
+                                $nok_reg->codigo=$cod2;
+                                if(!empty($serial)){
+                                    $nok_reg->prueba="0-0".$serial;
+                                    $serial++;
+                                }else{
+                                $nok_reg->prueba="";}
+                                $nok_reg->usuario=$value;
+                                $nok_reg->Responsable=$responsable2;
+                                $nok_reg->save();
+
+                            if(strpos($cod2, ';') ) {
+                                $cod = explode(';', $cod2);
+                                for ($i = 0; $i < count($cod); $i++) {
+                                    $regTimes= new timedead;
+                            $regTimes->fecha=$today;
+                            $regTimes->cliente=$client;
+                            $regTimes->np=$pn;
+                            $regTimes->codigo=$info;
+                            $regTimes->defecto=$cod[$i];
+                            $regTimes->timeIni=strtotime($today);
+                            $regTimes->whoDet=$value;
+                            if(in_array($cod[$i],$loom)){
+                                $regTimes->respArea="Jesus Zamarripa";
+                            }else if(in_array($cod[$i],$corteLibe)){
+                                $regTimes->respArea="Juan Olaes";
+                            }else if(in_array($cod[$i],$ensa)){
+                                $regTimes->respArea="David Villalpando";
+                            }else{  $regTimes->respArea="";      }
+
+                    $regTimes->area="Calidad";
+                    $regTimes->save();
+
+                                }
+                            }
+                                else{
+                            $regTimes= new timedead;
+                            $regTimes->fecha=$today;
+                            $regTimes->cliente=$client;
+                            $regTimes->np=$pn;
+                            $regTimes->codigo=$info;
+                            $regTimes->defecto=$cod2;
+                            $regTimes->timeIni=strtotime($today);
+                            $regTimes->whoDet=$value;
+                            if(in_array($cod2,$loom)){
+                                $regTimes->respArea="Jesus Zamarripa";
+                            }else if(in_array($cod2,$corteLibe)){
+                                $regTimes->respArea="Juan Olaes";
+                            }else if(in_array($cod2,$ensa)){
+                                $regTimes->respArea="David Villalpando";
+                            }else{  $regTimes->respArea="";      }
+
+                    $regTimes->area="Calidad";
+                    $regTimes->save();}
+                        }
+                        if(!empty($cant3)){
+                            foreach($personal as $key=>$var){
+                                if($responsable3==$personal[$key][0]){
+                                    $responsable3=($personal[$key][1]);
+                                    break;     }   }
+                            $nok_reg= new calidadRegistro;
+                            $nok_reg->fecha=$today;
+                            $nok_reg->client=$client;
+                            $nok_reg->pn=$pn;
+                            $nok_reg->info=$info;
+                            $nok_reg->resto=1;
+                            $nok_reg->codigo=$cod3;
+                            if(!empty($serial)){
+                                $nok_reg->prueba="0-0".$serial;
+                                $serial++;
+                            }else{
+                            $nok_reg->prueba="";}
+                            $nok_reg->usuario=$value;
+                            $nok_reg->Responsable=$responsable3;
+                            $nok_reg->save();
+
+                        if(strpos($cod3, ';') ) {
+                            $cod = explode(';', $cod3);
+                            for ($i = 0; $i < count($cod); $i++) {
+                                $regTimes= new timedead;
+                        $regTimes->fecha=$today;
+                        $regTimes->cliente=$client;
+                        $regTimes->np=$pn;
+                        $regTimes->codigo=$info;
+                        $regTimes->defecto=$cod[$i];
+                        $regTimes->timeIni=strtotime($today);
+                        $regTimes->whoDet=$value;
+                        if(in_array($cod[$i],$loom)){
+                            $regTimes->respArea="Jesus Zamarripa";
+                        }else if(in_array($cod[$i],$corteLibe)){
+                            $regTimes->respArea="Juan Olaes";
+                        }else if(in_array($cod[$i],$ensa)){
+                            $regTimes->respArea="David Villalpando";
+                        }else{  $regTimes->respArea="";      }
+
+                $regTimes->area="Calidad";
+                $regTimes->save();
+
+                            }
+                        }
+                            else{
+                        $regTimes= new timedead;
+                        $regTimes->fecha=$today;
+                        $regTimes->cliente=$client;
+                        $regTimes->np=$pn;
+                        $regTimes->codigo=$info;
+                        $regTimes->defecto=$cod3;
+                        $regTimes->timeIni=strtotime($today);
+                        $regTimes->whoDet=$value;
+                        if(in_array($cod3,$loom)){
+                            $regTimes->respArea="Jesus Zamarripa";
+                        }else if(in_array($cod3,$corteLibe)){
+                            $regTimes->respArea="Juan Olaes";
+                        }else if(in_array($cod3,$ensa)){
+                            $regTimes->respArea="David Villalpando";
+                        }else{  $regTimes->respArea="";      }
+                $regTimes->area="Calidad";
+                $regTimes->save();}
+                    }
+                    if(!empty($cant4)){
+                        foreach($personal as $key=>$var){
+                            if($responsable4==$personal[$key][0]){
+                                $responsable4=($personal[$key][1]);
+                                break;     }   }
+                        $nok_reg= new calidadRegistro;
+                        $nok_reg->fecha=$today;
+                        $nok_reg->client=$client;
+                        $nok_reg->pn=$pn;
+                        $nok_reg->info=$info;
+                        $nok_reg->resto=1;
+                        $nok_reg->codigo=$cod4;
+                        if(!empty($serial)){
+                            $nok_reg->prueba="0-0".$serial;
+                            $serial++;
+                        }else{
+                        $nok_reg->prueba="";}
+                        $nok_reg->usuario=$value;
+                        $nok_reg->Responsable=$responsable4;
+                        $nok_reg->save();
+
+                    if(strpos($cod4, ';') ) {
+                        $cod = explode(';', $cod4);
                         for ($i = 0; $i < count($cod); $i++) {
                             $regTimes= new timedead;
                     $regTimes->fecha=$today;
@@ -403,7 +599,6 @@ class caliController extends generalController
                     }else if(in_array($cod[$i],$ensa)){
                         $regTimes->respArea="David Villalpando";
                     }else{  $regTimes->respArea="";      }
-
             $regTimes->area="Calidad";
             $regTimes->save();
 
@@ -415,45 +610,42 @@ class caliController extends generalController
                     $regTimes->cliente=$client;
                     $regTimes->np=$pn;
                     $regTimes->codigo=$info;
-                    $regTimes->defecto=$cod1;
+                    $regTimes->defecto=$cod4;
                     $regTimes->timeIni=strtotime($today);
                     $regTimes->whoDet=$value;
-                    if(in_array($cod1,$loom)){
+                    if(in_array($cod4,$loom)){
                         $regTimes->respArea="Jesus Zamarripa";
-                    }else if(in_array($cod1,$corteLibe)){
+                    }else if(in_array($cod4,$corteLibe)){
                         $regTimes->respArea="Juan Olaes";
-                    }else if(in_array($cod1,$ensa)){
+                    }else if(in_array($cod4,$ensa)){
                         $regTimes->respArea="David Villalpando";
                     }else{  $regTimes->respArea="";      }
-
             $regTimes->area="Calidad";
             $regTimes->save();}
-
-        }
-            if(!empty($cant2)){
-                foreach($personal as $key=>$var){
-                    if($responsable2==$personal[$key][0]){
-                        $responsable2=($personal[$key][1]);
-                        break;     }   }
-
+                }
+                if(!empty($cant5)){
+                    foreach($personal as $key=>$var){
+                        if($responsable5==$personal[$key][0]){
+                            $responsable5=($personal[$key][1]);
+                            break;     }   }
                     $nok_reg= new calidadRegistro;
                     $nok_reg->fecha=$today;
                     $nok_reg->client=$client;
                     $nok_reg->pn=$pn;
                     $nok_reg->info=$info;
                     $nok_reg->resto=1;
-                    $nok_reg->codigo=$cod2;
+                    $nok_reg->codigo=$cod5;
                     if(!empty($serial)){
                         $nok_reg->prueba="0-0".$serial;
                         $serial++;
                     }else{
                     $nok_reg->prueba="";}
                     $nok_reg->usuario=$value;
-                    $nok_reg->Responsable=$responsable2;
+                    $nok_reg->Responsable=$responsable5;
                     $nok_reg->save();
 
-                if(strpos($cod2, ';') ) {
-                    $cod = explode(';', $cod2);
+                if(strpos($cod5, ';') ) {
+                    $cod = explode(';', $cod5);
                     for ($i = 0; $i < count($cod); $i++) {
                         $regTimes= new timedead;
                 $regTimes->fecha=$today;
@@ -470,9 +662,8 @@ class caliController extends generalController
                 }else if(in_array($cod[$i],$ensa)){
                     $regTimes->respArea="David Villalpando";
                 }else{  $regTimes->respArea="";      }
-
-        $regTimes->area="Calidad";
-        $regTimes->save();
+            $regTimes->area="Calidad";
+            $regTimes->save();
 
                     }
                 }
@@ -482,286 +673,95 @@ class caliController extends generalController
                 $regTimes->cliente=$client;
                 $regTimes->np=$pn;
                 $regTimes->codigo=$info;
-                $regTimes->defecto=$cod2;
+                $regTimes->defecto=$cod5;
                 $regTimes->timeIni=strtotime($today);
                 $regTimes->whoDet=$value;
-                if(in_array($cod2,$loom)){
+                if(in_array($cod5,$loom)){
                     $regTimes->respArea="Jesus Zamarripa";
-                }else if(in_array($cod2,$corteLibe)){
+                }else if(in_array($cod5,$corteLibe)){
                     $regTimes->respArea="Juan Olaes";
-                }else if(in_array($cod2,$ensa)){
+                }else if(in_array($cod5,$ensa)){
                     $regTimes->respArea="David Villalpando";
                 }else{  $regTimes->respArea="";      }
-
-        $regTimes->area="Calidad";
-        $regTimes->save();}
+            $regTimes->area="Calidad";
+            $regTimes->save();}
             }
-            if(!empty($cant3)){
-                foreach($personal as $key=>$var){
-                    if($responsable3==$personal[$key][0]){
-                        $responsable3=($personal[$key][1]);
-                        break;     }   }
-                $nok_reg= new calidadRegistro;
-                $nok_reg->fecha=$today;
-                $nok_reg->client=$client;
-                $nok_reg->pn=$pn;
-                $nok_reg->info=$info;
-                $nok_reg->resto=1;
-                $nok_reg->codigo=$cod3;
-                if(!empty($serial)){
-                    $nok_reg->prueba="0-0".$serial;
-                    $serial++;
+
+                        $rest=$qty_cal - ($ok+$nok);
+                        $buscarPartial=DB::table('registroparcial')->where('codeBar','=',$info)->get();
+                    foreach($buscarPartial as $row){
+                        $test=$row->testPar;
+                        $emba=$row->embPar;
+                    }
+                    $upPartial=DB::table('registroparcial')->where('codeBar','=',$info)->update(['testPar'=>$test-$total,'embPar'=>$emba+$total]);
+                    $regTimePar= new regParTime;
+                    $regTimePar->codeBar=$info;
+                    $regTimePar->qtyPar=$total;
+                    $regTimePar->area=$value;
+                    $regTimePar->fechaReg=$today;
+                    $regTimePar->save();
+
+
+                        if($rest>0){
+                        $updacalidad=DB::table('calidad')->where("info",$info)->update(['qty'=>$rest]);
+                        $updateToRegistro=DB::table('registro')->where("info",$info)->update(["paro"=>"Parcial prueba electrica"]);
+                        return redirect()->route('calidad');
+                        }else if($rest<=0){
+                            $todays=(date('d-m-Y H:i'));
+                            $buscarReg=DB::table('registro')->where("info",$info)->first();
+                            $rev=$buscarReg->rev;
+                            $np=$buscarReg->NumPart;
+                            if(substr($rev,0,4)=='PPAP' || substr($rev,0,4)=='PRIM'){
+                                $delteCalidad=DB::table('calidad')->where("info",$info)->delete();
+                                $updatetime=DB::table('timesharn')->where('bar',$info)->update(['qlyF'=>$todays]);
+                                $tiempoUp=DB::table('tiempos')->where('info',$info)->update(['calidad'=>$todays]);
+                                $updateToEmbarque=DB::table('registro')->where("info",$info)->update(["count"=>18,"donde"=>'En espera de ingenieria',"paro"=>""]);
+                                            return redirect()->route('calidad');
+                        }else{
+                            $delteCalidad=DB::table('calidad')->where("info",$info)->delete();
+                            $updatetime=DB::table('timesharn')->where('bar',$info)->update(['cutF'=>$todays]);
+                            $tiempoUp=DB::table('tiempos')->where('info',$info)->update(['calidad'=>$todays]);
+                            $updateToEmbarque=DB::table('registro')->where("info",$info)->update(["count"=>12,"donde"=>'En espera de embarque',"paro"=>""]);
+                            return redirect()->route('calidad');
+                        }
+                        }
+                    }else{
+                        return redirect()->route('calidad');
+                    }
+
                 }else{
-                $nok_reg->prueba="";}
-                $nok_reg->usuario=$value;
-                $nok_reg->Responsable=$responsable3;
-                $nok_reg->save();
-
-            if(strpos($cod3, ';') ) {
-                $cod = explode(';', $cod3);
-                for ($i = 0; $i < count($cod); $i++) {
-                    $regTimes= new timedead;
-            $regTimes->fecha=$today;
-            $regTimes->cliente=$client;
-            $regTimes->np=$pn;
-            $regTimes->codigo=$info;
-            $regTimes->defecto=$cod[$i];
-            $regTimes->timeIni=strtotime($today);
-            $regTimes->whoDet=$value;
-            if(in_array($cod[$i],$loom)){
-                $regTimes->respArea="Jesus Zamarripa";
-            }else if(in_array($cod[$i],$corteLibe)){
-                $regTimes->respArea="Juan Olaes";
-            }else if(in_array($cod[$i],$ensa)){
-                $regTimes->respArea="David Villalpando";
-            }else{  $regTimes->respArea="";      }
-
-    $regTimes->area="Calidad";
-    $regTimes->save();
-
+                    return redirect()->route('calidad');
                 }
-            }
-                else{
-            $regTimes= new timedead;
-            $regTimes->fecha=$today;
-            $regTimes->cliente=$client;
-            $regTimes->np=$pn;
-            $regTimes->codigo=$info;
-            $regTimes->defecto=$cod3;
-            $regTimes->timeIni=strtotime($today);
-            $regTimes->whoDet=$value;
-            if(in_array($cod3,$loom)){
-                $regTimes->respArea="Jesus Zamarripa";
-            }else if(in_array($cod3,$corteLibe)){
-                $regTimes->respArea="Juan Olaes";
-            }else if(in_array($cod3,$ensa)){
-                $regTimes->respArea="David Villalpando";
-            }else{  $regTimes->respArea="";      }
-    $regTimes->area="Calidad";
-    $regTimes->save();}
-        }
-        if(!empty($cant4)){
-            foreach($personal as $key=>$var){
-                if($responsable4==$personal[$key][0]){
-                    $responsable4=($personal[$key][1]);
-                    break;     }   }
-            $nok_reg= new calidadRegistro;
-            $nok_reg->fecha=$today;
-            $nok_reg->client=$client;
-            $nok_reg->pn=$pn;
-            $nok_reg->info=$info;
-            $nok_reg->resto=1;
-            $nok_reg->codigo=$cod4;
-            if(!empty($serial)){
-                $nok_reg->prueba="0-0".$serial;
-                $serial++;
-            }else{
-            $nok_reg->prueba="";}
-            $nok_reg->usuario=$value;
-            $nok_reg->Responsable=$responsable4;
-            $nok_reg->save();
-
-        if(strpos($cod4, ';') ) {
-            $cod = explode(';', $cod4);
-            for ($i = 0; $i < count($cod); $i++) {
-                $regTimes= new timedead;
-        $regTimes->fecha=$today;
-        $regTimes->cliente=$client;
-        $regTimes->np=$pn;
-        $regTimes->codigo=$info;
-        $regTimes->defecto=$cod[$i];
-        $regTimes->timeIni=strtotime($today);
-        $regTimes->whoDet=$value;
-        if(in_array($cod[$i],$loom)){
-            $regTimes->respArea="Jesus Zamarripa";
-        }else if(in_array($cod[$i],$corteLibe)){
-            $regTimes->respArea="Juan Olaes";
-        }else if(in_array($cod[$i],$ensa)){
-            $regTimes->respArea="David Villalpando";
-        }else{  $regTimes->respArea="";      }
-$regTimes->area="Calidad";
-$regTimes->save();
-
-            }
-        }
-            else{
-        $regTimes= new timedead;
-        $regTimes->fecha=$today;
-        $regTimes->cliente=$client;
-        $regTimes->np=$pn;
-        $regTimes->codigo=$info;
-        $regTimes->defecto=$cod4;
-        $regTimes->timeIni=strtotime($today);
-        $regTimes->whoDet=$value;
-        if(in_array($cod4,$loom)){
-            $regTimes->respArea="Jesus Zamarripa";
-        }else if(in_array($cod4,$corteLibe)){
-            $regTimes->respArea="Juan Olaes";
-        }else if(in_array($cod4,$ensa)){
-            $regTimes->respArea="David Villalpando";
-        }else{  $regTimes->respArea="";      }
-$regTimes->area="Calidad";
-$regTimes->save();}
-    }
-    if(!empty($cant5)){
-        foreach($personal as $key=>$var){
-            if($responsable5==$personal[$key][0]){
-                $responsable5=($personal[$key][1]);
-                break;     }   }
-        $nok_reg= new calidadRegistro;
-        $nok_reg->fecha=$today;
-        $nok_reg->client=$client;
-        $nok_reg->pn=$pn;
-        $nok_reg->info=$info;
-        $nok_reg->resto=1;
-        $nok_reg->codigo=$cod5;
-        if(!empty($serial)){
-            $nok_reg->prueba="0-0".$serial;
-            $serial++;
-        }else{
-        $nok_reg->prueba="";}
-        $nok_reg->usuario=$value;
-        $nok_reg->Responsable=$responsable5;
-        $nok_reg->save();
-
-    if(strpos($cod5, ';') ) {
-        $cod = explode(';', $cod5);
-        for ($i = 0; $i < count($cod); $i++) {
-            $regTimes= new timedead;
-    $regTimes->fecha=$today;
-    $regTimes->cliente=$client;
-    $regTimes->np=$pn;
-    $regTimes->codigo=$info;
-    $regTimes->defecto=$cod[$i];
-    $regTimes->timeIni=strtotime($today);
-    $regTimes->whoDet=$value;
-    if(in_array($cod[$i],$loom)){
-        $regTimes->respArea="Jesus Zamarripa";
-    }else if(in_array($cod[$i],$corteLibe)){
-        $regTimes->respArea="Juan Olaes";
-    }else if(in_array($cod[$i],$ensa)){
-        $regTimes->respArea="David Villalpando";
-    }else{  $regTimes->respArea="";      }
-$regTimes->area="Calidad";
-$regTimes->save();
-
-        }
-    }
-        else{
-    $regTimes= new timedead;
-    $regTimes->fecha=$today;
-    $regTimes->cliente=$client;
-    $regTimes->np=$pn;
-    $regTimes->codigo=$info;
-    $regTimes->defecto=$cod5;
-    $regTimes->timeIni=strtotime($today);
-    $regTimes->whoDet=$value;
-    if(in_array($cod5,$loom)){
-        $regTimes->respArea="Jesus Zamarripa";
-    }else if(in_array($cod5,$corteLibe)){
-        $regTimes->respArea="Juan Olaes";
-    }else if(in_array($cod5,$ensa)){
-        $regTimes->respArea="David Villalpando";
-    }else{  $regTimes->respArea="";      }
-$regTimes->area="Calidad";
-$regTimes->save();}
-}
-
-            $rest=$qty_cal - ($ok+$nok);
-            $buscarPartial=DB::table('registroparcial')->where('codeBar','=',$info)->get();
-        foreach($buscarPartial as $row){
-            $test=$row->testPar;
-            $emba=$row->embPar;
-        }
-        $upPartial=DB::table('registroparcial')->where('codeBar','=',$info)->update(['testPar'=>$test-$total,'embPar'=>$emba+$total]);
-        $regTimePar= new regParTime;
-        $regTimePar->codeBar=$info;
-        $regTimePar->qtyPar=$total;
-        $regTimePar->area=$value;
-        $regTimePar->fechaReg=$today;
-        $regTimePar->save();
-
-
-            if($rest>0){
-            $updacalidad=DB::table('calidad')->where("info",$info)->update(['qty'=>$rest]);
-            $updateToRegistro=DB::table('registro')->where("info",$info)->update(["paro"=>"Parcial prueba electrica"]);
-            return redirect()->route('calidad');
-            }else if($rest<=0){
-                $todays=(date('d-m-Y H:i'));
-                $buscarReg=DB::table('registro')->where("info",$info)->first();
-                $rev=$buscarReg->rev;
-                $np=$buscarReg->NumPart;
-                if(substr($rev,0,4)=='PPAP' || substr($rev,0,4)=='PRIM'){
-                    $delteCalidad=DB::table('calidad')->where("info",$info)->delete();
-                    $updatetime=DB::table('timesharn')->where('bar',$info)->update(['qlyF'=>$todays]);
-                    $tiempoUp=DB::table('tiempos')->where('info',$info)->update(['calidad'=>$todays]);
-                    $updateToEmbarque=DB::table('registro')->where("info",$info)->update(["count"=>18,"donde"=>'En espera de ingenieria',"paro"=>""]);
-                                return redirect()->route('calidad');
-            }else{
-                $delteCalidad=DB::table('calidad')->where("info",$info)->delete();
-                $updatetime=DB::table('timesharn')->where('bar',$info)->update(['cutF'=>$todays]);
-                $tiempoUp=DB::table('tiempos')->where('info',$info)->update(['calidad'=>$todays]);
-                $updateToEmbarque=DB::table('registro')->where("info",$info)->update(["count"=>12,"donde"=>'En espera de embarque',"paro"=>""]);
-                return redirect()->route('calidad');
-            }
-            }
-        }else{
-            return redirect()->route('calidad');
-        }
-
-    }else{
-        return redirect()->route('calidad');
-    }
 
     }
 
     public function buscarcodigo(Request $request)
-{
-    $codig1 = $request->input('codigo1');
-    $cod1=[];
-$restCodig="";
-if(strpos($codig1, ',') ) {
-    $cod1=explode(",",$codig1);
-    for($i=0;$i<count($cod1);$i++){
-        $rest = DB::table('clavecali')->select('defecto')->where('clave', $cod1[$i])->first();
-        if($i<count($cod1)-1){
+    {
+            $codig1 = $request->input('codigo1');
+            $cod1=[];
+        $restCodig="";
+        if(strpos($codig1, ',') ) {
+            $cod1=explode(",",$codig1);
+            for($i=0;$i<count($cod1);$i++){
+                $rest = DB::table('clavecali')->select('defecto')->where('clave', $cod1[$i])->first();
+                if($i<count($cod1)-1){
 
-            $restCodig = $restCodig.$rest->defecto.';';
+                    $restCodig = $restCodig.$rest->defecto.';';
+                }else{
+                    $restCodig = $restCodig.$rest->defecto;
+                }
+
+
+            }
+            return response()->json($restCodig);
         }else{
-            $restCodig = $restCodig.$rest->defecto;
+            $buscar = DB::table('clavecali')->select('defecto')->where('clave', $codig1)->first();
+            if($buscar->defecto != null){
+
+                $restCodig = $buscar ;
+            }
+            return response()->json($restCodig);
         }
-
-
-    }
-    return response()->json($restCodig);
-}else{
-    $buscar = DB::table('clavecali')->select('defecto')->where('clave', $codig1)->first();
-    if($buscar->defecto != null){
-
-        $restCodig = $buscar ;
-    }
-    return response()->json($restCodig);
-}
 
 
 
@@ -790,69 +790,69 @@ public function codigoCalidad(request $request){
 
 }
 
-public function fetchDatacali(){
-$i =$backlock =0;
-$fecha = $info = $cliente = $pn = $cantidad =$serial=$issue= [];
-$tested = DB::select('SELECT * FROM regsitrocalidad ORDER BY id DESC');
+    public function fetchDatacali(){
+        $i =$backlock =0;
+        $fecha = $info = $cliente = $pn = $cantidad =$serial=$issue= [];
+        $tested = DB::select('SELECT * FROM regsitrocalidad ORDER BY id DESC');
 
-foreach ($tested as $registro) {
-    $date = $registro->fecha;
-    $code = $registro->info;
-    $client = $registro->client;
-    $part = $registro->pn;
-    $cant = $registro->resto;
-    $issue=$registro->codigo;
-    $serial=$registro->prueba;
-    $dates=strtotime($date);
+        foreach ($tested as $registro) {
+            $date = $registro->fecha;
+            $code = $registro->info;
+            $client = $registro->client;
+            $part = $registro->pn;
+            $cant = $registro->resto;
+            $issue=$registro->codigo;
+            $serial=$registro->prueba;
+            $dates=strtotime($date);
 
-    $fechacontrol = strtotime("01-01-2024 00:00");
-
-
-    if($dates>$fechacontrol){
+            $fechacontrol = strtotime("01-01-2024 00:00");
 
 
-            $fecha[] = $date;
-            $cliente[] = $client;
-            $pn[] = $part;
-            $cantidad[] = $cant;
-            $codigo[]=$issue;
-            $prueba[]=$serial;
-            $i++;
-    }
+            if($dates>$fechacontrol){
 
-    }
-$tableContent = '';
-for ($j = 0; $j < $i; $j++) {
-    $tableContent .= '<tr>';
-    $tableContent .= '<td>' . $fecha[$j] . '</td>';
-    $tableContent .= '<td>' . $pn[$j] . '</td>';
-    $tableContent .= '<td>' . $cliente[$j] . '</td>';
-    $tableContent .= '<td>' . $cantidad[$j] . '</td>';
-    $tableContent .= '<td>' . $codigo[$j] . '</td>';
-    $tableContent .= '<td>' . $prueba[$j] . '</td>';
-    $tableContent .= '</tr>';
+
+                    $fecha[] = $date;
+                    $cliente[] = $client;
+                    $pn[] = $part;
+                    $cantidad[] = $cant;
+                    $codigo[]=$issue;
+                    $prueba[]=$serial;
+                    $i++;
+            }
+
+            }
+        $tableContent = '';
+        for ($j = 0; $j < $i; $j++) {
+            $tableContent .= '<tr>';
+            $tableContent .= '<td>' . $fecha[$j] . '</td>';
+            $tableContent .= '<td>' . $pn[$j] . '</td>';
+            $tableContent .= '<td>' . $cliente[$j] . '</td>';
+            $tableContent .= '<td>' . $cantidad[$j] . '</td>';
+            $tableContent .= '<td>' . $codigo[$j] . '</td>';
+            $tableContent .= '<td>' . $prueba[$j] . '</td>';
+            $tableContent .= '</tr>';
+        }
+        $labels=['Planning','Cutting','Terminal'];
+        $datos=[12,13,14];
+
+        $saldo=0;
+
+
+        // Create the updated data array
+        $updatedData = [
+            'tableContent' => $tableContent,
+            'saldo'=> $saldo,
+            'backlock'=> $backlock,
+            'labels'=>$labels,
+            'data'=>$datos
+
+        ];
+
+        // Return the updated data as JSON response
+        return response()->json($updatedData,);
 }
-$labels=['Planning','Cutting','Terminal'];
-$datos=[12,13,14];
 
-$saldo=0;
-
-
-// Create the updated data array
-$updatedData = [
-    'tableContent' => $tableContent,
-    'saldo'=> $saldo,
-    'backlock'=> $backlock,
-    'labels'=>$labels,
-    'data'=>$datos
-
-];
-
-// Return the updated data as JSON response
-return response()->json($updatedData,);
-}
-
-public function mantCali(Request $request){
+    public function mantCali(Request $request){
 
         $value=session('user');
         $equip=$request->input('equipo');
@@ -879,7 +879,7 @@ public function mantCali(Request $request){
         }
 
 }
-public function matCali(Request $request){
+    public function matCali(Request $request){
 
             $value=session('user');
             $today=date("d-m-Y");
