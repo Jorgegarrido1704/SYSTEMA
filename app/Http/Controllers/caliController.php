@@ -971,13 +971,15 @@ public function codigoCalidad(request $request){
         return redirect('/calidad');
     }
     public function accepted(Request $request){
-        $id=$request->input('id');
+        $acpt=$request->input('acpt');
+        $denied=$request->input('denied');
         $cat=session('categoria');
         $value = session('user');
-        if(empty($id)){
-            return view('preorder',['value'=>$value,'cat'=>$cat]);
+        if(empty($acpt) && empty($denied)){
+            $preorder=DB::table('registroparcial')->where('preCalidad','>',0)->get();
 
-    }
+            return view('preorder',['value'=>$value,'cat'=>$cat,'preorder'=>$preorder]);
+            }
 
  }
 }
