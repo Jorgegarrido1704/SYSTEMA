@@ -17,6 +17,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\getPnDetailsController;
 use App\Http\Controllers\AlmacenController;
 use App\Http\Controllers\AdminSupControlloer;
+use App\Http\Controllers\SaludController;
 
 
 /*
@@ -148,4 +149,9 @@ Route::get(    'juntas/calidad',   [juntasController::class, 'calidad_junta'])->
 Route::get(    'juntas/lista/{id}',   [juntasController::class, 'litas_junta'])->name('litas_junta');
 Route::get(    'juntas/reg',   [juntasController::class, 'litas_reg'])->name('litas_reg');
 Route::get(    'juntas/mostrarWO',   [juntasController::class, 'mostrarWOJ'])->name('mostrarWOJ');
+});
+
+Route::controller(SaludController::class)->group(function(){
+Route::get('/salud', [SaludController::class, 'index_salud'])->name('salud');
+Route::post('/salud/visita_enfermeria', [SaludController::class, 'visita_enfermeria'])->name('visita_enfermeria');
 });

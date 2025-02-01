@@ -107,6 +107,9 @@ class loginController extends Controller
                 }else if($categoria=='invent'){
                     session(['categoria'=>$categoria]);
                     return redirect('/globalInventario');
+                }else if($categoria=='nurse'){
+                    session(['categoria'=>$categoria]);
+                    return redirect('/salud');
                 }
                 else {
 
