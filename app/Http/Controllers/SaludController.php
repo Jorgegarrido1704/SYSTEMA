@@ -12,14 +12,14 @@ class SaludController extends Controller
     //
     public function index_salud(){
         $cat=session('categoria');
-        $user=session('user');
+        $value=session('user');
         $buscarFolio = DB::table('salud')->orderBy('id_salud', 'desc')->first();
         if($buscarFolio==null){
             $folio=1;
         }else{
             $folio=$buscarFolio->id_salud+1;
         }
-        return view('salud.salud',['cat'=>$cat,'user'=>$user,'folio'=>$folio]);
+        return view('salud.salud',['cat'=>$cat,'value'=>$value,'folio'=>$folio]);
     }
 
     public function visita_enfermeria(Request $request)

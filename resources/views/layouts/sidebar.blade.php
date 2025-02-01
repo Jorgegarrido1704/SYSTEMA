@@ -47,6 +47,8 @@
     <a class="nav-link" href="/planing">
     @elseif($cat=="cali")
     <a class="nav-link"  href="/calidad">
+    @elseif($cat=="nurse")
+    <a class="nav-link"  href="/salud">
     @endif
         <i class="fas fa-fw fa-tachometer-alt"></i>
         <span>Home</span></a>
