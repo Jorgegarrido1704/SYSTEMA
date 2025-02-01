@@ -21,7 +21,7 @@
                    <input type="text" name="fecha" id="fecha">
                 </div>
                 <div class="col-md-4 "></div>
-                <div class="col-md-4 "><label for="folio" class="form-label text-dark">Folio <span>1</span></label></div>
+                <div class="col-md-4 "><label for="folio" class="form-label text-dark">Folio <span>{{$folio}}</span></label></div>
                 <div class="col-md-3 ">
                   <label for="nomEmp" class="form-label">Numero de empleado</label>
                   <input type="number" class="form-control " id="nomEmp" name="nomEmp" required onchange="buscarempleado()">
