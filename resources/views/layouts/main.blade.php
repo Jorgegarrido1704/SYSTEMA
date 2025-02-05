@@ -192,7 +192,7 @@
 });
     </script>
     @endif
-    @if (!empty($datos))
+    @if (!empty($pareto))
 
     <script src="{{ asset('/dash/js/junta-calidad.js')}}"></script>
 @endif
