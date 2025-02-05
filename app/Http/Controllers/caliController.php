@@ -12,6 +12,7 @@ use Illuminate\Mail\Mailables;
 use Illuminate\Support\Facades\Mail;
 use App\Models\timeDead;
 use App\Models\regParTime;
+use App\Models\listaCalidad;
 
 
 class caliController extends generalController
@@ -979,7 +980,42 @@ public function codigoCalidad(request $request){
             $preorder=DB::table('registroparcial')->where('preCalidad','>',0)->get();
 
             return view('preorder',['value'=>$value,'cat'=>$cat,'preorder'=>$preorder]);
+        }else if(!empty($acpt)){
+            $preorder=DB::table('registroparcial')->where('id','=',$acpt)->first();
+            $barcode=$preorder->codeBar;
+            $pn=$preorder->pn;
+            $wo=$preorder->wo;
+            $qtycal=$preorder->preCalidad;
+            $buscarCalida=DB::table('calidad')->where('info','=',$barcode)->first();
+            if($buscarCalida){
+                $qty=$buscarCalida->qty+$qtycal;
+                $update=DB::table('calidad')->where('info','=',$barcode)->update(['qty'=>$qty]);
+                $updateParcia=DB::table('registroparcial')->where('codeBar','=',$barcode)->update(['preCalidad'=>0,'testPar'=>$qty]);
+                return redirect('/accepted');
+            }else{
+                $buscarIfno=DB::table('registro')->where('info','=',$barcode)->first();
+                $newCalidad=new listaCalidad;
+                $newCalidad->np=$pn;
+                $newCalidad->client=$buscarIfno->cliente;
+                $newCalidad->wo=$wo;
+                $newCalidad->po=$buscarIfno->po;
+                $newCalidad->info=$barcode;
+                $newCalidad->qty=$qtycal;
+                $newCalidad->parcial='SI';
+                $newCalidad->save();
+                $updateParcia=DB::table('registroparcial')->where('codeBar','=',$barcode)->update(['preCalidad'=>0,'testPar'=>$qtycal]);
+
+                return redirect('/accepted');
             }
 
- }
+        }else if(!empty($denied)){
+            $buscarParcial=DB::table('registroparcial')->where('id','=',$denied)->first();
+            $preCalidad=$buscarParcial->preCalidad;
+            $loomPar=$buscarParcial->loomPar;
+            $sum=$loomPar+$preCalidad;
+            $updateParcia=DB::table('registroparcial')->where('id','=',$denied)->update(['preCalidad'=>0,'loomPar'=>$sum]);
+            return redirect('/accepted');
+        }
+    }
+
 }

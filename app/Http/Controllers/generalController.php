@@ -292,7 +292,7 @@ class generalController extends Controller
                     }else if(($donde==='cort' or $donde==='libe') and $count==2){
                         $rep="Looming Process";
                         upRegistros(3,$codigo,"Cutting Process",$todays,'cut');
-                    } 
+                    }
                     $resp = Resp($codigo)."  ".$rep;
                     return redirect('general')->with('response', $resp);
                       }else{
@@ -305,38 +305,21 @@ class generalController extends Controller
                                     return redirect('general')->with('response', $resp);
                                 }else{
                                  $nuevo=$testPar+$loomPar;
-                                $update = DB::table('registroparcial')->where('codeBar', "=",$codigo)->update(['loomPar' => '0','testPar' => $nuevo]);
+                                $update = DB::table('registroparcial')->where('codeBar', "=",$codigo)->update(['loomPar' => '0','preCalidad' => $nuevo]);
                                 updateCount($codigo,$cantidad, $sesion,$donde,$todays);
-                                upRegistros(10,$codigo,'Testing Process',$todays,'loomF');
+                                upRegistros(10,$codigo,'Waiting for testing accetance',$todays,'loomF');
                                   $tiempoUp=DB::table('tiempos')->where('info',$codigo)->update(['loom'=>$todays]);
+                                $resp=Resp($codigo);
+                                return redirect('general')->with('response', $resp);
                                 }
                         } else  if($cantidad<($loomPar) and (substr($rev,0,4)!='PRIM' or substr($rev,0,4)!='PPAP' )){
                             $restoAnt=$loomPar-$cantidad; $nuevo=$testPar+$cantidad;
-                            $update = DB::table('registroparcial')->where('codeBar', "=",$codigo)->update(['loomPar' => $restoAnt,'testPar' => $nuevo]);
+                            $update = DB::table('registroparcial')->where('codeBar', "=",$codigo)->update(['loomPar' => $restoAnt,'preCalidad' => $nuevo]);
                             updateCount($codigo,$cantidad,$sesion,$donde,$todays);
+                            $resp=Resp($codigo);
+                            return redirect('general')->with('response', $resp);
                         }
-                        if($cantidad<$loomPar){
-                            $nuevo=$cantidad;
-                        }else if($cantidad>=$loomPar){
-                            $nuevo=$loomPar;                            
-                        }
-                        $buscarcalidad=DB::table('calidad')->where("info",$codigo)->first();
-                        if($buscarcalidad){
-                            $regcalidad=$buscarcalidad->qty;
-                            $nueva=$regcalidad+$nuevo;
-                            $update = DB::table('calidad')->where('info', $codigo)->update(['qty' => $nueva]);
-                        }else{
-                            $calReg=new listaCalidad;
-                            $calReg->np=$pnReg;
-                            $calReg->client=$cli;
-                            $calReg->wo=$wo;
-                            $calReg->po=$poReg;
-                            $codigo=strtoupper($codigo);
-                            $calReg->info=$codigo;
-                            $calReg->qty=$nuevo;
-                            $calReg->parcial="Si";
-                            $calReg->save();
-                        }
+
                     }else if(($donde==='ensa' and $count===7) or ($donde==='ensa' and $ensaPar>0)){
                         if( $cantidad<($ensaPar) and (substr($rev,0,4)!='PRIM' or substr($rev,0,4)!='PPAP' )){
                             $restoAnt=$ensaPar-$cantidad;             $nuevo=$loomPar+$cantidad;
