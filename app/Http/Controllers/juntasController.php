@@ -440,10 +440,10 @@ public function calidad_junta(){
                     $index = count($etiq) - 1; // Index of the last added element
                     $datos[$etiq[$index]] = $rows->resto;
                      }
-                if(in_array($rows->Responsable, array_column($gultyY, 0))){
-                        $gultyY[array_search($rows->Responsable, array_column($gultyY, 0))][1]+=$rows->resto;
+                if(in_array($rows->Responsable. " - ". $rows->pn, array_column($gultyY, 0))){
+                        $gultyY[array_search($rows->Responsable. " - ". $rows->pn, array_column($gultyY, 0))][1]+=$rows->resto;
                     }else{
-                        $gultyY[$j][0]=$rows->Responsable;
+                        $gultyY[$j][0]=$rows->Responsable. " - ". $rows->pn;
                         $gultyY[$j][1]=$rows->resto;
                         $j++;
                     }        }
@@ -635,7 +635,7 @@ public function calidad_junta(){
             }
             $todayD=date('d');
         for($i=0;$i<$todayD;$i++)
-            if($labelQ[$i]==22 or $labelQ[$i]==29 or $labelQ[$i]==34 or $labelQ[$i]==37){
+            if($labelQ[$i]==5 or $labelQ[$i]==329 or $labelQ[$i]==34 or $labelQ[$i]==37){
                 $colorQ[$i]='red';
             }else{
                 $colorQ[$i]='green';            }

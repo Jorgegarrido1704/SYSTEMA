@@ -232,6 +232,7 @@ class generalController extends Controller
                 $loomPar=$rowCantidad->loomPar;
                 $testPar=$rowCantidad->testPar;
                 $embPar=$rowCantidad->embPar;
+                $preCalidad=$rowCantidad->preCalidad;
             $resp="Cutting: $cortePar, Terminals: $libePar, Assembly: $ensaPar, Looming: $loomPar, Testing: $testPar, Shipping: $embPar";
         }}
             $todays=date('d-m-Y H:i');
@@ -270,6 +271,7 @@ class generalController extends Controller
                     $loomPar=$rowCantidad->loomPar;
                     $testPar=$rowCantidad->testPar;
                     $embPar=$rowCantidad->embPar;
+                    $preCalidad=$rowCantidad->preCalidad;
                 $resp="Cutting: $cortePar, Terminals: $libePar, Assembly: $ensaPar, Looming: $loomPar, Testing: $testPar, Shipping: $embPar";
             }}
             return $resp;
@@ -304,7 +306,7 @@ class generalController extends Controller
                                     $resp=Resp($codigo);
                                     return redirect('general')->with('response', $resp);
                                 }else{
-                                 $nuevo=$testPar+$loomPar;
+                                 $nuevo=$preCalidad+$loomPar;
                                 $update = DB::table('registroparcial')->where('codeBar', "=",$codigo)->update(['loomPar' => '0','preCalidad' => $nuevo]);
                                 updateCount($codigo,$cantidad, $sesion,$donde,$todays);
                                 upRegistros(10,$codigo,'Waiting for testing accetance',$todays,'loomF');
@@ -313,7 +315,7 @@ class generalController extends Controller
                                 return redirect('general')->with('response', $resp);
                                 }
                         } else  if($cantidad<($loomPar) and (substr($rev,0,4)!='PRIM' or substr($rev,0,4)!='PPAP' )){
-                            $restoAnt=$loomPar-$cantidad; $nuevo=$testPar+$cantidad;
+                            $restoAnt=$loomPar-$cantidad; $nuevo=$preCalidad+$cantidad;
                             $update = DB::table('registroparcial')->where('codeBar', "=",$codigo)->update(['loomPar' => $restoAnt,'preCalidad' => $nuevo]);
                             updateCount($codigo,$cantidad,$sesion,$donde,$todays);
                             $resp=Resp($codigo);
