@@ -616,16 +616,18 @@ public function calidad_junta(){
        next($datos);
        $thirdKey = key($datos);
        $buscardatosClientes3 = DB::table('regsitrocalidad')->where('codigo', $thirdKey)
-       ->where('fecha','LIKE',$crtl.'%')->orderBy('pn')  ->get();
+       ->where('fecha','LIKE',$crtl.'%')->orderBy('codigo')  ->get();
        foreach ($buscardatosClientes3 as $rowDatos3) {
-               if ((in_array($rowDatos3->client, array_column($datosT, 0)))and  (in_array($rowDatos3->pn, array_column($datosS, 3)))){
-                    $datosT[$rowDatos3->pn][2] += $rowDatos3->resto;
+        //
+               if  (in_array($rowDatos3->client, array_column($datosT, 0)) and (in_array($rowDatos3->pn, array_column($datosT, 3)))){
+                   $datosT[$rowDatos3->pn][2] += $rowDatos3->resto;
                } else {
                    $datosT[$rowDatos3->pn][0] = $rowDatos3->client;
                    $datosT[$rowDatos3->pn][1] = $rowDatos3->codigo;
                    $datosT[$rowDatos3->pn][2] = $rowDatos3->resto;
                    $datosT[$rowDatos3->pn][3] = $rowDatos3->pn;
-               }     }
+                }
+                    }
     //quality Q
     $Qdays=$colorQ=$labelQ=[];
     $maxDays = cal_days_in_month(CAL_GREGORIAN, date('m'), date('Y'));
