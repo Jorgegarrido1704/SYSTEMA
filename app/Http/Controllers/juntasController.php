@@ -440,10 +440,10 @@ public function calidad_junta(){
                     $index = count($etiq) - 1; // Index of the last added element
                     $datos[$etiq[$index]] = $rows->resto;
                      }
-                if(in_array($rows->Responsable, array_column($gultyY, 0))){
-                        $gultyY[array_search($rows->Responsable, array_column($gultyY, 0))][1]+=$rows->resto;
+                if(in_array($rows->Responsable. " - ". $rows->pn, array_column($gultyY, 0))){
+                        $gultyY[array_search($rows->Responsable. " - ". $rows->pn, array_column($gultyY, 0))][1]+=$rows->resto;
                     }else{
-                        $gultyY[$j][0]=$rows->Responsable;
+                        $gultyY[$j][0]=$rows->Responsable. " - ". $rows->pn;
                         $gultyY[$j][1]=$rows->resto;
                         $j++;
                     }        }
@@ -616,16 +616,18 @@ public function calidad_junta(){
        next($datos);
        $thirdKey = key($datos);
        $buscardatosClientes3 = DB::table('regsitrocalidad')->where('codigo', $thirdKey)
-       ->where('fecha','LIKE',$crtl.'%')->orderBy('pn')  ->get();
+       ->where('fecha','LIKE',$crtl.'%')->orderBy('codigo')  ->get();
        foreach ($buscardatosClientes3 as $rowDatos3) {
-               if ((in_array($rowDatos3->client, array_column($datosT, 0)))and  (in_array($rowDatos3->pn, array_column($datosS, 3)))){
-                    $datosT[$rowDatos3->pn][2] += $rowDatos3->resto;
+        //
+               if  (in_array($rowDatos3->client, array_column($datosT, 0)) and (in_array($rowDatos3->pn, array_column($datosT, 3)))){
+                   $datosT[$rowDatos3->pn][2] += $rowDatos3->resto;
                } else {
                    $datosT[$rowDatos3->pn][0] = $rowDatos3->client;
                    $datosT[$rowDatos3->pn][1] = $rowDatos3->codigo;
                    $datosT[$rowDatos3->pn][2] = $rowDatos3->resto;
                    $datosT[$rowDatos3->pn][3] = $rowDatos3->pn;
-               }     }
+                }
+                    }
     //quality Q
     $Qdays=$colorQ=$labelQ=[];
     $maxDays = cal_days_in_month(CAL_GREGORIAN, date('m'), date('Y'));
@@ -635,7 +637,7 @@ public function calidad_junta(){
             }
             $todayD=date('d');
         for($i=0;$i<$todayD;$i++)
-            if($labelQ[$i]==22 or $labelQ[$i]==29 or $labelQ[$i]==34 or $labelQ[$i]==37){
+            if($labelQ[$i]==5 or $labelQ[$i]==13 or $labelQ[$i]==34 or $labelQ[$i]==37){
                 $colorQ[$i]='red';
             }else{
                 $colorQ[$i]='green';            }
