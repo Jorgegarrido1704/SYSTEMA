@@ -273,6 +273,7 @@ select {
                                                     <option value="Nancy A">Nancy Aldana</option>
                                                     <option value="Alejandro V">Alejandro Vargas</option>
                                                     <option value="Brandon S">Brandon Sanchez</option>
+                                                    <option value="Arturo S">Arturo Santos</option>
                                                     <option value="Todos">Todos El equipo</option>
                                                 </select>
 
