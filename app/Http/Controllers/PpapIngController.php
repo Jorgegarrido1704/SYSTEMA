@@ -254,7 +254,7 @@ class PpapIngController extends Controller
 
         $buscardatos=DB::table('registroparcial')->where('codeBar','=',$info)->first();
         $eng=$buscardatos->eng;
-        function upRegistro($count,$donde,$info,$area,$idIng,$today,$mas,$newQty){
+        function upRegistro($count,$donde,$info,$area,$idIng,$today,$mas,$newQty,$value){
             $updateTiempo=DB::table('tiempos')->where('info',$info)->update([$area=>$today]);
             $updateInge=DB::table('registro')->where('id','=',$idIng)->update(['count'=>$count,'donde'=>$donde]);
             $regIng=new ppapIng;
@@ -266,11 +266,11 @@ class PpapIngController extends Controller
         $updateCantidad=DB::table('registroparcial')->where('codeBar','=',$info)->update(['eng'>0,$mas=>$newQty]);
         }
 
-        if($cuenta==17){ upRegistro(4,'En espera de liberacion',$info,'corte',$idIng,$today,'libePar',$eng);
-        }else if($cuenta==14){ upRegistro(10,'En espera de calidad',$info,'loom',$idIng,$today,'preCalidad',$eng);
-        }else if($cuenta==13){ upRegistro(8,'En espera de loom',$info,'ensamble',$idIng,$today,'loomPar',$eng);
-        }else if($cuenta==16){ upRegistro(6,'En espera de ensamble',$info,'liberacion',$idIng,$today,'ensaPar',$eng);
-        }else if($cuenta==18){ upRegistro(12,'En espera de embarque',$info,'calidad',$idIng,$today,'embPar',$eng);
+        if($cuenta==17){ upRegistro(4,'En espera de liberacion',$info,'corte',$idIng,$today,'libePar',$eng,$value);
+        }else if($cuenta==14){ upRegistro(10,'En espera de calidad',$info,'loom',$idIng,$today,'preCalidad',$eng,$value);
+        }else if($cuenta==13){ upRegistro(8,'En espera de loom',$info,'ensamble',$idIng,$today,'loomPar',$eng,$value);
+        }else if($cuenta==16){ upRegistro(6,'En espera de ensamble',$info,'liberacion',$idIng,$today,'ensaPar',$eng,$value);
+        }else if($cuenta==18){ upRegistro(12,'En espera de embarque',$info,'calidad',$idIng,$today,'embPar',$eng,$value);
             $count=12;$donde='En espera de embarque';$area='Prueba electrica';
             $buscarinfo=DB::table('registro')->where('info',$info)->first();
             $revin=substr($buscarinfo->rev,0,4);
