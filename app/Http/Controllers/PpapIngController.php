@@ -252,8 +252,10 @@ class PpapIngController extends Controller
         $info=$request->input('info');
         $today=date('d-m-Y H:i');
 
-        if($cuenta==17){$count=4; $donde='En espera de liberacion';$area='Corte';
-            $updateTiempo=DB::table('tiempos')->where('info',$info)->update(['corte'=>$today]);
+        $buscardatos=DB::table('registroparcial')->where('codeBar','=',$info)->first();
+        $eng=$buscardatos->eng;
+        function upRegistro($count,$donde,$info,$area,$idIng,$today,$mas,$newQty){
+            $updateTiempo=DB::table('tiempos')->where('info',$info)->update([$area=>$today]);
             $updateInge=DB::table('registro')->where('id','=',$idIng)->update(['count'=>$count,'donde'=>$donde]);
             $regIng=new ppapIng;
         $regIng->info=$info;
@@ -261,58 +263,15 @@ class PpapIngController extends Controller
         $regIng->codigo=$value;
         $regIng->area=$area;
         $regIng->save();
-            return redirect('/ing');
-        }else if($cuenta==14){
+        $updateCantidad=DB::table('registroparcial')->where('codeBar','=',$info)->update(['eng'>0,$mas=>$newQty]);
+        }
 
-            //Registrar a calidad..
-            $buscarReg=DB::table('registro')->where('info','=',$info)->first();
-            $np=$buscarReg->NumPart;
-            $cli=$buscarReg->cliente;
-            $woreg=$buscarReg->wo;
-            $poReg=$buscarReg->po;
-            $qtyReg=$buscarReg->Qty;
-            //cantidad de parciales
-            $updateCantidad=DB::table('registroparcial')->where('codeBar','=',$info)->update(['loomPar'=>0,'testPar'=>$qtyReg]);
-            $calReg=new listaCalidad;
-            $calReg->np=$np;
-            $calReg->client=$cli;
-            $calReg->wo=$woreg;
-            $calReg->po=$poReg;
-            $codigo=strtoupper($info);
-            $calReg->info=$codigo;
-            $calReg->qty=$qtyReg;
-            $calReg->parcial="No";
-            $calReg->save();
-                $count=10;$donde='En espera de prueba electrica';$area='loom';
-                $updateInge=DB::table('registro')->where('id','=',$idIng)->update(['count'=>$count,'donde'=>$donde]);
-                $regIng=new ppapIng;
-        $regIng->info=$info;
-        $regIng->fecha=$today;
-        $regIng->codigo=$value;
-        $regIng->area=$area;
-        $regIng->save();
-        return redirect('/ing');
-        }else if($cuenta==13){$count=8;$donde='En espera de loom';$area='Ensamble';
-            $updateTiempo=DB::table('tiempos')->where('info',$info)->update(['ensamble'=>$today]);
-            $updateInge=DB::table('registro')->where('id','=',$idIng)->update(['count'=>$count,'donde'=>$donde]);
-            $regIng=new ppapIng;
-        $regIng->info=$info;
-        $regIng->fecha=$today;
-        $regIng->codigo=$value;
-        $regIng->area=$area;
-        $regIng->save();
-            return redirect('/ing');
-        }else if($cuenta==16){$count=6;$donde='En espera de ensamble';$area='Libreracion';
-            $updateTiempo=DB::table('tiempos')->where('info',$info)->update(['liberacion'=>$today]);
-            $updateInge=DB::table('registro')->where('id','=',$idIng)->update(['count'=>$count,'donde'=>$donde]);
-            $regIng=new ppapIng;
-        $regIng->info=$info;
-        $regIng->fecha=$today;
-        $regIng->codigo=$value;
-        $regIng->area=$area;
-        $regIng->save();
-            return redirect('/ing');
-        }else if($cuenta==18){$count=12;$donde='En espera de embarque';$area='Prueba electrica';
+        if($cuenta==17){ upRegistro(4,'En espera de liberacion',$info,'corte',$idIng,$today,'libePar',$eng);
+        }else if($cuenta==14){ upRegistro(10,'En espera de calidad',$info,'loom',$idIng,$today,'preCalidad',$eng);
+        }else if($cuenta==13){ upRegistro(8,'En espera de loom',$info,'ensamble',$idIng,$today,'loomPar',$eng);
+        }else if($cuenta==16){ upRegistro(6,'En espera de ensamble',$info,'liberacion',$idIng,$today,'ensaPar',$eng);
+        }else if($cuenta==18){ upRegistro(12,'En espera de embarque',$info,'calidad',$idIng,$today,'embPar',$eng);
+            $count=12;$donde='En espera de embarque';$area='Prueba electrica';
             $buscarinfo=DB::table('registro')->where('info',$info)->first();
             $revin=substr($buscarinfo->rev,0,4);
             $emailcliente=$buscarinfo->cliente;
@@ -329,30 +288,27 @@ class PpapIngController extends Controller
                 'emailwo' => $emailwo,
                 'emailpo' => $emailpo,
                 'emailQty' => $emailQty,
-                // Add any other necessary data here
+
             ];
             $subject= $revin.' PRUEBA ELECTRICA  '.$emailcliente.' NP '.$emailpn.' en REV '.$revf;
             $date = date('d-m-Y');
-        $time = date('H:i');
+            $time = date('H:i');
 
-        $content =  $revin . ' liberada y en embarque '."\n\n";
-        $content .= 'Buen día,'."\n\n".'Les comparto que el día ' . $date . ' a las ' . $time . "\n\n"."Salió de prueba la siguiente PPAP:"."\n\n";
-$content .= "\n\n"." Cliente: " . $emailcliente;
-$content .= "\n\n"." Número de parte: " . $emailpn;
-$content .= "\n\n"." PPAP en revisión: " . $revf;
-$content .= "\n\n"." Con Work order: " . $emailwo;
-$content .= "\n\n"." Con Sono order: " . $emailpo;
-$content .= "\n\n"." Por la cantidad de: " . $emailQty;
-$content .= "\n\n"." Con las siguientes anotaciones:";
-$calidad=DB::table('regsitrocalidad')->where('info',$info)->get();
-foreach($calidad as $regcal){
-
-    $content .= "<br>".$regcal->codigo;
-}
-
+            $content =  $revin . ' liberada y en embarque '."\n\n";
+                    $content .= 'Buen día,'."\n\n".'Les comparto que el día ' . $date . ' a las ' . $time . "\n\n"."Salió de prueba la siguiente PPAP:"."\n\n";
+            $content .= "\n\n"." Cliente: " . $emailcliente;
+            $content .= "\n\n"." Número de parte: " . $emailpn;
+            $content .= "\n\n"." PPAP en revisión: " . $revf;
+            $content .= "\n\n"." Con Work order: " . $emailwo;
+            $content .= "\n\n"." Con Sono order: " . $emailpo;
+            $content .= "\n\n"." Por la cantidad de: " . $emailQty;
+            $content .= "\n\n"." Con las siguientes anotaciones:";
+            $calidad=DB::table('regsitrocalidad')->where('info',$info)->get();
+            foreach($calidad as $regcal){
+            $content .= "<br>".$regcal->codigo;
+            }
             $recipients = [
                 'jguillen@mx.bergstrominc.com',
-
                 'jcervera@mx.bergstrominc.com',
                 'jcrodriguez@mx.bergstrominc.com',
                 'egaona@mx.bergstrominc.com',
@@ -365,17 +321,7 @@ foreach($calidad as $regcal){
 
             ];
             Mail::to($recipients)->send(new \App\Mail\PPAPING($subject,$content));
-
-        }
-
-        $regIng=new ppapIng;
-        $regIng->info=$info;
-        $regIng->fecha=$today;
-        $regIng->codigo=$value;
-        $regIng->area=$area;
-        $regIng->save();
-        $updateInge=DB::table('registro')->where('id','=',$idIng)->update(['count'=>$count,'donde'=>$donde]);
-        return redirect('/ing');
+           }
     }
 
 
