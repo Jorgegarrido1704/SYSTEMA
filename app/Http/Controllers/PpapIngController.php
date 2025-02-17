@@ -263,7 +263,7 @@ class PpapIngController extends Controller
         $regIng->codigo=$value;
         $regIng->area=$area;
         $regIng->save();
-        $updateCantidad=DB::table('registroparcial')->where('codeBar','=',$info)->update(['eng'>0,$mas=>$newQty]);
+        $updateCantidad=DB::table('registroparcial')->where('codeBar','=',$info)->update(['eng'=>0,$mas=>$newQty]);
         }
 
         if($cuenta==17){ upRegistro(4,'En espera de liberacion',$info,'corte',$idIng,$today,'libePar',$eng,$value);
@@ -322,6 +322,8 @@ class PpapIngController extends Controller
             ];
             Mail::to($recipients)->send(new \App\Mail\PPAPING($subject,$content));
            }
+
+        return redirect ('/ing');
     }
 
 
