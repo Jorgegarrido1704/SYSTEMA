@@ -282,10 +282,10 @@ class generalController extends Controller
         }else if($count==13 or $count==14 or $count==18 or $count==16 or $count==17){
                 if($count=13){$resp="waiting for engineering Assembly";}
                 else if($count=14){$resp="waiting for engineering Looming";}
-                else if($count=18){$resp="waiting for engineering ";}
+                else if($count=18){$resp="waiting for engineering Quality";}
                 else if($count=16){$resp="waiting for engineering Terminals";}
-                else if($count=17){$resp="waiting for engineering Testing";}
-
+                else if($count=17){$resp="waiting for engineering cutting";}
+                return redirect('general')->with('response', $resp);
         } else if($cantidad <= 0 or $cantidad==NULL){
                 $resp="Quantity not valid";
         }else if($cantidad>=0){
