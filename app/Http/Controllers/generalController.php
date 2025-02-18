@@ -269,26 +269,44 @@ class generalController extends Controller
                 $preCalidad=$buscarCantidades->preCalidad;
             }
                    }
-        if($revp=='PRIM' or $revp=='PPAP' ){
-            if($count==7 or $count==6)  {  upRegistros(13,$codigo,'En espera de Ingenieria Assembly',$todays,'ensaF',$ensaPar,$donde,$sesion,'si');
+                if($cantidad <= 0 or $cantidad==NULL){
+                    $resp="Quantity not valid";
+                    return redirect('general')->with('response', $resp);
+                     }
+                if($count===2 or $count===4 or $count===6 or $count===8 or $count===15 ){
+                    if($donde==='loom' and $count===8){  $resp="Looming Process";  upRegistros(9,$codigo,"Looming Process",$todays,'loom',"",$donde,$sesion,'no');
+                    }else if($count===8 or $count===9){$resp="Looming Process";
+                    } else if($donde==='ensa' and ($count===6 or $count===15) ){
+                        $resp="Assembly Process"; upRegistros(7,$codigo,'Assembly Process',$todays,'ensa',"",$donde,$sesion,'no');
+                    }else if($count===6 or $count===7 or $count===15){$resp="Assembly Process";
+                    }else if(($donde==='libe') and $count===4){
+                        $buscarinfo=DB::table('registro_pull')->where('wo',substr($wo,2))
+                            ->orWhere('wo',$wo)->get();
+                            if(count($buscarinfo)<=0){ $resp="Pull test not found";        }else{$resp="Terminals Process";} upRegistros(5,$codigo,"Terminals Process",$todays,'term',"",$donde,$sesion,'no');
+                    }else if($count===4 or $count===5){$resp="Terminals Process";
+                    }else if(($donde==='cort' ) and $count==2){ $resp="Cuttining Process";  upRegistros(3,$codigo,"Cutting Process",$todays,'cut',"",$donde,$sesion,'no');
+                      }else if($count===2 or $count===3){$resp="Cutting Process";
+                      }
+                      return redirect('general')->with('response', $resp);
+                    }else  if($count==13 or $count==14 or $count==18 or $count==16 or $count==17){
+                        if($count==13){$resp="waiting for engineering Assembly";}
+                        else if($count==14){$resp="waiting for engineering Looming";}
+                        else if($count==18){$resp="waiting for engineering Quality";}
+                        else if($count==16){$resp="waiting for engineering Terminals";}
+                        else if($count==17){$resp="waiting for engineering cutting";}
+                        return redirect('general')->with('response', $resp);
+                }
+        else if($revp=='PRIM' or $revp=='PPAP' ){
+            if($count==7 )  { $resp="waiting for engineering Assembly"; upRegistros(13,$codigo,$resp,$todays,'ensaF',$ensaPar,$donde,$sesion,'si');
             $update = DB::table('registroparcial')->where('codeBar', "=",$codigo)->update(['ensaPar' => '0','eng' => $ensaPar]);
-            }else if($count==5 or $count==4)  {  upRegistros(16,$codigo,'En espera de Ingenieria Terminals',$todays,'termF',$libePar,$donde,$sesion,'si');
+            }else if($count==5 )  { $resp="waiting for engineering terminals"; upRegistros(16,$codigo,$resp,$todays,'termF',$libePar,$donde,$sesion,'si');
             $update = DB::table('registroparcial')->where('codeBar', "=",$codigo)->update(['libePar' => '0','eng' => $libePar]);
-            }else if($count==3 or $count==2)   { upRegistros(17,$codigo,'En espera de Ingenieria Cutting',$todays,'cutF',$cortPar,$donde,$sesion,'si');
+            }else if($count==3 )   {$resp="waiting for engineering Cutting"; upRegistros(17,$codigo,$resp,$todays,'cutF',$cortPar,$donde,$sesion,'si');
             $update = DB::table('registroparcial')->where('codeBar', "=",$codigo)->update(['cortPar' => '0','eng' => $cortPar]);
-            }else if($count==9 or $count==8)  {upRegistros(14,$codigo,'En espera de Ingenieria Loom',$todays,'loomF',$loomPar,$donde,$sesion,'si');
+            }else if($count==9 )  {$resp="waiting for engineering Looming"; upRegistros(14,$codigo,$resp,$todays,'loomF',$loomPar,$donde,$sesion,'si');
             $update = DB::table('registroparcial')->where('codeBar', "=",$codigo)->update(['loomPar' => '0','eng' => $loomPar]);
-            } return redirect('general')->with('response', 'Waiting for engineering');
-        }else if($count==13 or $count==14 or $count==18 or $count==16 or $count==17){
-                if($count=13){$resp="waiting for engineering Assembly";}
-                else if($count=14){$resp="waiting for engineering Looming";}
-                else if($count=18){$resp="waiting for engineering Quality";}
-                else if($count=16){$resp="waiting for engineering Terminals";}
-                else if($count=17){$resp="waiting for engineering cutting";}
-                return redirect('general')->with('response', $resp);
-        } else if($cantidad <= 0 or $cantidad==NULL){
-                $resp="Quantity not valid";
-        }else if($cantidad>=0){
+            } return redirect('general')->with('response', $resp);
+        } else if($cantidad>=0){
                      if(($donde==='loom' and $count===9) or ($donde==='loom' and $loomPar>0 and $count!==8)){
                            if( $cantidad>=($loomPar)){
                                  $nuevo=$preCalidad+$loomPar;
@@ -356,17 +374,8 @@ class generalController extends Controller
                             upRegistros(4,$codigo,'Assembly Process',$todays,'cutF',$cortPar,$donde,$sesion,'si');
                             $tiempoUp=DB::table('tiempos')->where('info',$codigo)->update(['corte'=>$todays]);
                             }}
-                 else if($count===2 or $count===4 or $count===6 or $count===8 ){
-                    if($donde==='loom' and $count===8){  $resp="Looming Process";  upRegistros(9,$codigo,"Looming Process",$todays,'loom',"",$donde,$sesion,'no');
-                    }else if($donde==='ensa' and ($count===6 or $count===15) ){
-                        $resp="Assembly Process"; upRegistros(7,$codigo,'Assembly Process',$todays,'ensa',"",$donde,$sesion,'no');
-                    }else if(($donde==='libe') and $count===4){
-                        $buscarinfo=DB::table('registro_pull')->where('wo',substr($wo,2))
-                            ->orWhere('wo',$wo)->get();
-                            if(count($buscarinfo)<=0){ $resp="Pull test not found";        }else{$resp="Terminals Process";} upRegistros(5,$codigo,"Terminals Process",$todays,'term',"",$donde,$sesion,'no');
-                    }else if(($donde==='cort' ) and $count==2){ $resp="Cuttining Process";  upRegistros(3,$codigo,"Cutting Process",$todays,'cut',"",$donde,$sesion,'no');
-                      }
-                    }
+
+
                     if($resp==null or $resp==''){
                         $buscarCantidad=DB::table('registroparcial')->where('codeBar','=',$codigo)->get();
                         if(empty($buscarCantidad)){ $resp="Recod not found";}
@@ -384,7 +393,10 @@ class generalController extends Controller
                         $resp="Cutting: $cortPar, Terminals: $libePar, Assembly: $ensaPar, Looming: $loomPar, Testing: $testPar, Shipping: $embPar";
 
                     }
-                }return redirect('general')->with('response', $resp);                }
+                }
+
+
+                return redirect('general')->with('response', $resp);                }
 
     }
     public function Bom(Request $request){
