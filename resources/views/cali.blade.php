@@ -499,6 +499,54 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="col-lg-6 mb-4">
+                            <!-- AREAS -->
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h5 class="m-0 font-weight-bold text-primary">Registro de incidencias</h5>
+                                </div>
+                                <div class="card-body" style="overflow-y: auto; height: 360px;">
+                                            <form action="{{ route('excel_calidad')}}" method="GET" >
+
+                                                <div class="form-group">
+                                                    <label for="text">De fecha:</label>
+                                                    <input type="date" class="form-control" name="de" id="de" required >
+                                                    <input type="hidden" name="di" id="di">
+
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="text">A fecha:</label>
+                                                    <input type="date" class="form-control" name="a" id="a" required>
+                                                    <input type="hidden" name="df" id="df">
+                                                </div>
+                                                <input type="submit" class="btn btn-primary"   value="Descargar Excel">
+                                            </form>
+                                            <script>
+                                                document.getElementById('de').addEventListener('change', function() {
+                                                    var de = document.getElementById('de').value;
+                                                    deA= de.slice(0,4);
+                                                    dem=de.slice(5,7);
+                                                    deD=de.slice(8,10);
+                                                    de=deD+"-"+dem+"-"+deA+" 00:00";
+                                                    document.getElementById('di').value=de;
+                                                    console.log('De fecha:', de);
+                                                    });
+
+                                                document.getElementById('a').addEventListener('change', function() {
+                                                    var a = document.getElementById('a').value;
+                                                    aA= a.slice(0,4);
+                                                    am=a.slice(5,7);
+                                                    aD=a.slice(8,10);
+                                                    a=aD+"-"+am+"-"+aA+" 23:59";
+                                                    document.getElementById('df').value=a;
+                                                       console.log('A fecha:', a);
+                                                    });
+                                            </script>
+
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
 

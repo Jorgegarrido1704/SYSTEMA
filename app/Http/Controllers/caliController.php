@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Mail;
 use App\Models\timeDead;
 use App\Models\regParTime;
 use App\Models\listaCalidad;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 
 class caliController extends generalController
@@ -1018,4 +1020,62 @@ public function codigoCalidad(request $request){
         }
     }
 
+
+
+    public function excel_calidad(Request $request)
+{
+    $di=$request->input('di');
+    $df=$request->input('df');
+   $di=strtotime($di);
+   $df=strtotime($df);
+   $registro=[];
+    $spreadsheet = new Spreadsheet();
+    $sheet = $spreadsheet->getActiveSheet();
+    $t = 2;
+            $headers = [
+                'A1' => 'Fecha',
+                'B1' => 'Numero de parte',
+                'C1' => 'Codigo',
+                'D1' => 'Responsable',
+                'E1' => 'Cuenta',
+            ];
+            foreach ($headers as $cell => $header) {
+                $sheet->setCellValue($cell, $header);
+            }
+            $buscarinfo = DB::table('regsitrocalidad')
+                ->orderBy('id', 'desc')
+                ->orderBy('codigo', 'desc')
+                ->get();
+            foreach ($buscarinfo as $row) {
+                if(strtotime($row->fecha)>=$di AND $df>= strtotime($row->fecha)){
+                    if(!isset($registro[substr($row->fecha,0,10)][$row->pn][$row->codigo][$row->Responsable])){
+                        $registro[substr($row->fecha,0,10)][$row->pn][$row->codigo][$row->Responsable]=1;
+                    }else{
+                        $registro[substr($row->fecha,0,10)][$row->pn][$row->codigo][$row->Responsable]+=1   ;
+                    }
+                }}
+                foreach ($registro as $key => $value) {
+                    foreach ($value as $key2 => $value2) {
+                        foreach ($value2 as $key3 => $value3) {
+                            foreach ($value3 as $key4 => $value4) {
+                                $sheet->setCellValue('A' . $t, $key);
+                                $sheet->setCellValue('B' . $t, $key2);
+                                $sheet->setCellValue('C' . $t, $key3);
+                                $sheet->setCellValue('D' . $t, $key4);
+                                $sheet->setCellValue('E' . $t, $value4);
+
+                            }
+                                          }
+                                                  $t++;        }$t++;
+                }
+
+
+
+
+            $writer = new Xlsx($spreadsheet);
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            header('Content-Disposition: attachment;filename="Reporte de calidad del '.date('d-m-Y', $di).' al '.date('d-m-Y', $df).'".xlsx"');
+            header('Cache-Control: max-age=0');
+            $writer->save('php://output');
+    }
 }

@@ -112,6 +112,7 @@ Route::controller(caliController::class)->group(function(){
     Route::post('/matCali',[caliController::class,'matCali'])->name('matCali');
     Route::get('/timesDead',[caliController::class,'timesDead'])->name('timesDead');
     Route::get('/accepted',[caliController::class,'accepted'])->name('accepted');
+    Route::get('/excel_calidad',[caliController::class,'excel_calidad'])->name('excel_calidad');
     });
 Route::controller(BossCaliController::class)->group(function(){
     Route::get('/BossCali',BossCaliController::class);

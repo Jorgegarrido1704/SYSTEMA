@@ -691,8 +691,6 @@ public function excel_ing(Request $request)
 
     $writer->save('php://output');
 
-    // Optionally, redirect after download if necessary
-    // return redirect('/ing');
 }
 
 
