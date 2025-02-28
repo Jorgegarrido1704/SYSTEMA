@@ -22,71 +22,71 @@ class caliController extends generalController
     public function __invoke(){
         $value = session('user');
         $cat = session('categoria');
+        if(empty($value)){
+            return redirect('/');
+        }else{
+                $buscarcalidad=DB::table("calidad")->get();
+                $i=0;
+                $calidad=[];
+                $fallas=[];
+                foreach($buscarcalidad as $rowcalidad){
+                    $calidad[$i][0]=$rowcalidad->np;
+                    $calidad[$i][1]=$rowcalidad->client;
+                    $calidad[$i][2]=$rowcalidad->wo;
+                    $calidad[$i][3]=$rowcalidad->po;
+                    $calidad[$i][4]=$rowcalidad->qty;
+                    $calidad[$i][5]=$rowcalidad->parcial;
+                    $calidad[$i][6]=$rowcalidad->id;
+                    $calidad[$i][7]=$rowcalidad->info;
+                    $i++;
 
-        $buscarcalidad=DB::table("calidad")->get();
-        $i=0;
-        $calidad=[];
-        $fallas=[];
-        foreach($buscarcalidad as $rowcalidad){
-            $calidad[$i][0]=$rowcalidad->np;
-            $calidad[$i][1]=$rowcalidad->client;
-            $calidad[$i][2]=$rowcalidad->wo;
-            $calidad[$i][3]=$rowcalidad->po;
-            $calidad[$i][4]=$rowcalidad->qty;
-            $calidad[$i][5]=$rowcalidad->parcial;
-            $calidad[$i][6]=$rowcalidad->id;
-            $calidad[$i][7]=$rowcalidad->info;
-            $i++;
+                }
+                $timesReg = strtotime(date("d-m-Y 00:00"))-86400;
+                /*$registros=[];
+                $i=0;
+                $buscReg=DB::table('regsitrocalidad')->orderBy('id','DESC')->limit(250)->get();
+                foreach($buscReg as $rowReg){
+                    $registros[$i][0]=$rowReg->fecha;
+                        $registros[$i][1]=$rowReg->client;
+                        $registros[$i][2]=$rowReg->pn;
+                        $registros[$i][3]=$rowReg->resto;
+                        $registros[$i][4]=$rowReg->codigo;
+                        $registros[$i][5]=$rowReg->prueba;
+                        $registros[$i][6]=$rowReg->Responsable;
+                        $i++;
+                }
+                $i=0;
+                $buscFallas=DB::table('timedead')->where('area','Calidad')->where('timeFin','=','No Aun')->orderBy('id','DESC')->get();
+                foreach($buscFallas as $Fa){
+                    $fallas[$i][0]=$Fa->id;
+                    $fallas[$i][1]=$Fa->fecha;
+                    $fallas[$i][2]=$Fa->cliente;
+                    $fallas[$i][3]=$Fa->np;
+                    $fallas[$i][4]=$Fa->codigo;
+                    $fallas[$i][5]=$Fa->defecto;
+                    $fallas[$i][6]=$Fa->respArea;
+                    $i++;
+                }
 
+                $Generalcontroller=new generalController;
+                $generalresult=$Generalcontroller->__invoke();
+                $week=$generalresult->getData()['week'];
+                $assit=$generalresult->getData()['assit'];
+                $paros=$generalresult->getData()['paros'];
+                $desviations=$generalresult->getData()['desviations'];
+                $materials=$generalresult->getData()['materials'];*/
+                    //se quitaron
+                //'fallas'=>$fallas,'registros'=>$registros,'week'=>$week,'assit'=>$assit,'paros'=>$paros,'desviations'=>$desviations,'materials'=>$materials
+                return view('cali',['cat'=>$cat,'value'=>$value,'calidad'=>$calidad]);
         }
-        $timesReg = strtotime(date("d-m-Y 00:00"))-86400;
-        $registros=[];
-        $i=0;
-        $buscReg=DB::table('regsitrocalidad')->orderBy('id','DESC')->limit(250)->get();
-        foreach($buscReg as $rowReg){
-               $registros[$i][0]=$rowReg->fecha;
-                $registros[$i][1]=$rowReg->client;
-                $registros[$i][2]=$rowReg->pn;
-                $registros[$i][3]=$rowReg->resto;
-                $registros[$i][4]=$rowReg->codigo;
-                $registros[$i][5]=$rowReg->prueba;
-                $registros[$i][6]=$rowReg->Responsable;
-                $i++;
-        }
-        $i=0;
-        $buscFallas=DB::table('timedead')->where('area','Calidad')->where('timeFin','=','No Aun')->orderBy('id','DESC')->get();
-        foreach($buscFallas as $Fa){
-            $fallas[$i][0]=$Fa->id;
-            $fallas[$i][1]=$Fa->fecha;
-            $fallas[$i][2]=$Fa->cliente;
-            $fallas[$i][3]=$Fa->np;
-            $fallas[$i][4]=$Fa->codigo;
-            $fallas[$i][5]=$Fa->defecto;
-            $fallas[$i][6]=$Fa->respArea;
-            $i++;
-        }
-
-        $Generalcontroller=new generalController;
-        $generalresult=$Generalcontroller->__invoke();
-        $week=$generalresult->getData()['week'];
-        $assit=$generalresult->getData()['assit'];
-        $paros=$generalresult->getData()['paros'];
-        $desviations=$generalresult->getData()['desviations'];
-        $materials=$generalresult->getData()['materials'];
-
-
-
-
-        return view('cali',['fallas'=>$fallas,'registros'=>$registros,'cat'=>$cat,'value'=>$value,'calidad'=>$calidad,'week'=>$week,'assit'=>$assit,'paros'=>$paros,'desviations'=>$desviations,'materials'=>$materials]);
-
 
      }
     public function baja(Request $request){
         $calicontroller = new generalController();
         $caliresult = $calicontroller->__invoke();
         $value = $caliresult->getData()['value'];
-        $week = $caliresult->getData()['week'];
-        $assit = $caliresult->getData()['assit'];
+       /* $week = $caliresult->getData()['week'];
+        $assit = $caliresult->getData()['assit'];*/
         $cat=$caliresult->getData()['cat'];
         $id=$request->input('id');
             if($id==''){
@@ -107,8 +107,8 @@ class caliController extends generalController
                     'wo'=>$wo,
                     'qty'=>$qty,
                     'info'=>$info,
-                    'week'=>$week,
-                    'assit'=>$assit,
+                    //'week'=>$week,
+                    //'assit'=>$assit,
                     'cat'=>$cat
                 ]);
             }

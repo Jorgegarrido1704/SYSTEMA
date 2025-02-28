@@ -412,7 +412,7 @@
 
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h5 class="m-0 font-weight-bold text-primary">Assistence WEEK {{$week}}</h5>
+                                    <h5 class="m-0 font-weight-bold text-primary">Assistence WEEK @if(!empty($week)){{$week}}@endif</h5>
                                 </div>
                                 <div class="card-body" style="overflow-y: auto; height: 360px;">
                                     <table>
@@ -432,6 +432,7 @@
                                         <tbody>
                                             <form action="{{ route('ascali')}}" method="POST">
                                                 @csrf
+                                                @if(!empty($assit))
                                                 @foreach($assit as $as)
                                                     <tr>
                                                         <td><input type="hidden" name="name[]" id="name">{{$as[2]}}</td>
@@ -488,6 +489,7 @@
                                                         <td><input type="hidden" name="id[]" id="id" value="{{$as[13]}}"></td>
                                                     </tr>
                                                 @endforeach
+                                                @endif
                                                 <input type="submit" style="border-radius: 4px; background-color:lightblue;border-bottom:10px" name="sendassit" id="sendassist" value="Save Assistence">
                                             </form>
                                         </tbody>
@@ -497,7 +499,7 @@
                         </div>
 
                         <div class="col-lg-6 mb-4">
-                            
+
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
                                     <h5 class="m-0 font-weight-bold text-primary">Registro de incidencias</h5>
