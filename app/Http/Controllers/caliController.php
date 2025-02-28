@@ -117,6 +117,50 @@ class caliController extends generalController
     public function saveData(Request $request){
         $cat=session('categoria');
         if($cat=='cali'){
+            function deadTime($cod1,$today,$client,$pn,$info,$value,$loom,$corteLibe,$ensa){
+                if(strpos($cod1, ';') ) {
+                    $cod = explode(';', $cod1);
+                    for ($i = 0; $i < count($cod); $i++) {
+                        $regTimes= new timedead;
+                $regTimes->fecha=$today;
+                $regTimes->cliente=$client;
+                $regTimes->np=$pn;
+                $regTimes->codigo=$info;
+                $regTimes->defecto=$cod[$i];
+                $regTimes->timeIni=strtotime($today);
+                $regTimes->whoDet=$value;
+                if(in_array($cod[$i],$loom)){
+                    $regTimes->respArea="Jesus Zamarripa";
+                }else if(in_array($cod[$i],$corteLibe)){
+                    $regTimes->respArea="Juan Olaes";
+                }else if(in_array($cod[$i],$ensa)){
+                    $regTimes->respArea="David Villalpando";
+                }else{  $regTimes->respArea="";      }
+                $regTimes->area="Calidad";
+                $regTimes->save();     }
+                }  else{
+                $regTimes= new timedead;
+                $regTimes->fecha=$today;
+                $regTimes->cliente=$client;
+                $regTimes->np=$pn;
+                $regTimes->codigo=$info;
+                $regTimes->defecto=$cod1;
+                $regTimes->timeIni=strtotime($today);
+                $regTimes->whoDet=$value;
+                if(in_array($cod1,$loom)){
+                    $regTimes->respArea="Jesus Zamarripa";
+                }else if(in_array($cod1,$corteLibe)){
+                    $regTimes->respArea="Juan Olaes";
+                }else if(in_array($cod1,$ensa)){
+                    $regTimes->respArea="David Villalpando";
+                }else{  $regTimes->respArea="";      }
+                $regTimes->area="Calidad";
+                $regTimes->save();}
+            }
+
+
+
+
         $corteLibe=['Impresion de cable incorrecta','Cable sobrante','Strip fuera de tolerancia','Terminal mal aplicada',
         'Crimp no centrado',
         'Cable con exceso de strip',
@@ -388,50 +432,7 @@ class caliController extends generalController
                                 $nok_reg->usuario=$value;
                                 $nok_reg->Responsable=$responsable1;
                                 $nok_reg->save();
-                                if(strpos($cod1, ';') ) {
-                                    $cod = explode(';', $cod1);
-                                    for ($i = 0; $i < count($cod); $i++) {
-                                        $regTimes= new timedead;
-                                $regTimes->fecha=$today;
-                                $regTimes->cliente=$client;
-                                $regTimes->np=$pn;
-                                $regTimes->codigo=$info;
-                                $regTimes->defecto=$cod[$i];
-                                $regTimes->timeIni=strtotime($today);
-                                $regTimes->whoDet=$value;
-                                if(in_array($cod[$i],$loom)){
-                                    $regTimes->respArea="Jesus Zamarripa";
-                                }else if(in_array($cod[$i],$corteLibe)){
-                                    $regTimes->respArea="Juan Olaes";
-                                }else if(in_array($cod[$i],$ensa)){
-                                    $regTimes->respArea="David Villalpando";
-                                }else{  $regTimes->respArea="";      }
-
-                        $regTimes->area="Calidad";
-                        $regTimes->save();
-
-                                    }
-                                }
-                                    else{
-                                $regTimes= new timedead;
-                                $regTimes->fecha=$today;
-                                $regTimes->cliente=$client;
-                                $regTimes->np=$pn;
-                                $regTimes->codigo=$info;
-                                $regTimes->defecto=$cod1;
-                                $regTimes->timeIni=strtotime($today);
-                                $regTimes->whoDet=$value;
-                                if(in_array($cod1,$loom)){
-                                    $regTimes->respArea="Jesus Zamarripa";
-                                }else if(in_array($cod1,$corteLibe)){
-                                    $regTimes->respArea="Juan Olaes";
-                                }else if(in_array($cod1,$ensa)){
-                                    $regTimes->respArea="David Villalpando";
-                                }else{  $regTimes->respArea="";      }
-
-                        $regTimes->area="Calidad";
-                        $regTimes->save();}
-
+                                deadTime($cod1,$today,$client,$pn,$info,$value,$loom,$corteLibe,$ensa);
                     }
                         if(!empty($cant2)){
                             foreach($personal as $key=>$var){
@@ -454,50 +455,7 @@ class caliController extends generalController
                                 $nok_reg->usuario=$value;
                                 $nok_reg->Responsable=$responsable2;
                                 $nok_reg->save();
-
-                            if(strpos($cod2, ';') ) {
-                                $cod = explode(';', $cod2);
-                                for ($i = 0; $i < count($cod); $i++) {
-                                    $regTimes= new timedead;
-                            $regTimes->fecha=$today;
-                            $regTimes->cliente=$client;
-                            $regTimes->np=$pn;
-                            $regTimes->codigo=$info;
-                            $regTimes->defecto=$cod[$i];
-                            $regTimes->timeIni=strtotime($today);
-                            $regTimes->whoDet=$value;
-                            if(in_array($cod[$i],$loom)){
-                                $regTimes->respArea="Jesus Zamarripa";
-                            }else if(in_array($cod[$i],$corteLibe)){
-                                $regTimes->respArea="Juan Olaes";
-                            }else if(in_array($cod[$i],$ensa)){
-                                $regTimes->respArea="David Villalpando";
-                            }else{  $regTimes->respArea="";      }
-
-                    $regTimes->area="Calidad";
-                    $regTimes->save();
-
-                                }
-                            }
-                                else{
-                            $regTimes= new timedead;
-                            $regTimes->fecha=$today;
-                            $regTimes->cliente=$client;
-                            $regTimes->np=$pn;
-                            $regTimes->codigo=$info;
-                            $regTimes->defecto=$cod2;
-                            $regTimes->timeIni=strtotime($today);
-                            $regTimes->whoDet=$value;
-                            if(in_array($cod2,$loom)){
-                                $regTimes->respArea="Jesus Zamarripa";
-                            }else if(in_array($cod2,$corteLibe)){
-                                $regTimes->respArea="Juan Olaes";
-                            }else if(in_array($cod2,$ensa)){
-                                $regTimes->respArea="David Villalpando";
-                            }else{  $regTimes->respArea="";      }
-
-                    $regTimes->area="Calidad";
-                    $regTimes->save();}
+                               // deadTime($cod2,$today,$client,$pn,$info,$value,$loom,$corteLibe,$ensa);
                         }
                         if(!empty($cant3)){
                             foreach($personal as $key=>$var){
@@ -519,49 +477,7 @@ class caliController extends generalController
                             $nok_reg->usuario=$value;
                             $nok_reg->Responsable=$responsable3;
                             $nok_reg->save();
-
-                        if(strpos($cod3, ';') ) {
-                            $cod = explode(';', $cod3);
-                            for ($i = 0; $i < count($cod); $i++) {
-                                $regTimes= new timedead;
-                        $regTimes->fecha=$today;
-                        $regTimes->cliente=$client;
-                        $regTimes->np=$pn;
-                        $regTimes->codigo=$info;
-                        $regTimes->defecto=$cod[$i];
-                        $regTimes->timeIni=strtotime($today);
-                        $regTimes->whoDet=$value;
-                        if(in_array($cod[$i],$loom)){
-                            $regTimes->respArea="Jesus Zamarripa";
-                        }else if(in_array($cod[$i],$corteLibe)){
-                            $regTimes->respArea="Juan Olaes";
-                        }else if(in_array($cod[$i],$ensa)){
-                            $regTimes->respArea="David Villalpando";
-                        }else{  $regTimes->respArea="";      }
-
-                $regTimes->area="Calidad";
-                $regTimes->save();
-
-                            }
-                        }
-                            else{
-                        $regTimes= new timedead;
-                        $regTimes->fecha=$today;
-                        $regTimes->cliente=$client;
-                        $regTimes->np=$pn;
-                        $regTimes->codigo=$info;
-                        $regTimes->defecto=$cod3;
-                        $regTimes->timeIni=strtotime($today);
-                        $regTimes->whoDet=$value;
-                        if(in_array($cod3,$loom)){
-                            $regTimes->respArea="Jesus Zamarripa";
-                        }else if(in_array($cod3,$corteLibe)){
-                            $regTimes->respArea="Juan Olaes";
-                        }else if(in_array($cod3,$ensa)){
-                            $regTimes->respArea="David Villalpando";
-                        }else{  $regTimes->respArea="";      }
-                $regTimes->area="Calidad";
-                $regTimes->save();}
+                            //deadTime($cod3,$today,$client,$pn,$info,$value,$loom,$corteLibe,$ensa);
                     }
                     if(!empty($cant4)){
                         foreach($personal as $key=>$var){
@@ -583,48 +499,7 @@ class caliController extends generalController
                         $nok_reg->usuario=$value;
                         $nok_reg->Responsable=$responsable4;
                         $nok_reg->save();
-
-                    if(strpos($cod4, ';') ) {
-                        $cod = explode(';', $cod4);
-                        for ($i = 0; $i < count($cod); $i++) {
-                            $regTimes= new timedead;
-                    $regTimes->fecha=$today;
-                    $regTimes->cliente=$client;
-                    $regTimes->np=$pn;
-                    $regTimes->codigo=$info;
-                    $regTimes->defecto=$cod[$i];
-                    $regTimes->timeIni=strtotime($today);
-                    $regTimes->whoDet=$value;
-                    if(in_array($cod[$i],$loom)){
-                        $regTimes->respArea="Jesus Zamarripa";
-                    }else if(in_array($cod[$i],$corteLibe)){
-                        $regTimes->respArea="Juan Olaes";
-                    }else if(in_array($cod[$i],$ensa)){
-                        $regTimes->respArea="David Villalpando";
-                    }else{  $regTimes->respArea="";      }
-            $regTimes->area="Calidad";
-            $regTimes->save();
-
-                        }
-                    }
-                        else{
-                    $regTimes= new timedead;
-                    $regTimes->fecha=$today;
-                    $regTimes->cliente=$client;
-                    $regTimes->np=$pn;
-                    $regTimes->codigo=$info;
-                    $regTimes->defecto=$cod4;
-                    $regTimes->timeIni=strtotime($today);
-                    $regTimes->whoDet=$value;
-                    if(in_array($cod4,$loom)){
-                        $regTimes->respArea="Jesus Zamarripa";
-                    }else if(in_array($cod4,$corteLibe)){
-                        $regTimes->respArea="Juan Olaes";
-                    }else if(in_array($cod4,$ensa)){
-                        $regTimes->respArea="David Villalpando";
-                    }else{  $regTimes->respArea="";      }
-            $regTimes->area="Calidad";
-            $regTimes->save();}
+                        //deadTime($cod4,$today,$client,$pn,$info,$value,$loom,$corteLibe,$ensa);
                 }
                 if(!empty($cant5)){
                     foreach($personal as $key=>$var){
@@ -646,48 +521,7 @@ class caliController extends generalController
                     $nok_reg->usuario=$value;
                     $nok_reg->Responsable=$responsable5;
                     $nok_reg->save();
-
-                if(strpos($cod5, ';') ) {
-                    $cod = explode(';', $cod5);
-                    for ($i = 0; $i < count($cod); $i++) {
-                        $regTimes= new timedead;
-                $regTimes->fecha=$today;
-                $regTimes->cliente=$client;
-                $regTimes->np=$pn;
-                $regTimes->codigo=$info;
-                $regTimes->defecto=$cod[$i];
-                $regTimes->timeIni=strtotime($today);
-                $regTimes->whoDet=$value;
-                if(in_array($cod[$i],$loom)){
-                    $regTimes->respArea="Jesus Zamarripa";
-                }else if(in_array($cod[$i],$corteLibe)){
-                    $regTimes->respArea="Juan Olaes";
-                }else if(in_array($cod[$i],$ensa)){
-                    $regTimes->respArea="David Villalpando";
-                }else{  $regTimes->respArea="";      }
-            $regTimes->area="Calidad";
-            $regTimes->save();
-
-                    }
-                }
-                    else{
-                $regTimes= new timedead;
-                $regTimes->fecha=$today;
-                $regTimes->cliente=$client;
-                $regTimes->np=$pn;
-                $regTimes->codigo=$info;
-                $regTimes->defecto=$cod5;
-                $regTimes->timeIni=strtotime($today);
-                $regTimes->whoDet=$value;
-                if(in_array($cod5,$loom)){
-                    $regTimes->respArea="Jesus Zamarripa";
-                }else if(in_array($cod5,$corteLibe)){
-                    $regTimes->respArea="Juan Olaes";
-                }else if(in_array($cod5,$ensa)){
-                    $regTimes->respArea="David Villalpando";
-                }else{  $regTimes->respArea="";      }
-            $regTimes->area="Calidad";
-            $regTimes->save();}
+                    //deadTime($cod5,$today,$client,$pn,$info,$value,$loom,$corteLibe,$ensa);
             }
 
                         $rest=$qty_cal - ($ok+$nok);
@@ -775,23 +609,30 @@ public function codigoCalidad(request $request){
     if(strpos($codigo, "'") ) {
         $codigo = str_replace("'", "-", $codigo);
     }
-
-    $buscar=DB::select("SELECT count,donde FROM registro WHERE info='$codigo'");
-    if (!$buscar) {
-        return redirect('calidad')->with('response', 'Record not found');
+    $resp="";
+    $buscar= DB::table('registroparcial')->where('codeBar','=',$codigo)->first();
+    if($buscar){
+        $resp="PN: ".(string)$buscar->pn." WO: ".(string)$buscar->wo." ";
+        if($buscar->cortPar){ $resp.=" Cutting: ".(string)$buscar->cortPar;        }
+        if($buscar->libePar){ $resp.=" Terminals: ".(string)$buscar->libePar;    }
+        if($buscar->ensaPar){ $resp.=" Assembly: ".(string)$buscar->ensaPar;     }
+        if($buscar->preCalidad){$resp.=" PreQuality: ".(string)$buscar->preCalidad;}
+        if($buscar->loomPar){  $resp.=" Looming: ".(string)$buscar->loomPar; }
+        if($buscar->testPar){ $resp.=" Testing: ".(string)$buscar->testPar;    }
+        if($buscar->embPar){ $resp.=" Shipping: ".(string)$buscar->embPar;   }
+        if($buscar->eng){ $resp.=" Engineering: ".(string)$buscar->eng;     }
+        return redirect('calidad')->with('response', $resp);
     }else{
-        foreach($buscar as $rowb){
-            $count=$rowb->count;
-            $area=$rowb->donde;
 
-            return redirect('calidad')->with('response', "Record in $area");
+
+            return redirect('calidad')->with('response', "Record not found");
     }
 
-}
+    }
 
 
 
-}
+
 
     public function fetchDatacali(){
         $i =$backlock =0;

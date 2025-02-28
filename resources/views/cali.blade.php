@@ -164,7 +164,7 @@
                             <!-- WO by Area -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Regist your barcode </h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">where is the order </h6>
                                 </div>
                                 <div class="card-body">
                                     <!-- Your WO by Area content here -->
@@ -173,7 +173,7 @@
                                             <form action="{{ route('codigoCalidad') }}" method="POST">
                                                 @csrf
                                                 <div class="form-group">
-                                                    <h2 class="mb-3">Scan Your Code</h2>
+                                                    
                                                     <input type="text" class="form-control" name="code-bar" id="code-bar" placeholder="Enter code here">
                                                 </div>
                                                 <button type="submit" class="btn btn-primary">Submit</button>
