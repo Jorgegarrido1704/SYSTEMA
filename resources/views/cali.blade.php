@@ -8,7 +8,7 @@
     const modificacionsCali = @json(route('buscarcodigo'));
 </script>
                     <!-- Content Row -->
-                    <div class="row">
+        <div class="row">
                         <!-- Content Column -->
                         <div class="col-lg-6 mb-4">
                             <!-- Project Card Example -->
@@ -74,49 +74,49 @@
                                                          </script>
                                       <br> <br> <br>
 
-<div class="d-flex justify-content-center">
-    <h4>Code #1
-        <input type="text" style="width:80px;margin-right:10px;" name="codigo1" id="codigo1" onchange="buscarcodigo1()">
-        <input type="text" style="width:280px;margin-right:80px;" name="rest_code1" id="rest_code1">
-       <input type="hidden" style="width: 80px;margin-right:80px" name="1" id="1" value="0" >
-       Responsable  <input type="text" style="width: 80px;margin-right:80px" name="responsable1" id="responsable1" value="0">
-    </h4>
-</div>
+                                        <div class="d-flex justify-content-center">
+                                            <h4>Code #1
+                                                <input type="text" style="width:80px;margin-right:10px;" name="codigo1" id="codigo1" onchange="buscarcodigo1()">
+                                                <input type="text" style="width:280px;margin-right:80px;" name="rest_code1" id="rest_code1">
+                                            <input type="hidden" style="width: 80px;margin-right:80px" name="1" id="1" value="0" >
+                                            Responsable  <input type="text" style="width: 80px;margin-right:80px" name="responsable1" id="responsable1" value="0">
+                                            </h4>
+                                        </div>
 
-<div class="d-flex justify-content-center">
-    <h4>Code #2
-        <input type="text" style="width:80px;margin-right:10px;" name="codigo2" id="codigo2" onchange="buscarcodigo2()">
-        <input type="text" style="width:280px;margin-right:80px;" name="rest_code2" id="rest_code2">
-        <input type="hidden" style="width: 80px;margin-right:80px" name="2" id="2" value="0" >
-        Responsable  <input type="text" style="width: 80px;margin-right:80px" name="responsable2" id="responsable2" value="0">
-    </h4>
-</div>
+                                        <div class="d-flex justify-content-center">
+                                            <h4>Code #2
+                                                <input type="text" style="width:80px;margin-right:10px;" name="codigo2" id="codigo2" onchange="buscarcodigo2()">
+                                                <input type="text" style="width:280px;margin-right:80px;" name="rest_code2" id="rest_code2">
+                                                <input type="hidden" style="width: 80px;margin-right:80px" name="2" id="2" value="0" >
+                                                Responsable  <input type="text" style="width: 80px;margin-right:80px" name="responsable2" id="responsable2" value="0">
+                                            </h4>
+                                        </div>
 
-<div>
-    <h4>Code #3
-        <input type="text" style="width:80px;margin-right:10px;" name="codigo3" id="codigo3" onchange="buscarcodigo3()">
-        <input type="text" style="width:280px;margin-right:80px;" name="rest_code3" id="rest_code3">
-        <input type="hidden" style="width: 80px;margin-right:80px" name="3" id="3" value="0" >
-        Responsable  <input type="text" style="width: 80px;margin-right:80px" name="responsable3" id="responsable3" value="0">
-    </h4>
-</div>
-<div class="d-flex justify-content-center">
-    <h4>Code #4
-        <input type="text" style="width:80px;margin-right:10px;" name="codigo4" id="codigo4" onchange="buscarcodigo4()">
-        <input type="text" style="width:280px;margin-right:80px;" name="rest_code4" id="rest_code4">
-        <input type="hidden" style="width: 80px;margin-right:80px" name="4" id="4" value="0" >
-        Responsable  <input type="text" style="width: 80px;margin-right:80px" name="responsable4" id="responsable4" value="0">
-    </h4>
-</div>
-<div class="d-flex justify-content-center">
-    <h4>Code #5
-        <input type="text" style="width:80px;margin-right:10px;" name="codigo5" id="codigo5" onchange="buscarcodigo5()">
-        <input type="text" style="width:280px;margin-right:80px;" name="rest_code5" id="rest_code5">
-        <input type="hidden" style="width: 80px;margin-right:80px" name="5" id="5"  value="0" >
-      Responsable  <input type="text" style="width: 80px;margin-right:80px" name="responsable5" id="responsable5" value="0">
+                                        <div>
+                                            <h4>Code #3
+                                                <input type="text" style="width:80px;margin-right:10px;" name="codigo3" id="codigo3" onchange="buscarcodigo3()">
+                                                <input type="text" style="width:280px;margin-right:80px;" name="rest_code3" id="rest_code3">
+                                                <input type="hidden" style="width: 80px;margin-right:80px" name="3" id="3" value="0" >
+                                                Responsable  <input type="text" style="width: 80px;margin-right:80px" name="responsable3" id="responsable3" value="0">
+                                            </h4>
+                                        </div>
+                                        <div class="d-flex justify-content-center">
+                                            <h4>Code #4
+                                                <input type="text" style="width:80px;margin-right:10px;" name="codigo4" id="codigo4" onchange="buscarcodigo4()">
+                                                <input type="text" style="width:280px;margin-right:80px;" name="rest_code4" id="rest_code4">
+                                                <input type="hidden" style="width: 80px;margin-right:80px" name="4" id="4" value="0" >
+                                                Responsable  <input type="text" style="width: 80px;margin-right:80px" name="responsable4" id="responsable4" value="0">
+                                            </h4>
+                                        </div>
+                                        <div class="d-flex justify-content-center">
+                                            <h4>Code #5
+                                                <input type="text" style="width:80px;margin-right:10px;" name="codigo5" id="codigo5" onchange="buscarcodigo5()">
+                                                <input type="text" style="width:280px;margin-right:80px;" name="rest_code5" id="rest_code5">
+                                                <input type="hidden" style="width: 80px;margin-right:80px" name="5" id="5"  value="0" >
+                                            Responsable  <input type="text" style="width: 80px;margin-right:80px" name="responsable5" id="responsable5" value="0">
 
-    </h4>
-</div>
+                                            </h4>
+                                        </div>
 
 
                                          <div><h4>Serial <input type="text" style="width: 180px" name="serial" id="serial"> </h4></div>
@@ -157,7 +157,7 @@
 
                               </div>
                             </div>
-                        </div>
+                           </div>
 
                         <!-- Second Column for WO by Area and Shipping Area -->
                         <div class="col-lg-6 mb-4">
@@ -191,62 +191,58 @@
                                 <div class="card-header py-3">
                                     <h6 class="m-0 font-weight-bold text-primary">Shipping Area</h6>
                                 </div>
+                                                    <div class="card-body" style="overflow-y: auto; height: 360px;">
+                                                                <form action="{{ route('excel_calidad')}}" method="GET" >
 
-                                    <div class="card-body" style="overflow-y: auto; max-height: 400px;">
-                                        <div class="chart-area" id="chart-area">
-                                            <style>
-                                                table {     width: 100%;    text-align: center;  }
-                                                td {border-bottom: solid 2px lightblue; }
-                                                thead{background-color: #FC4747; color:white;  }
-                                                a{text-decoration: none; color: whitesmoke;  }
-                                                a:hover{ text-decoration: none; color: white; font:bold;}
-                                            </style>
-                                            <table id="table-sales" class="table-sales">
-                                                <thead >
-                                                    <th>Fehca</th>
-                                                    <th>cliente</th>
-                                                    <th>Número de Parte</th>
-                                                    <th>Qty</th>
-                                                    <th>Codigo de falla</th>
-                                                    <th>Serial</th>
-                                                    <th>Responsable</th>
-                                                </thead>
-                                                <tbody>
-                                                    @if (!empty($registros))
-                                                    @foreach ($registros as $reg)
+                                                                    <div class="form-group">
+                                                                        <label for="text">De fecha:</label>
+                                                                        <input type="date" class="form-control" name="de" id="de" required >
+                                                                        <input type="hidden" name="di" id="di">
 
-                                                    <tr>
-                                                        <td>{{$reg[0]}}</td>
-                                                        <td>{{$reg[1]}}</td>
-                                                        <td>{{$reg[2]}}</td>
-                                                        <td>{{$reg[3]}}</td>
-                                                        <td>{{$reg[4]}}</td>
-                                                        <td>{{$reg[5]}}</td>
-                                                        <td>{{$reg[6]}}</td>
-                                                    </tr>
-                                                    @endforeach
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="text">A fecha:</label>
+                                                                        <input type="date" class="form-control" name="a" id="a" required>
+                                                                        <input type="hidden" name="df" id="df">
+                                                                    </div>
+                                                                    <input type="submit" class="btn btn-primary"   value="Descargar Excel">
+                                                                </form>
+                                                                <script>
+                                                                    document.getElementById('de').addEventListener('change', function() {
+                                                                        var de = document.getElementById('de').value;
+                                                                        deA= de.slice(0,4);
+                                                                        dem=de.slice(5,7);
+                                                                        deD=de.slice(8,10);
+                                                                        de=deD+"-"+dem+"-"+deA+" 00:00";
+                                                                        document.getElementById('di').value=de;
+                                                                        console.log('De fecha:', de);
+                                                                        });
 
-                                                    @endif
+                                                                    document.getElementById('a').addEventListener('change', function() {
+                                                                        var a = document.getElementById('a').value;
+                                                                        aA= a.slice(0,4);
+                                                                        am=a.slice(5,7);
+                                                                        aD=a.slice(8,10);
+                                                                        a=aD+"-"+am+"-"+aA+" 23:59";
+                                                                        document.getElementById('df').value=a;
+                                                                           console.log('A fecha:', a);
+                                                                        });
+                                                                </script>
 
-
-
-                                                </tbody>
-                                            </table>
+                                                    </div>
+                                                </div>
                                         </div>
-                                    </div>
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-6 mb-4">
-                            <!-- AREAS -->
+                             </div>
+        <div class="row">
+            <!--
+               <div class="col-lg-6 mb-4">
+                            <-- AREAS
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                     <h5 class="m-0 font-weight-bold text-primary">Assistence Request</h5>
                                 </div>
                                 <div class="card-body" style="overflow-y: auto; height: 360px;" id='work'>
-   <!--                                 <table>
+                                    <table>
                                         <thead>
                                             <tr>
                                                 <th>Equipo</th>
@@ -291,13 +287,13 @@
                                                 </form>
                                             </tr>
                                         </tbody>
-                                    </table> -->
+                                    </table>
                                 </div>
                             </div>
                         </div>
 
                         <div class="col-lg-6 mb-4">
-                            <!-- AREAS -->
+
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
                                     <h5 class="m-0 font-weight-bold text-primary">Assistence Proccess</h5>
@@ -330,7 +326,7 @@
                         </div>
 
                         <div class="col-lg-6 mb-4">
-                            <!-- AREAS -->
+
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                     <h5 class="m-0 font-weight-bold text-primary">Tiempo Muerto</h5>
@@ -372,7 +368,7 @@
                         </div>
 
                         <div class="col-lg-6 mb-4">
-                            <!-- AREAS -->
+
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
                                     <h5 class="m-0 font-weight-bold text-primary">Material Proccess</h5>
@@ -413,7 +409,7 @@
                         </div>
 
                         <div class="col-lg-6 mb-4">
-                            <!-- AREAS -->
+
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
                                     <h5 class="m-0 font-weight-bold text-primary">Assistence WEEK {{$week}}</h5>
@@ -501,7 +497,7 @@
                         </div>
 
                         <div class="col-lg-6 mb-4">
-                            <!-- AREAS -->
+                            
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
                                     <h5 class="m-0 font-weight-bold text-primary">Registro de incidencias</h5>
@@ -546,7 +542,7 @@
 
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
 
 
