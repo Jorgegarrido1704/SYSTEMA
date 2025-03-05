@@ -41,6 +41,7 @@ class caliController extends generalController
                     $i++;
 
                 }
+
                 $timesReg = strtotime(date("d-m-Y 00:00"))-86400;
                 /*$registros=[];
                 $i=0;
@@ -90,7 +91,7 @@ class caliController extends generalController
         $cat=$caliresult->getData()['cat'];
         $id=$request->input('id');
             if($id==''){
-                return redirect('cali');
+                return redirect()->route('calidad');
             }else{
         $buscarInfo=DB::table('calidad')->where('id','=',$id)->get();
         foreach($buscarInfo as $rowInfo){
@@ -857,9 +858,25 @@ public function codigoCalidad(request $request){
             $loomPar=$buscarParcial->loomPar;
             $sum=$loomPar+$preCalidad;
             $updateParcia=DB::table('registroparcial')->where('id','=',$denied)->update(['preCalidad'=>0,'loomPar'=>$sum]);
+            $upCount=DB::table('registro')->where ('info','=',$barcode)->update(['count'=>'8','donde'=>'Denid by Quality']);
             return redirect('/accepted');
         }
     }
+
+   /* public function fallasCalidad(Request $request){
+        $cat=session('categoria');
+        $value = session('user');
+        $fallasId=$request->input('fallas');
+        if(!empty($fallasId)){
+
+        }else{
+            $fallas=DB::table('registroparcial')->where('fallaCalidad','>',0)->first();
+
+
+
+            return view('fallas',['value'=>$value,'cat'=>$cat]);
+        }
+    }*/
 
 
 
@@ -886,9 +903,27 @@ public function codigoCalidad(request $request){
         ->select(DB::raw('MAX(id) as max'))
         ->where('fecha', 'LIKE', $df.'%') // Compare only the date part
         ->first();
+    if(!empty($buscarinfo)){
+        $min = intval($buscarinfo->min);
+    }else{
+        $min=DB::table('regsitrocalidad')
+        ->select('id')
+        ->orderby('id', 'asc')
+        ->first();
+    }
+    if(!empty($buscarinfo2)){
+        $max = intval($buscarinfo2->max);
+    }else{
+        $min=DB::table('regsitrocalidad')
+        ->select('id')
+        ->orderby('id', 'desc')
+        ->first();
+    }
 
-    $min = $buscarinfo->min;
-    $max = $buscarinfo2->max;
+
+
+    $max = intval($buscarinfo2->max);
+    $registro=[];
 
     // Set the headers for the spreadsheet
     $headers = [
@@ -906,8 +941,7 @@ public function codigoCalidad(request $request){
 
     // Get the data within the id range
     $buscarinfo = DB::table('regsitrocalidad')
-        ->where('id', '>=', $min)
-        ->where('id', '<=', $max)
+        ->whereBetween('id', [$min, $max]) // Compare only the id part (between $min, $min)
         ->orderBy('fecha', 'desc')
         ->orderBy('pn', 'desc')
         ->orderBy('codigo', 'desc')
