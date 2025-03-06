@@ -57,6 +57,7 @@
             <li class="submenu" id="submenu"><a style="color:white;" href="{{ route ('calidad_junta')}}">Quality</a></li>
             @if($cat=="cali")
             <li class="submenu" id="submenu"><a style="color:white;" href="{{ route ('accepted')}}">Accept orders</a></li>
+            <li class="submenu" id="submenu"><a style="color:white;" href="{{ route ('fallasCalidad')}}">Rework</a></li>
             @endif
             <li class="submenu" id="submenu"><a style="color:white;" href="#"></a></li>
             <li class="submenu" id="submenu"><a style="color:white;" href="#"></a></li>

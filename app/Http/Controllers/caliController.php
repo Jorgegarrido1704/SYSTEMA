@@ -863,20 +863,33 @@ public function codigoCalidad(request $request){
         }
     }
 
-   /* public function fallasCalidad(Request $request){
+    public function fallasCalidad(Request $request){
         $cat=session('categoria');
         $value = session('user');
         $fallasId=$request->input('fallas');
         if(!empty($fallasId)){
+            $fallas=DB::table('fallascalidad')->where('id','=',$fallasId)->first();
+
 
         }else{
-            $fallas=DB::table('registroparcial')->where('fallaCalidad','>',0)->first();
+            $registrosFallas=[];
+            $i=0;
+            $fallas=DB::table('fallascalidad')->get();
+            foreach($fallas as $rowfallas){
+                $id=$rowfallas->idCalidad;
+                $datosCalidadFallas=DB::table('regsitrocalidad')->where('id','=',$id)->first();
+                $registrosFallas[$i][0]=$rowfallas->id;
+                $registrosFallas[$i][1]=$rowfallas->pn;
+                $registrosFallas[$i][2]=$rowfallas->codigo;
+                $registrosFallas[$i][3]=$rowfallas->Resposable;
+                $registrosFallas[$i][4]=$rowfallas->info;
+                $i++;
+            }
 
 
-
-            return view('fallas',['value'=>$value,'cat'=>$cat]);
+            return view('calidad/retrabajos',['value'=>$value,'cat'=>$cat,'registrosFallas'=>$registrosFallas]);
         }
-    }*/
+    }
 
 
 
@@ -933,12 +946,10 @@ public function codigoCalidad(request $request){
         'D1' => 'Responsable',
         'E1' => 'Cuenta',
     ];
-
     // Loop through the headers and add them to the spreadsheet
     foreach ($headers as $cell => $header) {
         $sheet->setCellValue($cell, $header);
     }
-
     // Get the data within the id range
     $buscarinfo = DB::table('regsitrocalidad')
         ->whereBetween('id', [$min, $max]) // Compare only the id part (between $min, $min)
@@ -947,7 +958,6 @@ public function codigoCalidad(request $request){
         ->orderBy('codigo', 'desc')
         ->orderBy('Responsable', 'desc')
         ->get();
-
         foreach ($buscarinfo as $row) {
             if(!isset($registro[$row->fecha][$row->pn][$row->codigo][$row->Responsable])){
                 $registro[$row->fecha][$row->pn][$row->codigo][$row->Responsable]=1;
@@ -955,7 +965,6 @@ public function codigoCalidad(request $request){
                 $registro[$row->fecha][$row->pn][$row->codigo][$row->Responsable]++;
             }
             }
-
     // Loop through the records and add them to the spreadsheet
     foreach ($registro as $fecha => $pn) {
         foreach ($pn as $pn => $codigo) {
