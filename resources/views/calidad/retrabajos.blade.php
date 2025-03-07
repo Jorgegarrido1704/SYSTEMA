@@ -32,8 +32,8 @@
                                         <td>
                                             <form action="{{ route('fallasCalidad') }}" method="GET">
                                                 @csrf
-                                                <input type="hidden" name="fallas" value="{{ $item->id }}" id="fallas">
-                                                <button type="submit" class="btn btn-caution">Done </button>
+                                                <input type="hidden" name="fallas" value="{{ $item[0] }}" id="fallas">
+                                                <button type="submit" class="btn btn-primary">Done </button>
                                             </form>
                                         </td>
 

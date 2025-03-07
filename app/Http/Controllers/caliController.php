@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Models\timeDead;
 use App\Models\regParTime;
 use App\Models\listaCalidad;
+use App\Models\fallasCalidadModel;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
@@ -432,8 +433,14 @@ class caliController extends generalController
                                 $nok_reg->prueba="";}
                                 $nok_reg->usuario=$value;
                                 $nok_reg->Responsable=$responsable1;
-                                $nok_reg->save();
-                                deadTime($cod1,$today,$client,$pn,$info,$value,$loom,$corteLibe,$ensa);
+                                if($nok_reg->save()){
+                                    $ultimoRegistro=intval(calidadRegistro::orderBy('id', 'desc')->first()->id);
+                                    $registroFalla= new fallasCalidadModel;
+                                    $registroFalla->idCalidad=$ultimoRegistro;
+                                    $registroFalla->save();
+                                }
+
+                              //  deadTime($cod1,$today,$client,$pn,$info,$value,$loom,$corteLibe,$ensa);
                     }
                         if(!empty($cant2)){
                             foreach($personal as $key=>$var){
@@ -526,12 +533,14 @@ class caliController extends generalController
             }
 
                         $rest=$qty_cal - ($ok+$nok);
+                        $diferenciasEmbarque=$total-$nok;
                         $buscarPartial=DB::table('registroparcial')->where('codeBar','=',$info)->get();
                     foreach($buscarPartial as $row){
                         $test=$row->testPar;
                         $emba=$row->embPar;
+                        $fallaCalidasReg=$row->fallasCalidad;
                     }
-                    $upPartial=DB::table('registroparcial')->where('codeBar','=',$info)->update(['testPar'=>$test-$total,'embPar'=>$emba+$total]);
+                    $upPartial=DB::table('registroparcial')->where('codeBar','=',$info)->update(['testPar'=>$test-$total,'embPar'=>$emba+$diferenciasEmbarque,'fallasCalidad'=>$fallaCalidasReg+$nok]);
                     $regTimePar= new regParTime;
                     $regTimePar->codeBar=$info;
                     $regTimePar->qtyPar=$total;
@@ -557,7 +566,7 @@ class caliController extends generalController
                                             return redirect()->route('calidad');
                         }else{
                             $delteCalidad=DB::table('calidad')->where("info",$info)->delete();
-                            $updatetime=DB::table('timesharn')->where('bar',$info)->update(['cutF'=>$todays]);
+                            $updatetime=DB::table('timesharn')->where('bar',$info)->update(['qlyF'=>$todays]);
                             $tiempoUp=DB::table('tiempos')->where('info',$info)->update(['calidad'=>$todays]);
                             $updateToEmbarque=DB::table('registro')->where("info",$info)->update(["count"=>12,"donde"=>'En espera de embarque',"paro"=>""]);
                             return redirect()->route('calidad');
@@ -868,8 +877,13 @@ public function codigoCalidad(request $request){
         $value = session('user');
         $fallasId=$request->input('fallas');
         if(!empty($fallasId)){
-            $fallas=DB::table('fallascalidad')->where('id','=',$fallasId)->first();
-
+            $buscar=DB::table('regsitrocalidad')->where('id','=',$fallasId)->first();
+            $update= DB::table('registroparcial')
+            ->where('codeBar', '=', $buscar->info)
+            ->update(['fallasCalidad' => DB::raw('fallasCalidad - 1'),
+                'embPar' => DB::raw('embPar + 1')]);
+            $deleteFall=DB::table('fallascalidad')->where('idCalidad','=',$fallasId)->delete();
+            return redirect('/calidad');
 
         }else{
             $registrosFallas=[];
@@ -878,11 +892,11 @@ public function codigoCalidad(request $request){
             foreach($fallas as $rowfallas){
                 $id=$rowfallas->idCalidad;
                 $datosCalidadFallas=DB::table('regsitrocalidad')->where('id','=',$id)->first();
-                $registrosFallas[$i][0]=$rowfallas->id;
-                $registrosFallas[$i][1]=$rowfallas->pn;
-                $registrosFallas[$i][2]=$rowfallas->codigo;
-                $registrosFallas[$i][3]=$rowfallas->Resposable;
-                $registrosFallas[$i][4]=$rowfallas->info;
+                $registrosFallas[$i][0]=$datosCalidadFallas->id;
+                $registrosFallas[$i][1]=$datosCalidadFallas->pn;
+                $registrosFallas[$i][2]=$datosCalidadFallas->codigo;
+                $registrosFallas[$i][3]=$datosCalidadFallas->Responsable;
+                $registrosFallas[$i][4]=$datosCalidadFallas->info;
                 $i++;
             }
 
