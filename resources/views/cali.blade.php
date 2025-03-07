@@ -58,7 +58,8 @@
                                               </div>
 
                                                     <br>
-                                                    <form action="{{route('saveData')}}" method="post">
+                                                    <form action="{{route('saveData')}}" method="POST">
+                                                        @csrf
                                         <div> <h4>OK<input type="number" style="width:80px;margin-right:80px;" name="ok" id="ok" value="0"  max="100" onchange="return checkOk()">      NOK<input type="number" style="width: 80px;margin-right:80px" name="nok" id="nok" value="0"  max="5" onchange="return checkOk()"></h4></div>
                                                          <script>
                                                             function checkOk(){
@@ -80,6 +81,7 @@
                                                 <input type="text" style="width:280px;margin-right:80px;" name="rest_code1" id="rest_code1">
                                             <input type="hidden" style="width: 80px;margin-right:80px" name="1" id="1" value="0" >
                                             Responsable  <input type="text" style="width: 80px;margin-right:80px" name="responsable1" id="responsable1" value="0">
+                                            High Rework<input type="checkbox" name="check1" id="check1" value="1">
                                             </h4>
                                         </div>
 
@@ -89,6 +91,7 @@
                                                 <input type="text" style="width:280px;margin-right:80px;" name="rest_code2" id="rest_code2">
                                                 <input type="hidden" style="width: 80px;margin-right:80px" name="2" id="2" value="0" >
                                                 Responsable  <input type="text" style="width: 80px;margin-right:80px" name="responsable2" id="responsable2" value="0">
+                                                High Rework<input type="checkbox" name="check2" id="check2" value="1">
                                             </h4>
                                         </div>
 
@@ -98,6 +101,7 @@
                                                 <input type="text" style="width:280px;margin-right:80px;" name="rest_code3" id="rest_code3">
                                                 <input type="hidden" style="width: 80px;margin-right:80px" name="3" id="3" value="0" >
                                                 Responsable  <input type="text" style="width: 80px;margin-right:80px" name="responsable3" id="responsable3" value="0">
+                                                High Rework<input type="checkbox" name="check3" id="check3" value="1">
                                             </h4>
                                         </div>
                                         <div class="d-flex justify-content-center">
@@ -106,6 +110,7 @@
                                                 <input type="text" style="width:280px;margin-right:80px;" name="rest_code4" id="rest_code4">
                                                 <input type="hidden" style="width: 80px;margin-right:80px" name="4" id="4" value="0" >
                                                 Responsable  <input type="text" style="width: 80px;margin-right:80px" name="responsable4" id="responsable4" value="0">
+                                                High Rework<input type="checkbox" name="check4" id="check4" value="1">
                                             </h4>
                                         </div>
                                         <div class="d-flex justify-content-center">
@@ -113,8 +118,8 @@
                                                 <input type="text" style="width:80px;margin-right:10px;" name="codigo5" id="codigo5" onchange="buscarcodigo5()">
                                                 <input type="text" style="width:280px;margin-right:80px;" name="rest_code5" id="rest_code5">
                                                 <input type="hidden" style="width: 80px;margin-right:80px" name="5" id="5"  value="0" >
-                                            Responsable  <input type="text" style="width: 80px;margin-right:80px" name="responsable5" id="responsable5" value="0">
-
+                                                Responsable  <input type="text" style="width: 80px;margin-right:80px" name="responsable5" id="responsable5" value="0">
+                                                High Rework<input type="checkbox" name="check5" id="check5" value="1">
                                             </h4>
                                         </div>
 
