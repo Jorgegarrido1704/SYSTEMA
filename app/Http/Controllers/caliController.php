@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Models\timeDead;
 use App\Models\regParTime;
 use App\Models\listaCalidad;
+use App\Models\fallasCalidadModel;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
@@ -41,6 +42,7 @@ class caliController extends generalController
                     $i++;
 
                 }
+
                 $timesReg = strtotime(date("d-m-Y 00:00"))-86400;
                 /*$registros=[];
                 $i=0;
@@ -90,7 +92,7 @@ class caliController extends generalController
         $cat=$caliresult->getData()['cat'];
         $id=$request->input('id');
             if($id==''){
-                return redirect('cali');
+                return redirect()->route('calidad');
             }else{
         $buscarInfo=DB::table('calidad')->where('id','=',$id)->get();
         foreach($buscarInfo as $rowInfo){
@@ -157,7 +159,34 @@ class caliController extends generalController
                 $regTimes->area="Calidad";
                 $regTimes->save();}
             }
-
+            function RegistroCalidadFunc($cant1,$cod1,$today,$client,$pn,$info,$value,$responsable1,$serial,$check1){
+                $nok_reg= new calidadRegistro;
+                $nok_reg->fecha=$today;
+                $nok_reg->client=$client;
+                $nok_reg->pn=$pn;
+                $nok_reg->info=$info;
+                $nok_reg->resto=1;
+                $nok_reg->codigo=$cod1;
+                if(!empty($serial)){
+                    $nok_reg->prueba="0-0".$serial;
+                    $serial++;
+                }else{
+                $nok_reg->prueba="";}
+                $nok_reg->usuario=$value;
+                $nok_reg->Responsable=$responsable1;
+                if($nok_reg->save()){
+                    if($check1==1){
+                        DB::table('registroparcial')->where('codeBar','=',$info)->update(['testPar'=>DB::raw('testPar- 1'), 'fallasCalidad'=>DB::raw('fallasCalidad+1')]);
+                    $ultimoRegistro=intval(calidadRegistro::orderBy('id', 'desc')->first()->id);
+                    $registroFalla= new fallasCalidadModel;
+                    $registroFalla->idCalidad=$ultimoRegistro;
+                    $registroFalla->save();
+                    }else{
+                    DB::table('registroparcial')->where('codeBar','=',$info)->update(['testPar'=>DB::raw('testPar- 1'), 'embPar'=>DB::raw('embPar+1')]);
+                    }
+                }
+                return $serial;
+            }
 
 
 
@@ -355,6 +384,11 @@ class caliController extends generalController
                     $responsable3=$request->input('responsable3');
                     $responsable4=$request->input('responsable4');
                     $responsable5=$request->input('responsable5');
+                    $check1=$request->input('check1');
+                    $check2=$request->input('check2');
+                    $check3=$request->input('check3');
+                    $check4=$request->input('check4');
+                    $check5=$request->input('check5');
                     if(strpos($responsable1,',')){
                         $responsable1=str_replace(',',';',$responsable1);
                     }
@@ -417,44 +451,15 @@ class caliController extends generalController
                                 if($responsable1==$personal[$key][0]){
                                     $responsable1=($personal[$key][1]);
                                     break;     }   }
-                                $nok_reg= new calidadRegistro;
-                                $nok_reg->fecha=$today;
-                                $nok_reg->client=$client;
-                                $nok_reg->pn=$pn;
-                                $nok_reg->info=$info;
-                                $nok_reg->resto=1;
-                                $nok_reg->codigo=$cod1;
-                                if(!empty($serial)){
-                                    $nok_reg->prueba="0-0".$serial;
-                                    $serial++;
-                                }else{
-                                $nok_reg->prueba="";}
-                                $nok_reg->usuario=$value;
-                                $nok_reg->Responsable=$responsable1;
-                                $nok_reg->save();
-                                deadTime($cod1,$today,$client,$pn,$info,$value,$loom,$corteLibe,$ensa);
+                              $serial=RegistroCalidadFunc($cant1,$cod1,$today,$client,$pn,$info,$value,$responsable1,$serial,$check1);
+                              //  deadTime($cod1,$today,$client,$pn,$info,$value,$loom,$corteLibe,$ensa);
                     }
                         if(!empty($cant2)){
                             foreach($personal as $key=>$var){
                                 if($responsable2==$personal[$key][0]){
                                     $responsable2=($personal[$key][1]);
                                     break;     }   }
-
-                                $nok_reg= new calidadRegistro;
-                                $nok_reg->fecha=$today;
-                                $nok_reg->client=$client;
-                                $nok_reg->pn=$pn;
-                                $nok_reg->info=$info;
-                                $nok_reg->resto=1;
-                                $nok_reg->codigo=$cod2;
-                                if(!empty($serial)){
-                                    $nok_reg->prueba="0-0".$serial;
-                                    $serial++;
-                                }else{
-                                $nok_reg->prueba="";}
-                                $nok_reg->usuario=$value;
-                                $nok_reg->Responsable=$responsable2;
-                                $nok_reg->save();
+                             $serial=RegistroCalidadFunc($cant2,$cod2,$today,$client,$pn,$info,$value,$responsable2,$serial,$check2);
                                // deadTime($cod2,$today,$client,$pn,$info,$value,$loom,$corteLibe,$ensa);
                         }
                         if(!empty($cant3)){
@@ -462,43 +467,15 @@ class caliController extends generalController
                                 if($responsable3==$personal[$key][0]){
                                     $responsable3=($personal[$key][1]);
                                     break;     }   }
-                            $nok_reg= new calidadRegistro;
-                            $nok_reg->fecha=$today;
-                            $nok_reg->client=$client;
-                            $nok_reg->pn=$pn;
-                            $nok_reg->info=$info;
-                            $nok_reg->resto=1;
-                            $nok_reg->codigo=$cod3;
-                            if(!empty($serial)){
-                                $nok_reg->prueba="0-0".$serial;
-                                $serial++;
-                            }else{
-                            $nok_reg->prueba="";}
-                            $nok_reg->usuario=$value;
-                            $nok_reg->Responsable=$responsable3;
-                            $nok_reg->save();
-                            //deadTime($cod3,$today,$client,$pn,$info,$value,$loom,$corteLibe,$ensa);
+                                    $serial=RegistroCalidadFunc($cant3,$cod3,$today,$client,$pn,$info,$value,$responsable3,$serial,$check3);
+                                    //deadTime($cod3,$today,$client,$pn,$info,$value,$loom,$corteLibe,$ensa);
                     }
                     if(!empty($cant4)){
                         foreach($personal as $key=>$var){
                             if($responsable4==$personal[$key][0]){
                                 $responsable4=($personal[$key][1]);
                                 break;     }   }
-                        $nok_reg= new calidadRegistro;
-                        $nok_reg->fecha=$today;
-                        $nok_reg->client=$client;
-                        $nok_reg->pn=$pn;
-                        $nok_reg->info=$info;
-                        $nok_reg->resto=1;
-                        $nok_reg->codigo=$cod4;
-                        if(!empty($serial)){
-                            $nok_reg->prueba="0-0".$serial;
-                            $serial++;
-                        }else{
-                        $nok_reg->prueba="";}
-                        $nok_reg->usuario=$value;
-                        $nok_reg->Responsable=$responsable4;
-                        $nok_reg->save();
+                        $serial=RegistroCalidadFunc($cant4,$cod4,$today,$client,$pn,$info,$value,$responsable4,$serial,$check4);
                         //deadTime($cod4,$today,$client,$pn,$info,$value,$loom,$corteLibe,$ensa);
                 }
                 if(!empty($cant5)){
@@ -506,31 +483,19 @@ class caliController extends generalController
                         if($responsable5==$personal[$key][0]){
                             $responsable5=($personal[$key][1]);
                             break;     }   }
-                    $nok_reg= new calidadRegistro;
-                    $nok_reg->fecha=$today;
-                    $nok_reg->client=$client;
-                    $nok_reg->pn=$pn;
-                    $nok_reg->info=$info;
-                    $nok_reg->resto=1;
-                    $nok_reg->codigo=$cod5;
-                    if(!empty($serial)){
-                        $nok_reg->prueba="0-0".$serial;
-                        $serial++;
-                    }else{
-                    $nok_reg->prueba="";}
-                    $nok_reg->usuario=$value;
-                    $nok_reg->Responsable=$responsable5;
-                    $nok_reg->save();
-                    //deadTime($cod5,$today,$client,$pn,$info,$value,$loom,$corteLibe,$ensa);
+                            $serial=RegistroCalidadFunc($cant5,$cod5,$today,$client,$pn,$info,$value,$responsable5,$serial,$check5);
+                            //deadTime($cod5,$today,$client,$pn,$info,$value,$loom,$corteLibe,$ensa);
             }
 
                         $rest=$qty_cal - ($ok+$nok);
+                        $diferenciasEmbarque=$total-$nok;
                         $buscarPartial=DB::table('registroparcial')->where('codeBar','=',$info)->get();
                     foreach($buscarPartial as $row){
                         $test=$row->testPar;
                         $emba=$row->embPar;
+                        $fallaCalidasReg=$row->fallasCalidad;
                     }
-                    $upPartial=DB::table('registroparcial')->where('codeBar','=',$info)->update(['testPar'=>$test-$total,'embPar'=>$emba+$total]);
+                    $upPartial=DB::table('registroparcial')->where('codeBar','=',$info)->update(['testPar'=>$test-$ok,'embPar'=>$emba+$ok]);
                     $regTimePar= new regParTime;
                     $regTimePar->codeBar=$info;
                     $regTimePar->qtyPar=$total;
@@ -556,7 +521,7 @@ class caliController extends generalController
                                             return redirect()->route('calidad');
                         }else{
                             $delteCalidad=DB::table('calidad')->where("info",$info)->delete();
-                            $updatetime=DB::table('timesharn')->where('bar',$info)->update(['cutF'=>$todays]);
+                            $updatetime=DB::table('timesharn')->where('bar',$info)->update(['qlyF'=>$todays]);
                             $tiempoUp=DB::table('tiempos')->where('info',$info)->update(['calidad'=>$todays]);
                             $updateToEmbarque=DB::table('registro')->where("info",$info)->update(["count"=>12,"donde"=>'En espera de embarque',"paro"=>""]);
                             return redirect()->route('calidad');
@@ -857,7 +822,41 @@ public function codigoCalidad(request $request){
             $loomPar=$buscarParcial->loomPar;
             $sum=$loomPar+$preCalidad;
             $updateParcia=DB::table('registroparcial')->where('id','=',$denied)->update(['preCalidad'=>0,'loomPar'=>$sum]);
+            $upCount=DB::table('registro')->where ('info','=',$barcode)->update(['count'=>'8','donde'=>'Denid by Quality']);
             return redirect('/accepted');
+        }
+    }
+
+    public function fallasCalidad(Request $request){
+        $cat=session('categoria');
+        $value = session('user');
+        $fallasId=$request->input('fallas');
+        if(!empty($fallasId)){
+            $buscar=DB::table('regsitrocalidad')->where('id','=',$fallasId)->first();
+            $update= DB::table('registroparcial')
+            ->where('codeBar', '=', $buscar->info)
+            ->update(['fallasCalidad' => DB::raw('fallasCalidad - 1'),
+                'embPar' => DB::raw('embPar + 1')]);
+            $deleteFall=DB::table('fallascalidad')->where('idCalidad','=',$fallasId)->delete();
+            return redirect('/calidad');
+
+        }else{
+            $registrosFallas=[];
+            $i=0;
+            $fallas=DB::table('fallascalidad')->get();
+            foreach($fallas as $rowfallas){
+                $id=$rowfallas->idCalidad;
+                $datosCalidadFallas=DB::table('regsitrocalidad')->where('id','=',$id)->first();
+                $registrosFallas[$i][0]=$datosCalidadFallas->id;
+                $registrosFallas[$i][1]=$datosCalidadFallas->pn;
+                $registrosFallas[$i][2]=$datosCalidadFallas->codigo;
+                $registrosFallas[$i][3]=$datosCalidadFallas->Responsable;
+                $registrosFallas[$i][4]=$datosCalidadFallas->info;
+                $i++;
+            }
+
+
+            return view('calidad/retrabajos',['value'=>$value,'cat'=>$cat,'registrosFallas'=>$registrosFallas]);
         }
     }
 
@@ -886,9 +885,27 @@ public function codigoCalidad(request $request){
         ->select(DB::raw('MAX(id) as max'))
         ->where('fecha', 'LIKE', $df.'%') // Compare only the date part
         ->first();
+    if(!empty($buscarinfo)){
+        $min = intval($buscarinfo->min);
+    }else{
+        $min=DB::table('regsitrocalidad')
+        ->select('id')
+        ->orderby('id', 'asc')
+        ->first();
+    }
+    if(!empty($buscarinfo2)){
+        $max = intval($buscarinfo2->max);
+    }else{
+        $min=DB::table('regsitrocalidad')
+        ->select('id')
+        ->orderby('id', 'desc')
+        ->first();
+    }
 
-    $min = $buscarinfo->min;
-    $max = $buscarinfo2->max;
+
+
+    $max = intval($buscarinfo2->max);
+    $registro=[];
 
     // Set the headers for the spreadsheet
     $headers = [
@@ -898,22 +915,18 @@ public function codigoCalidad(request $request){
         'D1' => 'Responsable',
         'E1' => 'Cuenta',
     ];
-
     // Loop through the headers and add them to the spreadsheet
     foreach ($headers as $cell => $header) {
         $sheet->setCellValue($cell, $header);
     }
-
     // Get the data within the id range
     $buscarinfo = DB::table('regsitrocalidad')
-        ->where('id', '>=', $min)
-        ->where('id', '<=', $max)
+        ->whereBetween('id', [$min, $max]) // Compare only the id part (between $min, $min)
         ->orderBy('fecha', 'desc')
         ->orderBy('pn', 'desc')
         ->orderBy('codigo', 'desc')
         ->orderBy('Responsable', 'desc')
         ->get();
-
         foreach ($buscarinfo as $row) {
             if(!isset($registro[$row->fecha][$row->pn][$row->codigo][$row->Responsable])){
                 $registro[$row->fecha][$row->pn][$row->codigo][$row->Responsable]=1;
@@ -921,7 +934,6 @@ public function codigoCalidad(request $request){
                 $registro[$row->fecha][$row->pn][$row->codigo][$row->Responsable]++;
             }
             }
-
     // Loop through the records and add them to the spreadsheet
     foreach ($registro as $fecha => $pn) {
         foreach ($pn as $pn => $codigo) {

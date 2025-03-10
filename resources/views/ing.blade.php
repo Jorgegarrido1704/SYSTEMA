@@ -529,7 +529,7 @@ select {
                                                 <option value="PLASTIC OMNIUM">PLASTIC OMNIUM</option>
                                                 <option value="ZOELLER">ZOELLER</option>
                                                 <option value="COLLINS">COLLINS</option>
-                                                <option value="Proterra Powered LLC">Proterra Powered LLC.</option>"></option>
+                                                <option value="Proterra Powered LLC">Proterra Powered LLC.</option>
                                             </select>
                                             <label for="tipoArnes">Harness Type</label>
                                             <select name="tipoArnes" id="tipoArnes" required>

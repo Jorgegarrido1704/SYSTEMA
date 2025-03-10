@@ -58,7 +58,8 @@
                                               </div>
 
                                                     <br>
-                                                    <form action="{{route('saveData')}}" method="post">
+                                                    <form action="{{route('saveData')}}" method="POST">
+                                                        @csrf
                                         <div> <h4>OK<input type="number" style="width:80px;margin-right:80px;" name="ok" id="ok" value="0"  max="100" onchange="return checkOk()">      NOK<input type="number" style="width: 80px;margin-right:80px" name="nok" id="nok" value="0"  max="5" onchange="return checkOk()"></h4></div>
                                                          <script>
                                                             function checkOk(){
@@ -80,6 +81,7 @@
                                                 <input type="text" style="width:280px;margin-right:80px;" name="rest_code1" id="rest_code1">
                                             <input type="hidden" style="width: 80px;margin-right:80px" name="1" id="1" value="0" >
                                             Responsable  <input type="text" style="width: 80px;margin-right:80px" name="responsable1" id="responsable1" value="0">
+                                            High Rework<input type="checkbox" name="check1" id="check1" value="1">
                                             </h4>
                                         </div>
 
@@ -89,6 +91,7 @@
                                                 <input type="text" style="width:280px;margin-right:80px;" name="rest_code2" id="rest_code2">
                                                 <input type="hidden" style="width: 80px;margin-right:80px" name="2" id="2" value="0" >
                                                 Responsable  <input type="text" style="width: 80px;margin-right:80px" name="responsable2" id="responsable2" value="0">
+                                                High Rework<input type="checkbox" name="check2" id="check2" value="1">
                                             </h4>
                                         </div>
 
@@ -98,6 +101,7 @@
                                                 <input type="text" style="width:280px;margin-right:80px;" name="rest_code3" id="rest_code3">
                                                 <input type="hidden" style="width: 80px;margin-right:80px" name="3" id="3" value="0" >
                                                 Responsable  <input type="text" style="width: 80px;margin-right:80px" name="responsable3" id="responsable3" value="0">
+                                                High Rework<input type="checkbox" name="check3" id="check3" value="1">
                                             </h4>
                                         </div>
                                         <div class="d-flex justify-content-center">
@@ -106,6 +110,7 @@
                                                 <input type="text" style="width:280px;margin-right:80px;" name="rest_code4" id="rest_code4">
                                                 <input type="hidden" style="width: 80px;margin-right:80px" name="4" id="4" value="0" >
                                                 Responsable  <input type="text" style="width: 80px;margin-right:80px" name="responsable4" id="responsable4" value="0">
+                                                High Rework<input type="checkbox" name="check4" id="check4" value="1">
                                             </h4>
                                         </div>
                                         <div class="d-flex justify-content-center">
@@ -113,8 +118,8 @@
                                                 <input type="text" style="width:80px;margin-right:10px;" name="codigo5" id="codigo5" onchange="buscarcodigo5()">
                                                 <input type="text" style="width:280px;margin-right:80px;" name="rest_code5" id="rest_code5">
                                                 <input type="hidden" style="width: 80px;margin-right:80px" name="5" id="5"  value="0" >
-                                            Responsable  <input type="text" style="width: 80px;margin-right:80px" name="responsable5" id="responsable5" value="0">
-
+                                                Responsable  <input type="text" style="width: 80px;margin-right:80px" name="responsable5" id="responsable5" value="0">
+                                                High Rework<input type="checkbox" name="check5" id="check5" value="1">
                                             </h4>
                                         </div>
 
@@ -173,7 +178,7 @@
                                             <form action="{{ route('codigoCalidad') }}" method="POST">
                                                 @csrf
                                                 <div class="form-group">
-                                                    
+
                                                     <input type="text" class="form-control" name="code-bar" id="code-bar" placeholder="Enter code here">
                                                 </div>
                                                 <button type="submit" class="btn btn-primary">Submit</button>
@@ -197,12 +202,14 @@
                                                                     <div class="form-group">
                                                                         <label for="text">De fecha:</label>
                                                                         <input type="date" class="form-control" name="de" id="de" required >
+                                                                        <span id="errorMessage" style="color: red; display: none;">Weekends are not allowed!</span>
                                                                         <input type="hidden" name="di" id="di">
 
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label for="text">A fecha:</label>
                                                                         <input type="date" class="form-control" name="a" id="a" required>
+                                                                        <span id="errorMessage1" style="color: red; display: none;">Weekends are not allowed!</span>
                                                                         <input type="hidden" name="df" id="df">
                                                                     </div>
                                                                     <input type="submit" class="btn btn-primary"   value="Descargar Excel">
@@ -210,22 +217,43 @@
                                                                 <script>
                                                                     document.getElementById('de').addEventListener('change', function() {
                                                                         var de = document.getElementById('de').value;
+                                                                        const errorMessage = document.getElementById('errorMessage');
+                                                                        const selectedDate = new Date(de);
+                                                                            const dayOfWeek = selectedDate.getDay(); // 0 is Sunday, 6 is Saturday
+
+                                                                            if (dayOfWeek === 6 || dayOfWeek === 5) {
+                                                                                errorMessage.style.display = 'inline';
+                                                                                alert('Weekends are not allowed!');
+                                                                                document.getElementById('de').value='';
+                                                                            } else {
+                                                                                errorMessage.style.display = 'none';
                                                                         deA= de.slice(0,4);
                                                                         dem=de.slice(5,7);
                                                                         deD=de.slice(8,10);
                                                                         de=deD+"-"+dem+"-"+deA+" 00:00";
                                                                         document.getElementById('di').value=de;
-                                                                        console.log('De fecha:', de);
+                                                                        console.log('De fecha:', de);}
                                                                         });
 
                                                                     document.getElementById('a').addEventListener('change', function() {
                                                                         var a = document.getElementById('a').value;
+                                                                        const errorMessage1 = document.getElementById('errorMessage1');
+                                                                        const selectedDate1 = new Date(a);
+                                                                            const dayOfWeek1 = selectedDate1.getDay(); // 0 is Sunday, 6 is Saturday
+
+                                                                            if (dayOfWeek1 === 6 || dayOfWeek1 === 5) {
+                                                                                errorMessage1.style.display = 'inline';
+                                                                                alert('Weekends are not allowed!');
+                                                                                document.getElementById('a').value='';
+                                                                            } else {
+                                                                                errorMessage1.style.display = 'none';
+
                                                                         aA= a.slice(0,4);
                                                                         am=a.slice(5,7);
                                                                         aD=a.slice(8,10);
                                                                         a=aD+"-"+am+"-"+aA+" 23:59";
                                                                         document.getElementById('df').value=a;
-                                                                           console.log('A fecha:', a);
+                                                                           console.log('A fecha:', a);}
                                                                         });
                                                                 </script>
 

@@ -294,7 +294,7 @@ class PpapIngController extends Controller
             $date = date('d-m-Y');
             $time = date('H:i');
 
-            $content =  $revin . ' liberada y en embarque '."\n\n";
+            $content =  $revin . ' liberada y en embarque'."\n\n";
                     $content .= 'Buen día,'."\n\n".'Les comparto que el día ' . $date . ' a las ' . $time . "\n\n"."Salió de prueba la siguiente PPAP:"."\n\n";
             $content .= "\n\n"." Cliente: " . $emailcliente;
             $content .= "\n\n"." Número de parte: " . $emailpn;
@@ -694,6 +694,46 @@ public function excel_ing(Request $request)
 }
 
 
+/*function get_info_ing(Request $request){
+    $i=0;
+    $inges=$activ=$answer=$enginners=[];
+    $buscarinfor=DB::table('registro')->where('count','=','13')
+    ->orwhere('count','=','17')->orwhere('count','=','14')->orwhere('count','=','16')
+    ->orwhere('count','=','18')->get();
+    foreach($buscarinfor as $rowInge){
+        $inges[$i][0]=$rowInge->NumPart;
+        $inges[$i][1]=$rowInge->cliente;
+        $inges[$i][2]=$rowInge->rev;
+        $inges[$i][3]=$rowInge->wo;
+        $inges[$i][4]=$rowInge->po;
+        $inges[$i][5]=$rowInge->Qty;
+        $inges[$i][6]=$rowInge->id;
+        $inges[$i][7]=$rowInge->count;
+        $inges[$i][8]=$rowInge->info;
+    $i++;        }
+    $i=0;
+    $SearchAct=DB::table('ingactividades')->where('count','<','4')->orderby("Id_request")->get();
+    foreach($SearchAct as $rowAct){
+
+        $enginners[$i][0]=$rowAct->id;
+        $enginners[$i][1]=$rowAct->Id_request;
+        $control=strtotime($rowAct->fecha);
+        $dateControl=strtotime(date('d-m-Y H:i'));
+        $controlTotal=intval((($dateControl-$control)/3600)).":".intval((($dateControl-$control)%3600)/60) ;
+
+        $enginners[$i][2]=$controlTotal;
+        $enginners[$i][3]=$rowAct->actividades;
+        $enginners[$i][4]=$rowAct->desciption;
+        $enginners[$i][5]=$rowAct->fechaEncuesta;
+        $i++;
+    }
+
+    $info=[
+        'inges'=>$inges,
+        'enginners'=>$enginners
+    ];
+    return response()->json($info);
+}*/
 
 
 
