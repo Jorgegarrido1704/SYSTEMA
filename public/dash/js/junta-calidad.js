@@ -154,8 +154,8 @@ var calidadPareto = new Chart(ctx2, {
             {
                 label: 'FTQ',
                 data: pyv,
-                backgroundColor: ['#1cc88a', 'red'],
-                hoverBackgroundColor: ['#1cc89a', 'red'],
+                backgroundColor: ['#1cc88a', 'red','yellow','blue'],
+                hoverBackgroundColor: ['#1cc89a', 'red','yellow','blue'],
                 borderColor: '#1cc88a',
                 fill: false, // Evita rellenar el área debajo de la línea
                 borderWidth: 1

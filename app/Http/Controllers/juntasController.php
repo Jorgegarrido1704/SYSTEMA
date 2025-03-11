@@ -552,20 +552,30 @@ public function calidad_junta(){
                 $pareto[$datosj]=Paretos($regjg,$regjb);
                 $totalm=$reglb;
                 $totalb=$reglg;        }
-        $yearGood=$yearBad=$monthGood=$monthBad=$weekGood=$weekBad=0;
+        $yearGood=$yearBad=$monthGood=$monthBad=$weekGood=$weekBad=$lastmonthGood=$lastmonthBad=0;
         $monthAndYear=date("m-Y");
         $YearParto=date("Y");
+        $lastyear=date("12-Y", strtotime("-1 years"));
         $weekslas="Week ".date("W",strtotime("-1 weeks"));
         $buscarValorPareto=DB::table('regsitrocalidad')
         ->where('fecha', 'LIKE', "%$YearParto%")
+
         ->get();
         foreach($buscarValorPareto as $rowPareto){
-         if($rowPareto->codigo=='TODO BIEN'){$yearGood+=1;}else{$yearBad+=1;}
+         if($rowPareto->codigo=='TODO BIEN' ){$yearGood+=1;}else{$yearBad+=1;}
             if(substr($rowPareto->fecha, 3, 7) == $monthAndYear){
                 if($rowPareto->codigo=='TODO BIEN'){$monthGood+=1;}else{$monthBad+=1;}}
             }
        $monthAndYearPareto[$monthAndYear]=Paretos($monthGood,$monthBad);
                 $monthAndYearPareto[$YearParto]=Paretos($yearGood,$yearBad);
+            $lastmonth=date("m-Y", strtotime("-1 months"));
+            $registrosCalidad=DB::table('regsitrocalidad')
+            ->where('fecha', 'LIKE', "%$lastmonth%")
+            ->get();
+            foreach($registrosCalidad as $rowPareto){
+                if($rowPareto->codigo=='TODO BIEN'){$lastmonthGood+=1;}else{$lastmonthBad+=1;}}
+            $monthAndYearPareto[$lastmonth]=Paretos($lastmonthGood,$lastmonthBad);
+
                 function getDaysForWeek() {
                     $days = [];
                     for ($day = 1; $day <= 7; $day++) {
@@ -577,7 +587,15 @@ public function calidad_junta(){
 
                     } return $days;     }
                 $days = getDaysForWeek();
-        $weevalues=DB::table('regsitrocalidad')->get();
+        $weevalues=DB::table('regsitrocalidad')
+        ->where('fecha', 'LIKE', "$days[0]%")
+        ->orWhere('fecha', 'LIKE', "$days[1]%")
+        ->orWhere('fecha', 'LIKE', "$days[2]%")
+        ->orWhere('fecha', 'LIKE', "$days[3]%")
+        ->orWhere('fecha', 'LIKE', "$days[4]%")
+        ->orWhere('fecha', 'LIKE', "$days[5]%")
+        ->orWhere('fecha', 'LIKE', "$days[6]%")
+        ->get();
         foreach($weevalues as $rowParetos){
             if(strtotime($rowParetos->fecha) >= strtotime($days[0]) and strtotime($rowParetos->fecha) <= strtotime($days[6])){
             if($rowParetos->codigo=='TODO BIEN'){$weekGood+=1;}else{$weekBad+=1;}
