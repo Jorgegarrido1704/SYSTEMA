@@ -12,7 +12,7 @@ class globalInventario extends Controller
         $cat=session('categoria');
         $value=session('user');
         //Moviment registered
-        $itemOut=$inventario=[];
+        $itemOut=$inventario=$kitsReg=[];
         $i=$y=0;
         $buscaractual=DB::table('controlalmacen')
         ->orderBy("idRegALm", "desc")
@@ -34,6 +34,15 @@ class globalInventario extends Controller
             $inventario[$y][1]=$row->Qty;
             $y++;
         }
+        $kits=DB::table('kits')
+        ->where('status','!=','finalizado')
+        ->get();
+        $y=0;
+        foreach($kits as $kit){
+            $kitsReg[$y][0]=$kit->kit;
+            $kitsReg[$y][1]=$kit->qty;
+            $y++;
+        }
 
 
 
@@ -41,7 +50,7 @@ class globalInventario extends Controller
 
 
 
-        return view('globalInventary', ['cat'=>$cat,'value'=>$value,'itemOut'=>$itemOut,'inventario'=>$inventario]);
+        return view('globalInventary', ['cat'=>$cat,'value'=>$value,'itemOut'=>$itemOut,'inventario'=>$inventario,'kitsReg'=>$kitsReg]);
     }
 /*    public function index_inventario(Request $request){
         $cat=session('categoria');

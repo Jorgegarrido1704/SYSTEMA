@@ -357,7 +357,7 @@ return view('planing',['des'=>$des,'value'=>$value,'cat'=>$cat,'post'=>$post,'da
                    $savekits->qty=$qty;
                    $savekits->wo=$wo;
                    $savekits->status="En espera";
-                   $savekits->usuario="En espera";
+                   $savekits->usuario=$value;
                    $savekits->save();
                 }
                if(substr($rev, 0, 4) == 'PPAP' || substr($rev, 0, 4) == 'PRIM'){
