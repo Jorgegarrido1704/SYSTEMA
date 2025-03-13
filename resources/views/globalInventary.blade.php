@@ -5,7 +5,7 @@
  <div class="d-sm-flex align-items-center justify-content-between mb-4"> </div>
                     <div class="row">
 
-                        <!-- Table and Graph -->
+                        <!-- Last 100 movimentes -->
                         <div class="col-xl-6 col-lg-6">
                             <div class="card shadow mb-6">
 
@@ -49,7 +49,7 @@
 
                         <div class="col-xl-6 col-lg-6">
                             <div class="card shadow mb-6">
-                                    <!-- Card scaneer -->
+                                    <!-- Invetary  -->
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                     <h5 class="m-0 font-weight-bold text-primary">Inventario</h5>
