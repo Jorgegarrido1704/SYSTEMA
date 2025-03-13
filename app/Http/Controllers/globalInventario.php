@@ -10,6 +10,41 @@ class globalInventario extends Controller
     //index
     public function index_inventario(Request $request){
         $cat=session('categoria');
+        $value=session('user');
+        //Moviment registered
+        $itemOut=$inventario=[];
+        $i=$y=0;
+        $buscaractual=DB::table('controlalmacen')
+        ->orderBy("idRegALm", "desc")
+        ->limit(100)
+        ->get();
+            foreach($buscaractual as $val){
+                $itemOut[$i][0]=$val->fechaMov;
+                $itemOut[$i][1]=$val->itIdInt;
+                $itemOut[$i][2]=$val->Qty;
+                $itemOut[$i][3]=$val->MovType;
+                $i++;
+            }
+        $inv=DB::table('controlalmacen')
+        ->select('itIdInt',DB::raw('SUM(Qty) as Qty'))
+        ->groupBy('itIdInt')
+        ->get();
+        foreach($inv as $row){
+            $inventario[$y][0]=$row->itIdInt;
+            $inventario[$y][1]=$row->Qty;
+            $y++;
+        }
+
+
+
+
+
+
+
+        return view('globalInventary', ['cat'=>$cat,'value'=>$value,'itemOut'=>$itemOut,'inventario'=>$inventario]);
+    }
+/*    public function index_inventario(Request $request){
+        $cat=session('categoria');
         $user=session('user');
         $wo=request('wo');
         $qt=request('qty_pn');
@@ -45,7 +80,7 @@ class globalInventario extends Controller
         }else{
 
         return view('globalInventary', ['cat'=>$cat,'user'=>$user]);}
-    }
+    }*/
     public function WOitems(Request $request){
         $cat=session('categoria');
         $user=session('user');

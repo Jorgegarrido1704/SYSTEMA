@@ -1,86 +1,83 @@
-@extends('layouts.mainWithoutsidebar')
+@extends('layouts.main')
 
 @section('contenido')
-<div class="row">
-    <!-- Content Column -->
-    <div class="col-lg-6 mb-4">
-        <!-- Project Card Example -->
-        <div class="card shadow mb-4">
-            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h4 class="m-0 font-weight-bold text-primary">Inventario por Work Order</h4>
+ <!-- Page Heading -->
+ <div class="d-sm-flex align-items-center justify-content-between mb-4"> </div>
+                    <div class="row">
 
-            </div>
-            <!-- Percent section -->
-            <div class="card-body" style="overflow-y: auto; height: 600px;">
-                @if (!empty($items))
-                <table>
-                    <tr>
-                        <th colspan="2"><b>Work Order: {{ $wo }}</b</th>
+                        <!-- Table and Graph -->
+                        <div class="col-xl-6 col-lg-6">
+                            <div class="card shadow mb-6">
 
-                        <th colspan="2"><b>Quantity: {{ $qt }}</b></th>
-                    </tr>
-                    <tr>
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h5 class="m-0 font-weight-bold text-primary">Movimientos </h5>
 
-                        <th>Item</th>
-                        <th>Quantity</th>
-                    </tr>
-                    <form action="{{ route('WOitems') }}" method="GET">
-                    @foreach ($items as $item)
-                    <tr>
-                    <td> <input type="hidden" name="items[]" id="items" value="{{ $item[0] }}" >
-                    <input type="text" name="demo" id="demo" value="{{ $item[0] }}" disabled></td>
-                    <td><input type="number" name="qty[]" id="qty" value="{{ $item[1] }}" step="0.01" required class="form-control"></td>
-                        <input type="hidden" name="wo" id="wo" value="{{ $wo }}">
+                                </div>
+
+                                <!-- table Body -->
+                                <div class="card-body" style="overflow-y: auto; max-height: 400px;">
+                                    <div class="chart-area" id="chart-area">
+
+                                        <table id="table-harness" class="table" style="width:100%">
+                                            <thead >
+                                                <tr class="table-danger">
+                                                <th>Fecha</th>
+                                                <th>Articulo</th>
+                                                <th>Cantidad</th>
+                                                <th>Moviemiento</th>
+                                                </tr>
+                                                </thead>
+                                            <tbody>
+                                                @if (!empty($itemOut))
+                                                @foreach ($itemOut as $item)
+                                                <tr>
+                                                    <td>{{ $item[0] }}</td>
+                                                    <td>{{ $item[1] }}</td>
+                                                    <td>{{ $item[2] }}</td>
+                                                    <td>{{ $item[3] }}</td>
+                                                </tr>
+                                                @endforeach
+                                                @endif
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
 
-                </tr>
-                    @endforeach
-                    <div class="form-group">
-                    <input type="submit" name="enviar" id="enviar" value="Guardar" class="btn btn-primary">
+                        <div class="col-xl-6 col-lg-6">
+                            <div class="card shadow mb-6">
+                                    <!-- Card scaneer -->
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h5 class="m-0 font-weight-bold text-primary">Inventario</h5>
+                                </div>
+                                <div class="card-body" style="overflow-y: auto; height: 360px;">
+                                    <table class="table" style="width:100%">
+                                        <thead>
+                                            <tr class="table-primary">
+                                                <th>Item interno</th>
+                                                <th>Cantidad</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (!empty($inventario))
+                                            @foreach ($inventario as $item)
+                                            <tr>
+                                                <td>{{ $item[0] }}</td>
+                                                <td>{{ $item[1] }}</td>
+                                            </tr>
+                                            @endforeach
+                                            @endif
+                                        </tbody>
+
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </form>
-                </table>
 
-                @else
+                    @endsection
 
-                <form action="{{ route('index_inventario') }}" method="GET">
-                    <div class="form-group">
-                        <label for="wo">Part Number</label>
-                        <input type="text" name="wo" id="wo" required class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="qty_pn">Quantity</label>
-                        <input type="number" name="qty_pn" id="qty_pn" min="0" required class="form-control">
-                    </div>
-                    <input type="submit" name="enviar" id="enviar" value="Buscar" class="btn btn-primary">
-                </form>
-                @endif
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-6 mb-4">
-        <!-- Project Card Example -->
-        <div class="card shadow mb-4">
-            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h4 class="m-0 font-weight-bold text-primary">Inventario por item</h4>
-            </div>
-            <!-- Percent section -->
-            <div class="card-body" style="overflow-y: auto; height: 360px;">
-                <form action="{{ route('indItems') }}" method="GET">
-                    <div class="form-group">
-                        <label for="itemunic">Item</label>
-                        <input type="text" name="itemunic" id="itemunic" required class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="qtyunic">Quantity</label>
-                        <input type="number" name="qtyunic" id="qtyunic" step="0.01" min="0" required class="form-control">
-                    </div>
-                    <input type="submit" name="send" id="send" value="Agregar" class="btn btn-primary">
-
-
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-@endsection
