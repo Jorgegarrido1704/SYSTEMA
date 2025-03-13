@@ -39,17 +39,12 @@ class globalInventario extends Controller
         ->get();
         $y=0;
         foreach($kits as $kit){
-            $kitsReg[$y][0]=$kit->kit;
-            $kitsReg[$y][1]=$kit->qty;
+            $kitsReg[$y][0]=$kit->numeroParte;
+            $kitsReg[$y][1]=$kit->wo;
+            $kitsReg[$y][2]=$kit->qty;
+            $kitsReg[$y][3]=$kit->status;
             $y++;
         }
-
-
-
-
-
-
-
         return view('globalInventary', ['cat'=>$cat,'value'=>$value,'itemOut'=>$itemOut,'inventario'=>$inventario,'kitsReg'=>$kitsReg]);
     }
 /*    public function index_inventario(Request $request){
