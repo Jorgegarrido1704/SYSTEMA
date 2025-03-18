@@ -1,4 +1,4 @@
-@extends('layouts.mainWithoutsidebar')
+@extends('layouts.main')
 @section('contenido')
 <style>
     body{
@@ -43,6 +43,6 @@
             </form>
             </tbody>
         </table>
-        <button id="volver"><a id="volver" href="{{url('/inventario')}}">Regresar</a></button>
+        <button id="volver"><a id="volver" href="{{url('/almacen')}}">Regresar</a></button>
     </div>
 @endsection

@@ -1,4 +1,4 @@
-@extends('layouts.mainWithoutsidebar')
+@extends('layouts.main')
 @section('contenido')
     <style>
     body{   @media screen and (max-width: 768px) {

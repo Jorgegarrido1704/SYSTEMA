@@ -19,7 +19,7 @@ class AlmacenController extends Controller
             return view('login');
         }else{
         $i=0;
-        $listas=[];
+        $listas=$kispendientes=[];
         $buscarInfo=DB::table('almacen')->orderBy('id','DESC')->get();
         foreach($buscarInfo as $rowInfo){
             $listas[$i][0]=$rowInfo->fecha;
@@ -62,82 +62,78 @@ class AlmacenController extends Controller
                 $desviations[$i][10]=$rowdes->fecha;
                 $i++;
             }
-        return view('almacen',['value'=>$value,'listas'=>$listas,'cat'=>$cat,'desviations'=>$desviations]);}
-    }
-
-    public function store(Request $request)    {
-        $invoke=new AlmacenController;
-        $reqinvoko=$invoke->__invoke();
-        $listas=$reqinvoko->getData()['listas'];
-        $cat=$reqinvoko->getData()['cat'];
-        $value = session('user');
-$infoPar = [];
-
-$i = 0;
-$response="";
-$date = date('d-m-Y H:i');
-$codeWo=$request->input('codigo');
-$codeWo=str_replace("'", '-', $codeWo);
-$woItem=$request->input('woitem');
-if(!empty($codeWo)){
-    $i=0;
-    $buscarInfo=DB::table('registro')->join('kitenespera','registro.wo','=','kitenespera.wo')->where('info','=',$codeWo)->first();
-    if(!empty($buscarInfo)){
-        $wo=$buscarInfo->wo;
-        $buscarItems=DB::table('creacionkits')->where('wo',$wo)->get();
-        if(count($buscarItems)>0){
-            foreach($buscarItems as $rowItems){
-
-
-                $buscarEntregados=DB::table('almacen')->where('articulo',$rowItems->item)->where('wo',$wo)->first();
-                if(!empty($buscarEntregados)){
-                    if(($rowItems->qty-$buscarEntregados->qty)>0){
-                    $infoPar[$i][0] = $rowItems->item;
-                    $infoPar[$i][1] = $rowItems->qty-$buscarEntregados->qty;
-                    $infoPar[$i][2] = $wo;
-                    }
-                }else{
-                    $infoPar[$i][0] = $rowItems->item;
-                    $infoPar[$i][1] = $rowItems->qty;
-                    $infoPar[$i][2] = $wo;
+            $busquedaKits=DB::table('kits')
+            ->where('status','!=','Compleated')
+            ->get();
+            if(count($busquedaKits)>0){
+                $i=0;
+                foreach($busquedaKits as $rowkits){
+                    $kispendientes[$i][0]=$rowkits->id;
+                    $kispendientes[$i][1]=$rowkits->numeroParte;
+                    $kispendientes[$i][2]=$rowkits->wo;
+                    $kispendientes[$i][3]=$rowkits->status;
+                    $kispendientes[$i][4]=$rowkits->qty;
                     $i++;
                 }
+            }
+
+        return view('almacen',['value'=>$value,'listas'=>$listas,'cat'=>$cat,'desviations'=>$desviations,'kispendientes'=>$kispendientes]);}
+    }
+
+    public function registroKit(Request $request)    {
+        $cat=session('categoria');
+        $value = session('user');
+        $i = 0;
+        $response="";
+        $date = date('d-m-Y H:i');
+        $codeWo=$request->input('idkit');
+        $listas=$diff=$kits=$infoPar=[];
+        if(!empty($codeWo)){
+            $i=0;
+            $buscarInfo=DB::table('kits')
+            ->where('kits.id','=',$codeWo)->first();
+            if(!empty($buscarInfo)){
+                $kitswo=$buscarInfo->wo;
+                $kitsqty=$buscarInfo->qty;
+                $kitsPn=$buscarInfo->numeroParte;
+                $buscarItems=DB::table('creacionkits')->where('wo',"=",$kitswo)->get();
+                $buscarTotal = DB::table('datos')
+                ->where('part_num', $kitsPn)
+                ->get()
+                ->map(function ($item) use ($kitsqty) {
+                    $item->total = $item->qty * $kitsqty;
+                    return $item;
+                });
+
+                foreach($buscarTotal as $rowTotal){  $diff[$rowTotal->item]=$rowTotal->qty;}
+                if(count($buscarItems)>0){ foreach($buscarItems as $rowItems){$infoPar[$rowItems->item]=$rowItems->qty;}
+
+                    foreach($diff as $key=>$valor){
+                        $kits[$i][0]=$kitsPn;
+                        $kits[$i][1]=$kitswo;
+                        $kits[$i][2]=$key;
+                        $kits[$i][3]=$valor-$infoPar[$key];
+                        $i++;
+
+                    }
+                 }else{
+                    foreach($diff as $key=>$valor){
+                        $kits[$i][0]=$kitsPn;
+                        $kits[$i][1]=$kitswo;
+                        $kits[$i][2]=$key;
+                        $kits[$i][3]=$value;
+                        $i++;
+                    }
+
+                 }
 
         }
-      }  return view('almacen', ['cat'=>$cat,'infoPar' => $infoPar, 'value' => $value,'listas'=>$listas]);
-    } else {
-        return redirect('almacen');
-    }
-}
-if(!empty($woItem)){
-    $buscarItems=DB::table('creacionkits')->where('wo',$woItem)->get();
-    if(count($buscarItems)>0){
-        foreach($buscarItems as $rowItems){
-            $item=$rowItems->item;
-            $buscarEntregados=DB::table('almacen')->where('articulo','=',$item)->where('wo','=',$woItem)->first();
-            if(!empty($buscarEntregados)){
-                $diff=$rowItems->qty-$buscarEntregados->qty;
-            }else{
-                $diff=$rowItems->qty;
-            }
-            if($diff>0){
-                $registro= new Almacen();
-                $registro->fecha=$date;
-                $registro->articulo=$rowItems->item;
-                $registro->qty=$diff;
-                $registro->movimeinto='Salida a piso';
-                $registro->wo=$woItem;
-                $registro->quien=$value;
-                $registro->save();}
+        return view('almacen.kits',['value'=>$value,'cat'=>$cat,'kits'=>$kits]);
+
 
     }
-    if($registro->save()){
-        $update= DB::table('kitenespera')->where('wo', $woItem)->update(['Quien' => $value,'fechasalida' => $date]);
-        return redirect('almacen');
-    }
-    }}
-
 }
+
     public function BomAlm(Request $request){
         $value=session('user');
         $invokeData=new AlmacenController;
@@ -316,7 +312,7 @@ if(!empty($woItem)){
                 'fing'=>"",
                 'fimm'=>"",
                 'rechazo'=>"",    ]);
-        
+
             if ($desv->save()) {
                 return redirect('/almacen')->with('success', 'Data successfully saved.');
             } else {

@@ -1,15 +1,13 @@
-@extends('layouts.mainWithoutsidebar')
+@extends('layouts.main')
 
 @section('contenido')
  <!-- Page Heading -->
- <div class="d-sm-flex align-items-center justify-content-between mb-4">
-
-                    </div>
+ <div class="d-sm-flex align-items-center justify-content-between mb-4"> </div>
                     <div class="row">
 
                         <!-- Table and Graph -->
-                        <div class="col-xl-8 col-lg-7">
-                            <div class="card shadow mb-4">
+                        <div class="col-xl-6 col-lg-6">
+                            <div class="card shadow mb-6">
 
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -67,8 +65,8 @@
                         </div>
 
 
-                        <div class="col-xl-4 col-lg-5">
-                            <div class="card shadow mb-4">
+                        <div class="col-lg-3 mb-3">
+                            <div class="card shadow mb-3">
                                     <!-- Card scaneer -->
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -86,23 +84,17 @@
                                               </form>
                                         </div>
 
-                                    </div>
+
 
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Content Row -->
-                    <div class="row">
-                        <div class="col-lg-6 mb-4">
-                            <!-- AREAS -->
-                            <div class="card shadow mb-4">
-
-
-                                <div
-                                class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                <h5 class="m-0 font-weight-bold text-primary"><form action="{{route('parcial')}}"method='GET'>Registro Salidas <input type="text" name="codigo" id="codigo"></form></h5>
+                         <!-- Function not issued  <div class="col-lg-3 mb-3">
+                            // AREAS
+                            <div class="card shadow mb-3">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary"><form action="{{route('registroKit')}}"method='GET' class="form-inline">Registro Salidas <input type="text" class="form-control" name="codigo" id="codigo" required></form></h5>
                                 </div>
                                 <div class="card-body" style="overflow-y: auto; height: 360px;" id='work'>
                                     <div class="row" >
@@ -121,7 +113,7 @@
                                                 @endforeach
                                             </tbody>
                                         </table>
-                                        <form action="{{route('saveparcial')}}" method="GET">
+                                        <form action="{{route('registroKit')}}" method="GET">
                                             <input type="hidden" name="woitem" id="woitem" value="{{$part[2]}}">
                                             <input type="submit" name="save" id="save" value="Guardar">
                                          </form>
@@ -130,11 +122,10 @@
 
                                 </div>
                             </div>
-                        </div>
-                        <!--table of works -->
-                        <div class="col-lg-6 mb-4">
+                        </div>    -->
+                        <div class="col-lg-3 mb-3">
                             <!-- AREAS -->
-                            <div class="card shadow mb-4">
+                            <div class="card shadow mb-3">
                                 <div class="card-header py-3">
                                     <h5 class="m-0 font-weight-bold text-primary">Concentrado de materiales</h5>
                                 </div>
@@ -153,12 +144,19 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+
+
+
+                    <!-- Second Row Row -->
+                    <div class="row">
+                        <!--table of works -->
+
 
                         <div class="col-lg-6 mb-4">
                             <!-- AREAS  DESVIATION-->
                             <div class="card shadow mb-4">
-                                <div
-                                class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <div     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                 <h5 class="m-0 font-weight-bold text-primary">Set New Work</h5>
                                 <div class="dropdown no-arrow">
                                     <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
@@ -215,18 +213,19 @@
 
                     <input type="submit" class="btn btn-primary" name="enviar" id="enviar" value="Save">
                 </form>            </div>
-                                  
+
                                 </div>
                             </div>
                         </div>
+
                         <div class="col-lg-6 mb-4">
                             <!-- AREAS -->
-                            <div class="card shadow mb-4">
+                            <div class="card shadow mb-3">
                                 <div class="card-header py-3">
                                     <h5 class="m-0 font-weight-bold text-primary"> Tabla desviaciones</h5>
                                 </div>
                                 <div class="card-body" style="overflow-y: auto; height: 360px;">
-                                <div class="row" >
+
                                         <table>
                                             <thead>
                                                 <th>Folio</th>
@@ -263,38 +262,75 @@
                                             </tbody>
                                         </table>
 
-                                    </div>
+
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Column 2 -->
+                        </div>
+                        <!-- third row -->
+                        <div class="row">
 
                         <div class="col-lg-6 mb-4">
                             <!-- AREAS -->
                             <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h5 class="m-0 font-weight-bold text-primary"></h5>
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h5 class="m-0 font-weight-bold text-primary">Kids waiting for work</h5>
                                 </div>
-                                <div class="card-body" style="overflow-y: auto; height: 360px;">
-                                    <div class="row" >
 
-                                    </div>
+                                <div class="card-body" style="overflow-y: auto; height: 560px;">
+
+
+                                            <div class="form-group">
+                                                <table class="table absolute">
+                                                    <thead>
+                                                        <th>Model#</th>
+                                                        <th>Wo</th>
+                                                        <th>Status</th>
+                                                        <th>Qty</th>
+                                                        <th>Moviment</th>
+                                                    </thead>
+                                                    <tbody>
+                                                        @if(!empty($kispendientes))
+                                                        @foreach ($kispendientes as $kispendiente)
+                                                        <tr>
+                                                            <td>{{$kispendiente[1]}}</td>
+                                                            <td>{{$kispendiente[2]}}</td>
+                                                            <td>{{$kispendiente[3]}}</td>
+                                                            <td>{{$kispendiente[4]}}</td>
+                                                            <td> <form action="{{route('registroKit')}}"  class="form-container" id="kispendientes">
+                                                            <input type="hidden" name="idkit"  value="{{$kispendiente[0]}}">
+
+                                                                <button class="btn btn-primary" type="submit" >
+                                                                    @if($kispendiente[3] == 'En proceso' or $kispendiente[3] == 'Parcial')
+                                                                    Continue
+                                                                @elseif($kispendiente[3] == 'En espera')
+                                                                    start
+                                                                @endif
+                                                            </button>
+                                                            </form>
+                                                            </td>
+                                                        </tr>
+                                                        @endforeach
+                                                        @endif
+                                                    </tbody>
+
+                                                </table>
+                                </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-6 mb-4">
-                            <!-- AREAS -->
+                     <!--   <div class="col-lg-6 mb-4">
+                            // AREAS
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
                                     <h5 class="m-0 font-weight-bold text-primary"> </h5>
                                 </div>
-                                <div class="card-body" style="overflow-y: auto; max-height: 760px;">
-                                    <div class="row" >
+                                <div class="card-body" style="overflow-y: auto; height: 550px;">
 
-                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
+                    </div>
 
                     @endsection
