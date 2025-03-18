@@ -87,7 +87,7 @@ class AlmacenController extends Controller
         $response="";
         $date = date('d-m-Y H:i');
         $codeWo=$request->input('idkit');
-        $listas=$diff=$kits=$infoPar=[];
+        $listas=$diff=$kits=$infoPar=$datosPn=[];
         if(!empty($codeWo)){
             $i=0;
             $buscarInfo=DB::table('kits')
@@ -121,14 +121,16 @@ class AlmacenController extends Controller
                         $kits[$i][0]=$kitsPn;
                         $kits[$i][1]=$kitswo;
                         $kits[$i][2]=$key;
-                        $kits[$i][3]=$value;
+                        $kits[$i][3]=$valor;
                         $i++;
                     }
 
                  }
 
         }
-        return view('almacen.kits',['value'=>$value,'cat'=>$cat,'kits'=>$kits]);
+            $datosPn[0]=$kitsPn;
+            $datosPn[1]=$kitswo;
+        return view('almacen.kits',['value'=>$value,'cat'=>$cat,'kits'=>$kits,'datosPn'=>$datosPn]);
 
 
     }
