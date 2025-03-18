@@ -597,9 +597,8 @@ public function calidad_junta(){
         ->orWhere('fecha', 'LIKE', "$days[6]%")
         ->get();
         foreach($weevalues as $rowParetos){
-            if(strtotime($rowParetos->fecha) >= strtotime($days[0]) and strtotime($rowParetos->fecha) <= strtotime($days[6])){
             if($rowParetos->codigo=='TODO BIEN'){$weekGood+=1;}else{$weekBad+=1;}
-        }}
+        }
         $monthAndYearPareto[$weekslas]=Paretos($weekGood,$weekBad);
 
        // arsort($monthAndYearPareto);
