@@ -322,7 +322,51 @@ class AlmacenController extends Controller
             }
         }
 
+        public function regItem(Request $request){
 
+                // Get the JSON data from the request body
+                $data = $request->json()->all();
 
+                $codigo = $data['codigo'];
+                $pn = $data['pn'];
+                $wo = $data['wo'];
+
+                $items = explode("-", $codigo);
+                $registro = $items[1] . "-" . $items[2];
+
+                $buscar = DB::table('datos')
+                    ->where('part_num', '=', $pn)
+                    ->where('item', '=', $registro)
+                    ->get();
+
+                if ($buscar->isNotEmpty()) {
+                    return response()->json(['status' => 200, 'message' => 'Item found']);
+                } else {
+                    return response()->json(['status' => 400, 'message' => 'Item not found']);
+                }
+            }
+            public function qtyItem(Request $request){
+
+                // Get the JSON data from the request body
+                $data = $request->json()->all();
+
+                $codigo = $data['codigo'];
+                $pn = $data['pn'];
+                $wo = $data['wo'];
+
+                $items = explode("-", $codigo);
+                $registro = $items[1] . "-" . $items[2];
+
+                $buscar = DB::table('datos')
+                    ->where('part_num', '=', $pn)
+                    ->where('item', '=', $registro)
+                    ->get();
+
+                if ($buscar->isNotEmpty()) {
+                    return response()->json(['status' => 200, 'message' => 'Item found']);
+                } else {
+                    return response()->json(['status' => 400, 'message' => 'Item not found']);
+                }
+            }
 
     }

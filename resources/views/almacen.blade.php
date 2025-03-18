@@ -298,7 +298,8 @@
                                                             <td>{{$kispendiente[2]}}</td>
                                                             <td>{{$kispendiente[3]}}</td>
                                                             <td>{{$kispendiente[4]}}</td>
-                                                            <td> <form action="{{route('registroKit')}}"  class="form-container" id="kispendientes">
+                                                            <td> <form action="{{route('registroKit')}}" method="POST" class="form-container" id="kispendientes">
+                                                                @csrf
                                                             <input type="hidden" name="idkit"  value="{{$kispendiente[0]}}">
 
                                                                 <button class="btn btn-primary" type="submit" >
