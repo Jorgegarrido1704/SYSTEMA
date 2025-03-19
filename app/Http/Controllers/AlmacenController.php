@@ -99,11 +99,8 @@ class AlmacenController extends Controller
                 $buscarItems=DB::table('creacionkits')->where('wo',"=",$kitswo)->get();
                 $buscarTotal = DB::table('datos')
                 ->where('part_num', $kitsPn)
-                ->get()
-                ->map(function ($item) use ($kitsqty) {
-                    $item->total = $item->qty * $kitsqty;
-                    return $item;
-                });
+                ->get();
+
 
                 foreach($buscarTotal as $rowTotal){  $diff[$rowTotal->item]=$rowTotal->qty;}
                 if(count($buscarItems)>0){ foreach($buscarItems as $rowItems){$infoPar[$rowItems->item]=$rowItems->qty;}
@@ -112,7 +109,7 @@ class AlmacenController extends Controller
                         $kits[$i][0]=$kitsPn;
                         $kits[$i][1]=$kitswo;
                         $kits[$i][2]=$key;
-                        $kits[$i][3]=$valor-$infoPar[$key];
+                        $kits[$i][3]=($valor*$kitsqty)-$infoPar[$key];
                         $i++;
 
                     }
@@ -121,7 +118,7 @@ class AlmacenController extends Controller
                         $kits[$i][0]=$kitsPn;
                         $kits[$i][1]=$kitswo;
                         $kits[$i][2]=$key;
-                        $kits[$i][3]=$valor;
+                        $kits[$i][3]=($valor*$kitsqty);
                         $i++;
                     }
 
@@ -130,6 +127,7 @@ class AlmacenController extends Controller
         }
             $datosPn[0]=$kitsPn;
             $datosPn[1]=$kitswo;
+            $datosPn[2]=$kitsqty;
         return view('almacen.kits',['value'=>$value,'cat'=>$cat,'kits'=>$kits,'datosPn'=>$datosPn]);
 
 
