@@ -86,12 +86,14 @@ Route::controller( PpapIngController::class)->group(function (){
 
 Route::controller(AlmacenController::class)->group(function (){
     Route::get('/almacen',AlmacenController::class);
-    Route::get('/almacenparcial',[AlmacenController::class,'registroKit'])->name('registroKit');
+    Route::post('/almacenparcial',[AlmacenController::class,'registroKit'])->name('registroKit');
   //  Route::get('/saveparcial',[AlmacenController::class,'store'])->name('saveparcial');
     Route::get('/BomAlm',[AlmacenController::class,'BomAlm'])->name('BomAlm');
     Route::get('/entradas',[AlmacenController::class,'entradas'])->name('entradas');
     Route::get('/concentrado',[AlmacenController::class,'concentrado'])->name('concentrado');
     Route::get('/desviationAlm',[AlmacenController::class,'desviationAlm'])->name('desviationAlm');
+    Route::post('/regItem',[AlmacenController::class,'regItem'])->name('regItem');
+    Route::post('/qtyItem',[AlmacenController::class,'qtyItem'])->name('qtyItem');
 
 });
 
@@ -114,6 +116,7 @@ Route::controller(caliController::class)->group(function(){
     Route::get('/accepted',[caliController::class,'accepted'])->name('accepted');
     Route::get('/excel_calidad',[caliController::class,'excel_calidad'])->name('excel_calidad');
     Route::get('/fallasCalidad',[caliController::class,'fallasCalidad'])->name('fallasCalidad');
+
     });
 Route::controller(BossCaliController::class)->group(function(){
     Route::get('/BossCali',BossCaliController::class);
@@ -125,6 +128,7 @@ Route::controller(InventarioController::class)->group(function(){
     Route::post('/datos',[InventarioController::class,'savedataAlm'])->name('savedataAlm');
     Route::get('/kits',[InventarioController::class,'kits'])->name('kits');
     Route::post('/trabajoKits',[InventarioController::class,'trabajoKits'])->name('trabajoKits');
+
 });
 Route::controller(planingController::class)->group(function(){
 
