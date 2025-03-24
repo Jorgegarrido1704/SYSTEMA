@@ -60,6 +60,7 @@ class AlmacenController extends Controller
                     $desviations[$i][9]="Firmada";
                 }
                 $desviations[$i][10]=$rowdes->fecha;
+                $desviations[$i][11]=$rowdes->wo;
                 $i++;
             }
             $busquedaKits=DB::table('kits')
