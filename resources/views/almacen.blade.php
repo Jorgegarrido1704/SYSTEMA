@@ -157,7 +157,7 @@
                             <!-- AREAS  DESVIATION-->
                             <div class="card shadow mb-4">
                                 <div     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                <h5 class="m-0 font-weight-bold text-primary">Set New Work</h5>
+                                <h5 class="m-0 font-weight-bold text-primary">Desviation</h5>
                                 <div class="dropdown no-arrow">
                                     <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -180,6 +180,10 @@
                     <div class="form-group">
                         <label for="modelo">Modelo Afectado:</label>
                         <input type="text" class="form-control" name="modelo" id="modelo" placeholder="B222930" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="modelo">WO:</label>
+                        <input type="text" class="form-control" name="wo" id="wo" placeholder="000W000" required>
                     </div>
                     <div class="form-group">
                         <label for="numPartOrg">No° de parte original:</label>
@@ -230,6 +234,7 @@
                                             <thead>
                                                 <th>Folio</th>
                                                 <th>Modelo</th>
+                                                <th>WO</th>
                                                 <th>Parte Original</th>
                                                 <th>Parte Sustituto</th>
                                                 <th>Cliente</th>
@@ -246,6 +251,7 @@
                                                 <tr>
                                                     <td>{{$desviation[0]}}</td>
                                                     <td>{{$desviation[1]}}</td>
+                                                    <td>{{$desviation[11]}}</td>
                                                     <td>{{$desviation[2]}}</td>
                                                     <td>{{$desviation[3]}}</td>
                                                     <td>{{$desviation[4]}}</td>
@@ -255,6 +261,7 @@
                                                     <td>{{$desviation[8]}}</td>
                                                     <td>{{$desviation[9]}}</td>
                                                     <td>{{$desviation[10]}}</td>
+
 
                                                     </tr>
                                           @endforeach
@@ -275,7 +282,7 @@
                             <!-- AREAS -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h5 class="m-0 font-weight-bold text-primary">Kids waiting for work</h5>
+                                    <h5 class="m-0 font-weight-bold text-primary">Kits waiting for work</h5>
                                 </div>
 
                                 <div class="card-body" style="overflow-y: auto; height: 560px;">

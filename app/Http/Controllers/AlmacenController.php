@@ -287,6 +287,7 @@ class AlmacenController extends Controller
             $text = $request->input('text');
             $evi = $request->input('evi');
             $acc = $request->input('acc');
+            $wo = $request->input('wo');
             $busclient = DB::select("SELECT client FROM precios WHERE pn='$modelo'");
             foreach ($busclient as $row) {
                 $cliente = $row->client;    }
@@ -301,6 +302,7 @@ class AlmacenController extends Controller
                 'cliente'=>$cliente,
                 'quien'=>$user,
                 'Mafec' => $modelo,
+                'wo' => $wo,
                 'porg' => $npo,
                 'psus' => $nps,
                 'peridoDesv' => $time,

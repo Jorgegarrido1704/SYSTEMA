@@ -13,6 +13,7 @@ class desviation extends Model
         'cliente',
         'quien',
         'Mafec',
+        'wo',
         'porg',
         'psus',
         'clsus',
@@ -30,6 +31,6 @@ class desviation extends Model
     ];
     protected $table = 'desvation'; // Adjust the table name if it's different
 
-    public $timestamps = false; 
+    public $timestamps = false;
 
 }
