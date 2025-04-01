@@ -1,8 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Models\regPar;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+
 
 class AdminSupControlloer extends Controller
 {
@@ -11,11 +14,17 @@ class AdminSupControlloer extends Controller
         if(session('categoria')!='SupAdmin'){
             return redirect('/login');
         }else{
+
         return view('SupAdmin',['value'=>session('user'),'cat'=>session('categoria')]);}
 
     }
+    public function exelCalidad(Request $request){
+        $di=$request->input('di');
+        $df=$request->input('df');
+        $datos= new caliController();
+        $datos->excel_calidad($di,$df);
 
-
+    }
     public function mostrarWO(Request $request)
     {
         $buscarWo = $request->input('buscarWo');

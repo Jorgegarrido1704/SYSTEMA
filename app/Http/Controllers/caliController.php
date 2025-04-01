@@ -897,36 +897,44 @@ public function codigoCalidad(request $request){
     $sheet = $spreadsheet->getActiveSheet();
     $t = 2; // Row counter for the data
 
-    // Get the minimum and maximum id based on the date range
-    $buscarinfo = DB::table('regsitrocalidad')
-        ->select(DB::raw('MIN(id) as min'))
-        ->where('fecha', 'LIKE', $di.'%') // Compare only the date part
-        ->first();
 
-    $buscarinfo2 = DB::table('regsitrocalidad')
-        ->select(DB::raw('MAX(id) as max'))
-        ->where('fecha', 'LIKE', $df.'%') // Compare only the date part
-        ->first();
-    if(!empty($buscarinfo)){
-        $min = intval($buscarinfo->min);
-    }else{
-        $min=DB::table('regsitrocalidad')
-        ->select('id')
-        ->orderby('id', 'asc')
-        ->first();
+    $dates=(date('-m-Y'));
+$regmin = DB::table('regsitrocalidad')
+    ->select('id')
+    ->where('fecha', 'LiKE', $di.'%')
+    ->orderBy('id', 'asc')
+    ->first();
+    if($regmin) {
+        $min = $regmin->id;
+    } else {
+        $regmin = DB::table('regsitrocalidad')
+    ->select('id')
+    ->where('fecha', 'LiKE', '%'.$dates.'%')
+    ->orderBy('id', 'asc')
+    ->first();
+        $min = $regmin->id;
     }
-    if(!empty($buscarinfo2)){
-        $max = intval($buscarinfo2->max);
-    }else{
-        $min=DB::table('regsitrocalidad')
-        ->select('id')
-        ->orderby('id', 'desc')
-        ->first();
+$regmax = DB::table('regsitrocalidad')
+    ->select('id')
+    ->where('fecha', 'LiKE', $df.'%')
+    ->orderBy('id', 'desc')
+    ->first();
+    if($regmax) {
+        $max = $regmax->id;
+    } else {
+        $regmax = DB::table('regsitrocalidad')
+    ->select('id')
+    
+    ->orderBy('id', 'desc')
+    ->first();
+        $max = $regmax->id;
     }
 
 
 
-    $max = intval($buscarinfo2->max);
+
+
+
     $registro=[];
 
     // Set the headers for the spreadsheet
