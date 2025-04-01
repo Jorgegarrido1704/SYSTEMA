@@ -364,8 +364,10 @@ return view('planing',['des'=>$des,'value'=>$value,'cat'=>$cat,'post'=>$post,'da
                 $revn=substr($rev,5);}
                 else{$revn=$rev;}
                 $Buscarcorte=DB::table('listascorte')
-                ->where('pn', '=', $np,'and','rev','=',$revn)
+                ->where('pn', '=', $np)
+                ->andWhere('rev', '=', $revn)
                 ->get();
+                if(count($Buscarcorte) > 0) {
                     foreach($Buscarcorte as $corte){
                         $ADDcorte=new Corte;
                           $ADDcorte->np=$np;
@@ -388,7 +390,7 @@ return view('planing',['des'=>$des,'value'=>$value,'cat'=>$cat,'post'=>$post,'da
                           $ADDcorte->tamano=$corte->tamano;
                           $ADDcorte->conector=$corte->conector;
                             $ADDcorte->save();
-            }
+            }}
             $agegartiempos=new timesHarn;
             $agegartiempos->pn=$np;
             $agegartiempos->wo=$wo;
