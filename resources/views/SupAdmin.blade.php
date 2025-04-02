@@ -2,10 +2,16 @@
 
 @section('contenido')
  <!-- Page Heading -->
- <script>
-    const routeMostrarWo = @json(route('mostrarWO'));
-</script>
 
+ <script>const routeMostrarWo = @json(route('datosOrdenes'));</script>
+<script src="{{ asset('/dash/js/mostrarWo.js')}}"></script>
+<style>
+    input[type="number"] {
+        width: 65px;
+        padding: 4px;
+
+    }
+</style>
 
  <div class="d-sm-flex align-items-center justify-content-between mb-4">
 
@@ -84,7 +90,7 @@
                     <div class="row">
 
                         <!-- Table and Graph -->
-                        <div class="col-xl-7 col-lg-7">
+                        <div class="col-xl-12 col-lg-12">
                             <div class="card shadow mb-4">
 
                                 <div
@@ -102,12 +108,15 @@
                                             <tr>
                                                 <th>PN</th>
                                                 <th>WO</th>
+                                                <th>Return Plannig</th>
                                                 <th>Cutting</th>
                                                 <th>Terminals</th>
                                                 <th>Assembly</th>
                                                 <th>Lomming</th>
+                                                <th>Pre Testing</th>
                                                 <th>Testing</th>
                                                 <th>Shipping</th>
+                                                <th>ENG</th>
                                             </tr>
                                         </thead>
                                         <tbody id="table-harness">  </tbody>

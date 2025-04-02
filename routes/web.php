@@ -138,8 +138,8 @@ Route::controller(planingController::class)->group(function(){
 });
 
 Route::controller(AdminSupControlloer::class)->group(function(){
-    Route::get('/SupAdmin',[AdminSupControlloer::class,'__invoke'])->name('SupAdmin');
-    Route::get('/mostrarWO', [AdminSupControlloer::class, 'mostrarWO'])->name('mostrarWO');
+    Route::get('/SupAdmin',[AdminSupControlloer::class,'index_admin'])->name('SupAdmin');
+    Route::get('/datosOrdenes',[AdminSupControlloer::class,'datosOrdenes'])->name('datosOrdenes');
 });
 
 Route::controller(globalInventario::class)->group(function(){

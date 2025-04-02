@@ -23,3 +23,11 @@ function mostrarWo(workOrder) {
         }
     });
 }
+
+function submitForm(formId) {
+    // Get the form by ID
+    var form = document.getElementById('form' + formId);
+    var corte = document.getElementById('cortPar' + formId).value;
+    console.log(corte);
+}
+
