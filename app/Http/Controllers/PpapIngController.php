@@ -270,7 +270,7 @@ class PpapIngController extends Controller
         }else if($cuenta==14){ upRegistro(10,'En espera de calidad',$info,'loom',$idIng,$today,'testPar',$eng,$value);
             $buscarIfno=DB::table('registro')->where('info','=',$info)->first();
                 $newCalidad=new listaCalidad;
-                $newCalidad->np=$buscarIfno->pn;
+                $newCalidad->np=$buscarIfno->NumPart;
                 $newCalidad->client=$buscarIfno->cliente;
                 $newCalidad->wo=$buscarIfno->wo;
                 $newCalidad->po=$buscarIfno->po;
