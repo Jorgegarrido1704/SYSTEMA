@@ -267,7 +267,17 @@ class PpapIngController extends Controller
         }
 
         if($cuenta==17){ upRegistro(4,'En espera de liberacion',$info,'corte',$idIng,$today,'libePar',$eng,$value);
-        }else if($cuenta==14){ upRegistro(10,'En espera de calidad',$info,'loom',$idIng,$today,'preCalidad',$eng,$value);
+        }else if($cuenta==14){ upRegistro(10,'En espera de calidad',$info,'loom',$idIng,$today,'testPar',$eng,$value);
+            $buscarIfno=DB::table('registro')->where('info','=',$info)->first();
+                $newCalidad=new listaCalidad;
+                $newCalidad->np=$buscarIfno->pn;
+                $newCalidad->client=$buscarIfno->cliente;
+                $newCalidad->wo=$buscarIfno->wo;
+                $newCalidad->po=$buscarIfno->po;
+                $newCalidad->info=$info;
+                $newCalidad->qty=$eng;
+                $newCalidad->parcial='SI';
+                $newCalidad->save();
         }else if($cuenta==13){ upRegistro(8,'En espera de loom',$info,'ensamble',$idIng,$today,'loomPar',$eng,$value);
         }else if($cuenta==16){ upRegistro(6,'En espera de ensamble',$info,'liberacion',$idIng,$today,'ensaPar',$eng,$value);
         }else if($cuenta==18){ upRegistro(12,'En espera de embarque',$info,'calidad',$idIng,$today,'embPar',$eng,$value);
