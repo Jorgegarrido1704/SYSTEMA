@@ -43,28 +43,28 @@ class AdminSupControlloer extends Controller
             ->orWhere('pn', 'like', '%'.$buscarWo)
             ->get();
 
-$i = 0; // Initialize $i if it's not initialized
+                $i = 0; // Initialize $i if it's not initialized
 
-foreach ($buscar as $row) {
-    // Correct form ID concatenation
-    $tableContent .= '<tr><form method="GET" id="form' . $i . '" name="form[]">';
-    $tableContent .= '<td>' . $row->pn . '</td>';
-    $tableContent .= '<td>' . $row->wo . '</td>';
-    $tableContent .= '<td><input type="checkbox" id="plan' . $i . '" name="plan[]" value="ok"></td>';
-    $tableContent .= '<td><input type="number" min="0" id="cortPar' . $i . '" name="cortPar[]" value="' . $row->cortPar . '" required ></td>';
-    $tableContent .= '<td><input type="number" min="0" id="libePar' . $i . '" name="libePar[]" value="' . $row->libePar . '" required ></td>';
-    $tableContent .= '<td><input type="number" min="0" id="ensaPar' . $i . '" name="ensaPar[]" value="' . $row->ensaPar . '" required ></td>';
-    $tableContent .= '<td><input type="number" min="0" id="loomPar' . $i . '" name="loomPar[]" value="' . $row->loomPar . '" required ></td>';
-    $tableContent .= '<td><input type="number" min="0" id="preCalidad' . $i . '" name="preCalidad[]" value="' . $row->preCalidad . '" required ></td>';
-    $tableContent .= '<td><input type="number" min="0" id="testPar' . $i . '" name="testPar[]" value="' . $row->testPar . '" required ></td>';
-    $tableContent .= '<td><input type="number" min="0" id="embPar' . $i . '" name="embPar[]" value="' . $row->embPar . '" required ></td>';
-    $tableContent .= '<td><input type="number" min="0" id="eng' . $i . '" name="eng[]" value="' . $row->eng . '" required ></td>';
-    $tableContent .= '<td><input type="hidden" id="wo' . $i . '" name="wo[]" value="' . $row->wo . '" >
-    <input type="button" name="enviar" value="Guardar" onclick="submitForm(' . $i . ')" > </form></td>';
-    $tableContent .= '</tr>';
-    $pnReg[$i] = $row->pn;
-    $i++;
-}
+                foreach ($buscar as $row) {
+                    // Correct form ID concatenation
+                    $tableContent .= '<tr><form method="GET" id="form' . $i . '" name="form[]">';
+                    $tableContent .= '<td>' . $row->pn . '</td>';
+                    $tableContent .= '<td>' . $row->wo . '</td>';
+                    $tableContent .= '<td><input type="checkbox" id="plan' . $i . '" name="plan[]" ></td>';
+                    $tableContent .= '<td><input type="number" min="0" id="cortPar' . $i . '" name="cortPar[]" value="' . $row->cortPar . '" required ></td>';
+                    $tableContent .= '<td><input type="number" min="0" id="libePar' . $i . '" name="libePar[]" value="' . $row->libePar . '" required ></td>';
+                    $tableContent .= '<td><input type="number" min="0" id="ensaPar' . $i . '" name="ensaPar[]" value="' . $row->ensaPar . '" required ></td>';
+                    $tableContent .= '<td><input type="number" min="0" id="loomPar' . $i . '" name="loomPar[]" value="' . $row->loomPar . '" required ></td>';
+                    $tableContent .= '<td><input type="number" min="0" id="preCalidad' . $i . '" name="preCalidad[]" value="' . $row->preCalidad . '" required ></td>';
+                    $tableContent .= '<td><input type="number" min="0" id="testPar' . $i . '" name="testPar[]" value="' . $row->testPar . '" required ></td>';
+                    $tableContent .= '<td><input type="number" min="0" id="embPar' . $i . '" name="embPar[]" value="' . $row->embPar . '" required ></td>';
+                    $tableContent .= '<td><input type="number" min="0" id="eng' . $i . '" name="eng[]" value="' . $row->eng . '" required ></td>';
+                    $tableContent .= '<td><input type="hidden" id="wo' . $i . '" name="wo[]" value="' . $row->wo . '" >
+                    <input type="button" name="enviar" value="Guardar" onclick="submitForm(' . $i . ')" > </form></td>';
+                    $tableContent .= '</tr>';
+                    $pnReg[$i] = $row->pn;
+                    $i++;
+                }
                $pnReg = array_unique($pnReg);
 
                foreach($pnReg as $pnR){
@@ -164,5 +164,46 @@ foreach ($buscar as $row) {
         return response()->json(['error' => $e->getMessage()], 500);
     }
     }
+
+    public function altaDatos(Request $request){
+        try {
+            // Validate the incoming request data
+            $wo = $request->input('wo');
+            $corte = $request->input('corte');
+            $liber = $request->input('liber');
+            $ensa = $request->input('ensa');
+            $loom = $request->input('loom');
+            $pre = $request->input('pre');
+            $cali = $request->input('cali');
+            $emba = $request->input('emba');
+            $eng = $request->input('eng');
+            $plan = $request->input('plan');
+
+            // Extract the validated data
+        if($plan==1){
+            DB::table('registro')->where('wo', $wo)->update(['count' => 1,'donde' => 'Plannig']);
+            DB::table('registroparcial')->where('wo', $wo)->delete();
+
+        }
+        else{
+            DB::table('registroparcial')->where('wo', $wo)->update([
+                'cortPar' => $corte,
+                'libePar' => $liber,
+                'ensaPar' => $ensa,
+                'loomPar' => $loom,
+                'preCalidad' => $pre,
+                'testPar' => $cali,
+                'embPar' => $emba,
+                'eng' => $eng,
+            ]);
+        }
+            return response()->json(['success' => 'Data received and saved successfully']);
+        } catch (\Exception $e) {
+            // Handle any exceptions and return the error message
+            return response()->json(['error' => 'An error occurred while saving data: ' . $e->getMessage()]);
+        }
+    }
+
+
 
 }
