@@ -324,12 +324,65 @@ class AlmacenController extends Controller
         }
 
         public function qtyItem(Request $request)
+{
+    // Get POST data
+    $codigo = $request->input('codigo');  // Use input() to get form data
+    $pn = $request->input('pn');
+    $wo = $request->input('wo');
+
+    // Make sure 'codigo' is in the expected format
+    $items = explode("-", $codigo);
+    $registro = isset($items[1]) && isset($items[2]) ? $items[1] . "-" . $items[2] : null;
+
+    if (!$registro) {
+        return response()->json(['status' => 400, 'message' => 'Invalid codigo format']);
+    }
+
+    // Search for the item in the database
+    $buscar = DB::table('datos')
+        ->where('part_num', '=', $pn)
+        ->where('item', '=', $registro)
+        ->first();
+
+    // If no item is found, return an error response
+    if (!$buscar) {
+        return response()->json(['status' => 400, 'message' => 'Item not found']);
+    }
+
+    // Fetch the corresponding 'Qty' from 'registro' table
+    $registroWo = DB::table('registro')->select('Qty')->where('wo', '=', $wo)->first();
+
+    // If no matching 'registro' found, return an error
+    if (!$registroWo) {
+        return response()->json(['status' => 400, 'message' => 'Work order not found in registro table']);
+    }
+
+    // Sum all the 'qty' values from 'controlalmacen' table where 'codUnic' equals $codigo
+    $sumaMov = DB::table('controlalmacen')->where('codUnic', '=', $codigo)->sum('qty');
+
+    // Prepare the data to be returned
+    $datos = [];
+    $datos['item'] = $buscar->item;
+    $datos['qty'] = $buscar->qty * $registroWo->Qty;  // Multiply item qty by the 'Qty' from the registro table
+    $datos['sumaMov'] = $sumaMov;
+
+    // Return the response with item data
+    return response()->json([
+        'status' => 200,
+        'message' => 'Item found',
+        'data' => $datos
+    ]);
+}
+
+
+        /*
+        public function qtyItem(Request $request)
         {
             // Get POST data
             $codigo = $request->input('codigo');  // Use input() to get form data
             $pn = $request->input('pn');
             $wo = $request->input('wo');
-
+            $datosReg=[];
             // Make sure 'codigo' is in the expected format
             $items = explode("-", $codigo);
             $registro = isset($items[1]) && isset($items[2]) ? $items[1] . "-" . $items[2] : null;
@@ -342,12 +395,21 @@ class AlmacenController extends Controller
             $buscar = DB::table('datos')
                 ->where('part_num', '=', $pn)
                 ->where('item', '=', $registro)
-                ->get();
+                ->first();
 
             if ($buscar->isNotEmpty()) {
-                return response()->json(['status' => 200, 'message' => 'Item found']);
+                $regdatos=$buscar->item;
+                $qtydatos=$buscar->qty;
+                $registroWo=DB::table('registro')->select('Qty')->where('wo','=',$wo)->first();
+                $itemsneed=$registroWo->Qty*$qtydatos;
+                $datosWO=DB::table('controlalmacen')->where('codUnic','=',$codigo)->sum('Qty');
+                $datosReg=['item'=>$regdatos,'qtyNeed'=>$itemsneed,'qtycodigo'=>$datosWO];
+
+
+
+                return response()->json(['status' => 200, 'message' => 'Item found', 'datosReg' => $datosReg]);
             } else {
                 return response()->json(['status' => 400, 'message' => 'Item not found']);
             }
-        }
+        }*/
 }

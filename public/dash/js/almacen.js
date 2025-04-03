@@ -25,7 +25,20 @@ function hola() {
         success: function(response) {
             console.log(response);
             if (response.status === 200) { // Check for correct status code
-                alert('Cantidad registrada correctamente');
+               var item = response.data.item;
+               var qty = response.data.qty;
+               var saldo = response.data.sumaMov;
+                if(qty >= saldo){
+                    var diff = saldo;
+                }else{
+                    var diff = qty;
+                }
+                let registrado;
+                do {
+                  registrado = prompt("Del Item " + item + " escaneado tu puedes registrar : " + diff + " ¿Cuantos desea registrar?");
+                } while (isNaN(registrado) || registrado === "" || registrado < 1 || registrado > diff);
+
+
             } else {
                 alert(response.message); // Display error message from server
             }
