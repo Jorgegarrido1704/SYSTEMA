@@ -323,51 +323,31 @@ class AlmacenController extends Controller
             }
         }
 
-        public function regItem(Request $request){
+        public function qtyItem(Request $request)
+        {
+            // Get POST data
+            $codigo = $request->input('codigo');  // Use input() to get form data
+            $pn = $request->input('pn');
+            $wo = $request->input('wo');
 
-                // Get the JSON data from the request body
-                $data = $request->json()->all();
+            // Make sure 'codigo' is in the expected format
+            $items = explode("-", $codigo);
+            $registro = isset($items[1]) && isset($items[2]) ? $items[1] . "-" . $items[2] : null;
 
-                $codigo = $data['codigo'];
-                $pn = $data['pn'];
-                $wo = $data['wo'];
-
-                $items = explode("-", $codigo);
-                $registro = $items[1] . "-" . $items[2];
-
-                $buscar = DB::table('datos')
-                    ->where('part_num', '=', $pn)
-                    ->where('item', '=', $registro)
-                    ->get();
-
-                if ($buscar->isNotEmpty()) {
-                    return response()->json(['status' => 200, 'message' => 'Item found']);
-                } else {
-                    return response()->json(['status' => 400, 'message' => 'Item not found']);
-                }
-            }
-            public function qtyItem(Request $request){
-
-                // Get the JSON data from the request body
-                $data = $request->json()->all();
-
-                $codigo = $data['codigo'];
-                $pn = $data['pn'];
-                $wo = $data['wo'];
-
-                $items = explode("-", $codigo);
-                $registro = $items[1] . "-" . $items[2];
-
-                $buscar = DB::table('datos')
-                    ->where('part_num', '=', $pn)
-                    ->where('item', '=', $registro)
-                    ->get();
-
-                if ($buscar->isNotEmpty()) {
-                    return response()->json(['status' => 200, 'message' => 'Item found']);
-                } else {
-                    return response()->json(['status' => 400, 'message' => 'Item not found']);
-                }
+            if (!$registro) {
+                return response()->json(['status' => 400, 'message' => 'Invalid codigo format']);
             }
 
-    }
+            // Search for the item in the database
+            $buscar = DB::table('datos')
+                ->where('part_num', '=', $pn)
+                ->where('item', '=', $registro)
+                ->get();
+
+            if ($buscar->isNotEmpty()) {
+                return response()->json(['status' => 200, 'message' => 'Item found']);
+            } else {
+                return response()->json(['status' => 400, 'message' => 'Item not found']);
+            }
+        }
+}

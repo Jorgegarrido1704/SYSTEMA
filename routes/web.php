@@ -86,14 +86,13 @@ Route::controller( PpapIngController::class)->group(function (){
 
 Route::controller(AlmacenController::class)->group(function (){
     Route::get('/almacen',AlmacenController::class);
-    Route::post('/almacenparcial',[AlmacenController::class,'registroKit'])->name('registroKit');
+    Route::GET('/almacenparcial',[AlmacenController::class,'registroKit'])->name('registroKit');
   //  Route::get('/saveparcial',[AlmacenController::class,'store'])->name('saveparcial');
     Route::get('/BomAlm',[AlmacenController::class,'BomAlm'])->name('BomAlm');
     Route::get('/entradas',[AlmacenController::class,'entradas'])->name('entradas');
     Route::get('/concentrado',[AlmacenController::class,'concentrado'])->name('concentrado');
     Route::get('/desviationAlm',[AlmacenController::class,'desviationAlm'])->name('desviationAlm');
-    Route::post('/regItem',[AlmacenController::class,'regItem'])->name('regItem');
-    Route::post('/qtyItem',[AlmacenController::class,'qtyItem'])->name('qtyItem');
+    Route::post('/qtyItem', [AlmacenController::class, 'qtyItem'])->name('qtyItem');
 
 });
 
