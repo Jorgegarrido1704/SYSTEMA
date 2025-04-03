@@ -27,7 +27,17 @@ function mostrarWo(workOrder) {
 function submitForm(formId) {
     // Get the form by ID
     var form = document.getElementById('form' + formId);
+    var plan = document.getElementById('plan' + formId).value;
     var corte = document.getElementById('cortPar' + formId).value;
-    console.log(corte);
+    var liber = document.getElementById('libePar' + formId).value;
+    var ensa = document.getElementById('ensaPar' + formId).value;
+    var loom = document.getElementById('loomPar' + formId).value;
+    var pre = document.getElementById('preCalidad' + formId).value;
+    var cali = document.getElementById('testPar' + formId).value;
+    var emba = document.getElementById('embPar' + formId).value;
+    var eng = document.getElementById('eng' + formId).value;
+    var wo = document.getElementById('wo' + formId).value;
+    var datos = 'formId=' + formId + '&plan=' + plan + '&corte=' + corte + '&liber=' + liber + '&ensa=' + ensa + '&loom=' + loom + '&pre=' + pre + '&cali=' + cali + '&emba=' + emba + '&eng=' + eng;
+    console.log(datos);
 }
 

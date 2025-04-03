@@ -50,7 +50,7 @@ foreach ($buscar as $row) {
     $tableContent .= '<tr><form method="GET" id="form' . $i . '" name="form[]">';
     $tableContent .= '<td>' . $row->pn . '</td>';
     $tableContent .= '<td>' . $row->wo . '</td>';
-    $tableContent .= '<td><input type="checkbox" id="check' . $i . '" name="check[]" ></td>';
+    $tableContent .= '<td><input type="checkbox" id="plan' . $i . '" name="plan[]" value="ok"></td>';
     $tableContent .= '<td><input type="number" min="0" id="cortPar' . $i . '" name="cortPar[]" value="' . $row->cortPar . '" required ></td>';
     $tableContent .= '<td><input type="number" min="0" id="libePar' . $i . '" name="libePar[]" value="' . $row->libePar . '" required ></td>';
     $tableContent .= '<td><input type="number" min="0" id="ensaPar' . $i . '" name="ensaPar[]" value="' . $row->ensaPar . '" required ></td>';
