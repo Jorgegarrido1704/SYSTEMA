@@ -365,7 +365,7 @@ return view('planing',['des'=>$des,'value'=>$value,'cat'=>$cat,'post'=>$post,'da
                 else{$revn=$rev;}
                 $Buscarcorte=DB::table('listascorte')
                 ->where('pn', '=', $np)
-                ->andWhere('rev', '=', $revn)
+                ->where('rev', '=', $revn)
                 ->get();
                 if(count($Buscarcorte) > 0) {
                     foreach($Buscarcorte as $corte){
