@@ -472,7 +472,7 @@ public function calidad_junta(){
             ->orWhere('fecha', 'LIKE', "$datoss%")
             ->get();
             foreach($buscarValorespareto as $rowPareto){
-                if (substr($rowPareto->fecha, 0, 10) == $datoss) {  if($rowPareto->codigo=='TODO BIEN'){ $regsg+=1; }else{$regsb+=1;}  }
+                if (substr($rowPareto->fecha, 0, 10) == $datoss) {  if($rowPareto->codigo=='TODO BIEN'){ $regvg+=1; }else{$regvb+=1;}  }
                 if (substr($rowPareto->fecha, 0, 10) == $datosv) {  if($rowPareto->codigo=='TODO BIEN'){ $regvg+=1; }else{$regvb+=1;}  }
                 if (substr($rowPareto->fecha, 0, 10) == $datosj) {  if($rowPareto->codigo=='TODO BIEN'){ $regjg+=1; }else{$regjb+=1;}  }
                 if (substr($rowPareto->fecha, 0, 10) == $datosm) {  if($rowPareto->codigo=='TODO BIEN'){ $regmg+=1; }else{$regmb+=1;}  }
@@ -483,7 +483,7 @@ public function calidad_junta(){
             $pareto[$datosm]=Paretos($regmg,$regmb);
             $pareto[$datosj]=Paretos($regjg,$regjb);
             $pareto[$datosv]=Paretos($regvg,$regvb);
-            $pareto[$datoss]=Paretos($regsg,$regsb);
+           // $pareto[$datoss]=Paretos($regsg,$regsb);
             $totalm=$regvb;
             $totalb=$regvg;
         }else if(date("N")==2){
@@ -654,7 +654,7 @@ public function calidad_junta(){
             }
             $todayD=date('d');
         for($i=0;$i<$todayD;$i++)
-            if($labelQ[$i]==4 or $labelQ[$i]==6 or $labelQ[$i]==17 or $labelQ[$i]==18){
+            if($labelQ[$i]==33 or $labelQ[$i]==34 or $labelQ[$i]==35 or $labelQ[$i]==36){
                 $colorQ[$i]='red';
             }else{
                 $colorQ[$i]='green';            }
