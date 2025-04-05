@@ -13,6 +13,7 @@ function hola() {
         pn: pn
     };
 
+    // First AJAX request to fetch the item details
     $.ajax({
         method: 'POST', // Change to POST
         url: urlitem, // Ensure urlitem is correctly defined
@@ -25,27 +26,73 @@ function hola() {
         success: function(response) {
             console.log(response);
             if (response.status === 200) { // Check for correct status code
-               var item = response.data.item;
-               var qty = response.data.qty;
-               var saldo = response.data.sumaMov;
-                if(qty >= saldo){
-                    var diff = saldo;
-                }else{
-                    var diff = qty;
+                var item = response.data.item;
+                var qty = response.data.qty;
+                var saldo = response.data.sumaMov;
+
+                if (saldo > 0) {
+                    var diff = (qty >= saldo) ? saldo : qty; // Use conditional (ternary) operator to assign diff
+
+                    let registrado;
+                    do {
+                        registrado = prompt("Del Item " + item + " escaneado tu puedes registrar : " + diff + " ¿Cuantos desea registrar?");
+
+                        // Validation checks for the input
+                        if (registrado === "" || registrado === null || registrado == 0) {
+                            alert("No puedes registrar 0");
+                            break;
+                        } else if (registrado > diff) {
+                            alert("No puedes registrar más de " + diff);
+                        } else if (registrado < 1) {
+                            alert("El valor debe ser mayor que 0.");
+                        } else {
+                            alert("Registrando " + registrado + " de " + diff);
+
+                            // Send the registration data
+                            var datos = {
+                                item: item,
+                                codUnic: codigo,
+                                wo: wo,
+                                registrado: registrado
+                            };
+                            console.log(datos);
+
+                            // Second AJAX request to register the item
+                            $.ajax({
+                                type: 'POST',
+                                url: altaReg, // Ensure altaReg is defined
+                                data: JSON.stringify(datos),
+                                contentType: 'application/json', // Set content type to JSON
+                                dataType: 'json',
+                                headers: {
+                                    'X-CSRF-TOKEN': csrfToken // Include CSRF token in the request header
+                                },
+                                success: function(response) {
+                                    console.log(response);
+                                    if (response.status === 200) {
+                                        alert('Registro exitoso');
+                                        location.reload(); // Refresh the page after success
+                                    } else {
+                                        alert('Error al registrar la cantidad');
+                                    }
+                                },
+                                error: function(xhr, status, error) {
+                                    console.error('Error:', error);
+                                    alert('Error al registrar la cantidad: ' + error);
+                                }
+                            });
+                        }
+                    } while (isNaN(registrado) || registrado === "" || registrado < 1 || registrado > diff);
+                } else {
+                    alert('Item sin stock'); // Display error message if no stock
                 }
-                let registrado;
-                do {
-                  registrado = prompt("Del Item " + item + " escaneado tu puedes registrar : " + diff + " ¿Cuantos desea registrar?");
-                } while (isNaN(registrado) || registrado === "" || registrado < 1 || registrado > diff);
-
-
             } else {
-                alert(response.message); // Display error message from server
+                alert('Error al obtener datos del item'); // Handle failure to fetch item details
             }
         },
         error: function(xhr, status, error) {
             console.error('Error:', error);
-            alert('Error al registrar la cantidad: ' + error);
+            alert('Error al obtener datos del item: ' + error); // Handle failure to fetch item details
         }
     });
 }

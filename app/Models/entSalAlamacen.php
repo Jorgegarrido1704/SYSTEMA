@@ -9,13 +9,14 @@ class entSalAlamacen extends Model
 {
     use HasFactory;
     public $fillable=[
-        'id',
         'item',
         'Qty',
         'movimiento',
         'usuario',
-        'fecha'
+        'fecha',
+        'wo',
     ];
     protected $table = "movimientosalmacen";
     public $timestamps = false;
 }
+

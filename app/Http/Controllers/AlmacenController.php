@@ -7,6 +7,7 @@ use App\Models\entSalAlamacen;
 use App\Models\desviation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\controlAlmacen;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 class AlmacenController extends Controller
@@ -324,7 +325,7 @@ class AlmacenController extends Controller
         }
 
         public function qtyItem(Request $request)
-{
+    {
     // Get POST data
     $codigo = $request->input('codigo');  // Use input() to get form data
     $pn = $request->input('pn');
@@ -373,43 +374,27 @@ class AlmacenController extends Controller
         'data' => $datos
     ]);
 }
+    public function ChargeAlm(Request $request){
+        $value = session('user');
+        $codigo = $request->input('codUnic');
+        $wo = $request->input('wo');
+        $registrado = $request->input('registrado');
+        $item = $request->input('item');
+        $buscarId=DB::table('controlalmacen')->select('id_importacion')->where('codUnic','=',$codigo)->first();
+        $ids=$buscarId->id_importacion;
+        $agregarcontrol= new controlAlmacen();
+        $agregarcontrol->fechaMov=date("Y-m-d");
+        $agregarcontrol->itIdInt=$item;
+        $agregarcontrol->Qty=-$registrado;
+        $agregarcontrol->MovType='salida/wo: '.$wo;
+        $agregarcontrol->UserReg=$value;
+        $agregarcontrol->id_importacion=$ids;
+        $agregarcontrol->codUnic=$codigo;
+        $agregarcontrol->comentario=$wo;
+        $agregarcontrol->save();
+        return response()->json([
+            'status' => 200,
+        ]);
+    }
 
-
-        /*
-        public function qtyItem(Request $request)
-        {
-            // Get POST data
-            $codigo = $request->input('codigo');  // Use input() to get form data
-            $pn = $request->input('pn');
-            $wo = $request->input('wo');
-            $datosReg=[];
-            // Make sure 'codigo' is in the expected format
-            $items = explode("-", $codigo);
-            $registro = isset($items[1]) && isset($items[2]) ? $items[1] . "-" . $items[2] : null;
-
-            if (!$registro) {
-                return response()->json(['status' => 400, 'message' => 'Invalid codigo format']);
-            }
-
-            // Search for the item in the database
-            $buscar = DB::table('datos')
-                ->where('part_num', '=', $pn)
-                ->where('item', '=', $registro)
-                ->first();
-
-            if ($buscar->isNotEmpty()) {
-                $regdatos=$buscar->item;
-                $qtydatos=$buscar->qty;
-                $registroWo=DB::table('registro')->select('Qty')->where('wo','=',$wo)->first();
-                $itemsneed=$registroWo->Qty*$qtydatos;
-                $datosWO=DB::table('controlalmacen')->where('codUnic','=',$codigo)->sum('Qty');
-                $datosReg=['item'=>$regdatos,'qtyNeed'=>$itemsneed,'qtycodigo'=>$datosWO];
-
-
-
-                return response()->json(['status' => 200, 'message' => 'Item found', 'datosReg' => $datosReg]);
-            } else {
-                return response()->json(['status' => 400, 'message' => 'Item not found']);
-            }
-        }*/
 }

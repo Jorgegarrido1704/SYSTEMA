@@ -93,7 +93,7 @@ Route::controller(AlmacenController::class)->group(function (){
     Route::get('/concentrado',[AlmacenController::class,'concentrado'])->name('concentrado');
     Route::get('/desviationAlm',[AlmacenController::class,'desviationAlm'])->name('desviationAlm');
     Route::post('/qtyItem', [AlmacenController::class, 'qtyItem'])->name('qtyItem');
-
+    Route::post('/ChargeAlm', [AlmacenController::class, 'ChargeAlm'])->name('ChargeAlm');
 });
 
 Route::controller(bossController::class)->group(function(){
