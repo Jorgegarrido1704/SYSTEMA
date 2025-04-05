@@ -82,162 +82,156 @@ class AlmacenController extends Controller
         return view('almacen',['value'=>$value,'listas'=>$listas,'cat'=>$cat,'desviations'=>$desviations,'kispendientes'=>$kispendientes]);}
     }
 
-    public function registroKit(Request $request)    {
-        $cat=session('categoria');
-        $value = session('user');
-        $i = 0;
-        $response="";
-        $date = date('d-m-Y H:i');
-        $codeWo=$request->input('idkit');
-        $listas=$diff=$kits=$infoPar=$datosPn=[];
-        if(!empty($codeWo)){
+            public function registroKit(Request $request)    {
+                    $cat=session('categoria');
+                    $value = session('user');
+                    $i = 0;
+                    $response="";
+                    $date = date('d-m-Y H:i');
+                    $codeWo=$request->input('idkit');
+                    $listas=$diff=$kits=$infoPar=$datosPn=[];
+
+                    if(!empty($codeWo)){
+                        $i=0;
+                        $buscarInfo=DB::table('kits')
+                        ->where('kits.id','=',$codeWo)->first();
+                        if(!empty($buscarInfo)){
+                            $kitswo=$buscarInfo->wo;
+                            $kitsqty=$buscarInfo->qty;
+                            $kitsPn=$buscarInfo->numeroParte;
+                            $buscarTotal = DB::table('datos')
+                            ->where('part_num', $kitsPn)
+                            ->get();
+
+
+                            foreach($buscarTotal as $rowTotal){
+                                    $infoPar=0;
+                                    $kits[$i][0]=$kitsPn;
+                                    $kits[$i][1]=$kitswo;
+                                    $kits[$i][2]=$rowTotal->item;
+                                    $reginfo=DB::table('controlalmacen')
+                                    ->where('itIdInt','=',$rowTotal->item)
+                                    ->where('comentario','=',$kitswo)->get();
+                                    foreach($reginfo as $rowInfo){  $infoPar-=$rowInfo->Qty;  }
+
+                                    $kits[$i][3]=($rowTotal->qty*$kitsqty)-$infoPar;
+                                    $i++;
+
+                                }
+                            }
+
+
+                        $datosPn[0]=$kitsPn;
+                        $datosPn[1]=$kitswo;
+                        $datosPn[2]=$kitsqty;
+                        return view('almacen.kits',['value'=>$value,'cat'=>$cat,'kits'=>$kits,'datosPn'=>$datosPn]);
+
+                }
+
+            }
+
+        public function BomAlm(Request $request){
+            $value=session('user');
+            $invokeData=new AlmacenController;
+            $invokeRes=$invokeData->__invoke();
+            $listas=$invokeRes->getData()['listas'];
+            $cat=$invokeRes->getData()['cat'];
             $i=0;
-            $buscarInfo=DB::table('kits')
-            ->where('kits.id','=',$codeWo)->first();
-            if(!empty($buscarInfo)){
-                $kitswo=$buscarInfo->wo;
-                $kitsqty=$buscarInfo->qty;
-                $kitsPn=$buscarInfo->numeroParte;
-                $buscarItems=DB::table('creacionkits')->where('wo',"=",$kitswo)->get();
-                $buscarTotal = DB::table('datos')
-                ->where('part_num', $kitsPn)
-                ->get();
+            $BomResp=[];
+            $Np=$request->input('NpBom');
+            $qty=$request->input('qtyBom');
 
-
-                foreach($buscarTotal as $rowTotal){  $diff[$rowTotal->item]=$rowTotal->qty;}
-                if(count($buscarItems)>0){ foreach($buscarItems as $rowItems){$infoPar[$rowItems->item]=$rowItems->qty;}
-
-                    foreach($diff as $key=>$valor){
-                        $kits[$i][0]=$kitsPn;
-                        $kits[$i][1]=$kitswo;
-                        $kits[$i][2]=$key;
-                        $kits[$i][3]=($valor*$kitsqty)-$infoPar[$key];
-                        $i++;
-
-                    }
-                 }else{
-                    foreach($diff as $key=>$valor){
-                        $kits[$i][0]=$kitsPn;
-                        $kits[$i][1]=$kitswo;
-                        $kits[$i][2]=$key;
-                        $kits[$i][3]=($valor*$kitsqty);
-                        $i++;
-                    }
-
-                 }
-
-        }
-            $datosPn[0]=$kitsPn;
-            $datosPn[1]=$kitswo;
-            $datosPn[2]=$kitsqty;
-        return view('almacen.kits',['value'=>$value,'cat'=>$cat,'kits'=>$kits,'datosPn'=>$datosPn]);
-
-
-    }
-}
-
-    public function BomAlm(Request $request){
-        $value=session('user');
-        $invokeData=new AlmacenController;
-        $invokeRes=$invokeData->__invoke();
-        $listas=$invokeRes->getData()['listas'];
-        $cat=$invokeRes->getData()['cat'];
-        $i=0;
-        $BomResp=[];
-        $Np=$request->input('NpBom');
-        $qty=$request->input('qtyBom');
-
-        $buscarBom=DB::table('datos')->where('part_num',$Np)->get();
-        foreach($buscarBom as $rowBom){
-            $BomResp[$i][0]=$rowBom->item;
-            $BomResp[$i][1]=$rowBom->qty*$qty;
-            $i++;
-        }
-        if(!empty($BomResp)){
-        return view('almacen',['value'=>$value,'listas'=>$listas,'BomResp'=>$BomResp,'cat'=>$cat]);
-        }else{
-            return redirect('almacen');
-        }
+            $buscarBom=DB::table('datos')->where('part_num',$Np)->get();
+            foreach($buscarBom as $rowBom){
+                $BomResp[$i][0]=$rowBom->item;
+                $BomResp[$i][1]=$rowBom->qty*$qty;
+                $i++;
+            }
+            if(!empty($BomResp)){
+            return view('almacen',['value'=>$value,'listas'=>$listas,'BomResp'=>$BomResp,'cat'=>$cat]);
+            }else{
+                return redirect('almacen');
+            }
         }
 
         public function entradas(Request $request){
-            $value=session('user');
-            $cat=session('categoria');
-            $work=$request->input('Work');
-            $id_ret=$request->input('id_return');
-            $cant=$request->input('cant');
-        if($cat==''){
-            return view('login');
-        }else{
-            if($work){
-                $table=[];
-                $i=0;
-            $buscar=DB::table('creacionkits')->where('creacionkits.wo','=',$work)->get();
-            foreach($buscar as $bus){
-                $table[$i][0]=$bus->pn;
-                $table[$i][1]=$bus->wo;
-                $table[$i][2]=$bus->item;
-                $table[$i][3]=$bus->qty;
-                $table[$i][4]=$bus->id;
-                $i++;
-            }
-            if(!empty($table)){
-            return view('almacen.retorno')->with(['value'=>$value,'cat'=>$cat,'table'=>$table]);
-        }else{
-            return redirect('almacen');
-        }
-    }else if(count($cant)>0){
-            for($i=0;$i<count($cant);$i++){
-                $buscarCant=DB::table('creacionkits')->where('id','=',$id_ret[$i])->first();
-                $cantDiff=$buscarCant->qty-$cant[$i];
-                $item=$buscarCant->item;
-                $wo=$buscarCant->wo;
-                if($cant[$i]>0){
-
-                $buscarItems=DB::table('itemsconsumidos')->where('NumPart','=',$item)->first();
-                $donde=$buscarItems->Area;
-                $immex=$buscarItems->immex;
-                $nacional=$buscarItems->national;
-                $bodega=$buscarItems->Bodega;
-                if($immex>0 && $nacional==0 && $bodega==0 || $immex>0 && $nacional==0 && $bodega>0 && $donde=='IMMEX' || $immex>0 && $nacional>0 && $bodega==0 && $donde=='IMMEX' || $immex>0 && $nacional>0 && $bodega>0 && $donde=='IMMEX'){
-                    $updateItemsCons=DB::table('itemsconsumidos')->where('NumPart','=',$item)->increment('immex',$cant[$i]);
-                }else if($immex==0 && $nacional>0 && $bodega==0 || $immex==0 && $nacional>0 && $bodega>0 && $donde=='NACIONAL' || $immex>0 && $nacional>0 && $bodega==0 && $donde=='NACIONAL' || $immex>0 && $nacional>0 && $bodega>0 && $donde=='NACIONAL'){
-                    $updateItemsCons=DB::table('itemsconsumidos')->where('NumPart','=',$item)->increment('national',$cant[$i]);
-                }else if($immex==0 && $nacional==0 && $bodega>0){
-                    $updateItemsCons=DB::table('itemsconsumidos')->where('NumPart','=',$item)->increment('Bodega',$cant[$i]);
+                    $value=session('user');
+                    $cat=session('categoria');
+                    $work=$request->input('Work');
+                    $id_ret=$request->input('id_return');
+                    $cant=$request->input('cant');
+                if($cat==''){
+                    return view('login');
+                }else{
+                    if($work){
+                        $table=[];
+                        $i=0;
+                    $buscar=DB::table('creacionkits')->where('creacionkits.wo','=',$work)->get();
+                    foreach($buscar as $bus){
+                        $table[$i][0]=$bus->pn;
+                        $table[$i][1]=$bus->wo;
+                        $table[$i][2]=$bus->item;
+                        $table[$i][3]=$bus->qty;
+                        $table[$i][4]=$bus->id;
+                        $i++;
+                    }
+                    if(!empty($table)){
+                    return view('almacen.retorno')->with(['value'=>$value,'cat'=>$cat,'table'=>$table]);
+                }else{
+                    return redirect('almacen');
                 }
-                if($cantDiff>0){
-              $updatekits=DB::table('creacionkits')->where('id','=',$id_ret[$i])->update(['qty'=>$cantDiff]);
-              $updatekitsdenuevo=DB::table('kits')->where('wo','=',$wo)->update(['status'=>'Parcial']);
-                $updenuevo=DB::table('kitenespera')->where('wo','=',$wo)->update(['status'=>'Parcial']);
-              $movi=new entSalAlamacen();
-              $movi->item=$item;
-              $movi->Qty=$cant[$i];
-              $movi->movimiento='Retorno de kit';
-              $movi->usuario=$value;
-              $movi->fecha=date("d-m-Y H:i");
-              $movi->wo=$wo;
-              $movi->save();
-            }
-             if($cantDiff==0){
-                $updatekitsdenuevo=DB::table('kits')->where('wo','=',$wo)->update(['status'=>'Parcial']);
-                $updenuevo=DB::table('kitenespera')->where('wo','=',$wo)->update(['status'=>'Parcial']);
-                $movi=new entSalAlamacen();
-                $movi->item=$item;
-                $movi->Qty=$cant[$i];
-                $movi->movimiento='Retorno de kit';
-                $movi->usuario=$value;
-                $movi->fecha=date("d-m-Y H:i");
-                $movi->wo=$wo;
-                if($movi->save()){
-                $delete=DB::table('creacionkits')->where('id','=',$id_ret[$i])->delete();}
+            }else if(count($cant)>0){
+                    for($i=0;$i<count($cant);$i++){
+                        $buscarCant=DB::table('creacionkits')->where('id','=',$id_ret[$i])->first();
+                        $cantDiff=$buscarCant->qty-$cant[$i];
+                        $item=$buscarCant->item;
+                        $wo=$buscarCant->wo;
+                        if($cant[$i]>0){
+
+                        $buscarItems=DB::table('itemsconsumidos')->where('NumPart','=',$item)->first();
+                        $donde=$buscarItems->Area;
+                        $immex=$buscarItems->immex;
+                        $nacional=$buscarItems->national;
+                        $bodega=$buscarItems->Bodega;
+                        if($immex>0 && $nacional==0 && $bodega==0 || $immex>0 && $nacional==0 && $bodega>0 && $donde=='IMMEX' || $immex>0 && $nacional>0 && $bodega==0 && $donde=='IMMEX' || $immex>0 && $nacional>0 && $bodega>0 && $donde=='IMMEX'){
+                            $updateItemsCons=DB::table('itemsconsumidos')->where('NumPart','=',$item)->increment('immex',$cant[$i]);
+                        }else if($immex==0 && $nacional>0 && $bodega==0 || $immex==0 && $nacional>0 && $bodega>0 && $donde=='NACIONAL' || $immex>0 && $nacional>0 && $bodega==0 && $donde=='NACIONAL' || $immex>0 && $nacional>0 && $bodega>0 && $donde=='NACIONAL'){
+                            $updateItemsCons=DB::table('itemsconsumidos')->where('NumPart','=',$item)->increment('national',$cant[$i]);
+                        }else if($immex==0 && $nacional==0 && $bodega>0){
+                            $updateItemsCons=DB::table('itemsconsumidos')->where('NumPart','=',$item)->increment('Bodega',$cant[$i]);
+                        }
+                        if($cantDiff>0){
+                    $updatekits=DB::table('creacionkits')->where('id','=',$id_ret[$i])->update(['qty'=>$cantDiff]);
+                    $updatekitsdenuevo=DB::table('kits')->where('wo','=',$wo)->update(['status'=>'Parcial']);
+                        $updenuevo=DB::table('kitenespera')->where('wo','=',$wo)->update(['status'=>'Parcial']);
+                    $movi=new entSalAlamacen();
+                    $movi->item=$item;
+                    $movi->Qty=$cant[$i];
+                    $movi->movimiento='Retorno de kit';
+                    $movi->usuario=$value;
+                    $movi->fecha=date("d-m-Y H:i");
+                    $movi->wo=$wo;
+                    $movi->save();
+                    }
+                    if($cantDiff==0){
+                        $updatekitsdenuevo=DB::table('kits')->where('wo','=',$wo)->update(['status'=>'Parcial']);
+                        $updenuevo=DB::table('kitenespera')->where('wo','=',$wo)->update(['status'=>'Parcial']);
+                        $movi=new entSalAlamacen();
+                        $movi->item=$item;
+                        $movi->Qty=$cant[$i];
+                        $movi->movimiento='Retorno de kit';
+                        $movi->usuario=$value;
+                        $movi->fecha=date("d-m-Y H:i");
+                        $movi->wo=$wo;
+                        if($movi->save()){
+                        $delete=DB::table('creacionkits')->where('id','=',$id_ret[$i])->delete();}
+                    }
+
+                    }}
+                return redirect('almacen');
             }
 
-            }}
-        return redirect('almacen');
-    }
-
-        }
+                }
 
         }
 
@@ -325,55 +319,55 @@ class AlmacenController extends Controller
         }
 
         public function qtyItem(Request $request)
-    {
-    // Get POST data
-    $codigo = $request->input('codigo');  // Use input() to get form data
-    $pn = $request->input('pn');
-    $wo = $request->input('wo');
+            {
+            // Get POST data
+            $codigo = $request->input('codigo');  // Use input() to get form data
+            $pn = $request->input('pn');
+            $wo = $request->input('wo');
 
-    // Make sure 'codigo' is in the expected format
-    $items = explode("-", $codigo);
-    $registro = isset($items[1]) && isset($items[2]) ? $items[1] . "-" . $items[2] : null;
+            // Make sure 'codigo' is in the expected format
+            $items = explode("-", $codigo);
+            $registro = isset($items[1]) && isset($items[2]) ? $items[1] . "-" . $items[2] : null;
 
-    if (!$registro) {
-        return response()->json(['status' => 400, 'message' => 'Invalid codigo format']);
-    }
+            if (!$registro) {
+                return response()->json(['status' => 400, 'message' => 'Invalid codigo format']);
+            }
 
-    // Search for the item in the database
-    $buscar = DB::table('datos')
-        ->where('part_num', '=', $pn)
-        ->where('item', '=', $registro)
-        ->first();
+            // Search for the item in the database
+            $buscar = DB::table('datos')
+                ->where('part_num', '=', $pn)
+                ->where('item', '=', $registro)
+                ->first();
 
-    // If no item is found, return an error response
-    if (!$buscar) {
-        return response()->json(['status' => 400, 'message' => 'Item not found']);
-    }
+            // If no item is found, return an error response
+            if (!$buscar) {
+                return response()->json(['status' => 400, 'message' => 'Item not found']);
+            }
 
-    // Fetch the corresponding 'Qty' from 'registro' table
-    $registroWo = DB::table('registro')->select('Qty')->where('wo', '=', $wo)->first();
+            // Fetch the corresponding 'Qty' from 'registro' table
+            $registroWo = DB::table('registro')->select('Qty')->where('wo', '=', $wo)->first();
 
-    // If no matching 'registro' found, return an error
-    if (!$registroWo) {
-        return response()->json(['status' => 400, 'message' => 'Work order not found in registro table']);
-    }
+            // If no matching 'registro' found, return an error
+            if (!$registroWo) {
+                return response()->json(['status' => 400, 'message' => 'Work order not found in registro table']);
+            }
 
-    // Sum all the 'qty' values from 'controlalmacen' table where 'codUnic' equals $codigo
-    $sumaMov = DB::table('controlalmacen')->where('codUnic', '=', $codigo)->sum('qty');
+            // Sum all the 'qty' values from 'controlalmacen' table where 'codUnic' equals $codigo
+            $sumaMov = DB::table('controlalmacen')->where('codUnic', '=', $codigo)->sum('qty');
 
-    // Prepare the data to be returned
-    $datos = [];
-    $datos['item'] = $buscar->item;
-    $datos['qty'] = $buscar->qty * $registroWo->Qty;  // Multiply item qty by the 'Qty' from the registro table
-    $datos['sumaMov'] = $sumaMov;
+            // Prepare the data to be returned
+            $datos = [];
+            $datos['item'] = $buscar->item;
+            $datos['qty'] = $buscar->qty * $registroWo->Qty;  // Multiply item qty by the 'Qty' from the registro table
+            $datos['sumaMov'] = $sumaMov;
 
-    // Return the response with item data
-    return response()->json([
-        'status' => 200,
-        'message' => 'Item found',
-        'data' => $datos
-    ]);
-}
+            // Return the response with item data
+            return response()->json([
+                'status' => 200,
+                'message' => 'Item found',
+                'data' => $datos
+            ]);
+        }
     public function ChargeAlm(Request $request){
         $value = session('user');
         $codigo = $request->input('codUnic');
