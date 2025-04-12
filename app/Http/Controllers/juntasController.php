@@ -792,52 +792,6 @@ class juntasController extends Controller
                 $datosF[$rowDatos->pn][2] = $rowDatos->resto;
                 $datosF[$rowDatos->pn][3] = $rowDatos->pn;
             }
-<<<<<<< HEAD
-            $todayD=date('d');
-        for($i=0;$i<$todayD;$i++)
-            if($labelQ[$i]==38 or $labelQ[$i]==34 or $labelQ[$i]==35 or $labelQ[$i]==36){
-                $colorQ[$i]='red';
-            }else{
-                $colorQ[$i]='green';            }
-            rsort($datosT);
-            asort($datosS);
-            rsort($datosF);
-         $datosHoy=$gulty=[];
-         $i=$x=$hoyb=$hoymal=$parhoy=0;
-        $issues=DB::table('regsitrocalidad')
-        ->where('fecha','LIKE',date('d-m-Y')."%")
-        ->get();
-        foreach($issues as $issue){
-            if($issue->codigo=='TODO BIEN'){
-                $hoyb+=$issue->resto;
-            }else{
-                $hoymal+=$issue->resto;
-
-           if(key_exists($issue->codigo."-".$issue->pn,$datosHoy)){
-            $datosHoy[$issue->codigo."-".$issue->pn][2]+=$issue->resto;
-            }else{
-                $datosHoy[$issue->codigo."-".$issue->pn][0]=$issue->client;
-                $datosHoy[$issue->codigo."-".$issue->pn][1]=$issue->codigo;
-                $datosHoy[$issue->codigo."-".$issue->pn][2]=$issue->resto;
-                $datosHoy[$issue->codigo."-".$issue->pn][3]=$issue->pn;
-                $i++;
-            }
-            if(in_array($issue->Responsable, array_column($gulty, 0))){
-                $gulty[array_search($issue->Responsable, array_column($gulty, 0))][1]+=$issue->resto;
-            }else{
-                $gulty[$x][0]=$issue->Responsable;
-                $gulty[$x][1]=$issue->resto;
-                $x++;
-            }        }      }
-            $parhoy=Paretos($hoyb,$hoymal);
-            ksort($datosHoy);
-            if(!empty($gulty)){
-            arsort($gulty);
-            }
-            if(!empty($gultyY)){
-            arsort($gultyY);
-=======
->>>>>>> b33686272f7a3218f887dcfd7a6d52b7fe154cf4
         }
         next($datos);
         $secondKey = key($datos);
