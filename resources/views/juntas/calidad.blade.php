@@ -244,7 +244,7 @@ var respo = {!! json_encode($respemp) !!};
                             <!-- AREAS -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h5 class="m-0 font-weight-bold text-primary">Top 5 employees incidents Montly</h5>
+                                    <h5 class="m-0 font-weight-bold text-primary">Top 10 employees incidents Montly</h5>
                                 </div>
                                 <div class="card-body" style="overflow-y: auto; height: 360px;" id="tableChange">
                                    <canvas id="MonthIncidences"></canvas>
