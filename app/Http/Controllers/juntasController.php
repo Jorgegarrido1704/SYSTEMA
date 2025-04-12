@@ -416,7 +416,7 @@ return view('juntas')->with(['ventasStation'=>$ventasStation,'inform'=>$inform,'
 public function calidad_junta(){
     $value=session('user');
     $cat=session('categoria');
-        $datos = $etiq = $gultyY=[];
+       $empRes = $empleados = $datos = $etiq = $gultyY=[];
         $totalb=$totalm=$j=0;
         $monthAndYear = date("m-Y");
         $today=date('d-m-Y 00:00');
@@ -530,7 +530,7 @@ public function calidad_junta(){
                 $pareto[$datosmt]=Paretos($regmtg,$regmtb);
                 $pareto[$datosm]=Paretos($regmg,$regmb);
                 $totalm=$regmb; $totalb=$regmg;
-        }elseif(date("N")==5){
+        }elseif(date("N")==6){//cambiar
             $datosl = (date("d-m-Y", strtotime("-1 days")));
             $datosmt = (date("d-m-Y", strtotime("-2 days")));
             $datosm = (date("d-m-Y", strtotime("-3 days")));
@@ -541,6 +541,7 @@ public function calidad_junta(){
             ->orWhere('fecha', 'LIKE', "$datosmt%")
             ->orWhere('fecha', 'LIKE', "$datosl%")
             ->get();
+
             foreach($buscarValorespareto as $rowPareto){
                 if (substr($rowPareto->fecha, 0, 10) == $datosj) {  if($rowPareto->codigo=='TODO BIEN'){ $regjg+=1; }else{$regjb+=1;}  }
                 if (substr($rowPareto->fecha, 0, 10) == $datosm) {  if($rowPareto->codigo=='TODO BIEN'){ $regmg+=1; }else{$regmb+=1;}  }
@@ -559,13 +560,22 @@ public function calidad_junta(){
         $weekslas="Week ".date("W",strtotime("-1 weeks"));
         $buscarValorPareto=DB::table('regsitrocalidad')
         ->where('fecha', 'LIKE', "%$YearParto%")
-
+        ->orderBy('Responsable','ASC')
         ->get();
         foreach($buscarValorPareto as $rowPareto){
-         if($rowPareto->codigo=='TODO BIEN' ){$yearGood+=1;}else{$yearBad+=1;}
+         if($rowPareto->codigo=='TODO BIEN' ){$yearGood+=1;}else{$yearBad+=1;
+            if(!in_array($rowPareto->Responsable, $empRes)){
+                array_push($empRes,$rowPareto->Responsable);
+
+        }}
             if(substr($rowPareto->fecha, 3, 7) == $monthAndYear){
-                if($rowPareto->codigo=='TODO BIEN'){$monthGood+=1;}else{$monthBad+=1;}}
-            }
+                if($rowPareto->codigo=='TODO BIEN'){$monthGood+=1;}else{$monthBad+=1;
+                    if(key_exists($rowPareto->Responsable, $empleados)){
+                        $empleados[$rowPareto->Responsable]+=1;
+                }else{
+                    $empleados[$rowPareto->Responsable]=1;
+                }}
+            }}
        $monthAndYearPareto[$monthAndYear]=Paretos($monthGood,$monthBad);
                 $monthAndYearPareto[$YearParto]=Paretos($yearGood,$yearBad);
             $lastmonth=date("m-Y", strtotime("-1 months"));
@@ -696,7 +706,19 @@ public function calidad_junta(){
             if(!empty($gultyY)){
             arsort($gultyY);
         }
-        return view('juntas/calidad',['days'=>$days,'hoyb'=>$hoyb,'hoymal'=>$hoymal,'parhoy'=>$parhoy,'gultyY'=>$gultyY,'gulty'=>$gulty,'datosHoy'=>$datosHoy,'totalm'=>$totalm,'totalb'=>$totalb,'monthAndYearPareto'=>$monthAndYearPareto,'datosT'=>$datosT,'datosS'=>$datosS,'datosF'=>$datosF,'labelQ'=>$labelQ,'colorQ'=>$colorQ,'value'=>$value,'cat'=>$cat,'datos'=>$datos,'pareto'=>$pareto,'Qdays'=>$Qdays]);
+        arsort($empleados); // Asegura que esté ordenado de mayor a menor
+
+        $top5 = [];
+        $i = 0;
+
+        foreach ($empleados as $nombre => $cantidad) {
+            if ($i >= 10) break;
+            $top5[$nombre] = $cantidad;
+            $i++;
+        }
+        asort($top5);
+
+        return view('juntas/calidad',['respemp'=>$empRes,'empleados'=>$top5,'days'=>$days,'hoyb'=>$hoyb,'hoymal'=>$hoymal,'parhoy'=>$parhoy,'gultyY'=>$gultyY,'gulty'=>$gulty,'datosHoy'=>$datosHoy,'totalm'=>$totalm,'totalb'=>$totalb,'monthAndYearPareto'=>$monthAndYearPareto,'datosT'=>$datosT,'datosS'=>$datosS,'datosF'=>$datosF,'labelQ'=>$labelQ,'colorQ'=>$colorQ,'value'=>$value,'cat'=>$cat,'datos'=>$datos,'pareto'=>$pareto,'Qdays'=>$Qdays]);
 }
 
 public function litas_junta($id){
