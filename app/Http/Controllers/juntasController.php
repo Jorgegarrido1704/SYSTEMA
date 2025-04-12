@@ -649,7 +649,7 @@ class juntasController extends Controller
             $pareto[$datosm] = Paretos($regmg, $regmb);
             $totalm = $regmb;
             $totalb = $regmg;
-        } elseif (date("N") == 5) {
+        } elseif (date("N") == 6 or date("N") == 5) {
             $datosl = (date("d-m-Y", strtotime("-1 days")));
             $datosmt = (date("d-m-Y", strtotime("-2 days")));
             $datosm = (date("d-m-Y", strtotime("-3 days")));
