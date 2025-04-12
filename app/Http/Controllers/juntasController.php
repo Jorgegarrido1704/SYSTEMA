@@ -654,7 +654,7 @@ public function calidad_junta(){
             }
             $todayD=date('d');
         for($i=0;$i<$todayD;$i++)
-            if($labelQ[$i]==33 or $labelQ[$i]==34 or $labelQ[$i]==35 or $labelQ[$i]==36){
+            if($labelQ[$i]==38 or $labelQ[$i]==34 or $labelQ[$i]==35 or $labelQ[$i]==36){
                 $colorQ[$i]='red';
             }else{
                 $colorQ[$i]='green';            }
