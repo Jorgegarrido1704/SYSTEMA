@@ -32,6 +32,10 @@ var colorQ={!! json_encode($colorQ) !!}
 var labelQ={!! json_encode($labelQ)!!}
 var paretoYear={!! json_encode($monthAndYearPareto) !!};
 var dias={!! json_encode($days) !!};
+var empleados= {!! json_encode($empleados) !!};
+var respo = {!! json_encode($respemp) !!};
+
+
 </script>
  <div class="d-sm-flex align-items-center justify-content-between mb-4">
 
@@ -39,7 +43,7 @@ var dias={!! json_encode($days) !!};
                     <div class="row">
 
                         <!-- Table and Graph -->
-                        <div class="col-xl-12 col-lg-12">
+                        <div class="col-xl-8 col-lg-8">
                             <div class="card shadow mb-4">
 
                                 <div
@@ -56,51 +60,7 @@ var dias={!! json_encode($days) !!};
                                 </div>
                             </div>
                         </div>
-
-
-                        <div class="col-xl-12 col-lg-12">
-                            <div class="card shadow mb-4">
-                                    <!-- Card scaneer -->
-                                <div
-                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h5 class="m-0 font-weight-bold text-primary">FTQ (First Time Quality) <span></span> Total tested:{{$totalb+$totalm}}  total Buenas: {{$totalb}} total incidences: {{$totalm}} </h5>
-
-                                </div>
-
-                                <div class="card-body" style="overflow-y: auto; max-height: 400px;">
-                                   <div style="display: flex; justify-content: space-between; align-items: center; height: 100%;">
-                                    <!-- Primera gráfica: 60% del espacio -->
-                                    <div class="chart-area" style="flex: 0 0 60%; margin-right: 10%;">
-                                        <canvas id="pareto"></canvas>
-                                    </div>
-                                    <!-- Segunda gráfica: 30% del espacio -->
-                                    <div class="chart-area" style="flex: 0 0 30%;">
-                                        <canvas id="barPareto"></canvas>
-                                    </div>
-                                </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Content Row -->
-                    <div class="row">
-                        <div class="col-lg-6 mb-4">
-                            <!-- AREAS -->
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h5 class="m-0 font-weight-bold text-primary">Customer complains</h5>
-                                </div>
-                                <div class="card-body" style="overflow-y: auto; height: 360px;">
-                                    <canvas id="Q"></canvas>
-
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Column 2 -->
-
-                        <div class="col-lg-6 mb-4">
+                        <div class="col-lg-4 col-lx-4">
                             <!-- AREAS -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
@@ -140,6 +100,43 @@ var dias={!! json_encode($days) !!};
                                                 @endif
                                             </tbody>
                                     </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-8 col-lg-8">
+                            <div class="card shadow mb-4">
+                                    <!-- Card scaneer -->
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h5 class="m-0 font-weight-bold text-primary">FTQ (First Time Quality) <span></span> Total tested:{{$totalb+$totalm}}  total Buenas: {{$totalb}} total incidences: {{$totalm}} </h5>
+
+                                </div>
+
+                                <div class="card-body" style="overflow-y: auto; max-height: 400px;">
+                                   <div style="display: flex; justify-content: space-between; align-items: center; height: 100%;">
+                                    <!-- Primera gráfica: 60% del espacio -->
+                                    <div class="chart-area" style="flex: 0 0 60%; margin-right: 10%;">
+                                        <canvas id="pareto"></canvas>
+                                    </div>
+                                    <!-- Segunda gráfica: 30% del espacio -->
+                                    <div class="chart-area" style="flex: 0 0 30%;">
+                                        <canvas id="barPareto"></canvas>
+                                    </div>
+                                </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-lg-4">
+                            <!-- AREAS -->
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h5 class="m-0 font-weight-bold text-primary">Customer complains</h5>
+                                </div>
+                                <div class="card-body" style="overflow-y: auto; height: 360px;">
+                                    <canvas id="Q"></canvas>
+
                                 </div>
                             </div>
                         </div>
@@ -239,6 +236,41 @@ var dias={!! json_encode($days) !!};
                                 </div>
                             </div>
                         </div>
+                    </div>
+                      <!-- Graficas malas -->
+                      <div class="row">
+
+                        <div class="col-lg-6 col-lx-6">
+                            <!-- AREAS -->
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h5 class="m-0 font-weight-bold text-primary">Top 5 employees incidents Montly</h5>
+                                </div>
+                                <div class="card-body" style="overflow-y: auto; height: 360px;" id="tableChange">
+                                   <canvas id="MonthIncidences"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-lx-6">
+                            <!-- AREAS -->
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h5 class="m-0 font-weight-bold text-primary">Employees without incidents in 2025</h5>
+                                </div>
+                                <div class="card-body" style="overflow-y: auto; height: 360px;" id="tableChange">
+                                  <table id="table-harness" class="table-harness">
+                                    <thead>
+                                        <th>Employee</th>
+                                    </thead>
+                                        <tbody id="tres" >
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
 
                     @endsection

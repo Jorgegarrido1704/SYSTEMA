@@ -1,7 +1,7 @@
-var personal=medicamentosDisponibles =[];
+var medicamentosDisponibles =[];
 
 
-personal=[
+const personal=[
     ['2001','Jesus  Zamarripa Rodriguez','Lider Producción','Ensamble','DVillalpando'],
 ['2002','Rosario Hernandez Lopez','Inspector Calidad','','EVillegas'],
 ['2003','Andrea Pacheco','Supervisor Almacen','','JGUILLEN'],
@@ -129,6 +129,7 @@ personal=[
 ['2180','Brandon ','Practicante','','JCervera'],
 ['2182','Christian Alejandro ','Practicante','','JCervera'],
 ];
+
 
 window.onload = function() {
    document.getElementById("fecha").value = new Date().toISOString().substring(0, 10);
