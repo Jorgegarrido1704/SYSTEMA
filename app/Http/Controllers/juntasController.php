@@ -1150,4 +1150,35 @@ class juntasController extends Controller
             'tableReg' => $tableReg,
         ]);
     }
+
+
+
+    public function ing_junta(){
+        $monthYear=date('m-Y');
+        $actividades=[];
+        $tiemposDatosIng=DB::table('ingactividades')
+        ->where('count','=','4')
+        ->where('fecha','LIKE','%-'.$monthYear.'%')
+        ->orderBy('actividades', 'desc')
+        ->get();
+
+    foreach ($tiemposDatosIng as $row) {
+        $timeIni = $timeFin = $timetotal = 0;
+        $timeIni=strtotime($row->fecha);
+        $timeFin=strtotime($row->finT);
+        $timetotal=($timeFin-$timeIni)/60;
+        if(key_exists($row->actividades,$actividades)){
+            $actividades[$row->actividades]+=$timetotal;
+        }else{
+            $actividades[$row->actividades]=$timetotal;
+        }
+
+
+
+    }
+
+
+
+        return view('juntas/ing', ['actividades' => $actividades,'value' => session('user'), 'cat' => session('categoria')]);
+    }
 }

@@ -30,6 +30,7 @@ use App\Http\Controllers\SaludController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
 Route::get('/', loginController::class);
 Route::post('/admin', [loginController::class, 'store'])->name('store');
 Route::get('/adminlogout', [loginController::class, 'logout'])->name('logout');
@@ -45,119 +46,116 @@ Route::get('registro/impEtiquetas', [RegistroController::class,'impEtiquetas' ])
 */
 
 Route::controller(PoController::class)->group(function () {
-    Route::get('registro/po','po')->name('po');
+    Route::get('registro/po', 'po')->name('po');
     Route::resource('po', PoController::class);
-    Route::get('registro/code','code')->name('code');
-    Route::get('registro/label','label')->name('label');
-    Route::get('/registro/implabel','implabel')->name('implabel');
-
-    });
+    Route::get('registro/code', 'code')->name('code');
+    Route::get('registro/label', 'label')->name('label');
+    Route::get('/registro/implabel', 'implabel')->name('implabel');
+});
 
 //    Route::post('getPnDetails', [getPnDetailsController::class, 'getPnDetails'])->name('getPnDetails');
-    Route::post('getPnDetails', [getPnDetailsController::class, 'getPnDetails'])->name('getPnDetails');
+Route::post('getPnDetails', [getPnDetailsController::class, 'getPnDetails'])->name('getPnDetails');
 
-Route::controller(generalController::class)->group(function(){
-    Route::get('/general',generalController::class);
+Route::controller(generalController::class)->group(function () {
+    Route::get('/general', generalController::class);
     Route::post('/codigo', [generalController::class, 'codigo'])->name('codigo');
-    Route::post('/Bom',[generalController::class,'Bom'])->name('Bom');
+    Route::post('/Bom', [generalController::class, 'Bom'])->name('Bom');
     Route::post('/desviation', [generalController::class, 'desviation'])->name('desviation');
-    Route::post('/maintananceGen',[generalController::class, 'maintananceGen'])->name('maintananceGen');
+    Route::post('/maintananceGen', [generalController::class, 'maintananceGen'])->name('maintananceGen');
     Route::post('/assistence', [generalController::class, 'assistence'])->name('assistence');
-    Route::post('/material',[generalController::class,'material'])->name('material');
-    Route::get('/timesHarn',[generalController::class,'pause'])->name('pause');
-    Route::get('/finishWork',[generalController::class,'finishWork'])->name('finishWork');
-    Route::get('/KitsReq',[generalController::class,'KitsReq'])->name('KitsReq');
-    Route::post('/regfull',[generalController::class,'regfull'])->name('regfull');
-    Route::post('/problemas_general',[generalController::class,'problemas_general'])->name('problemas_general');
+    Route::post('/material', [generalController::class, 'material'])->name('material');
+    Route::get('/timesHarn', [generalController::class, 'pause'])->name('pause');
+    Route::get('/finishWork', [generalController::class, 'finishWork'])->name('finishWork');
+    Route::get('/KitsReq', [generalController::class, 'KitsReq'])->name('KitsReq');
+    Route::post('/regfull', [generalController::class, 'regfull'])->name('regfull');
+    Route::post('/problemas_general', [generalController::class, 'problemas_general'])->name('problemas_general');
 });
 
-Route::controller( PpapIngController::class)->group(function (){
-    Route::get('/ing',PpapIngController::class);
-    Route::get('/autorizar',[PpapIngController::class,'store'])->name('autorizar');
-    Route::get('/action',[PpapIngController::class,'action'])->name('action');
-    Route::get('/tareas',[PpapIngController::class,'tareas'])->name('tareas');
-    Route::get('/RegPPAP',[PpapIngController::class,'REgPPAP'])->name('RegPPAP');
-    Route::get('/cronoReg',[PpapIngController::class,'cronoReg'])->name('cronoReg');
-    Route::get('/modifull',[PpapIngController::class,'modifull'])->name('modifull');
-    Route::get('/excel_ing',[PpapIngController::class,'excel_ing'])->name('excel_ing');
-    Route::get('/problemas',[PpapIngController::class,'problemas'])->name('problemas');
-
+Route::controller(PpapIngController::class)->group(function () {
+    Route::get('/ing', PpapIngController::class);
+    Route::get('/autorizar', [PpapIngController::class, 'store'])->name('autorizar');
+    Route::get('/action', [PpapIngController::class, 'action'])->name('action');
+    Route::get('/tareas', [PpapIngController::class, 'tareas'])->name('tareas');
+    Route::get('/RegPPAP', [PpapIngController::class, 'REgPPAP'])->name('RegPPAP');
+    Route::get('/cronoReg', [PpapIngController::class, 'cronoReg'])->name('cronoReg');
+    Route::get('/modifull', [PpapIngController::class, 'modifull'])->name('modifull');
+    Route::get('/excel_ing', [PpapIngController::class, 'excel_ing'])->name('excel_ing');
+    Route::get('/problemas', [PpapIngController::class, 'problemas'])->name('problemas');
 });
 
-Route::controller(AlmacenController::class)->group(function (){
-    Route::get('/almacen',AlmacenController::class);
-    Route::GET('/almacenparcial',[AlmacenController::class,'registroKit'])->name('registroKit');
-  //  Route::get('/saveparcial',[AlmacenController::class,'store'])->name('saveparcial');
-    Route::get('/BomAlm',[AlmacenController::class,'BomAlm'])->name('BomAlm');
-    Route::get('/entradas',[AlmacenController::class,'entradas'])->name('entradas');
-    Route::get('/concentrado',[AlmacenController::class,'concentrado'])->name('concentrado');
-    Route::get('/desviationAlm',[AlmacenController::class,'desviationAlm'])->name('desviationAlm');
+Route::controller(AlmacenController::class)->group(function () {
+    Route::get('/almacen', AlmacenController::class);
+    Route::GET('/almacenparcial', [AlmacenController::class, 'registroKit'])->name('registroKit');
+    //  Route::get('/saveparcial',[AlmacenController::class,'store'])->name('saveparcial');
+    Route::get('/BomAlm', [AlmacenController::class, 'BomAlm'])->name('BomAlm');
+    Route::get('/entradas', [AlmacenController::class, 'entradas'])->name('entradas');
+    Route::get('/concentrado', [AlmacenController::class, 'concentrado'])->name('concentrado');
+    Route::get('/desviationAlm', [AlmacenController::class, 'desviationAlm'])->name('desviationAlm');
     Route::post('/qtyItem', [AlmacenController::class, 'qtyItem'])->name('qtyItem');
     Route::post('/ChargeAlm', [AlmacenController::class, 'ChargeAlm'])->name('ChargeAlm');
 });
 
-Route::controller(bossController::class)->group(function(){
-    Route::get('/boss',bossController::class);
-    Route::get('pending/pending','pending')->name('pending');
+Route::controller(bossController::class)->group(function () {
+    Route::get('/boss', bossController::class);
+    Route::get('pending/pending', 'pending')->name('pending');
 });
 
-Route::controller(caliController::class)->group(function(){
-        Route::get('/calidad',caliController::class)->name('calidad');
-        Route::post('/baja',[caliController::class,'baja'])->name('baja');
-        Route::post('/saveData',[caliController::class,'saveData'])->name('saveData');
-        Route::post('/buscarcodigo', [caliController::class, 'buscarcodigo'])->name('buscarcodigo');
-        Route::post('/codigoCalidad',[caliController::class,'codigoCalidad'])->name('codigoCalidad');
-        Route::get('/calidadfetchdatacali', [caliController::class, 'fetchDatacali'])->name('fetchdatacali');
-        Route::post('/mantCali',[caliController::class, 'mantCali'])->name('maintanance');
+Route::controller(caliController::class)->group(function () {
+    Route::get('/calidad', caliController::class)->name('calidad');
+    Route::post('/baja', [caliController::class, 'baja'])->name('baja');
+    Route::post('/saveData', [caliController::class, 'saveData'])->name('saveData');
+    Route::post('/buscarcodigo', [caliController::class, 'buscarcodigo'])->name('buscarcodigo');
+    Route::post('/codigoCalidad', [caliController::class, 'codigoCalidad'])->name('codigoCalidad');
+    Route::get('/calidadfetchdatacali', [caliController::class, 'fetchDatacali'])->name('fetchdatacali');
+    Route::post('/mantCali', [caliController::class, 'mantCali'])->name('maintanance');
     Route::post('/assiscali', [caliController::class, 'assiscali'])->name('ascali');
-    Route::post('/matCali',[caliController::class,'matCali'])->name('matCali');
-    Route::get('/timesDead',[caliController::class,'timesDead'])->name('timesDead');
-    Route::get('/accepted',[caliController::class,'accepted'])->name('accepted');
-    Route::get('/excel_calidad',[caliController::class,'excel_calidad'])->name('excel_calidad');
-    Route::get('/fallasCalidad',[caliController::class,'fallasCalidad'])->name('fallasCalidad');
-
-    });
-Route::controller(BossCaliController::class)->group(function(){
-    Route::get('/BossCali',BossCaliController::class);
-    Route::get('/reference',[BossCaliController::class,'reference'])->name('reference');
+    Route::post('/matCali', [caliController::class, 'matCali'])->name('matCali');
+    Route::get('/timesDead', [caliController::class, 'timesDead'])->name('timesDead');
+    Route::get('/accepted', [caliController::class, 'accepted'])->name('accepted');
+    Route::get('/excel_calidad', [caliController::class, 'excel_calidad'])->name('excel_calidad');
+    Route::get('/fallasCalidad', [caliController::class, 'fallasCalidad'])->name('fallasCalidad');
+});
+Route::controller(BossCaliController::class)->group(function () {
+    Route::get('/BossCali', BossCaliController::class);
+    Route::get('/reference', [BossCaliController::class, 'reference'])->name('reference');
 });
 
-Route::controller(InventarioController::class)->group(function(){
-    Route::get('/inventario',InventarioController::class);
-    Route::post('/datos',[InventarioController::class,'savedataAlm'])->name('savedataAlm');
-    Route::get('/kits',[InventarioController::class,'kits'])->name('kits');
-    Route::post('/trabajoKits',[InventarioController::class,'trabajoKits'])->name('trabajoKits');
-
+Route::controller(InventarioController::class)->group(function () {
+    Route::get('/inventario', InventarioController::class);
+    Route::post('/datos', [InventarioController::class, 'savedataAlm'])->name('savedataAlm');
+    Route::get('/kits', [InventarioController::class, 'kits'])->name('kits');
+    Route::post('/trabajoKits', [InventarioController::class, 'trabajoKits'])->name('trabajoKits');
 });
-Route::controller(planingController::class)->group(function(){
+Route::controller(planingController::class)->group(function () {
 
-    Route::get('/planing',[planingController::class,'planning'])->name('planning');
-    Route::get('/pos',[planingController::class,'pos'])->name('pos');
-    Route::get('/codeBarPlan',[planingController::class,'codeBarPlan'])->name('codeBarPlan');
-});
-
-Route::controller(AdminSupControlloer::class)->group(function(){
-    Route::get('/SupAdmin',[AdminSupControlloer::class,'index_admin'])->name('SupAdmin');
-    Route::get('/datosOrdenes',[AdminSupControlloer::class,'datosOrdenes'])->name('datosOrdenes');
-    Route::get('/altaDatos',[AdminSupControlloer::class,'altaDatos'])->name('altaDatos');
+    Route::get('/planing', [planingController::class, 'planning'])->name('planning');
+    Route::get('/pos', [planingController::class, 'pos'])->name('pos');
+    Route::get('/codeBarPlan', [planingController::class, 'codeBarPlan'])->name('codeBarPlan');
 });
 
-Route::controller(globalInventario::class)->group(function(){
-    Route::get('/globalInventario',[globalInventario::class,'index_inventario'])->name('index_inventario');
+Route::controller(AdminSupControlloer::class)->group(function () {
+    Route::get('/SupAdmin', [AdminSupControlloer::class, 'index_admin'])->name('SupAdmin');
+    Route::get('/datosOrdenes', [AdminSupControlloer::class, 'datosOrdenes'])->name('datosOrdenes');
+    Route::get('/altaDatos', [AdminSupControlloer::class, 'altaDatos'])->name('altaDatos');
+});
+
+Route::controller(globalInventario::class)->group(function () {
+    Route::get('/globalInventario', [globalInventario::class, 'index_inventario'])->name('index_inventario');
     Route::get('/globalInventario/itmes', [globalInventario::class, 'indItems'])->name('indItems');
     Route::get('/globalInventario/WO', [globalInventario::class, 'WOitems'])->name('WOitems');
 });
 
 
-Route::controller(juntasController::class)->group(function(){
-Route::get(    '/juntas',   [juntasController::class, 'index_junta'])->name('index_junta');
-Route::get(    'juntas/calidad',   [juntasController::class, 'calidad_junta'])->name('calidad_junta');
-Route::get(    'juntas/lista/{id}',   [juntasController::class, 'litas_junta'])->name('litas_junta');
-Route::get(    'juntas/reg',   [juntasController::class, 'litas_reg'])->name('litas_reg');
-Route::get(    'juntas/mostrarWO',   [juntasController::class, 'mostrarWOJ'])->name('mostrarWOJ');
+Route::controller(juntasController::class)->group(function () {
+    Route::get('/juntas',   [juntasController::class, 'index_junta'])->name('index_junta');
+    Route::get('juntas/calidad',   [juntasController::class, 'calidad_junta'])->name('calidad_junta');
+    Route::get('juntas/lista/{id}',   [juntasController::class, 'litas_junta'])->name('litas_junta');
+    Route::get('juntas/reg',   [juntasController::class, 'litas_reg'])->name('litas_reg');
+    Route::get('juntas/mostrarWO',   [juntasController::class, 'mostrarWOJ'])->name('mostrarWOJ');
+    Route::get('juntas/ing',   [juntasController::class, 'ing_junta'])->name('ing_junta');
 });
 
-Route::controller(SaludController::class)->group(function(){
-Route::get('/salud', [SaludController::class, 'index_salud'])->name('salud');
-Route::post('/salud/visita_enfermeria', [SaludController::class, 'visita_enfermeria'])->name('visita_enfermeria');
+Route::controller(SaludController::class)->group(function () {
+    Route::get('/salud', [SaludController::class, 'index_salud'])->name('salud');
+    Route::post('/salud/visita_enfermeria', [SaludController::class, 'visita_enfermeria'])->name('visita_enfermeria');
 });
