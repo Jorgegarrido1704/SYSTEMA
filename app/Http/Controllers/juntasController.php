@@ -1153,32 +1153,113 @@ class juntasController extends Controller
 
 
 
-    public function ing_junta(){
-        $monthYear=date('m-Y');
-        $actividades=[];
-        $tiemposDatosIng=DB::table('ingactividades')
-        ->where('count','=','4')
-        ->where('fecha','LIKE','%-'.$monthYear.'%')
-        ->orderBy('actividades', 'desc')
-        ->get();
+    public function ing_junta()
+    {
+        $monthYear = date('m-Y');
+        $lastMonth = date('m-Y', strtotime("-1 months"));
 
-    foreach ($tiemposDatosIng as $row) {
-        $timeIni = $timeFin = $timetotal = 0;
-        $timeIni=strtotime($row->fecha);
-        $timeFin=strtotime($row->finT);
-        $timetotal=($timeFin-$timeIni)/60;
-        if(key_exists($row->actividades,$actividades)){
-            $actividades[$row->actividades]+=$timetotal;
-        }else{
-            $actividades[$row->actividades]=$timetotal;
+        $datos = ['Soporte en piso', 'Seguimiento PPAP', 'Otro', 'Juntas', 'Documentacion', 'Comida', 'Colocacion de full size'];
+        $defaultValues = array_fill(0, count($datos), 0);
+        $actividades = array_combine($datos, $defaultValues);
+        $actividadesLastMonth = array_combine($datos, $defaultValues);
+        $jesus = array_combine($datos, $defaultValues);
+        $pao = array_combine($datos, $defaultValues);
+        $nancy = array_combine($datos, $defaultValues);
+        $ale = array_combine($datos, $defaultValues);
+        $carlos = array_combine($datos, $defaultValues);
+        $arturo = array_combine($datos, $defaultValues);
+        $jorge = array_combine($datos, $defaultValues);
+        $brandon = array_combine($datos, $defaultValues);
+        $tiemposDatosIng = DB::table('ingactividades')
+            ->where('count', '=', '4')
+            ->where('fecha', 'LIKE', '%-' . $monthYear . '%')
+            ->orderBy('actividades', 'desc')
+            ->get();
+        foreach ($tiemposDatosIng as $row) {
+            $timeIni = $timeFin = $timetotal = 0;
+            $timeIni = strtotime($row->fecha);
+            $timeFin = strtotime($row->finT);
+            $timetotal = ($timeFin - $timeIni) / 60;
+            if (key_exists($row->actividades, $actividades)) {
+                $actividades[$row->actividades] += $timetotal;
+            } else {
+                $actividades[$row->actividades] = $timetotal;
+            }
+            if ($row->Id_request == 'Nancy A') {
+                if (key_exists($row->actividades, $nancy)) {
+                    $nancy[$row->actividades] += $timetotal;
+                } else {
+                    $nancy[$row->actividades] = $timetotal;
+                }
+            }
+            if ($row->Id_request == 'Jesus C') {
+                if (key_exists($row->actividades, $jesus)) {
+                    $jesus[$row->actividades] += $timetotal;
+                } else {
+                    $jesus[$row->actividades] = $timetotal;
+                }
+            }
+            if ($row->Id_request == 'Paola S') {
+                if (key_exists($row->actividades, $pao)) {
+                    $pao[$row->actividades] += $timetotal;
+                } else {
+                    $pao[$row->actividades] = $timetotal;
+                }
+            }
+            if ($row->Id_request == 'Alejandro V') {
+                if (key_exists($row->actividades, $ale)) {
+                    $ale[$row->actividades] += $timetotal;
+                } else {
+                    $ale[$row->actividades] = $timetotal;
+                }
+            }
+            if ($row->Id_request == 'Carlos R') {
+                if (key_exists($row->actividades, $carlos)) {
+                    $carlos[$row->actividades] += $timetotal;
+                } else {
+                    $carlos[$row->actividades] = $timetotal;
+                }
+            }
+            if ($row->Id_request == 'Arturo S') {
+                if (key_exists($row->actividades, $arturo)) {
+                    $arturo[$row->actividades] += $timetotal;
+                } else {
+                }
+            }
+            if ($row->Id_request == 'Jorge G') {
+                if (key_exists($row->actividades, $jorge)) {
+                    $jorge[$row->actividades] += $timetotal;
+                } else {
+                    $jorge[$row->actividades] = $timetotal;
+                }
+            }
+            if ($row->Id_request == 'Brandon S') {
+                if (key_exists($row->actividades, $brandon)) {
+                    $brandon[$row->actividades] += $timetotal;
+                } else {
+                    $brandon[$row->actividades] = $timetotal;
+                }
+            }
+        }
+        $tiemposDatosIng = DB::table('ingactividades')
+            ->where('count', '=', '4')
+            ->where('fecha', 'LIKE', '%-' . $lastMonth . '%')
+            ->orderBy('actividades', 'desc')
+            ->get();
+        foreach ($tiemposDatosIng as $row) {
+            $timeIni = $timeFin = $timetotal = 0;
+            $timeIni = strtotime($row->fecha);
+            $timeFin = strtotime($row->finT);
+            $timetotal = ($timeFin - $timeIni) / 60;
+            if (key_exists($row->actividades, $actividadesLastMonth)) {
+                $actividadesLastMonth[$row->actividades] += $timetotal;
+            } else {
+                $actividadesLastMonth[$row->actividades] = $timetotal;
+            }
         }
 
 
 
-    }
-
-
-
-        return view('juntas/ing', ['actividades' => $actividades,'value' => session('user'), 'cat' => session('categoria')]);
+        return view('juntas/ing', ['jesus' => $jesus, 'pao' => $pao, 'nancy' => $nancy, 'ale' => $ale, 'carlos' => $carlos, 'arturo' => $arturo, 'jorge' => $jorge, 'brandon' => $brandon, 'actividadesLastMonth' => $actividadesLastMonth, 'actividades' => $actividades, 'value' => session('user'), 'cat' => session('categoria')]);
     }
 }
