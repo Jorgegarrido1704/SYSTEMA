@@ -1,10 +1,12 @@
+try {
+
 const tiemposIng = document.getElementById("tiempos");
 const labelsAct=Object.keys(actividades);
 const dataAct=Object.values(actividades);
 const jes =Object.values(jesus);
 const pao =Object.values(paos);
 const nancys =Object.values(nancy);
-console.log(nancy);
+//console.log(nancy);
 const ales =Object.values(ale);
 const carloss =Object.values(carlos);
 const arturos =Object.values(arturo);
@@ -143,3 +145,8 @@ const timeIng = new Chart(tiemposIng, {
     }
   }
 });
+}
+
+catch (error) {
+
+}

@@ -6,7 +6,6 @@ const actividadesLastMonth =  {!! json_encode($actividadesLastMonth) !!};
 const jesus =  {!! json_encode($jesus) !!};
 const paos =  {!! json_encode($pao) !!};
 const nancy =  {!! json_encode($nancy) !!};
-console.log(nancy);
 const ale =  {!! json_encode($ale) !!};
 const carlos =  {!! json_encode($carlos) !!};
 const arturo =  {!! json_encode($arturo) !!};
