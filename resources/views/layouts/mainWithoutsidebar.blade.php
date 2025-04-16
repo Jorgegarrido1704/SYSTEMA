@@ -14,14 +14,14 @@
     <title>CVTS</title>
 
     <!-- Custom fonts for this template-->
-    <link href="{{ asset('/dash/vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
-        @yield('css')
+    <link href="{{ asset('/dash/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
+    @yield('css')
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="{{ asset('/dash/css/sb-admin-2.min.css')}}" rel="stylesheet">
+    <link href="{{ asset('/dash/css/sb-admin-2.min.css') }}" rel="stylesheet">
 
 </head>
 
@@ -39,12 +39,12 @@
             <div id="content">
 
                 <!-- Topbar -->
-               @include('layouts.header')
+                @include('layouts.header')
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-                        @yield('contenido')
+                    @yield('contenido')
 
 
                 </div>
@@ -57,7 +57,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; by  Jorge Garrido 2024</span>
+                        <span>Copyright &copy; by Jorge Garrido 2024</span>
                     </div>
                 </div>
             </footer>
@@ -95,38 +95,38 @@
     </div>
 
     <!-- Bootstrap core JavaScript-->
-    <script src="{{ asset('/dash/vendor/jquery/jquery.min.js')}}"></script>
-    <script src="{{ asset('/dash/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+    <script src="{{ asset('/dash/vendor/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('/dash/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src="{{ asset('/dash/vendor/jquery-easing/jquery.easing.min.js')}}"></script>
+    <script src="{{ asset('/dash/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="{{ asset('/dash/js/sb-admin-2.min.js')}}"></script>
+    <script src="{{ asset('/dash/js/sb-admin-2.min.js') }}"></script>
 
     <!-- Page level plugins -->
-    <script src="{{ asset('/dash/vendor/chart.js/Chart.min.js')}}"></script>
+    <script src="{{ asset('/dash/vendor/chart.js/Chart.min.js') }}"></script>
 
     <!-- Page level custom scripts -->
-    <script src="{{ asset('/dash/js/demo/chart-area-demo.js')}}"></script>
-    <script src="{{ asset('/dash/js/demo/chart-pie-demo.js')}}"></script>
-    <script src="{{ asset('/dash/js/demo/chart-line-ing.js')}}"></script>
-    <script src="{{ asset('/dash/js/gandGraph.js')}}"></script>
+    <script src="{{ asset('/dash/js/demo/chart-area-demo.js') }}"></script>
+    <script src="{{ asset('/dash/js/demo/chart-pie-demo.js') }}"></script>
+    <script src="{{ asset('/dash/js/demo/chart-line-ing.js') }}"></script>
+    <script src="{{ asset('/dash/js/gandGraph.js') }}"></script>
 
 
- <script>
-    function changework(action) {
-    var areaToChange = document.getElementById('work');
-    var TableChange = document.getElementById('tableChange');
-    // Clear existing content
-    areaToChange.innerHTML = '';
-    TableChange.innerHTML='';
+    <script>
+        function changework(action) {
+            var areaToChange = document.getElementById('work');
+            var TableChange = document.getElementById('tableChange');
+            // Clear existing content
+            areaToChange.innerHTML = '';
+            TableChange.innerHTML = '';
 
 
-    // Depending on the selected action, update the area content
-    switch (action) {
-        case 'desviation':
-            areaToChange.innerHTML =`
+            // Depending on the selected action, update the area content
+            switch (action) {
+                case 'desviation':
+                    areaToChange.innerHTML = `
             <div class="desv" align="center">
                             <form  id="formula" action="{{ route('desviation') }}" method="POST">
                                 @csrf
@@ -167,7 +167,8 @@
                     <input type="submit" class="btn btn-primary" name="enviar" id="enviar" value="Save">
                 </form>            </div>
 
-            `; TableChange.innerHTML = `
+            `;
+                    TableChange.innerHTML = `
             <div class="row" >
                                                     <table>
                                                         <thead>
@@ -184,20 +185,20 @@
                                                             <th>Fecha</th>
                                                             </thead>
                                                         <tbody>
-                                                            @if(!empty($desviations))
-                                                    @foreach ( $desviations as $desviation)
+                                                            @if (!empty($desviations))
+                                                    @foreach ($desviations as $desviation)
                                                             <tr>
-                                                                <td>{{$desviation[0]}}</td>
-                                                                <td>{{$desviation[1]}}</td>
-                                                                <td>{{$desviation[2]}}</td>
-                                                                <td>{{$desviation[3]}}</td>
-                                                                <td>{{$desviation[4]}}</td>
-                                                                <td>{{$desviation[5]}}</td>
-                                                                <td>{{$desviation[6]}}</td>
-                                                                <td>{{$desviation[7]}}</td>
-                                                                <td>{{$desviation[8]}}</td>
-                                                                <td>{{$desviation[9]}}</td>
-                                                                <td>{{$desviation[10]}}</td>
+                                                                <td>{{ $desviation[0] }}</td>
+                                                                <td>{{ $desviation[1] }}</td>
+                                                                <td>{{ $desviation[2] }}</td>
+                                                                <td>{{ $desviation[3] }}</td>
+                                                                <td>{{ $desviation[4] }}</td>
+                                                                <td>{{ $desviation[5] }}</td>
+                                                                <td>{{ $desviation[6] }}</td>
+                                                                <td>{{ $desviation[7] }}</td>
+                                                                <td>{{ $desviation[8] }}</td>
+                                                                <td>{{ $desviation[9] }}</td>
+                                                                <td>{{ $desviation[10] }}</td>
 
                                                                 </tr>
                                                     @endforeach
@@ -207,12 +208,12 @@
 
                                                 </div>
             `;
-                        break;
-                    case 'Materials':
-                        // Default case: Show default table content
-                        areaToChange.innerHTML = `
+                    break;
+                case 'Materials':
+                    // Default case: Show default table content
+                    areaToChange.innerHTML = `
                         <div align="center">
-                        <form id="formula" action="{{ route('material')}}" method="POST">
+                        <form id="formula" action="{{ route('material') }}" method="POST">
                             @csrf
             <div style="margin-bottom: 10px;">
                 <label for="cant1" style="margin-right: 10px;">Cantidad</label>
@@ -263,7 +264,7 @@
             </div>
 
                         `;
-                        TableChange.innerHTML = `
+                    TableChange.innerHTML = `
                         <div class="row" >
                                                     <table>
                                                         <thead>
@@ -274,14 +275,14 @@
                                                             <th>Status</th>
                                                         </thead>
                                                         <tbody>
-                                                            @if(!empty($materials))
-                                                    @foreach ( $materials as $material)
+                                                            @if (!empty($materials))
+                                                    @foreach ($materials as $material)
                                                             <tr>
-                                                                <td>{{$material[0]}}</td>
-                                                                <td>{{$material[1]}}</td>
-                                                                <td>{{$material[2]}}</td>
-                                                                <td>{{$material[3]}}</td>
-                                                                <td>{{$material[4]}}</td>
+                                                                <td>{{ $material[0] }}</td>
+                                                                <td>{{ $material[1] }}</td>
+                                                                <td>{{ $material[2] }}</td>
+                                                                <td>{{ $material[3] }}</td>
+                                                                <td>{{ $material[4] }}</td>
 
                                                             </tr>
                                                     @endforeach
@@ -292,12 +293,12 @@
 
                                                 </div>
                         `;
-                        break;
-                    case 'Maintanience':
-                        // Default case: Show default table content
-                        areaToChange.innerHTML = `
+                    break;
+                case 'Maintanience':
+                    // Default case: Show default table content
+                    areaToChange.innerHTML = `
                         <div class="row" >
-                                            <form  action="{{ route('maintananceGen')}}" method="POST">
+                                            <form  action="{{ route('maintananceGen') }}" method="POST">
                                                     @csrf
                                                         <div class="form-group">
                                                     <label for="nom_equipo">Equipo:</label>
@@ -320,7 +321,7 @@
                                                     </div>
                                                     </form>
                                         </div>`;
-                                        TableChange.innerHTML = `
+                    TableChange.innerHTML = `
                         <div class="row" >
                                                     <table>
                                                         <thead>
@@ -331,14 +332,14 @@
                                                             <th>Status</th>
                                                         </thead>
                                                         <tbody>
-                                                    @if(!empty($paros))
-                                                    @foreach ( $paros as $paro)
+                                                    @if (!empty($paros))
+                                                    @foreach ($paros as $paro)
                                                             <tr>
-                                                                <td>{{$paro[0]}}</td>
-                                                                <td>{{$paro[1]}}</td>
-                                                                <td>{{$paro[2]}}</td>
-                                                                <td>{{$paro[3]}}</td>
-                                                                <td>{{$paro[4]}}</td>
+                                                                <td>{{ $paro[0] }}</td>
+                                                                <td>{{ $paro[1] }}</td>
+                                                                <td>{{ $paro[2] }}</td>
+                                                                <td>{{ $paro[3] }}</td>
+                                                                <td>{{ $paro[4] }}</td>
                                                             </tr>
                                                     @endforeach
                                                     @endif
@@ -347,10 +348,10 @@
 
                                                 </div>
                         `;
-                        case ('full'):
-                        // Default case: Show default table content
-                        areaToChange.innerHTML = `
-                                                    <form  action="{{ route('regfull')}}" method="POST">
+                case ('full'):
+                    // Default case: Show default table content
+                    areaToChange.innerHTML = `
+                                                    <form  action="{{ route('regfull') }}" method="POST">
                                                     @csrf
                                                         <div class="form-group">
                                                     <label for="cliente">Cliente:</label>
@@ -400,7 +401,7 @@
 
 
                                                         `;
-                                                        TableChange.innerHTML = `
+                    TableChange.innerHTML = `
                         <div class="row" >
                                                     <table>
                                                         <thead>
@@ -412,24 +413,24 @@
                                                             <th>Status</th>
                                                         </thead>
                                                         <tbody>
-                                                    @if(!empty($fulls))
-                                                    @foreach ( $fulls as $full)
+                                                    @if (!empty($fulls))
+                                                    @foreach ($fulls as $full)
                                                             <style>
-                                                    @if($full[5] == "Pendiente")
+                                                    @if ($full[5] == 'Pendiente')
                                                         #est{ background-color='ligthblue';}
-                                                    @elseif($full[5] == "En proceso")
+                                                    @elseif ($full[5] == 'En proceso')
                                                             <tr style="background-color='ligthgreen'">
-                                                    @elseif($full[5] == "Pausado")
+                                                    @elseif ($full[5] == 'Pausado')
                                                             <tr style="background-color='red';">
                                                             @endif
                                                             </style>
                                                             <tr>
-                                                                <td id="est" style="background-color=red;">{{$full[0]}}</td>
-                                                                <td id="est">{{$full[3]}}</td>
-                                                                <td id="est">{{$full[1]}}</td>
-                                                                <td id="est">{{$full[2]}}</td>
-                                                                <td id="est">{{$full[4]}}</td>
-                                                                <td id="est">{{$full[5]}}</td>
+                                                                <td id="est" style="background-color=red;">{{ $full[0] }}</td>
+                                                                <td id="est">{{ $full[3] }}</td>
+                                                                <td id="est">{{ $full[1] }}</td>
+                                                                <td id="est">{{ $full[2] }}</td>
+                                                                <td id="est">{{ $full[4] }}</td>
+                                                                <td id="est">{{ $full[5] }}</td>
                                                             </tr>
                                                     @endforeach
                                                     @endif
@@ -439,11 +440,11 @@
 
                                                 </div>
                         `;
-                        break;
-                        case ('help'):
-                        // Default case: Show default table content
-                        areaToChange.innerHTML = `
-                                                <form class="row g-3" action="{{route('problemas_general')}}" method="POST">
+                    break;
+                case ('help'):
+                    // Default case: Show default table content
+                    areaToChange.innerHTML = `
+                                                <form class="row g-3" action="{{ route('problemas_general') }}" method="POST">
                                                 @csrf
                                                     <div class="col-md-6">
                                                     <label for="pnIs" class="form-label">Part Number</label>
@@ -490,7 +491,7 @@
                                                     </div>
                                                 </form>
                                                         `;
-                                                        TableChange.innerHTML = `
+                    TableChange.innerHTML = `
                         <div class="row" >
                                                     <table>
                                                         <thead>
@@ -502,24 +503,24 @@
                                                             <th>Status</th>
                                                         </thead>
                                                         <tbody>
-                                                    @if(!empty($fulls))
-                                                    @foreach ( $fulls as $full)
+                                                    @if (!empty($fulls))
+                                                    @foreach ($fulls as $full)
                                                             <style>
-                                                    @if($full[5] == "Pendiente")
+                                                    @if ($full[5] == 'Pendiente')
                                                         #est{ background-color='ligthblue';}
-                                                    @elseif($full[5] == "En proceso")
+                                                    @elseif ($full[5] == 'En proceso')
                                                             <tr style="background-color='ligthgreen'">
-                                                    @elseif($full[5] == "Pausado")
+                                                    @elseif ($full[5] == 'Pausado')
                                                             <tr style="background-color='red';">
                                                             @endif
                                                             </style>
                                                             <tr>
-                                                                <td id="est" style="background-color=red;">{{$full[0]}}</td>
-                                                                <td id="est">{{$full[3]}}</td>
-                                                                <td id="est">{{$full[1]}}</td>
-                                                                <td id="est">{{$full[2]}}</td>
-                                                                <td id="est">{{$full[4]}}</td>
-                                                                <td id="est">{{$full[5]}}</td>
+                                                                <td id="est" style="background-color=red;">{{ $full[0] }}</td>
+                                                                <td id="est">{{ $full[3] }}</td>
+                                                                <td id="est">{{ $full[1] }}</td>
+                                                                <td id="est">{{ $full[2] }}</td>
+                                                                <td id="est">{{ $full[4] }}</td>
+                                                                <td id="est">{{ $full[5] }}</td>
                                                             </tr>
                                                     @endforeach
                                                     @endif
@@ -529,23 +530,22 @@
 
                                                 </div>
                         `;
-                        break;
+                    break;
 
 
-                }
             }
-
+        }
     </script>
- <script>
-    function ingregistro(action) {
-        var areaToChange = document.getElementById('containerPPAP');
-        // Clear existing content
-        areaToChange.innerHTML = '';
-        // Depending on the selected action, update the area content
-        switch (action) {
-        case 'ppap':
-            areaToChange.innerHTML =`
-                    <form action="{{route('RegPPAP')}}" method="GET">
+    <script>
+        function ingregistro(action) {
+            var areaToChange = document.getElementById('containerPPAP');
+            // Clear existing content
+            areaToChange.innerHTML = '';
+            // Depending on the selected action, update the area content
+            switch (action) {
+                case 'ppap':
+                    areaToChange.innerHTML = `
+                    <form action="{{ route('RegPPAP') }}" method="GET">
                                                     <label for="Tipo">Type of Work</label>
                                                     <select name="Tipo" id="Tipo" required  >
                                                     <option value=""></option>
@@ -607,11 +607,11 @@
                                                     <input type="submit" value="Submit">
                                                 </form>
         `;
-            break;
-        case 'cronograma':
-            // Default case: Show default table content
-            areaToChange.innerHTML = `
-                <form action="{{route('cronoReg')}}" method="GET">
+                    break;
+                case 'cronograma':
+                    // Default case: Show default table content
+                    areaToChange.innerHTML = `
+                <form action="{{ route('cronoReg') }}" method="GET">
 
                                                     <label for="Client">Client</label>
                                                     <select name="Client" id="Client" required>
@@ -650,173 +650,153 @@
 
                                                 </form>
             `;
-            break;
+                    break;
+            }
         }
+    </script>
+
+
+
+    <script>
+        document.forms["formula"].onsubmit = function() {
+            var peri = document.getElementById('time').value;
+            var cantsus = document.getElementById('cant').value
+            var text = document.getElementById('texthidden').value = document.getElementById('text').innerHTML;
+            var model = document.getElementById('modelo').value;
+            var numPartOrg = document.getElementById('numPartOrg').value;
+            var numPartSus = document.getElementById('numPartSus').value;
+            var evi = document.getElementById('evihidden').value = document.getElementById('evi').innerHTML;
+            var acc = document.getElementById('acchidden').value = document.getElementById('acc').innerHTML;
+            var client = document.getElementById('cliente').value;
+            if (model == '' || text == '' || numPartOrg == '' || numPartSus == '' || client == '' || acc == "") {
+                alert('Falta de por ingresar alguen dato, por favor verifiquelo');
+                return false;
+            }
         }
-
-</script>
-
-
-
-<script>
-    document.forms["formula"].onsubmit= function(){
-        var peri=document.getElementById('time').value;
-        var cantsus=document.getElementById('cant').value
-        var text=document.getElementById('texthidden').value=document.getElementById('text').innerHTML;
-        var model=document.getElementById('modelo').value;
-        var  numPartOrg=document.getElementById('numPartOrg').value;
-        var numPartSus = document.getElementById('numPartSus').value;
-        var evi=document.getElementById('evihidden').value=document.getElementById('evi').innerHTML;
-        var acc=document.getElementById('acchidden').value=document.getElementById('acc').innerHTML;
-        var client = document.getElementById('cliente').value;
-        if(model=='' || text=='' || numPartOrg=='' || numPartSus=='' || client=='' || acc=="" ){
-            alert('Falta de por ingresar alguen dato, por favor verifiquelo');
-            return false;
-        }
-    }
-
-</script>
-<script>
-
-
+    </script>
+    <script>
         // Populate second select based on the selected option from the first select
         function updateSecondSelect() {
-        var firstSelect = document.getElementById("equipo");
-        var secondSelect = document.getElementById("dano");
+            var firstSelect = document.getElementById("equipo");
+            var secondSelect = document.getElementById("dano");
 
-        // Clear existing options
-        secondSelect.innerHTML = "";
+            // Clear existing options
+            secondSelect.innerHTML = "";
 
-        // Populate second select based on the selected option from the first select
-        if (firstSelect.value === "Mantenimiento") {
+            // Populate second select based on the selected option from the first select
+            if (firstSelect.value === "Mantenimiento") {
 
-            var nulo = new Option("Maquina de corte","Maquina de corte");
-            var option1 = new Option("Impresora maquina corte", "Impresora maquina corte");
-            var option2 = new Option("Banda maquina de corte", "Banda maquina de corte");
-            var option_3 = new Option("Falla electrica corte", "Falla electrica corte");
-            var option3 = new Option("Cambio de aplicador", "Cambio de aplicador");
-            var option4 = new Option("Falla electrica aplicador", "Falla electrica aplicador");
-            var option_a = new Option("Ajuste de aplicador", "Ajuste de aplicador");
-            var option_b = new Option("Ajuste de presión", "Ajuste de presión");
-            var option_c = new Option("Colocacion de pernos","Colocacion de pernos")
-            var option_d = new Option("Quitar pernos","Quitar pernos");
-            var option_e = new Option("Empalmadora", "Empalmadora");
-            var option_f = new Option("Banco ajuste de presion", "Banco ajuste de presion");
-            var option_g = new Option("Banco colocacion de herramental","Banco colocacion de herramental")
-            var option_h = new Option("Equipo de computo","Equipo de computo");
+                var nulo = new Option("Maquina de corte", "Maquina de corte");
+                var option1 = new Option("Impresora maquina corte", "Impresora maquina corte");
+                var option2 = new Option("Banda maquina de corte", "Banda maquina de corte");
+                var option_3 = new Option("Falla electrica corte", "Falla electrica corte");
+                var option3 = new Option("Cambio de aplicador", "Cambio de aplicador");
+                var option4 = new Option("Falla electrica aplicador", "Falla electrica aplicador");
+                var option_a = new Option("Ajuste de aplicador", "Ajuste de aplicador");
+                var option_b = new Option("Ajuste de presión", "Ajuste de presión");
+                var option_c = new Option("Colocacion de pernos", "Colocacion de pernos")
+                var option_d = new Option("Quitar pernos", "Quitar pernos");
+                var option_e = new Option("Empalmadora", "Empalmadora");
+                var option_f = new Option("Banco ajuste de presion", "Banco ajuste de presion");
+                var option_g = new Option("Banco colocacion de herramental", "Banco colocacion de herramental")
+                var option_h = new Option("Equipo de computo", "Equipo de computo");
 
-            secondSelect.appendChild(nulo);
-            secondSelect.appendChild(option1);
-            secondSelect.appendChild(option2);
-            secondSelect.appendChild(option_3);
-            secondSelect.appendChild(option4);
-            secondSelect.appendChild(option3);
-            secondSelect.appendChild(option_a);
-            secondSelect.appendChild(option_b);
-            secondSelect.appendChild(option_c);
-            secondSelect.appendChild(option_d);
-            secondSelect.appendChild(option_e);
-            secondSelect.appendChild(option_f);
-            secondSelect.appendChild(option_g);
-            secondSelect.appendChild(option_h);
-        } else if (firstSelect.value === "Ingenieria") {
+                secondSelect.appendChild(nulo);
+                secondSelect.appendChild(option1);
+                secondSelect.appendChild(option2);
+                secondSelect.appendChild(option_3);
+                secondSelect.appendChild(option4);
+                secondSelect.appendChild(option3);
+                secondSelect.appendChild(option_a);
+                secondSelect.appendChild(option_b);
+                secondSelect.appendChild(option_c);
+                secondSelect.appendChild(option_d);
+                secondSelect.appendChild(option_e);
+                secondSelect.appendChild(option_f);
+                secondSelect.appendChild(option_g);
+                secondSelect.appendChild(option_h);
+            } else if (firstSelect.value === "Ingenieria") {
 
-        var option5 = new Option("Soporte ", "Soporte");
-        var option6 = new Option("Colocacion FULL size", "Colocacion FULL size");
-        var option5_1= new Option("Seguimiento de nuevo producto","Seguimiento de nuevo producto");
+                var option5 = new Option("Soporte ", "Soporte");
+                var option6 = new Option("Colocacion FULL size", "Colocacion FULL size");
+                var option5_1 = new Option("Seguimiento de nuevo producto", "Seguimiento de nuevo producto");
 
-         secondSelect.appendChild(option5);
-         secondSelect.appendChild(option6);
-         secondSelect.appendChild(option5_1);
-    } else if (firstSelect.value === "Calidad") {
+                secondSelect.appendChild(option5);
+                secondSelect.appendChild(option6);
+                secondSelect.appendChild(option5_1);
+            } else if (firstSelect.value === "Calidad") {
 
-        var option7 = new Option("Validacion de medidas", "Validacion de medidas");
-        var option8 = new Option("Liberacion de terminales","Liberacion de terminales");
-        var option9 = new Option("Pull Test", "Pull Test");
-       ;
-        secondSelect.appendChild(option7);
-         secondSelect.appendChild(option8);
-        secondSelect.appendChild(option9);
+                var option7 = new Option("Validacion de medidas", "Validacion de medidas");
+                var option8 = new Option("Liberacion de terminales", "Liberacion de terminales");
+                var option9 = new Option("Pull Test", "Pull Test");;
+                secondSelect.appendChild(option7);
+                secondSelect.appendChild(option8);
+                secondSelect.appendChild(option9);
 
-    } else if (firstSelect.value === "Almacen") {
-        var option_1a= new Option("Entrega de Kits","Entrega de Kits");
-        secondSelect.appendChild(option_1a);
+            } else if (firstSelect.value === "Almacen") {
+                var option_1a = new Option("Entrega de Kits", "Entrega de Kits");
+                secondSelect.appendChild(option_1a);
 
-    }
+            }
         }
         updateSecondSelect();
-</script>
+    </script>
 
 
 
 
 
-        @if($cat=='inge')
-
-
+    @if ($cat == 'inge')
         <script>
-                 function updateRev() {
-                    var rev=document.getElementById('Tipo').value;
-                    console.log(rev);
-                    if(rev=='PRIM' || rev=='PPAP'){
-                        document.getElementById('rev2').value='N/A';
-                        document.getElementById('cambios').value='N/A';
-                    }else if(rev=='NO PPAP'){
-                        document.getElementById('rev2').value='SOLO REGISTRO';
-                        document.getElementById('cambios').value='SOLO REGISTRO';
+           
+
+
+
+            var reg = document.getElementById('regGraf');
+            var ctx1 = reg.getContext('2d');
+            var datos = {!! json_encode($graficOnTime) !!};
+            var newDatos = {!! json_encode($graficasLate) !!};
+            console.log(datos); // Fix the variable name here to match the JSON data
+            var data = {
+                labels: ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'],
+                datasets: [{
+                        label: 'Harness on Time',
+                        backgroundColor: 'rgba(13, 238, 67, 0.8)',
+                        borderColor: 'rgba(13, 238, 67, 1)',
+                        borderWidth: 1,
+                        hoverBackgroundColor: 'rgba(13, 238, 67, 0.4)',
+                        data: datos
+                    },
+                    {
+                        label: 'Harness Late',
+                        backgroundColor: 'rgba(13, 33, 238, 0.8)',
+                        borderColor: 'rgba(13, 33, 238, 1)',
+                        borderWidth: 1,
+                        hoverBackgroundColor: 'rgba(13, 33, 238, 0.48)',
+                        data: newDatos
                     }
+                ]
+            };
 
+            options = {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
                 }
+            };
+
+            var chart = new Chart(ctx1, {
+                type: 'bar',
+                data: data,
+                options: options
+            });
+        </script>
+    @endif
 
 
 
-                                                    var reg = document.getElementById('regGraf');
-                                                    var ctx1 = reg.getContext('2d');
-                                                    var datos = {!! json_encode($graficOnTime)!!};
-                                                    var newDatos = {!! json_encode($graficasLate) !!};
-                                                    console.log(datos);  // Fix the variable name here to match the JSON data
-                                                    var data = {
-                                                        labels: ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'],
-                                                        datasets: [{
-                                                            label: 'Harness on Time',
-                                                            backgroundColor: 'rgba(13, 238, 67, 0.8)',
-                                                            borderColor: 'rgba(13, 238, 67, 1)',
-                                                            borderWidth: 1,
-                                                            hoverBackgroundColor: 'rgba(13, 238, 67, 0.4)',
-                                                            data: datos
-                                                        },
-                                                        {
-                                                                label: 'Harness Late',
-                                                                backgroundColor: 'rgba(13, 33, 238, 0.8)',
-                                                                borderColor: 'rgba(13, 33, 238, 1)',
-                                                                borderWidth: 1,
-                                                                hoverBackgroundColor: 'rgba(13, 33, 238, 0.48)',
-                                                                data: newDatos
-                                                            }]
-                                                    };
-
-                                                    options = {
-                                                        scales: {
-                                                            y: {
-                                                                beginAtZero: true
-                                                            }
-                                                        }
-                                                    };
-
-                                                    var chart = new Chart(ctx1, {
-                                                        type: 'bar',
-                                                        data: data,
-                                                        options: options
-                                                    });
-
-                                    </script>
-
-
-@endif
-
-
-
-@yield('scripts')
+    @yield('scripts')
 
 
 </body>
