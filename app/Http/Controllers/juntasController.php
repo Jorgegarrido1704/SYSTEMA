@@ -1044,12 +1044,15 @@ class juntasController extends Controller
             $tableContent .= '<tr>';
             $tableContent .= '<td>' . $row->pn . '</td>';
             $tableContent .= '<td>' . $row->wo . '</td>';
+            $tableContent .= '<td>' . $row->orgQty . '</td>';
             $tableContent .= '<td>' . $row->cortPar . '</td>';
             $tableContent .= '<td>' . $row->libePar . '</td>';
             $tableContent .= '<td>' . $row->ensaPar . '</td>';
             $tableContent .= '<td>' . $row->loomPar . '</td>';
+            $tableContent .= '<td>' . $row->preCalidad . '</td>';
             $tableContent .= '<td>' . $row->testPar . '</td>';
             $tableContent .= '<td>' . $row->embPar . '</td>';
+            $tableContent .= '<td>' . $row->eng . '</td>';
             $tableContent .= '</tr>';
             $pnReg[$i] = $row->pn;
             $i++;

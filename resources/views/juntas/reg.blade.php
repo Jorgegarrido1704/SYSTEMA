@@ -32,12 +32,15 @@
                                             <tr>
                                                 <th>PN</th>
                                                 <th>WO</th>
+                                                <th>Qty Order</th>
                                                 <th>Cutting</th>
                                                 <th>Terminals</th>
                                                 <th>Assembly</th>
                                                 <th>Lomming</th>
+                                                <th>Pre Quality</th>
                                                 <th>Testing</th>
                                                 <th>Shipping</th>
+                                                <th>Waiting Ing</th>
                                             </tr>
                                         </thead>
                                         <tbody id="table-harness">  </tbody>
