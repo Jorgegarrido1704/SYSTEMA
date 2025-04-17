@@ -157,6 +157,70 @@
 
     </div>
     <div class="row">
+        <div class="col-lg-5 col-lx-5">
+            <!-- AREAS -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h5 class="m-0 font-weight-bold text-primary">Top 10 employees incidents Montly</h5>
+                </div>
+                <div class="card-body" style="overflow-y: auto; height: 360px;" id="tableChange">
+                    <canvas id="MonthIncidences"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-lx-3">
+            <!-- AREAS -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h5 class="m-0 font-weight-bold text-primary">Employees without incidents in 2025</h5>
+                </div>
+                <div class="card-body" style="overflow-y: auto; height: 360px;" id="tableChange">
+                    <table id="table-harness" class="table-harness">
+                        <thead>
+                            <th>Employee</th>
+                        </thead>
+                        <tbody id="tres">
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 mb-4" style="max-width: 40%">
+            <!-- AREAS -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h5 class="m-0 font-weight-bold text-primary">Reworks Responsible Yesterday </h5>
+                </div>
+                <div class="card-body" style="overflow-y: auto; height: 360px;" id="tableChange">
+                    <div class="row">
+                        <table>
+                            <thead>
+                                <th>Responsable</th>
+                                <th>Quantity</th>
+                            </thead>
+                            <tbody>
+                                @if (!empty($gultyY))
+                                    @foreach ($gultyY as $datoGultyY)
+                                        <tr>
+                                            <td>{{ $datoGultyY[0] }}</td>
+                                            <td>{{ $datoGultyY[1] }}</td>
+
+                                        </tr>
+                                    @endforeach
+                                @endif
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- Graficas malas -->
+    <div class="row">
+
 
 
         <div class="col-lg-4 mb-4" style="max-width: 40%">
@@ -219,69 +283,6 @@
                         </table>
 
                     </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4 mb-4" style="max-width: 40%">
-            <!-- AREAS -->
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h5 class="m-0 font-weight-bold text-primary">Reworks Responsible Yesterday </h5>
-                </div>
-                <div class="card-body" style="overflow-y: auto; height: 360px;" id="tableChange">
-                    <div class="row">
-                        <table>
-                            <thead>
-                                <th>Responsable</th>
-                                <th>Quantity</th>
-                            </thead>
-                            <tbody>
-                                @if (!empty($gultyY))
-                                    @foreach ($gultyY as $datoGultyY)
-                                        <tr>
-                                            <td>{{ $datoGultyY[0] }}</td>
-                                            <td>{{ $datoGultyY[1] }}</td>
-
-                                        </tr>
-                                    @endforeach
-                                @endif
-                        </table>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Graficas malas -->
-    <div class="row">
-
-        <div class="col-lg-6 col-lx-6">
-            <!-- AREAS -->
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h5 class="m-0 font-weight-bold text-primary">Top 10 employees incidents Montly</h5>
-                </div>
-                <div class="card-body" style="overflow-y: auto; height: 360px;" id="tableChange">
-                    <canvas id="MonthIncidences"></canvas>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-6 col-lx-6">
-            <!-- AREAS -->
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h5 class="m-0 font-weight-bold text-primary">Employees without incidents in 2025</h5>
-                </div>
-                <div class="card-body" style="overflow-y: auto; height: 360px;" id="tableChange">
-                    <table id="table-harness" class="table-harness">
-                        <thead>
-                            <th>Employee</th>
-                        </thead>
-                        <tbody id="tres">
-
-
-                        </tbody>
-                    </table>
                 </div>
             </div>
         </div>
