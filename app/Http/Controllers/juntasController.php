@@ -1260,9 +1260,42 @@ class juntasController extends Controller
                 $actividadesLastMonth[$row->actividades] = $timetotal;
             }
         }
+        $jesp=$nanp=$bp=$jcp=$psp=$alv=$asp=$jg=[];
+        $datos2=['corte','liberacion','ensamble','loom','calidad'];
+        $defVal= array_fill(0, count($datos2), 0);
+        $jesp = array_combine($datos2, $defVal);
+        $nanp = array_combine($datos2, $defVal);
+        $bp = array_combine($datos2, $defVal);
+        $jcp = array_combine($datos2, $defVal);
+        $psp = array_combine($datos2, $defVal);
+        $alv = array_combine($datos2, $defVal);
+        $asp = array_combine($datos2, $defVal);
+        $jg = array_combine($datos2, $defVal);
+
+        $datosIng=DB::table('ppap')
+            ->where('fecha', 'LIKE', '%-' . $monthYear . '%')
+            ->orderBy('codigo', 'desc')
+            ->get();
+        foreach ($datosIng as $row) {
+            if ($row->codigo == 'Arturo S') {
+                $asp[$row->area] += 1;
+        }else if($row->codigo == 'Jorge G'){
+            $jg[$row->area] += 1;
+        }else if($row->codigo == 'PAOLA S'){
+            $psp[$row->area] += 1;
+        }else if($row->codigo == 'Alejandro V'){
+            $alv[$row->area] += 1;
+        }else if($row->codigo == 'Carlos R'){
+            $jcp[$row->area] += 1;
+        }else if($row->codigo == 'Jesus_C' or $row->codigo == 'Victor_E'){
+            $jesp[$row->area] += 1;
+        }else if($row->codigo == 'Nancy A'){
+            $nanp[$row->area] += 1;
+        }
+
+    }
 
 
-
-        return view('juntas/ing', ['jesus' => $jesus, 'pao' => $pao, 'nancy' => $nancy, 'ale' => $ale, 'carlos' => $carlos, 'arturo' => $arturo, 'jorge' => $jorge, 'brandon' => $brandon, 'actividadesLastMonth' => $actividadesLastMonth, 'actividades' => $actividades, 'value' => session('user'), 'cat' => session('categoria')]);
+        return view('juntas/ing', [ 'jesp' => $jesp, 'nanp' => $nanp, 'bp' => $bp, 'jcp' => $jcp, 'psp' => $psp, 'alv' => $alv, 'asp' => $asp, 'jg' => $jg,'jesus' => $jesus, 'pao' => $pao, 'nancy' => $nancy, 'ale' => $ale, 'carlos' => $carlos, 'arturo' => $arturo, 'jorge' => $jorge, 'brandon' => $brandon, 'actividadesLastMonth' => $actividadesLastMonth, 'actividades' => $actividades, 'value' => session('user'), 'cat' => session('categoria')]);
     }
 }

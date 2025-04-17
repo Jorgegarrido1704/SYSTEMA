@@ -1,12 +1,10 @@
 try {
-
 const tiemposIng = document.getElementById("tiempos");
 const labelsAct=Object.keys(actividades);
 const dataAct=Object.values(actividades);
 const jes =Object.values(jesus);
 const pao =Object.values(paos);
 const nancys =Object.values(nancy);
-//console.log(nancy);
 const ales =Object.values(ale);
 const carloss =Object.values(carlos);
 const arturos =Object.values(arturo);
@@ -149,4 +147,95 @@ const timeIng = new Chart(tiemposIng, {
 
 catch (error) {
 
+}
+try {
+
+    const ppap = document.getElementById("procesosIngPpap");
+    const jespL=Object.keys(jesp);
+    const jespV = Object.values(jesp);
+    const jgV= Object.values(jg);
+    const aspV= Object.values(asp);
+    const alvV = Object.values(alv);
+    const pspV = Object.values(psp);
+    const nanpV = Object.values(nanp);
+    const bpV = Object.values(bp);
+    const jcpV = Object.values(jcp);
+
+
+    const ppapIng = new Chart(ppap, {
+      type: 'bar',
+      data: {
+        labels: jespL,
+        datasets: [{
+          label: 'Jesus C',
+          data: jespV,
+          backgroundColor:
+            'rgba(255, 99, 132, 0.2)',
+          borderColor:
+            'rgba(255, 99, 132, 1)',
+          borderWidth: 1,
+          borderSkipped: false,
+          stack: 'combined',
+      },
+      {
+        label: 'Jorge G',
+        data: jgV,
+        backgroundColor:
+          'rgba(54, 162, 235, 0.2)',
+
+        borderColor:
+          'rgba(54, 162, 235, 1)',
+        borderWidth: 1,
+        borderSkipped: false,
+        stack: 'combined',
+      },
+      {
+        label: 'Arturo S',
+        data: aspV,
+        backgroundColor:
+          'rgba(255, 206, 86, 0.2)',
+        borderColor:
+            'rgba(255, 206, 86, 1)',
+
+        borderWidth: 1,
+        borderSkipped: false,
+        stack: 'combined',
+      },
+
+    ]
+
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: 'Nombre'
+            }
+          },
+          y: {
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: 'Horas'
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            display: true,
+            position: 'top'
+          },
+          tooltip: {
+            enabled: true
+          }
+        }
+      }
+
+    });
+
+}
+catch (error) {
 }
