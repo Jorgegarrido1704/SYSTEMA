@@ -170,9 +170,9 @@ try {
           label: 'Jesus C',
           data: jespV,
           backgroundColor:
-            'rgba(255, 99, 132, 0.2)',
+            'rgba(62, 177, 249, 0.2)',
           borderColor:
-            'rgba(255, 99, 132, 1)',
+            'rgb(62,177,249)',
           borderWidth: 1,
           borderSkipped: false,
           stack: 'combined',
@@ -181,10 +181,10 @@ try {
         label: 'Jorge G',
         data: jgV,
         backgroundColor:
-          'rgba(54, 162, 235, 0.2)',
+          'rgba(246, 160, 31, 0.2)',
 
         borderColor:
-          'rgba(54, 162, 235, 1)',
+          'rgb(246,160,31)',
         borderWidth: 1,
         borderSkipped: false,
         stack: 'combined',
@@ -193,10 +193,64 @@ try {
         label: 'Arturo S',
         data: aspV,
         backgroundColor:
-          'rgba(255, 206, 86, 0.2)',
+        'rgba(164, 240, 143, 0.2)',
         borderColor:
-            'rgba(255, 206, 86, 1)',
+          'rgb(164, 240, 142)',
+        borderWidth: 1,
+        borderSkipped: false,
+        stack: 'combined',
+      },
+      {
+        label: 'Alejandro V',
+        data: alvV,
+        backgroundColor:
+        'rgba(164, 240, 143, 0.2)',
+        borderColor:
+          'rgb(164, 240, 141)',
+        borderWidth: 1,
+        borderSkipped: false,
+        stack: 'combined',
 
+      },{
+        label: 'Paola S',
+        data: pspV,
+        backgroundColor:
+          'rgba(123, 8, 79, 0.2)',
+        borderColor:
+          'rgb(123, 8, 79)',
+        borderWidth: 1,
+        borderSkipped: false,
+        stack: 'combined',
+      },
+      {
+        label: 'Nancy A',
+        data: nanpV,
+        backgroundColor:
+          'rgba(251, 139, 208, 0.2)',
+        borderColor:
+          'rgb(251,139,208)',
+        borderWidth: 1,
+        borderSkipped: false,
+        stack: 'combined',
+      },
+      {
+        label: 'Brando S',
+        data: bpV,
+        backgroundColor:
+          'rgba(164, 240, 143, 0.2)',
+        borderColor:
+          'rgb(164, 240, 143)',
+        borderWidth: 1,
+        borderSkipped: false,
+        stack: 'combined',
+      },
+      {
+        label: 'Carlos R',
+        data: jcpV,
+        backgroundColor:
+          'rgba(3, 102, 18, 0.2)',
+        borderColor:
+          'rgb(3,102, 18)',
         borderWidth: 1,
         borderSkipped: false,
         stack: 'combined',
