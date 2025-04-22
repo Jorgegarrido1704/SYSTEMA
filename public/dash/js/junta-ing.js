@@ -146,6 +146,7 @@ const timeIng = new Chart(tiemposIng, {
 }
 
 catch (error) {
+    console.error(error);
 
 }
 try {
@@ -292,4 +293,5 @@ try {
 
 }
 catch (error) {
+    console.error(error);
 }
