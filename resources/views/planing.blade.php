@@ -212,15 +212,15 @@ var dat = {!! json_encode($datosP) !!};
                                             </div>
                                             <div class="form-group">
                                                 <label class="po-label" for="po">PO</label>
-                                                <input type="text" id="po" name="po" class="form-control"   minlength="11" required>
+                                                <input type="text" id="po" name="po" class="form-control"   minlength="11" maxlength="15" required>
                                             </div>
                                             <div class="form-group">
                                                 <label class="po-label" for="qty">Cantidad req</label>
-                                                <input type="number" name="qty" id="qty" min="1" class="form-control" required>
+                                                <input type="number" name="qty" id="qty" min="1" class="form-control" minlength="10" maxlength="10" required>
                                             </div>
                                             <div class="form-group">
                                                 <label class="po-label" for="Orday">Día que se ordenó (Formato dd/mm/YY)</label>
-                                                <input type="text" id="Orday" name="Orday" class="form-control"  required>
+                                                <input type="text" id="Orday" name="Orday" class="form-control"  minlength="10" maxlength="10"  required>
                                             </div>
                                             <div class="form-group">
                                                 <label class="po-label" for="Reqday">Día requerido (Formato dd/mm/YY)</label>
@@ -229,7 +229,7 @@ var dat = {!! json_encode($datosP) !!};
                                             <br>
                                             <div class="form-group">
                                                 <label class="po-label" for="WO">WO</label>
-                                                <input type="text" name="WO" id="WO" class="form-control" minlength="6" required>
+                                                <input type="text" name="WO" id="WO" class="form-control" minlength="6" maxlength="6" required>
                                             </div>
                                             <input type="submit" name="enviar" id="enviar" value="Crear" class="btn btn-primary">
                                         </form>
