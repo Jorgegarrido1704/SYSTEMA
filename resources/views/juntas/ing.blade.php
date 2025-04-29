@@ -23,6 +23,7 @@
         const alv = {!! json_encode($alv) !!};
         const asp = {!! json_encode($asp) !!};
         const jg = {!! json_encode($jg) !!};
+        const todas = {!! json_encode($todas) !!};
     </script>
     <div class="d-sm-flex align-items-center justify-content-between mb-4"></div>
 

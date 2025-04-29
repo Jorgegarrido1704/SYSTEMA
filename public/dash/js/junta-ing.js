@@ -161,6 +161,7 @@ try {
     const nanpV = Object.values(nanp);
     const bpV = Object.values(bp);
     const jcpV = Object.values(jcp);
+    const toda = Object.values(todas);
 
 
     const ppapIng = new Chart(ppap, {
@@ -255,6 +256,16 @@ try {
         borderWidth: 1,
         borderSkipped: false,
         stack: 'combined',
+      },
+      {
+        label: 'Todas',
+        data: toda,
+        backgroundColor:
+          'rgba(255, 48, 48, 0.2)',
+        borderColor:
+          'rgb(182, 0, 0)',
+        borderWidth: 1,
+        borderSkipped: false,
       },
 
     ]
