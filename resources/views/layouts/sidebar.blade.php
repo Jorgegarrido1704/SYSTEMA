@@ -54,6 +54,10 @@
                             <a class="nav-link" href="/salud">
                             @elseif($cat == 'inge')
                                 <a class="nav-link" href="/ing">
+                                @elseif($cat == 'SupAdmin')
+                                    <a class="nav-link" href="/SupAdmin">
+                                    @else
+                                        <a class="nav-link" href="/general">
             @endif
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Home</span></a>
@@ -70,8 +74,9 @@
                     <li class="submenu" id="submenu"><a style="color:white;"
                             href="{{ route('fallasCalidad') }}">Rework</a></li>
                 @endif
-                <li class="submenu" id="submenu"><a style="color:white;" href="#"></a></li>
-                <li class="submenu" id="submenu"><a style="color:white;" href="#"></a></li>
+                <li class="submenu" id="submenu"><a style="color:white;" href="#">HR</a></li>
+                <li class="submenu" id="submenu"><a style="color:white;" href="#">Cut & Terminals</a></li>
+                <li class="submenu" id="submenu"><a style="color:white;" href="#">Assembly & Looming</a></li>
             </ul>
         </li>
 

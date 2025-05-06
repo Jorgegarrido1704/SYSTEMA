@@ -576,6 +576,11 @@ class generalController extends Controller
     }
 
     public function assistence(Request $request) {
+        $value=session('user');
+        $cat=session('categoria');
+        if($cat=='' OR $value==''){
+            return view('login');
+        }else{
 
         $names = $request->input('name');
         $dlu = $request->input('dlu');
@@ -619,6 +624,7 @@ class generalController extends Controller
         }
         return redirect('/general');
 
+    }
     }
     public function material(Request $request){
         $value=session('user');
