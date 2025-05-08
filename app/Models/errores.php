@@ -16,12 +16,9 @@ class errores extends Model
         'rev',
         'problem',
         'descriptionIs',
-        'resp',
         'WhoReg',
         'DateIs',
-        'validator',
-        'obs_req',
-        'obs_val',
+        'DateOff',
         'mostrar_ing'
     ];
     protected $table = "errores";

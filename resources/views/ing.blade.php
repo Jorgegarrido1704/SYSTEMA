@@ -681,16 +681,16 @@
             </div>
         </div>-->
 
-        <!-- Reportes
-        <div class="row">
-            <div class="col-lg-6 mb-4">
-
-                <div class="card shadow mb-4">
+        <!-- Reportes -->
+        <!--<div class="row">-->
+            <div class="col-lg-6 col-xl-7 mb-5">
+                <div >
+                <div class="card shadow mb-5">
                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                         <h5 class="m-0 font-weight-bold text-primary">Problems on the floor</h5>
 
                     </div>
-                    <div class="card-body" style="overflow-y: auto; height: 360px;">
+                    <div class="card-body" style="height: 335px;">
                         <form class="row g-3" action="{{ route('problemas') }}" method="GET">
                             <div class="col-md-6">
                                 <label for="pnIs" class="form-label">Part Number</label>
@@ -717,32 +717,61 @@
                                     <option value = "Other">Other</option>
                                 </select>
                             </div>
-                            <div class="col-md-9">
+                            <div class="col-md-6">
                                 <label for="descIs" class="form-label">Description</label>
                                 <textarea class="form-control" name="descIs" id="descIs" rows="3"></textarea>
                             </div>
-                            <div class="col-md-3">
-                                <label for="answer" class="form-label">Have you fixed it</label>
-                                <select id="answer" name="answer" class="form-select" required>
-                                    <option selected>...</option>
-                                    <option value = "Yes">Yes</option>
-                                    <option value = "No">No</option>
-                                    <option value = 'No yet'>No yet</option>
-                                </select>
 
-                                <div class="col-md-12">
-                                    <label for="val" class="form-label">Validation By</label>
-                                    <input type="text" class="form-control" name="val" id="val"
-                                        minlength="1" required>
-                                </div>
-                            </div>
-                            <div class="col-12">
+                            <div class="col-md-3">
                                 <button type="submit" class="btn btn-primary">Send Info</button>
                             </div>
                         </form>
                     </div>
                 </div>
-            </div>-->
+            </div >
+                    <div >
+                        <div class="card shadow mb-5">
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h5 class="m-0 font-weight-bold text-primary">Problems on the floor Table</h5>
+
+                            </div>
+                            <div class="card-body" style="overflow-x: auto; max-height:415px;">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered"  cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th>Part Number</th>
+                                                <th>Problem</th>
+                                                <th>Validation By</th>
+                                                <th>Time</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($problem as $problema)
+                                                <tr>
+                                                    <td>Pn: {{ $problema[1] }}
+                                                        <br>
+                                                           WO: {{ $problema[2] }}
+                                                        <br>
+                                                         REV:   {{ $problema[3] }}
+                                                    </td>
+                                                    <td>{{ $problema[4] }}</td>
+                                                    <td>{{ $problema[5] }}</td>
+                                                    <td>{{ $problema[6] }}</td>
+                                                    <td><form action="{{ 'problemasFin'}}">
+                                                        <input type="hidden" name="id_problema" id="id_problema"
+                                                            value="{{ $problema[0] }}">
+                                                        <button type="submit">Finish</button></form></td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div >
+            </div>
 
             <!-- Cronograma
             <div class="col-lg-6 mb-4">
@@ -841,7 +870,7 @@
                 </div>
             </div>-->
 
-        </div>
+      <!--  </div>-->
     </div>
 
 @endsection

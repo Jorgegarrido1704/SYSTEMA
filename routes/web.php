@@ -81,6 +81,7 @@ Route::controller(PpapIngController::class)->group(function () {
     Route::get('/modifull', [PpapIngController::class, 'modifull'])->name('modifull');
     Route::get('/excel_ing', [PpapIngController::class, 'excel_ing'])->name('excel_ing');
     Route::get('/problemas', [PpapIngController::class, 'problemas'])->name('problemas');
+    Route::get('/problemasFin', [PpapIngController::class, 'problemasFin'])->name('problemasFin');
 });
 
 Route::controller(AlmacenController::class)->group(function () {
