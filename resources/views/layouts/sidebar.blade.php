@@ -75,7 +75,7 @@
                             href="{{ route('fallasCalidad') }}">Rework</a></li>
                 @endif
                 <li class="submenu" id="submenu"><a style="color:white;" href="#">HR</a></li>
-                <li class="submenu" id="submenu"><a style="color:white;" href="#">Cut & Terminals</a></li>
+                <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('cutAndTerm') }}">Cut & Terminals</a></li>
                 <li class="submenu" id="submenu"><a style="color:white;" href="#">Assembly & Looming</a></li>
             </ul>
         </li>

@@ -153,6 +153,7 @@ Route::controller(juntasController::class)->group(function () {
     Route::get('juntas/reg',   [juntasController::class, 'litas_reg'])->name('litas_reg');
     Route::get('juntas/mostrarWO',   [juntasController::class, 'mostrarWOJ'])->name('mostrarWOJ');
     Route::get('juntas/ing',   [juntasController::class, 'ing_junta'])->name('ing_junta');
+    Route::get('juntas/cutAndTerm',   [juntasController::class, 'cutAndTerm'])->name('cutAndTerm');
 });
 
 Route::controller(SaludController::class)->group(function () {

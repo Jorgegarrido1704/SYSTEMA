@@ -1154,8 +1154,6 @@ class juntasController extends Controller
         ]);
     }
 
-
-
     public function ing_junta()
     {
         $monthYear = date('m-Y');
@@ -1260,9 +1258,9 @@ class juntasController extends Controller
                 $actividadesLastMonth[$row->actividades] = $timetotal;
             }
         }
-        $jesp=$nanp=$bp=$jcp=$psp=$alv=$asp=$jg=$todas=[];
-        $datos2=['corte','liberacion','ensamble','loom','calidad'];
-        $defVal= array_fill(0, count($datos2), 0);
+        $jesp = $nanp = $bp = $jcp = $psp = $alv = $asp = $jg = $todas = [];
+        $datos2 = ['corte', 'liberacion', 'ensamble', 'loom', 'calidad'];
+        $defVal = array_fill(0, count($datos2), 0);
         $jesp = array_combine($datos2, $defVal);
         $nanp = array_combine($datos2, $defVal);
         $bp = array_combine($datos2, $defVal);
@@ -1273,30 +1271,77 @@ class juntasController extends Controller
         $jg = array_combine($datos2, $defVal);
         $todas = array_combine($datos2, $defVal);
 
-        $datosIng=DB::table('ppap')
+        $datosIng = DB::table('ppap')
             ->where('fecha', 'LIKE', '%-' . $monthYear . '%')
             ->orderBy('codigo', 'desc')
             ->get();
         foreach ($datosIng as $row) {
             if ($row->codigo == 'Arturo S') {
                 $asp[$row->area] += 1;
-        }else if($row->codigo == 'Jorge G'){
-            $jg[$row->area] += 1;
-        }else if($row->codigo == 'PAOLA S'){
-            $psp[$row->area] += 1;
-        }else if($row->codigo == 'Alejandro V' or $row->codigo == 'Alex V'){
-            $alv[$row->area] += 1;
-        }else if($row->codigo == 'Carlos R'){
-            $jcp[$row->area] += 1;
-        }else if($row->codigo == 'Jesus_C' or $row->codigo == 'Victor_E'){
-            $jesp[$row->area] += 1;
-        }else if($row->codigo == 'Nancy A'){
-            $nanp[$row->area] += 1;
+            } else if ($row->codigo == 'Jorge G') {
+                $jg[$row->area] += 1;
+            } else if ($row->codigo == 'PAOLA S') {
+                $psp[$row->area] += 1;
+            } else if ($row->codigo == 'Alejandro V' or $row->codigo == 'Alex V') {
+                $alv[$row->area] += 1;
+            } else if ($row->codigo == 'Carlos R') {
+                $jcp[$row->area] += 1;
+            } else if ($row->codigo == 'Jesus_C' or $row->codigo == 'Victor_E') {
+                $jesp[$row->area] += 1;
+            } else if ($row->codigo == 'Nancy A') {
+                $nanp[$row->area] += 1;
+            }
+            $todas[$row->area] += 1;
         }
-        $todas[$row->area] += 1;
-    }
 
 
-        return view('juntas/ing', [ 'todas'=>$todas,'jesp' => $jesp, 'nanp' => $nanp, 'bp' => $bp, 'jcp' => $jcp, 'psp' => $psp, 'alv' => $alv, 'asp' => $asp, 'jg' => $jg,'jesus' => $jesus, 'pao' => $pao, 'nancy' => $nancy, 'ale' => $ale, 'carlos' => $carlos, 'arturo' => $arturo, 'jorge' => $jorge, 'brandon' => $brandon, 'actividadesLastMonth' => $actividadesLastMonth, 'actividades' => $actividades, 'value' => session('user'), 'cat' => session('categoria')]);
+        return view('juntas/ing', ['todas' => $todas, 'jesp' => $jesp, 'nanp' => $nanp, 'bp' => $bp, 'jcp' => $jcp, 'psp' => $psp, 'alv' => $alv, 'asp' => $asp, 'jg' => $jg, 'jesus' => $jesus, 'pao' => $pao, 'nancy' => $nancy, 'ale' => $ale, 'carlos' => $carlos, 'arturo' => $arturo, 'jorge' => $jorge, 'brandon' => $brandon, 'actividadesLastMonth' => $actividadesLastMonth, 'actividades' => $actividades, 'value' => session('user'), 'cat' => session('categoria')]);
     }
+    public function cutAndTerm(){
+        $value = session('user');
+        $cat = session('categoria');
+        $i= $j =0;
+        $cutData = [];
+        if(!$value and !$cat){
+            session()->flash('error', 'No tienes acceso a esta sección.');
+            return redirect()->route('login');
+        }
+        //Search cutting on registro table and join with tiempo table to get time
+        $buscarCorte = DB::table('registro')
+            ->join('tiempos', 'registro.info', '=', 'tiempos.info')
+            ->where('planeacion', '!=', '')
+            ->where('count','>', '1')
+            ->where('count', '<', '6')
+            ->orderBy('registro.id', 'desc')
+            ->get();
+        if(count($buscarCorte) > 0){
+            foreach ($buscarCorte as $rows) {
+                if($rows->count < 4){
+                $cutData[$i][0] = $rows->cliente;
+                $cutData[$i][1] = $rows->NumPart;
+                $cutData[$i][2] = $rows->wo;
+                //search info on registroparcial table
+                $buscarInfo = DB::table('registroparcial')
+                    ->where('codeBar', '=', $rows->info)
+                    ->first();
+                if($buscarInfo){
+                     $cutData[$i][3] =($buscarInfo->cortPar +$buscarInfo->libePar)/$buscarInfo->orgQty*100;
+                }else{
+                    $cutData[$i][3] = 0;
+                }
+                $cutData[$i][4] = $rows->planeacion;
+                $i++;
+            }else{
+                $cutData[$i][0] = 'No hay datos';
+                $cutData[$i][1] = 'No hay datos';
+                $cutData[$i][2] = 'No hay datos';
+                $cutData[$i][3] = 'No hay datos';
+                $cutData[$i][4] = 'No hay datos';
+            }
+        }
+
+        }
+        return view('juntas/cutAndTerm', ['value' => $value, 'cat' => $cat, 'cutData' => $cutData]);
+    }
+
 }
