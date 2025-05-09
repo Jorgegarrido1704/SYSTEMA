@@ -1308,13 +1308,11 @@ class juntasController extends Controller
         function DiasEntre($startDate, $endDate)
         {
             $period = CarbonPeriod::create($startDate, $endDate);
-
             return collect($period)
                 ->filter(fn($date) => $date->isWeekday())
                 ->count();
-            return $count;
+            return $count-=1;
         }
-
         if (!$value and !$cat) {
             session()->flash('error', 'No tienes acceso a esta sección.');
             return redirect()->route('login');
