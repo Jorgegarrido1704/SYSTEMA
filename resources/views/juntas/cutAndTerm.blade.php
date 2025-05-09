@@ -26,7 +26,7 @@
                                 @foreach ($cutData as $cut)
 
                                     <tbody>
-                                        <tr style="background-color: rgb(237, 52, 52);">
+                                        <tr style="background-color: {{ $cut[5] }};">
 
                                             <td>{{ $cut[1] }}</td>
                                             <td>{{ $cut[0] }}</td>
@@ -58,8 +58,8 @@
                                     <th>Recieved Date</th>
                                 </tr>
                             </thead>
-                            @if(!empty($cutData2))
-                                @foreach ($cutData2 as $cut2)
+                            @if(!empty($libeData))
+                                @foreach ($libeData as $cut2)
 
                                     <tbody>
                                         <tr style="background-color: rgb(237, 52, 52);">

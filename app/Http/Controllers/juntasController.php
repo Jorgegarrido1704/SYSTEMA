@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Exception;
 use ZeroDivisionError;
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 
 
 
@@ -1297,12 +1298,24 @@ class juntasController extends Controller
 
         return view('juntas/ing', ['todas' => $todas, 'jesp' => $jesp, 'nanp' => $nanp, 'bp' => $bp, 'jcp' => $jcp, 'psp' => $psp, 'alv' => $alv, 'asp' => $asp, 'jg' => $jg, 'jesus' => $jesus, 'pao' => $pao, 'nancy' => $nancy, 'ale' => $ale, 'carlos' => $carlos, 'arturo' => $arturo, 'jorge' => $jorge, 'brandon' => $brandon, 'actividadesLastMonth' => $actividadesLastMonth, 'actividades' => $actividades, 'value' => session('user'), 'cat' => session('categoria')]);
     }
-    public function cutAndTerm(){
+    public function cutAndTerm()
+    {
         $value = session('user');
         $cat = session('categoria');
-        $i= $j =0;
-        $cutData = [];
-        if(!$value and !$cat){
+        $i = $j = 0;
+        $cutData = $libeData = [];
+        //days
+        function DiasEntre($startDate, $endDate)
+        {
+            $period = CarbonPeriod::create($startDate, $endDate);
+
+            return collect($period)
+                ->filter(fn($date) => $date->isWeekday())
+                ->count();
+            return $count;
+        }
+
+        if (!$value and !$cat) {
             session()->flash('error', 'No tienes acceso a esta sección.');
             return redirect()->route('login');
         }
@@ -1310,38 +1323,92 @@ class juntasController extends Controller
         $buscarCorte = DB::table('registro')
             ->join('tiempos', 'registro.info', '=', 'tiempos.info')
             ->where('planeacion', '!=', '')
-            ->where('count','>', '1')
+            ->where('count', '>', '1')
             ->where('count', '<', '6')
             ->orderBy('registro.id', 'desc')
             ->get();
-        if(count($buscarCorte) > 0){
+        if (count($buscarCorte) > 0) {
             foreach ($buscarCorte as $rows) {
-                if($rows->count < 4){
-                $cutData[$i][0] = $rows->cliente;
-                $cutData[$i][1] = $rows->NumPart;
-                $cutData[$i][2] = $rows->wo;
-                //search info on registroparcial table
-                $buscarInfo = DB::table('registroparcial')
-                    ->where('codeBar', '=', $rows->info)
-                    ->first();
-                if($buscarInfo){
-                     $cutData[$i][3] =($buscarInfo->cortPar +$buscarInfo->libePar)/$buscarInfo->orgQty*100;
-                }else{
-                    $cutData[$i][3] = 0;
+                if ($rows->count < 4) {
+                    $cutData[$i][0] = $rows->cliente;
+                    $cutData[$i][1] = $rows->NumPart;
+                    $cutData[$i][2] = $rows->wo;
+                    //search info on registroparcial table
+                    $buscarInfo = DB::table('registroparcial')
+                        ->where('codeBar', '=', $rows->info)
+                        ->first();
+                    if ($buscarInfo) {
+                        $cutData[$i][3] = ($buscarInfo->cortPar + $buscarInfo->libePar) / $buscarInfo->orgQty * 100;
+                    } else {
+                        $cutData[$i][3] = 0;
+                    }
+                    $cutData[$i][4] = $rows->planeacion;
+                    if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) >= 4 AND $rows->cliente=='TICO MANUFACTURING'){
+                        $cutData[$i][5] = 'rgb(237, 52, 52)';
+                    }else if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 3 AND $rows->cliente=='TICO MANUFACTURING'){
+                        $cutData[$i][5] = 'rgb(249, 131, 48)';
+                    }else if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 2 AND $rows->cliente=='TICO MANUFACTURING'){
+                        $cutData[$i][5] = 'rgb(249, 231, 48)';
+                    }else if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 1 AND $rows->cliente=='TICO MANUFACTURING'){
+                        $cutData[$i][5] = 'rgb(121, 193, 27)';
+                    }else if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 0 AND $rows->cliente=='TICO MANUFACTURING'){
+                        $cutData[$i][5] = 'rgb(51, 131, 51)';
+                    }else if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) >=3){
+                        $cutData[$i][5] = 'rgb(237, 52, 52)';
+                    }else if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) ==2){
+                        $cutData[$i][5] = 'rgb(249, 131, 48)';
+                    }else if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) ==1){
+                        $cutData[$i][5] = 'rgb(249, 231, 48)';
+                    }else if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 0){
+                        $cutData[$i][5] = 'rgb(121, 193, 27)';
+                    }else{
+                        $cutData[$i][5] = 'rgb(0, 0, 0)';
+                    }
+                    $i++;
+                } else if ($rows->count < 6) {
+                    $libeData[$j][0] = $rows->cliente;
+                    $libeData[$j][1] = $rows->NumPart;
+                    $libeData[$j][2] = $rows->wo;
+                    //search info on registroparcial table
+                    $buscarInfo = DB::table('registroparcial')
+                        ->where('codeBar', '=', $rows->info)
+                        ->first();
+                    if ($buscarInfo) {
+                        $libeData[$j][3] = ($buscarInfo->cortPar + $buscarInfo->libePar) / $buscarInfo->orgQty * 100;
+                    } else {
+                        $libeData[$j][3] = 0;
+                    }
+                    $libeData[$j][4] = $rows->planeacion;
+                    if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) >= 4 AND $rows->cliente=='TICO MANUFACTURING'){
+                        $libeData[$j][5] = 'rgb(237, 52, 52)';
+                    }else if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 3 AND $rows->cliente=='TICO MANUFACTURING'){
+                        $libeData[$j][5] = 'rgb(249, 131, 48)';
+                    }else if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 2 AND $rows->cliente=='TICO MANUFACTURING'){
+                        $libeData[$j][5] = 'rgb(249, 231, 48)';
+                    }else if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 1 AND $rows->cliente=='TICO MANUFACTURING'){
+                        $libeData[$j][5] = 'rgb(121, 193, 27)';
+                    }else if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 0 AND $rows->cliente=='TICO MANUFACTURING'){
+                        $libeData[$j][5] = 'rgb(51, 131, 51)';
+                    }else if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) >=3){
+                        $libeData[$j][5] = 'rgb(237, 52, 52)';
+                    }else if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) ==2){
+                        $libeData[$j][5] = 'rgb(249, 131, 48)';
+                    }else if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) ==1){
+                        $libeData[$j][5] = 'rgb(249, 231, 48)';
+                    }else if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) ==0){
+                        $libeData[$j][5] = 'rgb(121, 193, 27)';
+                    }
+
+                    $j++;
+                } else {
+                    $cutData[$i][0] = 'No hay datos';
+                    $cutData[$i][1] = 'No hay datos';
+                    $cutData[$i][2] = 'No hay datos';
+                    $cutData[$i][3] = 'No hay datos';
+                    $cutData[$i][4] = 'No hay datos';
                 }
-                $cutData[$i][4] = $rows->planeacion;
-                $i++;
-            }else{
-                $cutData[$i][0] = 'No hay datos';
-                $cutData[$i][1] = 'No hay datos';
-                $cutData[$i][2] = 'No hay datos';
-                $cutData[$i][3] = 'No hay datos';
-                $cutData[$i][4] = 'No hay datos';
             }
         }
-
-        }
-        return view('juntas/cutAndTerm', ['value' => $value, 'cat' => $cat, 'cutData' => $cutData]);
+        return view('juntas/cutAndTerm', ['value' => $value, 'cat' => $cat, 'cutData' => $cutData, 'libeData' => $libeData]);
     }
-
 }
