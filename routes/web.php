@@ -155,6 +155,7 @@ Route::controller(juntasController::class)->group(function () {
     Route::get('juntas/mostrarWO',   [juntasController::class, 'mostrarWOJ'])->name('mostrarWOJ');
     Route::get('juntas/ing',   [juntasController::class, 'ing_junta'])->name('ing_junta');
     Route::get('juntas/cutAndTerm',   [juntasController::class, 'cutAndTerm'])->name('cutAndTerm');
+    Route::get('juntas/asemblyLoom',   [juntasController::class, 'assemblyLoom'])->name('assemblyLoom');
 });
 
 Route::controller(SaludController::class)->group(function () {

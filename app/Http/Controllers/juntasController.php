@@ -1311,7 +1311,6 @@ class juntasController extends Controller
             return collect($period)
                 ->filter(fn($date) => $date->isWeekday())
                 ->count();
-            return $count-=1;
         }
         if (!$value and !$cat) {
             session()->flash('error', 'No tienes acceso a esta sección.');
@@ -1341,27 +1340,28 @@ class juntasController extends Controller
                         $cutData[$i][3] = 0;
                     }
                     $cutData[$i][4] = $rows->planeacion;
-                    if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) >= 4 AND $rows->cliente=='TICO MANUFACTURING'){
+                    if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) >= 5 and $rows->cliente == 'TICO MANUFACTURING') {
                         $cutData[$i][5] = 'rgba(255, 1, 1, 0.6)';
-                    }else if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 3 AND $rows->cliente=='TICO MANUFACTURING'){
+                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 4 and $rows->cliente == 'TICO MANUFACTURING') {
                         $cutData[$i][5] = 'rgba(249, 104, 0, 0.6)';
-                    }else if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 2 AND $rows->cliente=='TICO MANUFACTURING'){
+                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 3 and $rows->cliente == 'TICO MANUFACTURING') {
                         $cutData[$i][5] = 'rgba(255, 234, 0, 0.6)';
-                    }else if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 1 AND $rows->cliente=='TICO MANUFACTURING'){
+                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 2 and $rows->cliente == 'TICO MANUFACTURING') {
                         $cutData[$i][5] = 'rgba(145, 255, 0,0.6)';
-                    }else if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 0 AND $rows->cliente=='TICO MANUFACTURING'){
+                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 1 and $rows->cliente == 'TICO MANUFACTURING') {
                         $cutData[$i][5] = 'rgba(51, 131, 51,0.6)';
-                    }else if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) >=3){
+                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) >= 4) {
                         $cutData[$i][5] = 'rgba(237, 52, 52,0.6)';
-                    }else if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) ==2){
+                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 3) {
                         $cutData[$i][5] = 'rgba(249, 131, 48,0.6)';
-                    }else if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) ==1){
+                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 2) {
                         $cutData[$i][5] = 'rgba(249, 231, 48,0.6)';
-                    }else if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 0){
+                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 1) {
                         $cutData[$i][5] = 'rgba(121, 193, 27,0.6)';
-                    }else{
+                    } else {
                         $cutData[$i][5] = 'rgba(0, 0, 0,0.6)';
                     }
+
                     $i++;
                 } else if ($rows->count < 6) {
                     $libeData[$j][0] = $rows->cliente;
@@ -1377,23 +1377,23 @@ class juntasController extends Controller
                         $libeData[$j][3] = 0;
                     }
                     $libeData[$j][4] = $rows->planeacion;
-                    if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) >= 4 AND $rows->cliente=='TICO MANUFACTURING'){
+                    if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) >= 5 and $rows->cliente == 'TICO MANUFACTURING') {
                         $libeData[$j][5] = 'rgba(255, 0, 0, 0.6)';
-                    }else if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 3 AND $rows->cliente=='TICO MANUFACTURING'){
+                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 4 and $rows->cliente == 'TICO MANUFACTURING') {
                         $libeData[$j][5] = 'rgba(249, 131, 48,0.6)';
-                    }else if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 2 AND $rows->cliente=='TICO MANUFACTURING'){
+                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 3 and $rows->cliente == 'TICO MANUFACTURING') {
                         $libeData[$j][5] = 'rgba(249, 231, 48,0.6)';
-                    }else if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 1 AND $rows->cliente=='TICO MANUFACTURING'){
+                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 2 and $rows->cliente == 'TICO MANUFACTURING') {
                         $libeData[$j][5] = 'rgba(121, 193, 27,0.6)';
-                    }else if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 0 AND $rows->cliente=='TICO MANUFACTURING'){
+                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 1 and $rows->cliente == 'TICO MANUFACTURING') {
                         $libeData[$j][5] = 'rgba(51, 131, 51,0.6)';
-                    }else if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) >=3){
+                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) >= 4) {
                         $libeData[$j][5] = 'rgba(237, 52, 52,0.6)';
-                    }else if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) ==2){
+                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 3) {
                         $libeData[$j][5] = 'rgba(249, 131, 48,0.6)';
-                    }else if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) ==1){
+                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 2) {
                         $libeData[$j][5] = 'rgba(249, 231, 48,0.6)';
-                    }else if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) ==0){
+                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 1) {
                         $libeData[$j][5] = 'rgba(121, 193, 27,0.6)';
                     }
 
@@ -1408,5 +1408,110 @@ class juntasController extends Controller
             }
         }
         return view('juntas/cutAndTerm', ['value' => $value, 'cat' => $cat, 'cutData' => $cutData, 'libeData' => $libeData]);
+    }
+    function assemblyLoom()
+    {
+        $value = session('user');
+        $cat = session('categoria');
+        $i = $j = 0;
+        $cutData = $loomData = [];
+        //days
+       
+        if (!$value and !$cat) {
+            session()->flash('error', 'No tienes acceso a esta sección.');
+            return redirect()->route('login');
+        }
+        //Search cutting on registro table and join with tiempo table to get time
+        $buscarCorte = DB::table('registro')
+            ->join('tiempos', 'registro.info', '=', 'tiempos.info')
+            ->where('planeacion', '!=', '')
+            ->where('count', '>', '1')
+            ->where('count', '<', '6')
+            ->orderBy('registro.id', 'desc')
+            ->get();
+        if (count($buscarCorte) > 0) {
+            foreach ($buscarCorte as $rows) {
+                if ($rows->count < 4) {
+                    $cutData[$i][0] = $rows->cliente;
+                    $cutData[$i][1] = $rows->NumPart;
+                    $cutData[$i][2] = $rows->wo;
+                    //search info on registroparcial table
+                    $buscarInfo = DB::table('registroparcial')
+                        ->where('codeBar', '=', $rows->info)
+                        ->first();
+                    if ($buscarInfo) {
+                        $cutData[$i][3] = ($buscarInfo->cortPar + $buscarInfo->libePar) / $buscarInfo->orgQty * 100;
+                    } else {
+                        $cutData[$i][3] = 0;
+                    }
+                    $cutData[$i][4] = $rows->planeacion;
+                    if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) >= 5 and $rows->cliente == 'TICO MANUFACTURING') {
+                        $cutData[$i][5] = 'rgba(255, 1, 1, 0.6)';
+                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 4 and $rows->cliente == 'TICO MANUFACTURING') {
+                        $cutData[$i][5] = 'rgba(249, 104, 0, 0.6)';
+                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 3 and $rows->cliente == 'TICO MANUFACTURING') {
+                        $cutData[$i][5] = 'rgba(255, 234, 0, 0.6)';
+                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 2 and $rows->cliente == 'TICO MANUFACTURING') {
+                        $cutData[$i][5] = 'rgba(145, 255, 0,0.6)';
+                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 1 and $rows->cliente == 'TICO MANUFACTURING') {
+                        $cutData[$i][5] = 'rgba(51, 131, 51,0.6)';
+                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) >= 4) {
+                        $cutData[$i][5] = 'rgba(237, 52, 52,0.6)';
+                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 3) {
+                        $cutData[$i][5] = 'rgba(249, 131, 48,0.6)';
+                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 2) {
+                        $cutData[$i][5] = 'rgba(249, 231, 48,0.6)';
+                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 1) {
+                        $cutData[$i][5] = 'rgba(121, 193, 27,0.6)';
+                    } else {
+                        $cutData[$i][5] = 'rgba(0, 0, 0,0.6)';
+                    }
+
+                    $i++;
+                } else if ($rows->count < 6) {
+                    $loomData[$j][0] = $rows->cliente;
+                    $loomData[$j][1] = $rows->NumPart;
+                    $loomData[$j][2] = $rows->wo;
+                    //search info on registroparcial table
+                    $buscarInfo = DB::table('registroparcial')
+                        ->where('codeBar', '=', $rows->info)
+                        ->first();
+                    if ($buscarInfo) {
+                        $loomData[$j][3] = ($buscarInfo->cortPar + $buscarInfo->libePar) / $buscarInfo->orgQty * 100;
+                    } else {
+                        $loomData[$j][3] = 0;
+                    }
+                    $loomData[$j][4] = $rows->planeacion;
+                    if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) >= 5 and $rows->cliente == 'TICO MANUFACTURING') {
+                        $loomData[$j][5] = 'rgba(255, 0, 0, 0.6)';
+                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 4 and $rows->cliente == 'TICO MANUFACTURING') {
+                        $loomData[$j][5] = 'rgba(249, 131, 48,0.6)';
+                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 3 and $rows->cliente == 'TICO MANUFACTURING') {
+                        $loomData[$j][5] = 'rgba(249, 231, 48,0.6)';
+                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 2 and $rows->cliente == 'TICO MANUFACTURING') {
+                        $loomData[$j][5] = 'rgba(121, 193, 27,0.6)';
+                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 1 and $rows->cliente == 'TICO MANUFACTURING') {
+                        $loomData[$j][5] = 'rgba(51, 131, 51,0.6)';
+                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) >= 4) {
+                        $loomData[$j][5] = 'rgba(237, 52, 52,0.6)';
+                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 3) {
+                        $loomData[$j][5] = 'rgba(249, 131, 48,0.6)';
+                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 2) {
+                        $loomData[$j][5] = 'rgba(249, 231, 48,0.6)';
+                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 1) {
+                        $loomData[$j][5] = 'rgba(121, 193, 27,0.6)';
+                    }
+
+                    $j++;
+                } else {
+                    $loomData[$i][0] = 'No hay datos';
+                    $loomData[$i][1] = 'No hay datos';
+                    $loomData[$i][2] = 'No hay datos';
+                    $loomData[$i][3] = 'No hay datos';
+                    $loomData[$i][4] = 'No hay datos';
+                }
+            }
+        }
+        return view('juntas/cutAndTerm', ['value' => $value, 'cat' => $cat, 'cutData' => $cutData, 'loomData' => $loomData]);
     }
 }
