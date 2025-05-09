@@ -1344,25 +1344,25 @@ class juntasController extends Controller
                     }
                     $cutData[$i][4] = $rows->planeacion;
                     if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) >= 4 AND $rows->cliente=='TICO MANUFACTURING'){
-                        $cutData[$i][5] = 'rgb(237, 52, 52)';
+                        $cutData[$i][5] = 'rgba(255, 1, 1, 0.6)';
                     }else if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 3 AND $rows->cliente=='TICO MANUFACTURING'){
-                        $cutData[$i][5] = 'rgb(249, 131, 48)';
+                        $cutData[$i][5] = 'rgba(249, 104, 0, 0.6)';
                     }else if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 2 AND $rows->cliente=='TICO MANUFACTURING'){
-                        $cutData[$i][5] = 'rgb(249, 231, 48)';
+                        $cutData[$i][5] = 'rgba(255, 234, 0, 0.6)';
                     }else if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 1 AND $rows->cliente=='TICO MANUFACTURING'){
-                        $cutData[$i][5] = 'rgb(121, 193, 27)';
+                        $cutData[$i][5] = 'rgba(145, 255, 0,0.6)';
                     }else if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 0 AND $rows->cliente=='TICO MANUFACTURING'){
-                        $cutData[$i][5] = 'rgb(51, 131, 51)';
+                        $cutData[$i][5] = 'rgba(51, 131, 51,0.6)';
                     }else if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) >=3){
-                        $cutData[$i][5] = 'rgb(237, 52, 52)';
+                        $cutData[$i][5] = 'rgba(237, 52, 52,0.6)';
                     }else if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) ==2){
-                        $cutData[$i][5] = 'rgb(249, 131, 48)';
+                        $cutData[$i][5] = 'rgba(249, 131, 48,0.6)';
                     }else if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) ==1){
-                        $cutData[$i][5] = 'rgb(249, 231, 48)';
+                        $cutData[$i][5] = 'rgba(249, 231, 48,0.6)';
                     }else if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 0){
-                        $cutData[$i][5] = 'rgb(121, 193, 27)';
+                        $cutData[$i][5] = 'rgba(121, 193, 27,0.6)';
                     }else{
-                        $cutData[$i][5] = 'rgb(0, 0, 0)';
+                        $cutData[$i][5] = 'rgba(0, 0, 0,0.6)';
                     }
                     $i++;
                 } else if ($rows->count < 6) {
@@ -1380,23 +1380,23 @@ class juntasController extends Controller
                     }
                     $libeData[$j][4] = $rows->planeacion;
                     if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) >= 4 AND $rows->cliente=='TICO MANUFACTURING'){
-                        $libeData[$j][5] = 'rgb(237, 52, 52)';
+                        $libeData[$j][5] = 'rgba(255, 0, 0, 0.6)';
                     }else if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 3 AND $rows->cliente=='TICO MANUFACTURING'){
-                        $libeData[$j][5] = 'rgb(249, 131, 48)';
+                        $libeData[$j][5] = 'rgba(249, 131, 48,0.6)';
                     }else if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 2 AND $rows->cliente=='TICO MANUFACTURING'){
-                        $libeData[$j][5] = 'rgb(249, 231, 48)';
+                        $libeData[$j][5] = 'rgba(249, 231, 48,0.6)';
                     }else if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 1 AND $rows->cliente=='TICO MANUFACTURING'){
-                        $libeData[$j][5] = 'rgb(121, 193, 27)';
+                        $libeData[$j][5] = 'rgba(121, 193, 27,0.6)';
                     }else if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 0 AND $rows->cliente=='TICO MANUFACTURING'){
-                        $libeData[$j][5] = 'rgb(51, 131, 51)';
+                        $libeData[$j][5] = 'rgba(51, 131, 51,0.6)';
                     }else if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) >=3){
-                        $libeData[$j][5] = 'rgb(237, 52, 52)';
+                        $libeData[$j][5] = 'rgba(237, 52, 52,0.6)';
                     }else if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) ==2){
-                        $libeData[$j][5] = 'rgb(249, 131, 48)';
+                        $libeData[$j][5] = 'rgba(249, 131, 48,0.6)';
                     }else if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) ==1){
-                        $libeData[$j][5] = 'rgb(249, 231, 48)';
+                        $libeData[$j][5] = 'rgba(249, 231, 48,0.6)';
                     }else if(DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) ==0){
-                        $libeData[$j][5] = 'rgb(121, 193, 27)';
+                        $libeData[$j][5] = 'rgba(121, 193, 27,0.6)';
                     }
 
                     $j++;
