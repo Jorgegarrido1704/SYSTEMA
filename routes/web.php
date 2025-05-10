@@ -156,6 +156,8 @@ Route::controller(juntasController::class)->group(function () {
     Route::get('juntas/ing',   [juntasController::class, 'ing_junta'])->name('ing_junta');
     Route::get('juntas/cutAndTerm',   [juntasController::class, 'cutAndTerm'])->name('cutAndTerm');
     Route::get('juntas/asemblyLoom',   [juntasController::class, 'assemblyLoom'])->name('assemblyLoom');
+    Route::get('juntas/seguimientos',   [juntasController::class, 'seguimientos'])->name('seguimientos');
+    Route::get('juntas/seguimiento/{id}',   [juntasController::class, 'seguimiento'])->name('seguimiento');
 });
 
 Route::controller(SaludController::class)->group(function () {

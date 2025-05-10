@@ -15,6 +15,7 @@ use Carbon\CarbonPeriod;
 
 class juntasController extends Controller
 {
+
     public function index_junta(Request $request)
     {
         $value = session('user');
@@ -1416,7 +1417,7 @@ class juntasController extends Controller
         $i = $j = 0;
         $cutData = $loomData = [];
         //days
-       
+
         if (!$value and !$cat) {
             session()->flash('error', 'No tienes acceso a esta sección.');
             return redirect()->route('login');
@@ -1514,4 +1515,121 @@ class juntasController extends Controller
         }
         return view('juntas/cutAndTerm', ['value' => $value, 'cat' => $cat, 'cutData' => $cutData, 'loomData' => $loomData]);
     }
+
+    public function seguimientos()
+    {
+        $value = session('user');
+        $cat = session('categoria');
+        $i = 0;
+        $buscarDatos = [];
+        $tiempos = DB::table('registro')
+            ->join('tiempos', 'registro.info', '=', 'tiempos.info')
+            ->where('count', '<', '20')
+            ->select('registro.*', 'tiempos.*','registro.id as ids')
+            ->orderBy('registro.id', 'ASC')
+            ->get();
+
+        function deffColores($InitDays, $systemFinish, $registed,$lastStatus)
+        {
+            $DiasEntre = function ($inicio, $fin) {
+                $period = \Carbon\CarbonPeriod::create($inicio, $fin);
+                $diasHabiles = 0;
+
+                foreach ($period as $date) {
+                    if ($date->isWeekday()) {
+                        $diasHabiles++;
+                    }
+                }
+
+                return $diasHabiles;
+            };
+
+            $filtro = $registed ? $DiasEntre($registed, $systemFinish) : $DiasEntre($InitDays, $systemFinish);
+            if ($lastStatus == 'ini') {
+                if ($filtro >3){return 'excelentWork';} elseif ($filtro == 3) {return 'onTime';} else if ($filtro == 2) {return 'onWorking';} else if ($filtro == 1) {
+                return 'closeToexpiring'; } else if ($filtro <= 0) {return 'late';} else {return ''; }
+
+            }elseif ($lastStatus == 'onWorking' or $lastStatus == 'closeToexpiring') {
+                if ($filtro >3){return 'excelentWork';} elseif ($filtro == 3) {return 'onTime';} elseif ($filtro == 2) {return 'onWorking';} else if ($filtro == 1) {
+                    return 'closeToexpiring'; } else if ($filtro <= 0) {return 'late';} else {return ''; }
+
+            } elseif ($lastStatus == 'late') {
+                if ($filtro >3){return 'excelentWork';} elseif ($filtro == 3) {return 'onTime';} elseif ($filtro == 2) {return 'delayed';} else if ($filtro == 1) {
+                    return 'delayedandclosedtoexpiring'; } else if ($filtro <= 0) {return 'late';} else {return ''; }
+            }else {
+                if ($filtro >3){return 'excelentWork';} elseif ($filtro == 3) {return 'onTime';} elseif ($filtro == 2) {return 'onWorking';} else if ($filtro == 1) {
+                    return 'closeToexpiring'; } else if ($filtro <= 0) {return 'late';} else {return ''; }
+            }
+        }
+
+
+        foreach ($tiempos as $rows) {
+            $buscarDatos[$i][0] = $rows->cliente;
+            $buscarDatos[$i][1] = $rows->NumPart;
+            $buscarDatos[$i][2] = $rows->wo;
+
+            $buscarDatos[$i][3] = $rows->planeacion ? Carbon::parse($rows->planeacion)->format('d-m-Y') : Carbon::parse($rows->fecha)->format('d-m-Y');
+            $buscarDatos[$i][4] = $rows->Qty;
+            $buscarDatos[$i][5] = Carbon::parse($buscarDatos[$i][3])->addWeekdays(3)->format('d-m-Y'); //24567
+            $buscarDatos[$i][6] = Carbon::parse($buscarDatos[$i][3])->addWeekdays(6)->format('d-m-Y');
+            $buscarDatos[$i][7] = Carbon::parse($buscarDatos[$i][3])->addWeekdays(8)->format('d-m-Y');
+            $buscarDatos[$i][8] = Carbon::parse($buscarDatos[$i][3])->addWeekdays(9)->format('d-m-Y');
+            $buscarDatos[$i][9] = Carbon::parse($buscarDatos[$i][3])->addWeekdays(9)->format('d-m-Y');
+            $buscarDatos[$i][10] = deffColores(Carbon::today()->format('d-m-Y'), $buscarDatos[$i][5], $rows->liberacion,'ini');
+            $buscarDatos[$i][11] = $rows->liberacion ? deffColores(Carbon::today()->format('d-m-Y'), $buscarDatos[$i][6], $rows->ensamble,$buscarDatos[$i][10]) : '';
+            $buscarDatos[$i][12] = $rows->ensamble ? deffColores(Carbon::today()->format('d-m-Y'), $buscarDatos[$i][7], $rows->loom,$buscarDatos[$i][11]): '';
+            $buscarDatos[$i][13] = $rows->loom ? deffColores(Carbon::today()->format('d-m-Y'), $buscarDatos[$i][8], $rows->calidad,$buscarDatos[$i][12]):'';
+            $buscarDatos[$i][14] = $rows->calidad ? deffColores(Carbon::today()->format('d-m-Y'), $buscarDatos[$i][9], $rows->calidad,$buscarDatos[$i][13]):'';
+            $buscarDatos[$i][15] = $rows->ids;
+
+
+
+            $i++;
+        }
+
+
+        return view('juntas/seguimiento', ['value' => session('user'), 'cat' => session('categoria'), 'buscarDatos' => $buscarDatos]);
+    }
+    public function seguimiento($id)
+    {
+        $i = 0;
+        $datosInforRegistro = [];
+        $bucarRegistros = DB::table('registro')
+            ->join('tiempos', 'registro.info', '=', 'tiempos.info')
+            ->where('registro.id', '=', $id)
+            ->select('registro.*', 'tiempos.*')
+            ->orderBy('registro.id', 'desc')
+            ->get();
+            foreach ($bucarRegistros as $row) {
+                $datosInforRegistro [0]= $row->NumPart;
+                $datosInforRegistro [1]= $row->wo;
+                $datosInforRegistro [2]= $row->cliente;
+                $datosInforRegistro [3]= $row->planeacion;
+                $datosInforRegistro [4]= $row->Qty;
+                $datosInforRegistro [5]= $row->liberacion;
+                $datosInforRegistro [6]= $row->ensamble;
+                $datosInforRegistro [7]= $row->loom;
+                $datosInforRegistro [8]= $row->calidad;
+                if ($row->planeacion) {
+                    $datosInforRegistro [9]= Carbon::parse($row->planeacion)->format('d-m-Y');
+                    $datosInforRegistro [10]= Carbon::parse($row->planeacion)->addWeekdays(3)->format('d-m-Y');
+                    $datosInforRegistro [11]= Carbon::parse($row->planeacion)->addWeekdays(6)->format('d-m-Y');
+                    $datosInforRegistro [12]= Carbon::parse($row->planeacion)->addWeekdays(8)->format('d-m-Y');
+                    $datosInforRegistro [13]= Carbon::parse($row->planeacion)->addWeekdays(9)->format('d-m-Y');
+                    $datosInforRegistro [14]= Carbon::parse($row->planeacion)->addWeekdays(9)->format('d-m-Y');
+
+                } else {
+                    $datosInforRegistro [9]= Carbon::parse($row->fecha)->format('d-m-Y');
+                    $datosInforRegistro [10]= Carbon::parse($row->fecha)->addWeekdays(3)->format('d-m-Y');
+                    $datosInforRegistro [11]= Carbon::parse($row->fecha)->addWeekdays(6)->format('d-m-Y');
+                    $datosInforRegistro [12]= Carbon::parse($row->fecha)->addWeekdays(8)->format('d-m-Y');
+                    $datosInforRegistro [13]= Carbon::parse($row->fecha)->addWeekdays(9)->format('d-m-Y');
+                    $datosInforRegistro [14]= Carbon::parse($row->fecha)->addWeekdays(9)->format('d-m-Y');
+                }
+
+            }
+
+        return view('juntas/infoIdSeguimiento', ['value' => session('user'), 'cat' => session('categoria'), 'id' => $id, 'datosInforRegistro' => $datosInforRegistro]);
+    }
+
 }
