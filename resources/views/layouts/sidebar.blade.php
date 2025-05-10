@@ -76,8 +76,9 @@
                 @endif
                 <li class="submenu" id="submenu"><a style="color:white;" href="#">HR</a></li>
 
-                <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('seguimientos') }}">Production States</a>
-                    <ul>
+                <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('seguimientos') }}"
+                    onmouseover=showProduction();>Production States</a>
+                    <ul class="submenu" id="production" style="display:none;">
                         <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('cutAndTerm') }}">Cut & Terminals</a></li>
                         <li class="submenu" id="submenu"><a style="color:white;" href="#">Assembly & Looming</a></li>
                     </ul>
@@ -90,3 +91,14 @@
     @endif
 
 </ul>
+<script>
+    function showProduction() {
+        var productionMenu = document.getElementById("production");
+        if (productionMenu.style.display === "none" || productionMenu.style.display === "") {
+            productionMenu.style.display = "block";
+        } else {
+            productionMenu.style.display = "none";
+        }
+
+    }
+</script>
