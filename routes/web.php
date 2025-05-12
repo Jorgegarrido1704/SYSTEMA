@@ -82,6 +82,8 @@ Route::controller(PpapIngController::class)->group(function () {
     Route::get('/excel_ing', [PpapIngController::class, 'excel_ing'])->name('excel_ing');
     Route::get('/problemas', [PpapIngController::class, 'problemas'])->name('problemas');
     Route::get('/problemasFin', [PpapIngController::class, 'problemasFin'])->name('problemasFin');
+    Route::get('/workSchedule', [PpapIngController::class, 'workState'])->name('workState');
+    Route::get('/workStateJason', [PpapIngController::class, 'workStateJason'])->name('workStateJason');
 });
 
 Route::controller(AlmacenController::class)->group(function () {

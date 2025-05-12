@@ -69,7 +69,7 @@
                 <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('ing_junta') }}"
                         onmouseover=showEng();>engineering</a>
                     <ul class="submenu" id="engsub" style="display:none;">
-                        <li class="submenu" id="engsub"><a style="color:white;" href="#">Schedule Work</a>
+                        <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('workState') }}">Schedule Work</a>
                         </li>
                         <li class="submenu" id="engsub"><a style="color:white;" href="#">CutList</a>
                         </li>

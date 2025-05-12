@@ -1,0 +1,106 @@
+@extends('layouts.main')
+
+@section('contenido')
+    <!--<link rel="stylesheet" href="{{ asset('/dash/css/workSchedule.css') }}">-->
+
+    <div class="d-sm-flex align-items-center justify-content-between mb-4"></div>
+<script src="{{ asset('/dash/js/workSchedule.js') }}"></script>
+    <script>
+        const datas = '{{ route('workStateJason') }}';
+    </script>
+    <div class="row">
+        <div class="col-xl-12 col-lg-12 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h5 class="m-0 font-weight-bold text-primary"> Engineering work scheduled </h5>
+                    <input type="text" class="form-control" id="pns" placeholder="Search for PNs.." onchange="search()">
+                </div>
+                <!-- filtros -->
+                    <div class="col-12 text-center mb-5">
+                        <div class="col-12">
+                            <h5 class="m-0 font-weight-bold text-primary">Filters</h5>
+                        </div>
+                        <div class="form-group position-relative row">
+                            <div class="fomr-select col-2 m-0">
+                                <label for="customer" class="form-label">Customer</label>
+                                <select name="customer" id="customer" class="form-select">
+                                    <option value="">Customer</option>
+
+                                </select>
+                            </div>
+                            <div class="col-1">
+                                <label for="size" class="form-label"> Size</label>
+                                <select name="size" class="form-select" id="size">
+                                    <option value="">Size</option>
+                                    <option value="Ch">Ch</option>
+                                    <option value="M">M</option>
+                                    <option value="G">G</option>
+                                </select>
+                            </div>
+                            <div class="col-2">
+                                <label for="responsable">Responsable</label>
+                                <select name="responsable" class="form-select" id="responsable">
+                                    <option value="">Responsable</option>
+
+                                </select>
+                            </div>
+                            <div class="col-2">
+                                <label for="Filter">Filter Dates</label>
+                                <select name="Filter" class="form-select" id="Filter">
+                                    <option value="">Filter</option>
+                                    <option value="MRP">MRP</option>
+                                    <option value="receiptDate">Receipt Date</option>
+                                    <option value="commitmentDate">Commitment Date</option>
+                                    <option value="CompletionDate">Completion Date</option>
+                                    <option value="customerDate">Customer Date</option>
+                                </select>
+                            </div>
+                            <div class="col-2">
+                                <label for="DateIni">Date Init:</label><input type="date" class="form-control" id="DateIni"></label>
+                            </div>
+                            <div class="col-2">
+                                <label for="DateEnd">Date End:</label><input type="date" class="form-control" id="DateEnd"></label>
+                            </div>
+
+                                <button class="form-button btn btn-primary" onclick="search()">Search</button>
+
+                        </div>
+                    </div>
+                <!-- Schedule work engineering -->
+                <div class="card-body" style="overflow-y: auto; ">
+                     <div class="table">
+                        <table class="table table-bordered table-striped table-hover">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>PN</th>
+                                    <th>Customer</th>
+                                    <th>WorkRev</th>
+                                    <th>Size</th>
+                                    <th>FullSize</th>
+                                    <th>MRP</th>
+                                    <th>Receipt Date</th>
+                                    <th>Commitment Date</th>
+                                    <th>Completion Date</th>
+                                    <th>Documents Approved</th>
+                                    <th>Status</th>
+                                    <th>Responsible</th>
+                                    <th>Customer Date</th>
+                                    <th>Comments</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-body">
+
+
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+@endsection

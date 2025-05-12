@@ -242,8 +242,8 @@ class PpapIngController extends Controller
                     $j++;
                 }
             }
-            $i=0;
-            $problem=[];
+            $i = 0;
+            $problem = [];
             $buscarProblemas = DB::table('errores')->where('mostrar_ing', '=', 0)->get();
             foreach ($buscarProblemas as $problemas) {
                 $problem[$i][0] = $problemas->id;
@@ -258,7 +258,7 @@ class PpapIngController extends Controller
 
 
 
-            return view('/ing', ['problem'=> $problem, 'paolaTdesc' => $paolaTdesc, 'alexTdesc' => $alexTdesc, 'paolaT' => $paolaT, 'alexT' => $alexT, 'alex' => $alex, 'alexDesc' => $alexDesc, 'paola' => $paola, 'paoDesc' => $paoDesc, 'soporte' => $soporte, 'fullreq' => $fullreq, 'graficasLate' => $graficasLate, 'graficOnTime' => $graficOnTime, 'cat' => $cat, 'inges' => $inges, 'value' => $value, 'enginners' => $enginners, 'answer' => $answer, 'dias_mes' => $dias_mes, 'cronoGram' => $cronoGram]);
+            return view('/ing', ['problem' => $problem, 'paolaTdesc' => $paolaTdesc, 'alexTdesc' => $alexTdesc, 'paolaT' => $paolaT, 'alexT' => $alexT, 'alex' => $alex, 'alexDesc' => $alexDesc, 'paola' => $paola, 'paoDesc' => $paoDesc, 'soporte' => $soporte, 'fullreq' => $fullreq, 'graficasLate' => $graficasLate, 'graficOnTime' => $graficOnTime, 'cat' => $cat, 'inges' => $inges, 'value' => $value, 'enginners' => $enginners, 'answer' => $answer, 'dias_mes' => $dias_mes, 'cronoGram' => $cronoGram]);
         }
     }
 
@@ -778,8 +778,33 @@ class PpapIngController extends Controller
         $date = date("d-m-Y H:i");
         $buscar = DB::table('errores')->where('id', $id)->first();
         if ($buscar) {
-            DB::table('errores')->where('id', $id)->update([ 'DateOff' => $date,'mostrar_ing' => 1]);
+            DB::table('errores')->where('id', $id)->update(['DateOff' => $date, 'mostrar_ing' => 1]);
             return redirect('/ing');
         }
+    }
+    public function workState(Request $request)
+    {
+        $value = session('user');
+        $cat = session('categoria');
+        return view('juntas/workSchedules/workSchedule', ['cat' => $cat, 'value' => $value]);
+    }
+    public function workStateJason(Request $request)
+    {
+        $datos = [];
+        $input = $request->all();
+        $pns = $input['pns'];
+        $buscar = DB::table('workSchedule')->where('pn', 'like', '%' . $pns . '%')->get();
+        foreach ($buscar as $row) {
+            $datos[] = [
+
+                'pn' => $row->pn,
+                'WorkRev' => $row->WorkRev,
+
+            ];
+        }
+
+
+
+        return json_encode($datos);
     }
 }

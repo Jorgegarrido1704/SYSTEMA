@@ -110,7 +110,7 @@
     <script src="{{ asset('/dash/js/up-info.js')}}"></script>
     <script src="{{ asset('/dash/js/junta-ing.js')}}"></script>
     <script src="{{ asset('/dash/js/ingUpPn.js')}}"></script>
-   
+
     @if($cat=="plan")
     <script src="{{ asset('/dash/js/demo/plan-grafic.js')}}"></script>
     @endif
