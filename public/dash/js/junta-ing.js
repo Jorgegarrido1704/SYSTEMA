@@ -146,7 +146,7 @@ const timeIng = new Chart(tiemposIng, {
 }
 
 catch (error) {
-    console.error(error);
+    //console.error(error);
 
 }
 try {
@@ -304,7 +304,7 @@ try {
 
 }
 catch (error) {
-    console.error(error);
+   // console.error(error);
 }
 try {
 
@@ -350,7 +350,7 @@ try {
 
 }
 catch (error) {
-    console.error(error);
+//console.error(error);
 }
 try {
     goals = [];
@@ -401,5 +401,5 @@ const cakeIng2 = new Chart(cake2, config);
 
 }
 catch (error) {
-    console.error(error);
+  //  console.error(error);
 }

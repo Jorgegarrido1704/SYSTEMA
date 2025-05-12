@@ -3,7 +3,7 @@
 @section('contenido')
 
 
-    <script>
+    <script  >
          //grafica tiempos
         const actividades = {!! json_encode($actividades) !!};
         const actividadesLastMonth = {!! json_encode($actividadesLastMonth) !!};
@@ -32,13 +32,13 @@
     </script>
 
     <script>
-        //grafica trabajos
-       const buenos = {!! json_encode($porcentaje) !!};
-       const malos = {!! json_encode($porcentajeMalos) !!};
-       const mothLess12 = {!! json_encode($last12Months) !!};
-         const compGoals = {!! json_encode($thisYearGoals) !!};
-      // console.log(compGoals);
-        </script>
+                //grafica trabajos
+            const buenos = {!! json_encode($porcentaje) !!};
+            const malos = {!! json_encode($porcentajeMalos) !!};
+            const mothLess12 = {!! json_encode($last12Months) !!};
+                const compGoals = {!! json_encode($thisYearGoals) !!};
+            // console.log(compGoals);
+    </script>
 
     <div class="d-sm-flex align-items-center justify-content-between mb-4"></div>
 

@@ -12,6 +12,7 @@ async function search() {
 
         const data = await response.json();
         jsonData = data;
+        renderTable(data);
         console.log(jsonData);
     } catch (error) {
         console.error('Error:', error);
