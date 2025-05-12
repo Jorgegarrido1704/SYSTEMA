@@ -374,8 +374,8 @@ try {
     type: 'bar',
     label: 'This Year',
     data: comp,
-    backgroundColor: 'rgba(226, 250, 160, 0.2)',
-    borderColor: 'rgb(220, 240, 65)',
+    backgroundColor: 'rgba(12, 36, 254, 0.2)',
+    borderColor: 'rgb(33, 58, 251)',
     borderWidth: 1,
   }, {
     type: 'line',
