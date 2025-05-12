@@ -66,7 +66,14 @@
                 </li>
                 <li class="submenu" id="submenu"><a style="color:white;"
                         href="{{ route('calidad_junta') }}">Quality</a></li>
-                <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('ing_junta') }}">engineering</a>
+                <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('ing_junta') }}"
+                        onmouseover=showEng();>engineering</a>
+                    <ul class="submenu" id="engsub" style="display:none;">
+                        <li class="submenu" id="engsub"><a style="color:white;" href="#">Schedule Work</a>
+                        </li>
+                        <li class="submenu" id="engsub"><a style="color:white;" href="#">CutList</a>
+                        </li>
+                    </ul>
                 </li>
                 @if ($cat == 'cali')
                     <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('accepted') }}">Accept
@@ -99,6 +106,13 @@
         } else {
             productionMenu.style.display = "none";
         }
-
+    }
+    function showEng() {
+        var engMenu = document.getElementById("engsub");
+        if (engMenu.style.display === "none" || engMenu.style.display === "") {
+            engMenu.style.display = "block";
+        } else {
+            engMenu.style.display = "none";
+        }
     }
 </script>

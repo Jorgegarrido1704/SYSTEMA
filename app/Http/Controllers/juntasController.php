@@ -1296,8 +1296,68 @@ class juntasController extends Controller
             $todas[$row->area] += 1;
         }
 
+        //work Schedule dounut
+        $month = (int) date('m');
+        $year = date('Y');
+        $porcentaje = $porcentajeMalos = $buenos = $malos = $total = 0;
+        $workSchedule = DB::table('workschedule')
 
-        return view('juntas/ing', ['todas' => $todas, 'jesp' => $jesp, 'nanp' => $nanp, 'bp' => $bp, 'jcp' => $jcp, 'psp' => $psp, 'alv' => $alv, 'asp' => $asp, 'jg' => $jg, 'jesus' => $jesus, 'pao' => $pao, 'nancy' => $nancy, 'ale' => $ale, 'carlos' => $carlos, 'arturo' => $arturo, 'jorge' => $jorge, 'brandon' => $brandon, 'actividadesLastMonth' => $actividadesLastMonth, 'actividades' => $actividades, 'value' => session('user'), 'cat' => session('categoria')]);
+            ->where('commitmentDate', 'LIKE', $month . '/%/' . $year)
+            ->where('CompletionDate', '!=', '')
+            ->orderBy('id', 'desc')
+            ->get();
+        foreach ($workSchedule as $row) {
+            $timeIni = $timeFin = 0;
+            $timeIni = strtotime($row->commitmentDate);
+            $timeFin = strtotime($row->CompletionDate);
+            if ($timeFin > $timeIni) {
+                $malos += 1;
+            } else {
+                $buenos += 1;
+            }
+            $total++;
+        }
+        if ($total > 0) {
+            $porcentaje = round(($buenos / $total) * 100, 2);
+            $porcentajeMalos = round(($malos / $total) * 100, 2);
+        } else {
+            $porcentaje = 0;
+            $porcentajeMalos = 0;
+        }
+        //Last 12 Months Goals
+        $last12Months = [];
+        $restMonthes=12;
+        $lmo =(int) date('m', strtotime('-'.$restMonthes.' months'));
+        $lmy = date('Y', strtotime('-'.$restMonthes.' months'));
+        for ($i = 0; $i < 12; $i++) {
+            $total = $buenos = $malos = 0;
+            $last12Month = DB::table('workschedule')
+                ->where('commitmentDate', 'LIKE', $lmo . '/%/' . $lmy)
+                ->where('CompletionDate', '!=', '')
+                ->orderBy('id', 'desc')
+                ->get();
+            foreach ($last12Month as $row) {
+                $timeIni = $timeFin = 0;
+                $timeIni = strtotime($row->commitmentDate);
+                $timeFin = strtotime($row->CompletionDate);
+                if ($timeFin > $timeIni) {
+                    $malos += 1;
+                } else {
+                    $buenos += 1;
+                }
+                $total++;
+            }
+            if ($total > 0) {
+                $porcentajemes = round(($buenos / $total) * 100, 2); } else { $porcentajemes = 0;
+            }
+            $last12Months[$i . ' ' . date('M', strtotime('-' . $restMonthes . ' months')) . '-' . date('Y', strtotime('-' . $restMonthes . ' months')) ] = $porcentajemes;
+            $restMonthes--;
+            $lmo =(int) date('m', strtotime('-' . $restMonthes . ' months'));
+            $lmy = date('Y', strtotime('-' . $restMonthes . ' months'));
+        }
+
+
+        return view('juntas/ing', ['last12Months'=> $last12Months,'porcentaje' => $porcentaje, 'porcentajeMalos' => $porcentajeMalos, 'todas' => $todas, 'jesp' => $jesp, 'nanp' => $nanp, 'bp' => $bp, 'jcp' => $jcp, 'psp' => $psp, 'alv' => $alv, 'asp' => $asp, 'jg' => $jg, 'jesus' => $jesus, 'pao' => $pao, 'nancy' => $nancy, 'ale' => $ale, 'carlos' => $carlos, 'arturo' => $arturo, 'jorge' => $jorge, 'brandon' => $brandon, 'actividadesLastMonth' => $actividadesLastMonth, 'actividades' => $actividades, 'value' => session('user'), 'cat' => session('categoria')]);
     }
     public function cutAndTerm()
     {
@@ -1525,11 +1585,11 @@ class juntasController extends Controller
         $tiempos = DB::table('registro')
             ->join('tiempos', 'registro.info', '=', 'tiempos.info')
             ->where('count', '<', '20')
-            ->select('registro.*', 'tiempos.*','registro.id as ids')
+            ->select('registro.*', 'tiempos.*', 'registro.id as ids')
             ->orderBy('registro.id', 'ASC')
             ->get();
 
-        function deffColores($InitDays, $systemFinish, $registed,$lastStatus)
+        function deffColores($InitDays, $systemFinish, $registed, $lastStatus)
         {
             $DiasEntre = function ($inicio, $fin) {
                 $period = \Carbon\CarbonPeriod::create($inicio, $fin);
@@ -1546,19 +1606,61 @@ class juntasController extends Controller
 
             $filtro = $registed ? $DiasEntre($registed, $systemFinish) : $DiasEntre($InitDays, $systemFinish);
             if ($lastStatus == 'ini') {
-                if ($filtro >3){return 'excelentWork';} elseif ($filtro == 3) {return 'onTime';} else if ($filtro == 2) {return 'onWorking';} else if ($filtro == 1) {
-                return 'closeToexpiring'; } else if ($filtro <= 0) {return 'late';} else {return ''; }
-
-            }elseif ($lastStatus == 'onWorking' or $lastStatus == 'closeToexpiring') {
-                if ($filtro >3){return 'excelentWork';} elseif ($filtro == 3) {return 'onTime';} elseif ($filtro == 2) {return 'onWorking';} else if ($filtro == 1) {
-                    return 'closeToexpiring'; } else if ($filtro <= 0) {return 'late';} else {return ''; }
-
+                if ($filtro > 3) {
+                    return 'excelentWork';
+                } elseif ($filtro == 3) {
+                    return 'onTime';
+                } else if ($filtro == 2) {
+                    return 'onWorking';
+                } else if ($filtro == 1) {
+                    return 'closeToexpiring';
+                } else if ($filtro <= 0) {
+                    return 'late';
+                } else {
+                    return '';
+                }
+            } elseif ($lastStatus == 'onWorking' or $lastStatus == 'closeToexpiring') {
+                if ($filtro > 3) {
+                    return 'excelentWork';
+                } elseif ($filtro == 3) {
+                    return 'onTime';
+                } elseif ($filtro == 2) {
+                    return 'onWorking';
+                } else if ($filtro == 1) {
+                    return 'closeToexpiring';
+                } else if ($filtro <= 0) {
+                    return 'late';
+                } else {
+                    return '';
+                }
             } elseif ($lastStatus == 'late') {
-                if ($filtro >3){return 'excelentWork';} elseif ($filtro == 3) {return 'onTime';} elseif ($filtro == 2) {return 'delayed';} else if ($filtro == 1) {
-                    return 'delayedandclosedtoexpiring'; } else if ($filtro <= 0) {return 'late';} else {return ''; }
-            }else {
-                if ($filtro >3){return 'excelentWork';} elseif ($filtro == 3) {return 'onTime';} elseif ($filtro == 2) {return 'onWorking';} else if ($filtro == 1) {
-                    return 'closeToexpiring'; } else if ($filtro <= 0) {return 'late';} else {return ''; }
+                if ($filtro > 3) {
+                    return 'excelentWork';
+                } elseif ($filtro == 3) {
+                    return 'onTime';
+                } elseif ($filtro == 2) {
+                    return 'delayed';
+                } else if ($filtro == 1) {
+                    return 'delayedandclosedtoexpiring';
+                } else if ($filtro <= 0) {
+                    return 'late';
+                } else {
+                    return '';
+                }
+            } else {
+                if ($filtro > 3) {
+                    return 'excelentWork';
+                } elseif ($filtro == 3) {
+                    return 'onTime';
+                } elseif ($filtro == 2) {
+                    return 'onWorking';
+                } else if ($filtro == 1) {
+                    return 'closeToexpiring';
+                } else if ($filtro <= 0) {
+                    return 'late';
+                } else {
+                    return '';
+                }
             }
         }
 
@@ -1575,11 +1677,11 @@ class juntasController extends Controller
             $buscarDatos[$i][7] = Carbon::parse($buscarDatos[$i][3])->addWeekdays(8)->format('d-m-Y');
             $buscarDatos[$i][8] = Carbon::parse($buscarDatos[$i][3])->addWeekdays(9)->format('d-m-Y');
             $buscarDatos[$i][9] = Carbon::parse($buscarDatos[$i][3])->addWeekdays(9)->format('d-m-Y');
-            $buscarDatos[$i][10] = deffColores(Carbon::today()->format('d-m-Y'), $buscarDatos[$i][5], $rows->liberacion,'ini');
-            $buscarDatos[$i][11] = $rows->liberacion ? deffColores(Carbon::today()->format('d-m-Y'), $buscarDatos[$i][6], $rows->ensamble,$buscarDatos[$i][10]) : '';
-            $buscarDatos[$i][12] = $rows->ensamble ? deffColores(Carbon::today()->format('d-m-Y'), $buscarDatos[$i][7], $rows->loom,$buscarDatos[$i][11]): '';
-            $buscarDatos[$i][13] = $rows->loom ? deffColores(Carbon::today()->format('d-m-Y'), $buscarDatos[$i][8], $rows->calidad,$buscarDatos[$i][12]):'';
-            $buscarDatos[$i][14] = $rows->calidad ? deffColores(Carbon::today()->format('d-m-Y'), $buscarDatos[$i][9], $rows->calidad,$buscarDatos[$i][13]):'';
+            $buscarDatos[$i][10] = deffColores(Carbon::today()->format('d-m-Y'), $buscarDatos[$i][5], $rows->liberacion, 'ini');
+            $buscarDatos[$i][11] = $rows->liberacion ? deffColores(Carbon::today()->format('d-m-Y'), $buscarDatos[$i][6], $rows->ensamble, $buscarDatos[$i][10]) : '';
+            $buscarDatos[$i][12] = $rows->ensamble ? deffColores(Carbon::today()->format('d-m-Y'), $buscarDatos[$i][7], $rows->loom, $buscarDatos[$i][11]) : '';
+            $buscarDatos[$i][13] = $rows->loom ? deffColores(Carbon::today()->format('d-m-Y'), $buscarDatos[$i][8], $rows->calidad, $buscarDatos[$i][12]) : '';
+            $buscarDatos[$i][14] = $rows->calidad ? deffColores(Carbon::today()->format('d-m-Y'), $buscarDatos[$i][9], $rows->calidad, $buscarDatos[$i][13]) : '';
             $buscarDatos[$i][15] = $rows->ids;
 
 
@@ -1600,36 +1702,33 @@ class juntasController extends Controller
             ->select('registro.*', 'tiempos.*')
             ->orderBy('registro.id', 'desc')
             ->get();
-            foreach ($bucarRegistros as $row) {
-                $datosInforRegistro [0]= $row->NumPart;
-                $datosInforRegistro [1]= $row->wo;
-                $datosInforRegistro [2]= $row->cliente;
-                $datosInforRegistro [3]= $row->planeacion;
-                $datosInforRegistro [4]= $row->Qty;
-                $datosInforRegistro [5]= $row->liberacion;
-                $datosInforRegistro [6]= $row->ensamble;
-                $datosInforRegistro [7]= $row->loom;
-                $datosInforRegistro [8]= $row->calidad;
-                if ($row->planeacion) {
-                    $datosInforRegistro [9]= Carbon::parse($row->planeacion)->format('d-m-Y');
-                    $datosInforRegistro [10]= Carbon::parse($row->planeacion)->addWeekdays(3)->format('d-m-Y');
-                    $datosInforRegistro [11]= Carbon::parse($row->planeacion)->addWeekdays(6)->format('d-m-Y');
-                    $datosInforRegistro [12]= Carbon::parse($row->planeacion)->addWeekdays(8)->format('d-m-Y');
-                    $datosInforRegistro [13]= Carbon::parse($row->planeacion)->addWeekdays(9)->format('d-m-Y');
-                    $datosInforRegistro [14]= Carbon::parse($row->planeacion)->addWeekdays(9)->format('d-m-Y');
-
-                } else {
-                    $datosInforRegistro [9]= Carbon::parse($row->fecha)->format('d-m-Y');
-                    $datosInforRegistro [10]= Carbon::parse($row->fecha)->addWeekdays(3)->format('d-m-Y');
-                    $datosInforRegistro [11]= Carbon::parse($row->fecha)->addWeekdays(6)->format('d-m-Y');
-                    $datosInforRegistro [12]= Carbon::parse($row->fecha)->addWeekdays(8)->format('d-m-Y');
-                    $datosInforRegistro [13]= Carbon::parse($row->fecha)->addWeekdays(9)->format('d-m-Y');
-                    $datosInforRegistro [14]= Carbon::parse($row->fecha)->addWeekdays(9)->format('d-m-Y');
-                }
-
+        foreach ($bucarRegistros as $row) {
+            $datosInforRegistro[0] = $row->NumPart;
+            $datosInforRegistro[1] = $row->wo;
+            $datosInforRegistro[2] = $row->cliente;
+            $datosInforRegistro[3] = $row->planeacion;
+            $datosInforRegistro[4] = $row->Qty;
+            $datosInforRegistro[5] = $row->liberacion;
+            $datosInforRegistro[6] = $row->ensamble;
+            $datosInforRegistro[7] = $row->loom;
+            $datosInforRegistro[8] = $row->calidad;
+            if ($row->planeacion) {
+                $datosInforRegistro[9] = Carbon::parse($row->planeacion)->format('d-m-Y');
+                $datosInforRegistro[10] = Carbon::parse($row->planeacion)->addWeekdays(3)->format('d-m-Y');
+                $datosInforRegistro[11] = Carbon::parse($row->planeacion)->addWeekdays(6)->format('d-m-Y');
+                $datosInforRegistro[12] = Carbon::parse($row->planeacion)->addWeekdays(8)->format('d-m-Y');
+                $datosInforRegistro[13] = Carbon::parse($row->planeacion)->addWeekdays(9)->format('d-m-Y');
+                $datosInforRegistro[14] = Carbon::parse($row->planeacion)->addWeekdays(9)->format('d-m-Y');
+            } else {
+                $datosInforRegistro[9] = Carbon::parse($row->fecha)->format('d-m-Y');
+                $datosInforRegistro[10] = Carbon::parse($row->fecha)->addWeekdays(3)->format('d-m-Y');
+                $datosInforRegistro[11] = Carbon::parse($row->fecha)->addWeekdays(6)->format('d-m-Y');
+                $datosInforRegistro[12] = Carbon::parse($row->fecha)->addWeekdays(8)->format('d-m-Y');
+                $datosInforRegistro[13] = Carbon::parse($row->fecha)->addWeekdays(9)->format('d-m-Y');
+                $datosInforRegistro[14] = Carbon::parse($row->fecha)->addWeekdays(9)->format('d-m-Y');
             }
+        }
 
         return view('juntas/infoIdSeguimiento', ['value' => session('user'), 'cat' => session('categoria'), 'id' => $id, 'datosInforRegistro' => $datosInforRegistro]);
     }
-
 }

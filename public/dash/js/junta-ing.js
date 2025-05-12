@@ -306,3 +306,92 @@ try {
 catch (error) {
     console.error(error);
 }
+try {
+
+    const cake = document.getElementById("cakes");
+    const buen=(buenos);
+    const mal=(malos);
+console.log(buen);
+console.log(mal);
+    const cakeIng = new Chart(cake, {
+      type: 'doughnut',
+      data: {
+        labels: ['on Time', 'Delayed'],
+        datasets: [{
+          label: 'Cakes',
+          data: [buen, mal],
+            backgroundColor: [
+                'rgba(14, 249, 18, 0.2)',
+                'rgba(198, 73, 32, 0.2)',
+            ],
+            borderColor: [
+                'rgb(62, 249, 71)',
+                'rgb(251, 79, 79)',
+            ],
+            borderWidth: 1,
+            borderSkipped: false,
+            stack: 'combined',
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: true,
+            position: 'top'
+          },
+          tooltip: {
+            enabled: true
+          }
+        }
+      }
+    });
+
+
+}
+catch (error) {
+    console.error(error);
+}
+try {
+    goals = [];
+    const labelsreg=Object.keys(mothLess12);
+    const datareg=Object.values(mothLess12);
+    for (let i = 0; i < labelsreg.length; i++) {
+        goals[i] = parseInt(95);
+    }
+    const cake2 = document.getElementById("cakes2");
+  const data = {
+  labels:labelsreg,
+  datasets: [{
+    type: 'bar',
+    label: 'Status',
+    data: datareg,
+    borderColor: 'rgb(69, 11, 206)',
+    backgroundColor: 'rgba(0, 14, 172, 0.2)'
+  }, {
+    type: 'line',
+    label: 'GOAL',
+    data: goals,
+    fill: false,
+    borderColor: 'rgb(21, 249, 108)'
+  }]
+};
+const config = {
+  type: 'bar',
+  data: data,
+  options: {
+    scales: {
+      y: {
+        beginAtZero: true
+      }
+    }
+  }
+};
+const cakeIng2 = new Chart(cake2, config);
+
+
+}
+catch (error) {
+    console.error(error);
+}
