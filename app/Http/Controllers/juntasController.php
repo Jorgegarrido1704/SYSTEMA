@@ -1299,10 +1299,13 @@ class juntasController extends Controller
         //work Schedule dounut
         $month = (int) date('m');
         $year = date('Y');
+        $lmt =  'Jan';
         $porcentaje = $porcentajeMalos = $buenos = $malos = $total = 0;
+        $porcentajemes1 = $porcentajemes = 0;
+         $last12Months =$thisYearGoals = [];
         $workSchedule = DB::table('workschedule')
 
-            ->where('commitmentDate', 'LIKE', $month . '/%/' . $year)
+            ->where('commitmentDate', 'LIKE',   $month . '/%/' . $year)
             ->where('CompletionDate', '!=', '')
             ->orderBy('id', 'desc')
             ->get();
@@ -1324,15 +1327,40 @@ class juntasController extends Controller
             $porcentaje = 0;
             $porcentajeMalos = 0;
         }
+        //this year goals
+
+         for ($i = 0; $i < 12; $i++) {
+            $total = $buenos = $malos = 0;
+            $last12Month = DB::table('workschedule')
+                ->where('commitmentDate', 'LIKE', $i+1 . '/%/' . $year)
+                ->where('CompletionDate', '!=', '')
+                ->orderBy('id', 'desc')
+                ->get();
+            foreach ($last12Month as $row) {
+                $timeIni = $timeFin = 0;
+                $timeIni = strtotime($row->commitmentDate);
+                $timeFin = strtotime($row->CompletionDate);
+                if ($timeFin > $timeIni) {
+                    $malos += 1;
+                } else {
+                    $buenos += 1;
+                }
+                $total++;
+            }
+            if ($total > 0) {
+                $porcentajemes1 = round(($buenos / $total) * 100, 2); } else { $porcentajemes1 = 0;
+            }
+            $thisYearGoals[$i .' '.$lmt.'-' . $year ] = $porcentajemes1;
+            $lmt = date('M', strtotime($lmt . ' +1 month'));
+        }
+
         //Last 12 Months Goals
-        $last12Months = [];
-        $restMonthes=12;
-        $lmo =(int) date('m', strtotime('-'.$restMonthes.' months'));
-        $lmy = date('Y', strtotime('-'.$restMonthes.' months'));
+        $lmt = 'Jan';
+        $lmy = date('Y', strtotime('-1 year'));
         for ($i = 0; $i < 12; $i++) {
             $total = $buenos = $malos = 0;
             $last12Month = DB::table('workschedule')
-                ->where('commitmentDate', 'LIKE', $lmo . '/%/' . $lmy)
+                ->where('commitmentDate', 'LIKE', $i+1 . '/%/' . $lmy)
                 ->where('CompletionDate', '!=', '')
                 ->orderBy('id', 'desc')
                 ->get();
@@ -1350,14 +1378,13 @@ class juntasController extends Controller
             if ($total > 0) {
                 $porcentajemes = round(($buenos / $total) * 100, 2); } else { $porcentajemes = 0;
             }
-            $last12Months[$i . ' ' . date('M', strtotime('-' . $restMonthes . ' months')) . '-' . date('Y', strtotime('-' . $restMonthes . ' months')) ] = $porcentajemes;
-            $restMonthes--;
-            $lmo =(int) date('m', strtotime('-' . $restMonthes . ' months'));
-            $lmy = date('Y', strtotime('-' . $restMonthes . ' months'));
+            $last12Months[$i .' '.$lmt.'-' . $lmy ] = $porcentajemes;
+            $lmt = date('M', strtotime($lmt . ' +1 month'));
+
         }
 
 
-        return view('juntas/ing', ['last12Months'=> $last12Months,'porcentaje' => $porcentaje, 'porcentajeMalos' => $porcentajeMalos, 'todas' => $todas, 'jesp' => $jesp, 'nanp' => $nanp, 'bp' => $bp, 'jcp' => $jcp, 'psp' => $psp, 'alv' => $alv, 'asp' => $asp, 'jg' => $jg, 'jesus' => $jesus, 'pao' => $pao, 'nancy' => $nancy, 'ale' => $ale, 'carlos' => $carlos, 'arturo' => $arturo, 'jorge' => $jorge, 'brandon' => $brandon, 'actividadesLastMonth' => $actividadesLastMonth, 'actividades' => $actividades, 'value' => session('user'), 'cat' => session('categoria')]);
+        return view('juntas/ing', ['thisYearGoals' => $thisYearGoals,'last12Months'=> $last12Months,'porcentaje' => $porcentaje, 'porcentajeMalos' => $porcentajeMalos, 'todas' => $todas, 'jesp' => $jesp, 'nanp' => $nanp, 'bp' => $bp, 'jcp' => $jcp, 'psp' => $psp, 'alv' => $alv, 'asp' => $asp, 'jg' => $jg, 'jesus' => $jesus, 'pao' => $pao, 'nancy' => $nancy, 'ale' => $ale, 'carlos' => $carlos, 'arturo' => $arturo, 'jorge' => $jorge, 'brandon' => $brandon, 'actividadesLastMonth' => $actividadesLastMonth, 'actividades' => $actividades, 'value' => session('user'), 'cat' => session('categoria')]);
     }
     public function cutAndTerm()
     {

@@ -360,15 +360,24 @@ try {
     for (let i = 0; i < labelsreg.length; i++) {
         goals[i] = parseInt(95);
     }
+    const comp=Object.values(compGoals);
     const cake2 = document.getElementById("cakes2");
   const data = {
   labels:labelsreg,
   datasets: [{
     type: 'bar',
-    label: 'Status',
+    label: 'Last Year',
     data: datareg,
-    borderColor: 'rgb(69, 11, 206)',
-    backgroundColor: 'rgba(0, 14, 172, 0.2)'
+    borderColor: 'rgb(255, 162, 238)',
+    backgroundColor: 'rgba(226, 60, 223, 0.2)',
+    borderWidth: 1,
+  },{
+    type: 'bar',
+    label: 'This Year',
+    data: comp,
+    backgroundColor: 'rgba(226, 250, 160, 0.2)',
+    borderColor: 'rgb(220, 240, 65)',
+    borderWidth: 1,
   }, {
     type: 'line',
     label: 'GOAL',

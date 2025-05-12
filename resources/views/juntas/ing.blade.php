@@ -32,7 +32,8 @@
        const buenos = {!! json_encode($porcentaje) !!};
        const malos = {!! json_encode($porcentajeMalos) !!};
        const mothLess12 = {!! json_encode($last12Months) !!};
-       console.log(mothLess12);
+         const compGoals = {!! json_encode($thisYearGoals) !!};
+      // console.log(compGoals);
         </script>
     <div class="d-sm-flex align-items-center justify-content-between mb-4"></div>
 
