@@ -311,8 +311,7 @@ try {
     const cake = document.getElementById("cakes");
     const buen=(buenos);
     const mal=(malos);
-console.log(buen);
-console.log(mal);
+
     const cakeIng = new Chart(cake, {
       type: 'doughnut',
       data: {
