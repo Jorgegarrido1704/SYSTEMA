@@ -13,7 +13,7 @@
             <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                     <h5 class="m-0 font-weight-bold text-primary"> Engineering work scheduled </h5>
-                    <input type="text" class="form-control" id="pns" placeholder="Search for PNs.." onchange="search()">
+                    <input type="text" class="form-control" id="pns"  value="" placeholder="Search for PNs.." onchange="search()">
                 </div>
                 <!-- filtros -->
                     <div class="col-12 text-center mb-5">
@@ -24,42 +24,60 @@
                             <div class="fomr-select col-2 m-0">
                                 <label for="customer" class="form-label">Customer</label>
                                 <select name="customer" id="customer" class="form-select">
-                                    <option value="">Customer</option>
+                                    <option value="" selected>Customer</option>
+                                    @foreach ($customer as $cust )
+                                        <option value="{{ $cust }}">{{ $cust }}</option>
+
+                                    @endforeach
 
                                 </select>
                             </div>
-                            <div class="col-1">
+                            <div class="col-1 ">
+                               <div class="form-group">
                                 <label for="size" class="form-label"> Size</label>
+                               </div>
+                                <div class="form-group">
                                 <select name="size" class="form-select" id="size">
-                                    <option value="">Size</option>
+                                    <option value="" selected>Size</option>
                                     <option value="Ch">Ch</option>
                                     <option value="M">M</option>
                                     <option value="G">G</option>
                                 </select>
+                                </div>
                             </div>
                             <div class="col-2">
+                                <div class="form-group">
                                 <label for="responsable">Responsable</label>
+                                </div ><div>
                                 <select name="responsable" class="form-select" id="responsable">
-                                    <option value="">Responsable</option>
+                                    <option value="" selected>Responsable</option>
+                                    @foreach ($ingResp as $resp)
+                                        <option value="{{ $resp }}">{{ $resp }}</option>
+                                    @endforeach
 
                                 </select>
+                                </div>
                             </div>
                             <div class="col-2">
+                                <div class="form-group">
                                 <label for="Filter">Filter Dates</label>
+                            </div><div>
                                 <select name="Filter" class="form-select" id="Filter">
-                                    <option value="">Filter</option>
+                                    <option value="" selected>Filter</option>
                                     <option value="MRP">MRP</option>
                                     <option value="receiptDate">Receipt Date</option>
                                     <option value="commitmentDate">Commitment Date</option>
                                     <option value="CompletionDate">Completion Date</option>
+                                    <option value="documentsApproved">Documents Approved</option>
                                     <option value="customerDate">Customer Date</option>
                                 </select>
+                                </div>
                             </div>
                             <div class="col-2">
-                                <label for="DateIni">Date Init:</label><input type="date" class="form-control" id="DateIni"></label>
+                                <label for="DateIni">Date Init:</label><input type="date" class="form-control" id="DateIni" ></label>
                             </div>
                             <div class="col-2">
-                                <label for="DateEnd">Date End:</label><input type="date" class="form-control" id="DateEnd"></label>
+                                <label for="DateEnd">Date End:</label><input type="date" class="form-control" id="DateEnd" ></label>
                             </div>
 
                                 <button class="form-button btn btn-primary" onclick="search()">Search</button>

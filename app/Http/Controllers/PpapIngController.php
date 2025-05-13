@@ -12,6 +12,7 @@ use Illuminate\Mail\Mailables;
 use App\Models\listaCalidad;
 use App\Models\cronograma;
 use App\Models\errores;
+use Carbon\Carbon;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
@@ -784,26 +785,76 @@ class PpapIngController extends Controller
     }
     public function workState(Request $request)
     {
+        $customer =$ingResp= [];
         $value = session('user');
         $cat = session('categoria');
-        return view('juntas/workSchedules/workSchedule', ['cat' => $cat, 'value' => $value]);
+
+        $reqCust = DB::table('workSchedule')->select('customer')->distinct()->where('customer', '!=', '')->get();
+        foreach ($reqCust as $row) {
+            $customer[$row->customer] = $row->customer;
+        }
+        $ingSearch = DB::table('workSchedule')->select('resposible')->distinct()->where('resposible', '!=', '')->get();
+        foreach ($ingSearch as $row) {
+            $ingResp[$row->resposible] = $row->resposible;
+        }
+
+        return view('juntas/workSchedules/workSchedule', ['ingResp' => $ingResp,'customer' => $customer,'cat' => $cat, 'value' => $value]);
     }
     public function workStateJason(Request $request)
     {
         $datos = [];
         $input = $request->all();
-        $pns = $input['pns'];
-        $buscar = DB::table('workSchedule')->where('pn', 'like', '%' . $pns . '%')->get();
-        foreach ($buscar as $row) {
+        $customer = $input['customer'] ?? '';
+        $resposible = $input['responsable'] ?? '';
+        $filter = $input['filter'] ?? '';
+        $pn = $input['pns'] ?? '';
+        $size = $input['size'] ?? '';
+        $dateIni = $input['Dateini'] ?? '';
+        $dateFin = $input['DateFin'] ?? '';
+        $i=0;
+
+        if ($pn != '') {
+            $buscar = DB::table('workSchedule')->where('pn', 'LIKE', '%' . $pn . '%')->get();
+        } else if ($customer != '') {
+            $buscar = DB::table('workSchedule')->where('customer', 'LIKE', '%' . $customer . '%')->get();
+        } else if ($resposible != '') {
+            $buscar = DB::table('workSchedule')->where('resposible', 'LIKE', '%' . $resposible . '%')->get();
+        } else if ($size != '') {
+            $buscar = DB::table('workSchedule')->where('size', 'LIKE', '%' . $size . '%')->get();
+        } elseif ($filter != '' AND $dateIni != '' AND $dateFin != '') {
+            $buscar = DB::table('workSchedule')->whereBetween($filter, [$dateIni, $dateFin])->get();
+        }
+
+         if($buscar){
+            foreach ($buscar as $row) {
+                            $datos[$i++] = $row;
+                        }
+        }
+        if( $buscar->isEmpty()){
+            return json_encode(['mensaje'=>'No hay resultados']);
+        }
+      /*  foreach ($buscar as $row) {
             $datos[] = [
 
                 'pn' => $row->pn,
+                'customer' => $row->customer,
                 'WorkRev' => $row->WorkRev,
+                'size' => $row->size,
+                'FullSize' => $row->FullSize,
+                'MRP' => $row->MRP,
+                'receiptDate' => $row->receiptDate,
+                'commitmentDate' => $row->commitmentDate,
+                'CompletionDate' => $row->CompletionDate,
+                'documentsApproved' => $row->documentsApproved,
+                'Status' => $row->Status,
+                'resposible' => $row->resposible,
+                'customerDate' => $row->customerDate,
+
 
             ];
         }
 
-
+*/
 
         return json_encode($datos);
     }

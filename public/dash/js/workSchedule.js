@@ -1,7 +1,15 @@
 async function search() {
     const baseUrl = datas;
-    const pns = document.getElementById('pns').value;
-    const url = `${baseUrl}?pns=${encodeURIComponent(pns)}`;
+    const pns = document.getElementById('pns').value ;
+    const customer = document.getElementById('customer').value;
+    const responsable = document.getElementById('responsable').value;
+    const filter = document.getElementById('Filter').value ;
+    const size = document.getElementById('size').value ;
+    const Dateini = document.getElementById('DateIni').value;
+    const DateFin = document.getElementById('DateEnd').value;
+
+    console.log(DateFin + ' ' + Dateini+ ' ' + size + ' ' + filter + ' ' + responsable + ' ' + customer + ' ' + pns);
+    const url = `${baseUrl}?pns=${encodeURIComponent(pns)}&customer=${encodeURIComponent(customer)}&responsable=${encodeURIComponent(responsable)}&filter=${encodeURIComponent(filter)}&size=${encodeURIComponent(size)}&Dateini=${encodeURIComponent(Dateini)}&DateFin=${encodeURIComponent(DateFin)}`;
 
     try {
         const response = await fetch(url);
