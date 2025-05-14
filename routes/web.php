@@ -84,6 +84,7 @@ Route::controller(PpapIngController::class)->group(function () {
     Route::get('/problemasFin', [PpapIngController::class, 'problemasFin'])->name('problemasFin');
     Route::get('/workSchedule', [PpapIngController::class, 'workState'])->name('workState');
     Route::get('/workStateJason', [PpapIngController::class, 'workStateJason'])->name('workStateJason');
+
 });
 
 Route::controller(AlmacenController::class)->group(function () {
@@ -160,6 +161,7 @@ Route::controller(juntasController::class)->group(function () {
     Route::get('juntas/asemblyLoom',   [juntasController::class, 'assemblyLoom'])->name('assemblyLoom');
     Route::get('juntas/seguimientos',   [juntasController::class, 'seguimientos'])->name('seguimientos');
     Route::get('juntas/seguimiento/{id}',   [juntasController::class, 'seguimiento'])->name('seguimiento');
+     Route::get('/registroComment', [juntasController::class, 'registroComment'])->name('registroComment');
 });
 
 Route::controller(SaludController::class)->group(function () {

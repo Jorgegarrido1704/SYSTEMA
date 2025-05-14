@@ -25,7 +25,7 @@
                     </div>
                 </div>
             </div>
-         <!--   <div class="col-lg-12 col-lx-12 col-md-12 mb-4">
+           <div class="col-lg-12 col-lx-12 col-md-12 mb-4">
 
                 <div class="card shadow mb-5">
                     <div class="card-header py-3">
@@ -75,7 +75,7 @@
                         </table>
                     </div>
                 </div>
-            </div>-->
+            </div>
 
 
         </div>

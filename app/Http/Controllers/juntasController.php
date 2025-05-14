@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\calidadController;
+use App\Models\issuesFloor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -10,8 +11,7 @@ use Exception;
 use ZeroDivisionError;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
-
-
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx\Rels;
 
 class juntasController extends Controller
 {
@@ -1696,7 +1696,6 @@ class juntasController extends Controller
             $buscarDatos[$i][0] = $rows->cliente;
             $buscarDatos[$i][1] = $rows->NumPart;
             $buscarDatos[$i][2] = $rows->wo;
-
             $buscarDatos[$i][3] = $rows->planeacion ? Carbon::parse($rows->planeacion)->format('d-m-Y') : Carbon::parse($rows->fecha)->format('d-m-Y');
             $buscarDatos[$i][4] = $rows->Qty;
             $buscarDatos[$i][5] = Carbon::parse($buscarDatos[$i][3])->addWeekdays(3)->format('d-m-Y'); //24567
@@ -1704,11 +1703,20 @@ class juntasController extends Controller
             $buscarDatos[$i][7] = Carbon::parse($buscarDatos[$i][3])->addWeekdays(8)->format('d-m-Y');
             $buscarDatos[$i][8] = Carbon::parse($buscarDatos[$i][3])->addWeekdays(9)->format('d-m-Y');
             $buscarDatos[$i][9] = Carbon::parse($buscarDatos[$i][3])->addWeekdays(9)->format('d-m-Y');
+            $buscarIssue=DB::table('issuesfloor')->select('actionOfComment')->where('id_tiempos','=',$rows->ids)->where('actionOfComment','=','On Hold')->first();
+            if($buscarIssue){
+                $buscarDatos[$i][10] = 'onHold';
+                $buscarDatos[$i][11] = 'onHold';
+                $buscarDatos[$i][12] = 'onHold';
+                $buscarDatos[$i][13] = 'onHold';
+                $buscarDatos[$i][14] = 'onHold';
+            }else{
             $buscarDatos[$i][10] = deffColores(Carbon::today()->format('d-m-Y'), $buscarDatos[$i][5], $rows->liberacion, 'ini');
             $buscarDatos[$i][11] = $rows->liberacion ? deffColores(Carbon::today()->format('d-m-Y'), $buscarDatos[$i][6], $rows->ensamble, $buscarDatos[$i][10]) : '';
             $buscarDatos[$i][12] = $rows->ensamble ? deffColores(Carbon::today()->format('d-m-Y'), $buscarDatos[$i][7], $rows->loom, $buscarDatos[$i][11]) : '';
             $buscarDatos[$i][13] = $rows->loom ? deffColores(Carbon::today()->format('d-m-Y'), $buscarDatos[$i][8], $rows->calidad, $buscarDatos[$i][12]) : '';
             $buscarDatos[$i][14] = $rows->calidad ? deffColores(Carbon::today()->format('d-m-Y'), $buscarDatos[$i][9], $rows->calidad, $buscarDatos[$i][13]) : '';
+             }
             $buscarDatos[$i][15] = $rows->ids;
 
 
@@ -1722,7 +1730,7 @@ class juntasController extends Controller
     public function seguimiento($id)
     {
         $i = 0;
-        $datosInforRegistro = [];
+        $datosInforRegistro = $commentsBefore=[];
         $bucarRegistros = DB::table('registro')
             ->join('tiempos', 'registro.info', '=', 'tiempos.info')
             ->where('registro.id', '=', $id)
@@ -1755,7 +1763,50 @@ class juntasController extends Controller
                 $datosInforRegistro[14] = Carbon::parse($row->fecha)->addWeekdays(9)->format('d-m-Y');
             }
         }
+        $buscar = DB::table('issuesfloor')
+            ->where('id_tiempos', '=', $id)
+            ->where('actionOfComment', '!=', 'Ok')
+            ->orderBy('id_issues', 'desc')
+            ->get();
 
-        return view('juntas/infoIdSeguimiento', ['value' => session('user'), 'cat' => session('categoria'), 'id' => $id, 'datosInforRegistro' => $datosInforRegistro]);
+        foreach ($buscar as $rows) {
+            $commentsBefore[$i][0] = $rows->comment_issue;
+            $commentsBefore[$i][1] = $rows->date;
+            $commentsBefore[$i][2] = $rows->responsable;
+            $commentsBefore[$i][3] = $rows->actionOfComment;
+            $i++;
+        }
+
+        return view('juntas/infoIdSeguimiento', ['commentsBefore'=> $commentsBefore,'value' => session('user'), 'cat' => session('categoria'), 'id' => $id, 'datosInforRegistro' => $datosInforRegistro]);
+    }
+    public function registroComment(Request $request)
+    {
+        $datosOk=$request->input('dataok');
+        if($datosOk){
+            $updateRegistros = DB::table('issuesfloor')->where('id_tiempos', '=', $datosOk)->where('actionOfComment', '!=', 'Ok')->update(['actionOfComment' => 'Issue Fixed']);
+           $registroUp= new issuesFloor();
+           $registroUp->id_tiempos=$datosOk;
+           $registroUp->comment_issue='-';
+           $registroUp->date=Carbon::now();
+           $registroUp->responsable=session('user') . ' ' . session('categoria');
+           $registroUp->actionOfComment='Ok';
+           $registroUp->save();
+        }
+        $request->validate([
+            'comments' => 'required',
+            'status_issue' => 'required',
+
+        ]);
+        $value= session('user');
+        $cat= session('categoria');
+
+        $issuesRegister = new issuesFloor();
+        $issuesRegister->id_tiempos = $request->input('id_issue');
+        $issuesRegister->comment_issue = $request->input('comments');
+        $issuesRegister->date = $request->input('date_issue');
+        $issuesRegister->responsable = $value . ' ' . $cat;
+        $issuesRegister->actionOfComment = $request->input('status_issue');
+        $issuesRegister->save();
+        return redirect()->route('seguimiento', ['id' => $request->input('id_issue')]);
     }
 }
