@@ -21,16 +21,18 @@
                             <h5 class="m-0 font-weight-bold text-primary">Filters</h5>
                         </div>
                         <div class="form-group position-relative row">
-                            <div class="fomr-select col-2 m-0">
-                                <label for="customer" class="form-label">Customer</label>
-                                <select name="customer" id="customer" class="form-select">
-                                    <option value="" selected>Customer</option>
-                                    @foreach ($customer as $cust )
-                                        <option value="{{ $cust }}">{{ $cust }}</option>
-
-                                    @endforeach
-
-                                </select>
+                            <div class="col-2 m-0">
+                                <div class="form-group">
+                                    <label for="customer" class="form-label">Customer</label>
+                                </div>
+                                <div class="form-group">
+                                    <select name="customer" id="customer" class="form-select">
+                                        <option value="" selected>Customer</option>
+                                        @foreach ($customer as $cust )
+                                            <option value="{{ $cust }}">{{ $cust }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
                             <div class="col-1 ">
                                <div class="form-group">
@@ -84,6 +86,13 @@
 
                         </div>
                     </div>
+                    <!-- add Work engineering -->
+                    <div class ="col-12 text-center mb-5">
+                        <button type="circle" class="btn btn-primary" data-toggle="modal" data-target="#addModal">Add Another </button>
+
+                    </div>
+                    <hr>
+
                 <!-- Schedule work engineering -->
                 <div class="card-body" style="overflow-y: auto; ">
                      <div class="table">
