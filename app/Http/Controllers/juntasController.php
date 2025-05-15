@@ -1616,7 +1616,7 @@ class juntasController extends Controller
             ->orderBy('registro.id', 'ASC')
             ->get();
 
-        function deffColores($InitDays, $systemFinish, $lastStatus)
+        function deffColores($InitDays, $systemFinish, $lastStatus,$dias)
         {
             $DiasEntre = function ($inicio, $fin) {
                 $period = \Carbon\CarbonPeriod::create($inicio, $fin);
@@ -1632,29 +1632,53 @@ class juntasController extends Controller
 
             $filtro =  $DiasEntre($InitDays, $systemFinish) ;
             if ($lastStatus == 'ini' or $lastStatus != 'late') {
+                if($dias == 1){
+                     if ($filtro == 0) {
+                    return 'onWorking';
+                } else if ($filtro == 1) {
+                    return 'closeToexpiring';
+                } else if ($filtro >= 2) {
+                    return 'late';
+                } else {
+                    return '';
+                }
+                }else{
                 if ($filtro <= 0) {
                     return 'onTime';
                 } else if ($filtro == 1) {
                     return 'onWorking';
                 } else if ($filtro == 2) {
                     return 'closeToexpiring';
-                } else if ($filtro >= 3) {
+                } else if ($filtro > 2) {
                     return 'late';
                 } else {
                     return '';
-                }
+                } }
+
+
             } elseif ($lastStatus == 'late') {
-                if ($filtro == 0) {
-                    return 'delayedOnTime';
-                } elseif ($filtro == 1) {
-                    return 'delayed';
-                } else if ($filtro == 2) {
-                    return 'delayedandclosedtoexpiring';
-                } else if ($filtro >= 3) {
+                if($dias == 1){
+                    if ($filtro == 0) {
+                    return 'onWorking';
+                } else if ($filtro == 1) {
+                    return 'closeToexpiring';
+                } else if ($filtro >= 2) {
                     return 'late';
                 } else {
                     return '';
                 }
+                }else{
+                if ($filtro <= 0) {
+                    return 'onTime';
+                } else if ($filtro == 1) {
+                    return 'onWorking';
+                } else if ($filtro == 2) {
+                    return 'closeToexpiring';
+                } else if ($filtro > 2) {
+                    return 'late';
+                } else {
+                    return '';
+                } }
             }
         }
         function deffColorescompletos($InitDays, $systemFinish,$process)
@@ -1699,21 +1723,21 @@ class juntasController extends Controller
                 $buscarDatos[$i][13] = 'onHold';
                 $buscarDatos[$i][14] = 'onHold';
             }else{
-            $buscarDatos[$i][10] =$rows->liberacion ? deffColorescompletos($buscarDatos[$i][3], $buscarDatos[$i][5], 2): deffColores($buscarDatos[$i][3], Carbon::now()->format('d-m-Y'), 'ini');
+            $buscarDatos[$i][10] =$rows->liberacion ? deffColorescompletos($buscarDatos[$i][3], $buscarDatos[$i][5], 2): deffColores($buscarDatos[$i][3], Carbon::now()->format('d-m-Y'), 'ini',2);
              if($rows->ensamble ){$buscarDatos[$i][11] = deffColorescompletos($buscarDatos[$i][5], $buscarDatos[$i][6], 2);
-             } elseif($rows->liberacion){$buscarDatos[$i][11] = deffColores($buscarDatos[$i][6], Carbon::now()->format('d-m-Y'), $buscarDatos[$i][10]);}
+             } elseif($rows->liberacion){$buscarDatos[$i][11] = deffColores($buscarDatos[$i][6], Carbon::now()->format('d-m-Y'), $buscarDatos[$i][10],2);}
             else{ $buscarDatos[$i][11] ='';}
 
             if($rows->loom){$buscarDatos[$i][12] = deffColorescompletos($buscarDatos[$i][6], $buscarDatos[$i][7], 2);
-            } elseif($rows->ensamble){$buscarDatos[$i][12] = deffColores($buscarDatos[$i][7], Carbon::now()->format('d-m-Y'), $buscarDatos[$i][11]);}
+            } elseif($rows->ensamble){$buscarDatos[$i][12] = deffColores($buscarDatos[$i][7], Carbon::now()->format('d-m-Y'), $buscarDatos[$i][11],1);}
             else{ $buscarDatos[$i][12] ='';}
 
             if($rows->calidad){$buscarDatos[$i][13] = deffColorescompletos($buscarDatos[$i][7], $buscarDatos[$i][8], 2);
-            } elseif($rows->loom){$buscarDatos[$i][13] = deffColores($buscarDatos[$i][8], Carbon::now()->format('d-m-Y'), $buscarDatos[$i][12]);}
+            } elseif($rows->loom){$buscarDatos[$i][13] = deffColores($buscarDatos[$i][8], Carbon::now()->format('d-m-Y'), $buscarDatos[$i][12],1);}
             else{ $buscarDatos[$i][13] ='';}
 
             if($rows->calidad){$buscarDatos[$i][14] = deffColorescompletos($buscarDatos[$i][8], $buscarDatos[$i][9], 2);
-            } elseif($rows->loom){$buscarDatos[$i][14] = deffColores($buscarDatos[$i][9], Carbon::now()->format('d-m-Y'), $buscarDatos[$i][13]);}
+            } elseif($rows->loom){$buscarDatos[$i][14] = deffColores($buscarDatos[$i][9], Carbon::now()->format('d-m-Y'), $buscarDatos[$i][13],1);}
             else{ $buscarDatos[$i][14] ='';}
 
         }
