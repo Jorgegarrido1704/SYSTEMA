@@ -1637,19 +1637,17 @@ class juntasController extends Controller
                     return 'onWorking';
                 } else if ($filtro == 1) {
                     return 'closeToexpiring';
-                } else if ($filtro >= 2) {
+                } else if ($filtro > 1) {
                     return 'late';
                 } else {
                     return '';
                 }
                 }else{
-                if ($filtro <= 0) {
-                    return 'onTime';
-                } else if ($filtro == 1) {
+                 if ($filtro == 0) {
                     return 'onWorking';
-                } else if ($filtro == 2) {
+                } else if ($filtro == 1) {
                     return 'closeToexpiring';
-                } else if ($filtro > 2) {
+                } else if ($filtro >= 2) {
                     return 'late';
                 } else {
                     return '';
@@ -1668,13 +1666,13 @@ class juntasController extends Controller
                     return '';
                 }
                 }else{
-                if ($filtro <= 0) {
+                if ($filtro < 0) {
                     return 'delayedOnTime';
-                } else if ($filtro == 1) {
+                } else if ($filtro == 0) {
                     return 'delayed';
-                } else if ($filtro == 2) {
+                } else if ($filtro == 1) {
                     return 'delayedandclosedtoexpiring';
-                } else if ($filtro > 2) {
+                } else if ($filtro >= 2) {
                     return 'late';
                 } else {
                     return '';
