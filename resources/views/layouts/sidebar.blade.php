@@ -68,12 +68,14 @@
                         href="{{ route('calidad_junta') }}">Quality</a></li>
                 <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('ing_junta') }}"
                         onmouseover=showEng();>engineering</a>
+                        @if($cat=='inge')
                     <ul class="submenu" id="engsub" style="display:none;">
                         <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('workState') }}">Schedule Work</a>
                         </li>
                         <li class="submenu" id="engsub"><a style="color:white;" href="#">CutList</a>
                         </li>
                     </ul>
+                        @endif
                 </li>
                 @if ($cat == 'cali')
                     <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('accepted') }}">Accept
@@ -86,8 +88,10 @@
                 <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('seguimientos') }}"
                     onmouseover=showProduction();>Production States</a>
                     <ul class="submenu" id="production" style="display:none;">
+                        @if($value=='Admin')
                         <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('cutAndTerm') }}">Cut & Terminals</a></li>
                         <li class="submenu" id="submenu"><a style="color:white;" href="#">Assembly & Looming</a></li>
+                        @endif
                     </ul>
                 </li>
             </ul>
