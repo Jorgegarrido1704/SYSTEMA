@@ -80,6 +80,9 @@
                     </thead>
                     <tbody>
                         <tr>
+                            @if($value == 'Gamboa J' or $value == 'Juan G' or $value == 'Andrea P' or $value == 'Jesus_C' or
+                            $value=='Luis R' or $value=='Edward M' or $value=='Carlos R' or $value=='Juan O' or $value=='David V'
+                            or $value=='Estala G' or $value=='Mario V')
                             <form action="{{ route('registroComment') }}" method="get">
                             <td>
                                 <div class="form-group">
@@ -111,6 +114,7 @@
                                     <input type="submit" class="btn btn-primary" id="btnGuardar" name="btnGuardar" value="Save">
                                 </div>
                             </form>
+                            @endif
                         </tr>
 
 
@@ -127,10 +131,14 @@
                             <td>{{ $item[3] }}</td>
                             @if($item[3] == 'On Hold')
                             <td>
+                                @if($value =='Admin' or $value == 'Gamboa J' or $value == 'Juan G' or $value == 'Andrea P' or $value == 'Jesus_C' or
+                            $value=='Luis R' or $value=='Edward M' or $value=='Carlos R' or $value=='Juan O' or $value=='David V'
+                            or $value=='Estala G' or $value=='Mario V')
                                 <form action="{{ route('registroComment') }}" method="get">
                                     <input type="hidden" name="dataok" id="dataok'" value="{{$id}}">
                                 <input type="submit" class="btn btn-primary" id="btnGuardar" name="btnGuardar" value="Fix it">
                                 </form>
+                                @endif
                             </td>
                             @endif
                         </tr>
