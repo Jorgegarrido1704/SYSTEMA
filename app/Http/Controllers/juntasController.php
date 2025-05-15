@@ -1659,9 +1659,9 @@ class juntasController extends Controller
             } elseif ($lastStatus == 'late') {
                 if($dias == 1){
                     if ($filtro == 0) {
-                    return 'onWorking';
+                    return 'delayedOnTime';
                 } else if ($filtro == 1) {
-                    return 'closeToexpiring';
+                    return 'delayedandclosedtoexpiring';
                 } else if ($filtro >= 2) {
                     return 'late';
                 } else {
@@ -1669,11 +1669,11 @@ class juntasController extends Controller
                 }
                 }else{
                 if ($filtro <= 0) {
-                    return 'onTime';
+                    return 'delayedOnTime';
                 } else if ($filtro == 1) {
-                    return 'onWorking';
+                    return 'delayed';
                 } else if ($filtro == 2) {
-                    return 'closeToexpiring';
+                    return 'delayedandclosedtoexpiring';
                 } else if ($filtro > 2) {
                     return 'late';
                 } else {
