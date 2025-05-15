@@ -1632,25 +1632,25 @@ class juntasController extends Controller
 
             $filtro =  $DiasEntre($InitDays, $systemFinish) ;
             if ($lastStatus == 'ini' or $lastStatus != 'late') {
-                if ($filtro <= 1) {
+                if ($filtro <= 0) {
                     return 'onTime';
-                } else if ($filtro == 2) {
+                } else if ($filtro == 1) {
                     return 'onWorking';
-                } else if ($filtro == 3) {
+                } else if ($filtro == 2) {
                     return 'closeToexpiring';
-                } else if ($filtro >= 4) {
+                } else if ($filtro >= 3) {
                     return 'late';
                 } else {
                     return '';
                 }
             } elseif ($lastStatus == 'late') {
-                if ($filtro == 1) {
+                if ($filtro == 0) {
                     return 'delayedOnTime';
-                } elseif ($filtro == 2) {
+                } elseif ($filtro == 1) {
                     return 'delayed';
-                } else if ($filtro == 3) {
+                } else if ($filtro == 2) {
                     return 'delayedandclosedtoexpiring';
-                } else if ($filtro >= 4) {
+                } else if ($filtro >= 3) {
                     return 'late';
                 } else {
                     return '';
