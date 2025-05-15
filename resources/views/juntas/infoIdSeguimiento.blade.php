@@ -30,7 +30,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Calculate  Time</td>
+                            <td>Standar Time</td>
                             <td>{{ $datosInforRegistro[2] }}</td>
                             <td>{{ $datosInforRegistro[0] }}</td>
                             <td>{{ $datosInforRegistro[1] }}</td>

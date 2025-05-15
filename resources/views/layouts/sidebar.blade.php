@@ -68,7 +68,7 @@
                         href="{{ route('calidad_junta') }}">Quality</a></li>
                 <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('ing_junta') }}"
                         onmouseover=showEng();>engineering</a>
-                        @if($cat=='inge')
+                        @if($cat=='inge' || $value=='Admin')
                     <ul class="submenu" id="engsub" style="display:none;">
                         <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('workState') }}">Schedule Work</a>
                         </li>
