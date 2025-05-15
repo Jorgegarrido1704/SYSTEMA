@@ -1616,7 +1616,7 @@ class juntasController extends Controller
             ->orderBy('registro.id', 'ASC')
             ->get();
 
-        function deffColores($InitDays, $systemFinish, $registed, $lastStatus)
+        function deffColores($InitDays, $systemFinish, $lastStatus)
         {
             $DiasEntre = function ($inicio, $fin) {
                 $period = \Carbon\CarbonPeriod::create($inicio, $fin);
@@ -1627,63 +1627,30 @@ class juntasController extends Controller
                         $diasHabiles++;
                     }
                 }
-
                 return $diasHabiles;
             };
 
-            $filtro = $registed ? $DiasEntre($registed, $systemFinish) : $DiasEntre($InitDays, $systemFinish);
-            if ($lastStatus == 'ini') {
-                if ($filtro > 3) {
-                    return 'excelentWork';
-                } elseif ($filtro == 3) {
+            $filtro =  $DiasEntre($InitDays, $systemFinish) ;
+            if ($lastStatus == 'ini' or $lastStatus != 'late') {
+                if ($filtro == 1) {
                     return 'onTime';
                 } else if ($filtro == 2) {
                     return 'onWorking';
-                } else if ($filtro == 1) {
+                } else if ($filtro == 3) {
                     return 'closeToexpiring';
-                } else if ($filtro <= 0) {
-                    return 'late';
-                } else {
-                    return '';
-                }
-            } elseif ($lastStatus == 'onWorking' or $lastStatus == 'closeToexpiring') {
-                if ($filtro > 3) {
-                    return 'excelentWork';
-                } elseif ($filtro == 3) {
-                    return 'onTime';
-                } elseif ($filtro == 2) {
-                    return 'onWorking';
-                } else if ($filtro == 1) {
-                    return 'closeToexpiring';
-                } else if ($filtro <= 0) {
+                } else if ($filtro >= 4) {
                     return 'late';
                 } else {
                     return '';
                 }
             } elseif ($lastStatus == 'late') {
-                if ($filtro > 3) {
-                    return 'excelentWork';
-                } elseif ($filtro == 3) {
-                    return 'onTime';
+                if ($filtro == 1) {
+                    return 'delayedOnTime';
                 } elseif ($filtro == 2) {
                     return 'delayed';
-                } else if ($filtro == 1) {
+                } else if ($filtro == 3) {
                     return 'delayedandclosedtoexpiring';
-                } else if ($filtro <= 0) {
-                    return 'late';
-                } else {
-                    return '';
-                }
-            } else {
-                if ($filtro > 3) {
-                    return 'excelentWork';
-                } elseif ($filtro == 3) {
-                    return 'onTime';
-                } elseif ($filtro == 2) {
-                    return 'onWorking';
-                } else if ($filtro == 1) {
-                    return 'closeToexpiring';
-                } else if ($filtro <= 0) {
+                } else if ($filtro >= 4) {
                     return 'late';
                 } else {
                     return '';
@@ -1692,17 +1659,18 @@ class juntasController extends Controller
         }
 
 
+
         foreach ($tiempos as $rows) {
             $buscarDatos[$i][0] = $rows->cliente;
             $buscarDatos[$i][1] = $rows->NumPart;
             $buscarDatos[$i][2] = $rows->wo;
             $buscarDatos[$i][3] = $rows->planeacion ? Carbon::parse($rows->planeacion)->format('d-m-Y') : Carbon::parse($rows->fecha)->format('d-m-Y');
             $buscarDatos[$i][4] = $rows->Qty;
-            $buscarDatos[$i][5] = Carbon::parse($buscarDatos[$i][3])->addWeekdays(3)->format('d-m-Y'); //24567
-            $buscarDatos[$i][6] = Carbon::parse($buscarDatos[$i][3])->addWeekdays(6)->format('d-m-Y');
-            $buscarDatos[$i][7] = Carbon::parse($buscarDatos[$i][3])->addWeekdays(8)->format('d-m-Y');
-            $buscarDatos[$i][8] = Carbon::parse($buscarDatos[$i][3])->addWeekdays(9)->format('d-m-Y');
-            $buscarDatos[$i][9] = Carbon::parse($buscarDatos[$i][3])->addWeekdays(9)->format('d-m-Y');
+            $buscarDatos[$i][5] = $rows->liberacion ? substr($rows->liberacion, 0, 10) :Carbon::parse($buscarDatos[$i][3])->addWeekdays(2)->format('d-m-Y');
+            $buscarDatos[$i][6] = $rows->ensamble ? substr($rows->ensamble, 0, 10) :Carbon::parse($buscarDatos[$i][5])->addWeekdays(2)->format('d-m-Y');
+            $buscarDatos[$i][7] = $rows->loom ? substr($rows->loom, 0, 10) :Carbon::parse($buscarDatos[$i][6])->addWeekdays(1)->format('d-m-Y');
+            $buscarDatos[$i][8] = $rows->calidad ? substr($rows->calidad, 0, 10) :Carbon::parse($buscarDatos[$i][7])->addWeekdays(1)->format('d-m-Y');
+            $buscarDatos[$i][9] = $rows->calidad ? substr($rows->calidad, 0, 10) :Carbon::parse($buscarDatos[$i][7])->addWeekdays(1)->format('d-m-Y');
             $buscarIssue=DB::table('issuesfloor')->select('actionOfComment')->where('id_tiempos','=',$rows->ids)->where('actionOfComment','=','On Hold')->first();
             if($buscarIssue){
                 $buscarDatos[$i][10] = 'onHold';
@@ -1711,11 +1679,11 @@ class juntasController extends Controller
                 $buscarDatos[$i][13] = 'onHold';
                 $buscarDatos[$i][14] = 'onHold';
             }else{
-            $buscarDatos[$i][10] = deffColores(Carbon::today()->format('d-m-Y'), $buscarDatos[$i][5], $rows->liberacion, 'ini');
-            $buscarDatos[$i][11] = $rows->liberacion ? deffColores(Carbon::today()->format('d-m-Y'), $buscarDatos[$i][6], $rows->ensamble, $buscarDatos[$i][10]) : '';
-            $buscarDatos[$i][12] = $rows->ensamble ? deffColores(Carbon::today()->format('d-m-Y'), $buscarDatos[$i][7], $rows->loom, $buscarDatos[$i][11]) : '';
-            $buscarDatos[$i][13] = $rows->loom ? deffColores(Carbon::today()->format('d-m-Y'), $buscarDatos[$i][8], $rows->calidad, $buscarDatos[$i][12]) : '';
-            $buscarDatos[$i][14] = $rows->calidad ? deffColores(Carbon::today()->format('d-m-Y'), $buscarDatos[$i][9], $rows->calidad, $buscarDatos[$i][13]) : '';
+            $buscarDatos[$i][10] =$rows->liberacion ? deffColores($buscarDatos[$i][3], $buscarDatos[$i][5], 'ini'): deffColores($buscarDatos[$i][3], Carbon::now(), 'ini');
+            $buscarDatos[$i][11] = $rows->ensamble ? deffColores( $buscarDatos[$i][5], $buscarDatos[$i][6], $buscarDatos[$i][10]) : '';
+            $buscarDatos[$i][12] = $rows->loom ? deffColores( $buscarDatos[$i][6], $buscarDatos[$i][7], $buscarDatos[$i][11]) : '';
+            $buscarDatos[$i][13] = $rows->calidad ? deffColores( $buscarDatos[$i][7], $buscarDatos[$i][8], $buscarDatos[$i][12]) : '';
+            $buscarDatos[$i][14] = $rows->calidad ? deffColores( $buscarDatos[$i][8], $buscarDatos[$i][9], $buscarDatos[$i][13]) : '';
              }
             $buscarDatos[$i][15] = $rows->ids;
 
@@ -1749,18 +1717,18 @@ class juntasController extends Controller
             $datosInforRegistro[8] = $row->calidad;
             if ($row->planeacion) {
                 $datosInforRegistro[9] = Carbon::parse($row->planeacion)->format('d-m-Y');
-                $datosInforRegistro[10] = Carbon::parse($row->planeacion)->addWeekdays(3)->format('d-m-Y');
-                $datosInforRegistro[11] = Carbon::parse($row->planeacion)->addWeekdays(6)->format('d-m-Y');
-                $datosInforRegistro[12] = Carbon::parse($row->planeacion)->addWeekdays(8)->format('d-m-Y');
-                $datosInforRegistro[13] = Carbon::parse($row->planeacion)->addWeekdays(9)->format('d-m-Y');
-                $datosInforRegistro[14] = Carbon::parse($row->planeacion)->addWeekdays(9)->format('d-m-Y');
+                $datosInforRegistro[10] = Carbon::parse($row->planeacion)->addWeekdays(2)->format('d-m-Y');
+                $datosInforRegistro[11] = Carbon::parse($row->planeacion)->addWeekdays(4)->format('d-m-Y');
+                $datosInforRegistro[12] = Carbon::parse($row->planeacion)->addWeekdays(5)->format('d-m-Y');
+                $datosInforRegistro[13] = Carbon::parse($row->planeacion)->addWeekdays(6)->format('d-m-Y');
+                $datosInforRegistro[14] = Carbon::parse($row->planeacion)->addWeekdays(6)->format('d-m-Y');
             } else {
                 $datosInforRegistro[9] = Carbon::parse($row->fecha)->format('d-m-Y');
-                $datosInforRegistro[10] = Carbon::parse($row->fecha)->addWeekdays(3)->format('d-m-Y');
-                $datosInforRegistro[11] = Carbon::parse($row->fecha)->addWeekdays(6)->format('d-m-Y');
-                $datosInforRegistro[12] = Carbon::parse($row->fecha)->addWeekdays(8)->format('d-m-Y');
-                $datosInforRegistro[13] = Carbon::parse($row->fecha)->addWeekdays(9)->format('d-m-Y');
-                $datosInforRegistro[14] = Carbon::parse($row->fecha)->addWeekdays(9)->format('d-m-Y');
+                $datosInforRegistro[10] = Carbon::parse($row->fecha)->addWeekdays(2)->format('d-m-Y');
+                $datosInforRegistro[11] = Carbon::parse($row->fecha)->addWeekdays(4)->format('d-m-Y');
+                $datosInforRegistro[12] = Carbon::parse($row->fecha)->addWeekdays(5)->format('d-m-Y');
+                $datosInforRegistro[13] = Carbon::parse($row->fecha)->addWeekdays(6)->format('d-m-Y');
+                $datosInforRegistro[14] = Carbon::parse($row->fecha)->addWeekdays(6)->format('d-m-Y');
             }
         }
         $buscar = DB::table('issuesfloor')

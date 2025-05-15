@@ -38,6 +38,16 @@ td,tr {
       rgba(221, 255, 0, 0.6) 50%
     );
   }
+#delayedOnTime {
+
+    border: none;
+    text-decoration: bold;
+    background: linear-gradient(
+      to top left,
+      rgba(255, 0, 0, 0.5) 50%,
+      rgba(0, 255, 21, 0.6) 50%
+    );
+  }
 #delayedandclosedtoexpiring {
     background: linear-gradient(
       to top left,

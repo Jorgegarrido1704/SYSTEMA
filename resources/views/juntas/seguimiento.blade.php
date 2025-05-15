@@ -17,6 +17,7 @@
                         <input type="text" name="onTime" id="onTime" value="On Time"  style="width:70px;  height: 30px;"  readonly>
                         <input type="text" name="onWorking" id="onWorking" value="On precess" style="width:85px;  height: 30px;"  readonly>
                         <input type="text" name="closeToexpiring" id="closeToexpiring" value="close to expiring"  style="width:135px; height: 30px;"  readonly>
+                        <input type="text" name="delayedOnTime" id="delayedOnTime" value="Delayed/On Time"  style="width: 135px; height: 30px;"  readonly>
                         <input type="text" name="delayed" id="delayed" value="Delayed"  style="width: 70px; height: 30px;"  readonly>
                         <input type="text" name="delayedandclosedtoexpiring" id="delayedandclosedtoexpiring" value="delayed and close to expiring"  style="width:225px;  height: 30px;"  readonly>
                         <input type="text" name="late" id="late" value="Late" style="width: 50px; height: 30px;"  readonly>
