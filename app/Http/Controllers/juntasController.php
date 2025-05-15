@@ -1670,7 +1670,7 @@ class juntasController extends Controller
             $buscarDatos[$i][6] = $rows->ensamble ? substr($rows->ensamble, 0, 10) :Carbon::parse($buscarDatos[$i][5])->addWeekdays(2)->format('d-m-Y');
             $buscarDatos[$i][7] = $rows->loom ? substr($rows->loom, 0, 10) :Carbon::parse($buscarDatos[$i][6])->addWeekdays(1)->format('d-m-Y');
             $buscarDatos[$i][8] = $rows->calidad ? substr($rows->calidad, 0, 10) :Carbon::parse($buscarDatos[$i][7])->addWeekdays(1)->format('d-m-Y');
-            $buscarDatos[$i][9] = $rows->calidad ? substr($rows->calidad, 0, 10) :Carbon::parse($buscarDatos[$i][7])->addWeekdays(1)->format('d-m-Y');
+            $buscarDatos[$i][9] = $buscarDatos[$i][8];
             $buscarIssue=DB::table('issuesfloor')->select('actionOfComment')->where('id_tiempos','=',$rows->ids)->where('actionOfComment','=','On Hold')->first();
             if($buscarIssue){
                 $buscarDatos[$i][10] = 'onHold';
@@ -1683,7 +1683,7 @@ class juntasController extends Controller
             $buscarDatos[$i][11] = $rows->ensamble ? deffColores( $buscarDatos[$i][5], $buscarDatos[$i][6], $buscarDatos[$i][10]) : '';
             $buscarDatos[$i][12] = $rows->loom ? deffColores( $buscarDatos[$i][6], $buscarDatos[$i][7], $buscarDatos[$i][11]) : '';
             $buscarDatos[$i][13] = $rows->calidad ? deffColores( $buscarDatos[$i][7], $buscarDatos[$i][8], $buscarDatos[$i][12]) : '';
-            $buscarDatos[$i][14] = $rows->calidad ? deffColores( $buscarDatos[$i][8], $buscarDatos[$i][9], $buscarDatos[$i][13]) : '';
+            $buscarDatos[$i][14] = $rows->calidad ? deffColores( $buscarDatos[$i][7], $buscarDatos[$i][8], $buscarDatos[$i][13]) : '';
              }
             $buscarDatos[$i][15] = $rows->ids;
 
