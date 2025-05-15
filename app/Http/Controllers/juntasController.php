@@ -1632,7 +1632,7 @@ class juntasController extends Controller
 
             $filtro =  $DiasEntre($InitDays, $systemFinish) ;
             if ($lastStatus == 'ini' or $lastStatus != 'late') {
-                if ($filtro == 1) {
+                if ($filtro <= 1) {
                     return 'onTime';
                 } else if ($filtro == 2) {
                     return 'onWorking';
@@ -1657,7 +1657,27 @@ class juntasController extends Controller
                 }
             }
         }
+        function deffColorescompletos($InitDays, $systemFinish,$process)
+        {
+            $DiasEntre = function ($inicio, $fin) {
+                $period = \Carbon\CarbonPeriod::create($inicio, $fin);
+                $diasHabiles = 0;
 
+                foreach ($period as $date) {
+                    if ($date->isWeekday()) {
+                        $diasHabiles++;
+                    }
+                }
+                return $diasHabiles;
+            };
+
+            $filtro =  $DiasEntre($InitDays, $systemFinish) ;
+            if($filtro > $process){
+                return 'late';
+            }else{
+                return 'onTime';
+            }
+        }
 
 
         foreach ($tiempos as $rows) {
@@ -1679,12 +1699,24 @@ class juntasController extends Controller
                 $buscarDatos[$i][13] = 'onHold';
                 $buscarDatos[$i][14] = 'onHold';
             }else{
-            $buscarDatos[$i][10] =$rows->liberacion ? deffColores($buscarDatos[$i][3], $buscarDatos[$i][5], 'ini'): deffColores($buscarDatos[$i][3], Carbon::now(), 'ini');
-            $buscarDatos[$i][11] = $rows->ensamble ? deffColores( $buscarDatos[$i][5], $buscarDatos[$i][6], $buscarDatos[$i][10]) : '';
-            $buscarDatos[$i][12] = $rows->loom ? deffColores( $buscarDatos[$i][6], $buscarDatos[$i][7], $buscarDatos[$i][11]) : '';
-            $buscarDatos[$i][13] = $rows->calidad ? deffColores( $buscarDatos[$i][7], $buscarDatos[$i][8], $buscarDatos[$i][12]) : '';
-            $buscarDatos[$i][14] = $rows->calidad ? deffColores( $buscarDatos[$i][7], $buscarDatos[$i][8], $buscarDatos[$i][13]) : '';
-             }
+            $buscarDatos[$i][10] =$rows->liberacion ? deffColorescompletos($buscarDatos[$i][3], $buscarDatos[$i][5], 2): deffColores($buscarDatos[$i][3], Carbon::now(), 'ini');
+             if($rows->ensamble ){$buscarDatos[$i][11] = deffColorescompletos($buscarDatos[$i][5], $buscarDatos[$i][6], 2);
+             } elseif($rows->liberacion){$buscarDatos[$i][11] = deffColores($buscarDatos[$i][6], Carbon::now(), $buscarDatos[$i][10]);}
+            else{ $buscarDatos[$i][11] ='';}
+
+            if($rows->loom){$buscarDatos[$i][12] = deffColorescompletos($buscarDatos[$i][6], $buscarDatos[$i][7], 2);
+            } elseif($rows->ensamble){$buscarDatos[$i][12] = deffColores($buscarDatos[$i][7], Carbon::now(), $buscarDatos[$i][11]);}
+            else{ $buscarDatos[$i][12] ='';}
+
+            if($rows->calidad){$buscarDatos[$i][13] = deffColorescompletos($buscarDatos[$i][7], $buscarDatos[$i][8], 2);
+            } elseif($rows->loom){$buscarDatos[$i][13] = deffColores($buscarDatos[$i][8], Carbon::now(), $buscarDatos[$i][12]);}
+            else{ $buscarDatos[$i][13] ='';}
+
+            if($rows->calidad){$buscarDatos[$i][14] = deffColorescompletos($buscarDatos[$i][8], $buscarDatos[$i][9], 2);
+            } elseif($rows->loom){$buscarDatos[$i][14] = deffColores($buscarDatos[$i][9], Carbon::now(), $buscarDatos[$i][13]);}
+            else{ $buscarDatos[$i][14] ='';}
+
+        }
             $buscarDatos[$i][15] = $rows->ids;
 
 
