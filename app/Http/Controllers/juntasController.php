@@ -1726,15 +1726,15 @@ class juntasController extends Controller
              } elseif($rows->liberacion){$buscarDatos[$i][11] = deffColores($buscarDatos[$i][6], Carbon::now()->format('d-m-Y'), $buscarDatos[$i][10],2);}
             else{ $buscarDatos[$i][11] ='';}
 
-            if($rows->loom){$buscarDatos[$i][12] = deffColorescompletos($buscarDatos[$i][6], $buscarDatos[$i][7], 2);
+            if($rows->loom){$buscarDatos[$i][12] = deffColorescompletos($buscarDatos[$i][6], $buscarDatos[$i][7], 1);
             } elseif($rows->ensamble){$buscarDatos[$i][12] = deffColores($buscarDatos[$i][7], Carbon::now()->format('d-m-Y'), $buscarDatos[$i][11],1);}
             else{ $buscarDatos[$i][12] ='';}
 
-            if($rows->calidad){$buscarDatos[$i][13] = deffColorescompletos($buscarDatos[$i][7], $buscarDatos[$i][8], 2);
+            if($rows->calidad){$buscarDatos[$i][13] = deffColorescompletos($buscarDatos[$i][7], $buscarDatos[$i][8], 1);
             } elseif($rows->loom){$buscarDatos[$i][13] = deffColores($buscarDatos[$i][8], Carbon::now()->format('d-m-Y'), $buscarDatos[$i][12],1);}
             else{ $buscarDatos[$i][13] ='';}
 
-            if($rows->calidad){$buscarDatos[$i][14] = deffColorescompletos($buscarDatos[$i][8], $buscarDatos[$i][9], 2);
+            if($rows->calidad){$buscarDatos[$i][14] = deffColorescompletos($buscarDatos[$i][8], $buscarDatos[$i][9], 1);
             } elseif($rows->loom){$buscarDatos[$i][14] = deffColores($buscarDatos[$i][9], Carbon::now()->format('d-m-Y'), $buscarDatos[$i][13],1);}
             else{ $buscarDatos[$i][14] ='';}
 
