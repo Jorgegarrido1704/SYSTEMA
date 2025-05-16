@@ -116,14 +116,9 @@
                             </form>
                             @endif
                         </tr>
-
-
-
                             </form>
-
                         @if(!empty($commentsBefore))
                         @foreach ($commentsBefore as $item)
-
                         <tr >
                             <td>{{ $item[0] }}</td>
                             <td>{{ $item[2] }}</td>
