@@ -1734,7 +1734,7 @@ class juntasController extends Controller
             } elseif($rows->loom){$buscarDatos[$i][13] = deffColores($buscarDatos[$i][8], Carbon::now()->format('d-m-Y'), $buscarDatos[$i][12],1);}
             else{ $buscarDatos[$i][13] ='';}
 
-            if($rows->calidad){$buscarDatos[$i][14] = deffColorescompletos($buscarDatos[$i][8], $buscarDatos[$i][9], 1);
+            if($rows->calidad){$buscarDatos[$i][14] = deffColorescompletos($buscarDatos[$i][9], Carbon::now()->format('d-m-Y'), $buscarDatos[$i][13], 1);
             } elseif($rows->loom){$buscarDatos[$i][14] = deffColores($buscarDatos[$i][9], Carbon::now()->format('d-m-Y'), $buscarDatos[$i][13],1);}
             else{ $buscarDatos[$i][14] ='';}
 
