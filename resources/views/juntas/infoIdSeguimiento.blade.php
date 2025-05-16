@@ -82,7 +82,7 @@
                         <tr>
                             @if($value == 'Gamboa J' or $value == 'Juan G' or $value == 'Andrea P' or $value == 'Jesus_C' or
                             $value=='Luis R' or $value=='Edward M' or $value=='Carlos R' or $value=='Juan O' or $value=='David V'
-                            or $value=='Estala G' or $value=='Mario V')
+                            or $value=='Estala G' or $value=='Mario V' or $value=='Admin')
                             <form action="{{ route('registroComment') }}" method="get">
                             <td>
                                 <div class="form-group">
