@@ -83,7 +83,7 @@
                     <li class="submenu" id="submenu"><a style="color:white;"
                             href="{{ route('fallasCalidad') }}">Rework</a></li>
                 @endif
-                <li class="submenu" id="submenu"><a style="color:white;" href="#">HR</a></li>
+                <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('rhDashBoard') }}">HR</a></li>
 
                 <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('seguimientos') }}"
                     onmouseover=showProduction();>Production States</a>

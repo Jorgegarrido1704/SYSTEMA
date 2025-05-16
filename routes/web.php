@@ -161,7 +161,8 @@ Route::controller(juntasController::class)->group(function () {
     Route::get('juntas/asemblyLoom',   [juntasController::class, 'assemblyLoom'])->name('assemblyLoom');
     Route::get('juntas/seguimientos',   [juntasController::class, 'seguimientos'])->name('seguimientos');
     Route::get('juntas/seguimiento/{id}',   [juntasController::class, 'seguimiento'])->name('seguimiento');
-     Route::get('/registroComment', [juntasController::class, 'registroComment'])->name('registroComment');
+    Route::get('/registroComment', [juntasController::class, 'registroComment'])->name('registroComment');
+    Route::get('/rhDashBoard', [juntasController::class, 'rhDashBoard'])->name('rhDashBoard');
 });
 
 Route::controller(SaludController::class)->group(function () {

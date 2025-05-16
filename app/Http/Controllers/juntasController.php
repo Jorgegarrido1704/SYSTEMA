@@ -1749,6 +1749,7 @@ class juntasController extends Controller
 
         return view('juntas/seguimiento', ['value' => session('user'), 'cat' => session('categoria'), 'buscarDatos' => $buscarDatos]);
     }
+    //Show seguimiento according ID
     public function seguimiento($id)
     {
         $i = 0;
@@ -1801,6 +1802,7 @@ class juntasController extends Controller
 
         return view('juntas/infoIdSeguimiento', ['commentsBefore'=> $commentsBefore,'value' => session('user'), 'cat' => session('categoria'), 'id' => $id, 'datosInforRegistro' => $datosInforRegistro]);
     }
+    //Save commets
     public function registroComment(Request $request)
     {
         $datosOk=$request->input('dataok');
@@ -1830,5 +1832,11 @@ class juntasController extends Controller
         $issuesRegister->actionOfComment = $request->input('status_issue');
         $issuesRegister->save();
         return redirect()->route('seguimiento', ['id' => $request->input('id_issue')]);
+    }
+    //RH Graphics
+    public function rhDashBoard(){
+        $accidente='61928 REV B.pdf';
+        return view('juntas/hr', ['value' => session('user'), 'cat' => session('categoria'), 'accidente' => $accidente]);
+
     }
 }
