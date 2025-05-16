@@ -358,8 +358,10 @@ class generalController extends Controller
                     if ($cantidad >= ($loomPar)) {
                         $nuevo = $preCalidad + $loomPar;
                         $update = DB::table('registroparcial')->where('codeBar', "=", $codigo)->update(['loomPar' => '0', 'preCalidad' => $nuevo]);
-                        upRegistros(10, $codigo, 'Waiting for testing accetance', $todays, 'loomF', $loomPar, $donde, $sesion, 'si');
-                        $tiempoUp = DB::table('tiempos')->where('info', $codigo)->update(['loom' => $todays]);
+                        upRegistros(10, $codigo, 'Waiting for testing acceptance', $todays, 'loomF', $loomPar, $donde, $sesion, 'si');
+                        if($cortPar == 0 and $libePar == 0 and $ensaPar == 0){
+                            $tiempoUp = DB::table('tiempos')->where('info', $codigo)->update(['loom' => $todays]);
+                        }
                     } else  if ($cantidad < ($loomPar) and (substr($rev, 0, 4) != 'PRIM' or substr($rev, 0, 4) != 'PPAP')) {
                         $restoAnt = $loomPar - $cantidad;
                         $nuevo = $preCalidad + $cantidad;
@@ -567,7 +569,10 @@ class generalController extends Controller
                             $nuevo = $loomPar + $ensaPar;
                             $update = DB::table('registroparcial')->where('codeBar', "=", $codigo)->update(['ensaPar' => '0', 'loomPar' => $nuevo]);
                             upRegistros(8, $codigo, 'Looming Process', $todays, 'ensaF', $ensaPar, $donde, $sesion, 'si');
+                            if($cortPar == 0 and $libePar == 0 ){
                             $tiempoUp = DB::table('tiempos')->where('info', $codigo)->update(['ensamble' => $todays]);
+                        }
+
                         }
                     }
                 } else if ((($donde === 'libe') and $count === 5) or (($donde === 'libe') and $libePar > 0 and $count !== 4)) {
@@ -582,7 +587,9 @@ class generalController extends Controller
                         $nuevo = $ensaPar + $libePar;
                         $update = DB::table('registroparcial')->where('codeBar', "=", $codigo)->update(['libePar' => $restoAnt, 'ensaPar' => $nuevo]);
                         upRegistros(6, $codigo, 'Assembly Process', $todays, 'ensaF', $libePar, $donde, $sesion, 'si');
+                        if($cortPar == 0){
                         $tiempoUp = DB::table('tiempos')->where('info', $codigo)->update(['liberacion' => $todays]);
+                        }
                         $buscarinfo = DB::table('registro_pull')->where('wo', substr($wo, 2))
                             ->orWhere('wo', $wo)->get();
                         if (count($buscarinfo) <= 0) {
