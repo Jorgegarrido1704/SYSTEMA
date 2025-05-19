@@ -87,9 +87,45 @@
                         </div>
                     </div>
                     <!-- add Work engineering -->
-                    <div class ="col-12 text-center mb-5">
-                        <button type="circle" class="btn btn-primary" data-toggle="modal" data-target="#addModal">Add Another </button>
+                    <div class ="col-12 text-center mb-5 " >
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal" id="addWork" onclick="addworks()" >Add Another </button>
+                    </div>
+                    <div class ="col-12 text-center mb-5 ">
+                        <div id="formularioRegistro"  style="display: none">
+                            <form action="{{ route('saveWorkschedule') }}" method="GET">
+                                <div class="form-group">
+                                <label for="pnWork">PN:</label> <br>
+                                <input type="text" name="pnWork" id="pnWork">
+                                </div> <div class="form-group">
+                                <label for="customerWork">Customer:</label><br>
+                                <input type="text" name="customerWork" id="customerWork">
+                                </div><div>
+                                <label for="revWork">Work Rev:</label><br>
+                                <input type="text" name="revWork" id="revWork">
+                                </div>  <div>
+                                <label for="sizeWork">Size:</label><br>
+                                <input type="text" name="sizeWork" id="sizeWork">
+                                </div> <div>
+                                <label for="receiptDateWork">Receipt Date:</label><br>
+                                <input type="date" name="receiptDateWork" id="receiptDateWork">
+                                </div><div>
+                                <label for="commitmentDateWork">Commitment Date:</label><br>
+                                <input type="date" name="commitmentDateWork" id="commitmentDateWork">
+                                </div><div>
+                                <label for="customerDateWork">Customer Date:</label><br>
+                                <input type="date" name="customerDateWork" id="customerDateWork">
+                                </div><div>
+                                <label for="resposible">Resposible:</label><br>
+                                <input type="text" name="resposible" id="resposible">
+                                </div><div>
+                                <label for="comments">Comments:</label><br>
+                                <textarea name="comments" id="comments" cols="10" rows="3"></textarea>
+                                </div>
+                                <input type="submit" class="btn btn-primary" name="enviar" id="enviar" value="Guardar">
 
+                            </form>
+
+                        </div>
                     </div>
                     <hr>
 

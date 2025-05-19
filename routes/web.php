@@ -84,6 +84,7 @@ Route::controller(PpapIngController::class)->group(function () {
     Route::get('/problemasFin', [PpapIngController::class, 'problemasFin'])->name('problemasFin');
     Route::get('/workSchedule', [PpapIngController::class, 'workState'])->name('workState');
     Route::get('/workStateJason', [PpapIngController::class, 'workStateJason'])->name('workStateJason');
+    Route::get('/saveWorkschedule', [PpapIngController::class, 'saveWorkschedule'])->name('saveWorkschedule');
 
 });
 

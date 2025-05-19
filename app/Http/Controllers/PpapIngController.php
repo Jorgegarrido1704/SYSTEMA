@@ -12,9 +12,11 @@ use Illuminate\Mail\Mailables;
 use App\Models\listaCalidad;
 use App\Models\cronograma;
 use App\Models\errores;
+use App\Models\Wo;
 use Carbon\Carbon;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use App\Models\workScreduleModel;
 
 class PpapIngController extends Controller
 {
@@ -729,46 +731,7 @@ class PpapIngController extends Controller
     }
 
 
-    /*function get_info_ing(Request $request){
-    $i=0;
-    $inges=$activ=$answer=$enginners=[];
-    $buscarinfor=DB::table('registro')->where('count','=','13')
-    ->orwhere('count','=','17')->orwhere('count','=','14')->orwhere('count','=','16')
-    ->orwhere('count','=','18')->get();
-    foreach($buscarinfor as $rowInge){
-        $inges[$i][0]=$rowInge->NumPart;
-        $inges[$i][1]=$rowInge->cliente;
-        $inges[$i][2]=$rowInge->rev;
-        $inges[$i][3]=$rowInge->wo;
-        $inges[$i][4]=$rowInge->po;
-        $inges[$i][5]=$rowInge->Qty;
-        $inges[$i][6]=$rowInge->id;
-        $inges[$i][7]=$rowInge->count;
-        $inges[$i][8]=$rowInge->info;
-    $i++;        }
-    $i=0;
-    $SearchAct=DB::table('ingactividades')->where('count','<','4')->orderby("Id_request")->get();
-    foreach($SearchAct as $rowAct){
 
-        $enginners[$i][0]=$rowAct->id;
-        $enginners[$i][1]=$rowAct->Id_request;
-        $control=strtotime($rowAct->fecha);
-        $dateControl=strtotime(date('d-m-Y H:i'));
-        $controlTotal=intval((($dateControl-$control)/3600)).":".intval((($dateControl-$control)%3600)/60) ;
-
-        $enginners[$i][2]=$controlTotal;
-        $enginners[$i][3]=$rowAct->actividades;
-        $enginners[$i][4]=$rowAct->desciption;
-        $enginners[$i][5]=$rowAct->fechaEncuesta;
-        $i++;
-    }
-
-    $info=[
-        'inges'=>$inges,
-        'enginners'=>$enginners
-    ];
-    return response()->json($info);
-}*/
     public function problemasFin(Request $request)
     {
         $value = session('user');
@@ -833,29 +796,26 @@ class PpapIngController extends Controller
         if( $buscar->isEmpty()){
             return json_encode(['mensaje'=>'No hay resultados']);
         }
-      /*  foreach ($buscar as $row) {
-            $datos[] = [
-
-                'pn' => $row->pn,
-                'customer' => $row->customer,
-                'WorkRev' => $row->WorkRev,
-                'size' => $row->size,
-                'FullSize' => $row->FullSize,
-                'MRP' => $row->MRP,
-                'receiptDate' => $row->receiptDate,
-                'commitmentDate' => $row->commitmentDate,
-                'CompletionDate' => $row->CompletionDate,
-                'documentsApproved' => $row->documentsApproved,
-                'Status' => $row->Status,
-                'resposible' => $row->resposible,
-                'customerDate' => $row->customerDate,
-
-
-            ];
-        }
-
-*/
 
         return json_encode($datos);
+    }
+    public function saveWorkschedule(Request $request)
+    {
+      $input = $request->all();
+        $newRegistro=new workScreduleModel();
+        $newRegistro->fill([
+            'customer' => $input['customerWork'],
+            'pn' => $input['pnWork'],
+            'WorkRev' => $input['revWork'],
+            'size' => $input['sizeWork'],
+            'receiptDate' => $input['receiptDateWork'],
+            'commitmentDate' => $input['commitmentDateWork'],
+            'customerDate' => $input['customerDateWork'],
+            'resposible' => $input['resposible'],
+            'comments' => $input['comments'],
+        ]);
+        $newRegistro->save();
+        return redirect('/workState');
+
     }
 }

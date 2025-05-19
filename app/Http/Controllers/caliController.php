@@ -525,7 +525,7 @@ class caliController extends generalController
                     $emba = $row->embPar;
                     $fallaCalidasReg = $row->fallasCalidad;
                     $corte = $row->cortPar;
-                    $ensa = $row->ensaPart;
+                    $ensa = $row->ensaPar;
                     $libe = $row->libePar;
                     $loom = $row->loomPar;
                     $preCalidad = $row->preCalidad;
