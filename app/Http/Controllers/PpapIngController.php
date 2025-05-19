@@ -818,4 +818,34 @@ class PpapIngController extends Controller
         return redirect('/workSchedule');
 
     }
+    public function editDelite(Request $request)
+    {
+        if($request->input('id_delete') != null){
+            DB::table('workSchedule')->where('id', $request->input('id_delete'))->delete();
+            return redirect('/workSchedule');
+        }else if($request->input('id_edit') != null){
+            $input = $request->all();
+            $update=DB::table('workSchedule')->where('id', $request->input('id_edit'))
+            ->update([
+                'WorkRev' => $input['WR'],
+                'size' => $input['s'],
+                'FullSize' => $input['FS'],
+                'MRP' => date('Y-m-d', strtotime($input['MRP'])),//'$input['MRP'],
+                'receiptDate' => date('Y-m-d', strtotime($input['receiptDate'])),// $input['receiptDate'],
+                'commitmentDate' => date('Y-m-d', strtotime($input['commitmentDate'])),//$input['commitmentDate'],
+                'CompletionDate' => date('Y-m-d', strtotime($input['CompletionDate'])),//$input['CompletionDate'],
+                'documentsApproved' => date('Y-m-d', strtotime($input['documentsApproved'])),//$input['documentsApproved'],
+                'Status' => $input['Status'],
+                'customerDate' => date('Y-m-d', strtotime($input['customerDate'])),//$input['customerDate'],
+                'resposible' => $input['resposible'],
+                'comments' => $input['comments'] ?? '',
+            ]);
+
+
+
+            return redirect('/workSchedule');
+        }
+
+    }
+
 }
