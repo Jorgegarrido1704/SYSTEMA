@@ -1036,11 +1036,14 @@ class juntasController extends Controller
         $i = $ok = $nog = 0;
 
 
-
+        if($buscarWo == null or $buscarWo == ''){
+            $buscarWo = 0;
+        }else{
         $buscar = DB::table('registroparcial')
             ->orwhere('pn', 'like', $buscarWo . '%')
             ->orWhere('pn', 'like', '%' . $buscarWo)
-            ->orWhere('pn', 'like', '%' . $buscarWo . '%')
+            ->orderBy('pn', 'asc')
+            ->orderBy('wo', 'asc')
             ->get();
         foreach ($buscar as $row) {
             $tableContent .= '<tr>';
@@ -1145,6 +1148,7 @@ class juntasController extends Controller
                 $pullTest = '';
             }
         }
+    }
 
 
         return response()->json([
@@ -1613,7 +1617,7 @@ class juntasController extends Controller
             ->join('tiempos', 'registro.info', '=', 'tiempos.info')
             ->where('count', '<', '20')
             ->select('registro.*', 'tiempos.*', 'registro.id as ids')
-            ->orderBy('registro.id', 'ASC')
+            ->orderBy('registro.wo', 'ASC')
             ->get();
 
         function deffColores($InitDays, $systemFinish, $lastStatus,$dias)
