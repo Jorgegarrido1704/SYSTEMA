@@ -812,10 +812,10 @@ class PpapIngController extends Controller
             'commitmentDate' => $input['commitmentDateWork'],
             'customerDate' => $input['customerDateWork'],
             'resposible' => $input['resposible'],
-            'comments' => $input['comments'],
+            'comments' => $input['comments'] ?? '',
         ]);
         $newRegistro->save();
-        return redirect('/workState');
+        return redirect('/workSchedule');
 
     }
 }

@@ -95,28 +95,28 @@
                             <form action="{{ route('saveWorkschedule') }}" method="GET">
                                 <div class="form-group">
                                 <label for="pnWork">PN:</label> <br>
-                                <input type="text" name="pnWork" id="pnWork">
+                                <input type="text" name="pnWork" id="pnWork" required>
                                 </div> <div class="form-group">
                                 <label for="customerWork">Customer:</label><br>
-                                <input type="text" name="customerWork" id="customerWork">
+                                <input type="text" name="customerWork" id="customerWork" required>
                                 </div><div>
                                 <label for="revWork">Work Rev:</label><br>
-                                <input type="text" name="revWork" id="revWork">
+                                <input type="text" name="revWork" id="revWork" required>
                                 </div>  <div>
                                 <label for="sizeWork">Size:</label><br>
-                                <input type="text" name="sizeWork" id="sizeWork">
+                                <input type="text" name="sizeWork" id="sizeWork" required>
                                 </div> <div>
                                 <label for="receiptDateWork">Receipt Date:</label><br>
-                                <input type="date" name="receiptDateWork" id="receiptDateWork">
+                                <input type="date" name="receiptDateWork" id="receiptDateWork" required>
                                 </div><div>
                                 <label for="commitmentDateWork">Commitment Date:</label><br>
-                                <input type="date" name="commitmentDateWork" id="commitmentDateWork">
+                                <input type="date" name="commitmentDateWork" id="commitmentDateWork" required>
                                 </div><div>
                                 <label for="customerDateWork">Customer Date:</label><br>
-                                <input type="date" name="customerDateWork" id="customerDateWork">
+                                <input type="date" name="customerDateWork" id="customerDateWork" required>
                                 </div><div>
                                 <label for="resposible">Resposible:</label><br>
-                                <input type="text" name="resposible" id="resposible">
+                                <input type="text" name="resposible" id="resposible" required>
                                 </div><div>
                                 <label for="comments">Comments:</label><br>
                                 <textarea name="comments" id="comments" cols="10" rows="3"></textarea>
