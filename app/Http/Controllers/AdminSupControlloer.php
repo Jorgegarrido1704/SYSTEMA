@@ -178,10 +178,16 @@ class AdminSupControlloer extends Controller
             $emba = $request->input('emba');
             $eng = $request->input('eng');
             $plan = $request->input('plan');
+            $buscar = DB::table('registro')->select('info')->where('wo', $wo)->first();
 
             // Extract the validated data
         if($plan==1){
+            DB::table('tiempos')->where('info', $buscar->info)->update(['planeacion' => '']);
             DB::table('registro')->where('wo', $wo)->update(['count' => 1,'donde' => 'Plannig']);
+
+
+
+
             DB::table('registroparcial')->where('wo', $wo)->delete();
 
         }
