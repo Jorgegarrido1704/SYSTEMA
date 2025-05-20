@@ -259,8 +259,28 @@ class planingController extends Controller
                     break;
             }
         }
+       $i = 0;
+            $busarResp = DB::table('ppapandprim')->where('count', '<', '2')->get();
+            foreach ($busarResp as $respPPAP) {
+                $answer[$i][0] = $respPPAP->tp;
+                $answer[$i][1] = $respPPAP->client;
+                $answer[$i][2] = $respPPAP->pn;
+                $answer[$i][3] = $respPPAP->REV1;
+                $answer[$i][4] = $respPPAP->REV2;
+                $answer[$i][5] = $respPPAP->cambios;
+                $answer[$i][6] = $respPPAP->fecha;
+                $answer[$i][7] = $respPPAP->eng;
+                $answer[$i][8] = $respPPAP->quality;
+                $answer[$i][9] = $respPPAP->ime;
+                $answer[$i][10] = $respPPAP->test;
+                $answer[$i][11] = $respPPAP->production;
+                $answer[$i][12] = $respPPAP->compras;
+                $answer[$i][13] = $respPPAP->gernete;
+                $i++;
+            }
 
-        return view('planing', ['des' => $des, 'value' => $value, 'cat' => $cat, 'post' => $post, 'datosP' => $datosP]);
+
+        return view('planing', ['answer'=> $answer,'des' => $des, 'value' => $value, 'cat' => $cat, 'post' => $post, 'datosP' => $datosP]);
     }
 
 
@@ -514,7 +534,7 @@ class planingController extends Controller
                         $regcorte->save();
                         $update = DB::table('registro')->where('wo', $wo)->update(['donde' => 'En espera de corte', 'count' => 2]);
                     }
-                    //This time is not is accepted for cutting. 
+                    //This time is not is accepted for cutting.
                     $updateTime = DB::table('tiempos')->where('info', $info)->update(['planeacion' => $tiempos]);
                     return redirect('/planing');
                 } else {

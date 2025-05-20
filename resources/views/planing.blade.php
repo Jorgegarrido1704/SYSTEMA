@@ -267,7 +267,7 @@ var dat = {!! json_encode($datosP) !!};
 
                     </div>
                     <div class="row">
-                        <div class="col-lg-6 mb-4" style="max-width: 60%">
+                        <div class="col-lg-6 col-xl-6 mb-6">
                             <!-- AREAS -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
@@ -296,8 +296,8 @@ var dat = {!! json_encode($datosP) !!};
                         </div>-->
 
 
-                            <div class="col-lg-6 mb-4" style="max-width: 33%">
-                                <!-- AREAS -->
+                            <div class="col-lg-6  col-xl-6 mb-4" >
+                                <!-- AREAS
                                 <div class="card shadow mb-4">
                                     <div class="card-header py-3">
                                         <h5 class="m-0 font-weight-bold text-primary">Impresion Semanal</h5>
@@ -318,7 +318,58 @@ var dat = {!! json_encode($datosP) !!};
                                     </div>
 
                                     </div>
-                                </div>
+                                </div>-->
+                                <!-- Faltan por firmar  -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h5 class="m-0 font-weight-bold text-primary">Table of Works PPAP&PRIM </h5>
+                </div>
+                <div class="card-body" style="overflow-y: auto; height: 360px;" id="tableChange">
+                    <div class="row">
+                        <table>
+                            <thead>
+                                <th>Type</th>
+                                <th>Client</th>
+                                <th>part Number</th>
+                                <th>Rev 1</th>
+                                <th>Rev 2</th>
+                                <th>Description Moviement</th>
+                                <th>Date</th>
+                                <th>Enginner</th>
+                                <th>Sign Quality</th>
+                                <th>Sign Imex</th>
+                                <th>Sign Testing</th>
+                                <th>Sign Production</th>
+                                <th>Sign Purchase</th>
+                                <th>Sign Planning</th>
+                            </thead>
+                            <tbody>
+                                @if (!empty($answer))
+                                    @foreach ($answer as $answer)
+                                        <tr>
+                                            <td>{{ $answer[0] }}</td>
+                                            <td>{{ $answer[1] }}</td>
+                                            <td>{{ $answer[2] }}</td>
+                                            <td>{{ $answer[3] }}</td>
+                                            <td>{{ $answer[4] }}</td>
+                                            <td>{{ $answer[5] }}</td>
+                                            <td>{{ $answer[6] }}</td>
+                                            <td>{{ $answer[7] }}</td>
+                                            <td>{{ $answer[8] }}</td>
+                                            <td>{{ $answer[9] }}</td>
+                                            <td>{{ $answer[10] }}</td>
+                                            <td>{{ $answer[11] }}</td>
+                                            <td>{{ $answer[12] }}</td>
+                                            <td>{{ $answer[13] }}</td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
                             </div>
 
 
