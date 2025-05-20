@@ -259,6 +259,7 @@ class planingController extends Controller
                     break;
             }
         }
+        $answer = [];
        $i = 0;
             $busarResp = DB::table('ppapandprim')->where('count', '<', '2')->get();
             foreach ($busarResp as $respPPAP) {
@@ -280,7 +281,7 @@ class planingController extends Controller
             }
 
 
-        return view('planing', ['answer'=> $answer,'des' => $des, 'value' => $value, 'cat' => $cat, 'post' => $post, 'datosP' => $datosP]);
+        return view('planing', ['answer'=> $answer,'des' => $add, 'value' => $value, 'cat' => $cat, 'post' => $post, 'datosP' => $datosP]);
     }
 
 
