@@ -281,7 +281,7 @@ class planingController extends Controller
             }
 
 
-        return view('planing', ['answer'=> $answer,'des' => $add, 'value' => $value, 'cat' => $cat, 'post' => $post, 'datosP' => $datosP]);
+        return view('planing', ['answer'=> $answer,'des' => $des, 'value' => $value, 'cat' => $cat, 'post' => $post, 'datosP' => $datosP]);
     }
 
 
