@@ -1148,7 +1148,7 @@ class juntasController extends Controller
                 $pullTest = '';
             }
         }
-    }
+        }
 
 
         return response()->json([
@@ -1843,4 +1843,32 @@ class juntasController extends Controller
         return view('juntas/hr', ['value' => session('user'), 'cat' => session('categoria'), 'accidente' => $accidente]);
 
     }
+    public function vacations(){
+        $value= session('user');
+        $cat= session('categoria');
+        $diasAviles = [];
+
+
+
+        $currentYear = Carbon::now()->year;
+
+        for ($month = 1; $month <= 12; $month++) {
+            $daysInMonth = Carbon::createFromDate($currentYear, $month, 1)->daysInMonth;
+            $diasAviles[$month] = [];
+
+            for ($day = 1; $day <= $daysInMonth; $day++) {
+                $date = Carbon::createFromDate($currentYear, $month, $day);
+
+                if ($date->isWeekday()) {
+                    $diasAviles[$month][] = [
+                        'dia' => $date->format('d'),   // day number
+                        'Dia' => $date->format('D'),   // short weekday name
+                        'fecha' => $date->format('Y-m-d'),
+                    ];
+                }
+            }
+        }
+        return view('juntas/hrDocs/vacations',['diasAviles'=>$diasAviles,'value'=>$value,'cat'=>$cat]);
+    }
+
 }

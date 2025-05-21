@@ -161,10 +161,11 @@ Route::controller(juntasController::class)->group(function () {
     Route::get('juntas/ing',   [juntasController::class, 'ing_junta'])->name('ing_junta');
     Route::get('juntas/cutAndTerm',   [juntasController::class, 'cutAndTerm'])->name('cutAndTerm');
     Route::get('juntas/asemblyLoom',   [juntasController::class, 'assemblyLoom'])->name('assemblyLoom');
-    Route::get('juntas/seguimientos',   [juntasController::class, 'seguimientos'])->name('seguimientos');
+Route::get('juntas/seguimientos',   [juntasController::class, 'seguimientos'])->name('seguimientos');
     Route::get('juntas/seguimiento/{id}',   [juntasController::class, 'seguimiento'])->name('seguimiento');
     Route::get('/registroComment', [juntasController::class, 'registroComment'])->name('registroComment');
     Route::get('/rhDashBoard', [juntasController::class, 'rhDashBoard'])->name('rhDashBoard');
+    Route::get('/vacations', [juntasController::class, 'vacations'])->name('vacations');
 });
 
 Route::controller(SaludController::class)->group(function () {

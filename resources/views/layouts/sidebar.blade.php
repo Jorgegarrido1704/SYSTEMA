@@ -72,6 +72,8 @@
                     <ul class="submenu" id="engsub" style="display:none;">
                         <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('workState') }}">Schedule Work</a>
                         </li>
+                        <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('vacations') }}">Vacations</a>
+                        </li>
                         <li class="submenu" id="engsub"><a style="color:white;" href="#">CutList</a>
                         </li>
                     </ul>
