@@ -1,7 +1,9 @@
 @extends('layouts.main')
 
 @section('contenido')
+<link rel="stylesheet" href="{{ asset('/dash/css/vacaciones.css') }}">
 <div class="d-sm-flex align-items-center justify-content-between mb-4">  </div>
+
 <!-- First Period -->
 <div class="row">
     <div class="col-lg-12 col-lx-12 mb-4">
@@ -11,9 +13,12 @@
                         <h5 class="m-0 font-weight-bold text-primary">Enginners</h5>
                     </div>
                     <div class="card-body" style="overflow-y: auto; " >
-                        <table class="table table-bordered"  width="100%" cellspacing="0">
-
-                        </table>
+                        <input type="text" name="cervera" id="cervera" value="Jesus Cervera" readonly>
+                        <input type="text" name="rodriguez" id="rodriguez" value="Carlos Rodriguez" readonly>
+                        <input type="text" name="aldana" id="aldana" value="Nancy Aldana" readonly>
+                        <input type="text" name="silva" id="silva" value="Paola Silva" readonly>
+                        <input type="text" name="santos" id="santos" value="Arturo Santos" readonly>
+                        <input type="text" name="garrido" id="garrido" value="Jorge Garrido" readonly>
                     </div>
                 </div>
     </div>
@@ -40,7 +45,7 @@
                                     @if ($index % 5 === 0)
                                         <tr>
                                     @endif
-                                    <td>{{ $dia['dia'] }}</td>
+                                    <td id="{{ $dia['vacas'] }}">{{ $dia['dia'] }}</td>
                                     @if (($index + 1) % 5 === 0 || $index + 1 === count($diasAviles['1']))
                                         </tr>
                                     @endif

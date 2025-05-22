@@ -1,0 +1,28 @@
+input[type='text']{
+    width: 130px;
+
+}
+
+#rodriguez{
+    background-color: rgba(7, 54, 14, 0.5);
+}
+
+#cervera{
+    background-color: rgba(157, 217, 246, 0.668);
+}
+
+#aldana{
+    background-color: rgba(236, 178, 242, 0.658);
+}
+
+#silva{
+    background-color: rgba(146, 3, 249, 0.5);
+}
+
+#santos{
+    background-color: rgba(0, 202, 242, 0.942);
+}
+
+#garrido{
+    background-color: rgba(255, 128, 0, 0.5);
+}

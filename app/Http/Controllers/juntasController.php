@@ -1850,24 +1850,32 @@ class juntasController extends Controller
 
 
 
-        $currentYear = Carbon::now()->year;
+$vacas = ['2025-01-31', 'rodriguez'];
 
-        for ($month = 1; $month <= 12; $month++) {
-            $daysInMonth = Carbon::createFromDate($currentYear, $month, 1)->daysInMonth;
-            $diasAviles[$month] = [];
+$currentYear = Carbon::now()->year;
+$diasAviles = [];
 
-            for ($day = 1; $day <= $daysInMonth; $day++) {
-                $date = Carbon::createFromDate($currentYear, $month, $day);
+for ($month = 1; $month <= 12; $month++) {
+    $daysInMonth = Carbon::createFromDate($currentYear, $month, 1)->daysInMonth;
+    $diasAviles[$month] = [];
 
-                if ($date->isWeekday()) {
-                    $diasAviles[$month][] = [
-                        'dia' => $date->format('d'),   // day number
-                        'Dia' => $date->format('D'),   // short weekday name
-                        'fecha' => $date->format('Y-m-d'),
-                    ];
-                }
-            }
+    for ($day = 1; $day <= $daysInMonth; $day++) {
+        $date = Carbon::createFromDate($currentYear, $month, $day);
+        $vacationDate = Carbon::parse($vacas[0]);
+
+        $registrador = $date->isSameDay($vacationDate) ? $vacas[1] : '';
+
+        if ($date->isWeekday()) {
+            $diasAviles[$month][] = [
+                'dia' => $date->format('d'),
+                'Dia' => $date->format('D'),
+                'fecha' => $date->format('Y-m-d'),
+                'vacas' => $registrador,
+            ];
         }
+    }
+}
+
         return view('juntas/hrDocs/vacations',['diasAviles'=>$diasAviles,'value'=>$value,'cat'=>$cat]);
     }
 
