@@ -1036,118 +1036,118 @@ class juntasController extends Controller
         $i = $ok = $nog = 0;
 
 
-        if($buscarWo == null or $buscarWo == ''){
+        if ($buscarWo == null or $buscarWo == '') {
             $buscarWo = 0;
-        }else{
-        $buscar = DB::table('registroparcial')
-            ->orwhere('pn', 'like', $buscarWo . '%')
-            ->orWhere('pn', 'like', '%' . $buscarWo)
-            ->orderBy('pn', 'asc')
-            ->orderBy('wo', 'asc')
-            ->get();
-        foreach ($buscar as $row) {
-            $tableContent .= '<tr>';
-            $tableContent .= '<td>' . $row->pn . '</td>';
-            $tableContent .= '<td>' . $row->wo . '</td>';
-            $tableContent .= '<td>' . $row->orgQty . '</td>';
-            $tableContent .= '<td>' . $row->cortPar . '</td>';
-            $tableContent .= '<td>' . $row->libePar . '</td>';
-            $tableContent .= '<td>' . $row->ensaPar . '</td>';
-            $tableContent .= '<td>' . $row->loomPar . '</td>';
-            $tableContent .= '<td>' . $row->preCalidad . '</td>';
-            $tableContent .= '<td>' . $row->testPar . '</td>';
-            $tableContent .= '<td>' . $row->embPar . '</td>';
-            $tableContent .= '<td>' . $row->eng . '</td>';
-            $tableContent .= '</tr>';
-            $pnReg[$i] = $row->pn;
-            $i++;
-        }
-        $pnReg = array_unique($pnReg);
-
-        foreach ($pnReg as $pnR) {
-            $buscarR = DB::table('retiradad')
-                ->where('np', '=', $pnR)
+        } else {
+            $buscar = DB::table('registroparcial')
+                ->orwhere('pn', 'like', $buscarWo . '%')
+                ->orWhere('pn', 'like', '%' . $buscarWo)
+                ->orderBy('pn', 'asc')
+                ->orderBy('wo', 'asc')
                 ->get();
-            if (count($buscarR) > 0) {
-                foreach ($buscarR as $rowR) {
+            foreach ($buscar as $row) {
+                $tableContent .= '<tr>';
+                $tableContent .= '<td>' . $row->pn . '</td>';
+                $tableContent .= '<td>' . $row->wo . '</td>';
+                $tableContent .= '<td>' . $row->orgQty . '</td>';
+                $tableContent .= '<td>' . $row->cortPar . '</td>';
+                $tableContent .= '<td>' . $row->libePar . '</td>';
+                $tableContent .= '<td>' . $row->ensaPar . '</td>';
+                $tableContent .= '<td>' . $row->loomPar . '</td>';
+                $tableContent .= '<td>' . $row->preCalidad . '</td>';
+                $tableContent .= '<td>' . $row->testPar . '</td>';
+                $tableContent .= '<td>' . $row->embPar . '</td>';
+                $tableContent .= '<td>' . $row->eng . '</td>';
+                $tableContent .= '</tr>';
+                $pnReg[$i] = $row->pn;
+                $i++;
+            }
+            $pnReg = array_unique($pnReg);
+
+            foreach ($pnReg as $pnR) {
+                $buscarR = DB::table('retiradad')
+                    ->where('np', '=', $pnR)
+                    ->get();
+                if (count($buscarR) > 0) {
+                    foreach ($buscarR as $rowR) {
+                        $tableReg .= '<tr>';
+                        $tableReg .= '<td>' . $rowR->np . '</td>';
+                        $tableReg .= '<td>' . $rowR->wo . '</td>';
+                        $tableReg .= '<td>' . $rowR->qty . '</td>';
+                        $tableReg .= '<td>' . $rowR->fechaout . '</td>';
+                        $tableReg .= '</tr>';
+                    }
+                } else {
                     $tableReg .= '<tr>';
-                    $tableReg .= '<td>' . $rowR->np . '</td>';
-                    $tableReg .= '<td>' . $rowR->wo . '</td>';
-                    $tableReg .= '<td>' . $rowR->qty . '</td>';
-                    $tableReg .= '<td>' . $rowR->fechaout . '</td>';
+                    $tableReg .= '<td></td>';
+                    $tableReg .= '<td>' . '0' . '</td>';
+                    $tableReg .= '<td>' . '0' . '</td>';
+                    $tableReg .= '<td>' . '0' . '</td>';
                     $tableReg .= '</tr>';
                 }
-            } else {
-                $tableReg .= '<tr>';
-                $tableReg .= '<td></td>';
-                $tableReg .= '<td>' . '0' . '</td>';
-                $tableReg .= '<td>' . '0' . '</td>';
-                $tableReg .= '<td>' . '0' . '</td>';
-                $tableReg .= '</tr>';
-            }
 
-            $registroftq = DB::table('regsitrocalidad')
-                ->where('pn', '=', $pnR)
-                ->get();
-            if (count($registroftq) > 0) {
-                foreach ($registroftq as $rowftq) {
-                    $codigo = $rowftq->codigo;
-                    if ($codigo == 'TODO BIEN') {
-                        $ok++;
-                    } else {
-                        $nog++;
-                    }
-                }
-                if (in_array($codigo, array_keys($regftq))) {
-                    $regftq[$codigo]++;
-                } else {
-                    $regftq[$codigo] = 1;
-                }
-
-                foreach ($regftq as $key => $value) {
-                    $tableftq .= '<tr>';
-                    $tableftq .= '<td>' . $key . '</td>';
-                    $tableftq .= '<td>' . $value . '</td>';
-                    $tableftq .= '</tr>';
-                }
-
-                $paretos[0] = $ok;
-                $paretos[1] = $nog;
-                $paretos[2] = round($ok / ($ok + $nog) * 100, 2);
-
-                $buscarRegistroPull = DB::table('registro_pull')
-                    ->where('Num_part', '=', $pnR)
-                    ->orderBy('id', 'desc')
+                $registroftq = DB::table('regsitrocalidad')
+                    ->where('pn', '=', $pnR)
                     ->get();
-                if (count($buscarRegistroPull) > 0) {
-                    foreach ($buscarRegistroPull as $rowPull) {
+                if (count($registroftq) > 0) {
+                    foreach ($registroftq as $rowftq) {
+                        $codigo = $rowftq->codigo;
+                        if ($codigo == 'TODO BIEN') {
+                            $ok++;
+                        } else {
+                            $nog++;
+                        }
+                    }
+                    if (in_array($codigo, array_keys($regftq))) {
+                        $regftq[$codigo]++;
+                    } else {
+                        $regftq[$codigo] = 1;
+                    }
 
-                        $pullTest .= '<tr>';
-                        $pullTest .= '<td>' . $rowPull->fecha . '</td>';
-                        $pullTest .= '<td>' . $rowPull->Num_part . '</td>';
-                        $pullTest .= '<td>' . $rowPull->calibre . '</td>';
-                        $pullTest .= '<td>' . $rowPull->presion . '</td>';
-                        $pullTest .= '<td>' . $rowPull->forma . '</td>';
-                        $pullTest .= '<td>' . $rowPull->cont . '</td>';
-                        $pullTest .= '<td>' . $rowPull->quien . '</td>';
-                        $pullTest .= '<td>' . $rowPull->val . '</td>';
-                        $pullTest .= '<td>' . $rowPull->tipo . '</td>';
+                    foreach ($regftq as $key => $value) {
+                        $tableftq .= '<tr>';
+                        $tableftq .= '<td>' . $key . '</td>';
+                        $tableftq .= '<td>' . $value . '</td>';
+                        $tableftq .= '</tr>';
+                    }
+
+                    $paretos[0] = $ok;
+                    $paretos[1] = $nog;
+                    $paretos[2] = round($ok / ($ok + $nog) * 100, 2);
+
+                    $buscarRegistroPull = DB::table('registro_pull')
+                        ->where('Num_part', '=', $pnR)
+                        ->orderBy('id', 'desc')
+                        ->get();
+                    if (count($buscarRegistroPull) > 0) {
+                        foreach ($buscarRegistroPull as $rowPull) {
+
+                            $pullTest .= '<tr>';
+                            $pullTest .= '<td>' . $rowPull->fecha . '</td>';
+                            $pullTest .= '<td>' . $rowPull->Num_part . '</td>';
+                            $pullTest .= '<td>' . $rowPull->calibre . '</td>';
+                            $pullTest .= '<td>' . $rowPull->presion . '</td>';
+                            $pullTest .= '<td>' . $rowPull->forma . '</td>';
+                            $pullTest .= '<td>' . $rowPull->cont . '</td>';
+                            $pullTest .= '<td>' . $rowPull->quien . '</td>';
+                            $pullTest .= '<td>' . $rowPull->val . '</td>';
+                            $pullTest .= '<td>' . $rowPull->tipo . '</td>';
+                        }
+                    } else {
+                        $pullTest = '';
                     }
                 } else {
+                    $paretos[0] = 0;
+                    $paretos[1] = 0;
+                    $paretos[2] = 0;
+                    $tableftq .= '<tr>';
+                    $tableftq .= '<td>' . '0' . '</td>';
+                    $tableftq .= '<td>' . '0' . '</td>';
+                    $tableftq .= '</tr>';
+                    $regftq['no se encontro'] = 0;
                     $pullTest = '';
                 }
-            } else {
-                $paretos[0] = 0;
-                $paretos[1] = 0;
-                $paretos[2] = 0;
-                $tableftq .= '<tr>';
-                $tableftq .= '<td>' . '0' . '</td>';
-                $tableftq .= '<td>' . '0' . '</td>';
-                $tableftq .= '</tr>';
-                $regftq['no se encontro'] = 0;
-                $pullTest = '';
             }
-        }
         }
 
 
@@ -1306,7 +1306,7 @@ class juntasController extends Controller
         $lmt =  'Jan';
         $porcentaje = $porcentajeMalos = $buenos = $malos = $total = 0;
         $porcentajemes1 = $porcentajemes = 0;
-         $last12Months =$thisYearGoals = [];
+        $last12Months = $thisYearGoals = [];
         $workSchedule = DB::table('workschedule')
 
             ->where('commitmentDate', 'LIKE',   $month . '/%/' . $year)
@@ -1333,10 +1333,10 @@ class juntasController extends Controller
         }
         //this year goals
 
-         for ($i = 0; $i < 12; $i++) {
+        for ($i = 0; $i < 12; $i++) {
             $total = $buenos = $malos = 0;
             $last12Month = DB::table('workschedule')
-                ->where('commitmentDate', 'LIKE', $i+1 . '/%/' . $year)
+                ->where('commitmentDate', 'LIKE', $i + 1 . '/%/' . $year)
                 ->where('CompletionDate', '!=', '')
                 ->orderBy('id', 'desc')
                 ->get();
@@ -1352,9 +1352,11 @@ class juntasController extends Controller
                 $total++;
             }
             if ($total > 0) {
-                $porcentajemes1 = round(($buenos / $total) * 100, 2); } else { $porcentajemes1 = 0;
+                $porcentajemes1 = round(($buenos / $total) * 100, 2);
+            } else {
+                $porcentajemes1 = 0;
             }
-            $thisYearGoals[$i .' '.$lmt.'-' . $year ] = $porcentajemes1;
+            $thisYearGoals[$i . ' ' . $lmt . '-' . $year] = $porcentajemes1;
             $lmt = date('M', strtotime($lmt . ' +1 month'));
         }
 
@@ -1364,7 +1366,7 @@ class juntasController extends Controller
         for ($i = 0; $i < 12; $i++) {
             $total = $buenos = $malos = 0;
             $last12Month = DB::table('workschedule')
-                ->where('commitmentDate', 'LIKE', $i+1 . '/%/' . $lmy)
+                ->where('commitmentDate', 'LIKE', $i + 1 . '/%/' . $lmy)
                 ->where('CompletionDate', '!=', '')
                 ->orderBy('id', 'desc')
                 ->get();
@@ -1380,15 +1382,16 @@ class juntasController extends Controller
                 $total++;
             }
             if ($total > 0) {
-                $porcentajemes = round(($buenos / $total) * 100, 2); } else { $porcentajemes = 0;
+                $porcentajemes = round(($buenos / $total) * 100, 2);
+            } else {
+                $porcentajemes = 0;
             }
-            $last12Months[$i .' '.$lmt.'-' . $lmy ] = $porcentajemes;
+            $last12Months[$i . ' ' . $lmt . '-' . $lmy] = $porcentajemes;
             $lmt = date('M', strtotime($lmt . ' +1 month'));
-
         }
 
 
-        return view('juntas/ing', ['thisYearGoals' => $thisYearGoals,'last12Months'=> $last12Months,'porcentaje' => $porcentaje, 'porcentajeMalos' => $porcentajeMalos, 'todas' => $todas, 'jesp' => $jesp, 'nanp' => $nanp, 'bp' => $bp, 'jcp' => $jcp, 'psp' => $psp, 'alv' => $alv, 'asp' => $asp, 'jg' => $jg, 'jesus' => $jesus, 'pao' => $pao, 'nancy' => $nancy, 'ale' => $ale, 'carlos' => $carlos, 'arturo' => $arturo, 'jorge' => $jorge, 'brandon' => $brandon, 'actividadesLastMonth' => $actividadesLastMonth, 'actividades' => $actividades, 'value' => session('user'), 'cat' => session('categoria')]);
+        return view('juntas/ing', ['thisYearGoals' => $thisYearGoals, 'last12Months' => $last12Months, 'porcentaje' => $porcentaje, 'porcentajeMalos' => $porcentajeMalos, 'todas' => $todas, 'jesp' => $jesp, 'nanp' => $nanp, 'bp' => $bp, 'jcp' => $jcp, 'psp' => $psp, 'alv' => $alv, 'asp' => $asp, 'jg' => $jg, 'jesus' => $jesus, 'pao' => $pao, 'nancy' => $nancy, 'ale' => $ale, 'carlos' => $carlos, 'arturo' => $arturo, 'jorge' => $jorge, 'brandon' => $brandon, 'actividadesLastMonth' => $actividadesLastMonth, 'actividades' => $actividades, 'value' => session('user'), 'cat' => session('categoria')]);
     }
     public function cutAndTerm()
     {
@@ -1620,7 +1623,7 @@ class juntasController extends Controller
             ->orderBy('registro.wo', 'ASC')
             ->get();
 
-        function deffColores($InitDays, $systemFinish, $lastStatus,$dias)
+        function deffColores($InitDays, $systemFinish, $lastStatus, $dias)
         {
             $DiasEntre = function ($inicio, $fin) {
                 $period = \Carbon\CarbonPeriod::create($inicio, $fin);
@@ -1634,56 +1637,56 @@ class juntasController extends Controller
                 return $diasHabiles;
             };
 
-            $filtro =  $DiasEntre($InitDays, $systemFinish) ;
+            $filtro =  $DiasEntre($InitDays, $systemFinish);
             if ($lastStatus == 'ini' or $lastStatus != 'late') {
-                if($dias == 1){
-                     if ($filtro == 0) {
-                    return 'onWorking';
-                } else if ($filtro == 1) {
-                    return 'closeToexpiring';
-                } else if ($filtro > 1) {
-                    return 'late';
-                } else {
-                    return '';
-                }
-                }else{
-                 if ($filtro == 0) {
-                    return 'onWorking';
-                } else if ($filtro == 1) {
-                    return 'closeToexpiring';
-                } else if ($filtro >= 2) {
-                    return 'late';
-                } else {
-                    return '';
-                } }
-
-
-            } elseif ($lastStatus == 'late') {
-                if($dias == 1){
+                if ($dias == 1) {
                     if ($filtro == 0) {
-                    return 'delayedOnTime';
-                } else if ($filtro == 1) {
-                    return 'delayedandclosedtoexpiring';
-                } else if ($filtro >= 2) {
-                    return 'late';
+                        return 'onWorking';
+                    } else if ($filtro == 1) {
+                        return 'closeToexpiring';
+                    } else if ($filtro > 1) {
+                        return 'late';
+                    } else {
+                        return '';
+                    }
                 } else {
-                    return '';
+                    if ($filtro == 0) {
+                        return 'onWorking';
+                    } else if ($filtro == 1) {
+                        return 'closeToexpiring';
+                    } else if ($filtro >= 2) {
+                        return 'late';
+                    } else {
+                        return '';
+                    }
                 }
-                }else{
-                if ($filtro < 0) {
-                    return 'delayedOnTime';
-                } else if ($filtro == 0) {
-                    return 'delayed';
-                } else if ($filtro == 1) {
-                    return 'delayedandclosedtoexpiring';
-                } else if ($filtro >= 2) {
-                    return 'late';
+            } elseif ($lastStatus == 'late') {
+                if ($dias == 1) {
+                    if ($filtro == 0) {
+                        return 'delayedOnTime';
+                    } else if ($filtro == 1) {
+                        return 'delayedandclosedtoexpiring';
+                    } else if ($filtro >= 2) {
+                        return 'late';
+                    } else {
+                        return '';
+                    }
                 } else {
-                    return '';
-                } }
+                    if ($filtro < 0) {
+                        return 'delayedOnTime';
+                    } else if ($filtro == 0) {
+                        return 'delayed';
+                    } else if ($filtro == 1) {
+                        return 'delayedandclosedtoexpiring';
+                    } else if ($filtro >= 2) {
+                        return 'late';
+                    } else {
+                        return '';
+                    }
+                }
             }
         }
-        function deffColorescompletos($InitDays, $systemFinish,$process)
+        function deffColorescompletos($InitDays, $systemFinish, $process)
         {
             $DiasEntre = function ($inicio, $fin) {
                 $period = \Carbon\CarbonPeriod::create($inicio, $fin);
@@ -1697,10 +1700,10 @@ class juntasController extends Controller
                 return $diasHabiles;
             };
 
-            $filtro =  $DiasEntre($InitDays, $systemFinish) ;
-            if($filtro > $process){
+            $filtro =  $DiasEntre($InitDays, $systemFinish);
+            if ($filtro > $process) {
                 return 'late';
-            }else{
+            } else {
                 return 'onTime';
             }
         }
@@ -1712,37 +1715,52 @@ class juntasController extends Controller
             $buscarDatos[$i][2] = $rows->wo;
             $buscarDatos[$i][3] = $rows->planeacion ? Carbon::parse($rows->planeacion)->format('d-m-Y') : Carbon::parse($rows->fecha)->format('d-m-Y');
             $buscarDatos[$i][4] = $rows->Qty;
-            $buscarDatos[$i][5] = $rows->liberacion ? substr($rows->liberacion, 0, 10) :Carbon::parse($buscarDatos[$i][3])->addWeekdays(2)->format('d-m-Y');
-            $buscarDatos[$i][6] = $rows->ensamble ? substr($rows->ensamble, 0, 10) :Carbon::parse($buscarDatos[$i][5])->addWeekdays(2)->format('d-m-Y');
-            $buscarDatos[$i][7] = $rows->loom ? substr($rows->loom, 0, 10) :Carbon::parse($buscarDatos[$i][6])->addWeekdays(1)->format('d-m-Y');
-            $buscarDatos[$i][8] = $rows->calidad ? substr($rows->calidad, 0, 10) :Carbon::parse($buscarDatos[$i][7])->addWeekdays(1)->format('d-m-Y');
+            $buscarDatos[$i][5] = $rows->liberacion ? substr($rows->liberacion, 0, 10) : Carbon::parse($buscarDatos[$i][3])->addWeekdays(2)->format('d-m-Y');
+            $buscarDatos[$i][6] = $rows->ensamble ? substr($rows->ensamble, 0, 10) : Carbon::parse($buscarDatos[$i][5])->addWeekdays(2)->format('d-m-Y');
+            $buscarDatos[$i][7] = $rows->loom ? substr($rows->loom, 0, 10) : Carbon::parse($buscarDatos[$i][6])->addWeekdays(1)->format('d-m-Y');
+            $buscarDatos[$i][8] = $rows->calidad ? substr($rows->calidad, 0, 10) : Carbon::parse($buscarDatos[$i][7])->addWeekdays(1)->format('d-m-Y');
             $buscarDatos[$i][9] = $buscarDatos[$i][8];
-            $buscarIssue=DB::table('issuesfloor')->select('actionOfComment')->where('id_tiempos','=',$rows->ids)->where('actionOfComment','=','On Hold')->first();
-            if($buscarIssue){
+            $buscarIssue = DB::table('issuesfloor')->select('actionOfComment')->where('id_tiempos', '=', $rows->ids)->where('actionOfComment', '=', 'On Hold')->first();
+            if ($buscarIssue) {
                 $buscarDatos[$i][10] = 'onHold';
                 $buscarDatos[$i][11] = 'onHold';
                 $buscarDatos[$i][12] = 'onHold';
                 $buscarDatos[$i][13] = 'onHold';
                 $buscarDatos[$i][14] = 'onHold';
-            }else{
-            $buscarDatos[$i][10] =$rows->liberacion ? deffColorescompletos($buscarDatos[$i][3], $buscarDatos[$i][5], 2): deffColores($buscarDatos[$i][3], Carbon::now()->format('d-m-Y'), 'ini',2);
-             if($rows->ensamble ){$buscarDatos[$i][11] = deffColorescompletos($buscarDatos[$i][5], $buscarDatos[$i][6], 2);
-             } elseif($rows->liberacion){$buscarDatos[$i][11] = deffColores($buscarDatos[$i][6], Carbon::now()->format('d-m-Y'), $buscarDatos[$i][10],2);}
-            else{ $buscarDatos[$i][11] ='';}
+            } else {
+                $buscarDatos[$i][10] = $rows->liberacion ? deffColorescompletos($buscarDatos[$i][3], $buscarDatos[$i][5], 2) : deffColores($buscarDatos[$i][3], Carbon::now()->format('d-m-Y'), 'ini', 2);
+                if ($rows->ensamble) {
+                    $buscarDatos[$i][11] = deffColorescompletos($buscarDatos[$i][5], $buscarDatos[$i][6], 2);
+                } elseif ($rows->liberacion) {
+                    $buscarDatos[$i][11] = deffColores($buscarDatos[$i][6], Carbon::now()->format('d-m-Y'), $buscarDatos[$i][10], 2);
+                } else {
+                    $buscarDatos[$i][11] = '';
+                }
 
-            if($rows->loom){$buscarDatos[$i][12] = deffColorescompletos($buscarDatos[$i][6], $buscarDatos[$i][7], 1);
-            } elseif($rows->ensamble){$buscarDatos[$i][12] = deffColores($buscarDatos[$i][7], Carbon::now()->format('d-m-Y'), $buscarDatos[$i][11],1);}
-            else{ $buscarDatos[$i][12] ='';}
+                if ($rows->loom) {
+                    $buscarDatos[$i][12] = deffColorescompletos($buscarDatos[$i][6], $buscarDatos[$i][7], 1);
+                } elseif ($rows->ensamble) {
+                    $buscarDatos[$i][12] = deffColores($buscarDatos[$i][7], Carbon::now()->format('d-m-Y'), $buscarDatos[$i][11], 1);
+                } else {
+                    $buscarDatos[$i][12] = '';
+                }
 
-            if($rows->calidad){$buscarDatos[$i][13] = deffColorescompletos($buscarDatos[$i][7], $buscarDatos[$i][8], 1);
-            } elseif($rows->loom){$buscarDatos[$i][13] = deffColores($buscarDatos[$i][8], Carbon::now()->format('d-m-Y'), $buscarDatos[$i][12],1);}
-            else{ $buscarDatos[$i][13] ='';}
+                if ($rows->calidad) {
+                    $buscarDatos[$i][13] = deffColorescompletos($buscarDatos[$i][7], $buscarDatos[$i][8], 1);
+                } elseif ($rows->loom) {
+                    $buscarDatos[$i][13] = deffColores($buscarDatos[$i][8], Carbon::now()->format('d-m-Y'), $buscarDatos[$i][12], 1);
+                } else {
+                    $buscarDatos[$i][13] = '';
+                }
 
-            if($rows->calidad){$buscarDatos[$i][14] = deffColorescompletos($buscarDatos[$i][9], Carbon::now()->format('d-m-Y'), $buscarDatos[$i][13], 1);
-            } elseif($rows->loom){$buscarDatos[$i][14] = deffColores($buscarDatos[$i][9], Carbon::now()->format('d-m-Y'), $buscarDatos[$i][13],1);}
-            else{ $buscarDatos[$i][14] ='';}
-
-        }
+                if ($rows->calidad) {
+                    $buscarDatos[$i][14] = deffColorescompletos($buscarDatos[$i][9], Carbon::now()->format('d-m-Y'), $buscarDatos[$i][13], 1);
+                } elseif ($rows->loom) {
+                    $buscarDatos[$i][14] = deffColores($buscarDatos[$i][9], Carbon::now()->format('d-m-Y'), $buscarDatos[$i][13], 1);
+                } else {
+                    $buscarDatos[$i][14] = '';
+                }
+            }
             $buscarDatos[$i][15] = $rows->ids;
 
 
@@ -1757,7 +1775,7 @@ class juntasController extends Controller
     public function seguimiento($id)
     {
         $i = 0;
-        $datosInforRegistro = $commentsBefore=[];
+        $datosInforRegistro = $commentsBefore = [];
         $bucarRegistros = DB::table('registro')
             ->join('tiempos', 'registro.info', '=', 'tiempos.info')
             ->where('registro.id', '=', $id)
@@ -1804,29 +1822,29 @@ class juntasController extends Controller
             $i++;
         }
 
-        return view('juntas/infoIdSeguimiento', ['commentsBefore'=> $commentsBefore,'value' => session('user'), 'cat' => session('categoria'), 'id' => $id, 'datosInforRegistro' => $datosInforRegistro]);
+        return view('juntas/infoIdSeguimiento', ['commentsBefore' => $commentsBefore, 'value' => session('user'), 'cat' => session('categoria'), 'id' => $id, 'datosInforRegistro' => $datosInforRegistro]);
     }
     //Save commets
     public function registroComment(Request $request)
     {
-        $datosOk=$request->input('dataok');
-        if($datosOk){
+        $datosOk = $request->input('dataok');
+        if ($datosOk) {
             $updateRegistros = DB::table('issuesfloor')->where('id_tiempos', '=', $datosOk)->where('actionOfComment', '!=', 'Ok')->update(['actionOfComment' => 'Issue Fixed']);
-           $registroUp= new issuesFloor();
-           $registroUp->id_tiempos=$datosOk;
-           $registroUp->comment_issue='-';
-           $registroUp->date=Carbon::now();
-           $registroUp->responsable=session('user') . ' ' . session('categoria');
-           $registroUp->actionOfComment='Ok';
-           $registroUp->save();
+            $registroUp = new issuesFloor();
+            $registroUp->id_tiempos = $datosOk;
+            $registroUp->comment_issue = '-';
+            $registroUp->date = Carbon::now();
+            $registroUp->responsable = session('user') . ' ' . session('categoria');
+            $registroUp->actionOfComment = 'Ok';
+            $registroUp->save();
         }
         $request->validate([
             'comments' => 'required',
             'status_issue' => 'required',
 
         ]);
-        $value= session('user');
-        $cat= session('categoria');
+        $value = session('user');
+        $cat = session('categoria');
 
         $issuesRegister = new issuesFloor();
         $issuesRegister->id_tiempos = $request->input('id_issue');
@@ -1838,45 +1856,69 @@ class juntasController extends Controller
         return redirect()->route('seguimiento', ['id' => $request->input('id_issue')]);
     }
     //RH Graphics
-    public function rhDashBoard(){
-        $accidente='61928 REV B.pdf';
+    public function rhDashBoard()
+    {
+        $accidente = '61928 REV B.pdf';
         return view('juntas/hr', ['value' => session('user'), 'cat' => session('categoria'), 'accidente' => $accidente]);
-
     }
-    public function vacations(){
-        $value= session('user');
-        $cat= session('categoria');
+    public function vacations()
+    {
+
+
+        $currentYear = Carbon::now()->year;
+        $lastYear = Carbon::now()->subYear()->year;
+        $nextYear = Carbon::now()->addYear()->year;
+        $anos = [$lastYear, $currentYear, $nextYear];
         $diasAviles = [];
+        $value = session('user');
+        $cat = session('categoria');
+        $diasAviles = [];
+        $empleados = [];
+        $busqueda = DB::table('personalberg')
+            ->where('employeeArea', '=', 'Ingenieria')
+            ->get();
 
 
 
-$vacas = ['2025-01-31', 'rodriguez'];
-
-$currentYear = Carbon::now()->year;
-$diasAviles = [];
-
-for ($month = 1; $month <= 12; $month++) {
-    $daysInMonth = Carbon::createFromDate($currentYear, $month, 1)->daysInMonth;
-    $diasAviles[$month] = [];
-
-    for ($day = 1; $day <= $daysInMonth; $day++) {
-        $date = Carbon::createFromDate($currentYear, $month, $day);
-        $vacationDate = Carbon::parse($vacas[0]);
-
-        $registrador = $date->isSameDay($vacationDate) ? $vacas[1] : '';
-
-        if ($date->isWeekday()) {
-            $diasAviles[$month][] = [
-                'dia' => $date->format('d'),
-                'Dia' => $date->format('D'),
-                'fecha' => $date->format('Y-m-d'),
-                'vacas' => $registrador,
-            ];
+        foreach ($busqueda as $rows) {
+            $empleados[$rows->employeeName][0] = $rows->employeeName;
+            $empleados[$rows->employeeName][1] = $rows->DateIngreso;
+            // $empleados[$rows->employeeName][2] = $rows->lastYear;
+            $thisYearBirth = Carbon::createFromDate($currentYear, substr($rows->DateIngreso, 5, 2), substr($rows->DateIngreso, 8, 2));
+            $empleados[$rows->employeeName][2] = $rows->currentYear;
+            $empleados[$rows->employeeName][3] = Carbon::parse($thisYearBirth)->addMonths(6)->format('Y-m-d');
+            $empleados[$rows->employeeName][4] = $rows->nextYear;
+            $nextYearBirth = Carbon::createFromDate($nextYear, substr($rows->DateIngreso, 5, 2), substr($rows->DateIngreso, 8, 2));
+            $empleados[$rows->employeeName][5] = Carbon::parse($nextYearBirth)->addMonths(6)->format('Y-m-d');
+            $empleados[$rows->employeeName][6] = $rows->employeeNumber;
+             $empleados[$rows->employeeName][7] = $rows->DaysVacationsAvailble;
         }
-    }
-}
 
-        return view('juntas/hrDocs/vacations',['diasAviles'=>$diasAviles,'value'=>$value,'cat'=>$cat]);
-    }
+        $vacas = ['2025-01-31', 'i2101'];
 
+
+
+        for ($month = 1; $month <= 12; $month++) {
+            $daysInMonth = Carbon::createFromDate($currentYear, $month, 1)->daysInMonth;
+            $diasAviles[$month] = [];
+
+            for ($day = 1; $day <= $daysInMonth; $day++) {
+                $date = Carbon::createFromDate($currentYear, $month, $day);
+                $vacationDate = Carbon::parse($vacas[0]);
+
+                $registrador = $date->isSameDay($vacationDate) ? $vacas[1] : '';
+
+                if ($date->isWeekday()) {
+                    $diasAviles[$month][] = [
+                        'dia' => $date->format('d'),
+                        'Dia' => $date->format('D'),
+                        'fecha' => $date->format('Y-m-d'),
+                        'vacas' => $registrador,
+                    ];
+                }
+            }
+        }
+
+        return view('juntas/hrDocs/vacations', ['anos' => $anos, 'empleados' => $empleados, 'diasAviles' => $diasAviles, 'value' => $value, 'cat' => $cat]);
+    }
 }

@@ -1,28 +1,38 @@
-input[type='text']{
-    width: 130px;
-
+.ing{
+    width: 135px;
+    margin: 3px;
+}
+.ings{
+    display: inline-flexbox;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column
+}
+#ingn{
+    width: 250px;
+    margin: 3px
 }
 
-#rodriguez{
+#i2164{
     background-color: rgba(7, 54, 14, 0.5);
 }
 
-#cervera{
+#i2147{
     background-color: rgba(157, 217, 246, 0.668);
 }
 
-#aldana{
+#i2144{
     background-color: rgba(236, 178, 242, 0.658);
 }
 
-#silva{
+#i2165{
     background-color: rgba(146, 3, 249, 0.5);
 }
 
-#santos{
+#i2197{
     background-color: rgba(0, 202, 242, 0.942);
 }
 
-#garrido{
+#i2101{
     background-color: rgba(255, 128, 0, 0.5);
 }

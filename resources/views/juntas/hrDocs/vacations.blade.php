@@ -10,15 +10,31 @@
 
                 <div class="card shadow mb-5">
                     <div class="card-header py-3">
-                        <h5 class="m-0 font-weight-bold text-primary">Enginners</h5>
+                        <h5 class="m-0 font-weight-bold text-primary">Vacations <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#exampleModal"> Agregar vacaciones</button></h5>
+
                     </div>
                     <div class="card-body" style="overflow-y: auto; " >
-                        <input type="text" name="cervera" id="cervera" value="Jesus Cervera" readonly>
-                        <input type="text" name="rodriguez" id="rodriguez" value="Carlos Rodriguez" readonly>
-                        <input type="text" name="aldana" id="aldana" value="Nancy Aldana" readonly>
-                        <input type="text" name="silva" id="silva" value="Paola Silva" readonly>
-                        <input type="text" name="santos" id="santos" value="Arturo Santos" readonly>
-                        <input type="text" name="garrido" id="garrido" value="Jorge Garrido" readonly>
+                        <div class="ingT">
+                        <input type="text" name="ing" id="ingn" class="ingn" value="Enginners" readonly>
+                        <input type="text" name="ing" id="ingn" class="ingn" value="Fecha de entrada" readonly>
+                        <input type="text" name="ing" id="ingn" class="ingn" value="Vacaciones {{$anos[0]}} - {{$anos[1]}}" readonly>
+                        <input type="text" name="ing" id="ingn" class="ingn" value="Fecha limite para usarlas" readonly>
+                        <input type="text" name="ing" id="ingn" class="ing" value="Vacaciones {{$anos[1]}} - {{$anos[2]}}" readonly>
+                         <input type="text" name="ing" id="ingn" class="ing" value="Fecha limite para usarlas" readonly>
+                        <input type="text" name="ing" id="ing" class="ing" value="Dias disponibles" readonly>
+                        </div>
+                       @foreach ($empleados as $empleado)
+                       <div class="ings" id='{{$empleado[6]}}'>
+                       <input type="text" name="ingn" id="ingn" class="ing" value="{{ $empleado[0] }}" readonly>
+                       <input type="text" name="ing" id="ingn" class="ing" value="{{ $empleado[1] }}" readonly>
+                       <input type="text" name="ing" id="ingn" class="ing" value="{{ $empleado[2] }}" readonly>
+                       <input type="text" name="ing" id="ingn" class="ing" value="{{ $empleado[3] }}" readonly>
+                       <input type="text" name="ing" id="ingn" class="ing" value="{{ $empleado[4] }}" readonly>
+                       <input type="text" name="ing" id="ingn" class="ing" value="{{ $empleado[5] }}" readonly>
+                       <input type="text" name="ing" id="ing" class="ing" value="{{ $empleado[7] }}" readonly>
+                       </div>
+                       @endforeach
+
                     </div>
                 </div>
     </div>
