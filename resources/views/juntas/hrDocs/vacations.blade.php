@@ -36,6 +36,7 @@
                        @endforeach
 
                     </div>
+
                 </div>
     </div>
 </div>
@@ -79,6 +80,7 @@
                         <h5 class="m-0 font-weight-bold text-primary">February</h5>
                     </div>
                     <div class="card-body" style="overflow-y: auto; " >
+
                         <table class="table table-bordered"  width="100%" cellspacing="0">
                             <thead>
                                 <tr>
@@ -92,7 +94,7 @@
                                     @if ($index % 5 === 0)
                                         <tr>
                                     @endif
-                                    <td>{{ $dia['dia'] }}</td>
+                                    <td id="{{ $dia['vacas'] }}">{{ $dia['dia'] }}</td>
                                     @if (($index + 1) % 5 === 0 || $index + 1 === count($diasAviles['2']))
                                         </tr>
                                     @endif
@@ -123,7 +125,7 @@
                                     @if ($index % 5 === 0)
                                         <tr>
                                     @endif
-                                    <td>{{ $dia['dia'] }}</td>
+                                    <td id="{{ $dia['vacas'] }}">{{ $dia['dia'] }}</td>
                                     @if (($index + 1) % 5 === 0 || $index + 1 === count($diasAviles['3']))
                                         </tr>
                                     @endif
@@ -154,7 +156,7 @@
                                     @if ($index % 5 === 0)
                                         <tr>
                                     @endif
-                                    <td>{{ $dia['dia'] }}</td>
+                                    <td id="{{ $dia['vacas'] }}">{{ $dia['dia'] }}</td>
                                     @if (($index + 1) % 5 === 0 || $index + 1 === count($diasAviles['4']))
                                         </tr>
                                     @endif
@@ -185,7 +187,7 @@
                                     @if ($index % 5 === 0)
                                         <tr>
                                     @endif
-                                    <td>{{ $dia['dia'] }}</td>
+                                    <td id="{{ $dia['vacas'] }}">{{ $dia['dia'] }}</td>
                                     @if (($index + 1) % 5 === 0 || $index + 1 === count($diasAviles['5']))
                                         </tr>
                                     @endif
@@ -216,7 +218,7 @@
                                     @if ($index % 5 === 0)
                                         <tr>
                                     @endif
-                                    <td>{{ $dia['dia'] }}</td>
+                                    <td id="{{ $dia['vacas'] }}">{{ $dia['dia'] }}</td>
                                     @if (($index + 1) % 5 === 0 || $index + 1 === count($diasAviles['6']))
                                         </tr>
                                     @endif
@@ -251,7 +253,7 @@
                                     @if ($index % 5 === 0)
                                         <tr>
                                     @endif
-                                    <td>{{ $dia['dia'] }}</td>
+                                    <td id="{{ $dia['vacas'] }}">{{ $dia['dia'] }}</td>
                                     @if (($index + 1) % 5 === 0 || $index + 1 === count($diasAviles['7']))
                                         </tr>
                                     @endif
@@ -282,7 +284,7 @@
                                     @if ($index % 5 === 0)
                                         <tr>
                                     @endif
-                                    <td>{{ $dia['dia'] }}</td>
+                                    <td id="{{ $dia['vacas'] }}">{{ $dia['dia'] }}</td>
                                     @if (($index + 1) % 5 === 0 || $index + 1 === count($diasAviles['8']))
                                         </tr>
                                     @endif
@@ -313,7 +315,7 @@
                                     @if ($index % 5 === 0)
                                         <tr>
                                     @endif
-                                    <td>{{ $dia['dia'] }}</td>
+                                    <td id="{{ $dia['vacas'] }}">{{ $dia['dia'] }}</td>
                                     @if (($index + 1) % 5 === 0 || $index + 1 === count($diasAviles['9']))
                                         </tr>
                                     @endif
@@ -344,7 +346,7 @@
                                     @if ($index % 5 === 0)
                                         <tr>
                                     @endif
-                                    <td>{{ $dia['dia'] }}</td>
+                                    <td id="{{ $dia['vacas'] }}">{{ $dia['dia'] }}</td>
                                     @if (($index + 1) % 5 === 0 || $index + 1 === count($diasAviles['10']))
                                         </tr>
                                     @endif
@@ -375,7 +377,7 @@
                                     @if ($index % 5 === 0)
                                         <tr>
                                     @endif
-                                    <td>{{ $dia['dia'] }}</td>
+                                    <td id="{{ $dia['vacas'] }}">{{ $dia['dia'] }}</td>
                                     @if (($index + 1) % 5 === 0 || $index + 1 === count($diasAviles['11']))
                                         </tr>
                                     @endif
@@ -406,7 +408,7 @@
                                     @if ($index % 5 === 0)
                                         <tr>
                                     @endif
-                                    <td>{{ $dia['dia'] }}</td>
+                                    <td id="{{ $dia['vacas'] }}">{{ $dia['dia'] }}</td>
                                     @if (($index + 1) % 5 === 0 || $index + 1 === count($diasAviles['12']))
                                         </tr>
                                     @endif

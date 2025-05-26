@@ -1872,10 +1872,16 @@ class juntasController extends Controller
         $diasAviles = [];
         $value = session('user');
         $cat = session('categoria');
+        if ($cat == 'inge') {
+            $vacacionesRegistro = 'Ingenieria';
+        } else {
+            $vacacionesRegistro = 'RH';
+        }
+
         $diasAviles = [];
         $empleados = [];
         $busqueda = DB::table('personalberg')
-            ->where('employeeArea', '=', 'Ingenieria')
+            ->where('employeeArea', '=', $vacacionesRegistro)
             ->get();
 
 
@@ -1891,34 +1897,49 @@ class juntasController extends Controller
             $nextYearBirth = Carbon::createFromDate($nextYear, substr($rows->DateIngreso, 5, 2), substr($rows->DateIngreso, 8, 2));
             $empleados[$rows->employeeName][5] = Carbon::parse($nextYearBirth)->addMonths(6)->format('Y-m-d');
             $empleados[$rows->employeeName][6] = $rows->employeeNumber;
-             $empleados[$rows->employeeName][7] = $rows->DaysVacationsAvailble;
+            $empleados[$rows->employeeName][7] = $rows->DaysVacationsAvailble;
+        }
+  $diasAviles = [];
+$InicioYear = Carbon::createFromDate($currentYear, 1, 1);
+$FinYear = Carbon::createFromDate($currentYear, 12, 31);
+
+// Obtener vacaciones del año
+$vacaciones = DB::table('registro_vacaciones')
+    ->where('fecha_de_solicitud', 'LIKE', $currentYear . '%')
+    ->orderBy('fecha_de_solicitud', 'asc')
+    ->get();
+
+// Crear array asociativo: 'Y-m-d' => [id_empleado, ...]
+$vacacions = [];
+foreach ($vacaciones as $row) {
+    $fecha = Carbon::parse($row->fecha_de_solicitud)->toDateString(); // 'YYYY-MM-DD'
+    $vacacions[$fecha][] = $row->id_empleado;
+}
+
+// Recorrer cada día hábil del año
+while ($InicioYear <= $FinYear) {
+    if ($InicioYear->isWeekday()) {
+        $fechaActual = $InicioYear->toDateString(); // 'YYYY-MM-DD'
+        if(key_exists($fechaActual, $vacacions)){
+
+        $empleadoVacacion = $vacacions[$InicioYear->toDateString()][0];
+
+        }else{
+        $empleadoVacacion = '';
         }
 
-        $vacas = ['2025-01-31', 'i2101'];
 
 
+        $diasAviles[$InicioYear->month][] = [
+            'dia' => $InicioYear->format('d'),
+            'Dia' => $InicioYear->format('D'),
+            'fecha' => $fechaActual,
+            'vacas' => $empleadoVacacion
+        ];
+    }
 
-        for ($month = 1; $month <= 12; $month++) {
-            $daysInMonth = Carbon::createFromDate($currentYear, $month, 1)->daysInMonth;
-            $diasAviles[$month] = [];
-
-            for ($day = 1; $day <= $daysInMonth; $day++) {
-                $date = Carbon::createFromDate($currentYear, $month, $day);
-                $vacationDate = Carbon::parse($vacas[0]);
-
-                $registrador = $date->isSameDay($vacationDate) ? $vacas[1] : '';
-
-                if ($date->isWeekday()) {
-                    $diasAviles[$month][] = [
-                        'dia' => $date->format('d'),
-                        'Dia' => $date->format('D'),
-                        'fecha' => $date->format('Y-m-d'),
-                        'vacas' => $registrador,
-                    ];
-                }
-            }
-        }
-
-        return view('juntas/hrDocs/vacations', ['anos' => $anos, 'empleados' => $empleados, 'diasAviles' => $diasAviles, 'value' => $value, 'cat' => $cat]);
+    $InicioYear->addDay(1);
+}
+        return view('juntas/hrDocs/vacations', ['vacacions'=> $vacacions,'anos' => $anos, 'empleados' => $empleados, 'diasAviles' => $diasAviles, 'value' => $value, 'cat' => $cat]);
     }
 }
