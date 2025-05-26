@@ -166,6 +166,7 @@ Route::get('juntas/seguimientos',   [juntasController::class, 'seguimientos'])->
     Route::get('/registroComment', [juntasController::class, 'registroComment'])->name('registroComment');
     Route::get('/rhDashBoard', [juntasController::class, 'rhDashBoard'])->name('rhDashBoard');
     Route::get('/vacations', [juntasController::class, 'vacations'])->name('vacations');
+    Route::get('/vacations/addVacation', [juntasController::class, 'addVacation'])->name('addVacation');
 });
 
 Route::controller(SaludController::class)->group(function () {

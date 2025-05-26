@@ -10,10 +10,36 @@
 
                 <div class="card shadow mb-5">
                     <div class="card-header py-3">
-                        <h5 class="m-0 font-weight-bold text-primary">Vacations <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#exampleModal"> Agregar vacaciones</button></h5>
+                        <h5 class="m-0 font-weight-bold text-primary">Vacations <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#exampleModal" onclick="document.getElementById('agregarVacaciones').style.display = 'block';" "> Agregar vacaciones</button></h5>
 
                     </div>
                     <div class="card-body" style="overflow-y: auto; " >
+                        <div class="form-group" id="agregarVacaciones" style= "display: none;">
+                            <form action="{{ route('addVacation') }}" method="GET">
+
+                                <div class="form-row">
+                                    <div class="col-md-4 mb-3">
+                                        <label for="personalIng">Personal:</label>
+                                            <select  class="form-control" name="personalIng" id="personalIng" required>
+                                                <option value="" disabled selected> Select an option</option>
+                                                @foreach ($empleados as $empleado )
+                                                <option value="{{ $empleado[6] }}">{{ $empleado[0] }} -- {{ $empleado[6] }}</option>
+                                                @endforeach
+                                            </select>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="endDate">Fecha de fin:</label>
+                                        <input type="date" class="form-control" id="endDate" name="endDate" required>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="diasT">Dias:</label>
+                                        <input type="number" class="form-control" id="diasT" name="diasT" required>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Agregar</button>
+                            </form>
+                        </div>
+                        <hr>
                         <div class="ingT">
                         <input type="text" name="ing" id="ingn" class="ingn" value="Enginners" readonly>
                         <input type="text" name="ing" id="ingn" class="ingn" value="Fecha de entrada" readonly>

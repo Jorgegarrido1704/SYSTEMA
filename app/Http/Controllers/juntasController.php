@@ -12,6 +12,7 @@ use ZeroDivisionError;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx\Rels;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class juntasController extends Controller
 {
@@ -1941,5 +1942,60 @@ while ($InicioYear <= $FinYear) {
     $InicioYear->addDay(1);
 }
         return view('juntas/hrDocs/vacations', ['vacacions'=> $vacacions,'anos' => $anos, 'empleados' => $empleados, 'diasAviles' => $diasAviles, 'value' => $value, 'cat' => $cat]);
+    }
+
+    public function addVacation(Request $request)
+    {
+        $input = $request->all();
+        $request->validate([
+            'personalIng' => 'required',
+            'endDate' => 'required|date',
+            'diasT' => 'required|integer|min:1|max:20',
+        ]);
+        $pesonal = $input['personalIng'];
+        $endDate = Carbon::parse($input['endDate']);
+        $diasT = $input['diasT'];
+        $buscarPersonal = DB::table('personalberg')
+            ->where('employeeNumber', '=', $pesonal)
+            ->first();
+        $lastyear= $buscarPersonal->lastYear;
+        $currentYear = $buscarPersonal->currentYear;
+        $nextYear = $buscarPersonal->nextYear;
+
+        if($lastyear >= $diasT){
+            DB::table('personalberg')
+                ->where('employeeNumber', '=', $pesonal)
+                ->update(['lastYear' => $lastyear - $diasT,'DaysVacationsAvailble'=> DB::raw('DaysVacationsAvailble - ' . $diasT)]);
+        }else if($lastyear >= 0 && $currentYear >= ($diasT - $lastyear)){
+            DB::table('personalberg')
+                ->where('employeeNumber', '=', $pesonal)
+                ->update(['currentYear' => $currentYear - ($diasT- $lastyear), 'lastYear' => 0,'DaysVacationsAvailble'=> DB::raw('DaysVacationsAvailble - ' . $diasT)]);
+        }else if($lastyear >= 0 && $currentYear >= 0 && $nextYear >= ($diasT - $lastyear - $currentYear)){
+            DB::table('personalberg')
+                ->where('employeeNumber', '=', $pesonal)
+                ->update(['nextYear' => $nextYear - ($diasT - $lastyear - $currentYear), 'currentYear' => 0, 'lastYear' => 0,'DaysVacationsAvailble'=> DB::raw('DaysVacationsAvailble - ' . $diasT)]);
+        }else{
+            session()->flash('error', 'No tienes suficientes días de vacaciones disponibles.');
+            return redirect()->back();
+        }
+        for ($i = 0; $i < $diasT; $i++) {
+
+            //Check if the date is a weekend
+            if (Carbon::parse($endDate)->isWeekend()) {
+                $diasT++;
+            } else {
+                //Insert into registro_vacaciones table
+                DB::table('registro_vacaciones')->insert([
+                    'id_empleado' => $pesonal,
+                    'fecha_de_solicitud' => $endDate,
+                    'estatus' => 'Confirmado',
+                    'dias_solicitados' => 1,
+
+                ]);
+            }
+            $endDate->addDay(1);
+        }
+
+        return redirect()->route('vacations')->with('success', 'Vacaciones agregadas correctamente.');
     }
 }
