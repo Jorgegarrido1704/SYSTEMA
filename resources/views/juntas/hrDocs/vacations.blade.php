@@ -44,6 +44,8 @@
                         <div class="ingT">
                         <input type="text" name="ing" id="ingn" class="ingn" value="Enginners" readonly>
                         <input type="text" name="ing" id="ingn" class="ingn" value="Fecha de entrada" readonly>
+                         <input type="text" name="ing" id="ingn" class="ingn" value="Vacaciones {{$anos[3]}} - {{$anos[0]}}" readonly>
+                        <input type="text" name="ing" id="ingn" class="ingn" value="Fecha limite para usarlas" readonly>
                         <input type="text" name="ing" id="ingn" class="ingn" value="Vacaciones {{$anos[0]}} - {{$anos[1]}}" readonly>
                         <input type="text" name="ing" id="ingn" class="ingn" value="Fecha limite para usarlas" readonly>
                         <input type="text" name="ing" id="ingn" class="ing" value="Vacaciones {{$anos[1]}} - {{$anos[2]}}" readonly>
@@ -54,6 +56,8 @@
                        <div class="ings" id='{{$empleado[6]}}'>
                        <input type="text" name="ingn" id="ingn" class="ing" value="{{ $empleado[0] }}" readonly>
                        <input type="text" name="ing" id="ingn" class="ing" value="{{ $empleado[1] }}" readonly>
+                       <input type="text" name="ing" id="ingn" class="ing" value="{{ $empleado[9] }}" readonly>
+                       <input type="text" name="ing" id="ingn" class="ing" value="{{ $empleado[8] }}" readonly>
                        <input type="text" name="ing" id="ingn" class="ing" value="{{ $empleado[2] }}" readonly>
                        <input type="text" name="ing" id="ingn" class="ing" value="{{ $empleado[3] }}" readonly>
                        <input type="text" name="ing" id="ingn" class="ing" value="{{ $empleado[4] }}" readonly>

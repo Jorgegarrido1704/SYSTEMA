@@ -1868,8 +1868,9 @@ class juntasController extends Controller
 
         $currentYear = Carbon::now()->year;
         $lastYear = Carbon::now()->subYear()->year;
+        $lastLastYear = Carbon::now()->subYears(2)->year;
         $nextYear = Carbon::now()->addYear()->year;
-        $anos = [$lastYear, $currentYear, $nextYear];
+        $anos = [$lastYear, $currentYear, $nextYear, $lastLastYear];
         $diasAviles = [];
         $value = session('user');
         $cat = session('categoria');
@@ -1899,6 +1900,9 @@ class juntasController extends Controller
             $empleados[$rows->employeeName][5] = Carbon::parse($nextYearBirth)->addMonths(6)->format('Y-m-d');
             $empleados[$rows->employeeName][6] = $rows->employeeNumber;
             $empleados[$rows->employeeName][7] = $rows->DaysVacationsAvailble;
+            $lastyearBirth = Carbon::createFromDate($lastYear, substr($rows->DateIngreso, 5, 2), substr($rows->DateIngreso, 8, 2));
+            $empleados[$rows->employeeName][8] = Carbon::parse($lastyearBirth)->addMonths(6)->format('Y-m-d');
+            $empleados[$rows->employeeName][9] = $rows->lastYear;
         }
   $diasAviles = [];
 $InicioYear = Carbon::createFromDate($currentYear, 1, 1);
@@ -1914,7 +1918,12 @@ $vacaciones = DB::table('registro_vacaciones')
 $vacacions = [];
 foreach ($vacaciones as $row) {
     $fecha = Carbon::parse($row->fecha_de_solicitud)->toDateString(); // 'YYYY-MM-DD'
+    if(key_exists($fecha, $vacacions)){
+        $vacacions[$fecha][0] .= $row->id_empleado;
+    }else{
     $vacacions[$fecha][] = $row->id_empleado;
+
+    }
 }
 
 // Recorrer cada día hábil del año
@@ -1957,18 +1966,19 @@ while ($InicioYear <= $FinYear) {
 
         $pesonal = $input['personalIng'];
         $endDate = Carbon::parse($input['endDate']);
+        $diasT = $input['diasT'];
         // revisar si hay
         $datosVacaciones= DB::table('registro_vacaciones')
             ->select('dias_solicitados','id_empleado')
             ->where('fecha_de_solicitud', '=', $endDate)
             ->first();
-        if($datosVacaciones != null &&  $datosVacaciones->dias_solicitados >1){
+        if($datosVacaciones != null &&  count($datosVacaciones) >2){
             session()->flash('error', 'Ya hay vacaciones registradas para esta fecha.');
             return redirect()->back();
         }
 
 
-        $diasT = $input['diasT'];
+
         $buscarPersonal = DB::table('personalberg')
             ->where('employeeNumber', '=', $pesonal)
             ->first();
@@ -1991,24 +2001,20 @@ while ($InicioYear <= $FinYear) {
         }else{
             session()->flash('error', 'No tienes suficientes días de vacaciones disponibles.');
             return redirect()->back();
-        }
+        }$diasReg=$diasT;
         for ($i = 0; $i < $diasT; $i++) {
 
             //Check if the date is a weekend
             if (Carbon::parse($endDate)->isWeekend()) {
                 $diasT++;
             } else {
-                if($datosVacaciones != null && $datosVacaciones->dias_solicitados == 1){
-                    //Insert into registro_vacaciones table
-                    $personal = $datosVacaciones->id_empleado . "-" . $pesonal;
-                    DB::table('registro_vacaciones')->
-                    where('fecha_de_solicitud', '=', $endDate)
-                        ->update([
-                            'id_empleado' => $personal,
-                            'estatus' => 'Confirmado',
-                            'dias_solicitados' => 2,
-                        ]);
-                    }else if($datosVacaciones == null ){
+                if(($diasReg-($currentYear+$lastyear) )> 0){
+                    $years = Carbon::addYears(1)->year;
+                }else if(($diasReg-($lastyear)) > 0){
+                    $years = Carbon::now()->year;
+                }else{
+                    $years = Carbon::now()->subYear()->year;
+                }
 
                 //Insert into registro_vacaciones table
                 DB::table('registro_vacaciones')->insert([
@@ -2016,9 +2022,10 @@ while ($InicioYear <= $FinYear) {
                     'fecha_de_solicitud' => $endDate,
                     'estatus' => 'Confirmado',
                     'dias_solicitados' => 1,
+                    'usedYear' => $years,
 
                 ]);
-            }
+
             }
             $endDate->addDay(1);
         }

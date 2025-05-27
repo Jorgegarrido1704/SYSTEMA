@@ -16,7 +16,7 @@
 #i2164{
     background-color: rgba(7, 54, 14, 0.5);
 }
-#i2164-i2147, #i2147-i2164{
+#i2164i2147, #i2147i2164{
     border: none;
     text-decoration: bold;
     background: linear-gradient(
@@ -24,7 +24,7 @@
      rgba(7, 54, 14, 0.5)50%,
      rgba(157, 217, 246, 0.668) 50%);
 }
-#i2164-i2144, #i2144-i2164{
+#i2164i2144, #i2144i2164{
     border: none;
     text-decoration: bold;
     background: linear-gradient(
@@ -32,7 +32,7 @@
      rgba(7, 54, 14, 0.5)50%,
      rgba(236, 178, 242, 0.658)50% );
 }
-#i2164-i2165, #i2165-i2164{
+#i2164i2165, #i2165i2164{
     border: none;
     text-decoration: bold;
     background: linear-gradient(
@@ -40,7 +40,7 @@
      rgba(7, 54, 14, 0.5) 50%,
      rgba(146, 3, 249, 0.5) 50% );
 }
-#i2164-i2197, #i2197-i2164{
+#i2164i2197, #i2197-i2164{
     border: none;
     text-decoration: bold;
     background: linear-gradient(
@@ -48,7 +48,7 @@
      rgba(7, 54, 14, 0.5)50%,
      rgba(0, 202, 242, 0.942)50% );
 }
-#i2164-i2101, #i2101-i2164{
+#i2164i2101, #i2101i2164{
     border: none;
     text-decoration: bold;
     background: linear-gradient(
@@ -59,7 +59,7 @@
 #i2147{
     background-color: rgba(157, 217, 246, 0.668);
 }
-#i2147-i2144, #i2144-i2147{
+#i2147i2144, #i2144i2147{
     border: none;
     text-decoration: bold;
     background: linear-gradient(
@@ -67,7 +67,7 @@
      rgba(157, 217, 246, 0.668) 50%,
      rgba(236, 178, 242, 0.658) 50%);
 }
-#i2147-i2165, #i2165-i2147{
+#i2147i2165, #i2165i2147{
     border: none;
     text-decoration: bold;
     background: linear-gradient(
@@ -75,7 +75,7 @@
      rgba(157, 217, 246, 0.668) 50%,
      rgba(146, 3, 249, 0.5)50% );
 }
-#i2147-i2197, #i2197-i2147{
+#i2147i2197, #i2197i2147{
     border: none;
     text-decoration: bold;
     background: linear-gradient(
@@ -83,7 +83,7 @@
      rgba(157, 217, 246, 0.668) 50%,
      rgba(0, 202, 242, 0.942) 50% );
 }
-#i2147-i2101, #i2101-i2147{
+#i2147i2101, #i2101i2147{
     border: none;
     text-decoration: bold;
     background: linear-gradient(
@@ -96,7 +96,7 @@
 #i2144{
     background-color: rgba(236, 178, 242, 0.658);
 }
-#i2144-i2165, #i2165-i2144{
+#i2144i2165, #i2165i2144{
     border: none;
     text-decoration: bold;
     background: linear-gradient(
@@ -104,7 +104,7 @@
      rgba(236, 178, 242, 0.658) 50%,
      rgba(146, 3, 249, 0.5)50% );
 }
-#i2144-i2197, #i2197-i2144{
+#i2144i2197, #i2197i2144{
     border: none;
     text-decoration: bold;
     background: linear-gradient(
@@ -113,7 +113,7 @@
      rgba(0, 202, 242, 0.942) 50%);
 }
 
-#i2144-i2101, #i2101-i2144{
+#i2144i2101, #i2101i2144{
     border: none;
     text-decoration: bold;
     background: linear-gradient(
@@ -126,7 +126,7 @@
 #i2165{
     background-color: rgba(146, 3, 249, 0.5);
 }
-#i2165-i2197, #i2197-i2165{
+#i2165i2197, #i2197i2165{
     border: none;
     text-decoration: bold;
     background: linear-gradient(
@@ -134,7 +134,7 @@
      rgba(146, 3, 249, 0.5) 50%,
      rgba(0, 202, 242, 0.942) 50% );
 }
-#i2165-i2101, #i2101-i2165{
+#i2165i2101, #i2101i2165{
     border: none;
     text-decoration: bold;
     background: linear-gradient(
