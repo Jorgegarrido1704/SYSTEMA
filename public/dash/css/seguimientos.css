@@ -2,6 +2,17 @@ td,tr {
     font-size: 20px;
     color: rgb(31, 31, 31)
 }
+#PPAP {
+    background-color: rgba(153, 253, 90, 0.812);
+    color: rgb(31, 31, 31);
+    border: solid 1px rgb(10, 90, 0);
+}
+#PRIM {
+    background-color: rgba(249, 218, 43, 0.653);
+    color: rgb(31, 31, 31);
+    border: solid 1px rgb(168, 146, 0);
+}
+
 #excelentWork {
     background-color: rgba(6, 235, 6, 0.2);
     color: rgb(31, 31, 31);

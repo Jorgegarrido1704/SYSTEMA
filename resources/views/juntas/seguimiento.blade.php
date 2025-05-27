@@ -55,12 +55,12 @@
 
                                     <tbody>
                                         <tr  onclick ="location.href='{{ url('juntas/seguimiento/'.$cut[15]) }}'" style="cursor: pointer;">
-                                            <td id=""><b>{{ $cut[0]  }}
+                                            <td id="{{$cut[16]}}"><b>{{ $cut[0]  }}
                                                 </td>
-                                            <td id=""><b>{{ $cut[1]  }}
+                                            <td id="{{$cut[16]}}"><b>{{ $cut[1]  }}
                                                </td>
                                             </td>
-                                            <td><b>{{ $cut[2] }}</td>
+                                            <td id="{{$cut[16]}}"><b>{{ $cut[2] }}</td>
                                             <td><b>{{ $cut[3] }}</td>
                                             <td><b>{{ $cut[4] }}</td>
                                             <td id="{{$cut[10]}}"><b>{{ $cut[5] }}</td>

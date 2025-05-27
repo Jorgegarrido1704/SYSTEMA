@@ -1763,6 +1763,14 @@ class juntasController extends Controller
                 }
             }
             $buscarDatos[$i][15] = $rows->ids;
+            if(substr($rows->rev, 0, 4) == 'PPAP'){
+                $buscarDatos[$i][16] = 'PPAP';
+            } elseif(substr($rows->rev, 0, 4) == 'PRIM'){
+                $buscarDatos[$i][16] = 'PRIM';
+            } else {
+                $buscarDatos[$i][16] = '';
+
+            }
 
 
 
