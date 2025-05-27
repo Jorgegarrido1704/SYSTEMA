@@ -2057,7 +2057,7 @@ class juntasController extends Controller
             ->where( $days, '!=', "")
             ->get();
 
-        $assitence= $faltas =$vacaciones = $permisosGose =$permisosSinGose= 0;
+        $assitence= $faltas =$vacaciones = $permisosGose =$permisosSinGose=$incapacidad= 0;
         foreach ($registroAssitence as $row) {
             $datoGenero = DB::table('personalberg')
             ->select('Gender')
@@ -2084,6 +2084,9 @@ class juntasController extends Controller
             }
             if ($row->$days == 'PSG') {
                 $permisosSinGose++;
+            }
+            if ($row->$days == 'I') {
+                $incapacidad++;
             }
         }
         $registrosDeAsistencia =[$assitence, $faltas,  $permisosGose+$permisosSinGose,$vacaciones];
