@@ -21,7 +21,7 @@
                 <h5 class="m-1 font-weight-bold text-primary">Today assistence {{date('Y-m-d')}}</h5>
             </div>
             <div class="card-body" style="overflow-y: auto; " >
-
+                <canvas id="assistence"></canvas>
             </div>
         </div>
     </div>

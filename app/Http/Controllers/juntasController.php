@@ -1857,11 +1857,7 @@ class juntasController extends Controller
         return redirect()->route('seguimiento', ['id' => $request->input('id_issue')]);
     }
     //RH Graphics
-    public function rhDashBoard()
-    {
-        $accidente = '61928 REV B.pdf';
-        return view('juntas/hr', ['value' => session('user'), 'cat' => session('categoria'), 'accidente' => $accidente]);
-    }
+
     public function vacations()
     {
 
@@ -1904,53 +1900,51 @@ class juntasController extends Controller
             $empleados[$rows->employeeName][8] = Carbon::parse($lastyearBirth)->addMonths(6)->format('Y-m-d');
             $empleados[$rows->employeeName][9] = $rows->lastYear;
         }
-  $diasAviles = [];
-$InicioYear = Carbon::createFromDate($currentYear, 1, 1);
-$FinYear = Carbon::createFromDate($currentYear, 12, 31);
+        $diasAviles = [];
+        $InicioYear = Carbon::createFromDate($currentYear, 1, 1);
+        $FinYear = Carbon::createFromDate($currentYear, 12, 31);
 
-// Obtener vacaciones del año
-$vacaciones = DB::table('registro_vacaciones')
-    ->where('fecha_de_solicitud', 'LIKE', $currentYear . '%')
-    ->orderBy('fecha_de_solicitud', 'asc')
-    ->get();
+        // Obtener vacaciones del año
+        $vacaciones = DB::table('registro_vacaciones')
+            ->where('fecha_de_solicitud', 'LIKE', $currentYear . '%')
+            ->orderBy('fecha_de_solicitud', 'asc')
+            ->get();
 
-// Crear array asociativo: 'Y-m-d' => [id_empleado, ...]
-$vacacions = [];
-foreach ($vacaciones as $row) {
-    $fecha = Carbon::parse($row->fecha_de_solicitud)->toDateString(); // 'YYYY-MM-DD'
-    if(key_exists($fecha, $vacacions)){
-        $vacacions[$fecha][0] .= $row->id_empleado;
-    }else{
-    $vacacions[$fecha][] = $row->id_empleado;
-
-    }
-}
-
-// Recorrer cada día hábil del año
-while ($InicioYear <= $FinYear) {
-    if ($InicioYear->isWeekday()) {
-        $fechaActual = $InicioYear->toDateString(); // 'YYYY-MM-DD'
-        if(key_exists($fechaActual, $vacacions)){
-
-        $empleadoVacacion = $vacacions[$InicioYear->toDateString()][0];
-
-        }else{
-        $empleadoVacacion = '';
+        // Crear array asociativo: 'Y-m-d' => [id_empleado, ...]
+        $vacacions = [];
+        foreach ($vacaciones as $row) {
+            $fecha = Carbon::parse($row->fecha_de_solicitud)->toDateString(); // 'YYYY-MM-DD'
+            if (key_exists($fecha, $vacacions)) {
+                $vacacions[$fecha][0] .= $row->id_empleado;
+            } else {
+                $vacacions[$fecha][] = $row->id_empleado;
+            }
         }
 
+        // Recorrer cada día hábil del año
+        while ($InicioYear <= $FinYear) {
+            if ($InicioYear->isWeekday()) {
+                $fechaActual = $InicioYear->toDateString(); // 'YYYY-MM-DD'
+                if (key_exists($fechaActual, $vacacions)) {
+
+                    $empleadoVacacion = $vacacions[$InicioYear->toDateString()][0];
+                } else {
+                    $empleadoVacacion = '';
+                }
 
 
-        $diasAviles[$InicioYear->month][] = [
-            'dia' => $InicioYear->format('d'),
-            'Dia' => $InicioYear->format('D'),
-            'fecha' => $fechaActual,
-            'vacas' => $empleadoVacacion
-        ];
-    }
 
-    $InicioYear->addDay(1);
-}
-        return view('juntas/hrDocs/vacations', ['vacacions'=> $vacacions,'anos' => $anos, 'empleados' => $empleados, 'diasAviles' => $diasAviles, 'value' => $value, 'cat' => $cat]);
+                $diasAviles[$InicioYear->month][] = [
+                    'dia' => $InicioYear->format('d'),
+                    'Dia' => $InicioYear->format('D'),
+                    'fecha' => $fechaActual,
+                    'vacas' => $empleadoVacacion
+                ];
+            }
+
+            $InicioYear->addDay(1);
+        }
+        return view('juntas/hrDocs/vacations', ['vacacions' => $vacacions, 'anos' => $anos, 'empleados' => $empleados, 'diasAviles' => $diasAviles, 'value' => $value, 'cat' => $cat]);
     }
 
     public function addVacation(Request $request)
@@ -1968,11 +1962,11 @@ while ($InicioYear <= $FinYear) {
         $endDate = Carbon::parse($input['endDate']);
         $diasT = $input['diasT'];
         // revisar si hay
-        $datosVacaciones= DB::table('registro_vacaciones')
-            ->select('dias_solicitados','id_empleado')
+        $datosVacaciones = DB::table('registro_vacaciones')
+            ->select('dias_solicitados', 'id_empleado')
             ->where('fecha_de_solicitud', '=', $endDate)
-            ->first();
-        if($datosVacaciones != null &&  count($datosVacaciones) >2){
+            ->get();
+        if ($datosVacaciones != null &&  count($datosVacaciones) > 2) {
             session()->flash('error', 'Ya hay vacaciones registradas para esta fecha.');
             return redirect()->back();
         }
@@ -1982,37 +1976,38 @@ while ($InicioYear <= $FinYear) {
         $buscarPersonal = DB::table('personalberg')
             ->where('employeeNumber', '=', $pesonal)
             ->first();
-        $lastyear= $buscarPersonal->lastYear;
+        $lastyear = $buscarPersonal->lastYear;
         $currentYear = $buscarPersonal->currentYear;
         $nextYear = $buscarPersonal->nextYear;
 
-        if($lastyear >= $diasT){
+        if ($lastyear >= $diasT) {
             DB::table('personalberg')
                 ->where('employeeNumber', '=', $pesonal)
-                ->update(['lastYear' => $lastyear - $diasT,'DaysVacationsAvailble'=> DB::raw('DaysVacationsAvailble - ' . $diasT)]);
-        }else if($lastyear >= 0 && $currentYear >= ($diasT - $lastyear)){
+                ->update(['lastYear' => $lastyear - $diasT, 'DaysVacationsAvailble' => DB::raw('DaysVacationsAvailble - ' . $diasT)]);
+        } else if ($lastyear >= 0 && $currentYear >= ($diasT - $lastyear)) {
             DB::table('personalberg')
                 ->where('employeeNumber', '=', $pesonal)
-                ->update(['currentYear' => $currentYear - ($diasT- $lastyear), 'lastYear' => 0,'DaysVacationsAvailble'=> DB::raw('DaysVacationsAvailble - ' . $diasT)]);
-        }else if($lastyear >= 0 && $currentYear >= 0 && $nextYear >= ($diasT - $lastyear - $currentYear)){
+                ->update(['currentYear' => $currentYear - ($diasT - $lastyear), 'lastYear' => 0, 'DaysVacationsAvailble' => DB::raw('DaysVacationsAvailble - ' . $diasT)]);
+        } else if ($lastyear >= 0 && $currentYear >= 0 && $nextYear >= ($diasT - $lastyear - $currentYear)) {
             DB::table('personalberg')
                 ->where('employeeNumber', '=', $pesonal)
-                ->update(['nextYear' => $nextYear - ($diasT - $lastyear - $currentYear), 'currentYear' => 0, 'lastYear' => 0,'DaysVacationsAvailble'=> DB::raw('DaysVacationsAvailble - ' . $diasT)]);
-        }else{
+                ->update(['nextYear' => $nextYear - ($diasT - $lastyear - $currentYear), 'currentYear' => 0, 'lastYear' => 0, 'DaysVacationsAvailble' => DB::raw('DaysVacationsAvailble - ' . $diasT)]);
+        } else {
             session()->flash('error', 'No tienes suficientes días de vacaciones disponibles.');
             return redirect()->back();
-        }$diasReg=$diasT;
+        }
+        $diasReg = $diasT;
         for ($i = 0; $i < $diasT; $i++) {
 
             //Check if the date is a weekend
             if (Carbon::parse($endDate)->isWeekend()) {
                 $diasT++;
             } else {
-                if(($diasReg-($currentYear+$lastyear) )> 0){
+                if (($diasReg - ($currentYear + $lastyear)) > 0) {
                     $years = Carbon::now()->addYear()->year;
-                }else if(($diasReg-($lastyear)) > 0){
+                } else if (($diasReg - ($lastyear)) > 0) {
                     $years = Carbon::now()->year;
-                }else{
+                } else {
                     $years = Carbon::now()->subYear()->year;
                 }
 
@@ -2025,11 +2020,18 @@ while ($InicioYear <= $FinYear) {
                     'usedYear' => $years,
 
                 ]);
-
             }
             $endDate->addDay(1);
         }
 
         return redirect()->route('vacations')->with('success', 'Vacaciones agregadas correctamente.');
+    }
+
+    public function rhDashBoard()
+    {
+        $accidente = '61928 REV B.pdf';
+
+
+        return view('juntas/hr', ['value' => session('user'), 'cat' => session('categoria'), 'accidente' => $accidente]);
     }
 }
