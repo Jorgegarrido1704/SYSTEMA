@@ -2030,8 +2030,59 @@ class juntasController extends Controller
     public function rhDashBoard()
     {
         $accidente = '61928 REV B.pdf';
+        $week = Carbon::now()->week();
+        $today= Carbon::now()->dayOfWeek;
+        $genero=[0,0];
+        if( $today == 1){
+            $days='lunes';
+        }else if($today == 2){
+            $days='martes';
+        }else if($today == 3){
+            $days='miercoles';
+        }else if($today == 4){
+            $days='jueves';
+        }else if($today == 5){
+            $days='viernes';
+        }
+        $registroAssitence = DB::table('assistence')
+            ->where('week', '=', $week)
+            ->where( $days, '!=', "")
+            ->get();
+
+        $assitence= $faltas =$vacaciones = $permisosGose =$permisosSinGose= 0;
+        foreach ($registroAssitence as $row) {
+            $datoGenero = DB::table('personalberg')
+            ->select('Gender')
+                ->where('employeeNumber', '=', $row->id_empleado)
+                ->first();
+                if($datoGenero->Gender == 'M'){
+                    $genero[1]++;
+                }else if($datoGenero->Gender == 'F'){
+                    $genero[0]++;
+                }
 
 
-        return view('juntas/hr', ['value' => session('user'), 'cat' => session('categoria'), 'accidente' => $accidente]);
+            if ($row->$days == 'OK') {
+                $assitence++;
+            }
+            if ($row->$days == 'F') {
+                $faltas++;
+            }
+            if ($row->$days == 'V') {
+                $vacaciones++;
+            }
+            if ($row->$days == 'PCG') {
+                $permisosGose++;
+            }
+            if ($row->$days == 'PSG') {
+                $permisosSinGose++;
+            }
+        }
+        $registrosDeAsistencia =[$assitence, $faltas,  $permisosGose+$permisosSinGose,$vacaciones];
+
+
+
+
+        return view('juntas/hr', ['genero' => $genero,'registrosDeAsistencia' => $registrosDeAsistencia ,'value' => session('user'), 'cat' => session('categoria'), 'accidente' => $accidente]);
     }
 }

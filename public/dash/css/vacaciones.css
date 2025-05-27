@@ -12,16 +12,22 @@
     width: 250px;
     margin: 3px
 }
+td{
+    text-align: center;
+    background-color: whitesmoke;
+    color: black;
+    font-weight: bold;
+}
 
 #i2164{
-    background-color: rgba(7, 54, 14, 0.5);
+    background-color: rgba(1, 132, 21, 0.5);
 }
 #i2164i2147, #i2147i2164{
     border: none;
     text-decoration: bold;
     background: linear-gradient(
       to top left,
-     rgba(7, 54, 14, 0.5)50%,
+     rgba(1, 132, 21, 0.5)50%,
      rgba(157, 217, 246, 0.668) 50%);
 }
 #i2164i2144, #i2144i2164{
@@ -29,7 +35,7 @@
     text-decoration: bold;
     background: linear-gradient(
       to top left,
-     rgba(7, 54, 14, 0.5)50%,
+     rgba(1, 132, 21, 0.5)50%,
      rgba(236, 178, 242, 0.658)50% );
 }
 #i2164i2165, #i2165i2164{
@@ -37,7 +43,7 @@
     text-decoration: bold;
     background: linear-gradient(
       to top left,
-     rgba(7, 54, 14, 0.5) 50%,
+     rgba(1, 132, 21, 0.5) 50%,
      rgba(146, 3, 249, 0.5) 50% );
 }
 #i2164i2197, #i2197-i2164{
@@ -45,7 +51,7 @@
     text-decoration: bold;
     background: linear-gradient(
       to top left,
-     rgba(7, 54, 14, 0.5)50%,
+     rgba(1, 132, 21, 0.5)50%,
      rgba(0, 202, 242, 0.942)50% );
 }
 #i2164i2101, #i2101i2164{
@@ -53,7 +59,7 @@
     text-decoration: bold;
     background: linear-gradient(
       to top left,
-     rgba(7, 54, 14, 0.5)50%,
+     rgba(1, 132, 21, 0.5)50%,
      rgba(255, 128, 0, 0.5) 50%);
 }
 #i2147{

@@ -13,8 +13,12 @@
    font: bold;
     }
 </style>
+<script>
+    const registros = @json($registrosDeAsistencia);
+    const genero = @json($genero);
+</script>
 <div class="row">
-    <div class="col-lg-4 col-lx-4 col-md-5 mb-4">
+    <div class="col-lg-4 col-lx-4 col-md-4 mb-4">
 
         <div class="card shadow mb-5">
             <div class="card-header py-3">
@@ -28,10 +32,10 @@
     <div class="col-lg-4 col-lx-4 col-md-4 mb-4">
         <div class="card shadow mb-5">
             <div class="card-header py-3">
-                <h5 class="m-1 font-weight-bold text-primary">Top 10 employees incidents Monthly</h5>
+                <h5 class="m-1 font-weight-bold text-primary">Diversidad</h5>
             </div>
-            <div class="card-body" style="overflow-y: auto; height: 360px;" id="tableChange">
-                <canvas id="MonthIncidences"></canvas>
+            <div class="card-body" style="overflow-y: auto;">
+                <canvas id="diversidad"></canvas>
             </div>
         </div>
     </div>
