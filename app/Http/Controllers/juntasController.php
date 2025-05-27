@@ -1952,8 +1952,22 @@ while ($InicioYear <= $FinYear) {
             'endDate' => 'required|date',
             'diasT' => 'required|integer|min:1|max:20',
         ]);
+
+
+
         $pesonal = $input['personalIng'];
         $endDate = Carbon::parse($input['endDate']);
+        // revisar si hay
+        $datosVacaciones= DB::table('registro_vacaciones')
+            ->select('dias_solicitados','id_empleado')
+            ->where('fecha_de_solicitud', '=', $endDate)
+            ->first();
+        if($datosVacaciones->dias_solicitados >1){
+            session()->flash('error', 'Ya hay vacaciones registradas para esta fecha.');
+            return redirect()->back();
+        }
+
+
         $diasT = $input['diasT'];
         $buscarPersonal = DB::table('personalberg')
             ->where('employeeNumber', '=', $pesonal)
@@ -1984,6 +1998,18 @@ while ($InicioYear <= $FinYear) {
             if (Carbon::parse($endDate)->isWeekend()) {
                 $diasT++;
             } else {
+                if($datosVacaciones->dias_solicitados == 1){
+                    //Insert into registro_vacaciones table
+                    $personal = $datosVacaciones->id_empleado . "-" . $pesonal;
+                    DB::table('registro_vacaciones')->
+                    where('fecha_de_solicitud', '=', $endDate)
+                        ->update([
+                            'id_empleado' => $personal,
+                            'estatus' => 'Confirmado',
+                            'dias_solicitados' => 2,
+                        ]);
+                    }else if($datosVacaciones->dias_solicitados == 1){
+
                 //Insert into registro_vacaciones table
                 DB::table('registro_vacaciones')->insert([
                     'id_empleado' => $pesonal,
@@ -1992,6 +2018,7 @@ while ($InicioYear <= $FinYear) {
                     'dias_solicitados' => 1,
 
                 ]);
+            }
             }
             $endDate->addDay(1);
         }
