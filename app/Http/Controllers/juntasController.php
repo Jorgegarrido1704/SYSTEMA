@@ -2009,7 +2009,7 @@ while ($InicioYear <= $FinYear) {
                 $diasT++;
             } else {
                 if(($diasReg-($currentYear+$lastyear) )> 0){
-                    $years = Carbon::addYears(1)->year;
+                    $years = Carbon::now()->addYear()->year;
                 }else if(($diasReg-($lastyear)) > 0){
                     $years = Carbon::now()->year;
                 }else{
