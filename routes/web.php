@@ -143,6 +143,8 @@ Route::controller(AdminSupControlloer::class)->group(function () {
     Route::get('/SupAdmin', [AdminSupControlloer::class, 'index_admin'])->name('SupAdmin');
     Route::get('/datosOrdenes', [AdminSupControlloer::class, 'datosOrdenes'])->name('datosOrdenes');
     Route::get('/altaDatos', [AdminSupControlloer::class, 'altaDatos'])->name('altaDatos');
+    Route::get('/workSchedule/VSM', [AdminSupControlloer::class, 'vsm_schedule'])->name('vsm_schedule');
+    Route::get('/workSchedule/timeLine', [AdminSupControlloer::class, 'timeLine'])->name('timeLine');
 });
 
 Route::controller(globalInventario::class)->group(function () {

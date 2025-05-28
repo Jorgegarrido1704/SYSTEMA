@@ -96,6 +96,14 @@
                         @endif
                     </ul>
                 </li>
+                @if($value=='Admin')
+                 <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('vsm_schedule') }}"
+                    onmouseover=showSchedule();>Schedule Orders</a>
+                    <ul class="submenu" id="schedule" style="display:none;">
+                        <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('timeLine') }}">Time Study</a></li>
+                    </ul>
+                </li>
+                 @endif
             </ul>
         </li>
 
@@ -115,6 +123,14 @@
     }
     function showEng() {
         var engMenu = document.getElementById("engsub");
+        if (engMenu.style.display === "none" || engMenu.style.display === "") {
+            engMenu.style.display = "block";
+        } else {
+            engMenu.style.display = "none";
+        }
+    }
+    function showSchedule() {
+        var engMenu = document.getElementById("schedule");
         if (engMenu.style.display === "none" || engMenu.style.display === "") {
             engMenu.style.display = "block";
         } else {
