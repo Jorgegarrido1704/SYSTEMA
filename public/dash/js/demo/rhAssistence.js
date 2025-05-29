@@ -63,3 +63,189 @@ const diver = new Chart(document.getElementById("diversidad"), {
         }
     }
 });
+
+const rota0 = new Chart(document.getElementById("rotation0"), {
+    type: "doughnut",
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: "top",
+            },
+            title: {
+                display: true,
+                text: "Rotación de personal",
+            },
+        },
+    },
+    data: {
+        labels: ["Hombres", "Mujeres"],
+        datasets: [
+            {
+                label: "Rotación de personal",
+                data: [20,30,35],
+                backgroundColor: [
+                    "rgba(3, 50, 204, 0.5)",
+                    "rgba(249, 41, 176, 0.5)",
+                    "rgba(255, 47, 47, 0.5)",
+                ],
+                borderColor: [
+                    "rgba(3, 50, 204, 1)",
+                    "rgba(249, 41, 176, 1)",
+                    "rgba(255, 47, 47, 1)",
+                ],
+                borderWidth: 1,
+            },
+        ],
+    },
+
+});
+const rota1 = new Chart(document.getElementById("rotation1"), {
+    type: "doughnut",
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: "top",
+            },
+            title: {
+                display: true,
+                text: "Rotación de personal",
+            },
+        },
+    },
+    data: {
+        labels: ["Hombres", "Mujeres"],
+        datasets: [
+            {
+                label: "Rotación de personal",
+                data: [20,30,35],
+                backgroundColor: [
+                    "rgba(3, 50, 204, 0.5)",
+                    "rgba(249, 41, 176, 0.5)",
+                    "rgba(255, 47, 47, 0.5)",
+                ],
+                borderColor: [
+                    "rgba(3, 50, 204, 1)",
+                    "rgba(249, 41, 176, 1)",
+                    "rgba(255, 47, 47, 1)",
+                ],
+                borderWidth: 1,
+            },
+        ],
+    },
+
+});
+const rota2 = new Chart(document.getElementById("rotation2"), {
+    type: "doughnut",
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: "top",
+            },
+            title: {
+                display: true,
+                text: "Rotación de personal",
+            },
+        },
+    },
+    data: {
+        labels: ["Hombres", "Mujeres"],
+        datasets: [
+            {
+                label: "Rotación de personal",
+                data: [20,30,35],
+                backgroundColor: [
+                    "rgba(3, 50, 204, 0.5)",
+                    "rgba(249, 41, 176, 0.5)",
+                    "rgba(255, 47, 47, 0.5)",
+                ],
+                borderColor: [
+                    "rgba(3, 50, 204, 1)",
+                    "rgba(249, 41, 176, 1)",
+                    "rgba(255, 47, 47, 1)",
+                ],
+                borderWidth: 1,
+            },
+        ],
+    },
+
+});
+const rota3 = new Chart(document.getElementById("rotation3"), {
+    type: "doughnut",
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: "top",
+            },
+            title: {
+                display: true,
+                text: "Rotación de personal",
+            },
+        },
+    },
+    data: {
+        labels: ["Hombres", "Mujeres"],
+        datasets: [
+            {
+                label: "Rotación de personal",
+                data: [3,30,0.0],
+                backgroundColor: [
+                    "rgba(3, 50, 204, 0.5)",
+                    "rgba(249, 41, 176, 0.5)",
+                    "rgba(255, 47, 47, 0.5)",
+                ],
+                borderColor: [
+                    "rgba(3, 50, 204, 1)",
+                    "rgba(249, 41, 176, 1)",
+                    "rgba(255, 47, 47, 1)",
+                ],
+                borderWidth: 1,
+            },
+        ],
+    },
+
+});
+
+const vacations = new Chart(document.getElementById("vacations"), {
+     type: "bar",
+    data: {
+        labels: [ "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+        datasets: [
+            {
+                label: "Vacaciones por mes",
+                backgroundColor:  "rgba(3, 50, 204, 0.5)",
+                data: [10, 20, 15, 25, 30, 20, 15, 10, 5,20, 30, 80,90],
+            },
+        ],
+    },
+    options: {
+        values: true,
+
+        responsive: true,
+        plugins: {
+            legend: {
+                position: "top",
+            },
+            title: {
+                display: true,
+                text: "Vacaciones por mes",
+            },
+        },
+        scales: {
+            y: {
+                min: 0,
+                max: 250,
+                ticks: {
+                    stepSize: 5
+                },
+                title: {
+                    display: true,
+                    text: 'Vacaciones por mes'
+                }
+            }
+        }
+    }
+});

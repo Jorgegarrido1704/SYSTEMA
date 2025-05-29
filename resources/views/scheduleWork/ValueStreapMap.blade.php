@@ -26,6 +26,9 @@
     </style>
 
     <h2 class="mb-4 text-center">Value Stream Mapping</h2>
+    <div class="mb-4 text-center" id='img-vsm'>
+        <img src="{{ asset('/pngs/mvs.png')}}" alt="" class="img-fluid" style="width: 75%; height: auto;">
+    </div>
 
     <div class="vsm-container">
         @foreach ($steps as $step)
