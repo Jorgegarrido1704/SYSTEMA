@@ -33,6 +33,23 @@ const rhAssistence = new Chart(assist, {
             },
         ],
     },
+    options: {
+        values: true,
+        responsive: true,
+        scales: {
+            y: {
+                min: 0,
+                max: 250,
+                ticks: {
+                    stepSize: 5
+                },
+                title: {
+                    display: true,
+                    text: 'Diversidad (0–25)'
+                }
+            }
+        }
+    }
 });
 
 const diver = new Chart(document.getElementById("diversidad"), {
@@ -48,6 +65,8 @@ const diver = new Chart(document.getElementById("diversidad"), {
         ],
     },
     options: {
+        values: true,
+        responsive: true,
         scales: {
             y: {
                 min: 0,
@@ -67,6 +86,7 @@ const diver = new Chart(document.getElementById("diversidad"), {
 const rota0 = new Chart(document.getElementById("rotation0"), {
     type: "doughnut",
     options: {
+        values: true,
         responsive: true,
         plugins: {
             legend: {
@@ -223,7 +243,6 @@ const vacations = new Chart(document.getElementById("vacations"), {
     },
     options: {
         values: true,
-
         responsive: true,
         plugins: {
             legend: {
