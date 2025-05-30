@@ -56,26 +56,29 @@
 </div>
 
 <div class="row">
-    <div class="col-lg-4 mb-4">
+    <div class="col-lg-6 col-md-6 mb-8">
         <div class="card shadow mb-5">
             <div class="card-header py-3">
                 <h5 class="m-1 font-weight-bold text-primary">Rotación</h5>
             </div>
-            <div class="card-body">
-                <div class="row g-2">
-                    <div class="col-6 d-flex justify-content-center" style="height: 170px;">
-                        <canvas id="rotation0"></canvas>
+            <div class="card-body ">
+                <div class="row">
+                        <div class="col-lg-4 col-md-4 mb-8">
+                        <div >
+                            <canvas id="rotation0"></canvas>
+                        </div>
                     </div>
-                    <div class="col-6 d-flex justify-content-center" style="height: 170px;">
-                        <canvas id="rotation1"></canvas>
+                    <div class="col-lg-4 col-md-4 mb-4">
+                        <div >
+                            <canvas id="rotation1"></canvas>
+                        </div>
                     </div>
-                    <div class="col-6 d-flex justify-content-center" style="height: 170px;">
-                        <canvas id="rotation2"></canvas>
+                    <div class="col-lg-4 col-md-4 mb-4">
+                        <div >
+                            <canvas id="rotation2"></canvas>
+                        </div>
                     </div>
-                    <div class="col-6 d-flex justify-content-center" style="height: 170px;">
-                        <canvas id="rotation3"></canvas>
-                    </div>
-                </div>
+
             </div>
         </div>
     </div>

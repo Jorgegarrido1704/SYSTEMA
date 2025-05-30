@@ -83,6 +83,7 @@ const diver = new Chart(document.getElementById("diversidad"), {
     }
 });
 
+//rotacion
 const rota0 = new Chart(document.getElementById("rotation0"), {
     type: "doughnut",
     options: {
@@ -120,6 +121,7 @@ const rota0 = new Chart(document.getElementById("rotation0"), {
     },
 
 });
+//ratios
 const rota1 = new Chart(document.getElementById("rotation1"), {
     type: "doughnut",
     options: {
@@ -156,6 +158,7 @@ const rota1 = new Chart(document.getElementById("rotation1"), {
     },
 
 });
+//ausentismo
 const rota2 = new Chart(document.getElementById("rotation2"), {
     type: "doughnut",
     options: {
@@ -192,43 +195,8 @@ const rota2 = new Chart(document.getElementById("rotation2"), {
     },
 
 });
-const rota3 = new Chart(document.getElementById("rotation3"), {
-    type: "doughnut",
-    options: {
-        responsive: true,
-        plugins: {
-            legend: {
-                position: "top",
-            },
-            title: {
-                display: true,
-                text: "Rotación de personal",
-            },
-        },
-    },
-    data: {
-        labels: ["Hombres", "Mujeres"],
-        datasets: [
-            {
-                label: "Rotación de personal",
-                data: [3,30,0.0],
-                backgroundColor: [
-                    "rgba(3, 50, 204, 0.5)",
-                    "rgba(249, 41, 176, 0.5)",
-                    "rgba(255, 47, 47, 0.5)",
-                ],
-                borderColor: [
-                    "rgba(3, 50, 204, 1)",
-                    "rgba(249, 41, 176, 1)",
-                    "rgba(255, 47, 47, 1)",
-                ],
-                borderWidth: 1,
-            },
-        ],
-    },
 
-});
-
+//vacaciones
 const vacations = new Chart(document.getElementById("vacations"), {
      type: "bar",
     data: {

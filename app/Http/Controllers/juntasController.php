@@ -2090,10 +2090,14 @@ class juntasController extends Controller
             }
         }
         $registrosDeAsistencia =[$assitence, $faltas,  $permisosGose+$permisosSinGose,$vacaciones];
+        $rotacion = DB::connection('rrhh')
+            ->table('rotacion')
+
+            ->get();
 
 
 
 
-        return view('juntas/hr', ['genero' => $genero,'registrosDeAsistencia' => $registrosDeAsistencia ,'value' => session('user'), 'cat' => session('categoria'), 'accidente' => $accidente]);
+        return view('juntas.hr', ['genero' => $genero,'registrosDeAsistencia' => $registrosDeAsistencia ,'value' => session('user'), 'cat' => session('categoria'), 'accidente' => $accidente]);
     }
 }
