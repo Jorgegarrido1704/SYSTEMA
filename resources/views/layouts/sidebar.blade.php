@@ -46,18 +46,20 @@
         <li class="nav-item active">
             @if ($cat == 'junta')
                 <a class="nav-link" href="/juntas">
-                @elseif($cat == 'plan')
-                    <a class="nav-link" href="/planing">
-                    @elseif($cat == 'cali')
-                        <a class="nav-link" href="/calidad">
-                        @elseif($cat == 'nurse')
-                            <a class="nav-link" href="/salud">
-                            @elseif($cat == 'inge')
-                                <a class="nav-link" href="/ing">
-                                @elseif($cat == 'SupAdmin')
-                                    <a class="nav-link" href="/SupAdmin">
-                                    @else
-                                        <a class="nav-link" href="/general">
+                @elseif($cat == 'RRHH')
+                    <a class="nav-link" href="/RRHH">
+                    @elseif($cat == 'plan')
+                        <a class="nav-link" href="/planing">
+                        @elseif($cat == 'cali')
+                            <a class="nav-link" href="/calidad">
+                            @elseif($cat == 'nurse')
+                                <a class="nav-link" href="/salud">
+                                @elseif($cat == 'inge')
+                                    <a class="nav-link" href="/ing">
+                                    @elseif($cat == 'SupAdmin')
+                                        <a class="nav-link" href="/SupAdmin">
+                                        @else
+                                            <a class="nav-link" href="/general">
             @endif
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Home</span></a>
@@ -85,7 +87,14 @@
                     <li class="submenu" id="submenu"><a style="color:white;"
                             href="{{ route('fallasCalidad') }}">Rework</a></li>
                 @endif
-                <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('rhDashBoard') }}">HR</a></li>
+                <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('rhDashBoard') }}"
+                    onmouseover=showRRHH();>HR</a></li>
+                     <ul class="submenu" id="RRHH" style="display:none;">
+                        @if($value=='Admin' || $cat=='RRHH')
+                        <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('rrhhDashBoard') }}">Registros RRHH</a></li>
+
+                        @endif
+                    </ul>
 
                 <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('seguimientos') }}"
                     onmouseover=showProduction();>Production States</a>
@@ -131,6 +140,14 @@
     }
     function showSchedule() {
         var engMenu = document.getElementById("schedule");
+        if (engMenu.style.display === "none" || engMenu.style.display === "") {
+            engMenu.style.display = "block";
+        } else {
+            engMenu.style.display = "none";
+        }
+    }
+    function showRRHH() {
+          var engMenu = document.getElementById("RRHH");
         if (engMenu.style.display === "none" || engMenu.style.display === "") {
             engMenu.style.display = "block";
         } else {

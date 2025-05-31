@@ -17,6 +17,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\getPnDetailsController;
 use App\Http\Controllers\AlmacenController;
 use App\Http\Controllers\AdminSupControlloer;
+use App\Http\Controllers\rrhhController;
 use App\Http\Controllers\SaludController;
 
 
@@ -86,7 +87,6 @@ Route::controller(PpapIngController::class)->group(function () {
     Route::get('/workStateJason', [PpapIngController::class, 'workStateJason'])->name('workStateJason');
     Route::get('/saveWorkschedule', [PpapIngController::class, 'saveWorkschedule'])->name('saveWorkschedule');
     Route::get('/editDelite', [PpapIngController::class, 'editDelite'])->name('editDelite');
-
 });
 
 Route::controller(AlmacenController::class)->group(function () {
@@ -163,7 +163,7 @@ Route::controller(juntasController::class)->group(function () {
     Route::get('juntas/ing',   [juntasController::class, 'ing_junta'])->name('ing_junta');
     Route::get('juntas/cutAndTerm',   [juntasController::class, 'cutAndTerm'])->name('cutAndTerm');
     Route::get('juntas/asemblyLoom',   [juntasController::class, 'assemblyLoom'])->name('assemblyLoom');
-Route::get('juntas/seguimientos',   [juntasController::class, 'seguimientos'])->name('seguimientos');
+    Route::get('juntas/seguimientos',   [juntasController::class, 'seguimientos'])->name('seguimientos');
     Route::get('juntas/seguimiento/{id}',   [juntasController::class, 'seguimiento'])->name('seguimiento');
     Route::get('/registroComment', [juntasController::class, 'registroComment'])->name('registroComment');
     Route::get('/rhDashBoard', [juntasController::class, 'rhDashBoard'])->name('rhDashBoard');
@@ -174,4 +174,9 @@ Route::get('juntas/seguimientos',   [juntasController::class, 'seguimientos'])->
 Route::controller(SaludController::class)->group(function () {
     Route::get('/salud', [SaludController::class, 'index_salud'])->name('salud');
     Route::post('/salud/visita_enfermeria', [SaludController::class, 'visita_enfermeria'])->name('visita_enfermeria');
+});
+
+Route::controller(rrhhController::class)->group(function () {
+    Route::get('/RRHH', [rrhhController::class, 'rrhhDashBoard'])->name('rrhhDashBoard');
+   // Route::post('/rrhh/visita_enfermeria', [rrhhController::class, 'visita_enfermeria'])->name('visita_enfermeria');
 });
