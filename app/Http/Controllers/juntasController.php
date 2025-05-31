@@ -2038,66 +2038,31 @@ class juntasController extends Controller
     public function rhDashBoard()
     {
         $accidente = '61928 REV B.pdf';
-        $week = Carbon::now()->week();
-        $today= Carbon::now()->dayOfWeek;
+        $today = date('Y-m-d');
         $genero=[0,0];
-        if( $today == 1){
-            $days='lunes';
-        }else if($today == 2){
-            $days='martes';
-        }else if($today == 3){
-            $days='miercoles';
-        }else if($today == 4){
-            $days='jueves';
-        }else if($today == 5){
-            $days='viernes';
-        }
-        $registroAssitence = DB::table('assistence')
-            ->where('week', '=', $week)
-            ->where( $days, '!=', "")
-            ->get();
+        $total = 0;
 
-        $assitence= $faltas =$vacaciones = $permisosGose =$permisosSinGose=$incapacidad= 0;
-        foreach ($registroAssitence as $row) {
-            $datoGenero = DB::table('personalberg')
+            $datoGeneros = DB::table('personalberg')
             ->select('Gender')
-                ->where('employeeNumber', '=', $row->id_empleado)
-                ->first();
+            ->get();
+            foreach ($datoGeneros as $datoGenero){
                 if($datoGenero->Gender == 'M'){
                     $genero[1]++;
                 }else if($datoGenero->Gender == 'F'){
                     $genero[0]++;
-                }
+                }$total++;}
 
 
-            if ($row->$days == 'OK') {
-                $assitence++;
-            }
-            if ($row->$days == 'F') {
-                $faltas++;
-            }
-            if ($row->$days == 'V') {
-                $vacaciones++;
-            }
-            if ($row->$days == 'PCG') {
-                $permisosGose++;
-            }
-            if ($row->$days == 'PSG') {
-                $permisosSinGose++;
-            }
-            if ($row->$days == 'I') {
-                $incapacidad++;
-            }
-        }
-        $registrosDeAsistencia =[$assitence, $faltas,  $permisosGose+$permisosSinGose,$vacaciones];
+
         $rotacion = DB::connection('rrhh')
             ->table('rotacion')
+            ->where('fecha_rotacion', '=', $today)
+            ->first();
+            $faltan= $total-($rotacion->assistencia+$rotacion->faltas+$rotacion->incapacidad+$rotacion->permisos_gose+$rotacion->permisos_sin_gose+$rotacion->vacaciones);
+        $registrosDeAsistencia =[$rotacion->assistencia, $rotacion->faltas, $rotacion->incapacidad, $rotacion->permisos_gose + $rotacion->permisos_sin_gose,$rotacion->vacaciones];
 
-            ->get();
 
 
-
-
-        return view('juntas.hr', ['genero' => $genero,'registrosDeAsistencia' => $registrosDeAsistencia ,'value' => session('user'), 'cat' => session('categoria'), 'accidente' => $accidente]);
+        return view('juntas.hr', ['faltan'=>$faltan,'genero' => $genero,'registrosDeAsistencia' => $registrosDeAsistencia ,'value' => session('user'), 'cat' => session('categoria'), 'accidente' => $accidente]);
     }
 }

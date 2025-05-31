@@ -100,20 +100,20 @@ const rota0 = new Chart(document.getElementById("rotation0"), {
         },
     },
     data: {
-        labels: ["Hombres", "Mujeres"],
+        labels: ["3% maximo de rotacion", "Rotacion de este mes"],
         datasets: [
             {
                 label: "Rotación de personal",
-                data: [20,30,35],
+                data: [3,4.5],
                 backgroundColor: [
-                    "rgba(3, 50, 204, 0.5)",
-                    "rgba(249, 41, 176, 0.5)",
-                    "rgba(255, 47, 47, 0.5)",
+                    "rgba(2, 164, 75, 0.5)",
+                    "rgba(205, 2, 2, 0.68)",
+
                 ],
                 borderColor: [
-                    "rgba(3, 50, 204, 1)",
-                    "rgba(249, 41, 176, 1)",
-                    "rgba(255, 47, 47, 1)",
+                    "rgb(3, 204, 43)",
+                    "rgb(168, 0, 0)",
+
                 ],
                 borderWidth: 1,
             },
@@ -174,20 +174,19 @@ const rota2 = new Chart(document.getElementById("rotation2"), {
         },
     },
     data: {
-        labels: ["Hombres", "Mujeres"],
+        labels: ["3% maximo de ausentismo", "Ausentismo de este mes"],
         datasets: [
             {
-                label: "Rotación de personal",
-                data: [20,30,35],
-                backgroundColor: [
-                    "rgba(3, 50, 204, 0.5)",
-                    "rgba(249, 41, 176, 0.5)",
-                    "rgba(255, 47, 47, 0.5)",
+                label: "Ausentismo de personal",
+                data: [3,0.15,],
+               backgroundColor: [
+                    "rgba(2, 164, 75, 0.5)",
+                    "rgba(205, 2, 2, 0.68)",
+
                 ],
                 borderColor: [
-                    "rgba(3, 50, 204, 1)",
-                    "rgba(249, 41, 176, 1)",
-                    "rgba(255, 47, 47, 1)",
+                    "rgb(3, 204, 43)",
+                    "rgb(168, 0, 0)",
                 ],
                 borderWidth: 1,
             },
