@@ -311,7 +311,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-6 mb-4">
+                        <div class="col-lg-12 col-lx-12 mb-4">
                             <!-- AREAS -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
@@ -323,15 +323,23 @@
                                         <thead>
                                             <th>Nombre</th>
                                             <th>Lunes</th>
+                                            <th>Extras lunes</th>
                                             <th>Martes</th>
+                                            <th>Extras martes</th>
                                             <th>Miercoles</th>
+                                            <th>Extras miercoles</th>
                                             <th>Jueves</th>
+                                            <th>Extras jueves</th>
                                             <th>Viernes</th>
+                                            <th>Extras  viernes</th>
                                             <th>Sabado</th>
+                                            <th>Extras sabado </th>
                                             <th>Domingo</th>
+                                            <th>Extras domingo</th>
                                             <th>Bono Asistencia</th>
                                             <th>Bono puntualidad</th>
                                             <th>extras</th>
+                                            <th>tiempo por tiempo</th>
                                         </thead>
                                         <tbody>
                                             <form action="{{ route('assistence')}}" method="POST">
