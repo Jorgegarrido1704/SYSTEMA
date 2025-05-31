@@ -165,11 +165,11 @@ const rota2 = new Chart(document.getElementById("rotation2"), {
         responsive: true,
         plugins: {
             legend: {
-                position: "top",
+                position: "buttom",
             },
             title: {
                 display: true,
-                text: "Rotación de personal",
+                text: "Ausentismo de personal",
             },
         },
     },
@@ -190,6 +190,7 @@ const rota2 = new Chart(document.getElementById("rotation2"), {
                 ],
                 borderWidth: 1,
             },
+
         ],
     },
 

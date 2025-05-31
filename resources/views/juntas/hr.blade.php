@@ -61,8 +61,8 @@
             <div class="card-header py-3">
                 <h5 class="m-1 font-weight-bold text-primary">Rotación</h5>
             </div>
-            <div class="card-body ">
-                <div class="row">
+            <div class="card-body " style="overflow-y: auto; ">
+                <div class="row" >
                         <div class="col-lg-4 col-md-4 mb-8">
                         <div >
                             <canvas id="rotation0"></canvas>
