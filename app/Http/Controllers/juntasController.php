@@ -2058,9 +2058,19 @@ class juntasController extends Controller
             ->table('rotacion')
             ->where('fecha_rotacion', '=', $today)
             ->first();
+            if (!$rotacion) {
+                $rotacion = (object) [
+                    'assistencia' => 0,
+                    'faltas' => 0,
+                    'incapacidad' => 0,
+                    'permisos_gose' => 0,
+                    'permisos_sin_gose' => 0,
+                    'vacaciones' => 0
+                ];
+            }else{
             $faltan= $total-($rotacion->assistencia+$rotacion->faltas+$rotacion->incapacidad+$rotacion->permisos_gose+$rotacion->permisos_sin_gose+$rotacion->vacaciones);
         $registrosDeAsistencia =[$rotacion->assistencia, $rotacion->faltas, $rotacion->incapacidad, $rotacion->permisos_gose + $rotacion->permisos_sin_gose,$rotacion->vacaciones];
-
+            }
 
 
         return view('juntas.hr', ['faltan'=>$faltan,'genero' => $genero,'registrosDeAsistencia' => $registrosDeAsistencia ,'value' => session('user'), 'cat' => session('categoria'), 'accidente' => $accidente]);
