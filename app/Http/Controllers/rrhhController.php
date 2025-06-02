@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\assistence;
+use App\Models\rrhh\rotacionModel;
 use Illuminate\Http\Request;
 
 class rrhhController extends Controller
@@ -74,6 +75,7 @@ class rrhhController extends Controller
             ->where('week', $week)
             ->update($updateData);
     }
+    
 
     return redirect()->route('rrhhDashBoard');
 }
