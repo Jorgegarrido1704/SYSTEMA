@@ -54,5 +54,10 @@ class assistence extends Model
     $week = date('W');
     return $query->where('week', $week);
 }
+   public function scopeLeader($query,$leader)
+{
+    $week = date('W');
+    return $query->where('week', $week)->where('lider', '=', $leader);
+}
 
 }

@@ -344,66 +344,33 @@
                                         <tbody>
                                             <form action="{{ route('assistence')}}" method="POST">
                                                 @csrf
-                                                @foreach ($assit as $as)
-
-
+                                                @foreach ($assit as $d => $as)
                                                 <tr>
-                                                    <td><input type="hidden" name="name[]" id="name">{{$as[2]}}</td>
-                                                    @if(!empty($as[3]))
-                                                    <td><input type="text" style="max-width: 40px" name="dlu[]" id="dlu" value="{{$as[3]}}"></td>
-                                                    @else
-                                                    <td><input type="text" style="max-width: 40px" name="dlu[]" id="dlu" value="N/R"></td>
-                                                    @endif
-                                                    @if(!empty($as[4]))
-                                                    <td><input type="text" style="max-width: 40px" name="dma[]" id="dma" value="{{$as[4]}}"></td>
-                                                    @else
-                                                    <td><input type="text" style="max-width: 40px" name="dma[]" id="dma" value="N/R"></td>
-                                                    @endif
-                                                    @if(!empty($as[5]))
-                                                    <td><input type="text" style="max-width: 40px" name="dmi[]" id="dmi" value="{{$as[5]}}"></td>
-                                                    @else
-                                                    <td><input type="text" style="max-width: 40px" name="dmi[]" id="dmi" value="N/R"></td>
-                                                    @endif
-                                                    @if(!empty($as[6]))
-                                                    <td><input type="text" style="max-width: 40px" name="dju[]" id="dju" value="{{$as[6]}}"></td>
-                                                    @else
-                                                    <td><input type="text" style="max-width: 40px" name="dju[]" id="dju" value="N/R"></td>
-                                                    @endif
-                                                    @if(!empty($as[7]))
-                                                    <td><input type="text" style="max-width: 40px" name="dvi[]" id="dvi" value="{{$as[7]}}"></td>
-                                                    @else
-                                                    <td><input type="text" style="max-width: 40px" name="dvi[]" id="dvi" value="N/R"></td>
-                                                    @endif
-                                                    @if(!empty($as[8]))
-                                                    <td><input type="text" style="max-width: 40px" name="dsa[]" id="dsa" value="{{$as[8]}}"></td>
-                                                    @else
-                                                    <td><input type="text" style="max-width: 40px" name="dsa[]" id="dsa" value="N/R"></td>
-                                                    @endif
-                                                    @if(!empty($as[9]))
-                                                    <td><input type="text" style="max-width: 40px" name="ddo[]" id="ddo" value="{{$as[9]}}"></td>
-                                                    @else
-                                                    <td><input type="text" style="max-width: 40px" name="ddo[]" id="ddo" value="N/R"></td>
-                                                    @endif
-                                                    @if(!empty($as[10]))
-                                                    <td><input type="text" style="max-width: 40px" name="dba[]" id="dba" value="{{$as[10]}}"></td>
-                                                    @else
-                                                    <td><input type="text" style="max-width: 40px" name="dba[]" id="dba" value="N/R"></td>
-                                                    @endif
-                                                    @if(!empty($as[11]))
-                                                    <td><input type="text" style="max-width: 40px" name="dbp[]" id="dbp" value="{{$as[11]}}"></td>
-                                                    @else
-                                                    <td><input type="text" style="max-width: 40px" name="dbp[]" id="dbp" value="N/R"></td>
-                                                    @endif
-                                                    @if(!empty($as[12]))
-                                                    <td><input type="number" style="max-width: 40px" name="dex[]" id="dex" value="{{$as[12]}}"></td>
-                                                    @else
-                                                    <td><input type="numer" style="max-width: 40px" name="dex[]" id="dex" value="0"></td>
-                                                    @endif
-                                                    <td><input type="hidden" name="id[]" id="id" value="{{$as[13]}}"></td>
+                                                    <td>{{$as['name']}}</td>
+                                                    <td><input type="text" style="max-width: 40px" name="lun[]" id="lun" value="{{$as['lunes']}}" ></td>
+                                                    <td><input type="text" style="max-width: 40px" name="extra_lun[]" id="extra_lun" value="{{$as['extLunes']}}" ></td>
+                                                    <td><input type="text" style="max-width: 40px" name="mar[]" id="mar" value="{{$as['martes']}}" ></td>
+                                                    <td><input type="text" style="max-width: 40px" name="extra_mar[]" id="extra_mar" value="{{$as['extMartes']}}" ></td>
+                                                    <td><input type="text" style="max-width: 40px" name="mie[]" id="mie" value="{{$as['miercoles']}}" ></td>
+                                                    <td><input type="text" style="max-width: 40px" name="extra_mie[]" id="extra_mie" value="{{$as['extMiercoles']}}" ></td>
+                                                    <td><input type="text" style="max-width: 40px" name="jue[]" id="jue" value="{{$as['jueves']}}" ></td>
+                                                    <td><input type="text" style="max-width: 40px" name="extra_jue[]" id="extra_jue" value="{{$as['extJueves']}}" ></td>
+                                                    <td><input type="text" style="max-width: 40px" name="vie[]" id="vie" value="{{$as['viernes']}}" ></td>
+                                                    <td><input type="text" style="max-width: 40px" name="extra_vie[]" id="extra_vie" value="{{$as['extViernes']}}" ></td>
+                                                    <td><input type="text" style="max-width: 40px" name="sab[]" id="sab" value="{{$as['sabado']}}" ></td>
+                                                    <td><input type="text" style="max-width: 40px" name="extra_sab[]" id="extra_sab" value="{{$as['extSabado']}}" ></td>
+                                                    <td><input type="text" style="max-width: 40px" name="dom[]" id="dom" value="{{$as['domingo']}}" ></td>
+                                                    <td><input type="text" style="max-width: 40px" name="extra_dom[]" id="extra_dom" value="{{$as['extDomingo']}}" ></td>
+                                                    <td><input type="text" style="max-width: 40px" name="bono_asistencia[]" id="bono_asistencia" value="{{$as['bonoAsistencia']}}" ></td>
+                                                    <td><input type="text" style="max-width: 40px" name="bono_puntualidad[]" id="bono_puntualidad" value="{{$as['bonoPuntualidad']}}" ></td>
+                                                    <td><input type="text" style="max-width: 40px" name="total_extras[]" id="total_extras" value="{{$as['extras']}}" ></td>
+                                                    <td><input type="text" style="max-width: 40px" name="tiempo_por_tiempo[]" id="tiempo_por_tiempo" value="{{$as['tiempoPorTiempo']}}" ></td>
+                                                   
                                                 </tr>
-                                            @endforeach
-                                            <input type="submit" style="border-radius: 4px; background-color:lightblue;border-bottom:10px" name="sendassit" id="sendassist" value="Save Assistence">
-
+                                    @endforeach
+                                            <div class="form-group">
+                                                   <input type="submit" style="border-radius: 4px; background-color:lightblue;border-bottom:10px" name="sendassit" id="sendassist" value="Save Assistence">
+                                            </div>
                                             </form>
                                         </tbody>
                                     </table>

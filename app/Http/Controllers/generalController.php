@@ -113,26 +113,8 @@ class generalController extends Controller
                     $i++;
                 }
             }
-            $assis = DB::select("SELECT * FROM assistence WHERE week='$week' and  lider='$value'");
-            $i = 0;
-            $assit = [];
-            foreach ($assis as $rowassis) {
-                $assit[$i][0] = $rowassis->week;
-                $assit[$i][1] = $rowassis->lider;
-                $assit[$i][2] = $rowassis->name;
-                $assit[$i][3] = $rowassis->lunes;
-                $assit[$i][4] = $rowassis->martes;
-                $assit[$i][5] = $rowassis->miercoles;
-                $assit[$i][6] = $rowassis->jueves;
-                $assit[$i][7] = $rowassis->viernes;
-                $assit[$i][8] = $rowassis->sabado;
-                $assit[$i][9] = $rowassis->domingo;
-                $assit[$i][10] = $rowassis->bonoAsistencia;
-                $assit[$i][11] = $rowassis->bonoPuntualidad;
-                $assit[$i][12] = $rowassis->extras;
-                $assit[$i][13] = $rowassis->id;
-                $i++;
-            }
+            $assit = assistence::leader($value)->get();
+
             $buscarparo = DB::table("registro_paro")->select("fecha", "equipo", "nombreEquipo", "dano", "atiende", "id")->where('finHora', '=', '')->where('quien', "=", $value)->get();
             $i = 0;
             $paros = [];
@@ -812,12 +794,19 @@ class generalController extends Controller
 
             $names = $request->input('name');
             $dlu = $request->input('dlu');
+            $elu = $request->input('elu');
             $dma = $request->input('dma');
+            $ema = $request->input('ema');
             $dmi = $request->input('dmi');
+            $emi = $request->input('emi');
             $dju = $request->input('dju');
+            $eju = $request->input('eju');
             $dvi = $request->input('dvi');
+            $evi = $request->input('evi');
             $dsa = $request->input('dsa');
+            $esa = $request->input('esa');
             $ddo = $request->input('ddo');
+            $edo = $request->input('edo');
             $dba = $request->input('dba');
             $dbp = $request->input('dbp');
             $dex = $request->input('dex');
