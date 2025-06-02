@@ -14,7 +14,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
      $schedule->job(new \App\Jobs\UpdateRotacionJob)
-    ->cron('26 9,10 * * *') 
+    ->cron('10 6,9 * * *')
     ->timezone('America/Mexico_City');
 
     }
