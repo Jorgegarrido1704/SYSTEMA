@@ -113,6 +113,8 @@
                     </ul>
                 </li>
                  @endif
+                 <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('rrhhDashBoard') }}">Assitence</a>
+                </li>
             </ul>
         </li>
 

@@ -178,5 +178,6 @@ Route::controller(SaludController::class)->group(function () {
 
 Route::controller(rrhhController::class)->group(function () {
     Route::get('/RRHH', [rrhhController::class, 'rrhhDashBoard'])->name('rrhhDashBoard');
+    Route::get('/rrhh/rrhhDashBoard', [rrhhController::class, 'updateAsistencia'])->name('updateAsistencia');
    // Route::post('/rrhh/visita_enfermeria', [rrhhController::class, 'visita_enfermeria'])->name('visita_enfermeria');
 });

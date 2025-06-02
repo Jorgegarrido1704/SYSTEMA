@@ -2046,9 +2046,9 @@ class juntasController extends Controller
             ->select('Gender')
             ->get();
             foreach ($datoGeneros as $datoGenero){
-                if($datoGenero->Gender == 'M'){
+                if($datoGenero->Gender == 'H'){
                     $genero[1]++;
-                }else if($datoGenero->Gender == 'F'){
+                }else if($datoGenero->Gender == 'M'){
                     $genero[0]++;
                 }$total++;}
 
@@ -2070,7 +2070,7 @@ class juntasController extends Controller
             }
             $faltan= $total-($rotacion->assistencia+$rotacion->faltas+$rotacion->incapacidad+$rotacion->permisos_gose+$rotacion->permisos_sin_gose+$rotacion->vacaciones);
         $registrosDeAsistencia =[$rotacion->assistencia, $rotacion->faltas, $rotacion->incapacidad, $rotacion->permisos_gose + $rotacion->permisos_sin_gose,$rotacion->vacaciones];
-            
+
 
 
         return view('juntas.hr', ['faltan'=>$faltan,'genero' => $genero,'registrosDeAsistencia' => $registrosDeAsistencia ,'value' => session('user'), 'cat' => session('categoria'), 'accidente' => $accidente]);

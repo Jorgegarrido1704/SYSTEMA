@@ -311,72 +311,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-12 col-lx-12 mb-4">
-                            <!-- AREAS -->
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h5 class="m-0 font-weight-bold text-primary">Assistence WEEK {{$week}} </h5>
-                                </div>
-                                <div class="card-body" style="overflow-y: auto; height: 360px;">
-                                    <div class="row" >
-                                    <table >
-                                        <thead>
-                                            <th>Nombre</th>
-                                            <th>Lunes</th>
-                                            <th>Extras lunes</th>
-                                            <th>Martes</th>
-                                            <th>Extras martes</th>
-                                            <th>Miercoles</th>
-                                            <th>Extras miercoles</th>
-                                            <th>Jueves</th>
-                                            <th>Extras jueves</th>
-                                            <th>Viernes</th>
-                                            <th>Extras  viernes</th>
-                                            <th>Sabado</th>
-                                            <th>Extras sabado </th>
-                                            <th>Domingo</th>
-                                            <th>Extras domingo</th>
-                                            <th>Bono Asistencia</th>
-                                            <th>Bono puntualidad</th>
-                                            <th>extras</th>
-                                            <th>tiempo por tiempo</th>
-                                        </thead>
-                                        <tbody>
-                                            <form action="{{ route('assistence')}}" method="POST">
-                                                @csrf
-                                                @foreach ($assit as $d => $as)
-                                                <tr>
-                                                    <td>{{$as['name']}}</td>
-                                                    <td><input type="text" style="max-width: 40px" name="lun[]" id="lun" value="{{$as['lunes']}}" ></td>
-                                                    <td><input type="text" style="max-width: 40px" name="extra_lun[]" id="extra_lun" value="{{$as['extLunes']}}" ></td>
-                                                    <td><input type="text" style="max-width: 40px" name="mar[]" id="mar" value="{{$as['martes']}}" ></td>
-                                                    <td><input type="text" style="max-width: 40px" name="extra_mar[]" id="extra_mar" value="{{$as['extMartes']}}" ></td>
-                                                    <td><input type="text" style="max-width: 40px" name="mie[]" id="mie" value="{{$as['miercoles']}}" ></td>
-                                                    <td><input type="text" style="max-width: 40px" name="extra_mie[]" id="extra_mie" value="{{$as['extMiercoles']}}" ></td>
-                                                    <td><input type="text" style="max-width: 40px" name="jue[]" id="jue" value="{{$as['jueves']}}" ></td>
-                                                    <td><input type="text" style="max-width: 40px" name="extra_jue[]" id="extra_jue" value="{{$as['extJueves']}}" ></td>
-                                                    <td><input type="text" style="max-width: 40px" name="vie[]" id="vie" value="{{$as['viernes']}}" ></td>
-                                                    <td><input type="text" style="max-width: 40px" name="extra_vie[]" id="extra_vie" value="{{$as['extViernes']}}" ></td>
-                                                    <td><input type="text" style="max-width: 40px" name="sab[]" id="sab" value="{{$as['sabado']}}" ></td>
-                                                    <td><input type="text" style="max-width: 40px" name="extra_sab[]" id="extra_sab" value="{{$as['extSabado']}}" ></td>
-                                                    <td><input type="text" style="max-width: 40px" name="dom[]" id="dom" value="{{$as['domingo']}}" ></td>
-                                                    <td><input type="text" style="max-width: 40px" name="extra_dom[]" id="extra_dom" value="{{$as['extDomingo']}}" ></td>
-                                                    <td><input type="text" style="max-width: 40px" name="bono_asistencia[]" id="bono_asistencia" value="{{$as['bonoAsistencia']}}" ></td>
-                                                    <td><input type="text" style="max-width: 40px" name="bono_puntualidad[]" id="bono_puntualidad" value="{{$as['bonoPuntualidad']}}" ></td>
-                                                    <td><input type="text" style="max-width: 40px" name="total_extras[]" id="total_extras" value="{{$as['extras']}}" ></td>
-                                                    <td><input type="text" style="max-width: 40px" name="tiempo_por_tiempo[]" id="tiempo_por_tiempo" value="{{$as['tiempoPorTiempo']}}" ></td>
-                                                   
-                                                </tr>
-                                    @endforeach
-                                            <div class="form-group">
-                                                   <input type="submit" style="border-radius: 4px; background-color:lightblue;border-bottom:10px" name="sendassit" id="sendassist" value="Save Assistence">
-                                            </div>
-                                            </form>
-                                        </tbody>
-                                    </table>
-                                    </div>
-                                </div>
-                            </div>
+                       
                         </div>
                     </div>
 
