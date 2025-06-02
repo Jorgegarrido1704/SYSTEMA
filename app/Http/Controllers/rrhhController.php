@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Carbon\Carbon;
 use App\Models\assistence;
 use Illuminate\Http\Request;
 
@@ -13,11 +13,22 @@ class rrhhController extends Controller
         $cat=session('categoria');
         if($cat == 'RRHH'){
        $datosRHWEEK = assistence::changeInfo()->OrderBy('lider', 'desc')->get();
+       $diasRegistro = ['','','','',''];
+
         }else{
             $datosRHWEEK = assistence::leader($value)->OrderBy('lider', 'desc')->get();
-        }
-        return view('juntas/hrDocs/rrhhDashBoard',['datosRHWEEK'=>$datosRHWEEK,'value'=>$value,'cat'=>$cat]);
+             $diasRegistro=['disabled','disabled','disabled','disabled','disabled'];
+             $diaNum=carbon::now()->dayOfWeek; //
+
+             if($diaNum == 5 or $diaNum == 6 or $diaNum == 7){
+                 $diasRegistro[4]='';
+             }else{
+                 $diasRegistro[$diaNum-1]='';
+             }
+
+        return view('juntas/hrDocs/rrhhDashBoard',['diasRegistro'=>$diasRegistro,'datosRHWEEK'=>$datosRHWEEK,'value'=>$value,'cat'=>$cat]);
     }
+}
 
     public function updateAsistencia(Request $request)
 {
