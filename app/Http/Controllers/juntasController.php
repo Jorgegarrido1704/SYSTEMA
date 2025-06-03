@@ -2070,7 +2070,11 @@ class juntasController extends Controller
                     'vacaciones' => 0
                 ];
             }
-            $faltantes = assistence::select('lider')->distinct()->where($diaActual,'=','')->get();
+           
+            $faltantes = assistence::select('lider')
+    ->distinct()
+    ->where($diaActual, '=', '')
+    ->get();
 
             $faltan= $total-($rotacion->assistencia+$rotacion->faltas+$rotacion->incapacidad+$rotacion->permisos_gose+$rotacion->permisos_sin_gose+$rotacion->vacaciones);
         $registrosDeAsistencia =[$rotacion->assistencia, $rotacion->faltas, $rotacion->incapacidad, $rotacion->permisos_gose + $rotacion->permisos_sin_gose,$rotacion->vacaciones];
