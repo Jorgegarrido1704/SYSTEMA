@@ -325,7 +325,7 @@ class caliController extends generalController
             if (!empty($registroQr)) {
                  $registroQr=DB::table('registroqrs')->where('infoQr', '=', $info)->where('CodigoIdentificaicon','=',$serial)->delete();
             }else{
-                return redirect('calidad')->with('response', "No existe el registro QR");
+                return redirect('calidad')->with('response', "Qr invalido");
             }
             $busquedainfo = DB::table('calidad')->select('qty', 'wo')->where('info', $info)->first();
 
