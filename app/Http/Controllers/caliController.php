@@ -320,7 +320,13 @@ class caliController extends generalController
             if (strpos($responsable5, ',')) {
                 $responsable5 = str_replace(',', ';', $responsable5);
             }
-            
+
+            $registroQr=DB::table('registroqrs')->where('infoQr', '=', $info)->where('CodigoIdentificaicon','=',$serial)->first();
+            if ($registroQr) {
+                $registroQr->delete();
+            }else{
+                return redirect('calidad')->with('response', "No existe el registro QR");
+            }
             $busquedainfo = DB::table('calidad')->select('qty', 'wo')->where('info', $info)->first();
 
             $wo = $busquedainfo->wo;
