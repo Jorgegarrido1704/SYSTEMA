@@ -58,8 +58,6 @@
                                                 </tr>
                                     @endforeach
                                     <div class="form-group">
-
-
                                     <button type="submit" name="enviar" id="enviar" class=" btn btn-primary" >Modificar</button>
                                     </div>
                                                 </form>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\calidadController;
+use App\Models\assistence;
 use App\Models\issuesFloor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -2041,7 +2042,7 @@ class juntasController extends Controller
         $today = date('Y-m-d');
         $genero=[0,0];
         $total = 0;
-
+        $dias=['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
             $datoGeneros = DB::table('personalberg')
             ->select('Gender')
             ->get();
@@ -2051,7 +2052,8 @@ class juntasController extends Controller
                 }else if($datoGenero->Gender == 'M'){
                     $genero[0]++;
                 }$total++;}
-
+            $selectDia=Carbon::now()->dayOfWeek;
+            $diaActual = $dias[$selectDia-1];
 
 
         $rotacion = DB::connection('rrhh')
@@ -2068,11 +2070,13 @@ class juntasController extends Controller
                     'vacaciones' => 0
                 ];
             }
+            $faltantes = assistence::select('lider')->distinct()->where($diaActual,'=','')->get();
+
             $faltan= $total-($rotacion->assistencia+$rotacion->faltas+$rotacion->incapacidad+$rotacion->permisos_gose+$rotacion->permisos_sin_gose+$rotacion->vacaciones);
         $registrosDeAsistencia =[$rotacion->assistencia, $rotacion->faltas, $rotacion->incapacidad, $rotacion->permisos_gose + $rotacion->permisos_sin_gose,$rotacion->vacaciones];
 
 
 
-        return view('juntas.hr', ['faltan'=>$faltan,'genero' => $genero,'registrosDeAsistencia' => $registrosDeAsistencia ,'value' => session('user'), 'cat' => session('categoria'), 'accidente' => $accidente]);
+        return view('juntas.hr', ['faltantes'=>$faltantes,'faltan'=>$faltan,'genero' => $genero,'registrosDeAsistencia' => $registrosDeAsistencia ,'value' => session('user'), 'cat' => session('categoria'), 'accidente' => $accidente]);
     }
 }

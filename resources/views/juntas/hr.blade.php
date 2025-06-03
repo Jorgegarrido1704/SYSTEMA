@@ -81,6 +81,26 @@
 
             </div>
         </div>
+
+    </div>
+     <div class="col-lg-6 col-md-6 mb-8">
+        <div class="card shadow mb-5">
+            <div class="card-header py-3">
+                <h5 class="m-1 font-weight-bold text-primary">Faltantes de registros de asistencia</h5>
+            </div>
+            <div class="card-body " style="overflow-y: auto; ">
+               <ul>
+                    @foreach ($faltantes as $faltante)
+                        <li>
+                            <span class="badge badge-danger text-white font-weight-bold fond-size-20">{{ $faltante->lider }}</span>
+
+                        </li>
+                    @endforeach
+               </ul>
+
+            </div>
+        </div>
+
     </div>
 </div>
 

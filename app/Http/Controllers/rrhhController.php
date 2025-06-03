@@ -18,7 +18,7 @@ class rrhhController extends Controller
 
         }else{
             $datosRHWEEK = assistence::leader($value)->OrderBy('lider', 'desc')->get();
-             $diasRegistro=['disabled','disabled','disabled','disabled','disabled'];
+             $diasRegistro=['readonly','readonly','readonly','readonly','readonly'];
              $diaNum=carbon::now()->dayOfWeek; //
 
              if($diaNum == 5 or $diaNum == 6 or $diaNum == 7){
@@ -75,7 +75,7 @@ class rrhhController extends Controller
             ->where('week', $week)
             ->update($updateData);
     }
-    
+
 
     return redirect()->route('rrhhDashBoard');
 }
