@@ -74,6 +74,7 @@ class rrhhController extends Controller
             'extSabado' => $validated['extra_sab'][$index],
             'domingo' => $validated['dom'][$index],
             'extDomingo' => $validated['extra_dom'][$index],
+            'extras' => $validated['extra_lun'][$index] + $validated['extra_mar'][$index] + $validated['extra_mie'][$index] + $validated['extra_jue'][$index] + $validated['extra_vie'][$index] + $validated['extra_sab'][$index] + $validated['extra_dom'][$index],
         ];
 
         assistence::where('id_empleado', $id_empleado)
