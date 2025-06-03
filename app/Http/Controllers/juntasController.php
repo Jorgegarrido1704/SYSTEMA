@@ -2070,8 +2070,9 @@ class juntasController extends Controller
                     'vacaciones' => 0
                 ];
             }
-           
-            $faltantes = assistence::select('lider')
+
+            $faltantes = DB::tabla('assistence')
+    ->select('lider')
     ->distinct()
     ->where($diaActual, '=', '')
     ->get();
