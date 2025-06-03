@@ -49,15 +49,15 @@ class assistence extends Model
         'updated_at'
     ];
     //indexes
-   public function scopeChangeInfo($query)
-{
-    $week = date('W');
-    return $query->where('week', $week);
-}
+
    public function scopeLeader($query,$leader)
 {
     $week = date('W');
-    return $query->where('week', $week)->where('lider', '=', $leader);
+    if($leader == 'Admin' or $leader == 'Paola A'){
+        return $query->where('week', $week)->OrderBy('lider', 'desc');
+    }else{
+    return $query->where('week', $week)->where('lider', '=', $leader)->OrderBy('lider', 'desc');
+        }
 }
 
 }

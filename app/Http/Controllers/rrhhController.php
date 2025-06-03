@@ -12,13 +12,15 @@ class rrhhController extends Controller
     {
         $value=session('user');
         $cat=session('categoria');
-        if($cat == 'RRHH'){
-       $datosRHWEEK = assistence::changeInfo()->OrderBy('lider', 'desc')->get();
-       $diasRegistro = ['','','','',''];
 
-        }else{
             $datosRHWEEK = assistence::leader($value)->OrderBy('lider', 'desc')->get();
-             $diasRegistro=['readonly','readonly','readonly','readonly','readonly'];
+            if($value == 'Admin' or $value == 'Paola A'){
+                $diasRegistro=['','','','',''];
+            }else{
+                $diasRegistro=['readonly','readonly','readonly','readonly','readonly'];
+            }
+                $datosRHWEEK = assistence::leader($value,$cat)->OrderBy('lider', 'desc')->get();
+
              $diaNum=carbon::now()->dayOfWeek; //
 
              if($diaNum == 5 or $diaNum == 6 or $diaNum == 7){
@@ -28,7 +30,7 @@ class rrhhController extends Controller
              }
 
         return view('juntas/hrDocs/rrhhDashBoard',['diasRegistro'=>$diasRegistro,'datosRHWEEK'=>$datosRHWEEK,'value'=>$value,'cat'=>$cat]);
-    }
+
 }
 
     public function updateAsistencia(Request $request)
