@@ -112,7 +112,7 @@ class loginController extends Controller
                     return redirect('/salud');
                 }else if($categoria=='RRHH'){
                     session(['categoria'=>$categoria]);
-                    return redirect('/RRHH');
+                    return redirect('/rhDashBoard');
                 }
                 else {
 
