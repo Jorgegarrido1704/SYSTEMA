@@ -2072,8 +2072,8 @@ class juntasController extends Controller
             }
 
             $faltantes = DB::table('assistence')
-    ->select('lider')
-    ->distinct()
+    
+    ->distinct('lider')
     ->where($diaActual, '=', '')
     ->get();
 
