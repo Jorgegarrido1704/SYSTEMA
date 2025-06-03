@@ -2071,7 +2071,7 @@ class juntasController extends Controller
                 ];
             }
 
-            $faltantes = DB::tabla('assistence')
+            $faltantes = DB::table('assistence')
     ->select('lider')
     ->distinct()
     ->where($diaActual, '=', '')
