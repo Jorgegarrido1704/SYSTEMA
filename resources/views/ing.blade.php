@@ -562,6 +562,7 @@
                                 <label for="Client">Client</label>
                                 <select name="Client" id="Client" required>
                                     <option value=""></option>
+                                    <option value="READING TRUCK">READING TRUCK</option>
                                     <option value="MORGAN OLSON">MORGAN OLSON</option>
                                     <option value="JOHN DEERE">JOHN DEERE</option>
                                     <option value="OP MOBILITY">OP MOBILITY</option>

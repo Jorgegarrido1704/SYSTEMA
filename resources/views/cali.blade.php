@@ -2,7 +2,7 @@
 
 @section('contenido')
  <!-- Page Heading -->
- <meta http-equiv="refresh" content="90">
+ <meta http-equiv="refresh" content="180">
  <script src="{{ asset('/dash/js/calidadReg.js')}}"></script>
 <script>
     const modificacionsCali = @json(route('buscarcodigo'));
@@ -137,7 +137,7 @@
                                                             function checkCant(){
 
                                                             var checkNok=document.getElementById('nok').value;
-                                                                checkNok=parseInt(checkNok);
+                                                            var checkNok=parseInt(checkNok);
                                                             var check1=document.getElementById('1').value;
                                                             var check2=document.getElementById('2').value;
                                                             var check3=document.getElementById('3').value;
@@ -260,7 +260,7 @@
                                                     </div>
                                                 </div>
                                         </div>
-                            
+
          <!-- <div class="row">
 
                <div class="col-lg-6 mb-4">
