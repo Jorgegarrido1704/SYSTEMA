@@ -5,6 +5,9 @@ use Carbon\Carbon;
 use App\Models\assistence;
 use App\Models\rrhh\rotacionModel;
 use Illuminate\Http\Request;
+use App\Jobs\UpdateRotacionJob;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class rrhhController extends Controller
 {
@@ -77,6 +80,8 @@ class rrhhController extends Controller
             ->where('week', $week)
             ->update($updateData);
     }
+    //send a job to update rotacion
+        UpdateRotacionJob::dispatch();
 
 
     return redirect()->route('rrhhDashBoard');
