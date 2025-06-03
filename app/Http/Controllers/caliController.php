@@ -103,6 +103,12 @@ class caliController extends generalController
                 $info = $rowInfo->info;
                 $qty = $rowInfo->qty;
             }
+             if($pn=="185-4147 " or $pn=="199-4942" or $pn=="199-6660  " or $pn=="199-3871 " or $pn=="189-6256" or $pn=="190-3559" or $pn=="185-4142"){
+                $cambioestados=[1,'readonly',''];
+             }else{
+                $cambioestados=[100,'','readonly'];
+             }
+
 
             return view('cali', [
                 'value' => $value,
@@ -114,7 +120,8 @@ class caliController extends generalController
                 'info' => $info,
                 //'week'=>$week,
                 //'assit'=>$assit,
-                'cat' => $cat
+                'cat' => $cat,
+                'cambioestados'=>$cambioestados
             ]);
         }
     }
@@ -178,12 +185,7 @@ class caliController extends generalController
                 $nok_reg->info = $info;
                 $nok_reg->resto = 1;
                 $nok_reg->codigo = $cod1;
-                if (!empty($serial)) {
-                    $nok_reg->prueba = "0-0" . $serial;
-                    $serial++;
-                } else {
-                    $nok_reg->prueba = "";
-                }
+                $nok_reg->prueba = $serial;
                 $nok_reg->usuario = $value;
                 $nok_reg->Responsable = $responsable1;
                 if ($nok_reg->save()) {
@@ -283,6 +285,13 @@ class caliController extends generalController
             $cant4 = $request->input('4');
             $cant5 = $request->input('5');
             $serial = $request->input('serial');
+            if (strpos($serial, "'")) {
+                $serial = str_replace("'", "-", $serial);
+            }
+            if( strpos($serial, ']')) {
+                $serial = str_replace(']', '|', $serial);
+            }
+
             $responsable1 = $request->input('responsable1');
             $responsable2 = $request->input('responsable2');
             $responsable3 = $request->input('responsable3');
@@ -311,15 +320,7 @@ class caliController extends generalController
             if (strpos($responsable5, ',')) {
                 $responsable5 = str_replace(',', ';', $responsable5);
             }
-            if (substr($serial, 0, 2) == '0-0') {
-                $ini = '0-0';
-                $serial = str_replace('0-0', '', $serial);
-                $serial = (int)$serial;
-            } else if (substr($serial, 0, 1) == '0-') {
-                $serial = str_replace('0-', '', $serial);
-                $serial = (int)$serial;
-                $ini = '0-';
-            }
+            
             $busquedainfo = DB::table('calidad')->select('qty', 'wo')->where('info', $info)->first();
 
             $wo = $busquedainfo->wo;
@@ -342,12 +343,7 @@ class caliController extends generalController
                     $ok_reg->info = $info;
                     $ok_reg->resto = 1;
                     $ok_reg->codigo = "TODO BIEN";
-                    if (!empty($serial)) {
-                        $ok_reg->prueba = $serial;
-                        $serial++;
-                    } else {
-                        $ok_reg->prueba = "";
-                    }
+                    $ok_reg->prueba = "";
                     $ok_reg->usuario = $value;
                     $ok_reg->save();
                 }
@@ -452,12 +448,7 @@ class caliController extends generalController
             return redirect()->route('calidad');
         }
     }
-    public function saveQrData(Request $request){
-        $value = session('user');
-        $info = $request->input('info');
 
-        return redirect()->route('calidad')->with('response', "QR Code: $info, User: $value");
-    }
 
     public function buscarcodigo(Request $request)
     {
