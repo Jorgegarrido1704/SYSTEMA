@@ -322,8 +322,8 @@ class caliController extends generalController
             }
 
             $registroQr=DB::table('registroqrs')->where('infoQr', '=', $info)->where('CodigoIdentificaicon','=',$serial)->first();
-            if ($registroQr) {
-                $registroQr->delete();
+            if (!empty($registroQr)) {
+                 $registroQr=DB::table('registroqrs')->where('infoQr', '=', $info)->where('CodigoIdentificaicon','=',$serial)->delete();
             }else{
                 return redirect('calidad')->with('response', "No existe el registro QR");
             }
@@ -349,7 +349,7 @@ class caliController extends generalController
                     $ok_reg->info = $info;
                     $ok_reg->resto = 1;
                     $ok_reg->codigo = "TODO BIEN";
-                    $ok_reg->prueba = "";
+                    $ok_reg->prueba = $serial;
                     $ok_reg->usuario = $value;
                     $ok_reg->save();
                 }
