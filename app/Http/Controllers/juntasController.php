@@ -2054,7 +2054,7 @@ class juntasController extends Controller
                 }$total++;}
             $selectDia=Carbon::now()->dayOfWeek;
             $diaActual = $dias[$selectDia];
-
+                $week = Carbon::now()->weekOfYear;
 
         $rotacion = DB::connection('rrhh')
             ->table('rotacion')
@@ -2074,6 +2074,7 @@ class juntasController extends Controller
             $faltantes = DB::table('assistence')
     ->select('lider')
     ->distinct()
+    ->where('week', '=', $week)
     ->where($diaActual, '=', '')
     ->get();
 
