@@ -25,10 +25,10 @@ class workScreduleModel extends Model
         'Status',
         'resposible',
         'customerDate',
-        'comments'
+        'comments',
+        'UpOrderDate'
     ];
+
     public $timestamps = false;
-
-
 
 }

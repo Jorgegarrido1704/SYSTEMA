@@ -383,8 +383,7 @@ class generalController extends Controller
                         '90834',
                         '910508',
                         '91194',
-                        '
-                            90835',
+                        '90835',
                         '91583',
                         '910968',
                         '910350',
@@ -525,7 +524,8 @@ class generalController extends Controller
                         '40747',
                         '90894',
                         '90919',
-                        '90941'
+                        '90941',
+                        '56386544'
                     ];
                     if (in_array($pnReg, $noloom)) {
                         if ($cantidad < ($ensaPar) and (substr($rev, 0, 4) != 'PRIM' or substr($rev, 0, 4) != 'PPAP')) {
@@ -535,7 +535,7 @@ class generalController extends Controller
                             upRegistros(7, $codigo, 'Assembly Partial', $todays, 'ensaF', $cantidad, $donde, $sesion, 'si');
                         } else if ($cantidad >= ($ensaPar)) {
                             $restoAnt = $ensaPar - $cantidad;
-                            $nuevo = $loomPar + $cantidad;
+                            $nuevo = $preCalidad + $cantidad;
                             $update = DB::table('registroparcial')->where('codeBar', "=", $codigo)->update(['ensaPar' => $restoAnt, 'precalidad' => $nuevo]);
                             upRegistros(10, $codigo, 'Pre Quality', $todays, 'ensaF', $cantidad, $donde, $sesion, 'si');
                         }
@@ -784,67 +784,7 @@ class generalController extends Controller
         }
     }
 
-    public function assistence(Request $request)
-    {
-        $value = session('user');
-        $cat = session('categoria');
-        if ($cat == '' or $value == '') {
-            return view('login');
-        } else {
 
-            $names = $request->input('name');
-            $dlu = $request->input('dlu');
-            $elu = $request->input('elu');
-            $dma = $request->input('dma');
-            $ema = $request->input('ema');
-            $dmi = $request->input('dmi');
-            $emi = $request->input('emi');
-            $dju = $request->input('dju');
-            $eju = $request->input('eju');
-            $dvi = $request->input('dvi');
-            $evi = $request->input('evi');
-            $dsa = $request->input('dsa');
-            $esa = $request->input('esa');
-            $ddo = $request->input('ddo');
-            $edo = $request->input('edo');
-            $dba = $request->input('dba');
-            $dbp = $request->input('dbp');
-            $dex = $request->input('dex');
-            $id = $request->input('id');
-
-
-
-
-            for ($i = 0; $i < count($names); $i++) {
-                $name = $names[$i];
-                $value_dlu = $dlu[$i];
-                $value_dma = $dma[$i];
-                $value_dmi = $dmi[$i];
-                $value_dju = $dju[$i];
-                $value_dvi = $dvi[$i];
-                $value_dsa = $dsa[$i];
-                $value_ddo = $ddo[$i];
-                $value_dba = $dba[$i];
-                $value_dbp = $dbp[$i];
-                $value_dex = $dex[$i];
-
-                $update = DB::table('assistence')->where('id', '=', $id[$i])
-                    ->update([
-                        'lunes' => $value_dlu,
-                        'martes' => $value_dma,
-                        'miercoles' => $value_dmi,
-                        'jueves' => $value_dju,
-                        'viernes' => $value_dvi,
-                        'sabado' => $value_dsa,
-                        'domingo' => $value_ddo,
-                        'bonoAsistencia' => $value_dba,
-                        'bonoPuntualidad' => $value_dbp,
-                        'extras' => $value_dex
-                    ]);
-            }
-            return redirect('/general');
-        }
-    }
     public function material(Request $request)
     {
         $value = session('user');
