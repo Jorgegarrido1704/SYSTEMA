@@ -2095,6 +2095,6 @@ class juntasController extends Controller
 
 
 
-        return view('juntas.hr', ['tipoTrabajador'=>$tipoTrabajador,'faltantes'=>$faltantes,'faltan'=>$faltan,'genero' => $genero,'registrosDeAsistencia' => $registrosDeAsistencia ,'value' => session('user'), 'cat' => session('categoria'), 'accidente' => $accidente]);
+        return view('juntas.hr', ['diaActual'=>$diaActual,'tipoTrabajador'=>$tipoTrabajador,'faltantes'=>$faltantes,'faltan'=>$faltan,'genero' => $genero,'registrosDeAsistencia' => $registrosDeAsistencia ,'value' => session('user'), 'cat' => session('categoria'), 'accidente' => $accidente]);
     }
 }

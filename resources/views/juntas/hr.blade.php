@@ -94,7 +94,7 @@
      <div class="col-lg-4 col-md-4 mb-8">
         <div class="card shadow mb-5">
             <div class="card-header py-3">
-                <h5 class="m-1 font-weight-bold text-primary">Faltantes de registros de asistencia</h5>
+                <h5 class="m-1 font-weight-bold text-primary">Faltantes de registros de asistencia: {{ $diaActual}}</h5>
             </div>
 
             <div class="card-body " style="overflow-y: auto;  max-height: 450px;">
