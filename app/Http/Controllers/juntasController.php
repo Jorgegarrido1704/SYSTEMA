@@ -2075,7 +2075,7 @@ class juntasController extends Controller
     ->select('lider')
     ->distinct()
     ->where('week', '=', $week)
-    //->where($diaActual, '=', NULL)
+    ->where($diaActual, '=', '')
     ->whereNull($diaActual)
 
     ->get();
