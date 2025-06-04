@@ -2079,7 +2079,6 @@ class juntasController extends Controller
             }
             $faltantes=[];
             $restroFaltantes = DB::table('assistence')
-    ->select('lider')
     ->where('week', '=', $week, 'and' , $diaActual, '=', '-')
     ->get();
     foreach ($restroFaltantes as $faltante) {
