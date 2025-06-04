@@ -2060,7 +2060,7 @@ class juntasController extends Controller
                 }
                 $total++;}
             $selectDia=Carbon::now()->dayOfWeek;
-            $diaActual = $dias[$selectDia];
+            $diaActual = $dias[$selectDia-1];
                 $week = Carbon::now()->weekOfYear;
 
         $rotacion = DB::connection('rrhh')
