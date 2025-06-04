@@ -2079,14 +2079,18 @@ class juntasController extends Controller
             }
             $faltantes=[];
             $restroFaltantes = DB::table('assistence')
-    ->where('week', '=', $week, 'and' , $diaActual, '=', '-')
+    ->select('lider',$diaActual)
+    ->where('week', '=', $week)
     ->get();
     foreach ($restroFaltantes as $faltante) {
+        if($faltante->$diaActual == '-'){
+
         if(in_array($faltante->lider, $faltantes)){
             continue;
         }else{
-            $faltantes[] = $faltante->lider;
+         $faltantes[] = $faltante->lider;
         }
+    }
     }
 
             $faltan= $total-($rotacion->assistencia+$rotacion->faltas+$rotacion->incapacidad+$rotacion->permisos_gose+$rotacion->permisos_sin_gose+$rotacion->vacaciones);
