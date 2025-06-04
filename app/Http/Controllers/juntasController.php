@@ -2053,7 +2053,7 @@ class juntasController extends Controller
                     $genero[0]++;
                 }$total++;}
             $selectDia=Carbon::now()->dayOfWeek;
-            $diaActual = $dias[$selectDia-1];
+            $diaActual = $dias[$selectDia];
 
 
         $rotacion = DB::connection('rrhh')
