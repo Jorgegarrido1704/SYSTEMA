@@ -23,19 +23,29 @@
                                             <th>jueves</th>  <th>extras jueves</th>  <th>viernes</th>
                                             <th>extras viernes</th>  <th>sabado</th>  <th>extras sabado</th>
                                             <th>domingo</th> <th>extras domingo</th> <th> bono asistencia</th>
-                                            <th> bono puntualidad</th>  <th>total extras</th> <th> tiempo por tiempo</th>
+                                            <th>bono puntualidad</th>  <th>total extras</th> <th> tiempo por tiempo</th>
                                             <th>numero de empleado</th>
+                                            <th>Modificar</th>
 
                                        </tr>
                                    </thead>
                                    <tbody>
-                                    <form action="{{route('updateAsistencia')}}" method="GET">
+
                                     @foreach ($datosRHWEEK as $d => $as)
 
                                                 <tr>
-
+                                                    <form action="{{route('updateAsistencia')}}" method="GET">
                                                     <td>{{$as['name']}}</td>
-                                                    <td><input type="text" style="max-width: 40px" name="lun[]" id="lun" value="{{$as['lunes']}}" minlength="1" maxlength="3" {{ $diasRegistro[0] }} ></td>
+                                                    <td><select type="text" style="max-width: 40px" name="lun[]" id="lun" >
+                                                       <option value="{{ $diasRegistro[0] }}"> {{ $diasRegistro[0] }} </option>
+                                                         <option value="OK">OK</option>
+                                                         <option value="R">Retardo</option>
+                                                            <option value="F">Falta</option>
+                                                            <option value="PSS">Permiso S/goce</option>
+                                                            <option value="PCS">Permiso C/goce</option>
+                                                            <option value="V">Vacacion</option>
+                                                            <option value="INC">Incapacidad</option>
+                                                    </select></td>
                                                     <td><input type="number" style="max-width: 40px" name="extra_lun[]" id="extra_lun" value="{{$as['extLunes']}}"  min="0" max="30" {{ $diasRegistro[1] }}></td>
                                                     <td><input type="text" style="max-width: 40px" name="mar[]" id="mar" value="{{$as['martes']}}" minlength="1" maxlength="3"   {{ $diasRegistro[1] }}></td>
                                                     <td><input type="number" style="max-width: 40px" name="extra_mar[]" id="extra_mar" value="{{$as['extMartes']}}"  min="0" max="30" {{ $diasRegistro[2] }}></td>
@@ -54,13 +64,14 @@
                                                     <td><input type="number" style="max-width: 40px" name="total_extras[]" id="total_extras" value="{{$as['extras']}}" disabled></td>
                                                     <td><input type="number" style="max-width: 40px" name="tiempo_por_tiempo[]" id="tiempo_por_tiempo" value="{{$as['tiempoPorTiempo']}}"disabled ></td>
                                                     <td><input type="text" style="max-width: 60px" name="numero_emplead[]" id="numero_emplead" value="{{$as['id_empleado']}}" disabled></td>
-                                                    <input type="hidden" name="numero_empleado[]" id="numero_empleado[]" value="{{$as['id_empleado']}}">
+                                                   <td> <input type="hidden" name="numero_empleado[]" id="numero_empleado[]" value="{{$as['id_empleado']}}">
+
+                                    <button type="submit" name="enviar" id="enviar" class=" btn btn-primary" >Modificar</button></td>
+
+                                                </form>
                                                 </tr>
                                     @endforeach
-                                    <div class="form-group">
-                                    <button type="submit" name="enviar" id="enviar" class=" btn btn-primary" >Modificar</button>
-                                    </div>
-                                                </form>
+
                                    </tbody>
                                </table>
 

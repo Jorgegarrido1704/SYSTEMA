@@ -2040,18 +2040,25 @@ class juntasController extends Controller
     {
         $accidente = '61928 REV B.pdf';
         $today = date('Y-m-d');
-        $genero=[0,0];
+        $genero=$tipoTrabajador=[0,0];
+
         $total = 0;
         $dias=['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
             $datoGeneros = DB::table('personalberg')
-            ->select('Gender')
+            ->select('Gender','typeWorker')
             ->get();
             foreach ($datoGeneros as $datoGenero){
                 if($datoGenero->Gender == 'H'){
                     $genero[1]++;
                 }else if($datoGenero->Gender == 'M'){
                     $genero[0]++;
-                }$total++;}
+                }
+                if($datoGenero->typeWorker == 'Directo'){
+                    $tipoTrabajador[0]++;
+                }else if($datoGenero->typeWorker == 'Indirecto'){
+                    $tipoTrabajador[1]++;
+                }
+                $total++;}
             $selectDia=Carbon::now()->dayOfWeek;
             $diaActual = $dias[$selectDia];
                 $week = Carbon::now()->weekOfYear;
@@ -2070,18 +2077,24 @@ class juntasController extends Controller
                     'vacaciones' => 0
                 ];
             }
-
-            $faltantes = DB::table('assistence')
+            $faltantes=[];
+            $restroFaltantes = DB::table('assistence')
     ->select('lider')
-    ->distinct()
     ->where('week', '=', $week, 'and' , $diaActual, '=', '-')
     ->get();
+    foreach ($restroFaltantes as $faltante) {
+        if(in_array($faltante->lider, $faltantes)){
+            continue;
+        }else{
+            $faltantes[] = $faltante->lider;
+        }
+    }
 
             $faltan= $total-($rotacion->assistencia+$rotacion->faltas+$rotacion->incapacidad+$rotacion->permisos_gose+$rotacion->permisos_sin_gose+$rotacion->vacaciones);
         $registrosDeAsistencia =[$rotacion->assistencia, $rotacion->faltas, $rotacion->incapacidad, $rotacion->permisos_gose + $rotacion->permisos_sin_gose,$rotacion->vacaciones];
 
 
 
-        return view('juntas.hr', ['faltantes'=>$faltantes,'faltan'=>$faltan,'genero' => $genero,'registrosDeAsistencia' => $registrosDeAsistencia ,'value' => session('user'), 'cat' => session('categoria'), 'accidente' => $accidente]);
+        return view('juntas.hr', ['tipoTrabajador'=>$tipoTrabajador,'faltantes'=>$faltantes,'faltan'=>$faltan,'genero' => $genero,'registrosDeAsistencia' => $registrosDeAsistencia ,'value' => session('user'), 'cat' => session('categoria'), 'accidente' => $accidente]);
     }
 }

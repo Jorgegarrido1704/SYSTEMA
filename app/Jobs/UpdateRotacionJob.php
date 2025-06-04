@@ -34,7 +34,7 @@ class UpdateRotacionJob implements ShouldQueue
         $days = ['domingo', 'lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado'];
         $dayNumber = Carbon::now()->dayOfWeek;
         $today= Carbon::now()->format('Y-m-d');
-        $vacaciones = $faltas=$permisosConGose=$permisosSinGose=$incapacidad=$assistencia=0;
+        $vacaciones = $faltas=$permisosConGose=$permisosSinGose=$incapacidad=$assistencia=$retardos=0;
 
 
       $registroAssitenceDailyJob =  Db::table('assistence')
@@ -46,14 +46,16 @@ class UpdateRotacionJob implements ShouldQueue
                 $vacaciones++;
             } elseif ($registro->{$days[$dayNumber]} == 'F') {
                 $faltas++;
-            } elseif ($registro->{$days[$dayNumber]} == 'PCG') {
+            } elseif ($registro->{$days[$dayNumber]} == 'PSS') {
                 $permisosConGose++;
-            } elseif ($registro->{$days[$dayNumber]} == 'PCG') {
+            } elseif ($registro->{$days[$dayNumber]} == 'PCS') {
                 $permisosSinGose++;
-            } elseif ($registro->{$days[$dayNumber]} == 'I') {
+            } elseif ($registro->{$days[$dayNumber]} == 'INC') {
                 $incapacidad++;
             }else if ($registro->{$days[$dayNumber]} == 'OK') {
                 $assistencia++;
+            }else if ($registro->{$days[$dayNumber]} == 'R') {
+                $retardos++;
             }
 
         }
@@ -67,7 +69,8 @@ class UpdateRotacionJob implements ShouldQueue
                     'permisos_gose' => $permisosConGose,
                     'permisos_sin_gose' => $permisosSinGose,
                     'incapacidad' => $incapacidad,
-                    'assistencia' => $assistencia
+                    'assistencia' => $assistencia,
+                    'retardos' => $retardos,
                 ]);
 
         }else{
@@ -79,7 +82,8 @@ class UpdateRotacionJob implements ShouldQueue
                 'permisos_gose' => $permisosConGose,
                 'permisos_sin_gose' => $permisosSinGose,
                 'incapacidad' => $incapacidad,
-                'assistencia' => $assistencia
+                'assistencia' => $assistencia,
+                'retardos' => $retardos,
             ]);
         }
 
