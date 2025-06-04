@@ -2075,7 +2075,7 @@ class juntasController extends Controller
     ->select('lider')
     ->distinct()
     ->where('week', '=', $week)
-    ->where($diaActual, '=', '')
+    ->where($diaActual, '=', null)
     ->get();
 
             $faltan= $total-($rotacion->assistencia+$rotacion->faltas+$rotacion->incapacidad+$rotacion->permisos_gose+$rotacion->permisos_sin_gose+$rotacion->vacaciones);
