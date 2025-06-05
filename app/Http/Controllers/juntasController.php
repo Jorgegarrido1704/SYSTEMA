@@ -2085,7 +2085,7 @@ class juntasController extends Controller
                 if($aus == 0 && $falt == 0){
                     $promaus = 0;
                 }else if($falt > 0){
-                    $promaus = ($falt/$aus);
+                    $promaus = round($falt/$aus,2);
                 }
 
 
