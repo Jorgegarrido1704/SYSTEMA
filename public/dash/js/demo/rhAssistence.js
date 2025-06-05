@@ -8,7 +8,7 @@ const registroVacaciones = [10, 20, 15, 25, 30, 20, 15, 10, 5,20, 30, 80,90];
 const promau = promaus || 0; // Default to 0 if promaus is not defined
 
 console.log(promau);
-promau = promau.toFixed(2);
+
 const rhAssistence = new Chart(assist, {
     type: "bar",
     data: {
