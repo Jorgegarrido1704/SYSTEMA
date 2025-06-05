@@ -13,7 +13,13 @@
                     </div>
                 </div>
                     <div class="card-body" style="overflow-y: auto; " >
-
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h5 class="text-primary font-weight-bold text-center">OK = Asistencia F = Falta PSS= Permiso sin gose  PCS= Permiso con gose INC = Incapacidad V = Vacaciones R = Retardo</h5>
+                            </div>
+                        </div>
+                        <br>
+                        <hr>
                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                    <thead>
                                        <tr>
@@ -36,16 +42,7 @@
                                                 <tr>
                                                     <form action="{{route('updateAsistencia')}}" method="GET">
                                                     <td>{{$as['name']}}</td>
-                                                    <td><select type="text" style="max-width: 40px" name="lun[]" id="lun" >
-                                                       <option value="{{ $diasRegistro[0] }}"> {{ $diasRegistro[0] }} </option>
-                                                         <option value="OK">OK</option>
-                                                         <option value="R">Retardo</option>
-                                                            <option value="F">Falta</option>
-                                                            <option value="PSS">Permiso S/goce</option>
-                                                            <option value="PCS">Permiso C/goce</option>
-                                                            <option value="V">Vacacion</option>
-                                                            <option value="INC">Incapacidad</option>
-                                                    </select></td>
+                                                    <td><input type="text" style="max-width: 40px" name="lun[]" id="lun"   minlength="1" maxlength="3" value="{{$as['lunes']}}" {{ $diasRegistro[0] }}></td>
                                                     <td><input type="number" style="max-width: 40px" name="extra_lun[]" id="extra_lun" value="{{$as['extLunes']}}"  min="0" max="30" {{ $diasRegistro[1] }}></td>
                                                     <td><input type="text" style="max-width: 40px" name="mar[]" id="mar" value="{{$as['martes']}}" minlength="1" maxlength="3"   {{ $diasRegistro[1] }}></td>
                                                     <td><input type="number" style="max-width: 40px" name="extra_mar[]" id="extra_mar" value="{{$as['extMartes']}}"  min="0" max="30" {{ $diasRegistro[2] }}></td>

@@ -60,19 +60,19 @@ class rrhhController extends Controller
 
     foreach ($validated['numero_empleado'] as $index => $id_empleado) {
         $updateData = [
-            'lunes' => $validated['lun'][$index],
+            'lunes' => strtoupper ($validated['lun'][$index]),
             'extLunes' => $validated['extra_lun'][$index],
-            'martes' => $validated['mar'][$index],
+            'martes' => strtoupper($validated['mar'][$index]),
             'extMartes' => $validated['extra_mar'][$index],
-            'miercoles' => $validated['mie'][$index],
+            'miercoles' =>strtoupper( $validated['mie'][$index]),
             'extMiercoles' => $validated['extra_mie'][$index],
-            'jueves' => $validated['jue'][$index],
+            'jueves' => strtoupper($validated['jue'][$index]),
             'extJueves' => $validated['extra_jue'][$index],
-            'viernes' => $validated['vie'][$index],
+            'viernes' => strtoupper($validated['vie'][$index]),
             'extViernes' => $validated['extra_vie'][$index],
-            'sabado' => $validated['sab'][$index],
+            'sabado' => strtoupper($validated['sab'][$index]),
             'extSabado' => $validated['extra_sab'][$index],
-            'domingo' => $validated['dom'][$index],
+            'domingo' => strtoupper($validated['dom'][$index]),
             'extDomingo' => $validated['extra_dom'][$index],
             'extras' => $validated['extra_lun'][$index] + $validated['extra_mar'][$index] + $validated['extra_mie'][$index] + $validated['extra_jue'][$index] + $validated['extra_vie'][$index] + $validated['extra_sab'][$index] + $validated['extra_dom'][$index],
         ];
