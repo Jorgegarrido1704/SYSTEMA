@@ -2041,7 +2041,7 @@ class juntasController extends Controller
         $accidente = '61928 REV B.pdf';
         $today = date('Y-m-d');
         $genero=$tipoTrabajador=[0,0];
-        $month = date('m');
+        $month = date('Y-m');
         $year = date('Y');
         $datosDate =strval ($year . '-' . $month );
 
@@ -2071,7 +2071,7 @@ class juntasController extends Controller
     ->table('rotacion')
     ->whereMonth('fecha_rotacion', Carbon::now()->month)
     ->whereYear('fecha_rotacion', Carbon::now()->year)
-    //->where('fecha_rotacion', 'LIKE', '2025-06-%%')
+    ->where('fecha_rotacion', 'LIKE', '2025-06-%%')
     ->get();
 
                 foreach ($ausentismos as $ausentismo) {
@@ -2086,7 +2086,7 @@ class juntasController extends Controller
                 if($aus == 0 && $falt == 0){
                     $promaus = 0;
                 }else if($falt > 0){
-                    $promaus = round($falt/$aus,2);
+                    $promaus = ($falt/$aus);
                 }
 
 
