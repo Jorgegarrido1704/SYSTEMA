@@ -2068,8 +2068,8 @@ class juntasController extends Controller
                 $faltantes=[];
        $ausentismos = DB::connection('rrhh')
     ->table('rotacion')
-    //->whereMonth('fecha_rotacion', Carbon::now()->month)
-   //->whereYear('fecha_rotacion', Carbon::now()->year)
+    ->whereMonth('fecha_rotacion', Carbon::now()->month)
+   ->whereYear('fecha_rotacion', Carbon::now()->year)
    // ->where('fecha_rotacion', 'LIKE', $month.'%')
     ->get();
 
