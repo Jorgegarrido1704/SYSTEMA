@@ -8,6 +8,20 @@
     <script>
         const datas = '{{ route('workStateJason') }}';
     </script>
+    <style>
+        input[type="text"] {
+            text-align: center;
+            width: 100px;
+        }
+        select {
+            text-align: center;
+            width: 100px;
+        }
+        #pns{
+            text-align: center;
+            width: 400px;
+        }
+    </style>
     <div class="row">
         <div class="col-xl-12 col-lg-12 mb-4">
             <div class="card shadow mb-4">
@@ -138,7 +152,7 @@
                                     <th>PN</th>
                                     <th>Customer</th>
                                     <th>WorkRev</th>
-                                    <th>Size</th>
+                                    <th >Size</th>
                                     <th>FullSize</th>
                                     <th>MRP</th>
                                     <th>Receipt Date</th>

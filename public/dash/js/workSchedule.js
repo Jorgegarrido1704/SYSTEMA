@@ -31,15 +31,22 @@ function renderTable(data) {
         row.innerHTML = `
             <td>${item.pn}</td>
             <td>${item.customer}</td>
-            <td><textarea id="WorkRev${item.id}" rows="2" cols="15">${item.WorkRev}</textarea></td>
-            <td><input type="text" id="size${item.id}" value="${item.size}"></td>
-            <td><input type="text" id="FullSize${item.id}" value="${item.FullSize}"></td>
+            <td><textarea id="WorkRev${item.id}" rows="2" cols="14">${item.WorkRev}</textarea></td>
+            <td> <select id="size${item.id}" name="size${item.id}"> <option value="${item.size}">${item.size}</option>
+                <option value="Ch">Ch </option><option value="M">M</option><option value="G">G</option></select></td>
+            <td><select id="FullSize${item.id}" >
+                <option value="${item.FullSize}">${item.FullSize}</option><option value='NA'>NA</option>
+                <option value="SI">SI</option><option value="NO">NO</option></select>
+            </td>
             <td><input type="date" id="MRP${item.id}" value="${item.MRP}"></td>
             <td><input type="date" id="receiptDate${item.id}" value="${item.receiptDate}"></td>
             <td><input type="date" id="commitmentDate${item.id}" value="${item.commitmentDate}"></td>
             <td><input type="date" id="CompletionDate${item.id}" value="${item.CompletionDate}"></td>
             <td><input type="date" id="documentsApproved${item.id}" value="${item.documentsApproved}"></td>
-            <td><input type="text" id="Status${item.id}" value="${item.Status}"></td>
+            <td>
+            <select  id="Status${item.id}">
+            <option value="${item.Status}">${item.Status}</option><option value="On Hold">On Hold</option><option value='CANCELLED'>CANCELLED</option>
+            <option value="Pending">Pending</option><option value="Completed">Completed</option><option value= 'In Progress'>In Progress</option></select></td>
             <td><input type="text" id="responsable${item.id}" value="${item.resposible}"></td>
             <td><input type="date" id="customerDate${item.id}" value="${item.customerDate}"></td>
             <td><textarea id="comments${item.id}" rows="2" cols="15">${item.comments || ''}</textarea></td>
