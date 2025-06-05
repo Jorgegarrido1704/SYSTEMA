@@ -2042,7 +2042,7 @@ class juntasController extends Controller
         $today = date('Y-m-d');
         $genero=$tipoTrabajador=[0,0];
         $month = date('Y-m');
-       
+
 
         $total = $aus= $falt= $promaus= 0;
         $dias=['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
@@ -2069,8 +2069,8 @@ class juntasController extends Controller
        $ausentismos = DB::connection('rrhh')
     ->table('rotacion')
     //->whereMonth('fecha_rotacion', Carbon::now()->month)
-    //->whereYear('fecha_rotacion', Carbon::now()->year)
-    ->where('fecha_rotacion', 'LIKE', $month.'%')
+   ->whereYear('fecha_rotacion', Carbon::now()->year)
+   // ->where('fecha_rotacion', 'LIKE', $month.'%')
     ->get();
 
                 foreach ($ausentismos as $ausentismo) {
