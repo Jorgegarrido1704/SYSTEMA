@@ -17,6 +17,7 @@
     const registros = @json($registrosDeAsistencia);
     const genero = @json($genero);
     const tipoTrabajador = @json($tipoTrabajador);
+    const promaus = @json($promaus);
 </script>
 <div class="row">
     <!-- Asistencia -->

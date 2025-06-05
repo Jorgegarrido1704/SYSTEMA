@@ -2041,8 +2041,11 @@ class juntasController extends Controller
         $accidente = '61928 REV B.pdf';
         $today = date('Y-m-d');
         $genero=$tipoTrabajador=[0,0];
+        $month = date('m');
+        $year = date('Y');
+        $datosDate =strval ($year . '-' . $month );
 
-        $total = 0;
+        $total = $aus= $falt= $promaus= 0;
         $dias=['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
             $datoGeneros = DB::table('personalberg')
             ->select('Gender','typeWorker')
@@ -2063,6 +2066,35 @@ class juntasController extends Controller
             $diaActual = $dias[$selectDia-1];
                 $week = Carbon::now()->weekOfYear;
 
+                $faltantes=[];
+       $ausentismos = DB::connection('rrhh')
+    ->table('rotacion')
+   // ->whereMonth('fecha_rotacion', Carbon::now()->month)
+   // ->whereYear('fecha_rotacion', Carbon::now()->year)
+    ->where('fecha_rotacion', 'LIKE', '2025-06-%%')
+    ->get();
+
+                foreach ($ausentismos as $ausentismo) {
+        $aus += (int) $ausentismo->assistencia;
+        $aus += (int) $ausentismo->vacaciones;
+        $aus += (int) $ausentismo->incapacidad;
+        $falt += (int) $ausentismo->faltas;
+        $aus += (int) $ausentismo->permisos_gose;
+        $aus += (int) $ausentismo->permisos_sin_gose;
+        $aus += (int) $ausentismo->retardos;
+                }
+                if($aus == 0 && $falt == 0){
+                    $promaus = 0;
+                }else if($falt > 0){
+                    $promaus = round($falt/$aus,2);
+                }
+                
+
+
+
+
+
+
         $rotacion = DB::connection('rrhh')
             ->table('rotacion')
             ->where('fecha_rotacion', '=', $today)
@@ -2077,7 +2109,7 @@ class juntasController extends Controller
                     'vacaciones' => 0
                 ];
             }
-            $faltantes=[];
+
             $restroFaltantes = DB::table('assistence')
     ->select('lider',$diaActual)
     ->where('week', '=', $week)
@@ -2098,6 +2130,6 @@ class juntasController extends Controller
 
 
 
-        return view('juntas.hr', ['diaActual'=>$diaActual,'tipoTrabajador'=>$tipoTrabajador,'faltantes'=>$faltantes,'faltan'=>$faltan,'genero' => $genero,'registrosDeAsistencia' => $registrosDeAsistencia ,'value' => session('user'), 'cat' => session('categoria'), 'accidente' => $accidente]);
+        return view('juntas.hr', ['promaus'=>$promaus,'diaActual'=>$diaActual,'tipoTrabajador'=>$tipoTrabajador,'faltantes'=>$faltantes,'faltan'=>$faltan,'genero' => $genero,'registrosDeAsistencia' => $registrosDeAsistencia ,'value' => session('user'), 'cat' => session('categoria'), 'accidente' => $accidente]);
     }
 }

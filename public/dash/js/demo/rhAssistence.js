@@ -5,6 +5,9 @@ const registroInicidencia = Object.values(registros);
 const generos = Object.values(genero);
 const tipoTrabajadors = Object.values(tipoTrabajador);
 const registroVacaciones = [10, 20, 15, 25, 30, 20, 15, 10, 5,20, 30, 80,90];
+const promau = promaus || 0; // Default to 0 if promaus is not defined
+
+console.log(promau);
 
 const rhAssistence = new Chart(assist, {
     type: "bar",
@@ -147,11 +150,11 @@ const rota2 = new Chart(document.getElementById("rotation2"), {
         },
     },
     data: {
-        labels: ["Max ausentismo: "+3+"%", "Ausentismo: "+0.15+"%"],
+        labels: ["Max ausentismo: "+3+"%", "Ausentismo: "+promau+"%"],
         datasets: [
             {
                 label: "Ausentismo de personal",
-                data: [3,0.15,],
+                data: [3,promau],
                backgroundColor: [
                     "rgba(2, 164, 75, 0.35)",
                     "rgba(205, 2, 2, 0.35)",
