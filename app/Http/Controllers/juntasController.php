@@ -2069,9 +2069,9 @@ class juntasController extends Controller
                 $faltantes=[];
        $ausentismos = DB::connection('rrhh')
     ->table('rotacion')
-   // ->whereMonth('fecha_rotacion', Carbon::now()->month)
-   // ->whereYear('fecha_rotacion', Carbon::now()->year)
-    ->where('fecha_rotacion', 'LIKE', '2025-06-%%')
+    ->whereMonth('fecha_rotacion', Carbon::now()->month)
+    ->whereYear('fecha_rotacion', Carbon::now()->year)
+    //->where('fecha_rotacion', 'LIKE', '2025-06-%%')
     ->get();
 
                 foreach ($ausentismos as $ausentismo) {
@@ -2088,7 +2088,7 @@ class juntasController extends Controller
                 }else if($falt > 0){
                     $promaus = round($falt/$aus,2);
                 }
-                
+
 
 
 
