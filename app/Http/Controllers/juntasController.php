@@ -2069,7 +2069,7 @@ class juntasController extends Controller
        $ausentismos = DB::connection('rrhh')
     ->table('rotacion')
     //->whereMonth('fecha_rotacion', Carbon::now()->month)
-   ->whereYear('fecha_rotacion', Carbon::now()->year)
+   //->whereYear('fecha_rotacion', Carbon::now()->year)
    // ->where('fecha_rotacion', 'LIKE', $month.'%')
     ->get();
 
