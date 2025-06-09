@@ -18,7 +18,7 @@ class rrhhController extends Controller
 
             $datosRHWEEK = assistence::leader($value)->OrderBy('lider', 'desc')->get();
             if($value == 'Admin' or $value == 'Paola A'){
-                $diasRegistro=['','','','',''];
+                $diasRegistro=['','','','','',''];
             }else{
                 $diasRegistro=['readonly','readonly','readonly','readonly','readonly'];
             }
@@ -28,6 +28,7 @@ class rrhhController extends Controller
 
              if($diaNum == 5 or $diaNum == 6 or $diaNum == 7){
                  $diasRegistro[4]='';
+
              }else{
                  $diasRegistro[$diaNum-1]='';
              }
@@ -60,19 +61,19 @@ class rrhhController extends Controller
 
     foreach ($validated['numero_empleado'] as $index => $id_empleado) {
         $updateData = [
-            'lunes' => strtoupper ($validated['lun'][$index]),
+            'lunes' => $validated['lun'][$index] ?  strtoupper(str_replace('-', '', $validated['lun'][$index])):strtoupper('-', '', $validated['lun'][$index]),
             'extLunes' => $validated['extra_lun'][$index],
-            'martes' => strtoupper($validated['mar'][$index]),
+            'martes' => $validated['mar'][$index] ?  strtoupper(str_replace('-', '', $validated['mar'][$index])):strtoupper($validated['mar'][$index]),
             'extMartes' => $validated['extra_mar'][$index],
-            'miercoles' =>strtoupper( $validated['mie'][$index]),
+            'miercoles' => $validated['mie'][$index] ?  strtoupper(str_replace('-', '', $validated['mie'][$index])): strtoupper( $validated['mie'][$index]),
             'extMiercoles' => $validated['extra_mie'][$index],
-            'jueves' => strtoupper($validated['jue'][$index]),
+            'jueves' => $validated['jue'][$index] ?  strtoupper(str_replace('-', '', $validated['jue'][$index])):strtoupper($validated['jue'][$index]),
             'extJueves' => $validated['extra_jue'][$index],
-            'viernes' => strtoupper($validated['vie'][$index]),
+            'viernes' => $validated['vie'][$index] ?  strtoupper(str_replace('-', '', $validated['vie'][$index])): strtoupper($validated['vie'][$index]),
             'extViernes' => $validated['extra_vie'][$index],
-            'sabado' => strtoupper($validated['sab'][$index]),
+            'sabado' => $validated['sab'][$index] ?  strtoupper(str_replace('-', '', $validated['sab'][$index])):strtoupper($validated['sab'][$index]),
             'extSabado' => $validated['extra_sab'][$index],
-            'domingo' => strtoupper($validated['dom'][$index]),
+            'domingo' =>$validated['dom'][$index] ?  strtoupper(str_replace('-', '', $validated['dom'][$index])): strtoupper($validated['dom'][$index]),
             'extDomingo' => $validated['extra_dom'][$index],
             'extras' => $validated['extra_lun'][$index] + $validated['extra_mar'][$index] + $validated['extra_mie'][$index] + $validated['extra_jue'][$index] + $validated['extra_vie'][$index] + $validated['extra_sab'][$index] + $validated['extra_dom'][$index],
         ];
