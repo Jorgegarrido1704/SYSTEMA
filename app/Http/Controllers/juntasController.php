@@ -1764,13 +1764,12 @@ class juntasController extends Controller
                 }
             }
             $buscarDatos[$i][15] = $rows->ids;
-            if(substr($rows->rev, 0, 4) == 'PPAP'){
+            if (substr($rows->rev, 0, 4) == 'PPAP') {
                 $buscarDatos[$i][16] = 'PPAP';
-            } elseif(substr($rows->rev, 0, 4) == 'PRIM'){
+            } elseif (substr($rows->rev, 0, 4) == 'PRIM') {
                 $buscarDatos[$i][16] = 'PRIM';
             } else {
                 $buscarDatos[$i][16] = '';
-
             }
 
 
@@ -2040,53 +2039,54 @@ class juntasController extends Controller
     {
         $accidente = '61928 REV B.pdf';
         $today = date('Y-m-d');
-        $genero=$tipoTrabajador=[0,0];
+        $genero = $tipoTrabajador = [0, 0];
         $month = date('Y-m');
 
 
-        $total = $aus= $falt= $promaus= 0;
-        $dias=['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
-            $datoGeneros = DB::table('personalberg')
-            ->select('Gender','typeWorker')
+        $total = $aus = $falt = $promaus = 0;
+        $dias = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
+        $datoGeneros = DB::table('personalberg')
+            ->select('Gender', 'typeWorker')
             ->get();
-            foreach ($datoGeneros as $datoGenero){
-                if($datoGenero->Gender == 'H'){
-                    $genero[1]++;
-                }else if($datoGenero->Gender == 'M'){
-                    $genero[0]++;
-                }
-                if($datoGenero->typeWorker == 'Directo'){
-                    $tipoTrabajador[0]++;
-                }else if($datoGenero->typeWorker == 'Indirecto'){
-                    $tipoTrabajador[1]++;
-                }
-                $total++;}
-            $selectDia=Carbon::now()->dayOfWeek;
-            $diaActual = $dias[$selectDia-1];
-                $week = Carbon::now()->weekOfYear;
+        foreach ($datoGeneros as $datoGenero) {
+            if ($datoGenero->Gender == 'H') {
+                $genero[1]++;
+            } else if ($datoGenero->Gender == 'M') {
+                $genero[0]++;
+            }
+            if ($datoGenero->typeWorker == 'Directo') {
+                $tipoTrabajador[0]++;
+            } else if ($datoGenero->typeWorker == 'Indirecto') {
+                $tipoTrabajador[1]++;
+            }
+            $total++;
+        }
+        $selectDia = Carbon::now()->dayOfWeek;
+        $diaActual = $dias[$selectDia - 1];
+        $week = Carbon::now()->weekOfYear;
 
-                $faltantes=[];
-       $ausentismos = DB::connection('rrhh')
-    ->table('rotacion')
-    ->whereMonth('fecha_rotacion', Carbon::now()->month)
-   ->whereYear('fecha_rotacion', Carbon::now()->year)
-   // ->where('fecha_rotacion', 'LIKE', $month.'%')
-    ->get();
+        $faltantes = [];
+        $ausentismos = DB::connection('rrhh')
+            ->table('rotacion')
+            ->whereMonth('fecha_rotacion', Carbon::now()->month)
+            ->whereYear('fecha_rotacion', Carbon::now()->year)
+            // ->where('fecha_rotacion', 'LIKE', $month.'%')
+            ->get();
 
-                foreach ($ausentismos as $ausentismo) {
-        $aus += (int) $ausentismo->assistencia;
-        $aus += (int) $ausentismo->vacaciones;
-        $aus += (int) $ausentismo->incapacidad;
-        $falt += (int) $ausentismo->faltas;
-        $aus += (int) $ausentismo->permisos_gose;
-        $aus += (int) $ausentismo->permisos_sin_gose;
-        $aus += (int) $ausentismo->retardos;
-                }
-                if($aus == 0 && $falt == 0){
-                    $promaus = 0;
-                }else if($falt > 0){
-                    $promaus = round($falt/$aus,2);
-                }
+        foreach ($ausentismos as $ausentismo) {
+            $aus += (int) $ausentismo->assistencia;
+            $aus += (int) $ausentismo->vacaciones;
+            $aus += (int) $ausentismo->incapacidad;
+            $falt += (int) $ausentismo->faltas;
+            $aus += (int) $ausentismo->permisos_gose;
+            $aus += (int) $ausentismo->permisos_sin_gose;
+            $aus += (int) $ausentismo->retardos;
+        }
+        if ($aus == 0 && $falt == 0) {
+            $promaus = 0;
+        } else if ($falt > 0) {
+            $promaus = round($falt / $aus, 2);
+        }
 
 
 
@@ -2098,37 +2098,37 @@ class juntasController extends Controller
             ->table('rotacion')
             ->where('fecha_rotacion', '=', $today)
             ->first();
-            if (!$rotacion) {
-                $rotacion = (object) [
-                    'assistencia' => 0,
-                    'faltas' => 0,
-                    'incapacidad' => 0,
-                    'permisos_gose' => 0,
-                    'permisos_sin_gose' => 0,
-                    'vacaciones' => 0
-                ];
-            }
-
-            $restroFaltantes = DB::table('assistence')
-    ->select('lider',$diaActual)
-    ->where('week', '=', $week)
-    ->get();
-    foreach ($restroFaltantes as $faltante) {
-        if($faltante->$diaActual == '-'){
-
-        if(in_array($faltante->lider, $faltantes)){
-            continue;
-        }else{
-         $faltantes[] = $faltante->lider;
+        if (!$rotacion) {
+            $rotacion = (object) [
+                'assistencia' => 0,
+                'faltas' => 0,
+                'incapacidad' => 0,
+                'permisos_gose' => 0,
+                'permisos_sin_gose' => 0,
+                'vacaciones' => 0
+            ];
         }
-    }
-    }
 
-            $faltan= $total-($rotacion->assistencia+$rotacion->faltas+$rotacion->incapacidad+$rotacion->permisos_gose+$rotacion->permisos_sin_gose+$rotacion->vacaciones);
-        $registrosDeAsistencia =[$rotacion->assistencia, $rotacion->faltas, $rotacion->incapacidad, $rotacion->permisos_gose + $rotacion->permisos_sin_gose,$rotacion->vacaciones];
+        $restroFaltantes = DB::table('assistence')
+            ->select('lider', $diaActual)
+            ->where('week', '=', $week)
+            ->get();
+        foreach ($restroFaltantes as $faltante) {
+            if ($faltante->$diaActual == '-') {
+
+                if (in_array($faltante->lider, $faltantes)) {
+                    continue;
+                } else {
+                    $faltantes[] = $faltante->lider;
+                }
+            }
+        }
+
+        $faltan = $total - ($rotacion->assistencia + $rotacion->faltas + $rotacion->incapacidad + $rotacion->permisos_gose + $rotacion->permisos_sin_gose + $rotacion->vacaciones);
+        $registrosDeAsistencia = [$rotacion->assistencia, $rotacion->faltas, $rotacion->incapacidad, $rotacion->permisos_gose + $rotacion->permisos_sin_gose, $rotacion->vacaciones];
 
 
 
-        return view('juntas.hr', ['promaus'=>$promaus,'diaActual'=>$diaActual,'tipoTrabajador'=>$tipoTrabajador,'faltantes'=>$faltantes,'faltan'=>$faltan,'genero' => $genero,'registrosDeAsistencia' => $registrosDeAsistencia ,'value' => session('user'), 'cat' => session('categoria'), 'accidente' => $accidente]);
+        return view('juntas.hr', ['promaus' => $promaus, 'diaActual' => $diaActual, 'tipoTrabajador' => $tipoTrabajador, 'faltantes' => $faltantes, 'faltan' => $faltan, 'genero' => $genero, 'registrosDeAsistencia' => $registrosDeAsistencia, 'value' => session('user'), 'cat' => session('categoria'), 'accidente' => $accidente]);
     }
 }

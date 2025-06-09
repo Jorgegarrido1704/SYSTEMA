@@ -31,4 +31,19 @@ class workScreduleModel extends Model
 
     public $timestamps = false;
 
+    public static function getWorkSchedule()
+    {
+        return workScreduleModel::all();
+    }
+
+    public static function getDatesWorks($pn,$rev)
+    {
+        return workScreduleModel::where('pn', $pn)->where('WorkRev', $rev)->first();
+    }
+    public static function getWorkScheduleStatus()
+    {
+        return workScreduleModel::where('status', '!=', 'Completed' )->get();
+    }
+
+
 }
