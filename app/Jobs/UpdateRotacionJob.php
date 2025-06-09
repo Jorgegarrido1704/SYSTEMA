@@ -40,6 +40,7 @@ class UpdateRotacionJob implements ShouldQueue
       $registroAssitenceDailyJob =  Db::table('assistence')
         ->select($days[$dayNumber])
         ->where('week', '=', $week)
+        ->orderBy($days[$dayNumber], 'desc')
         ->get();
         foreach ($registroAssitenceDailyJob as $registro) {
             if ($registro->{$days[$dayNumber]} == 'V') {
