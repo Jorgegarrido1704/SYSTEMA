@@ -2105,7 +2105,8 @@ class juntasController extends Controller
                 'incapacidad' => 0,
                 'permisos_gose' => 0,
                 'permisos_sin_gose' => 0,
-                'vacaciones' => 0
+                'vacaciones' => 0,
+                 'retardos' => 0
             ];
         }
 

@@ -30,7 +30,9 @@ class rotacionModel extends Model
         'permisos_gose' => ['integer', 'max:6'],
         'permisos_sin_gose' => ['integer', 'max:6'],
         'incapacidad' => ['integer', 'max:6'],
-        'estado' => 'string'
+        'estado' => 'string',
+        'retardos' => ['integer', 'max:4'],
+
     ];
     protected $keyType = 'integer';
     public $incrementing = true;
@@ -40,7 +42,10 @@ class rotacionModel extends Model
         'vacaciones' => 0,
         'faltas' => 0,
         'permisos_gose' => 0,
-        'permisos_sin_gose' => 0
+        'permisos_sin_gose' => 0,
+        'incapacidad' => 0,
+        'retardos' => 0
+
     ];
     protected $hidden = [
         'created_at',

@@ -39,10 +39,15 @@ const rhAssistence = new Chart(assist, {
             },
         ],
     },
-    options: {
-         responsive: true,
+   options: {
+        responsive: true,
         maintainAspectRatio: false,
         scales: {
+            x: {
+                grid: {
+                    display: false
+                }
+            },
             y: {
                 min: 0,
                 max: 250,
@@ -52,12 +57,14 @@ const rhAssistence = new Chart(assist, {
                 title: {
                     display: true,
                     text: 'Diversidad (0–25)'
+                },
+                grid: {
+                    display: false 
                 }
             }
         }
     }
 });
-
 //rotacion
 const rota0 = new Chart(document.getElementById("rotation0"), {
     type: "doughnut",
