@@ -10,7 +10,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
- 
+
     <title>CVTS</title>
 
     <!-- Custom fonts for this template-->
@@ -99,6 +99,8 @@
     </div>
 
     <!-- Bootstrap core JavaScript-->
+
+
     <script src="{{ asset('/dash/vendor/jquery/jquery.min.js')}}"></script>
     <script src="{{ asset('/dash/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
         <!-- Core plugin JavaScript -->

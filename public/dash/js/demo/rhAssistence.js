@@ -1,18 +1,24 @@
+const assist = document.getElementById("assistence").getContext("2d");
 
-
-const assist = document.getElementById("assistence");
 const registroInicidencia = Object.values(registros);
 const generos = Object.values(genero);
 const tipoTrabajadors = Object.values(tipoTrabajador);
-const registroVacaciones = [10, 20, 15, 25, 30, 20, 15, 10, 5,20, 30, 80,90];
+const registroVacaciones = [10, 20, 15, 25, 30, 20, 15, 10, 5, 20, 30, 80, 90];
 const promau = promaus || 0; // Default to 0 if promaus is not defined
 
-console.log(promau);
+//console.log(promau);
 
 const rhAssistence = new Chart(assist, {
     type: "bar",
     data: {
-        labels: ["Asistencia", "Faltas","Incapacidad", "Permisos", "Vacaciones","Retardos"],
+        labels: [
+            "Asistencia",
+            "Faltas",
+            "Incapacidad",
+            "Permisos",
+            "Vacaciones",
+            "Retardos",
+        ],
         datasets: [
             {
                 label: "Incidences ",
@@ -39,37 +45,69 @@ const rhAssistence = new Chart(assist, {
             },
         ],
     },
-   options: {
+    options: {
         responsive: true,
         maintainAspectRatio: false,
+        layout: {
+
+        },
+        plugins: {
+            datalabels: {
+                anchor: "end",
+                align: "top",
+                formatter: function (value) {
+                    return value;
+                },
+                color: "#000",
+                font: {
+                    weight: "bold",
+                },
+            },
+
+            legend: {
+                position: "top",
+            },
+            title: {
+                display: true,
+                text: "Asistencia",
+            },
+        },
+        xAxes: [
+            {
+                gridLines: {
+                    display: false,
+                },
+            },
+        ],
+
         scales: {
             x: {
                 grid: {
-                    display: false
-                }
+                    display: false,
+                },
             },
             y: {
                 min: 0,
                 max: 250,
                 ticks: {
-                    stepSize: 5
+                    stepSize: 5,
                 },
                 title: {
                     display: true,
-                    text: 'Diversidad (0–25)'
+                    text: "Diversidad (0–25)",
                 },
                 grid: {
-                    display: false 
-                }
-            }
-        }
-    }
+                    display: false,
+                },
+            },
+        },
+    },
 });
 //rotacion
 const rota0 = new Chart(document.getElementById("rotation0"), {
     type: "doughnut",
     options: {
-         responsive: true,
+        responsive: true,
         maintainAspectRatio: false,
         plugins: {
             legend: {
@@ -82,32 +120,26 @@ const rota0 = new Chart(document.getElementById("rotation0"), {
         },
     },
     data: {
-        labels: ["Max rotacion: "+3+"%", "Rotacion: "+0.5+"%"],
+        labels: ["Max rotacion: " + 3 + "%", "Rotacion: " + 0.5 + "%"],
         datasets: [
             {
                 label: "Rotación de personal",
-                data: [3,0.5],
+                data: [3, 0.5],
                 backgroundColor: [
                     "rgba(2, 164, 75, 0.25)",
                     "rgba(205, 2, 2, 0.25)",
-
                 ],
-                borderColor: [
-                    "rgb(3, 204, 43)",
-                    "rgb(168, 0, 0)",
-
-                ],
+                borderColor: ["rgb(3, 204, 43)", "rgb(168, 0, 0)"],
                 borderWidth: 1,
             },
         ],
     },
-
 });
-//diersidad
+//diversidad
 const rota1 = new Chart(document.getElementById("rotation1"), {
     type: "doughnut",
     options: {
-         responsive: true,
+        responsive: true,
         maintainAspectRatio: false,
         plugins: {
             legend: {
@@ -120,7 +152,7 @@ const rota1 = new Chart(document.getElementById("rotation1"), {
         },
     },
     data: {
-        labels: ["Mujeres: "+generos[0], "Hombres: "+generos[1]],
+        labels: ["Mujeres: " + generos[0], "Hombres: " + generos[1]],
         datasets: [
             {
                 label: "Rotación de personal",
@@ -129,22 +161,44 @@ const rota1 = new Chart(document.getElementById("rotation1"), {
                     "rgba(249, 41, 176, 0.21)",
                     "rgba(3, 50, 204, 0.21)",
                 ],
-                borderColor: [
-                    "rgba(249, 41, 176, 1)",
-                    "rgba(3, 50, 204, 1)",
-                ],
+                borderColor: ["rgba(249, 41, 176, 1)", "rgba(3, 50, 204, 1)"],
                 borderWidth: 1,
             },
         ],
     },
-
-
+     plugins: [
+        {
+            beforeDraw: (chart) => {
+                const ctx = chart.ctx;
+                ctx.save();
+                ctx.font = "bold 18px Arial";
+                ctx.fillStyle = "black";
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+                const total = chart.data.datasets[0].data.reduce(
+                    (a, b) => a + b,
+                    0
+                );
+                const centerX =
+                    chart.chartArea.left +
+                    (chart.chartArea.right - chart.chartArea.left) / 2;
+                const centerY =
+                    chart.chartArea.top +
+                    (chart.chartArea.bottom - chart.chartArea.top) / 2;
+                ctx.fillText(
+                    `total : ${( generos[0] + generos[1])}`,
+                    centerX,
+                    centerY
+                );
+            },
+        },
+    ],
 });
 //ausentismo
 const rota2 = new Chart(document.getElementById("rotation2"), {
     type: "doughnut",
     options: {
-         responsive: true,
+        responsive: true,
         maintainAspectRatio: false,
         plugins: {
             legend: {
@@ -157,26 +211,20 @@ const rota2 = new Chart(document.getElementById("rotation2"), {
         },
     },
     data: {
-        labels: ["Max ausentismo: "+3+"%", "Ausentismo: "+promau+"%"],
+        labels: ["Max ausentismo: " + 3 + "%", "Ausentismo: " + promau + "%"],
         datasets: [
             {
                 label: "Ausentismo de personal",
-                data: [3,promau],
-               backgroundColor: [
+                data: [3, promau],
+                backgroundColor: [
                     "rgba(2, 164, 75, 0.35)",
                     "rgba(205, 2, 2, 0.35)",
-
                 ],
-                borderColor: [
-                    "rgb(3, 204, 43)",
-                    "rgb(168, 0, 0)",
-                ],
+                borderColor: ["rgb(3, 204, 43)", "rgb(168, 0, 0)"],
                 borderWidth: 1,
             },
-
         ],
     },
-
 });
 //ratios
 const rota3 = new Chart(document.getElementById("rotation3"), {
@@ -195,86 +243,109 @@ const rota3 = new Chart(document.getElementById("rotation3"), {
         },
     },
     data: {
-        labels: ["Directos:"+tipoTrabajadors[0], "Indirectos:"+tipoTrabajadors[1]],
+        labels: [
+            "Directos:" + tipoTrabajadors[0],
+            "Indirectos:" + tipoTrabajadors[1],
+        ],
         datasets: [
             {
                 label: "Ratios de personal",
                 data: tipoTrabajadors,
-               backgroundColor: [
+                backgroundColor: [
                     "rgba(2, 164, 75, 0.21)",
                     "rgba(255, 0, 0, 0.21)",
-
                 ],
-                borderColor: [
-                    "rgb(3, 204, 43)",
-                    "rgb(168, 0, 0)",
-                ],
+                borderColor: ["rgb(3, 204, 43)", "rgb(168, 0, 0)"],
                 borderWidth: 1,
             },
-
         ],
     },
 
-    plugins: [{
-        beforeDraw: (chart) => {
-            const ctx = chart.ctx;
-            ctx.save();
-            ctx.font = "bold 18px Arial";
-            ctx.fillStyle = "black";
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-            const total = chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
-            const centerX = chart.chartArea.left + (chart.chartArea.right - chart.chartArea.left) / 2;
-            const centerY = chart.chartArea.top + (chart.chartArea.bottom - chart.chartArea.top) / 2;
-            ctx.fillText(`${(tipoTrabajadors[0]/tipoTrabajadors[1]).toFixed(2)}%`, centerX, centerY);
-        }
-    }],
-
+    plugins: [
+        {
+            beforeDraw: (chart) => {
+                const ctx = chart.ctx;
+                ctx.save();
+                ctx.font = "bold 18px Arial";
+                ctx.fillStyle = "black";
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+                const total = chart.data.datasets[0].data.reduce(
+                    (a, b) => a + b,
+                    0
+                );
+                const centerX =
+                    chart.chartArea.left +
+                    (chart.chartArea.right - chart.chartArea.left) / 2;
+                const centerY =
+                    chart.chartArea.top +
+                    (chart.chartArea.bottom - chart.chartArea.top) / 2;
+                ctx.fillText(
+                    `${(tipoTrabajadors[0] / tipoTrabajadors[1]).toFixed(2)}%`,
+                    centerX,
+                    centerY
+                );
+            },
+        },
+    ],
 });
 //vacaciones
 const vacations = new Chart(document.getElementById("vacations"), {
-     type: "bar",
+    type: "bar",
     data: {
-        labels: [ "Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+        labels: [
+            "Ene",
+            "Feb",
+            "Mar",
+            "Abr",
+            "May",
+            "Jun",
+            "Jul",
+            "Ago",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dic",
+        ],
         datasets: [
             {
                 label: "Vacaciones por mes",
-                backgroundColor:  "rgba(3, 50, 204, 0.5)",
+                backgroundColor: "rgba(3, 50, 204, 0.5)",
                 data: registroVacaciones,
             },
         ],
     },
     options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                datalabels: {
-                    anchor: 'end',
-                    align: 'top',
-                    formatter: function(value) {
-                        return value ;
-                    },
-                    color: '#000',
-                    font: {
-                        weight: 'bold'
-                    }
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            datalabels: {
+                anchor: "end",
+                align: "top",
+                formatter: function (value) {
+                    return value;
                 },
-                legend: {
-                    position: "bottom",
+                color: "#000",
+                font: {
+                    weight: "bold",
                 },
-                title: {
-                    display: true,
-                    text: "Vacaciones de personal"
-                }
             },
-
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        stepSize: 20
-                    }
-                }
-            }
+            legend: {
+                position: "bottom",
+            },
+            title: {
+                display: true,
+                text: "Vacaciones de personal",
+            },
         },
-    });
+
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    stepSize: 20,
+                },
+            },
+        },
+    },
+});

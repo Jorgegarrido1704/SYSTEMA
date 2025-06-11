@@ -21,6 +21,7 @@ class rrhhController extends Controller
                 $diasRegistro=['','','','','',''];
             }else{
                 $diasRegistro=['readonly','readonly','readonly','readonly','readonly'];
+                $diasRegistros=['none','none','none','none','none'];
             }
                 $datosRHWEEK = assistence::leader($value,$cat)->OrderBy('lider', 'desc')->get();
 
@@ -28,12 +29,14 @@ class rrhhController extends Controller
 
              if($diaNum == 5 or $diaNum == 6 or $diaNum == 7){
                  $diasRegistro[4]='';
+                 $diasRegistros[4]='';
 
              }else{
                  $diasRegistro[$diaNum-1]='';
+                 $diasRegistros[$diaNum-1]='';
              }
 
-        return view('juntas/hrDocs/rrhhDashBoard',['diasRegistro'=>$diasRegistro,'datosRHWEEK'=>$datosRHWEEK,'value'=>$value,'cat'=>$cat]);
+        return view('juntas/hrDocs/rrhhDashBoard',['diasRegistros'=>$diasRegistros,'diasRegistro'=>$diasRegistro,'datosRHWEEK'=>$datosRHWEEK,'value'=>$value,'cat'=>$cat]);
 
 }
 

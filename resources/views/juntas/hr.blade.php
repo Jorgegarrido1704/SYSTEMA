@@ -2,6 +2,9 @@
 
 @section('contenido')
 <div class="d-sm-flex align-items-center justify-content-between mb-4">  </div>
+    <!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
 <style>
     #fullscreenPreview {
     transition: opacity 5s ease-in-out;
@@ -21,20 +24,53 @@
 </script>
 <div class="row">
     <!-- Asistencia -->
-    <div class="col-lg-4 col-md-4 mb-4">
+    <div class="col-lg-5 col-md-5 mb-4">
         <div class="card shadow mb-5">
             <div class="card-header py-3">
                 <h5 class="m-1 font-weight-bold text-primary">Today assistence {{ date('Y-m-d') }} Faltan por registro: {{ $faltan }}</h5>
             </div>
             <div class="card-body" style=" max-height: 450px;">
-                <canvas id="assistence" style=" height: 400px;"></canvas>
+                <div class="row">
+                    <div class="col-lg-4 col-md-4">
+                        <table class="table table-borderless item-center">
+                           <tr>
+                            <td class="font-weight-bold text-success font-size-24">Asistencia</td>
+                            <td class="font-weight-bold font-size-24">{{$registrosDeAsistencia[0]}}</td>
+                           </tr>
+                           <tr>
+                            <td class="font-weight-bold text-danger font-size-24">Faltas </td>
+                            <td class="font-weight-bold font-size-24">{{$registrosDeAsistencia[1]}}</td>
+                           </tr>
+                           <tr>
+                            <td class="font-weight-bold text-warning font-size-24">Incapacidad</td>
+                            <td class="font-weight-bold font-size-24">{{$registrosDeAsistencia[2]}}</td>
+                           </tr>
+                           <tr>
+                            <td class="font-weight-bold text-primary font-size-24">Permisos</td>
+                            <td class="font-weight-bold font-size-24">{{$registrosDeAsistencia[3]}}</td>
+                           </tr>
+                           <tr>
+                            <td class="font-weight-bold text-primary font-size-24">Vacaciones</td>
+                            <td class="font-weight-bold font-size-24">{{$registrosDeAsistencia[4]}}</td>
+                           </tr>
+                           <tr>
+                            <td class="font-weight-bold text-danger font-size-24">Retardos</td>
+                            <td class="font-weight-bold font-size-24">{{$registrosDeAsistencia[5]}}</td>
+                           </tr>
+                        </table>
+                    </div>
+                    <div class="col-lg-8 col-md-8">
+                        <canvas id="assistence" style=" height: 400px;"></canvas>
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>
 
 
     <!-- Vacaciones -->
-    <div class="col-lg-8 lg-8 mb-4 ">
+    <div class="col-lg-7 lg-7 mb-4 ">
         <div class="card shadow mb-5">
             <div class="card-header py-3">
                 <h5 class="m-1 font-weight-bold text-primary">Vacaciones en 2025</h5>
