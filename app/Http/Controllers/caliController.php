@@ -103,7 +103,7 @@ class caliController extends generalController
                 $info = $rowInfo->info;
                 $qty = $rowInfo->qty;
             }
-             if($pn=="185-4147 " or $pn=="199-4942" or $pn=="199-6660  " or $pn=="199-3871 " or $pn=="189-6256" or $pn=="190-3559" or $pn=="185-4142"){
+             if($pn=="185-4147" or $pn=="199-4942" or $pn=="199-6660" or $pn=="199-3871" or $pn=="189-6256" or $pn=="190-3559" or $pn=="185-4142"){
                 $cambioestados=[1,'readonly',''];
              }else{
                 $cambioestados=[100,'','readonly'];
