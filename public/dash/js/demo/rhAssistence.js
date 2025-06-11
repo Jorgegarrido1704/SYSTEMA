@@ -134,6 +134,33 @@ const rota0 = new Chart(document.getElementById("rotation0"), {
             },
         ],
     },
+     plugins: [
+        {
+            beforeDraw: (chart) => {
+                const ctx = chart.ctx;
+                ctx.save();
+                ctx.font = "bold 19px Arial";
+                ctx.fillStyle = "black";
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+                const total = chart.data.datasets[0].data.reduce(
+                    (a, b) => a + b,
+                    0
+                );
+                const centerX =
+                    chart.chartArea.left +
+                    (chart.chartArea.right - chart.chartArea.left) / 2;
+                const centerY =
+                    chart.chartArea.top +
+                    (chart.chartArea.bottom - chart.chartArea.top) / 2;
+                ctx.fillText(
+                    `0.05%`,
+                    centerX,
+                    centerY
+                );
+            },
+        },
+    ],
 });
 //diversidad
 const rota1 = new Chart(document.getElementById("rotation1"), {
@@ -171,7 +198,7 @@ const rota1 = new Chart(document.getElementById("rotation1"), {
             beforeDraw: (chart) => {
                 const ctx = chart.ctx;
                 ctx.save();
-                ctx.font = "bold 18px Arial";
+                ctx.font = "bold 20px Arial";
                 ctx.fillStyle = "black";
                 ctx.textAlign = "center";
                 ctx.textBaseline = "middle";
@@ -186,7 +213,7 @@ const rota1 = new Chart(document.getElementById("rotation1"), {
                     chart.chartArea.top +
                     (chart.chartArea.bottom - chart.chartArea.top) / 2;
                 ctx.fillText(
-                    `total : ${( generos[0] + generos[1])}`,
+                    `${( generos[0] + generos[1])}`,
                     centerX,
                     centerY
                 );
@@ -225,6 +252,33 @@ const rota2 = new Chart(document.getElementById("rotation2"), {
             },
         ],
     },
+    plugins: [
+        {
+            beforeDraw: (chart) => {
+                const ctx = chart.ctx;
+                ctx.save();
+                ctx.font = "bold 19px Arial";
+                ctx.fillStyle = "black";
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+                const total = chart.data.datasets[0].data.reduce(
+                    (a, b) => a + b,
+                    0
+                );
+                const centerX =
+                    chart.chartArea.left +
+                    (chart.chartArea.right - chart.chartArea.left) / 2;
+                const centerY =
+                    chart.chartArea.top +
+                    (chart.chartArea.bottom - chart.chartArea.top) / 2;
+                ctx.fillText(
+                    `${( promau)}%`,
+                    centerX,
+                    centerY
+                );
+            },
+        },
+    ],
 });
 //ratios
 const rota3 = new Chart(document.getElementById("rotation3"), {
