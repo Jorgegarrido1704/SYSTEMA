@@ -57,85 +57,18 @@
                                 </tr>
                             </thead>
                             <tbody>
-
-
-
+                                @foreach ($registros as $registro)
                                 <tr>
-                                    <th>Cutting</th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
+                                    <td> {{ $registro->work_routing }} </td>
+                                    <td> {{ $registro->work_description }} </td>
+                                    <td> {{ $registro->posible_stations }} </td>
+                                    <td> {{ $registro->setUp_routing	 }} </td>
+                                    <td> {{ $registro->QtyTimes	 }} </td>
+                                    <td> {{ $registro->setUp_routing}} </td>
 
                                 </tr>
-                                <tr>
-                                    <th>Work Center</th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                </tr>
-                                <tr>
-                                    <th>Time</th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                </tr>
-                                <tr>
-                                    <th>Operation</th>
-                                   <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                </tr>
-                                <tr>
-                                    <th>Quantity</th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                </tr>
+
+                                @endforeach
                             </tbody>
                         </table>
                     </div>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\regPar;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use App\Models\routingModel;
 
 
 class AdminSupControlloer extends Controller
@@ -213,21 +214,25 @@ class AdminSupControlloer extends Controller
     public function vsm_schedule()
     {
         $steps = [
-        ['name' => 'Customer Order', 'label' => 'Trigger', 'order' => 1],
-        ['name' => 'Planning', 'label' => '1 day', 'order' => 2],
-        ['name' => 'Cutting', 'label' => '1 day', 'order' => 3],
-        ['name' => 'Terminals', 'label' => '1 day', 'order' => 4],
-        ['name' => 'Sub-Assembly', 'label' => '1 day', 'order' => 5],
-        ['name' => 'Assembly', 'label' => '1 day', 'order' => 6],
-        ['name' => 'Looming', 'label' => '1 day', 'order' => 7],
-        ['name' => 'Testing', 'label' => '1 day', 'order' => 8],
-        ['name' => 'Packing', 'label' => '1 day', 'order' => 9],
-        ['name' => 'Shipping', 'label' => '1 day', 'order' => 10],
-    ];
-        return view('scheduleWork.ValueStreapMap', ['steps' => $steps,'value' => session('user'), 'cat' => session('categoria')]);
+            ['name' => 'Customer Order', 'label' => 'Trigger', 'order' => 1],
+            ['name' => 'Planning', 'label' => '1 day', 'order' => 2],
+            ['name' => 'Cutting', 'label' => '1 day', 'order' => 3],
+            ['name' => 'Terminals', 'label' => '1 day', 'order' => 4],
+            ['name' => 'Sub-Assembly', 'label' => '1 day', 'order' => 5],
+            ['name' => 'Assembly', 'label' => '1 day', 'order' => 6],
+            ['name' => 'Looming', 'label' => '1 day', 'order' => 7],
+            ['name' => 'Testing', 'label' => '1 day', 'order' => 8],
+            ['name' => 'Packing', 'label' => '1 day', 'order' => 9],
+            ['name' => 'Shipping', 'label' => '1 day', 'order' => 10],
+        ];
+        return view('scheduleWork.ValueStreapMap', ['steps' => $steps, 'value' => session('user'), 'cat' => session('categoria')]);
     }
     public function timeLine()
     {
-        return view('scheduleWork.timeLine', ['value' => session('user'), 'cat' => session('categoria')]);
+
+        $registros =routingModel::Search('1001489409');
+
+
+        return view('scheduleWork.timeLine', ['registros' => $registros	,'value' => session('user'), 'cat' => session('categoria')]);
     }
 }
