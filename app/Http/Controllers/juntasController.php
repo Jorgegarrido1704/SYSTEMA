@@ -2115,7 +2115,7 @@ class juntasController extends Controller
             ->where('week', '=', $week)
             ->get();
         foreach ($restroFaltantes as $faltante) {
-            if ($faltante->$diaActual == '-') {
+            if ($faltante->$diaActual == '-' or $faltante->$diaActual == '') {
 
                 if (in_array($faltante->lider, $faltantes)) {
                     continue;
