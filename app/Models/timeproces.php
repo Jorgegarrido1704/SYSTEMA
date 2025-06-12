@@ -27,9 +27,10 @@ class timeproces extends Model
     ];
     public $timestamps = false;
 
-    
+
     public function scopeSearch($query, $search)
     {
         return $query->where('partnum', '=',   $search );
     }
+    
 }
