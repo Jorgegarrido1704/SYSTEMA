@@ -826,7 +826,7 @@ class juntasController extends Controller
                 $datosT[$rowDatos3->pn][3] = $rowDatos3->pn;
             }
         }
-        //quality Q
+        //calidad Q
         $Qdays = $colorQ = $labelQ = [];
         $maxDays = cal_days_in_month(CAL_GREGORIAN, date('m'), date('Y'));
         for ($i = 0; $i < $maxDays; $i++) {
@@ -835,7 +835,7 @@ class juntasController extends Controller
         }
         $todayD = date('d');
         for ($i = 0; $i < $todayD; $i++)
-            if ($labelQ[$i] == 15 or $labelQ[$i] == 21 or $labelQ[$i] == 35 or $labelQ[$i] == 36) {
+            if ($labelQ[$i] == 35 or $labelQ[$i] == 41 or $labelQ[$i] == 445 or $labelQ[$i] == 66) {
                 $colorQ[$i] = 'red';
             } else {
                 $colorQ[$i] = 'green';
