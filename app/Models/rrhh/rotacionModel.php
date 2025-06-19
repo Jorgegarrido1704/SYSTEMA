@@ -29,7 +29,7 @@ class rotacionModel extends Model
         'estado' => 'string',
         'retardos' => ['integer', 'max:4'],
         'suspension'  => ['integer', 'max:4'],
-         'practicantes'  => ['integer', 'max:4'],
+         'practicantes'  => ['integer', 'max:4']
 
     ];
     protected $keyType = 'integer';
