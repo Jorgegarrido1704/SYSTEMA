@@ -15,6 +15,13 @@
    font-style: oblique;
    font: bold;
     }
+    .text-wine {
+  color: #722f37; /* ejemplo de color vino */
+}
+.text-gray {
+  color: #473e3f; /* ejemplo de color vino */
+}
+
 </style>
 <script>
     const registros = @json($registrosDeAsistencia);
@@ -56,6 +63,14 @@
                            <tr>
                             <td class="font-weight-bold text-danger font-size-24">Retardos</td>
                             <td class="font-weight-bold font-size-24">{{$registrosDeAsistencia[5]}}</td>
+                           </tr>
+                           <tr>
+                            <td class="font-weight-bold text-wine font-size-24">Suspension</td>
+                            <td class="font-weight-bold font-size-24">{{$registrosDeAsistencia[6]}}</td>
+                           </tr>
+                           <tr>
+                            <td class="font-weight-bold text-gray font-size-24">Practicantes</td>
+                            <td class="font-weight-bold font-size-24">{{$registrosDeAsistencia[7]}}</td>
                            </tr>
                         </table>
                     </div>

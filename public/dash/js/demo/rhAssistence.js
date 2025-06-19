@@ -18,6 +18,8 @@ const rhAssistence = new Chart(assist, {
             "Permisos",
             "Vacaciones",
             "Retardos",
+            "Suspensión",
+            "Practicantes",
         ],
         datasets: [
             {
@@ -29,6 +31,10 @@ const rhAssistence = new Chart(assist, {
                     "rgba(253, 207, 71, 0.84)",
                     "rgba(3, 50, 204, 0.5)",
                     "rgba(245, 13, 129, 0.35)",
+                    "rgba(100, 9, 9, 0.81)",
+                    "rgba(103, 95, 95, 0.35)",
+
+
                 ],
                 borderColor: [
                     "rgba(76, 175, 80, 1)",
@@ -37,6 +43,8 @@ const rhAssistence = new Chart(assist, {
                     "rgba(253, 207, 71, 1)",
                     "rgba(3, 50, 204, 1)",
                     "rgba(245, 13, 129, 1)",
+                    "rgb(67, 18, 18)",
+                    "rgba(103, 95, 95, 1)",
                 ],
                 borderWidth: 1,
                 borderSkipped: false,

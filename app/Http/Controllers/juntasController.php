@@ -2081,17 +2081,15 @@ class juntasController extends Controller
             $aus += (int) $ausentismo->permisos_gose;
             $aus += (int) $ausentismo->permisos_sin_gose;
             $aus += (int) $ausentismo->retardos;
+            $aus += (int) $ausentismo->suspension;
+            $aus += (int) $ausentismo->practicantes;
+
         }
         if ($aus == 0 && $falt == 0) {
             $promaus = 0;
         } else if ($falt > 0) {
             $promaus = round($falt / $aus, 2);
         }
-
-
-
-
-
 
 
         $rotacion = DB::connection('rrhh')
@@ -2106,7 +2104,9 @@ class juntasController extends Controller
                 'permisos_gose' => 0,
                 'permisos_sin_gose' => 0,
                 'vacaciones' => 0,
-                 'retardos' => 0
+                 'retardos' => 0,
+                'suspension' => 0,
+                'practicantes' => 0
             ];
         }
 
@@ -2126,7 +2126,9 @@ class juntasController extends Controller
         }
 
         $faltan = $total - ($rotacion->assistencia + $rotacion->faltas + $rotacion->incapacidad + $rotacion->permisos_gose + $rotacion->permisos_sin_gose + $rotacion->vacaciones + $rotacion->retardos);
-        $registrosDeAsistencia = [$rotacion->assistencia, $rotacion->faltas, $rotacion->incapacidad, $rotacion->permisos_gose + $rotacion->permisos_sin_gose, $rotacion->vacaciones, $rotacion->retardos];
+        $registrosDeAsistencia = [$rotacion->assistencia, $rotacion->faltas, $rotacion->incapacidad,
+        $rotacion->permisos_gose + $rotacion->permisos_sin_gose, $rotacion->vacaciones, $rotacion->retardos,
+        $rotacion->suspension, $rotacion->practicantes];
 
 
 

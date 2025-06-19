@@ -21,7 +21,7 @@ class rrhhController extends Controller
                 $diasRegistro=['','','','','',''];
             }else{
                 $diasRegistro=['readonly','readonly','readonly','readonly','readonly'];
-                $diasRegistros=['none','none','none','none','none'];
+                $diasRegistros=['','','','',''];
             }
                 $datosRHWEEK = assistence::leader($value,$cat)->OrderBy('lider', 'desc')->get();
 

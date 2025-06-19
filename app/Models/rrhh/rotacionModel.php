@@ -14,15 +14,11 @@ class rotacionModel extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'id_rotacion' ,
-        'id_empleado',
-        'fecha_rotacion',
-        'motivo_rotacion',
-        'observaciones',
-        'estado'
+        'id_rotacion', 'assistencia', 'fecha_rotacion', 'vacaciones', 'faltas',
+        'permisos_gose', 'permisos_sin_gose', 'incapacidad', 'estado', 'retardos', 'suspension', 'practicantes'
     ];
     protected $casts = [
-        'id_rotacion' => 'string',
+        'id_rotacion' => 'integer',
         'assistencia' => ['integer', 'max:6'],
         'fecha_rotacion' => 'date',
         'vacaciones' => ['integer', 'max:6'],
@@ -32,6 +28,8 @@ class rotacionModel extends Model
         'incapacidad' => ['integer', 'max:6'],
         'estado' => 'string',
         'retardos' => ['integer', 'max:4'],
+        'suspension'  => ['integer', 'max:4'],
+         'practicantes'  => ['integer', 'max:4'],
 
     ];
     protected $keyType = 'integer';
@@ -44,7 +42,10 @@ class rotacionModel extends Model
         'permisos_gose' => 0,
         'permisos_sin_gose' => 0,
         'incapacidad' => 0,
-        'retardos' => 0
+        'retardos' => 0,
+        'suspension' => 0,
+        'practicantes' => 0
+
 
     ];
     protected $hidden = [
@@ -52,4 +53,7 @@ class rotacionModel extends Model
         'updated_at',
     ];
 
+    public function scopeDate($query, $date) {
+        return $query->where('fecha_rotacion', $date);
+    }
 }
