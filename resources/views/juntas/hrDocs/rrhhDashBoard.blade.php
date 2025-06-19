@@ -10,6 +10,7 @@
                 <div class="card shadow mb-5">
                     <div class="card-header py-3">
                         <h5 class="m-0 font-weight-bold text-primary">Modificaciones de Registos </h5>
+                        <button class="btn btn-primary" data-toggle="modal" data-target="#addModal" id="ad" ></button>
                     </div>
                 </div>
                     <div class="card-body" style="overflow-y: auto; " >
