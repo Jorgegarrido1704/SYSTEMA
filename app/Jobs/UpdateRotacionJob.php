@@ -57,7 +57,7 @@ class UpdateRotacionJob implements ShouldQueue
                 $assistencia++;
             }else if ($registro->{$days[$dayNumber]} == 'R') {
                 $retardos++;
-            }else if ($registro->{$days[$dayNumber]} == 'S') {
+            }else if ($registro->{$days[$dayNumber]} == 'SUS') {
                 $suspension++;
             }else if ($registro->{$days[$dayNumber]} == 'PCT') {
                 $practicantes++;
