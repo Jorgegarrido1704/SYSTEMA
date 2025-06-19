@@ -16,7 +16,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <h5 class="text-primary font-weight-bold text-center">OK = Asistencia F = Falta PSS = Permiso sin gose PCS = Permiso con gose  <br>
-                                    INC = Incapacidad V = Vacaciones R = Retardo  S = Suspension PCT = Practicante</h5>
+                                    INC = Incapacidad V = Vacaciones R = Retardo  SUS = Suspension PCT = Practicante</h5>
                             </div>
                         </div>
                         <br>
