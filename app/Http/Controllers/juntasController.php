@@ -2125,7 +2125,7 @@ class juntasController extends Controller
             }
         }
 
-        $faltan = $total - ($rotacion->assistencia + $rotacion->faltas + $rotacion->incapacidad + $rotacion->permisos_gose + $rotacion->permisos_sin_gose + $rotacion->vacaciones + $rotacion->retardos);
+        $faltan = $total - ($rotacion->assistencia + $rotacion->faltas + $rotacion->incapacidad + $rotacion->permisos_gose + $rotacion->permisos_sin_gose + $rotacion->vacaciones + $rotacion->retardos + $rotacion->suspension + $rotacion->practicantes);
         $registrosDeAsistencia = [$rotacion->assistencia, $rotacion->faltas, $rotacion->incapacidad,
         $rotacion->permisos_gose + $rotacion->permisos_sin_gose, $rotacion->vacaciones, $rotacion->retardos,
         $rotacion->suspension, $rotacion->practicantes];
