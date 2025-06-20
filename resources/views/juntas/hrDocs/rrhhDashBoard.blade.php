@@ -6,6 +6,18 @@
 <!-- First Period -->
 <div class="row">
     <div class="col-lg-12 col-lx-12 mb-4">
+        <style>
+#OK {background-color: rgba(76, 175, 80, 0.5); color: white;}
+#F{background-color: rgba(255, 47, 47, 0.75); color: white;}
+#PSS{background-color: rgba(237, 142, 1, 0.75); color: white;}
+#PCS{background-color: rgba(237, 142, 1, 0.8); color: white;}
+#INC{background-color: rgba(253, 207, 71, 0.84); color: white;}
+#V{background-color: rgba(73, 50, 204, 0.5); color: white;}
+#R{background-color: rgba(245, 13, 129, 0.35);color: white;}
+#SUS{background-color: rgba(100, 9, 9, 0.81); color: white;}
+#PCT{background-color: rgba(103, 95, 95, 0.35); color: black;}
+#empleado{background-color: rgba(255, 255, 255, 0.5); color: black; font-weight: bold; font-size: 16px;}
+        </style>
 
                 <div class="card shadow mb-5">
                     <div class="card-header py-3">
@@ -15,9 +27,29 @@
                 </div>
                     <div class="card-body" style="overflow-y: auto; " >
                         <div class="row">
+
                             <div class="col-md-12">
-                                <h5 class="text-primary font-weight-bold text-center">OK = Asistencia F = Falta PSS = Permiso sin gose PCS = Permiso con gose  <br>
-                                    INC = Incapacidad V = Vacaciones R = Retardo  SUS = Suspension PCT = Practicante</h5>
+                                  <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+
+                                    <th id="OK">OK = Asistencia</th>
+                                    <th id="F">F = Falta</th>
+                                    <th id="PSS">PSS = Permiso sin gose</th>
+                                    <th id="PCS">PCS = Permiso con gose</th>
+                                    <th id="INC">INC = Incapacidad</th>
+                                    </tr>
+                                    <tr>
+                                    <th id="V">V = Vacaciones</th>
+                                    <th id="R">R = Retardo</th>
+                                    <th id="SUS">SUS = Suspension</th>
+                                    <th id="PCT">PCT = Practicante</th>
+
+                                    </tr>
+                                </thead>
+                            </table>
+
+
                             </div>
                         </div>
                         <br>
@@ -46,20 +78,20 @@
                                                 <tr>
 
                                                     <form action="{{route('updateAsistencia')}}" method="GET">
-                                                    <td>{{$as['name']}}</td>
-                                                    <td><input type="text" style="max-width: 45px" name="lun[]" id="lun"   minlength="1" maxlength="3" value="{{$as['lunes']}}" {{ $diasRegistro[0] }} ></td>
+                                                    <td id="empleado">{{$as['name']}}</td>
+                                                    <td id="{{ $as['lunes'] }}"><input type="text" style="max-width: 45px" name="lun[]" id="lun"   minlength="1" maxlength="3" value="{{$as['lunes']}}" {{ $diasRegistro[0] }} ></td>
                                                     <td><input type="number" style="max-width: 45px" name="extra_lun[]" id="extra_lun" value="{{$as['extLunes']}}"  min="0" max="30" step="0.5" {{ $diasRegistro[1] }}></td>
-                                                    <td><input type="text" style="max-width: 45px" name="mar[]" id="mar" value="{{$as['martes']}}" minlength="1" maxlength="3"   {{ $diasRegistro[1] }}></td>
+                                                    <td id="{{ $as['martes'] }}"><input type="text" style="max-width: 45px" name="mar[]" id="mar" value="{{$as['martes']}}" minlength="1" maxlength="3"   {{ $diasRegistro[1] }}></td>
                                                     <td><input type="number" style="max-width: 45px" name="extra_mar[]" id="extra_mar" value="{{$as['extMartes']}}"  min="0" max="30" step="0.5" {{ $diasRegistro[2] }}></td>
-                                                    <td><input type="text" style="max-width: 45px" name="mie[]" id="mie" value="{{$as['miercoles']}}" minlength="1" maxlength="3"   {{ $diasRegistro[2] }}></td>
+                                                    <td id="{{ $as['miercoles'] }}"><input type="text" style="max-width: 45px" name="mie[]" id="mie" value="{{$as['miercoles']}}" minlength="1" maxlength="3"   {{ $diasRegistro[2] }}></td>
                                                     <td><input type="number" style="max-width: 45px" name="extra_mie[]" id="extra_mie" value="{{$as['extMiercoles']}}" min="0" max="30" step="0.5"  {{ $diasRegistro[3] }}></td>
-                                                    <td><input type="text" style="max-width: 45px" name="jue[]" id="jue" value="{{$as['jueves']}}" minlength="1" maxlength="3"  {{ $diasRegistro[3] }}></td>
+                                                    <td id="{{ $as['jueves'] }}"><input type="text" style="max-width: 45px" name="jue[]" id="jue" value="{{$as['jueves']}}" minlength="1" maxlength="3"  {{ $diasRegistro[3] }}></td>
                                                     <td><input type="number" style="max-width: 45px" name="extra_jue[]" id="extra_jue" value="{{$as['extJueves']}}"  min="0" max="30" step="0.5" {{ $diasRegistro[4] }}></td>
-                                                    <td><input type="text" style="max-width: 45px" name="vie[]" id="vie" value="{{$as['viernes']}}"minlength="1" maxlength="3"   {{ $diasRegistro[4] }}></td>
+                                                    <td id="{{ $as['viernes'] }}"><input type="text" style="max-width: 45px" name="vie[]" id="vie" value="{{$as['viernes']}}"minlength="1" maxlength="3"   {{ $diasRegistro[4] }}></td>
                                                     <td><input type="number" style="max-width: 45px" name="extra_vie[]" id="extra_vie" value="{{$as['extViernes']}}"  min="0" max="30" step="0.5" {{ $diasRegistro[4] }}></td>
-                                                    <td><input type="text" style="max-width: 45px" name="sab[]" id="sab" value="{{$as['sabado']}}" minlength="1" maxlength="3"  {{ $diasRegistro[4] }}></td>
+                                                    <td id="{{ $as['sabado'] }}"><input type="text" style="max-width: 45px" name="sab[]" id="sab" value="{{$as['sabado']}}" minlength="1" maxlength="3"  {{ $diasRegistro[4] }}></td>
                                                     <td><input type="number" style="max-width: 45px" name="extra_sab[]" id="extra_sab" value="{{$as['extSabado']}}"  min="0" max="30" step="0.5" {{ $diasRegistro[4] }}></td>
-                                                    <td><input type="text" style="max-width: 45px" name="dom[]" id="dom" value="{{$as['domingo']}}" minlength="1" maxlength="3"  {{ $diasRegistro[4] }}></td>
+                                                    <td id="{{ $as['domingo'] }}"><input type="text" style="max-width: 45px" name="dom[]" id="dom" value="{{$as['domingo']}}" minlength="1" maxlength="3"  {{ $diasRegistro[4] }}></td>
                                                     <td><input type="number" style="max-width: 45px" name="extra_dom[]" id="extra_dom" value="{{$as['extDomingo']}}"  min="0" max="30" step="0.5" {{ $diasRegistro[4] }}></td>
                                                     <td><input type="text" style="max-width: 45px" name="bono_asistencia[]" id="bono_asistencia" value="{{$as['bonoAsistencia']}}"   disabled></td>
                                                     <td><input type="text" style="max-width: 45px" name="bono_puntualidad[]" id="bono_puntualidad" value="{{$as['bonoPuntualidad']}}"  disabled ></td>
