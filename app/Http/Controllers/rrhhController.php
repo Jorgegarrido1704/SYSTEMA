@@ -60,6 +60,13 @@ class rrhhController extends Controller
         'dom' => 'required|array',
         'extra_dom' => 'required|array',
         'numero_empleado' => 'required|array',
+        'tt_lunes' => 'required|array',
+        'tt_martes' => 'required|array',
+        'tt_miercoles' => 'required|array',
+        'tt_jueves' => 'required|array',
+        'tt_viernes' => 'required|array',
+        'tt_sabado' => 'required|array',
+        'tt_domingo' => 'required|array',
     ]);
 
     foreach ($validated['numero_empleado'] as $index => $id_empleado) {
@@ -79,6 +86,14 @@ class rrhhController extends Controller
             'domingo' =>$validated['dom'][$index] ?  strtoupper(str_replace('-', '', $validated['dom'][$index])): strtoupper($validated['dom'][$index]),
             'extDomingo' => $validated['extra_dom'][$index],
             'extras' => $validated['extra_lun'][$index] + $validated['extra_mar'][$index] + $validated['extra_mie'][$index] + $validated['extra_jue'][$index] + $validated['extra_vie'][$index] + $validated['extra_sab'][$index] + $validated['extra_dom'][$index],
+            'tt_lunes' => $validated['tt_lunes'][$index],
+            'tt_martes' => $validated['tt_martes'][$index],
+            'tt_miercoles' => $validated['tt_miercoles'][$index],
+            'tt_jueves' => $validated['tt_jueves'][$index],
+            'tt_viernes' => $validated['tt_viernes'][$index],
+            'tt_sabado' => $validated['tt_sabado'][$index],
+            'tt_domingo' => $validated['tt_domingo'][$index],
+            'tiempoPorTiempo'=> $validated['tt_lunes'][$index]+$validated['tt_martes'][$index]+$validated['tt_miercoles'][$index]+$validated['tt_jueves'][$index]+$validated['tt_viernes'][$index]+$validated['tt_sabado'][$index]+$validated['tt_domingo'][$index],
         ];
 
         assistence::where('id_empleado', $id_empleado)
