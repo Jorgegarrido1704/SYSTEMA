@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Jobs\UpdateRotacionJob;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use App\Models\personalBergsModel;
+use Illuminate\Database\Eloquent\Casts\Json;
 
 class rrhhController extends Controller
 {
@@ -106,6 +108,74 @@ class rrhhController extends Controller
 
     return redirect()->route('rrhhDashBoard');
 }
+    public function addperson(Request $request){
+        $validated = $request->validate([
+            'nombre' => 'required|string|max:60',
+            'id_empleado' => 'required|numeric|maxdigits:4',
+            'ingreso' => 'required|date',
+            'area' => 'required|string',
+            'lider' => 'required|string',
+            'tipoDeTrabajador'=>'required|string',
+            'Genero' => 'required|string',
+        ]);
 
+
+        personalBergsModel::create([
+            'employeeName' =>  $validated['nombre'],
+            'employeeNumber' =>  $validated['id_empleado'],
+            'DateIngreso' => $validated['ingreso'],
+            'employeeArea' => $validated['area'],
+            'employeeLider' => $validated['lider'],
+            'typeWorker' =>$validated['tipoDeTrabajador'],
+            'Gender' => $validated['Genero'],
+        ]);
+
+          return redirect()->route('rrhhDashBoard');
+
+    }
+    public function modificarEmpleado(Request $request){
+        $datos=$request->input('dato');
+        if(is_numeric($datos)){
+             $data=personalBergsModel::where('employeeNumber','=',$datos)->get();
+        }else {
+            $data=personalBergsModel::where('employeeName','LIKE',$datos.'%')->orWhere('employeeName','LIKE','%'.$datos.'%')->get();
+        }
+        return response()->json($data);
+    }
+    public function editarEmepleado(Request $request){
+        $valued = $request->input('valor');
+        $id_empleado=$request->input('id_employee');
+        $name=$request->input('nameEmployee');
+        $area=$request->input('area');
+        $lider=$request->input('lider');
+        $tipoDeTrabajador=$request->input('typeWorker');
+        $Genero=$request->input('genero');
+        $status=$request->input('status');
+
+
+        if (personalBergsModel::where('employeeNumber','=',$valued)->exists()) {
+
+
+        personalBergsModel::where('employeeNumber','=',$valued)->update([
+            'employeeNumber' => 'i'.$id_empleado,
+            'employeeName' => $name,
+            'employeeArea' => $area,
+            'employeeLider' => $lider,
+            'typeWorker' => $tipoDeTrabajador,
+            'Gender' => $Genero,
+            'status' => $status,
+        ]);
+
+        $datos="realizado";
+    }else{
+            $datos="error // no cambio de empleado";
+        }
+
+
+        return response()->json($datos);
+
+
+
+    }
 
 }

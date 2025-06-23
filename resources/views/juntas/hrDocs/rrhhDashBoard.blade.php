@@ -17,12 +17,79 @@
 #SUS{background-color: rgba(100, 9, 9, 0.81); color: white;}
 #PCT{background-color: rgba(103, 95, 95, 0.35); color: black;}
 #empleado{background-color: rgba(255, 255, 255, 0.5); color: black; font-weight: bold; font-size: 16px;}
+#AddPersonal,#modificarEmpleado{display: none; }
+
         </style>
+
 
                 <div class="card shadow mb-5">
                     <div class="card-header py-3">
                         <h5 class="m-0 font-weight-bold text-primary">Modificaciones de Registos </h5>
-                        <button class="btn btn-primary" data-toggle="modal" data-target="#addModal" id="ad" ></button>
+                          @if($cat == "RRHH" or $cat == "SupAdmin")
+                        <button class="btn btn-primary" data-toggle="modal" data-target="#addModal" id="addPersonal" onclick="addEmpleado();" >Agregar personal</button>
+                        <button class="btn btn-success" data-toggle="modal" data-target="#addModal" id="modificarEmpleados" onclick="modificarEmpleado();">Modifiar empleado</button>
+
+                        <div id ="AddPersonal" >
+                           <form class="row g-3" action="{{ route('addperson') }}" method="POST">
+                            @csrf
+                                <div class="col-md-2">
+                                    <label for="nombre" class="form-label">Nombre de empleado: </label>
+                                    <input type="text" class="form-control" id="nombre" name="nombre" required>
+                                </div>
+                                <div class="col-md-1">
+                                    <label for="id_empleado" class="form-label">Numero de empleado</label>
+                                    <input type="text" class="form-control" id="id_empleado" name="id_empleado" minlength="4" maxlength="4" required>
+                                </div>
+                                <div class="col-md-1">
+                                    <label for="ingreso" class="form-label">Fecha de ingreso</label>
+                                    <input type="date" class="form-control" id="ingreso" name="ingreso" required>
+                                </div>
+                                 <div class="col-md-1">
+                                    <label for="Genero" class="form-label">Genero del trabajador</label>
+                                   <select id="Genero" name="Genero" class="form-select">
+                                    <option selected>Choose...</option>
+                                    <option value="H">Hombre</option>
+                                    <option value="M">Mujer</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-1">
+                                    <label for="area" class="form-label">Area de trabajo</label>
+                                   <select id="area" name="area" class="form-select">
+                                    <option selected>Choose...</option>
+                                    <option value="...">...</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-1">
+                                    <label for="lider" class="form-label">Lider de empleado</label>
+                                   <select id="lider" name="lider" class="form-select">
+                                    <option selected >Choose...</option>
+                                    <option value="...">...</option>
+                                    </select>
+                                </div>
+                                  <div class="col-md-1">
+                                    <label for="tipoDeTrabajador" class="form-label">Tipo de empleado</label>
+                                   <select id="tipoDeTrabajador" name="tipoDeTrabajador" class="form-select">
+                                    <option selected >Choose...</option>
+                                    <option value="...">...</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-1">
+                                    <button type="submit" class="btn btn-primary">Sign in</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div id="modificarEmpleado">
+                                <hr>
+                                <div class= "row g-3">
+                                <div class="col-md-2">
+                                <label for="nombreEmpleado" class="form-label">Buscar empleado: </label><input type="text" name="nombreEmpleado" id="nombreEmpleado" onchange="buscarempleado()"></div>
+                                <hr>
+                                <div id="datos"></div>
+
+                                </div>
+                        </div>
+                        @endif
                     </div>
                 </div>
                     <div class="card-body" style="overflow-y: auto; " >
@@ -125,7 +192,7 @@
                                     <form action="{{route('updateAsistencia')}}" method="GET">
                                     @foreach ($datosRHWEEK as $d => $as)
                                                 <tr>
-                                                    
+
                                                       <td id="empleado">{{$as['name']}}</td>
                                                     <td id="{{ $as['lunes'] }}"><input type="text" style="max-width: 45px" name="lun[]" id="lun"   minlength="1" maxlength="3" value="{{$as['lunes']}}" {{ $diasRegistro[0] }} ></td>
                                                     <td >TE:<input type="number" style="max-width: 45px" name="extra_lun[]" id="extra_lun" value="{{$as['extLunes']}}"  min="0" max="30" step="0.5" {{ $diasRegistro[1] }}>
@@ -167,4 +234,183 @@
                     </div>
     </div>
 </div>
+<script>
+    function addEmpleado() {
+        if(document.getElementById("AddPersonal").style.display == "none"){
+            document.getElementById("AddPersonal").style.display = "block";
+            return;
+        }else{
+            document.getElementById("AddPersonal").style.display = "none";
+        }
+
+    }
+    function modificarEmpleado() {
+        if(document.getElementById("modificarEmpleado").style.display == "none"){
+            document.getElementById("modificarEmpleado").style.display = "block";
+            return;
+        }else{
+            document.getElementById("modificarEmpleado").style.display = "none";
+        }
+    }
+    function buscarempleado() {
+      let  dato=document.getElementById("nombreEmpleado").value;
+      console.log(dato);
+      const url = "{{ route('modificarEmpleado') }}";
+      const codigoValue = dato;
+      fetch(url, { method: 'POST',
+                    headers: {   'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')  },
+                    body: JSON.stringify({ dato: codigoValue }),   })
+                .then(response => response.json())
+                .then(data => {  console.log(data);
+                       const registros = document.getElementById('datos');
+        let table = "<table class='table table-striped' style='width:100%'><thead><tr><th>Nombre</th><th>Numero de empleado</th><th>Lider</th><th>Area</th><th>Genero</th><th>Estado</th><th>Tipo</th><th>Editar</th></tr> </thead><tbody>";
+
+        for (let i = 0; i < data.length; i++) {
+            const emp = data[i];
+
+            table += `
+            <form action="{{ route('modificarEmpleado') }}" method="POST">
+            <tr>
+                <td><input type="text" id="nameEmployee_${emp.employeeNumber}" maxlength="45" minlength="9" value="${emp.employeeName}"></td>
+                <td><input type="text" id="id_employee_${emp.employeeNumber}" maxlength="4" minlength="4" value="${emp.employeeNumber.substring(1, 5)}"></td>
+                <td>
+                    <select id="lider_${emp.employeeNumber}" >
+                        <option value="${emp.employeeLider}"> Actual ${emp.employeeLider}</option>
+                           <option value="Jesus_C">Jesus_C</option>
+                    <option value="Juan G">Juan G</option>
+                    <option value="Chava Cort">Chava Cort</option>
+                    <option value="Juan O">Juan O</option>
+                    <option value="Jessi_S">Jessi_S</option>
+                    <option value="David V">David V</option>
+                    <option value="Saul">Saul</option>
+                    <option value="loom.manue">loom.manue</option>
+                    <option value="Angel_G">Angel_G</option>
+                    <option value="Gamboa J">Gamboa J</option>
+                    <option value="Andrea P">Andrea P</option>
+                    <option value="Efrain V">Efrain V</option>
+                    <option value="Edward M">Edward M</option>
+                    <option value="Luis R">Luis R</option>
+                    <option value="Rocio F">Rocio F</option>
+                    <option value="Paco G">Paco G</option>
+                    <option value="Paola A">Paola A</option>
+                    <option value="Javier C">Javier C</option>
+                    </select>
+                </td>
+                <td>
+                    <select id="area_${emp.employeeNumber}">
+                        <option value="${emp.employeeArea}">Actual ${emp.employeeArea}</option>
+                        <option value="Ingenieria">Ingenieria</option>
+                    <option value="Corte">Corte</option>
+                    <option value="Ensamble">Ensamble</option>
+                    <option value="Servicio al cliente">Servicio al cliente</option>
+                    <option value="Liberacion">Liberacion</option>
+                    <option value="Almacen">Almacen</option>
+                    <option value="Calidad">Calidad</option>
+                    <option value="Comercio Internacional">Comercio Internacional</option>
+                    <option value="Embarques">Embarques</option>
+                    <option value="Limpieza">Limpieza</option>
+                    <option value="Mantenimiento">Mantenimiento</option>
+                    <option value="Materiales">Materiales</option>
+                    <option value="Vigilancia">Vigilancia</option>
+                    <option value="EMBARQUE">EMBARQUE</option>
+                    <option value="PRODUCCION">PRODUCCION</option>
+                    <option value="Finanzas">Finanzas</option>
+                    <option value="Compras">Compras</option>
+                    <option value="Enfermeria">Enfermeria</option>
+                    <option value="Planeacion">Planeacion</option>
+                    <option value="RECURSOS HUMANOS">RECURSOS HUMANOS</option>
+                    <option value="Nomina">Nomina</option>
+                    <option value="Operaciones">Operaciones</option>
+                    <option value="PPAP">PPAP</option>
+
+                    </select>
+                </td>
+                <td>
+                    <select id="genero_${emp.employeeNumber}">
+                        <option value="${emp.Gender}">Actual ${emp.Gender}</option>
+                        <option value="M">M</option><option value="H">H</option>
+                    </select>
+                </td>
+                <td>
+                    <select id="status_${emp.employeeNumber}">
+                        <option value="${emp.status}">Actual ${emp.status}</option>
+                        <option value="Activo">Activo</option>
+                          <option value="Baja">Baja</option><option value="Incapacidad">Incapacidad</option>
+                    <option value="Suspension">Suspension</option>
+                    <option value="Permiso temporal con gose">Permiso temporal con gose</option>
+                    <option value="Permiso temporal sin gose">Permiso temporal sin gose</option>
+                    </select>
+                </td>
+                <td>
+                    <select id="typeWorker_${emp.employeeNumber}">
+                        <option value="${emp.typeWorker}"> Actual ${emp.typeWorker}</option>
+                           <option value="Directo">Directo</option><option value="Indirecto">Indirecto</option>
+                    <option value="Practicante">Practicante</option>
+                    </select>
+                </td>
+                <td>
+                <button class="btn btn-primary" type="button" onclick="altaEmpleado('${emp.employeeNumber}')">Editar</button>
+                </td>
+            </tr>
+            </form>`;
+        }
+        table += "</tbody></table>";
+
+        registros.innerHTML = table;
+
+
+                })
+                .catch(error => { console.error('Error:', error);  });
+            }
+
+        function altaEmpleado(valor){
+            const url = "{{ route('editarEmepleado') }}";
+
+            const nameEmployee = document.getElementById("nameEmployee_"+valor).value;
+            const id_employee = document.getElementById("id_employee_"+valor).value;
+            const lider = document.getElementById("lider_"+valor).value;
+            const area = document.getElementById("area_"+valor).value;
+            const genero = document.getElementById("genero_"+valor).value;
+            const status = document.getElementById("status_"+valor).value;
+            const typeWorker = document.getElementById("typeWorker_"+valor).value;
+
+            const codigoValue = {
+                valor: valor,
+                nameEmployee: nameEmployee,
+                id_employee: id_employee,
+                lider: lider,
+                area: area,
+                genero: genero,
+                status: status,
+                typeWorker: typeWorker
+            };
+            console.log(codigoValue);
+
+            fetch(url, { method: 'POST',
+                headers: {   'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')  },
+                body: JSON.stringify({ nameEmployee: nameEmployee,valor: valor,
+                id_employee: id_employee,
+                lider: lider,
+                area: area,
+                genero: genero,
+                status: status,
+                typeWorker: typeWorker }),   })
+                .then(response => response.json())
+                .then(data => {  console.log(data);
+                    alert(data);
+                    window.location.reload();
+
+                })
+                .catch(error => { console.error('Error:', error);  });
+
+
+
+        }
+
+
+
+</script>
+
 @endsection

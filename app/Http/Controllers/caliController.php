@@ -103,11 +103,11 @@ class caliController extends generalController
                 $info = $rowInfo->info;
                 $qty = $rowInfo->qty;
             }
-             if($pn=="185-4147" or $pn=="199-4942" or $pn=="199-6660" or $pn=="199-3871" or $pn=="189-6256" or $pn=="190-3559" or $pn=="185-4142"){
-                $cambioestados=[1,'readonly',''];
-             }else{
-                $cambioestados=[100,'','readonly'];
-             }
+            if ($pn == "185-4147" or $pn == "199-4942" or $pn == "199-6660" or $pn == "199-3871" or $pn == "189-6256" or $pn == "190-3559" or $pn == "185-4142") {
+                $cambioestados = [1, 'readonly', ''];
+            } else {
+                $cambioestados = [100, '', 'readonly'];
+            }
 
 
             return view('cali', [
@@ -121,7 +121,7 @@ class caliController extends generalController
                 //'week'=>$week,
                 //'assit'=>$assit,
                 'cat' => $cat,
-                'cambioestados'=>$cambioestados
+                'cambioestados' => $cambioestados
             ]);
         }
     }
@@ -288,7 +288,7 @@ class caliController extends generalController
             if (strpos($serial, "'")) {
                 $serial = str_replace("'", "-", $serial);
             }
-            if( strpos($serial, ']')) {
+            if (strpos($serial, ']')) {
                 $serial = str_replace(']', '|', $serial);
             }
 
@@ -320,14 +320,14 @@ class caliController extends generalController
             if (strpos($responsable5, ',')) {
                 $responsable5 = str_replace(',', ';', $responsable5);
             }
-            if($pn=="185-4147" or $pn=="199-4942" or $pn=="199-6660" or $pn=="199-3871" or $pn=="189-6256" or $pn=="190-3559" or $pn=="185-4142"){
+            if ($pn == "185-4147" or $pn == "199-4942" or $pn == "199-6660" or $pn == "199-3871" or $pn == "189-6256" or $pn == "190-3559" or $pn == "185-4142") {
 
-            $registroQr=DB::table('registroqrs')->where('infoQr', '=', $info)->where('CodigoIdentificaicon','=',$serial)->first();
-            if (!empty($registroQr)) {
-                 $registroQr=DB::table('registroqrs')->where('infoQr', '=', $info)->where('CodigoIdentificaicon','=',$serial)->delete();
-            }else{
-                return redirect('calidad')->with('response', "Qr invalido");
-            }
+                $registroQr = DB::table('registroqrs')->where('infoQr', '=', $info)->where('CodigoIdentificaicon', '=', $serial)->first();
+                if (!empty($registroQr)) {
+                    $registroQr = DB::table('registroqrs')->where('infoQr', '=', $info)->where('CodigoIdentificaicon', '=', $serial)->delete();
+                } else {
+                    return redirect('calidad')->with('response', "Qr invalido");
+                }
             }
             $busquedainfo = DB::table('calidad')->select('qty', 'wo')->where('info', $info)->first();
 
