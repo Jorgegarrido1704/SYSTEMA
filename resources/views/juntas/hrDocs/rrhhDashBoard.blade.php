@@ -379,10 +379,12 @@ if (Error) {
                     <select id="status_${emp.employeeNumber}">
                         <option value="${emp.status}">Actual ${emp.status}</option>
                         <option value="Activo">Activo</option>
-                          <option value="Baja">Baja</option><option value="Incapacidad">Incapacidad</option>
+                          <option value="Baja">Baja</option>
+                          <option value="Incapacidad">Incapacidad</option>
                     <option value="Suspension">Suspension</option>
-                    <option value="Permiso temporal con gose">Permiso temporal con gose</option>
-                    <option value="Permiso temporal sin gose">Permiso temporal sin gose</option>
+                    <option value="Vacaciones">Vacaciones</option>
+                    <option value="PCS">Permiso temporal con gose</option>
+                    <option value="PSS">Permiso temporal sin gose</option>
                     </select>
                 </td>
                 <td>
