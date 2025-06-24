@@ -155,9 +155,13 @@ class rrhhController extends Controller
 
         if ($status == 'Baja') {
             $registro = carbon::now();
+            $semana = carbon::now()->week();
             personalBergsModel::where('employeeNumber', '=', $valued)->update([
                 'DateSalida' => $registro,
             ]);
+            assistence::where('id_empleado', '=', $valued,'AND','Status', '=', 'Baja', 'AND','week', '=', $semana)->delete();
+            UpdateRotacionJob::dispatch();
+
         }
 
         $datosAdd =    personalBergsModel::where('employeeNumber', '=', $valued)->update([

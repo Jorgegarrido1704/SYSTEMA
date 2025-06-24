@@ -2047,6 +2047,7 @@ class juntasController extends Controller
         $dias = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
         $datoGeneros = DB::table('personalberg')
             ->select('Gender', 'typeWorker')
+           ->where('status', '!=', 'Baja')
             ->get();
         foreach ($datoGeneros as $datoGenero) {
             if ($datoGenero->Gender == 'H') {
