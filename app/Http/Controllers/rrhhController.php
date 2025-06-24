@@ -119,18 +119,27 @@ class rrhhController extends Controller
             'Genero' => 'required|string',
         ]);
 
-
+        if(personalBergsModel::where('employeeNumber', '=', 'i'.$validated['id_empleado'])->exists()){
+            return redirect()->route('rrhhDashBoard')->with('error', 'El empleado ya existe en la base de datos.');
+        }else{
         personalBergsModel::create([
             'employeeName' =>  $validated['nombre'],
-            'employeeNumber' =>  $validated['id_empleado'],
+            'employeeNumber' => 'i'. $validated['id_empleado'],
             'DateIngreso' => $validated['ingreso'],
             'employeeArea' => $validated['area'],
             'employeeLider' => $validated['lider'],
             'typeWorker' => $validated['tipoDeTrabajador'],
             'Gender' => $validated['Genero'],
         ]);
+        assistence::create([
+            'week' => date('W'),
+            'lider' => $validated['lider'],
+            'name' => $validated['nombre'],
+            'id_empleado' => 'i'.$validated['id_empleado']
+        ]);
 
-        return redirect()->route('rrhhDashBoard');
+        return redirect()->route('rrhhDashBoard')->with('error', 'Empleado agregado correctamente.');
+    }
     }
     public function modificarEmpleado(Request $request)
     {
@@ -159,9 +168,8 @@ class rrhhController extends Controller
             personalBergsModel::where('employeeNumber', '=', $valued)->update([
                 'DateSalida' => $registro,
             ]);
-            assistence::where('id_empleado', '=', $valued,'AND','Status', '=', 'Baja', 'AND','week', '=', $semana)->delete();
+            assistence::where('id_empleado', '=', $valued, 'AND', 'Status', '=', 'Baja', 'AND', 'week', '=', $semana)->delete();
             UpdateRotacionJob::dispatch();
-
         }
 
         $datosAdd =    personalBergsModel::where('employeeNumber', '=', $valued)->update([

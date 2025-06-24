@@ -2,7 +2,10 @@
 
 @section('contenido')
 <div class="d-sm-flex align-items-center justify-content-between mb-4">  </div>
-
+<script>const Error = {{ json_encode(session('error')) }};
+if (Error) {
+    alert(Error);}
+</script>
 <!-- First Period -->
 <div class="row">
     <div class="col-lg-12 col-lx-12 mb-4">
