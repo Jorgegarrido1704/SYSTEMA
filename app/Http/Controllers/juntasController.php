@@ -2135,4 +2135,52 @@ class juntasController extends Controller
 
         return view('juntas.hr', ['promaus' => $promaus, 'diaActual' => $diaActual, 'tipoTrabajador' => $tipoTrabajador, 'faltantes' => $faltantes, 'faltan' => $faltan, 'genero' => $genero, 'registrosDeAsistencia' => $registrosDeAsistencia, 'value' => session('user'), 'cat' => session('categoria'), 'accidente' => $accidente]);
     }
+    public function DatosRh(Request $request)  {
+        $id = $request->input('id');
+        $value = session('user');
+        $cat = session('categoria');
+        $dias = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
+        $diaActual = $dias[Carbon::now()->dayOfWeek - 1];
+        $week = Carbon::now()->weekOfYear;
+        if($id =='P'){
+            $datos = assistence::select('name')->where($diaActual, '=', 'PSS','OR', $diaActual, '=', 'PCS')->where('week', '=', $week)->get();
+        }else{
+            $datos = assistence::select('name')->where($diaActual, '=', $id, 'AND', 'week', '=', $week)->get();
+        }
+
+        switch ($id){
+            case 'V':
+                $id = 'vacaciones';
+                break;
+            case 'OK':
+                $id = 'asistencia';
+                break;
+            case 'F':
+                $id = 'faltas';
+                break;
+            case 'INC':
+                $id = 'incapacidad';
+                break;
+            case 'P':
+                $id = 'permisos';
+                break;
+
+            case 'PCT':
+                $id = 'practicantes';
+                break;
+            case 'SUS':
+                $id = 'suspension';
+                break;
+            case 'R':
+                $id = 'retardos';
+                break;
+            default:
+                $id = 'asistencia';
+                break;
+        }
+
+
+        return view ('juntas.hrDocs.datosRh', ['datos' => $datos, 'value' => $value, 'cat' => $cat, 'id' => $id]);
+    }
+
 }

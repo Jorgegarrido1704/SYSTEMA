@@ -21,6 +21,9 @@
 .text-gray {
   color: #473e3f; /* ejemplo de color vino */
 }
+a:hover {
+    text-decoration: none;
+}
 
 </style>
 <script>
@@ -41,35 +44,35 @@
                     <div class="col-lg-4 col-md-4">
                         <table class="table table-borderless item-center">
                            <tr>
-                            <td class="font-weight-bold text-success font-size-24">Asistencia</td>
+                            <td class="font-weight-bold text-success font-size-24"><a class ="text-success" href="{{ route('DatosRh', ['id' => 'OK']) }}">Asistencia</a></td>
                             <td class="font-weight-bold font-size-24">{{$registrosDeAsistencia[0]}}</td>
                            </tr>
                            <tr>
-                            <td class="font-weight-bold text-danger font-size-24">Faltas </td>
+                            <td class="font-weight-bold text-danger font-size-24"><a class ="text-danger" href="{{ route('DatosRh', ['id' => 'F']) }}">Faltas</a> </td>
                             <td class="font-weight-bold font-size-24">{{$registrosDeAsistencia[1]}}</td>
                            </tr>
                            <tr>
-                            <td class="font-weight-bold text-warning font-size-24">Incapacidad</td>
+                            <td class="font-weight-bold text-warning font-size-24"><a class ="text-warning" href="{{ route('DatosRh', ['id' => 'INC']) }}">Incapacidad</a></td>
                             <td class="font-weight-bold font-size-24">{{$registrosDeAsistencia[2]}}</td>
                            </tr>
                            <tr>
-                            <td class="font-weight-bold text-primary font-size-24">Permisos</td>
+                            <td class="font-weight-bold text-primary font-size-24"><a class ="text-primary" href="{{ route('DatosRh', ['id' => 'P']) }}">Permisos</a></td>
                             <td class="font-weight-bold font-size-24">{{$registrosDeAsistencia[3]}}</td>
                            </tr>
                            <tr>
-                            <td class="font-weight-bold text-primary font-size-24">Vacaciones</td>
+                            <td class="font-weight-bold text-primary font-size-24"><a class ="text-primary" href="{{ route('DatosRh', ['id' => 'V']) }}">Vacaciones</a></td>
                             <td class="font-weight-bold font-size-24">{{$registrosDeAsistencia[4]}}</td>
                            </tr>
                            <tr>
-                            <td class="font-weight-bold text-danger font-size-24">Retardos</td>
+                            <td class="font-weight-bold text-danger font-size-24"><a class ="text-danger" href="{{ route('DatosRh', ['id' => 'R']) }}">Retardos</a></td>
                             <td class="font-weight-bold font-size-24">{{$registrosDeAsistencia[5]}}</td>
                            </tr>
                            <tr>
-                            <td class="font-weight-bold text-wine font-size-24">Suspension</td>
+                            <td class="font-weight-bold text-wine font-size-24"><a class ="text-wine" href="{{ route('DatosRh', ['id' => 'SUS']) }}">Suspension</a></td>
                             <td class="font-weight-bold font-size-24">{{$registrosDeAsistencia[6]}}</td>
                            </tr>
                            <tr>
-                            <td class="font-weight-bold text-gray font-size-24">Practicantes</td>
+                            <td class="font-weight-bold text-gray font-size-24"><a class ="text-gray" href="{{ route('DatosRh', ['id' => 'PCT']) }}">Practicantes</a></td>
                             <td class="font-weight-bold font-size-24">{{$registrosDeAsistencia[7]}}</td>
                            </tr>
                         </table>

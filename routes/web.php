@@ -169,6 +169,7 @@ Route::controller(juntasController::class)->group(function () {
     Route::get('/rhDashBoard', [juntasController::class, 'rhDashBoard'])->name('rhDashBoard');
     Route::get('/vacations', [juntasController::class, 'vacations'])->name('vacations');
     Route::get('/vacations/addVacation', [juntasController::class, 'addVacation'])->name('addVacation');
+    Route::get('/rrhh/DatosRh', [juntasController::class, 'DatosRh'])->name('DatosRh');
 });
 
 Route::controller(SaludController::class)->group(function () {
@@ -183,4 +184,5 @@ Route::controller(rrhhController::class)->group(function () {
     Route::post('/rrhh/addpersonal', [rrhhController::class, 'addperson'])->name('addperson');
     Route::post('/rrhh/modificarEmpleado', [rrhhController::class, 'modificarEmpleado'])->name('modificarEmpleado');
     Route::post('/rrhh/editarEmepleado', [rrhhController::class, 'editarEmepleado'])->name('editarEmepleado');
+
 });
