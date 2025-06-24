@@ -2140,8 +2140,9 @@ class juntasController extends Controller
         $value = session('user');
         $cat = session('categoria');
         $dias = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
-        $diaActual = $dias[Carbon::now()->dayOfWeek];
-        $week = Carbon::now()->weekOfYear;
+         $week = Carbon::now()->weekOfYear;
+        $diaActual = $dias[Carbon::now()->dayOfWeek-1];
+
         if($id =='P'){
             $datos = assistence::select('name')->where($diaActual, '=', 'PSS','OR', $diaActual, '=', 'PCS')->where('week', '=', $week)->get();
         }else{
@@ -2180,7 +2181,7 @@ class juntasController extends Controller
         }
 
 
-        return view ('juntas.hrDocs.datosRh', ['datos' => $datos, 'value' => $value, 'cat' => $cat, 'id' => $id]);
+        return view ('juntas.hrDocs.datosRh', ['datos' => $datos, 'value' => $value, 'cat' => $cat, 'id' => $id, 'diaActual' => $diaActual]);
     }
 
 }

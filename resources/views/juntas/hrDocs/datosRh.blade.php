@@ -17,6 +17,8 @@
                                 <div class="row">
                                     <div class="ul col-md-6">
                                         <ul class="list-group">
+                                            <li class="list-group-item">
+                                                <strong>Dia:</strong> {{ $diaActual }}
                                           @foreach ($datos as $dato)
                                               <li class="list-group-item">{{ $dato->name }}</li>
                                           @endforeach
