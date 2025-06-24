@@ -761,6 +761,7 @@ class caliController extends generalController
             $ensamble = $buscarParcial->ensaPar;
             $noloomqy = $preCalidad + $ensamble;
             $noloom = [
+                '910657',
                 '910985',
                 '910987',
                 '91304',
