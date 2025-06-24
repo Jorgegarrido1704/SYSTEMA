@@ -56,21 +56,61 @@
                                     <label for="area" class="form-label">Area de trabajo</label>
                                    <select id="area" name="area" class="form-select">
                                     <option selected>Choose...</option>
-                                    <option value="...">...</option>
+                                      <option value="Ingenieria">Ingenieria</option>
+                    <option value="Corte">Corte</option>
+                    <option value="Ensamble">Ensamble</option>
+                    <option value="Servicio al cliente">Servicio al cliente</option>
+                    <option value="Liberacion">Liberacion</option>
+                    <option value="Almacen">Almacen</option>
+                    <option value="Calidad">Calidad</option>
+                    <option value="Comercio Internacional">Comercio Internacional</option>
+                    <option value="Embarques">Embarques</option>
+                    <option value="Limpieza">Limpieza</option>
+                    <option value="Mantenimiento">Mantenimiento</option>
+                    <option value="Materiales">Materiales</option>
+                    <option value="Vigilancia">Vigilancia</option>
+                    <option value="EMBARQUE">EMBARQUE</option>
+                    <option value="PRODUCCION">PRODUCCION</option>
+                    <option value="Finanzas">Finanzas</option>
+                    <option value="Compras">Compras</option>
+                    <option value="Enfermeria">Enfermeria</option>
+                    <option value="Planeacion">Planeacion</option>
+                    <option value="RECURSOS HUMANOS">RECURSOS HUMANOS</option>
+                    <option value="Nomina">Nomina</option>
+                    <option value="Operaciones">Operaciones</option>
+                    <option value="PPAP">PPAP</option>
                                     </select>
                                 </div>
                                 <div class="col-md-1">
                                     <label for="lider" class="form-label">Lider de empleado</label>
                                    <select id="lider" name="lider" class="form-select">
                                     <option selected >Choose...</option>
-                                    <option value="...">...</option>
+                                     <option value="Jesus_C">Jesus_C</option>
+                    <option value="Juan G">Juan G</option>
+                    <option value="Chava Cort">Chava Cort</option>
+                    <option value="Juan O">Juan O</option>
+                    <option value="Jessi_S">Jessi_S</option>
+                    <option value="David V">David V</option>
+                    <option value="Saul">Saul</option>
+                    <option value="loom.manue">loom.manue</option>
+                    <option value="Angel_G">Angel_G</option>
+                    <option value="Gamboa J">Gamboa J</option>
+                    <option value="Andrea P">Andrea P</option>
+                    <option value="Efrain V">Efrain V</option>
+                    <option value="Edward M">Edward M</option>
+                    <option value="Luis R">Luis R</option>
+                    <option value="Rocio F">Rocio F</option>
+                    <option value="Paco G">Paco G</option>
+                    <option value="Paola A">Paola A</option>
+                    <option value="Javier C">Javier C</option>
                                     </select>
                                 </div>
                                   <div class="col-md-1">
                                     <label for="tipoDeTrabajador" class="form-label">Tipo de empleado</label>
                                    <select id="tipoDeTrabajador" name="tipoDeTrabajador" class="form-select">
                                     <option selected >Choose...</option>
-                                    <option value="...">...</option>
+                                    <option value="Directo">Directo</option><option value="Indirecto">Indirecto</option>
+                    <option value="Practicante">Practicante</option>
                                     </select>
                                 </div>
 
