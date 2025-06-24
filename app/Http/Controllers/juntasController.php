@@ -2140,13 +2140,13 @@ class juntasController extends Controller
         $value = session('user');
         $cat = session('categoria');
         $dias = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
-         $week = Carbon::now()->weekOfYear;
+        $week = Carbon::now()->weekOfYear;
         $diaActual = $dias[Carbon::now()->dayOfWeek-1];
 
         if($id =='P'){
             $datos = assistence::select('name')->where($diaActual, '=', 'PSS','OR', $diaActual, '=', 'PCS')->where('week', '=', $week)->get();
         }else{
-            $datos = assistence::select('name')->where($diaActual, '=', $id, 'AND', 'week', '=', $week)->get();
+            $datos = assistence::select('name')->where($diaActual, '=', $id)->where('week', '=', $week)->get();
         }
 
         switch ($id){
