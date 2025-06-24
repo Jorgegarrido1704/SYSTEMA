@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Carbon\Carbon;
 use App\Models\assistence;
 use App\Models\rrhh\rotacionModel;
@@ -15,107 +16,106 @@ class rrhhController extends Controller
 {
     public function rrhhDashBoard()
     {
-        $value=session('user');
-        $cat=session('categoria');
+        $value = session('user');
+        $cat = session('categoria');
 
-            $datosRHWEEK = assistence::leader($value)->OrderBy('lider', 'desc')->get();
-            if($value == 'Admin' or $value == 'Paola A'){
-                $diasRegistro=['','','','','',''];
-            }else{
-                $diasRegistro=['readonly','readonly','readonly','readonly','readonly'];
-                $diasRegistros=['','','','',''];
-            }
-                $datosRHWEEK = assistence::leader($value,$cat)->OrderBy('lider', 'desc')->get();
+        $datosRHWEEK = assistence::leader($value)->OrderBy('lider', 'desc')->get();
+        if ($value == 'Admin' or $value == 'Paola A') {
+            $diasRegistro = ['', '', '', '', '', ''];
+        } else {
+            $diasRegistro = ['readonly', 'readonly', 'readonly', 'readonly', 'readonly'];
+            $diasRegistros = ['', '', '', '', ''];
+        }
+        $datosRHWEEK = assistence::leader($value, $cat)->OrderBy('lider', 'desc')->get();
 
-             $diaNum=carbon::now()->dayOfWeek; //
+        $diaNum = carbon::now()->dayOfWeek; //
 
-             if($diaNum == 5 or $diaNum == 6 or $diaNum == 7){
-                 $diasRegistro[4]='';
-                 $diasRegistros[4]='';
+        if ($diaNum == 5 or $diaNum == 6 or $diaNum == 7) {
+            $diasRegistro[4] = '';
+            $diasRegistros[4] = '';
+        } else {
+            $diasRegistro[$diaNum - 1] = '';
+            $diasRegistros[$diaNum - 1] = '';
+        }
 
-             }else{
-                 $diasRegistro[$diaNum-1]='';
-                 $diasRegistros[$diaNum-1]='';
-             }
-
-        return view('juntas/hrDocs/rrhhDashBoard',['diasRegistros'=>$diasRegistros,'diasRegistro'=>$diasRegistro,'datosRHWEEK'=>$datosRHWEEK,'value'=>$value,'cat'=>$cat]);
-
-}
+        return view('juntas/hrDocs/rrhhDashBoard', ['diasRegistros' => $diasRegistros, 'diasRegistro' => $diasRegistro, 'datosRHWEEK' => $datosRHWEEK, 'value' => $value, 'cat' => $cat]);
+    }
 
     public function updateAsistencia(Request $request)
-{
-    $week = date('W');
+    {
+        $week = date('W');
 
-    $validated = $request->validate([
-        'lun' => 'required|array',
-        'extra_lun' => 'required|array',
-        'mar' => 'required|array',
-        'extra_mar' => 'required|array',
-        'mie' => 'required|array',
-        'extra_mie' => 'required|array',
-        'jue' => 'required|array',
-        'extra_jue' => 'required|array',
-        'vie' => 'required|array',
-        'extra_vie' => 'required|array',
-        'sab' => 'required|array',
-        'extra_sab' => 'required|array',
-        'dom' => 'required|array',
-        'extra_dom' => 'required|array',
-        'numero_empleado' => 'required|array',
-        'tt_lunes' => 'required|array',
-        'tt_martes' => 'required|array',
-        'tt_miercoles' => 'required|array',
-        'tt_jueves' => 'required|array',
-        'tt_viernes' => 'required|array',
-        'tt_sabado' => 'required|array',
-        'tt_domingo' => 'required|array',
-    ]);
+        $validated = $request->validate([
+            'lun' => 'required|array',
+            'extra_lun' => 'required|array',
+            'mar' => 'required|array',
+            'extra_mar' => 'required|array',
+            'mie' => 'required|array',
+            'extra_mie' => 'required|array',
+            'jue' => 'required|array',
+            'extra_jue' => 'required|array',
+            'vie' => 'required|array',
+            'extra_vie' => 'required|array',
+            'sab' => 'required|array',
+            'extra_sab' => 'required|array',
+            'dom' => 'required|array',
+            'extra_dom' => 'required|array',
+            'numero_empleado' => 'required|array',
+            'tt_lunes' => 'required|array',
+            'tt_martes' => 'required|array',
+            'tt_miercoles' => 'required|array',
+            'tt_jueves' => 'required|array',
+            'tt_viernes' => 'required|array',
+            'tt_sabado' => 'required|array',
+            'tt_domingo' => 'required|array',
+        ]);
 
-    foreach ($validated['numero_empleado'] as $index => $id_empleado) {
-        $updateData = [
-            'lunes' => $validated['lun'][$index] ?  strtoupper(str_replace('-', '', $validated['lun'][$index])):strtoupper('-', '', $validated['lun'][$index]),
-            'extLunes' => $validated['extra_lun'][$index],
-            'martes' => $validated['mar'][$index] ?  strtoupper(str_replace('-', '', $validated['mar'][$index])):strtoupper($validated['mar'][$index]),
-            'extMartes' => $validated['extra_mar'][$index],
-            'miercoles' => $validated['mie'][$index] ?  strtoupper(str_replace('-', '', $validated['mie'][$index])): strtoupper( $validated['mie'][$index]),
-            'extMiercoles' => $validated['extra_mie'][$index],
-            'jueves' => $validated['jue'][$index] ?  strtoupper(str_replace('-', '', $validated['jue'][$index])):strtoupper($validated['jue'][$index]),
-            'extJueves' => $validated['extra_jue'][$index],
-            'viernes' => $validated['vie'][$index] ?  strtoupper(str_replace('-', '', $validated['vie'][$index])): strtoupper($validated['vie'][$index]),
-            'extViernes' => $validated['extra_vie'][$index],
-            'sabado' => $validated['sab'][$index] ?  strtoupper(str_replace('-', '', $validated['sab'][$index])):strtoupper($validated['sab'][$index]),
-            'extSabado' => $validated['extra_sab'][$index],
-            'domingo' =>$validated['dom'][$index] ?  strtoupper(str_replace('-', '', $validated['dom'][$index])): strtoupper($validated['dom'][$index]),
-            'extDomingo' => $validated['extra_dom'][$index],
-            'extras' => $validated['extra_lun'][$index] + $validated['extra_mar'][$index] + $validated['extra_mie'][$index] + $validated['extra_jue'][$index] + $validated['extra_vie'][$index] + $validated['extra_sab'][$index] + $validated['extra_dom'][$index],
-            'tt_lunes' => $validated['tt_lunes'][$index],
-            'tt_martes' => $validated['tt_martes'][$index],
-            'tt_miercoles' => $validated['tt_miercoles'][$index],
-            'tt_jueves' => $validated['tt_jueves'][$index],
-            'tt_viernes' => $validated['tt_viernes'][$index],
-            'tt_sabado' => $validated['tt_sabado'][$index],
-            'tt_domingo' => $validated['tt_domingo'][$index],
-            'tiempoPorTiempo'=> $validated['tt_lunes'][$index]+$validated['tt_martes'][$index]+$validated['tt_miercoles'][$index]+$validated['tt_jueves'][$index]+$validated['tt_viernes'][$index]+$validated['tt_sabado'][$index]+$validated['tt_domingo'][$index],
-        ];
+        foreach ($validated['numero_empleado'] as $index => $id_empleado) {
+            $updateData = [
+                'lunes' => $validated['lun'][$index] ?  strtoupper(str_replace('-', '', $validated['lun'][$index])) : strtoupper('-', '', $validated['lun'][$index]),
+                'extLunes' => $validated['extra_lun'][$index],
+                'martes' => $validated['mar'][$index] ?  strtoupper(str_replace('-', '', $validated['mar'][$index])) : strtoupper($validated['mar'][$index]),
+                'extMartes' => $validated['extra_mar'][$index],
+                'miercoles' => $validated['mie'][$index] ?  strtoupper(str_replace('-', '', $validated['mie'][$index])) : strtoupper($validated['mie'][$index]),
+                'extMiercoles' => $validated['extra_mie'][$index],
+                'jueves' => $validated['jue'][$index] ?  strtoupper(str_replace('-', '', $validated['jue'][$index])) : strtoupper($validated['jue'][$index]),
+                'extJueves' => $validated['extra_jue'][$index],
+                'viernes' => $validated['vie'][$index] ?  strtoupper(str_replace('-', '', $validated['vie'][$index])) : strtoupper($validated['vie'][$index]),
+                'extViernes' => $validated['extra_vie'][$index],
+                'sabado' => $validated['sab'][$index] ?  strtoupper(str_replace('-', '', $validated['sab'][$index])) : strtoupper($validated['sab'][$index]),
+                'extSabado' => $validated['extra_sab'][$index],
+                'domingo' => $validated['dom'][$index] ?  strtoupper(str_replace('-', '', $validated['dom'][$index])) : strtoupper($validated['dom'][$index]),
+                'extDomingo' => $validated['extra_dom'][$index],
+                'extras' => $validated['extra_lun'][$index] + $validated['extra_mar'][$index] + $validated['extra_mie'][$index] + $validated['extra_jue'][$index] + $validated['extra_vie'][$index] + $validated['extra_sab'][$index] + $validated['extra_dom'][$index],
+                'tt_lunes' => $validated['tt_lunes'][$index],
+                'tt_martes' => $validated['tt_martes'][$index],
+                'tt_miercoles' => $validated['tt_miercoles'][$index],
+                'tt_jueves' => $validated['tt_jueves'][$index],
+                'tt_viernes' => $validated['tt_viernes'][$index],
+                'tt_sabado' => $validated['tt_sabado'][$index],
+                'tt_domingo' => $validated['tt_domingo'][$index],
+                'tiempoPorTiempo' => $validated['tt_lunes'][$index] + $validated['tt_martes'][$index] + $validated['tt_miercoles'][$index] + $validated['tt_jueves'][$index] + $validated['tt_viernes'][$index] + $validated['tt_sabado'][$index] + $validated['tt_domingo'][$index],
+            ];
 
-        assistence::where('id_empleado', $id_empleado)
-            ->where('week', $week)
-            ->update($updateData);
-    }
-    //send a job to update rotacion
+            assistence::where('id_empleado', $id_empleado)
+                ->where('week', $week)
+                ->update($updateData);
+        }
+        //send a job to update rotacion
         UpdateRotacionJob::dispatch();
 
 
-    return redirect()->route('rrhhDashBoard');
-}
-    public function addperson(Request $request){
+        return redirect()->route('rrhhDashBoard');
+    }
+    public function addperson(Request $request)
+    {
         $validated = $request->validate([
             'nombre' => 'required|string|max:60',
             'id_empleado' => 'required|numeric|maxdigits:4',
             'ingreso' => 'required|date',
             'area' => 'required|string',
             'lider' => 'required|string',
-            'tipoDeTrabajador'=>'required|string',
+            'tipoDeTrabajador' => 'required|string',
             'Genero' => 'required|string',
         ]);
 
@@ -126,38 +126,42 @@ class rrhhController extends Controller
             'DateIngreso' => $validated['ingreso'],
             'employeeArea' => $validated['area'],
             'employeeLider' => $validated['lider'],
-            'typeWorker' =>$validated['tipoDeTrabajador'],
+            'typeWorker' => $validated['tipoDeTrabajador'],
             'Gender' => $validated['Genero'],
         ]);
 
-          return redirect()->route('rrhhDashBoard');
-
+        return redirect()->route('rrhhDashBoard');
     }
-    public function modificarEmpleado(Request $request){
-        $datos=$request->input('dato');
-        if(is_numeric($datos)){
-             $data=personalBergsModel::where('employeeNumber','=',$datos)->get();
-        }else {
-            $data=personalBergsModel::where('employeeName','LIKE',$datos.'%')->orWhere('employeeName','LIKE','%'.$datos.'%')->get();
+    public function modificarEmpleado(Request $request)
+    {
+        $datos = $request->input('dato');
+        if (is_numeric($datos)) {
+            $data = personalBergsModel::where('employeeNumber', '=', $datos)->get();
+        } else {
+            $data = personalBergsModel::where('employeeName', 'LIKE', $datos . '%')->orWhere('employeeName', 'LIKE', '%' . $datos . '%')->get();
         }
         return response()->json($data);
     }
-    public function editarEmepleado(Request $request){
+    public function editarEmepleado(Request $request)
+    {
         $valued = $request->input('valor');
-        $id_empleado=$request->input('id_employee');
-        $name=$request->input('nameEmployee');
-        $area=$request->input('area');
-        $lider=$request->input('lider');
-        $tipoDeTrabajador=$request->input('typeWorker');
-        $Genero=$request->input('genero');
-        $status=$request->input('status');
+        $id_empleado = $request->input('id_employee');
+        $name = $request->input('nameEmployee');
+        $area = $request->input('area');
+        $lider = $request->input('lider');
+        $tipoDeTrabajador = $request->input('typeWorker');
+        $Genero = $request->input('genero');
+        $status = $request->input('status');
 
+        if ($status == 'Baja') {
+            $registro = carbon::now();
+            personalBergsModel::where('employeeNumber', '=', $valued)->update([
+                'DateSalida' => $registro,
+            ]);
+        }
 
-        if (personalBergsModel::where('employeeNumber','=',$valued)->exists()) {
-
-
-        personalBergsModel::where('employeeNumber','=',$valued)->update([
-            'employeeNumber' => 'i'.$id_empleado,
+        $datosAdd =    personalBergsModel::where('employeeNumber', '=', $valued)->update([
+            'employeeNumber' => 'i' . $id_empleado,
             'employeeName' => $name,
             'employeeArea' => $area,
             'employeeLider' => $lider,
@@ -165,17 +169,13 @@ class rrhhController extends Controller
             'Gender' => $Genero,
             'status' => $status,
         ]);
-
-        $datos="realizado";
-    }else{
-            $datos="error // no cambio de empleado";
+        if ($datosAdd) {
+            $datos = "realizado";
+        } else {
+            $datos = "error // no cambio de empleado";
         }
 
 
         return response()->json($datos);
-
-
-
     }
-
 }
