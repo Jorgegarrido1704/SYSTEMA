@@ -1,6 +1,7 @@
 const assist = document.getElementById("assistence").getContext("2d");
 
 const registroInicidencia = Object.values(registros);
+
 const generos = Object.values(genero);
 const tipoTrabajadors = Object.values(tipoTrabajador);
 const registroVacaciones = [10, 20, 15, 25, 30, 20, 15, 10, 5, 20, 30, 80, 90];
@@ -128,11 +129,11 @@ const rota0 = new Chart(document.getElementById("rotation0"), {
         },
     },
     data: {
-        labels: ["Max rotacion: " + 3 + "%", "Rotacion: " + 0.5 + "%"],
+        labels: ["Max rotacion: " + 3 + "%", "Rotacion: " +registroInicidencia[8] + "%"],
         datasets: [
             {
                 label: "Rotación de personal",
-                data: [3, 0.5],
+                data: [3, registroInicidencia[8]],
                 backgroundColor: [
                     "rgba(2, 164, 75, 0.25)",
                     "rgba(205, 2, 2, 0.25)",
@@ -162,7 +163,7 @@ const rota0 = new Chart(document.getElementById("rotation0"), {
                     chart.chartArea.top +
                     (chart.chartArea.bottom - chart.chartArea.top) / 2;
                 ctx.fillText(
-                    `0.05%`,
+                    `${( registroInicidencia[8])}%`,
                     centerX,
                     centerY
                 );
@@ -308,6 +309,7 @@ const rota3 = new Chart(document.getElementById("rotation3"), {
         labels: [
             "Directos:" + tipoTrabajadors[0],
             "Indirectos:" + tipoTrabajadors[1],
+            "Practicantes:" + tipoTrabajadors[2],
         ],
         datasets: [
             {
@@ -316,8 +318,9 @@ const rota3 = new Chart(document.getElementById("rotation3"), {
                 backgroundColor: [
                     "rgba(2, 164, 75, 0.21)",
                     "rgba(255, 0, 0, 0.21)",
+                    "rgba(85, 87, 96, 0.21)",
                 ],
-                borderColor: ["rgb(3, 204, 43)", "rgb(168, 0, 0)"],
+                borderColor: ["rgb(3, 204, 43)", "rgb(168, 0, 0)", "rgb(85, 87, 96)"],
                 borderWidth: 1,
             },
         ],
@@ -343,7 +346,7 @@ const rota3 = new Chart(document.getElementById("rotation3"), {
                     chart.chartArea.top +
                     (chart.chartArea.bottom - chart.chartArea.top) / 2;
                 ctx.fillText(
-                    `${(tipoTrabajadors[0] / tipoTrabajadors[1]).toFixed(2)}%`,
+                    `${(tipoTrabajadors[0] / (tipoTrabajadors[1]+tipoTrabajadors[2])).toFixed(2)}%`,
                     centerX,
                     centerY
                 );

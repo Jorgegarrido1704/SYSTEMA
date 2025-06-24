@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\calidadController;
 use App\Models\assistence;
 use App\Models\issuesFloor;
+use App\Models\personalBergsModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -2039,7 +2040,7 @@ class juntasController extends Controller
     {
         $accidente = '61928 REV B.pdf';
         $today = date('Y-m-d');
-        $genero = $tipoTrabajador = [0, 0];
+        $genero = $tipoTrabajador = [0, 0,0];
         $month = date('Y-m');
 
 
@@ -2059,9 +2060,19 @@ class juntasController extends Controller
                 $tipoTrabajador[0]++;
             } else if ($datoGenero->typeWorker == 'Indirecto') {
                 $tipoTrabajador[1]++;
+            } else if ($datoGenero->typeWorker == 'Practicante') {
+                $tipoTrabajador[2]++;
             }
             $total++;
         }
+        $registroRotacion =personalBergsModel::select('employeeNumber')
+           ->where('status', '=', 'Baja')
+           ->whereMonth('DateSalida', '=', Carbon::now()->month)
+           ->get();
+           $rotacionTotal = count($registroRotacion);
+
+        $totalRotacion = round($rotacionTotal/ $total * 100,2);
+
         $selectDia = Carbon::now()->dayOfWeek;
         $diaActual = $dias[$selectDia - 1];
         $week = Carbon::now()->weekOfYear;
@@ -2129,12 +2140,14 @@ class juntasController extends Controller
         $faltan = $total - ($rotacion->assistencia + $rotacion->faltas + $rotacion->incapacidad + $rotacion->permisos_gose + $rotacion->permisos_sin_gose + $rotacion->vacaciones + $rotacion->retardos + $rotacion->suspension + $rotacion->practicantes);
         $registrosDeAsistencia = [$rotacion->assistencia, $rotacion->faltas, $rotacion->incapacidad,
         $rotacion->permisos_gose + $rotacion->permisos_sin_gose, $rotacion->vacaciones, $rotacion->retardos,
-        $rotacion->suspension, $rotacion->practicantes];
+        $rotacion->suspension, $rotacion->practicantes,$totalRotacion];
 
 
 
         return view('juntas.hr', ['promaus' => $promaus, 'diaActual' => $diaActual, 'tipoTrabajador' => $tipoTrabajador, 'faltantes' => $faltantes, 'faltan' => $faltan, 'genero' => $genero, 'registrosDeAsistencia' => $registrosDeAsistencia, 'value' => session('user'), 'cat' => session('categoria'), 'accidente' => $accidente]);
     }
+
+    //Show Names per category
     public function DatosRh(Request $request)  {
         $id = $request->input('id');
         $value = session('user');
