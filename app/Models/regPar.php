@@ -15,11 +15,14 @@ class regPar extends Model
         'cortPar',
         'libePar',
         'ensaPar',
-        'espWPar',
+        'preCalidad',
         'loomPar',
         'testPar',
         'embPar',
-        'codeBar'
+        'eng',
+        'codeBar',
+        'fallasCalidad',
+        'specialWire'
 
     ];
     protected $table = 'registroparcial';

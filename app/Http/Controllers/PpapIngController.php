@@ -17,6 +17,7 @@ use Carbon\Carbon;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use App\Models\workScreduleModel;
+use App\Models\regPar;
 
 class PpapIngController extends Controller
 {
@@ -272,9 +273,9 @@ class PpapIngController extends Controller
         $cuenta = $request->input('count');
         $info = $request->input('info');
         $today = date('d-m-Y H:i');
-
-        $buscardatos = DB::table('registroparcial')->where('codeBar', '=', $info)->first();
-        $eng = $buscardatos->eng;
+        $regpart=regPar::where('codeBar', $info)->DB::update(['eng' => 0, 'cortPar' => 0, 'libePar' => 0, 'ensaPar' => 0, 'loomPar' => 0, 'testPar' => 0, 'embPar' => 0, 'preCalidad' => 0,'fallasCalidad' => 0,'specialWire' => 0]);
+        $datosRegistro= Wo::select('Qty')->where('info', $info)->first();
+        $eng=$datosRegistro->Qty;
         function upRegistro($count, $donde, $info, $area, $idIng, $today, $mas, $newQty, $value)
         {
             $updateTiempo = DB::table('tiempos')->where('info', $info)->update([$area => $today]);
@@ -291,17 +292,7 @@ class PpapIngController extends Controller
         if ($cuenta == 17) {
             upRegistro(4, 'En espera de liberacion', $info, 'corte', $idIng, $today, 'libePar', $eng, $value);
         } else if ($cuenta == 14) {
-            upRegistro(10, 'En espera de calidad', $info, 'loom', $idIng, $today, 'testPar', $eng, $value);
-            $buscarIfno = DB::table('registro')->where('info', '=', $info)->first();
-            $newCalidad = new listaCalidad;
-            $newCalidad->np = $buscarIfno->NumPart;
-            $newCalidad->client = $buscarIfno->cliente;
-            $newCalidad->wo = $buscarIfno->wo;
-            $newCalidad->po = $buscarIfno->po;
-            $newCalidad->info = $info;
-            $newCalidad->qty = $eng;
-            $newCalidad->parcial = 'SI';
-            $newCalidad->save();
+            upRegistro(10, 'En espera de calidad', $info, 'loom', $idIng, $today, 'preCalidad', $eng, $value);
         } else if ($cuenta == 13) {
             upRegistro(8, 'En espera de loom', $info, 'ensamble', $idIng, $today, 'loomPar', $eng, $value);
         } else if ($cuenta == 16) {
@@ -847,6 +838,6 @@ class PpapIngController extends Controller
         }
 
     }
-    
+
 
 }
