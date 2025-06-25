@@ -273,7 +273,7 @@ class PpapIngController extends Controller
         $cuenta = $request->input('count');
         $info = $request->input('info');
         $today = date('d-m-Y H:i');
-        $regpart=regPar::where('codeBar', $info)->DB::update(['eng' => 0, 'cortPar' => 0, 'libePar' => 0, 'ensaPar' => 0, 'loomPar' => 0, 'testPar' => 0, 'embPar' => 0, 'preCalidad' => 0,'fallasCalidad' => 0,'specialWire' => 0]);
+        $regpart=regPar::where('codeBar', $info)->update(['eng' => 0, 'cortPar' => 0, 'libePar' => 0, 'ensaPar' => 0, 'loomPar' => 0, 'testPar' => 0, 'embPar' => 0, 'preCalidad' => 0,'fallasCalidad' => 0,'specialWire' => 0]);
         $datosRegistro= Wo::select('Qty')->where('info', $info)->first();
         $eng=$datosRegistro->Qty;
         function upRegistro($count, $donde, $info, $area, $idIng, $today, $mas, $newQty, $value)
