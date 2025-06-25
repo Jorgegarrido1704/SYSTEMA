@@ -11,6 +11,11 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Models\personalBergsModel;
 use Illuminate\Database\Eloquent\Casts\Json;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use PhpOffice\PhpSpreadsheet\Style\Border;
 
 class rrhhController extends Controller
 {
@@ -119,27 +124,27 @@ class rrhhController extends Controller
             'Genero' => 'required|string',
         ]);
 
-        if(personalBergsModel::where('employeeNumber', '=', 'i'.$validated['id_empleado'])->exists()){
+        if (personalBergsModel::where('employeeNumber', '=', 'i' . $validated['id_empleado'])->exists()) {
             return redirect()->route('rrhhDashBoard')->with('error', 'El empleado ya existe en la base de datos.');
-        }else{
-        personalBergsModel::create([
-            'employeeName' =>  $validated['nombre'],
-            'employeeNumber' => 'i'. $validated['id_empleado'],
-            'DateIngreso' => $validated['ingreso'],
-            'employeeArea' => $validated['area'],
-            'employeeLider' => $validated['lider'],
-            'typeWorker' => $validated['tipoDeTrabajador'],
-            'Gender' => $validated['Genero'],
-        ]);
-        assistence::create([
-            'week' => date('W'),
-            'lider' => $validated['lider'],
-            'name' => $validated['nombre'],
-            'id_empleado' => 'i'.$validated['id_empleado']
-        ]);
+        } else {
+            personalBergsModel::create([
+                'employeeName' =>  $validated['nombre'],
+                'employeeNumber' => 'i' . $validated['id_empleado'],
+                'DateIngreso' => $validated['ingreso'],
+                'employeeArea' => $validated['area'],
+                'employeeLider' => $validated['lider'],
+                'typeWorker' => $validated['tipoDeTrabajador'],
+                'Gender' => $validated['Genero'],
+            ]);
+            assistence::create([
+                'week' => date('W'),
+                'lider' => $validated['lider'],
+                'name' => $validated['nombre'],
+                'id_empleado' => 'i' . $validated['id_empleado']
+            ]);
 
-        return redirect()->route('rrhhDashBoard')->with('error', 'Empleado agregado correctamente.');
-    }
+            return redirect()->route('rrhhDashBoard')->with('error', 'Empleado agregado correctamente.');
+        }
     }
     public function modificarEmpleado(Request $request)
     {
@@ -189,5 +194,143 @@ class rrhhController extends Controller
 
 
         return response()->json($datos);
+    }
+
+
+
+
+
+
+    public function reporteSemanlInicidencias(Request $request)
+    {
+        $week = $request->input('semana');
+
+        // Obtener líderes únicos por semana
+        $leaders = assistence::select('lider')
+            ->distinct()
+            ->where('semana', $week)
+            ->orderBy('lider', 'ASC')
+            ->get();
+
+        $spreadsheet = new Spreadsheet();
+        $spreadsheet->removeSheetByIndex(0); // Quitar la hoja en blanco por defecto
+
+        // Encabezados
+        $headers = [
+            'A1' => 'Empleado',
+            'B1' => 'Numero de empleado',
+            'C1' => 'Lunes',
+            'D1' => 'Tiempo Extra Lunes',
+            'E1' => 'Tiempo por Tiempo Lunes',
+            'F1' => 'Martes',
+            'G1' => 'Tiempo Extra Martes',
+            'H1' => 'Tiempo por Tiempo Martes',
+            'I1' => 'Miércoles',
+            'J1' => 'Tiempo Extra Miércoles',
+            'K1' => 'Tiempo por Tiempo Miércoles',
+            'L1' => 'Jueves',
+            'M1' => 'Tiempo Extra Jueves',
+            'N1' => 'Tiempo por Tiempo Jueves',
+            'O1' => 'Viernes',
+            'P1' => 'Tiempo Extra Viernes',
+            'Q1' => 'Tiempo por Tiempo Viernes',
+            'R1' => 'Sábado',
+            'S1' => 'Tiempo Extra Sábado',
+            'T1' => 'Tiempo por Tiempo Sábado',
+            'U1' => 'Domingo',
+            'V1' => 'Tiempo Extra Domingo',
+            'W1' => 'Tiempo por Tiempo Domingo',
+            'X1' => 'Total de Extras',
+            'Y1' => 'Total de Tiempo por Tiempo',
+            'Z1' => 'Bono de Asistencia',
+            'AA1' => 'Bono de puntualidad'
+        ];
+
+        foreach ($leaders as $l) {
+            // Crear hoja por líder
+            $sheet = $spreadsheet->createSheet();
+            $sheet->setTitle($l->lider);
+
+            // Agregar encabezados
+            foreach ($headers as $cell => $value) {
+                $sheet->setCellValue($cell, $value);
+            }
+
+            // Estilo para encabezados
+            $headerStyle = [
+                'font' => ['bold' => true],
+                'fill' => [
+                    'fillType' => Fill::FILL_SOLID,
+                    'startColor' => ['argb' => 'FFB0C4DE']
+                ],
+                'alignment' => [
+                    'horizontal' => Alignment::HORIZONTAL_CENTER
+                ],
+                'borders' => [
+                    'allBorders' => [
+                        'borderStyle' => Border::BORDER_THIN
+                    ]
+                ]
+            ];
+            $sheet->getStyle('A1:AA1')->applyFromArray($headerStyle);
+
+            // Obtener datos del líder
+            $datos = assistence::where('semana', $week)
+                ->where('lider', $l->lider)
+                ->orderBy('employeeName', 'asc')
+                ->get();
+
+            // Agregar datos
+            $row = 2;
+            foreach ($datos as $d) {
+                $sheet->setCellValue('A' . $row, $d->employeeName);
+                $sheet->setCellValue('B' . $row, $d->employeeNumber);
+                $sheet->setCellValue('C' . $row, $d->Lunes);
+                $sheet->setCellValue('D' . $row, $d->LunesExtra);
+                $sheet->setCellValue('E' . $row, $d->LunesTiempo);
+                $sheet->setCellValue('F' . $row, $d->Martes);
+                $sheet->setCellValue('G' . $row, $d->MartesExtra);
+                $sheet->setCellValue('H' . $row, $d->MartesTiempo);
+                $sheet->setCellValue('I' . $row, $d->Miercoles);
+                $sheet->setCellValue('J' . $row, $d->MiercolesExtra);
+                $sheet->setCellValue('K' . $row, $d->MiercolesTiempo);
+                $sheet->setCellValue('L' . $row, $d->Jueves);
+                $sheet->setCellValue('M' . $row, $d->JuevesExtra);
+                $sheet->setCellValue('N' . $row, $d->JuevesTiempo);
+                $sheet->setCellValue('O' . $row, $d->Viernes);
+                $sheet->setCellValue('P' . $row, $d->ViernesExtra);
+                $sheet->setCellValue('Q' . $row, $d->ViernesTiempo);
+                $sheet->setCellValue('R' . $row, $d->Sabado);
+                $sheet->setCellValue('S' . $row, $d->SabadoExtra);
+                $sheet->setCellValue('T' . $row, $d->SabadoTiempo);
+                $sheet->setCellValue('U' . $row, $d->Domingo);
+                $sheet->setCellValue('V' . $row, $d->DomingoExtra);
+                $sheet->setCellValue('W' . $row, $d->DomingoTiempo);
+                $sheet->setCellValue('X' . $row, $d->TotalExtras);
+                $sheet->setCellValue('Y' . $row, $d->TotalTiempo);
+                $sheet->setCellValue('Z' . $row, $d->BonoAsistencia);
+                $sheet->setCellValue('AA' . $row, $d->BonoPuntualidad);
+                $row++;
+            }
+
+            // Ajustar ancho de columnas automáticamente
+            foreach (range('A', 'AA') as $col) {
+                $sheet->getColumnDimension($col)->setAutoSize(true);
+            }
+        }
+
+        // Establecer hoja activa en la primera creada
+        $spreadsheet->setActiveSheetIndex(0);
+
+        // Enviar archivo
+        $writer = new Xlsx($spreadsheet);
+        $fileName = 'Reporte_incidencias_semana_' . $week . '.xlsx';
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment; filename="' . $fileName . '"');
+        header('Cache-Control: max-age=0');
+
+        $writer->save('php://output');
+        exit;
     }
 }

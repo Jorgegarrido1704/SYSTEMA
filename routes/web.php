@@ -184,5 +184,6 @@ Route::controller(rrhhController::class)->group(function () {
     Route::post('/rrhh/addpersonal', [rrhhController::class, 'addperson'])->name('addperson');
     Route::post('/rrhh/modificarEmpleado', [rrhhController::class, 'modificarEmpleado'])->name('modificarEmpleado');
     Route::post('/rrhh/editarEmepleado', [rrhhController::class, 'editarEmepleado'])->name('editarEmepleado');
+    Route::get('/rrhh/reporte', [rrhhController::class, 'reporteSemanlInicidencias'])->name('reporteSemanlInicidencias');
 
 });

@@ -8,20 +8,23 @@ if (Error) {
 </script>
 <!-- First Period -->
 <div class="row">
+    <div class="col-lg-12 col-md-12 mb-4">
+        <h1 class="h3 mb-2 text-gray-800">reporte</h1>
+        <p class="mb-4"><a href="#"></a></p>
+    </div>
     <div class="col-lg-12 col-lx-12 mb-4">
         <style>
-#OK {background-color: rgba(76, 175, 80, 0.5); color: white;}
-#F{background-color: rgba(255, 47, 47, 0.75); color: white;}
-#PSS{background-color: rgba(237, 142, 1, 0.75); color: white;}
-#PCS{background-color: rgba(237, 142, 1, 0.8); color: white;}
-#INC{background-color: rgba(253, 207, 71, 0.84); color: white;}
-#V{background-color: rgba(73, 50, 204, 0.5); color: white;}
-#R{background-color: rgba(245, 13, 129, 0.35);color: white;}
-#SUS{background-color: rgba(100, 9, 9, 0.81); color: white;}
-#PCT{background-color: rgba(103, 95, 95, 0.35); color: black;}
-#empleado{background-color: rgba(255, 255, 255, 0.5); color: black; font-weight: bold; font-size: 16px;}
-#AddPersonal,#modificarEmpleado{display: none; }
-
+            #OK {background-color: rgba(76, 175, 80, 0.5); color: white;}
+            #F{background-color: rgba(255, 47, 47, 0.75); color: white;}
+            #PSS{background-color: rgba(237, 142, 1, 0.75); color: white;}
+            #PCS{background-color: rgba(237, 142, 1, 0.8); color: white;}
+            #INC{background-color: rgba(253, 207, 71, 0.84); color: white;}
+            #V{background-color: rgba(73, 50, 204, 0.5); color: white;}
+            #R{background-color: rgba(245, 13, 129, 0.35);color: white;}
+            #SUS{background-color: rgba(100, 9, 9, 0.81); color: white;}
+            #PCT{background-color: rgba(103, 95, 95, 0.35); color: black;}
+            #empleado{background-color: rgba(255, 255, 255, 0.5); color: black; font-weight: bold; font-size: 16px;}
+            #AddPersonal,#modificarEmpleado{display: none; }
         </style>
 
 
