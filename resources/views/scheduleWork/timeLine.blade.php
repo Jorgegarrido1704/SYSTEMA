@@ -45,15 +45,11 @@
                                     <th> Description </th>
                                     <th> Machine/Tool Required </th>
                                     <th> Setup Time </th>
+                                    <th>Times Per Proccess </th>
                                     <th> Cycle Time </th>
-                                    <th> Operator </th>
-                                    <th> Status </th>
-                                    <th> Dependencies/Predecessors </th>
-                                    <th> Resources </th>
-                                    <th> Notes / Comments </th>
-                                    <th> Shift / Schedule </th>
-                                    <th> Planned Start Date </th>
-                                    <th> Planned End Date </th>
+                                    <th> Total Cycle Time </th>
+                                    <th> Total Time </th>
+
                                 </tr>
                             </thead>
                             <tbody>
@@ -63,8 +59,10 @@
                                     <td> {{ $registro->work_description }} </td>
                                     <td> {{ $registro->posible_stations }} </td>
                                     <td> {{ $registro->setUp_routing	 }} </td>
-                                    <td> {{ $registro->QtyTimes	 }} </td>
-                                    <td> {{ $registro->setUp_routing}} </td>
+                                     <td> {{ $registro->QtyTimes	 }} </td>
+                                     <td> {{  $registro->timePerProcess }} </td>
+                                    <td> {{ $registro->timePerProcess+$registro->QtyTimes }} </td>
+                                     <td>{{ $registro->setUp_routing+($registro->QtyTimes*$registro->timePerProcess) }}  </td>
 
                                 </tr>
 
