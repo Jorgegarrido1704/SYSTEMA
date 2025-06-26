@@ -15,7 +15,7 @@
 
         const totalTime = qty * timePerProcess;
         const sumTime = setupTime + totalTime;
-        const finalTime = qty + qtyTimes;
+        const finalTime = qty * qtyTimes;
 
 
         document.getElementById(`total_${index}`).value = totalTime.toFixed(3);
