@@ -18,7 +18,7 @@ class routingModel extends Model
 
     public function scopeSearch($query, $search)
     {
-        return $query->where('pn_routing', '=',   $search )->get();
+        return $query->where('pn_routing', '=',   $search )->orderBy('work_routing', 'ASC')->get();
     }
      public function timeProcesses()
     {

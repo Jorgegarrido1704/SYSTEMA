@@ -227,10 +227,17 @@ class AdminSupControlloer extends Controller
         ];
         return view('scheduleWork.ValueStreapMap', ['steps' => $steps, 'value' => session('user'), 'cat' => session('categoria')]);
     }
-    public function timeLine()
+    public function timeLine(Request $request)
     {
-
-        $registros =routingModel::Search('1001489409');
+        if (session('categoria') != 'SupAdmin') {
+            return redirect('/login');
+        }
+        $np = $request->input('np');
+        
+        if ($np) {
+            $registros = routingModel::Search($np);
+        }else{
+        $registros = routingModel::Search('1001489409');}
 
 
         return view('scheduleWork.timeLine', ['registros' => $registros	,'value' => session('user'), 'cat' => session('categoria')]);
