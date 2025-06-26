@@ -6,6 +6,7 @@
    function updateTimes() {
     const qty = parseInt(document.getElementById("qty").value) || 1;
     const rows = document.querySelectorAll("tbody tr");
+    let finalTotalTime = 0;
 
     rows.forEach((row, index) => {
         const timePerProcess = parseFloat(document.getElementById(`timePerProcess_${index}`).value) || 0;
@@ -16,10 +17,13 @@
         const sumTime = setupTime + totalTime;
         const finalTime = qty + qtyTimes;
 
+
         document.getElementById(`total_${index}`).value = totalTime.toFixed(3);
         document.getElementById(`sum_${index}`).value = sumTime.toFixed(3);
         document.getElementById(`QtyTimes${index}`).value = finalTime.toFixed(0);
+        finalTotalTime += totalTime;
     });
+    document.getElementById("totalTime").value = finalTotalTime.toFixed(3);
 }
 
 
@@ -34,23 +38,22 @@
     <div class="row">
         <div class="col-xl-12 col-lg-12 col-md-12 mb-4">
             <div class="card shadow mb-6">
-
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h5 class="m-0 font-weight-bold text-primary">Moviments </h5>
-                </div>
-
-                <!-- table Body -->
-                <div class="card-body" style="overflow-y: auto; ">
-                    <div class="form-group">
-                        <form action="{{ route('timeLine') }}" method="GET">
-                        <label for="np" class="form-label">Part Number: </label>
-                        <input type="text" class="form-input" id="np" name="np" stytle="width: 50px;">
-                        <button type="submit" class="btn btn-primary">Search</button>
-                            </form>
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h5 class="m-0 font-weight-bold text-primary">Total Time  <input type="text" id="totalTime" name="totalTime" readonly style="width: 150px;"></h5>
                     </div>
-                    <div class="form-group">
-                        <label for="qty" class="form-label">Quanty: </label>
-                        <input type="text" class="form-input" id="qty" name="qty" value="1" onchange="updateTimes();">
+                    <!-- table Body -->
+                    <div class="card-body" style="overflow-y: auto; ">
+                        <div class="form-group row ">
+                            <form action="{{ route('timeLine') }}" method="GET">
+                            <label for="np" class="form-label">Part Number: </label>
+                            <input type="text" class="form-input" id="np" name="np" stytle="width: 50px;">
+                            <button type="submit" class="btn btn-primary">Search</button>
+                                </form>
+                                <div class="form-group " style="margin-left: 20px;">
+                            <label for="qty" class="form-label">Quanty: </label>
+                            <input type="text" class="form-input" id="qty" name="qty" value="1" onchange="updateTimes();">
+                    </div>
+                        </div>
                 </div>
             </div>
         </div>
