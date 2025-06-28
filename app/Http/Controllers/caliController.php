@@ -17,6 +17,7 @@ use App\Models\listaCalidad;
 use App\Models\fallasCalidadModel;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use App\Models\calidad\calidad_registro_baja;
 
 
 class caliController extends generalController
@@ -85,41 +86,35 @@ class caliController extends generalController
     }
     public function baja(Request $request)
     {
-        $calicontroller = new generalController();
-        $caliresult = $calicontroller->__invoke();
-        $value = $caliresult->getData()['value'];
-        /* $week = $caliresult->getData()['week'];
-        $assit = $caliresult->getData()['assit'];*/
-        $cat = $caliresult->getData()['cat'];
+
+        $value = session('user');
+        $cat = session('categoria');
         $id = $request->input('id');
         if ($id == '') {
             return redirect()->route('calidad');
         } else {
-            $buscarInfo = DB::table('calidad')->where('id', '=', $id)->get();
-            foreach ($buscarInfo as $rowInfo) {
-                $client = $rowInfo->client;
-                $pn = $rowInfo->np;
-                $wo = $rowInfo->wo;
-                $info = $rowInfo->info;
-                $qty = $rowInfo->qty;
-            }
-            if ($pn == "185-4147" or $pn == "199-4942" or $pn == "199-6660" or $pn == "199-3871" or $pn == "189-6256" or $pn == "190-3559" or $pn == "185-4142") {
-                $cambioestados = [1, 'readonly', ''];
+            $buscarInfor = calidad_registro_baja::find($id);
+
+            $numQr=[
+                '185-4147',
+                '199-4942',
+                '199-6660',
+                '199-3871',
+                '189-6256',
+                '190-3559',
+                '185-4142'
+            ];
+            if (in_array($buscarInfor->np, $numQr)) {
+                $cambioestados = [1, 'readonly', '', 'none','focus'];
             } else {
-                $cambioestados = [100, '', 'readonly'];
+                $cambioestados = [100, '', 'readonly', '', ''];
             }
 
 
-            return view('cali', [
+            return view('calidad.bajaDeRegistros', [
                 'value' => $value,
                 'id' => $id,
-                'client' => $client,
-                'pn' => $pn,
-                'wo' => $wo,
-                'qty' => $qty,
-                'info' => $info,
-                //'week'=>$week,
-                //'assit'=>$assit,
+                'buscarInfor' => $buscarInfor,
                 'cat' => $cat,
                 'cambioestados' => $cambioestados
             ]);
@@ -285,6 +280,7 @@ class caliController extends generalController
             $cant4 = $request->input('4');
             $cant5 = $request->input('5');
             $serial = $request->input('serial');
+            $id = $request->input('id_cali');
             if (strpos($serial, "'")) {
                 $serial = str_replace("'", "-", $serial);
             }
@@ -326,7 +322,7 @@ class caliController extends generalController
                     $registroQr = DB::table('registroqrs')->where('CodigoIdentificaicon', '=', $serial)->delete();
                 }
                  else {
-                    return redirect('calidad')->with('response', "Qr invalido");
+                     return redirect()->route('baja', ['id' => $id])->with('response', "QR code not found in the database");
                 }
 
             }
@@ -449,12 +445,13 @@ class caliController extends generalController
                         $tiempoUp = DB::table('tiempos')->where('info', $info)->update(['calidad' => $todays]);
                     }
                 }
-                return redirect()->route('calidad');
+                return redirect()->route('baja', ['id' => $id])->with('response', "Registro actualizado correctamente");
             } else {
-                return redirect()->route('calidad');
+                return redirect()->route('baja', ['id' => $id])->with('response', "No update you need to update less than " . $qty_cal . " and the total of NOK must be equal to " . $qty_cal);
             }
         } else {
-            return redirect()->route('calidad');
+            $id = $request->input('id_cali');
+            return redirect()->route('baja', ['id' => $id])->with('response', "You do not have permission to perform this action");
         }
     }
 
