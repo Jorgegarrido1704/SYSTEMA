@@ -61,7 +61,12 @@
             <div class="card shadow mb-6">
 
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h5 class="m-0 font-weight-bold text-primary">Routing </h5>
+                    <h5 class="m-0 font-weight-bold text-primary">Routing   NP: @if (!empty($_GET['np']))
+                        {{ $_GET['np'] }}
+                    @else
+                        {{ '1001489409' }}
+
+                    @endif</h5>
                 </div>
 
                 <!-- table Body -->
