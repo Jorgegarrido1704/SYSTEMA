@@ -113,8 +113,8 @@
                     </ul>
                 </li>
                  @endif
-                 <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('rrhhDashBoard') }}">Assitence</a>
-                </li>
+                 <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('rrhhDashBoard') }}">Assistance</a></li>
+                 <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('accionesCorrectivas.index') }}">Corrective Actions</a></li>
             </ul>
         </li>
 

@@ -19,7 +19,8 @@ use App\Http\Controllers\AlmacenController;
 use App\Http\Controllers\AdminSupControlloer;
 use App\Http\Controllers\rrhhController;
 use App\Http\Controllers\SaludController;
-
+use App\Models\accionesCorrectivas;
+use App\Http\Controllers\accionesCorrectivasController;
 
 /*
 |--------------------------------------------------------------------------
@@ -186,4 +187,8 @@ Route::controller(rrhhController::class)->group(function () {
     Route::post('/rrhh/editarEmepleado', [rrhhController::class, 'editarEmepleado'])->name('editarEmepleado');
     Route::get('/rrhh/reporte', [rrhhController::class, 'reporteSemanlInicidencias'])->name('reporteSemanlInicidencias');
 
+});
+Route::controller(accionesCorrectivasController::class)->group(function () {
+    Route::get('/acciones-correctivas', [accionesCorrectivasController::class, 'index'])->name('accionesCorrectivas.index');
+    Route::post('/acciones-correctivas/create', [accionesCorrectivasController::class, 'create'])->name('accionesCorrectivas.create');
 });

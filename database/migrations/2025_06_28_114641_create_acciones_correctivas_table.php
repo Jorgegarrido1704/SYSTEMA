@@ -1,0 +1,33 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('acciones_correctivas', function (Blueprint $table) {
+            $table->id('id_acciones_correctivas')->autoincrement();
+            $table->dateTime('fechaAccion')->nullable();
+            $table->string('Afecta')->nullable();
+            $table->string('origenAccion')->nullable();
+            $table->string('resposableAccion')->nullable();
+            $table->text('descripcionAccion')->nullable();
+            $table->dateTime('fechaCompromiso')->nullable();
+            $table->string('status')->default('Activa')->nullable();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('acciones_correctivas');
+    }
+};
