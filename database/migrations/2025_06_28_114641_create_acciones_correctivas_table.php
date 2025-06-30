@@ -19,7 +19,17 @@ return new class extends Migration
             $table->string('resposableAccion')->nullable();
             $table->text('descripcionAccion')->nullable();
             $table->dateTime('fechaCompromiso')->nullable();
-            $table->string('status')->default('Activa')->nullable();
+            $table->string('status')->default('Activa - Etapa 1')->nullable();
+            $table->string('asistenciaCausaRaiz')->nullable();
+            $table->string('descripcionContencion')->nullable();
+            $table->string('porque1')->nullable();
+            $table->string('porque2')->nullable();
+            $table->string('porque3')->nullable();
+            $table->string('porque4')->nullable();
+            $table->string('porque5')->nullable();
+            $table->string('Ishikawa')->nullable();
+
+
         });
     }
 

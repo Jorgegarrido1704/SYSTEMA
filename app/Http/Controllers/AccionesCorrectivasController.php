@@ -51,11 +51,40 @@ class AccionesCorrectivasController extends Controller
     {
     $cat=session('categoria');
     $value=session('user');
+     $problema = "Alta rotación de empleados";
+     $categorias=[];
+     $mermaid = "";
+      /*  $categorias = [
+            "Mano de Obra" => ["Falta de motivación", "Exceso de trabajo"],
+            "Métodos" => ["Procesos de inducción ineficientes", "Falta de retroalimentación"],
+            "Máquinas" => ["Herramientas obsoletas"],
+            "Materiales" => ["Recursos insuficientes"],
+            "Medio Ambiente" => ["Condiciones laborales deficientes", "Ruido excesivo"],
+            "Medición" => ["Falta de indicadores", "Evaluaciones poco claras"]
+        ];
+      $mermaid = "graph LR\n";
+*/
+foreach ($categorias as $cat => $causas) {
+    $cat_id = str_replace(' ', '_', $cat);
+    $mermaid .= "    {$cat_id} -->|{$cat}| Problema\n";
+
+    foreach ($causas as $i => $causa) {
+        $causa_id = $cat_id . "_" . $i;
+        $mermaid .= "    {$causa_id}[\"{$causa}\"] --> {$cat_id}\n";
+    }
+}
+
+$mermaid .= "    Problema(\"$problema\")\n";
+
+
         $accion = accionesCorrectivas::findOrFail($id);
         return view('accionesCorrectiva.show', [
             'accion' => $accion,
             'cat' => $cat,
             'value' => $value,
+            'problema' => $problema,
+            'categorias' => $categorias,
+            'mermaid' => $mermaid
         ]);
     }
 }
