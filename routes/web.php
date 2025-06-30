@@ -191,4 +191,5 @@ Route::controller(rrhhController::class)->group(function () {
 Route::controller(accionesCorrectivasController::class)->group(function () {
     Route::get('/acciones-correctivas', [accionesCorrectivasController::class, 'index'])->name('accionesCorrectivas.index');
     Route::post('/acciones-correctivas/create', [accionesCorrectivasController::class, 'create'])->name('accionesCorrectivas.create');
+    Route::get('/acciones-correctivas/{id}', [accionesCorrectivasController::class, 'show'])->name('accionesCorrectivas.show');
 });

@@ -88,7 +88,7 @@
                         @if($accionesActivas->count() > 0)
                             @foreach($accionesActivas as $accion)
                                 <tr>
-                                    <td>{{ $accion->id_acciones_correctivas }}</td>
+                                    <td><a href="{{ route('accionesCorrectivas.show', $accion->id_acciones_correctivas) }}">{{ $accion->id_acciones_correctivas }}</a></td>
                                     <td>{{ $accion->fechaAccion->format('Y-m-d') }}</td>
                                     <td>{{ $accion->Afecta }}</td>
                                     <td>{{ $accion->origenAccion }}</td>
@@ -107,3 +107,4 @@
     </div>
  </div>
 @endsection
+

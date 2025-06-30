@@ -47,4 +47,15 @@ class AccionesCorrectivasController extends Controller
 
         return redirect()->route('accionesCorrectivas.index')->with('success', 'Acción correctiva creada exitosamente.');
     }
+    public function show($id)
+    {
+    $cat=session('categoria');
+    $value=session('user');
+        $accion = accionesCorrectivas::findOrFail($id);
+        return view('accionesCorrectiva.show', [
+            'accion' => $accion,
+            'cat' => $cat,
+            'value' => $value,
+        ]);
+    }
 }
