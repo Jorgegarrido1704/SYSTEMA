@@ -112,9 +112,10 @@
                         <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('timeLine') }}">Time Study</a></li>
                     </ul>
                 </li>
+                 <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('accionesCorrectivas.index') }}">Corrective Actions</a></li>
                  @endif
                  <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('rrhhDashBoard') }}">Assistance</a></li>
-                 <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('accionesCorrectivas.index') }}">Corrective Actions</a></li>
+
             </ul>
         </li>
 

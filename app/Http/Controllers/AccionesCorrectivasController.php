@@ -54,7 +54,7 @@ class AccionesCorrectivasController extends Controller
      $problema = "Alta rotación de empleados";
      $categorias=[];
      $mermaid = "";
-      /*  $categorias = [
+        $categorias = [
             "Mano de Obra" => ["Falta de motivación", "Exceso de trabajo"],
             "Métodos" => ["Procesos de inducción ineficientes", "Falta de retroalimentación"],
             "Máquinas" => ["Herramientas obsoletas"],
@@ -63,7 +63,7 @@ class AccionesCorrectivasController extends Controller
             "Medición" => ["Falta de indicadores", "Evaluaciones poco claras"]
         ];
       $mermaid = "graph LR\n";
-*/
+
 foreach ($categorias as $cat => $causas) {
     $cat_id = str_replace(' ', '_', $cat);
     $mermaid .= "    {$cat_id} -->|{$cat}| Problema\n";
