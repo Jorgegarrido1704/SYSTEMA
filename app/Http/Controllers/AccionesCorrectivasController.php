@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\accionesCorrectivas;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class AccionesCorrectivasController extends Controller
 {
@@ -34,15 +35,17 @@ class AccionesCorrectivasController extends Controller
             'origenAccion' => 'required|string|max:50',
             'resposableAccion' => 'required|string|max:80',
             'descripcionAccion' => 'required|string|max:500',
-            'fechaCompromiso' => 'required|date',
+
         ]);
+        $cantidadAccionesHoy= accionesCorrectivas::whereDate('fechaAccion', $request->input('fechaAccion'))->count();
+
         $accion = new accionesCorrectivas();
+        $accion->folioAccion = "C-" . carbon::parse($request->input('fechaAccion'))->format('dmY') . ($cantidadAccionesHoy + 1);
         $accion->fechaAccion = $request->input('fechaAccion');
         $accion->Afecta = $request->input('Afecta');
         $accion->origenAccion = $request->input('origenAccion');
         $accion->resposableAccion = $request->input('resposableAccion');
         $accion->descripcionAccion = $request->input('descripcionAccion');
-        $accion->fechaCompromiso = $request->input('fechaCompromiso');
         $accion->save();
 
         return redirect()->route('accionesCorrectivas.index')->with('success', 'Acción correctiva creada exitosamente.');

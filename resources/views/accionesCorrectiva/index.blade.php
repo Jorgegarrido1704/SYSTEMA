@@ -18,17 +18,23 @@
                         <label for="fechaAccion">Fecha de deteccion</label>
                         <input type="date" class="form-control" id="fechaAccion" name="fechaAccion" required>
                     </div>
-                    <div class="col-md-2" >
-                        <label for="folioAccion">Folio</label>
-                        <input type="text" class="form-control" id="folioAccion" name="folioAccion" value="@if(!empty($accionesActivas->last()->id_acciones_correctivas)) {{$accionesActivas->last()->id_acciones_correctivas + 1}} @else {{'1'}}@endif" readonly>
-                    </div>
                     <div class="col-md-5" >
                             <label for="Afecta">Proceso al que afecta</label>
                             <select class="form-control" id="Afecta" name="Afecta" required>
                                 <option value="" disabled selected>Seleccione un proceso</option>
-                                <option value="Proceso 1">Proceso 1</option>
-                                <option value="Proceso 2">Proceso 2</option>
-                                <option value="Proceso 3">Proceso 3</option>
+                                <option value="Prduccion">Prduccion</option>
+                                <option value="Calidad">Calidad</option>
+                                <option value="Atencion a clientes">Atencion a clientes</option>
+                                <option value="Planeacion">Planeacion</option>
+                                <option value="Embarques">Embarques</option>
+                                <option value="Compras">Compras</option>
+                                <option value="Almacen de marteria prima">Almacen de marteria prima</option>
+                                <option value="Mantenimiento">Mantenimiento</option>
+                                <option value="Recursos humanos">Recursos humanos</option>
+                                <option value="Seguridad e higiene">Seguridad e higiene</option>
+                                <option value="Comercio internacional">Comercio internacional</option>
+                                <option value="Ingenieria">Ingenieria</option>
+
                             </select>
                         </div>
                 </div>
@@ -49,10 +55,7 @@
                     </div>
                 </div>
                 <div class="row mt-3">
-                    <div class="col-md-6" >
-                        <label for="fechaCompromiso">Fecha de compromiso</label>
-                        <input type="date" class="form-control" id="fechaCompromiso" name="fechaCompromiso" required>
-                    </div>
+
                     <div class="col-md-6 mt-4 lt-3"  >
                         <button type="submit" class="btn btn-success">Guardar</button>
 
@@ -79,7 +82,7 @@
                             <th>Origen de la Accion</th>
                             <th>Responsable</th>
                             <th>Descripcion</th>
-                            <th>Fecha de Compromiso</th>
+
                             <th>Status</th>
                             <th>Dias Restantes</th>
                         </tr>
@@ -88,13 +91,13 @@
                         @if($accionesActivas->count() > 0)
                             @foreach($accionesActivas as $accion)
                                 <tr>
-                                    <td><a href="{{ route('accionesCorrectivas.show', $accion->id_acciones_correctivas) }}">{{ $accion->id_acciones_correctivas }}</a></td>
+                                    <td><a href="{{ route('accionesCorrectivas.show', $accion->id_acciones_correctivas) }}">{{ $accion->folioAccion  }}</a></td>
                                     <td>{{ $accion->fechaAccion->format('Y-m-d') }}</td>
                                     <td>{{ $accion->Afecta }}</td>
                                     <td>{{ $accion->origenAccion }}</td>
                                     <td>{{ $accion->resposableAccion }}</td>
                                     <td>{{ $accion->descripcionAccion }}</td>
-                                    <td>{{ $accion->fechaCompromiso->format('Y-m-d') }}</td>
+
                                     <td>{{ $accion->status }}</td>
                                     <td>{{ $diasRestantes[$accion->id_acciones_correctivas] ?? 0 }}</td>
                                 </tr>

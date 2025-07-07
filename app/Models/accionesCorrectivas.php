@@ -16,6 +16,7 @@ class accionesCorrectivas extends Model
     protected $keyType = 'int';
 
     protected $fillable = [
+        'folioAccion',
         'fechaAccion',
         'Afecta',
         'origenAccion',

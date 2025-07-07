@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('acciones_correctivas', function (Blueprint $table) {
             $table->id('id_acciones_correctivas')->autoincrement();
+            $table->string('folioAccion');
             $table->dateTime('fechaAccion')->nullable();
             $table->string('Afecta')->nullable();
             $table->string('origenAccion')->nullable();
