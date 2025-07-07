@@ -2,7 +2,7 @@
 
 @section('contenido')
  <div class="d-sm-flex align-items-center justify-content-between mb-4">  </div>
-
+ <script src="{{ asset('dash/js/accionesCorrectivas.js') }}"></script>
  <div class="row">
     <div class="col-lg-4 mb-4">
         <div class="card shadow mb-4">
@@ -41,8 +41,25 @@
                 <div class="row mt-3">
                         <div class="col-md-6" >
                             <label for="origenAccion">Origen de la accion</label>
-                            <textarea class="form-control" id="origenAccion" name="origenAccion" rows="2" required></textarea>
+                            <select class="form-control" id="origenAccion" name="origenAccion" onchange="mostrarOtroOrigen()"  required>
+                                <option value="" disabled selected>Seleccione un origen</option>
+                                <option value="Auditoria Interna">Auditoria Interna</option>
+                                <option value="Revision de la Direccion">Revision de la Direccion</option>
+                                <option value="Proceso">Proceso</option>
+                                <option value="Proveedor">Proveedor</option>
+                                <option value="Cliente">Cliente</option>
+                                <option value="Analisis de Indicadores">Analisis de Indicadores</option>
+                                <option value="Gestion de Riesgo">Gestion de Riesgo</option>
+                                <option value="otro" >Otro</option>
+                            </select>
+                            <div class="row mt-3">
+                                <div class="col-md-12" id="otroOrigen" style="display: none;" >
+                                    <label for="otrosOrigen">Especifique</label>
+                                    <input type="text" class="form-control" name="origenAccion" id="origenAccion"  required>
+                                </div>
+                            </div>
                         </div>
+
                         <div class="col-md-6" >
                             <label for="resposableAccion">Responsable de la accion</label>
                             <input type="text" class="form-control" name="resposableAccion" id="resposableAccion" required>

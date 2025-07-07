@@ -12,6 +12,17 @@ function mostrarAccionesCorrectivas(valor) {
         alert('Ishikawa');
     }
 
-    
+
+
+}
+
+function mostrarOtroOrigen(){
+    const otroOrigen = document.getElementById('origenAccion');
+    if(otroOrigen.value == 'otro'){
+        document.getElementById('otroOrigen').style.display = 'block';
+         console.log(otroOrigen.value);
+    }
+
+
 
 }
