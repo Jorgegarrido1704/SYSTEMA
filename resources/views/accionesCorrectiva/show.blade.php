@@ -32,9 +32,18 @@
                 </div>
                 <div class="card-body">
                      @if(!empty($categorias))
-                        <pre class="mermaid">
-                    {{ $mermaid }}
-                        </pre>
+                        @foreach ($categorias as  $ctas => $causas)
+                        <p>{{$ctas}} :</p>
+
+                        <p>{{$causas}}</p>
+
+
+                        @endforeach
+                        <p>Concluciones: </p>
+                        <p>{{$accion->conclusiones}}</p>
+                        <p>Es Sistemico: </p>
+                        <p>@if($accion->IsSistemicProblem ==1) Si @else No @endif </p>
+
                     @else
                         <p>Como desea registrar su causa raiz</p>
                         <div class='row'>
@@ -42,9 +51,92 @@
                                <button type="button" class="btn btn-outline-primary" onclick="mostrarAccionesCorrectivas(1);">5 porques</button>
                                <button type="button" class="btn btn-outline-info" onclick="mostrarAccionesCorrectivas(2);">Ishikawa</button>
                             </div>
-                            <div  id="5porque">
+                            <br>
+                            <div  id="5porque" style="display: none;">
+                                <div class=row>
+                                    <form action="{{ route('accionesCorrectivas.guardarPorques') }}" method="POST">
+                                        @csrf
+                                            <div class="col-12 mb-3">
+                                                <label for="porque1">Porque?</label>
+                                                <textarea class="form-control" name="porque1" id="porque1"  cols="55" row="3" required></textarea>
+                                            </div>
+                                            <div class="col-12 mb-3">
+                                                <label for="porque2">Porque?</label>
+                                                <textarea class="form-control" name="porque2" id="porque2"  cols="55" row="3"></textarea>
+                                            </div>
+                                            <div class="col-12 mb-3">
+                                                <label for="porque3">porque?</label>
+                                                <textarea class="form-control" name="porque3" id="porque3"  cols="55" row="3"></textarea>
+                                            </div>
+                                            <div class="col-12  mb-3">
+                                                <label for="porque4">Porque?</label>
+                                                <textarea class="form-control" name="porque4" id="porque4"  cols="55" row="3"></textarea>
+                                            </div>
+                                            <div class="col-12 mb-3">
+                                                <label for="porque5">porque?</label>
+                                                <textarea class="form-control" name="porque5" id="porque5"  cols="55" row="3"></textarea>
+                                            </div>
+                                            <div class="col-9 mb-3">
+                                                    <label for="conclusion">Conclusiones</label>
+                                                    <textarea class="form-control" name="conclusion" id="conclusion"  cols="55" row="4" required></textarea>
+                                            </div> <div class="col-3 mb-3">
+                                                    <label for="sistemic">Es sistemico?</label>
+                                                   <input type="checkbox" name="sistemic" id="sistemic" >
+                                                   <input type="hidden" name="accion_id" value="{{ $accion->id_acciones_correctivas }}">
+                                            </div>
+                                                <button type="submit" class="btn btn-primary">Guardar</button>
+                                            </div>
+                                    </form>
+                                </div>
                             </div>
-                            <div  id="ishikawa">
+                            <div  id="ishikawa" style="display: none;">
+                                <div class="row">
+                                    <form action="#" method="POST">
+                                        @csrf
+                                        <div class="col-12 mb-3">
+                                            <label for="problema1">Problema</label>
+                                            <input type="text" name="problema1" id="problema1" required>
+                                        </div><div class="col-12 mb-3">
+                                            <label for="motivo1">Motivo</label>
+                                            <textarea class="form-control" name="motivo1" id="motivo1"  cols="55" row="3" required></textarea>
+                                            </div><div class="col-12 mb-3">
+                                            <label for="problema2">Problema</label>
+                                            <input type="text" name="problema2" id="problema2">
+                                        </div><div class="col-12 mb-3">
+                                            <label for="motivo2">Motivo</label>
+                                            <textarea class="form-control" name="motivo2" id="motivo2"  cols="55" row="3"></textarea>
+                                            </div><div class="col-12 mb-3">
+                                            <label for="problema3">Problema</label>
+                                            <input type="text" name="problema3" id="problema3">
+                                        </div><div class="col-12 mb-3">
+                                            <label for="motivo3">Motivo</label>
+                                            <textarea class="form-control" name="motivo3" id="motivo3"  cols="55" row="3"></textarea>
+                                            </div><div class="col-12 mb-3">
+                                            <label for="problema4">Problema</label>
+                                            <input type="text" name="problema4" id="problema4">
+                                        </div><div class="col-12 mb-3">
+                                            <label for="motivo4">Motivo</label>
+                                            <textarea class="form-control" name="motivo4" id="motivo4"  cols="55" row="3"></textarea>
+                                            </div><div class="col-12 mb-3">
+                                            <label for="problema5">Problema</label>
+                                            <input type="text" name="problema5" id="problema5">
+                                        </div><div class="col-12 mb-3">
+                                            <label for="motivo5">Motivo</label>
+                                            <textarea class="form-control" name="motivo5" id="motivo5"  cols="55" row="3"></textarea>
+                                            </div>
+                                             <div class="col-9 mb-3">
+                                                    <label for="conclusion">Conclusiones</label>
+                                                    <textarea class="form-control" name="conclusion" id="conclusion"  cols="55" row="4" required></textarea>
+                                            </div class="col-3 mb-3">
+                                                    <label for="sistemic">Es sistemico?</label>
+                                                   <input type="checkbox" name="sistemic" id="sistemic" required>
+                                                    <input type="hidden" name="accion_id" value="{{ $accion->id_acciones_correctivas }}">
+                                            </div>
+                                                <button type="submit" class="btn btn-primary">Guardar</button>
+                                            </div>
+
+                                    </form>
+                                </div>
                             </div>
 
                         </div>

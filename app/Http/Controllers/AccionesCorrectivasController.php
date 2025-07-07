@@ -10,14 +10,14 @@ class AccionesCorrectivasController extends Controller
     //
     public function index()
     {
-        $cat=session('categoria');
-        $value=session('user');
+        $cat = session('categoria');
+        $value = session('user');
         $accionesActivas = accionesCorrectivas::where('status', '!=', 'finalizada')->orderBy('id_acciones_correctivas', 'ASC')->get();
         $diasRestantes = [];
         foreach ($accionesActivas as $accion) {
             $diasRestantes[$accion->id_acciones_correctivas] = $accion->getDateForFinisg($accion->id_acciones_correctivas);
         }
-        return view('accionesCorrectiva.index',[
+        return view('accionesCorrectiva.index', [
             'cat' => $cat,
             'value' => $value,
             'accionesActivas' => $accionesActivas,
@@ -49,32 +49,31 @@ class AccionesCorrectivasController extends Controller
     }
     public function show($id)
     {
-    $cat=session('categoria');
-    $value=session('user');
-     $problema = "Alta rotación de empleados";
-     $categorias=[];
-     $mermaid = "";
-        $categorias = [
-            "Mano de Obra" => ["Falta de motivación", "Exceso de trabajo"],
-            "Métodos" => ["Procesos de inducción ineficientes", "Falta de retroalimentación"],
-            "Máquinas" => ["Herramientas obsoletas"],
-            "Materiales" => ["Recursos insuficientes"],
-            "Medio Ambiente" => ["Condiciones laborales deficientes", "Ruido excesivo"],
-            "Medición" => ["Falta de indicadores", "Evaluaciones poco claras"]
-        ];
-      $mermaid = "graph LR\n";
+        $cat = session('categoria');
+        $value = session('user');
+        $problema = "Alta rotación de empleados";
+        $categorias = [];
+        $mermaid = "";
+        $registroPorquest = accionesCorrectivas::findOrFail($id);
+      if (!empty($registroPorquest->porques)) {
+        $categorias = json_decode($registroPorquest->porques, true);
+        } else if ($registroPorquest->Ishikawa != null) {
+            $categorias = json_decode($registroPorquest->Ishikawa);
+            $mermaid = "graph LR\n";
 
-foreach ($categorias as $cat => $causas) {
-    $cat_id = str_replace(' ', '_', $cat);
-    $mermaid .= "    {$cat_id} -->|{$cat}| Problema\n";
+            foreach ($categorias as $cats => $causas) {
+                $cats_id = str_replace(' ', '_', $cats);
+                $mermaid .= "    {$cats_id} -->|{$cats}| Problema\n";
 
-    foreach ($causas as $i => $causa) {
-        $causa_id = $cat_id . "_" . $i;
-        $mermaid .= "    {$causa_id}[\"{$causa}\"] --> {$cat_id}\n";
-    }
-}
+                foreach ($causas as $i => $causa) {
+                    $causa_id = $cats_id . "_" . $i;
+                    $mermaid .= "    {$causa_id}[\"{$causa}\"] --> {$cats_id}\n";
+                }
+            }
 
-$mermaid .= "    Problema(\"$problema\")\n";
+            $mermaid .= "    Problema(\"$problema\")\n";
+        }
+
 
 
         $accion = accionesCorrectivas::findOrFail($id);
@@ -84,7 +83,36 @@ $mermaid .= "    Problema(\"$problema\")\n";
             'value' => $value,
             'problema' => $problema,
             'categorias' => $categorias,
-            'mermaid' => $mermaid
+
         ]);
+    }
+    public function guardarPorques(Request $request)
+    {
+        $request->validate([
+            'porque1' => 'required|string|max:500',
+            'conclusion' => 'required|string|max:500',
+            'accion_id' => 'required|integer'
+        ]);
+        $registroPorquest = [
+            'porque1' => $request->input('porque1')
+        ];
+
+        for ($i = 2; $i <= 5; $i++) {
+            $key = 'porque' . $i;
+            if ($request->filled($key)) {
+                $registroPorquest[$key] = $request->input($key);
+            }
+        }
+        if ($request->input('sistemic') != null) {
+            $sistemic = true;
+        }else{
+            $sistemic = false;
+        }
+        $accion = accionesCorrectivas::findOrFail($request->input('accion_id'));
+        $accion->porques = $registroPorquest;
+        $accion->conclusiones = $request->input('conclusion');
+        $accion->IsSistemicProblem = $sistemic;
+        $accion->save();
+        return redirect()->route('accionesCorrectivas.index')->with('success', 'Acción correctiva actualizada exitosamente.');
     }
 }

@@ -11,5 +11,7 @@ function mostrarAccionesCorrectivas(valor) {
         Ishikawa.style.display = 'block';
         alert('Ishikawa');
     }
-   
+
+    
+
 }

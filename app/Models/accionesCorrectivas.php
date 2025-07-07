@@ -23,6 +23,14 @@ class accionesCorrectivas extends Model
         'descripcionAccion',
         'fechaCompromiso',
         'status',
+        'asistenciaCausaRaiz',
+        'descripcionContencion',
+        'porques',
+        'Ishikawa',
+        'fechaRegistroAcciones',
+        'conclusiones',
+        'IsSistemicProblem',
+
     ];
     protected $casts = [
         'fechaAccion' => 'datetime',
@@ -33,7 +41,7 @@ class accionesCorrectivas extends Model
     {
         $accion = accionesCorrectivas::find($id);
         if ($accion) {
-           $inicio = $accion->fechaAccion;
+           $inicio = carbon::now();
            $fin = $accion->fechaCompromiso;
            $diff= carbon::parse($fin)->diffInDays(carbon::parse($inicio));
            return $diff;
