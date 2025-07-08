@@ -111,6 +111,7 @@ class AccionesCorrectivasController extends Controller
         $accion->porques = $registroPorquest;
         $accion->conclusiones = $request->input('conclusion');
         $accion->IsSistemicProblem = $sistemic;
+        $accion->status = 'etapa 2 - Causa Raiz';
         $accion->save();
         return redirect()->route('accionesCorrectivas.index')->with('success', 'Acción correctiva actualizada exitosamente.');
     }
@@ -145,6 +146,7 @@ class AccionesCorrectivasController extends Controller
         $accion->Ishikawa = $datosIshikawa;
         $accion->conclusiones = $request->input('conclusion');
         $accion->IsSistemicProblem = $sistemic;
+        $accion->status = 'etapa 2 - Causa Raiz';
         $accion->save();
         return redirect()->route('accionesCorrectivas.index')->with('success', 'Acción correctiva actualizada exitosamente.');
     }
@@ -165,6 +167,7 @@ class AccionesCorrectivasController extends Controller
         $accion->fechaInicioAccion = $request->input('fechaInicioAccion');
         $accion->fechaFinAccion = $request->input('fechaFinAccion');
         $accion->verificadorAccion = $request->input('verificadorAccion');
+        $accion->status = 'etapa 2 - Accion Correctiva';
         $accion->save();
         return redirect()->route('accionesCorrectivas.index')->with('success', 'Acción correctiva actualizada exitosamente.');
     }
