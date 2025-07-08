@@ -17,6 +17,8 @@ class Kernel extends ConsoleKernel
     ->cron('10 6,9 * * *')
     ->timezone('America/Mexico_City');
 
+    $schedule->job(new \App\Jobs\accionesCorrectivasJob)->dailyAt('07:00');
+
     }
 
     /**

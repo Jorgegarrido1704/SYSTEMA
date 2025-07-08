@@ -21,6 +21,7 @@ use App\Http\Controllers\rrhhController;
 use App\Http\Controllers\SaludController;
 use App\Models\accionesCorrectivas;
 use App\Http\Controllers\accionesCorrectivasController;
+use App\Http\Controllers\mailsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -195,4 +196,9 @@ Route::controller(accionesCorrectivasController::class)->group(function () {
     Route::post('/acciones-correctivas/guardarPorques', [accionesCorrectivasController::class, 'guardarPorques'])->name('accionesCorrectivas.guardarPorques');
     Route::post('/acciones-correctivas/guardarIshikawa', [accionesCorrectivasController::class, 'guardarIshikawa'])->name('accionesCorrectivas.guardarIshikawa');
     Route::post('/acciones-correctivas/guardarAccion', [accionesCorrectivasController::class, 'guardarAccion'])->name('accionesCorrectivas.guardarAccion');
+});
+
+Route::controller(mailsController::class)->group(function () {
+    Route::get('/mails', [mailsController::class, 'accionesCorrectivas'])->name('mails.accionesCorrectivas');
+
 });
