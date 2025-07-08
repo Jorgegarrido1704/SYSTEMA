@@ -118,111 +118,111 @@
                             </div>
                         </div>
 
-                    <!-- Table Work -->
-                        <div class="col-lg-6 mb-4">
-                            <!-- AREAS -->
-                            <div class="card shadow mb-4">
+                        <!-- Table Work -->
+                            <div class="col-lg-6 mb-4">
+                                <!-- AREAS -->
+                                <div class="card shadow mb-4">
 
 
-                                <div
-                                class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                <h5 class="m-0 font-weight-bold text-primary">Report Issue</h5>
-                                <div class="dropdown no-arrow">
-                                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>x
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                        aria-labelledby="dropdownMenuLink">
-                                     <!--  <a class="dropdown-item" href="#" onclick="changework('desviation')">Desviation</a>
-                                     <a class="dropdown-item" href="#" onclick="changework('Materials')">Material Requirement</a>
-                                        <a class="dropdown-item" href="#" onclick="changework('Kits')">Requerimiento Kits</a>-->
-                                        <a class="dropdown-item" href="{{'general'}}" onclick="changework('Maintanience')">Maintanience</a>
-                                        <a class="dropdown-item" href="#" onclick="changework('full')">Requerimiento full size</a>
-                                        <a class="dropdown-item" href="#" onclick="changework('help')">Requierimiento de ingenieria</a>
+                                    <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h5 class="m-0 font-weight-bold text-primary">Report Issue</h5>
+                                    <div class="dropdown no-arrow">
+                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>x
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                            aria-labelledby="dropdownMenuLink">
+                                        <!--  <a class="dropdown-item" href="#" onclick="changework('desviation')">Desviation</a>
+                                        <a class="dropdown-item" href="#" onclick="changework('Materials')">Material Requirement</a>
+                                            <a class="dropdown-item" href="#" onclick="changework('Kits')">Requerimiento Kits</a>-->
+                                            <a class="dropdown-item" href="{{'general'}}" onclick="changework('Maintanience')">Maintanience</a>
+                                            <a class="dropdown-item" href="#" onclick="changework('full')">Requerimiento full size</a>
+                                            <a class="dropdown-item" href="#" onclick="changework('help')">Requierimiento de ingenieria</a>
+                                        </div>
+                                    </div>
+                                    </div>
+                                    <div class="card-body" style="overflow-y: auto; height: 360px;" id='work'>
+                                        <div class="row" >
+                                            <form  action="{{ route('maintananceGen')}}" method="POST">
+                                                @csrf
+                                                    <div class="form-group">
+                                                <label for="nom_equipo">Equipo:</label>
+                                                <select id="nom_equipo" name="nom_equipo" class="form-control" required>
+                                                    <option value=""></option>
+                                                    <option value='USAMT-01'>USAMT-01</option>
+                                                    <option value='USAMT-02'>USAMT-02</option>
+                                                    <option value='USAMT-03'>USAMT-03</option>
+                                                    <option value='USAMT-04'>USAMT-04</option>
+                                                    <option value='PRINT-1'>PRINT-1</option>
+                                                    <option value='PRINT-2'>PRINT-2</option>
+                                                    <option value='PRINT-3'>PRINT-3</option>
+                                                    <option value='PRINT-4'>PRINT-4</option>
+                                                    <option value='PRINT-5'>PRINT-5</option>
+                                                    <option value='PRINT-6'>PRINT-6</option>
+                                                    <option value='PRINT-7'>PRINT-7</option>
+                                                    <option value='PRINT-8'>PRINT-8</option>
+                                                    <option value='PRINT-9'>PRINT-9</option>
+                                                    <option value='PRE-1'>PRE-1</option>
+                                                    <option value='PRE-2'>PRE-2</option>
+                                                    <option value='PRE-3'>PRE-3</option>
+                                                    <option value='PRE-4'>PRE-4</option>
+                                                    <option value='PRE-5'>PRE-5</option>
+                                                    <option value='PRE-6'>PRE-6</option>
+                                                    <option value='PRE-7'>PRE-7</option>
+                                                    <option value='PRE-8'>PRE-8</option>
+                                                    <option value='PRE-9'>PRE-9</option>
+                                                    <option value='PRE-10'>PRE-10</option>
+                                                    <option value='PRE-11'>PRE-11</option>
+                                                    <option value='PRE-12'>PRE-12</option>
+                                                    <option value='PRE-13'>PRE-13</option>
+                                                    <option value='PRE-14'>PRE-14</option>
+                                                    <option value='PRE-15'>PRE-15</option>
+                                                    <option value='PRE-16'>PRE-16</option>
+                                                    <option value='PRE-17'>PRE-17</option>
+                                                    <option value='PRE-18'>PRE-18</option>
+                                                    <option value='PRE-19'>PRE-19</option>
+                                                    <option value='PRE-20'>PRE-20</option>
+                                                    <option value='PRE-21'>PRE-21</option>
+                                                    <option value='PRE-22'>PRE-22</option>
+                                                    <option value='MCUT-1'>MCUT-1</option>
+                                                    <option value='MCUT-2'>MCUT-2</option>
+                                                    <option value='MCUT-3'>MCUT-3</option>
+                                                    <option value='MCUT-4'>MCUT-4</option>
+                                                    <option value='MCUT-5'>MCUT-5</option>
+                                                    <option value='MCUT-6'>MCUT-6</option>
+                                                    <option value='MCUT-7'>MCUT-7</option>
+                                                    <option value='MCUT-8'>MCUT-8</option>
+                                                    </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                    <label for="dano">Daño del equipo</label>
+                                                <input type="text" id="dano" name="dano" class="form-control" required>
+                                                </div>
+                                                <div class="form-group">
+                                                <label for="quien">Quien solicita</label>
+                                                <input type="text" id="quien" name="quien" class="form-control" required>
+                                                </div>
+                                                <div class="form-group">
+                                                <label for="area">Area que solicita</label>
+                                                <select name="area" id="  area" class="form-control">
+                                                    <option value=""></option>
+                                                    <option value="Corte">Corte</option>
+                                                    <option value="Liberacion">Liberacion</option>
+                                                    <option value="Ensamble">Ensable</option>
+                                                    <option value="Loom">Loom</option>
+                                                    <option value="Pruebas Electricas">Pruebas Electricas</option>
+                                                </select>
+                                                </div>
+
+                                                <input type="submit" id="submit" value="Send">
+                                                </form>
+                                    </div>
+
                                     </div>
                                 </div>
-                                </div>
-                                <div class="card-body" style="overflow-y: auto; height: 360px;" id='work'>
-                                    <div class="row" >
-                                        <form  action="{{ route('maintananceGen')}}" method="POST">
-                                               @csrf
-                                                   <div class="form-group">
-                                               <label for="nom_equipo">Equipo:</label>
-                                              <select id="nom_equipo" name="nom_equipo" class="form-control" required>
-                                                <option value=""></option>
-                                                <option value='USAMT-01'>USAMT-01</option>
-                                                <option value='USAMT-02'>USAMT-02</option>
-                                                <option value='USAMT-03'>USAMT-03</option>
-                                                <option value='USAMT-04'>USAMT-04</option>
-                                                <option value='PRINT-1'>PRINT-1</option>
-                                                <option value='PRINT-2'>PRINT-2</option>
-                                                <option value='PRINT-3'>PRINT-3</option>
-                                                <option value='PRINT-4'>PRINT-4</option>
-                                                <option value='PRINT-5'>PRINT-5</option>
-                                                <option value='PRINT-6'>PRINT-6</option>
-                                                <option value='PRINT-7'>PRINT-7</option>
-                                                <option value='PRINT-8'>PRINT-8</option>
-                                                <option value='PRINT-9'>PRINT-9</option>
-                                                <option value='PRE-1'>PRE-1</option>
-                                                <option value='PRE-2'>PRE-2</option>
-                                                <option value='PRE-3'>PRE-3</option>
-                                                <option value='PRE-4'>PRE-4</option>
-                                                <option value='PRE-5'>PRE-5</option>
-                                                <option value='PRE-6'>PRE-6</option>
-                                                <option value='PRE-7'>PRE-7</option>
-                                                <option value='PRE-8'>PRE-8</option>
-                                                <option value='PRE-9'>PRE-9</option>
-                                                <option value='PRE-10'>PRE-10</option>
-                                                <option value='PRE-11'>PRE-11</option>
-                                                <option value='PRE-12'>PRE-12</option>
-                                                <option value='PRE-13'>PRE-13</option>
-                                                <option value='PRE-14'>PRE-14</option>
-                                                <option value='PRE-15'>PRE-15</option>
-                                                <option value='PRE-16'>PRE-16</option>
-                                                <option value='PRE-17'>PRE-17</option>
-                                                <option value='PRE-18'>PRE-18</option>
-                                                <option value='PRE-19'>PRE-19</option>
-                                                <option value='PRE-20'>PRE-20</option>
-                                                <option value='PRE-21'>PRE-21</option>
-                                                <option value='PRE-22'>PRE-22</option>
-                                                <option value='MCUT-1'>MCUT-1</option>
-                                                <option value='MCUT-2'>MCUT-2</option>
-                                                <option value='MCUT-3'>MCUT-3</option>
-                                                <option value='MCUT-4'>MCUT-4</option>
-                                                <option value='MCUT-5'>MCUT-5</option>
-                                                <option value='MCUT-6'>MCUT-6</option>
-                                                <option value='MCUT-7'>MCUT-7</option>
-                                                <option value='MCUT-8'>MCUT-8</option>
-                                                   </select>
-                                                   </div>
-                                                   <div class="form-group">
-                                                <label for="dano">Daño del equipo</label>
-                                               <input type="text" id="dano" name="dano" class="form-control" required>
-                                               </div>
-                                               <div class="form-group">
-                                               <label for="quien">Quien solicita</label>
-                                               <input type="text" id="quien" name="quien" class="form-control" required>
-                                               </div>
-                                               <div class="form-group">
-                                               <label for="area">Area que solicita</label>
-                                              <select name="area" id="  area" class="form-control">
-                                                <option value=""></option>
-                                                <option value="Corte">Corte</option>
-                                                <option value="Liberacion">Liberacion</option>
-                                                <option value="Ensamble">Ensable</option>
-                                                <option value="Loom">Loom</option>
-                                                <option value="Pruebas Electricas">Pruebas Electricas</option>
-                                              </select>
-                                               </div>
-
-                                               <input type="submit" id="submit" value="Send">
-                                               </form>
-                                   </div>
-
-                                </div>
                             </div>
-                        </div>
                     </div>
 
                     <!-- Content Row -->
@@ -311,9 +311,9 @@
                                 </div>
                             </div>
                         </div>
-                       
-                        </div>
-                    </div>
+
+                 </div>
+
 
 
                     @endsection
