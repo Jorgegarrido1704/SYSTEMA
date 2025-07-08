@@ -1026,12 +1026,12 @@ class juntasController extends Controller
 
         return view('juntas.lista', ['value' => $value, 'cat' => $cat, 'buscarDatos' => $buscarDatos, 'datosTabla' => $datosTabla]);
     }
-    /* Peendiente por asignar
+     
     public function litas_reg(Request $request)
     {
 
         return view('juntas.reg', ['value' => session('user'), 'cat' => session('categoria')]);
-    }*/
+    }
     public function mostrarWOJ(Request $request)
     {
         $buscarWo = $request->input('buscarWo');
