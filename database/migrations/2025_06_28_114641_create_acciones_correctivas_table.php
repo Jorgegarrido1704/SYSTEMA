@@ -14,26 +14,27 @@ return new class extends Migration
         Schema::create('acciones_correctivas', function (Blueprint $table) {
             $table->id('id_acciones_correctivas')->autoincrement();
             $table->string('folioAccion');
-            $table->dateTime('fechaAccion')->nullable();
+            $table->date('fechaAccion')->nullable();
             $table->string('Afecta')->nullable();
             $table->string('origenAccion')->nullable();
             $table->string('resposableAccion')->nullable();
             $table->text('descripcionAccion')->nullable();
-            $table->dateTime('fechaCompromiso')->nullable();
+            $table->date('fechaCompromiso')->nullable();
             $table->string('status')->default('Activa - Etapa 1')->nullable();
             $table->string('asistenciaCausaRaiz')->nullable();
             $table->string('descripcionContencion')->nullable();
             $table->string('porques')->nullable();
             $table->string('Ishikawa')->nullable();
-            $table->dateTime('fechaRegistroAcciones')->nullable();
+            $table->date('fechaRegistroAcciones')->nullable();
             $table->string('conclusiones')->nullable();
             $table->boolean('IsSistemicProblem')->default(false);
             $table->string('accion')->nullable();
             $table->string('reponsableAccion')->nullable();
-            $table->dateTime('fechaInicioAccion')->nullable();
-            $table->dateTime('fechaFinAccion')->nullable();
+            $table->date('fechaInicioAccion')->nullable();
+            $table->date('fechaFinAccion')->nullable();
             $table->string('verificadorAccion')->nullable();
-           
+            $table->date('ultimoEmail')->nullable();
+
 
 
 

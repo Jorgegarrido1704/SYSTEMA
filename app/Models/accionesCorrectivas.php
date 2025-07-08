@@ -36,11 +36,12 @@ class accionesCorrectivas extends Model
         'fechaInicioAccion',
         'fechaFinAccion',
         'verificadorAccion',
+        'ultimoEmail',
 
     ];
     protected $casts = [
-        'fechaAccion' => 'datetime',
-        'fechaCompromiso' => 'datetime',
+        'fechaAccion' => 'date',
+        'fechaCompromiso' => 'date',
     ];
 
     public function getDateForFinisg($id)
