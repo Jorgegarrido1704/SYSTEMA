@@ -902,7 +902,7 @@ class juntasController extends Controller
         $cat = session('categoria');
         $datosTabla = [];
         if ($id == "") {
-            redirect()->route('juntas');
+            redirect()->route('index_junta');
         } else if ($id == "planeacion") {
             $buscarDatos = DB::table('registro')
                 ->where('count', '=', '1')
@@ -1024,13 +1024,14 @@ class juntasController extends Controller
             }
         }
 
-        return view('juntas/lista', ['value' => $value, 'cat' => $cat, 'buscarDatos' => $buscarDatos, 'datosTabla' => $datosTabla]);
+        return view('juntas.lista', ['value' => $value, 'cat' => $cat, 'buscarDatos' => $buscarDatos, 'datosTabla' => $datosTabla]);
     }
+    /* Peendiente por asignar
     public function litas_reg(Request $request)
     {
 
-        return view('juntas/reg', ['value' => session('user'), 'cat' => session('categoria')]);
-    }
+        return view('juntas.reg', ['value' => session('user'), 'cat' => session('categoria')]);
+    }*/
     public function mostrarWOJ(Request $request)
     {
         $buscarWo = $request->input('buscarWo');
@@ -2040,7 +2041,7 @@ class juntasController extends Controller
     {
         $accidente = '61928 REV B.pdf';
         $today = date('Y-m-d');
-        $genero = $tipoTrabajador = [0, 0,0];
+        $genero = $tipoTrabajador = [0, 0, 0];
         $month = date('Y-m');
 
 
@@ -2048,7 +2049,7 @@ class juntasController extends Controller
         $dias = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
         $datoGeneros = DB::table('personalberg')
             ->select('Gender', 'typeWorker')
-           ->where('status', '!=', 'Baja')
+            ->where('status', '!=', 'Baja')
             ->get();
         foreach ($datoGeneros as $datoGenero) {
             if ($datoGenero->Gender == 'H') {
@@ -2065,13 +2066,13 @@ class juntasController extends Controller
             }
             $total++;
         }
-        $registroRotacion =personalBergsModel::select('employeeNumber')
-           ->where('status', '=', 'Baja')
-           ->whereMonth('DateSalida', '=', Carbon::now()->month)
-           ->get();
-           $rotacionTotal = count($registroRotacion);
+        $registroRotacion = personalBergsModel::select('employeeNumber')
+            ->where('status', '=', 'Baja')
+            ->whereMonth('DateSalida', '=', Carbon::now()->month)
+            ->get();
+        $rotacionTotal = count($registroRotacion);
 
-        $totalRotacion = round($rotacionTotal/ $total * 100,2);
+        $totalRotacion = round($rotacionTotal / $total * 100, 2);
 
         $selectDia = Carbon::now()->dayOfWeek;
         $diaActual = $dias[$selectDia - 1];
@@ -2095,7 +2096,6 @@ class juntasController extends Controller
             $aus += (int) $ausentismo->retardos;
             $aus += (int) $ausentismo->suspension;
             $aus += (int) $ausentismo->practicantes;
-
         }
         if ($aus == 0 && $falt == 0) {
             $promaus = 0;
@@ -2116,7 +2116,7 @@ class juntasController extends Controller
                 'permisos_gose' => 0,
                 'permisos_sin_gose' => 0,
                 'vacaciones' => 0,
-                 'retardos' => 0,
+                'retardos' => 0,
                 'suspension' => 0,
                 'practicantes' => 0
             ];
@@ -2138,9 +2138,17 @@ class juntasController extends Controller
         }
 
         $faltan = $total - ($rotacion->assistencia + $rotacion->faltas + $rotacion->incapacidad + $rotacion->permisos_gose + $rotacion->permisos_sin_gose + $rotacion->vacaciones + $rotacion->retardos + $rotacion->suspension + $rotacion->practicantes);
-        $registrosDeAsistencia = [$rotacion->assistencia, $rotacion->faltas, $rotacion->incapacidad,
-        $rotacion->permisos_gose + $rotacion->permisos_sin_gose, $rotacion->vacaciones, $rotacion->retardos,
-        $rotacion->suspension, $rotacion->practicantes,$totalRotacion];
+        $registrosDeAsistencia = [
+            $rotacion->assistencia,
+            $rotacion->faltas,
+            $rotacion->incapacidad,
+            $rotacion->permisos_gose + $rotacion->permisos_sin_gose,
+            $rotacion->vacaciones,
+            $rotacion->retardos,
+            $rotacion->suspension,
+            $rotacion->practicantes,
+            $totalRotacion
+        ];
 
 
 
@@ -2148,21 +2156,22 @@ class juntasController extends Controller
     }
 
     //Show Names per category
-    public function DatosRh(Request $request)  {
+    public function DatosRh(Request $request)
+    {
         $id = $request->input('id');
         $value = session('user');
         $cat = session('categoria');
         $dias = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
         $week = Carbon::now()->weekOfYear;
-        $diaActual = $dias[Carbon::now()->dayOfWeek-1];
+        $diaActual = $dias[Carbon::now()->dayOfWeek - 1];
 
-        if($id =='P'){
-            $datos = assistence::select('name')->where($diaActual, '=', 'PSS','OR', $diaActual, '=', 'PCS')->where('week', '=', $week)->get();
-        }else{
+        if ($id == 'P') {
+            $datos = assistence::select('name')->where($diaActual, '=', 'PSS', 'OR', $diaActual, '=', 'PCS')->where('week', '=', $week)->get();
+        } else {
             $datos = assistence::select('name')->where($diaActual, '=', $id)->where('week', '=', $week)->get();
         }
 
-        switch ($id){
+        switch ($id) {
             case 'V':
                 $id = 'vacaciones';
                 break;
@@ -2194,7 +2203,6 @@ class juntasController extends Controller
         }
 
 
-        return view ('juntas.hrDocs.datosRh', ['datos' => $datos, 'value' => $value, 'cat' => $cat, 'id' => $id, 'diaActual' => $diaActual]);
+        return view('juntas.hrDocs.datosRh', ['datos' => $datos, 'value' => $value, 'cat' => $cat, 'id' => $id, 'diaActual' => $diaActual]);
     }
-
 }
