@@ -28,6 +28,12 @@ return new class extends Migration
             $table->dateTime('fechaRegistroAcciones')->nullable();
             $table->string('conclusiones')->nullable();
             $table->boolean('IsSistemicProblem')->default(false);
+            $table->string('accion')->nullable();
+            $table->string('reponsableAccion')->nullable();
+            $table->dateTime('fechaInicioAccion')->nullable();
+            $table->dateTime('fechaFinAccion')->nullable();
+            $table->string('verificadorAccion')->nullable();
+           
 
 
 

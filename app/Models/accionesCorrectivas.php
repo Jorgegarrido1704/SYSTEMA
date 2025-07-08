@@ -31,6 +31,11 @@ class accionesCorrectivas extends Model
         'fechaRegistroAcciones',
         'conclusiones',
         'IsSistemicProblem',
+        'accion',
+        'responsableAccion',
+        'fechaInicioAccion',
+        'fechaFinAccion',
+        'verificadorAccion',
 
     ];
     protected $casts = [
@@ -45,6 +50,15 @@ class accionesCorrectivas extends Model
            $inicio = carbon::now();
            $fin = $accion->fechaCompromiso;
            $diff= carbon::parse($fin)->diffInDays(carbon::parse($inicio));
+           return $diff;
+        }
+        return null;
+    }
+    public function getRestofDateAction($id)
+    {
+        $accion = accionesCorrectivas::find($id);
+        if ($accion) {
+           $diff= Carbon::parse($accion->fechaInicioAccion) < Carbon::now()?carbon::parse($accion->fechaFinAccion)->diffInDays(carbon::now()):carbon::parse($accion->fechaFinAccion)->diffInDays(carbon::parse($accion->fechaInicioAccion));
            return $diff;
         }
         return null;

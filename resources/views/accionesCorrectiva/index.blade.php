@@ -39,7 +39,7 @@
                         </div>
                 </div>
                 <div class="row mt-3">
-                        <div class="col-md-6" >
+                        <div class="col-md-6"  id='origen'>
                             <label for="origenAccion">Origen de la accion</label>
                             <select class="form-control" id="origenAccion" name="origenAccion" onchange="mostrarOtroOrigen()"  required>
                                 <option value="" disabled selected>Seleccione un origen</option>
@@ -52,12 +52,7 @@
                                 <option value="Gestion de Riesgo">Gestion de Riesgo</option>
                                 <option value="otro" >Otro</option>
                             </select>
-                            <div class="row mt-3">
-                                <div class="col-md-12" id="otroOrigen" style="display: none;" >
-                                    <label for="otrosOrigen">Especifique</label>
-                                    <input type="text" class="form-control" name="origenAccion" id="origenAccion"  required>
-                                </div>
-                            </div>
+                           
                         </div>
 
                         <div class="col-md-6" >
