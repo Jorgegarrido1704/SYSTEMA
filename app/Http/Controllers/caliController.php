@@ -444,6 +444,7 @@ class caliController extends generalController
                     if ($loom <= 0 && $corte <= 0 && $ensa <= 0 && $libe <= 0 && $preCalidad <= 0) {
                         $tiempoUp = DB::table('tiempos')->where('info', $info)->update(['calidad' => $todays]);
                     }
+                    return redirect()->route('cali')->with('response', "Registro actualizado correctamente");
                 }
                 return redirect()->route('baja', ['id' => $id])->with('response', "Registro actualizado correctamente");
             } else {
