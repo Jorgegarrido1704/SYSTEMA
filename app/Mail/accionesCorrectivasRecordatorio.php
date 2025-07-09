@@ -12,11 +12,11 @@ class accionesCorrectivasRecordatorio extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $accion;
+    public $acciones;
 
-public function __construct($accion)
+public function __construct($acciones)
 {
-    $this->accion = $accion;
+    $this->acciones = $acciones;
 }
 
 
@@ -34,7 +34,7 @@ public function __construct($accion)
     return new Content(
         view: 'emails.accionesCorrectivasMail',
         with: [
-            'accion' => $this->accion,
+            'accion' => $this->acciones,
         ]
     );
 }

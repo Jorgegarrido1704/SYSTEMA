@@ -28,11 +28,9 @@ class accionesCorrectivasJob implements ShouldQueue
     public function handle(): void
     {
         $acciones = accionesCorrectivas::where('status', 'etapa 2 - Accion Correctiva')
-            
-            ->get();
+            ->first();
 
-        foreach ($acciones as $accion) {
-            Mail::to('jgarrido@mx.bergstrominc.com')->send(new accionesCorrectivasRecordatorio($accion));
-        }
+            Mail::to('jgarrido@mx.bergstrominc.com')->send(new accionesCorrectivasRecordatorio($acciones));
+
     }
 }
