@@ -15,12 +15,10 @@ class mailsController extends Controller
     public function accionesCorrectivas()
     {
         $accion = accionesCorrectivas::where('status', 'etapa 2 - Accion Correctiva')
-           
+
             ->first();
 
-        if ($accion) {
-            Mail::to('jgarrido@mx.bergstrominc.com')->send(new accionesCorrectivasRecordatorio($accion));
-        }
+        
 
         return view('emails.accionesCorrectivasMail', ['accion' => $accion]);
     }

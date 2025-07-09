@@ -199,6 +199,6 @@ Route::controller(accionesCorrectivasController::class)->group(function () {
 });
 
 Route::controller(mailsController::class)->group(function () {
-    Route::get('/mails', [mailsController::class, 'accionesCorrectivas'])->name('mails.accionesCorrectivas');
+  //  Route::get('/mails', [mailsController::class, 'accionesCorrectivas'])->name('mails.accionesCorrectivas');
 
 });
