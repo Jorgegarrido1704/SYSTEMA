@@ -17,37 +17,22 @@ use PHPUnit\Framework\Constraint\Count;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
-
+use Illuminate\Support\Facades\Mail;
 
 class accionesCorrectivasJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    /**
-     * Create a new job instance.
-     */
-    public function __construct()
-    {
-        //
-    }
+    public function __construct() {}
 
-    /**
-     * Execute the job.
-     */
     public function handle(): void
     {
-
         $acciones = accionesCorrectivas::where('status', 'etapa 2 - Accion Correctiva')
+            ->whereNotNull('email')
             ->get();
 
         foreach ($acciones as $accion) {
-            if ($accion->email) {
-                // Send the email using the Mailable class
-                Mail::to('jgarrido@mx.bergstrominc.com')->send(new accionesCorrectivasRecordatorio($accion));
-            }
+            Mail::to($accion->email)->send(new accionesCorrectivasRecordatorio($accion));
         }
-
-
-
     }
 }
