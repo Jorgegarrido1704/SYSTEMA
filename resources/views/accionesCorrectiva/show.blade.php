@@ -165,18 +165,21 @@
                      @if(!empty($categorias) AND empty($accion->accion))
                      <form action="{{ route('accionesCorrectivas.guardarAccion') }}" method="POST">
                         @csrf
-                        <div class="col-12 mb-3">
+                        <div class="row">
+                        <div class="col-6 mb-3">
                             <label for="accion" class="form-label font-weight-bold"><a>Descripcion de la accion:</a></label>
-                            <div class="col-6 mb-3">
+
                            <textarea class="form-control" name="accion" id="accion" cols="45" rows="2" required></textarea>
-                            </div>
+                          
                         </div>
                         <div class="col-6 mb-3">
                             <label for="reponsableAccion" class="form-label font-weight-bold">Reponsable de la accion</label>
-                            <select name="reponsableAccion" id="reponsableAccion" class="form-control" required>
+                            <select name="reponsableAccion" id="reponsableAccion" class="form-control"  required>
                                 <option value="" selected disabled>...</option>
                                 <option value="jgarrido">Jorge Garrido</option>
+                                <option value="jgarrido">Martin Aleman</option>
                             </select>
+                        </div>
                         </div>
                         <div class="col-12 mb-3">
                             <p class="form-label font-weight-bold" >Fecha de implementacion</p>
