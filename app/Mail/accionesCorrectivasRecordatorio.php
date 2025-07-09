@@ -11,12 +11,13 @@ use Illuminate\Queue\SerializesModels;
 class accionesCorrectivasRecordatorio extends Mailable
 {
     use Queueable, SerializesModels;
-
+    Public $subject;
     public $acciones;
 
-public function __construct($acciones)
+public function __construct($acciones, $subject)
 {
     $this->acciones = $acciones;
+    $this->subject = $subject;
 }
 
 
@@ -29,14 +30,15 @@ public function __construct($acciones)
         );
     }
 
+      public function build()
+    {
+        return $this->view('emails.accionesCorrectivasMail')
+                    ->subject($this->subject);
+    }
+
   public function content(): Content
 {
-    return new Content(
-        view: 'emails.accionesCorrectivasMail',
-        with: [
-            'accion' => $this->acciones,
-        ]
-    );
+    return new Content('');
 }
 
     public function attachments(): array
