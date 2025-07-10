@@ -19,11 +19,9 @@ class acciones extends Model
     'fechaInicioAccion', 'fechaFinAccion', 'verificadorAccion', 'ultimoEmail',];
 
     protected $hidden = ['created_at', 'updated_at'];
-    protected $casts = ['fechaInicioAccion' => 'date', 'fechaFinAccion' => 'date'];
+   protected $casts = ['fechaInicioAccion' => 'date', 'fechaFinAccion' => 'date'];
 
-    public function accionesregistradas(){
-        return $this->hasMany(accionesCorrectivas::class)->where('folioAccion', $this->folioAccion);
-    }
+
 
 
 }

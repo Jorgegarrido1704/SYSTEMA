@@ -15,16 +15,17 @@
                     <h6 class="m-0 font-weight-bold text-primary">Detalles de la Accion Correctiva</h6>
                 </div>
                 <div class="card-body" style="overflow-y: auto; height: 460px;">
-                    <p><strong>Folio:</strong> {{ $accion->folioAccion }}</p>
-                    <p><strong>Fecha de Detección:</strong> {{ $accion->fechaAccion->format('Y-m-d') }}</p>
-                    <p><strong>Proceso Afectado:</strong> {{ $accion->Afecta }}</p>
-                    <p><strong>Origen de la Acción:</strong> {{ $accion->origenAccion }}</p>
-                    <p><strong>Responsable de la Acción:</strong> {{ $accion->resposableAccion }}</p>
-                    <p><strong>Descripción de la Acción:</strong> {{ $accion->descripcionAccion }}</p>
+                    <p><strong>Folio:</strong> {{ $registroPorquest->folioAccion }}</p>
+                    <p><strong>Fecha de Detección:</strong> {{ $registroPorquest->fechaAccion->format('Y-m-d') }}</p>
+                    <p><strong>Proceso Afectado:</strong> {{ $registroPorquest->Afecta }}</p>
+                    <p><strong>Origen de la Acción:</strong> {{ $registroPorquest->origenAccion }}</p>
+                    <p><strong>Responsable de la Acción:</strong> {{ $registroPorquest->resposableAccion }}</p>
+                    <p><strong>Descripción de la Acción:</strong> {{ $registroPorquest->descripcionAccion }}</p>
 
                 </div>
             </div>
         </div>
+
         <div class="col-lg-6 mb-4">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
@@ -40,9 +41,9 @@
 
                         @endforeach
                         <p>Concluciones: </p>
-                        <p>{{$accion->conclusiones}}</p>
+                        <p>{{$registroPorquest->conclusiones}}</p>
                         <p>Es Sistemico: </p>
-                        <p>@if($accion->IsSistemicProblem ==1) Si @else No @endif </p>
+                        <p>@if($registroPorquest->IsSistemicProblem ==1) Si @else No @endif </p>
 
 
 
@@ -156,54 +157,65 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-6 mb-4">
+         <div class="col-lg-12 mb-4">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Registro de accion Correctiva {{$diasRestantes}}</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Registro de accion Correctiva </h6>
                 </div>
-                <div class="card-body" style="overflow-y: auto; height: 460px;">
-                     @if(!empty($categorias) AND empty($accion->accion))
+                <div class="card-body" style="overflow-y: auto; height: 150px;">
                      <form action="{{ route('accionesCorrectivas.guardarAccion') }}" method="POST">
                         @csrf
                         <div class="row">
-                        <div class="col-6 mb-3">
-                            <label for="accion" class="form-label font-weight-bold"><a>Descripcion de la accion:</a></label>
+                            <div class="col-4 mb-3">
+                                <label for="accion" class="form-label font-weight-bold"><a>Descripcion de la accion:</a></label>
+                                <textarea class="form-control" name="accion" id="accion" cols="45" rows="2" required></textarea>
+                            </div>
+                            <div class="col-3 mb-3">
+                                <label for="reponsableAccion" class="form-label font-weight-bold">Reponsable de la accion</label>
+                                <select name="reponsableAccion" id="reponsableAccion" class="form-control"  required>
+                                    <option value="" selected disabled>...</option>
+                                    <option value="jgarrido">Jorge Garrido</option>
+                                    <option value="jgarrido">Martin Aleman</option>
+                                </select>
+                            </div>
 
-                           <textarea class="form-control" name="accion" id="accion" cols="45" rows="2" required></textarea>
-
-                        </div>
-                        <div class="col-6 mb-3">
-                            <label for="reponsableAccion" class="form-label font-weight-bold">Reponsable de la accion</label>
-                            <select name="reponsableAccion" id="reponsableAccion" class="form-control"  required>
-                                <option value="" selected disabled>...</option>
-                                <option value="jgarrido">Jorge Garrido</option>
-                                <option value="jgarrido">Martin Aleman</option>
-                            </select>
-                        </div>
-                        </div>
-                        <div class="col-12 mb-3">
-                            <p class="form-label font-weight-bold" >Fecha de implementacion</p>
-                            <div class="row">
-                            <div class="col-6 mb-3">
+                             <div class="col-1 mb-3">
                                 <label for="fechaInicioAccion">Fecha de inicio</label>
                                 <input type="date" name="fechaInicioAccion" id="fechaInicioAccion" required>
                             </div>
-                            <div class="col-6 mb-3">
+                            <div class="col-1 mb-3">
                                 <label for="fechaFinAccion">Fecha de fin</label>
                                 <input type="date" name="fechaFinAccion" id="fechaFinAccion" required>
                             </div>
-                            </div>
-                        </div>
-                        <div class="col-12 mb-3">
+
+
+                        <div class="col-2 mb-3">
                             <label for="verificadorAccion">Quien aprobara la accion</label>
                             <input type="text" name="verificadorAccion" id="verificadorAccion" placeholder="Martin Aleman" required>
-                            <input type="hidden" name="id" value="{{$accion->id_acciones_correctivas}}" id="id">
+
                         </div>
-                        <div class="col-12 mb-3">
+                        <div class="col-1 mb-3" >
+                              <input type="hidden" name="id" value="{{$registroPorquest->folioAccion}}" id="id">
                             <button type="submit" class="btn btn-primary">Guardar</button>
                         </div>
+                    </div>
                      </form>
-                     @elseif(!empty($categorias) AND !empty($accion->accion))
+
+                </div>
+            </div>
+        </div>
+          @if(!empty($acciones))
+          @foreach ($acciones as $accion )
+
+
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Registro de accion Correctiva {{$diasRestantes[$accion->id]}}</h6>
+                </div>
+                <div class="card-body" style="overflow-y: auto; height: 460px;">
+
+
                             <p>Descripcion de la accion:</p>
                             <p>{{$accion->accion}}</p>
                             <p>Reponsable de la accion:</p>
@@ -216,7 +228,7 @@
                             <p>{{$accion->verificadorAccion}}</p>
 
 
-                     @endif
+
                 </div>
             </div>
         </div>
@@ -232,5 +244,7 @@
                 </div>
             </div>
         </div>
+          @endforeach
+          @endif
     </div>
 @endsection

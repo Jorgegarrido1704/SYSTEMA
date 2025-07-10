@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\accionesCorrectivas;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use App\Models\accionesCorrectivas\acciones;
 
 class AccionesCorrectivasController extends Controller
 {
@@ -67,7 +68,6 @@ class AccionesCorrectivasController extends Controller
         $value = session('user');
         $problema = "Alta rotación de empleados";
         $categorias = [];
-        $mermaid = "";
         $registroPorquest = accionesCorrectivas::findOrFail($id);
       if (!empty($registroPorquest->porques)) {
         $categorias = json_decode($registroPorquest->porques, true);
@@ -77,17 +77,21 @@ class AccionesCorrectivasController extends Controller
         }
 
 
+        $acciones = acciones::where('folioAccion', $registroPorquest->folioAccion)->get();
 
-        $accion = accionesCorrectivas::findOrFail($id);
-        $diasRestantes = $accion->fechaAccion->addWeekDays(2)->format('Y-m-d');
+        $diasRestantes = [];
+        foreach ($acciones as $accion) {
+            $diasRestantes[$accion->id] = $accion->fechaFinAccion->diffInDays($accion->fechaInicioAccion);
+        }
 
         return view('accionesCorrectiva.show', [
-            'accion' => $accion,
+            'acciones' => $acciones,
             'cat' => $cat,
             'value' => $value,
             'problema' => $problema,
             'categorias' => $categorias,
             'diasRestantes' => $diasRestantes,
+            'registroPorquest' => $registroPorquest,
 
         ]);
     }
@@ -160,21 +164,22 @@ class AccionesCorrectivasController extends Controller
     public function guardarAccion(Request $request)
     {
         $request->validate([
-            'id'=>'required|integer',
+            'id'=>'required|string|max:15',
             'accion' => 'required|string|max:500',
             'reponsableAccion' => 'required|string|max:500',
             'fechaInicioAccion' => 'required|date',
             'fechaFinAccion' => 'required|date',
             'verificadorAccion' => 'required|string|max:500',
         ]);
-        $accion = accionesCorrectivas::findOrFail($request->input('id'));
-        $accion->accion = $request->input('accion');
-        $accion->reponsableAccion = $request->input('reponsableAccion');
-        $accion->fechaInicioAccion = $request->input('fechaInicioAccion');
-        $accion->fechaFinAccion = $request->input('fechaFinAccion');
-        $accion->verificadorAccion = $request->input('verificadorAccion');
-        $accion->status = 'etapa 2 - Accion Correctiva';
-        $accion->save();
+         acciones::create([
+            'folioAccion' =>$request->input('id'),
+       'accion' => $request->input('accion'),
+       'reponsableAccion' => $request->input('reponsableAccion'),
+       'fechaInicioAccion' => $request->input('fechaInicioAccion'),
+       'fechaFinAccion' => $request->input('fechaFinAccion'),
+       'verificadorAccion' => $request->input('verificadorAccion'),
+
+        ]);
         return redirect()->route('accionesCorrectivas.index')->with('success', 'Acción correctiva actualizada exitosamente.');
     }
     public function destroy($id)
