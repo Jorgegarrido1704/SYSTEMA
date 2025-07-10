@@ -79,7 +79,7 @@ class AccionesCorrectivasController extends Controller
 
 
         $accion = accionesCorrectivas::findOrFail($id);
-        $diasRestantes = $accion->getRestofDateAction($id);
+        $diasRestantes = $accion->fechaAccion->addWeekDays(2)->format('Y-m-d');
 
         return view('accionesCorrectiva.show', [
             'accion' => $accion,
@@ -184,6 +184,6 @@ class AccionesCorrectivasController extends Controller
         return redirect()->route('accionesCorrectivas.index')->with('success', 'Acción correctiva eliminada exitosamente.');
     }
     public function seguimientos (Request $request,){
-        
+
     }
 }

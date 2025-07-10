@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use App\Models\accionesCorrectivas\acciones;
 
 class accionesCorrectivas extends Model
 {
@@ -44,25 +45,10 @@ class accionesCorrectivas extends Model
         'fechaCompromiso' => 'date',
     ];
 
-    public function getDateForFinisg($id)
-    {
-        $accion = accionesCorrectivas::find($id);
-        if ($accion) {
-           $inicio = carbon::now();
-           $fin = $accion->fechaCompromiso;
-           $diff= carbon::parse($fin)->diffInDays(carbon::parse($inicio));
-           return $diff;
+        public function registroAcciones(){
+            return $this->hasMany(acciones::class)->where('folioAccion', $this->folioAccion);
         }
-        return null;
-    }
-    public function getRestofDateAction($id)
-    {
-        $accion = accionesCorrectivas::find($id);
-        if ($accion) {
-           $diff= Carbon::parse($accion->fechaInicioAccion) < Carbon::now()?carbon::parse($accion->fechaFinAccion)->diffInDays(carbon::now()):carbon::parse($accion->fechaFinAccion)->diffInDays(carbon::parse($accion->fechaInicioAccion));
-           return $diff;
-        }
-        return null;
-    }
+
+
 
 }
