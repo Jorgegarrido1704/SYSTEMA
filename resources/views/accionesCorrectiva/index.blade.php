@@ -4,6 +4,7 @@
  <div class="d-sm-flex align-items-center justify-content-between mb-4">  </div>
  <script src="{{ asset('dash/js/accionesCorrectivas.js') }}"></script>
  <div class="row">
+    @if($value=='Admin' or $value=='Martin A')
     <div class="col-lg-4 mb-4">
         <div class="card shadow mb-4">
             <div class="card-header py-3">
@@ -52,7 +53,7 @@
                                 <option value="Gestion de Riesgo">Gestion de Riesgo</option>
                                 <option value="otro" >Otro</option>
                             </select>
-                           
+
                         </div>
 
                         <div class="col-md-6" >
@@ -78,6 +79,7 @@
             </div>
 
     </div>
+    @endif
     <div class="col-lg-8 mb-4">
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">

@@ -13,8 +13,14 @@ class AccionesCorrectivasController extends Controller
     {
         $cat = session('categoria');
         $value = session('user');
-        $accionesActivas = accionesCorrectivas::where('status', '!=', 'finalizada')->orderBy('id_acciones_correctivas', 'ASC')->get();
         $diasRestantes = [];
+        if($value=='Admin' or $value=='Martin A'){
+             $accionesActivas = accionesCorrectivas::where('status', '!=', 'finalizada')->orderBy('id_acciones_correctivas', 'ASC')->get();
+
+        }
+        else{
+            $accionesActivas = accionesCorrectivas::where('status', '!=', 'finalizada')->where('resposableAccion', $value)->orderBy('id_acciones_correctivas', 'ASC')->get();
+        }
         foreach ($accionesActivas as $accion) {
             $diasRestantes[$accion->id_acciones_correctivas] = $accion->fechaAccion->addWeekDays(2)->format('Y-m-d');
         }
@@ -170,5 +176,14 @@ class AccionesCorrectivasController extends Controller
         $accion->status = 'etapa 2 - Accion Correctiva';
         $accion->save();
         return redirect()->route('accionesCorrectivas.index')->with('success', 'Acción correctiva actualizada exitosamente.');
+    }
+    public function destroy($id)
+    {
+        $accion = accionesCorrectivas::findOrFail($id);
+        $accion->delete();
+        return redirect()->route('accionesCorrectivas.index')->with('success', 'Acción correctiva eliminada exitosamente.');
+    }
+    public function seguimientos (Request $request,){
+        
     }
 }

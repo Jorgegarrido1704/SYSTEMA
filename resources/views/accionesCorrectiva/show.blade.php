@@ -170,7 +170,7 @@
                             <label for="accion" class="form-label font-weight-bold"><a>Descripcion de la accion:</a></label>
 
                            <textarea class="form-control" name="accion" id="accion" cols="45" rows="2" required></textarea>
-                          
+
                         </div>
                         <div class="col-6 mb-3">
                             <label for="reponsableAccion" class="form-label font-weight-bold">Reponsable de la accion</label>
@@ -217,6 +217,18 @@
 
 
                      @endif
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Seguimiento y monitoreo de la ejecución</h6>
+                </div>
+                <div class="card-body" style="overflow-y: auto; height: 460px;">
+                    <form action="{{ route('accionesCorrectivas.guardarSeguimiento') }}" method="POST">
+                        @csrf
+
                 </div>
             </div>
         </div>
