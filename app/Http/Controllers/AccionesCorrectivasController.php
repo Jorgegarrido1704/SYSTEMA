@@ -6,6 +6,7 @@ use App\Models\accionesCorrectivas;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\accionesCorrectivas\acciones;
+use App\Models\accionesCorrectivas\monitoreosAcciones;
 
 class AccionesCorrectivasController extends Controller
 {
@@ -82,7 +83,19 @@ class AccionesCorrectivasController extends Controller
         $diasRestantes = [];
         foreach ($acciones as $accion) {
             $diasRestantes[$accion->id] = $accion->fechaFinAccion->diffInDays($accion->fechaInicioAccion);
+            $seguimientos = monitoreosAcciones::where('folioAccion', $accion->id)->get();
+            
+            foreach ($seguimientos as $seguimiento) {
+                $registrosSeguimientos[$seguimiento->id] = [
+                    'fecha' => $seguimiento->created_at,
+                    'seguimiento' => $seguimiento->seguimiento,
+                    'aprobador' => $seguimiento->AprobadorSeguimiento,
+                    'comentario' => $seguimiento->comentariosSeguimiento
+
+            ];
+            }
         }
+
 
         return view('accionesCorrectiva.show', [
             'acciones' => $acciones,
@@ -92,6 +105,7 @@ class AccionesCorrectivasController extends Controller
             'categorias' => $categorias,
             'diasRestantes' => $diasRestantes,
             'registroPorquest' => $registroPorquest,
+            'registrosSeguimientos' => $registrosSeguimientos
 
         ]);
     }
@@ -188,7 +202,19 @@ class AccionesCorrectivasController extends Controller
         $accion->delete();
         return redirect()->route('accionesCorrectivas.index')->with('success', 'Acción correctiva eliminada exitosamente.');
     }
-    public function seguimientos (Request $request,){
+    public function guardarSeguimiento (Request $request,){
+        $request->validate([
+            'accion_id' => 'required|integer',
+            'seguimiento' => 'required|string|max:500',
+            'validador' => 'required|string|max:500',
+        ]);
+
+        monitoreosAcciones::create([
+            'folioAccion' =>$request->input('accion_id'),
+            'descripcionSeguimiento' => $request->input('seguimiento'),
+            'AprobadorSeguimiento' => $request->input('validador'),
+        ]);
+        return redirect()->route('accionesCorrectivas.index')->with('success', 'Acción correctiva actualizada exitosamente.');
 
     }
 }

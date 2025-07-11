@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('monitoreos_acciones', function (Blueprint $table) {
             $table->id();
-            $table->integet('idAccion');
             $table->string('folioAccion');
             $table->string('descripcionSeguimiento')->nullable();
             $table->string('AprobadorSeguimiento')->nullable();
+            $table->string('comentariosSeguimiento')->nullable();
             $table->timestamps();
         });
     }

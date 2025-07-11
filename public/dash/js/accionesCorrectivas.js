@@ -30,3 +30,5 @@ function mostrarOtroOrigen() {
 
     }
 }
+
+document.querySelector('#origenAccion').addEventListener('onsubmit', datos);

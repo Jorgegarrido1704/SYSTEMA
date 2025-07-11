@@ -9,7 +9,22 @@ class monitoreosAcciones extends Model
 {
     use HasFactory;
     protected $table = 'monitoreos_acciones';
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'idAccion';
     public $timestamps = true;
-    
+    protected $fillable = [
+        'folioAccion',
+        'descripcionSeguimiento',
+        'AprobadorSeguimiento',
+    ];
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
+
+   function getBunchAcciones($idAccion){
+       return acciones::where('folioAccion', $idAccion)->get();
+   }
+
+
+
 }

@@ -205,46 +205,83 @@
             </div>
         </div>
           @if(!empty($acciones))
-          @foreach ($acciones as $accion )
+       @foreach ($acciones as $accion )
+    <div class="col-lg-6 mb-4">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">
+                    Registro de accion Correctiva {{$diasRestantes[$accion->id]}}
+                </h6>
+            </div>
+            <div class="card-body" style="overflow-y: auto; height: 460px;">
+                <p>Descripcion de la accion:</p>
+                <p>{{$accion->accion}}</p>
+                <p>Reponsable de la accion:</p>
+                <p>{{$accion->reponsableAccion}}</p>
+                <p>Fecha de inicio:</p>
+                <p>{{$accion->fechaInicioAccion}}</p>
+                <p>Fecha de fin:</p>
+                <p>{{$accion->fechaFinAccion}}</p>
+                <p>Quien aprobara la accion:</p>
+                <p>{{$accion->verificadorAccion}}</p>
+            </div>
+        </div>
+    </div>
+
+    {{-- FORMULARIO INDEPENDIENTE POR CADA ID --}}
+    <div class="col-lg-6 mb-4">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Seguimiento y monitoreo de la ejecución</h6>
+            </div>
+            <div class="card-body" style="overflow-y: auto; height: 460px;">
+                <form action="{{ route('accionesCorrectivas.guardarSeguimiento') }}" method="POST" id="form-{{$accion->id}}" name="form-{{$accion->id}}">
+                    @csrf
+                    <div class="row">
+                        <div class="col-4 mb-3">
+                            <label for="seguimiento_{{$accion->id}}" class="form-label font-weight-bold">
+                                Descripcion de Seguimiento:
+                            </label>
+                            <textarea class="form-control" name="seguimiento" id="seguimiento_{{$accion->id}}" cols="45" rows="2"></textarea>
+                        </div>
+                        <div class="col-3 mb-3">
+                            <label for="ValidadorSeguimiento_{{$accion->id}}" class="form-label font-weight-bold">
+                                Responsable de la validación
+                            </label>
+                            <input type="text" class="form-control" name="validador" id="ValidadorSeguimiento_{{$accion->id}}" placeholder="Martin Aleman">
+                        </div>
+                        <div class="col-1 mb-3">
+                            <input type="hidden" name="accion_id" value="{{$accion->id}}">
+                            <button type="submit" class="btn btn-primary mt-4">Guardar</button>
+                        </div>
+                    </div>
+                </form>
+                <div class="row">
+
+                    @if(!empty($registrosSeguimientos[$accion->id]))
+                    @foreach ($registrosSeguimientos[$accion->id] as $key => $seguimiento)
 
 
-        <div class="col-lg-6 mb-4">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Registro de accion Correctiva {{$diasRestantes[$accion->id]}}</h6>
-                </div>
-                <div class="card-body" style="overflow-y: auto; height: 460px;">
-
-
-                            <p>Descripcion de la accion:</p>
-                            <p>{{$accion->accion}}</p>
-                            <p>Reponsable de la accion:</p>
-                            <p>{{$accion->reponsableAccion}}</p>
-                            <p>Fecha de inicio:</p>
-                            <p>{{$accion->fechaInicioAccion}}</p>
-                            <p>Fecha de fin:</p>
-                            <p>{{$accion->fechaFinAccion}}</p>
-                            <p>Quien aprobara la accion:</p>
-                            <p>{{$accion->verificadorAccion}}</p>
-
-
+                    <div class="col-12 mb-3">
+                        <hr>
+                        <p>Fecha:</p>
+                        <p>{{$seguimiento}}</p>
+                        <p>Seguimiento:</p>
+                        <p>{{$seguimiento}}</p>
+                        <p>Validador:</p>
+                        <p>{{$seguimiento}}</p>
+                    </div>
+                     @endforeach
+                    @endif
 
                 </div>
             </div>
         </div>
-        <div class="col-lg-6 mb-4">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Seguimiento y monitoreo de la ejecución</h6>
-                </div>
-                <div class="card-body" style="overflow-y: auto; height: 460px;">
-                    <form action="{{ route('accionesCorrectivas.guardarSeguimiento') }}" method="POST">
-                        @csrf
+    </div>
+@endforeach
 
-                </div>
-            </div>
-        </div>
-          @endforeach
           @endif
+
+
     </div>
 @endsection
