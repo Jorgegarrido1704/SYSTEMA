@@ -83,10 +83,10 @@ class AccionesCorrectivasController extends Controller
         $diasRestantes = [];
         foreach ($acciones as $accion) {
             $diasRestantes[$accion->id] = $accion->fechaFinAccion->diffInDays($accion->fechaInicioAccion);
-            $seguimientos = monitoreosAcciones::where('folioAccion', $accion->id)->get();
-            
+            $seguimientos = monitoreosAcciones::where('folioAccion', $accion->id)->orderBy('folioAccion', 'DESC')->get();
+
             foreach ($seguimientos as $seguimiento) {
-                $registrosSeguimientos[$seguimiento->id] = [
+                $registrosSeguimientos[$accion->id][$seguimiento->id] = [
                     'fecha' => $seguimiento->created_at,
                     'seguimiento' => $seguimiento->seguimiento,
                     'aprobador' => $seguimiento->AprobadorSeguimiento,

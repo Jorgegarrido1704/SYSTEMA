@@ -256,27 +256,25 @@
                         </div>
                     </div>
                 </form>
-                <div class="row">
+<div class="row">
 
                     @if(!empty($registrosSeguimientos[$accion->id]))
                     @foreach ($registrosSeguimientos[$accion->id] as $key => $seguimiento)
 
 
-                    <div class="col-12 mb-3">
-                        <hr>
-                        <p>Fecha:</p>
-                        <p>{{$seguimiento}}</p>
+                    <div class="col-4 mb-3">
                         <p>Seguimiento:</p>
-                        <p>{{$seguimiento}}</p>
+                        <p>{{$seguimiento['seguimiento']}}</p>
                         <p>Validador:</p>
-                        <p>{{$seguimiento}}</p>
+                        <p>{{$seguimiento['aprobador']}}</p>
                     </div>
                      @endforeach
-                    @endif
 
+                    @endif
+                </div>
                 </div>
             </div>
-        </div>
+       
     </div>
 @endforeach
 
