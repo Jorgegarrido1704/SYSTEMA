@@ -262,19 +262,21 @@
                     @foreach ($registrosSeguimientos[$accion->id] as $key => $seguimiento)
 
 
-                    <div class="col-4 mb-3">
+                    <div class="col-12 mb-3">
                         <p>Seguimiento:</p>
                         <p>{{$seguimiento['seguimiento']}}</p>
                         <p>Validador:</p>
                         <p>{{$seguimiento['aprobador']}}</p>
+                        <hr>
                     </div>
+
                      @endforeach
 
                     @endif
                 </div>
                 </div>
             </div>
-       
+
     </div>
 @endforeach
 

@@ -88,7 +88,7 @@ class AccionesCorrectivasController extends Controller
             foreach ($seguimientos as $seguimiento) {
                 $registrosSeguimientos[$accion->id][$seguimiento->id] = [
                     'fecha' => $seguimiento->created_at,
-                    'seguimiento' => $seguimiento->seguimiento,
+                    'seguimiento' => $seguimiento->descripcionSeguimiento,
                     'aprobador' => $seguimiento->AprobadorSeguimiento,
                     'comentario' => $seguimiento->comentariosSeguimiento
 

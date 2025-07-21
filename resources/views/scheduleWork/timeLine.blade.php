@@ -15,7 +15,7 @@
 
         const totalTime = qty * timePerProcess;
         const sumTime = setupTime + totalTime;
-        const finalTime = qty * qtyTimes;
+        const finalTime = qty ;
 
 
         document.getElementById(`total_${index}`).value = totalTime.toFixed(3);
@@ -51,7 +51,7 @@
                                 </form>
                                 <div class="form-group " style="margin-left: 20px;">
                             <label for="qty" class="form-label">Quanty: </label>
-                            <input type="text" class="form-input" id="qty" name="qty" value="1" onchange="updateTimes();">
+                            <input type="text" class="form-input" id="qty" name="qty" value="0" onchange="updateTimes();">
                     </div>
                         </div>
                 </div>
