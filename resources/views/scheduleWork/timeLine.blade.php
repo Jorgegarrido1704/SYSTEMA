@@ -15,13 +15,15 @@
 
         const totalTime = qty * timePerProcess;
         const sumTime = setupTime + totalTime;
-        const finalTime = qty ;
+        const finalTime =  qtyTimes;
 
 
         document.getElementById(`total_${index}`).value = totalTime.toFixed(3);
         document.getElementById(`sum_${index}`).value = sumTime.toFixed(3);
         document.getElementById(`QtyTimes${index}`).value = finalTime.toFixed(0);
-        finalTotalTime += sumTime.toFixed(3);
+
+        finalTotalTime += (timePerProcess * qty)+setupTime;
+        console.log("time per process por qty :"+(timePerProcess * qty)+" + setupTime: " +setupTime+ " total: "+finalTotalTime);
     });
     document.getElementById("totalTime").value = finalTotalTime.toFixed(3);
 }
