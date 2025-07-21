@@ -43,7 +43,7 @@ class rrhhController extends Controller
             $diasRegistros[$diaNum - 1] = '';
         }
 
-        return view('juntas/hrDocs/rrhhDashBoard', ['diasRegistros' => $diasRegistros, 'diasRegistro' => $diasRegistro, 'datosRHWEEK' => $datosRHWEEK, 'value' => $value, 'cat' => $cat]);
+        return view('juntas.hrDocs.rrhhDashBoard', ['diasRegistros' => $diasRegistros, 'diasRegistro' => $diasRegistro, 'datosRHWEEK' => $datosRHWEEK, 'value' => $value, 'cat' => $cat]);
     }
 
     public function updateAsistencia(Request $request)

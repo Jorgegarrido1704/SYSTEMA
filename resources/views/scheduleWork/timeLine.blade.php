@@ -21,7 +21,7 @@
         document.getElementById(`total_${index}`).value = totalTime.toFixed(3);
         document.getElementById(`sum_${index}`).value = sumTime.toFixed(3);
         document.getElementById(`QtyTimes${index}`).value = finalTime.toFixed(0);
-        finalTotalTime += totalTime;
+        finalTotalTime += sumTime.toFixed(3);
     });
     document.getElementById("totalTime").value = finalTotalTime.toFixed(3);
 }
