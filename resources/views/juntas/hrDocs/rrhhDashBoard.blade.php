@@ -23,6 +23,7 @@ if (Error) {
             #R{background-color: rgba(245, 13, 129, 0.35);color: white;}
             #SUS{background-color: rgba(100, 9, 9, 0.81); color: white;}
             #PCT{background-color: rgba(103, 95, 95, 0.35); color: black;}
+            #TSP{background-color: rgba(247, 130, 159, 0.35); color: black;}
             #empleado{background-color: rgba(255, 255, 255, 0.5); color: black; font-weight: bold; font-size: 16px;}
             #AddPersonal,#modificarEmpleado{display: none; }
         </style>
@@ -157,7 +158,7 @@ if (Error) {
                                     <th id="R">R = Retardo</th>
                                     <th id="SUS">SUS = Suspension</th>
                                     <th id="PCT">PCT = Practicante</th>
-
+                                    <th id="TSP">TSP = Tiempo Permiso Salida</th>
                                     </tr>
                                 </thead>
                             </table>
@@ -225,7 +226,8 @@ if (Error) {
                                     @endforeach
                                     @else
                                       <th>Empleado</th>
-                                            <th style="display: {{ $diasRegistros[0] }};">lunes</th><th style="display: {{ $diasRegistros[1] }};">extras lunes</th> <th style="display: {{ $diasRegistros[1] }};">martes</th><th style="display: {{ $diasRegistros[2] }};">extras martes</th>
+                                            <th style="display: {{ $diasRegistros[0] }};">lunes</th><th style="display: {{ $diasRegistros[1] }};">extras lunes</th>
+                                            <th style="display: {{ $diasRegistros[1] }};">martes</th><th style="display: {{ $diasRegistros[2] }};">extras martes</th>
                                             <th style="display: {{ $diasRegistros[2] }};">miercoles</th><th style="display: {{ $diasRegistros[3] }};">extras miercoles</th>
                                             <th style="display: {{ $diasRegistros[3] }};">jueves</th>  <th style="display: {{ $diasRegistros[4] }};">extras jueves</th>  <th style="display: {{ $diasRegistros[4] }};">viernes</th>
                                             <th style="display: {{ $diasRegistros[4] }};">extras viernes</th>  <th style="display: {{ $diasRegistros[4] }};">sabado</th>  <th style="display: {{ $diasRegistros[4] }};">extras sabado</th>

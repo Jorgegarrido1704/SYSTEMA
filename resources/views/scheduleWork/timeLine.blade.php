@@ -13,7 +13,7 @@
         const setupTime = parseFloat(document.getElementById(`setup_${index}`).value) || 0;
         const qtyTimes = parseFloat(document.getElementById(`QtyTimes${index}`).value) || 0;
 
-        const totalTime = qty * timePerProcess;
+        const totalTime = (qty*qtyTimes) * timePerProcess;
         const sumTime = setupTime + totalTime;
         const finalTime =  qtyTimes;
 
@@ -22,10 +22,14 @@
         document.getElementById(`sum_${index}`).value = sumTime.toFixed(3);
         document.getElementById(`QtyTimes${index}`).value = finalTime.toFixed(0);
 
-        finalTotalTime += (timePerProcess * qty)+setupTime;
-        console.log("time per process por qty :"+(timePerProcess * qty)+" + setupTime: " +setupTime+ " total: "+finalTotalTime);
+        finalTotalTime += totalTime+setupTime;
+        minutes = (finalTotalTime / 60).toFixed(0) +" : "+ (finalTotalTime % 60).toFixed(0);
+        hours= (finalTotalTime / 3600).toFixed(0) +" : "+ ((finalTotalTime % 3600) / 60).toFixed(0) +" : "+ ((finalTotalTime % 3600) % 60).toFixed(0);
+       // console.log("time per process por qty :"+(timePerProcess * qty)+" + setupTime: " +setupTime+ " total: "+finalTotalTime);
     });
-    document.getElementById("totalTime").value = finalTotalTime.toFixed(3);
+    document.getElementById("totalTime").value = finalTotalTime.toFixed(0);
+    document.getElementById("timesInMinutes").value = minutes;
+    document.getElementById("timesInHours").value = hours;
 }
 
 
@@ -41,11 +45,12 @@
         <div class="col-xl-12 col-lg-12 col-md-12 mb-4">
             <div class="card shadow mb-6">
                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                        <h5 class="m-0 font-weight-bold text-primary">Total Time  <input type="text" id="totalTime" name="totalTime" readonly style="width: 150px;"></h5>
+                        <h5 class="m-0 font-weight-bold text-primary">Total Time in seconds </h5>
                     </div>
                     <!-- table Body -->
                     <div class="card-body" style="overflow-y: auto; ">
-                        <div class="form-group row ">
+                        <div class='row'>
+                        <div class="col-md-6 ">
                             <form action="{{ route('timeLine') }}" method="GET">
                             <label for="np" class="form-label">Part Number: </label>
                             <input type="text" class="form-input" id="np" name="np" stytle="width: 50px;">
@@ -54,8 +59,14 @@
                                 <div class="form-group " style="margin-left: 20px;">
                             <label for="qty" class="form-label">Quanty: </label>
                             <input type="text" class="form-input" id="qty" name="qty" value="0" onchange="updateTimes();">
-                    </div>
-                        </div>
+                                 </div>
+                             </div>
+                             <div class="col-md-6 ">
+                                <h5>Seconds <input type="text" id="totalTime" name="totalTime" readonly style="width: 150px;"></h5>
+                                 <h5>Minutes <input type="text" id="timesInMinutes" name="timesInMinutes" readonly style="width: 150px;"></h5>
+                                  <h5>Hours  <input type="text" id="timesInHours" name="timesInHours" disabled style="width: 150px;"></h5>
+                             </div>
+                   </div>
                 </div>
             </div>
         </div>
