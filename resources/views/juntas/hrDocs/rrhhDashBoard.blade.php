@@ -8,9 +8,9 @@ if (Error) {
 </script>
 <!-- First Period -->
 <div class="row">
-    <div class="col-lg-12 col-md-12 mb-4">
-        <h1 class="h3 mb-2 text-gray-800">reporte</h1>
-        <p class="mb-4"><a href="#"></a></p>
+    <div class="col-lg-12 col-md-12 mb-4 text-center">
+        <h2 class="h3 mb-2 text-gray-800">Reporte</h2>
+        
     </div>
     <div class="col-lg-12 col-lx-12 mb-4">
         <style>
@@ -29,8 +29,8 @@ if (Error) {
         </style>
 
 
-                <div class="card shadow mb-5">
-                    <div class="card-header py-3">
+                <div class="card shadow mb-5 item-center">
+                    <div class="card-header py-3 text-center">
                         <h5 class="m-0 font-weight-bold text-primary">Modificaciones de Registos </h5>
                           @if($cat == "RRHH" or $cat == "SupAdmin")
                         <button class="btn btn-primary" data-toggle="modal" data-target="#addModal" id="addPersonal" onclick="addEmpleado();" >Agregar personal</button>
