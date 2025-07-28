@@ -378,6 +378,8 @@
                                                             <option value="PLASTIC OMNIUM">PLASTIC OMNIUM</option>
                                                             <option value="ZOELLER">ZOELLER</option>
                                                             <option value="COLLINS">COLLINS</option>
+                                                            <option value="MORGAN OLSON">MORGAN OLSON</option>
+                                                            <option value="PALFINGER">PALFINGER</option>
                                                         </select>
                                                         </div>
                                                         <div class="form-group">
