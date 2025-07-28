@@ -11,7 +11,7 @@
                 <div class="card shadow mb-5">
                     <div class="card-header py-3">
                         <h5 class="m-0 font-weight-bold text-primary">Vacations @if ($value == 'Jesus_C' or $value == 'Admin' or $value == 'Jorge G')
-                           <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#exampleModal" onclick="document.getElementById('agregarVacaciones').style.display = 'block';" "> Agregar vacaciones</button></h5>
+                           <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#exampleModal" onclick="document.getElementById('agregarVacaciones').style.display = 'block';" > Agregar vacaciones</button></h5>
                              @endif
                     </div>
                     <div class="card-body" style="overflow-y: auto; " >

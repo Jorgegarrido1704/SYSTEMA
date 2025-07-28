@@ -1026,7 +1026,7 @@ class juntasController extends Controller
 
         return view('juntas.lista', ['value' => $value, 'cat' => $cat, 'buscarDatos' => $buscarDatos, 'datosTabla' => $datosTabla]);
     }
-     
+
     public function litas_reg(Request $request)
     {
 
@@ -2096,6 +2096,7 @@ class juntasController extends Controller
             $aus += (int) $ausentismo->retardos;
             $aus += (int) $ausentismo->suspension;
             $aus += (int) $ausentismo->practicantes;
+            $aus += (int) $ausentismo->tsp;
         }
         if ($aus == 0 && $falt == 0) {
             $promaus = 0;
@@ -2118,7 +2119,8 @@ class juntasController extends Controller
                 'vacaciones' => 0,
                 'retardos' => 0,
                 'suspension' => 0,
-                'practicantes' => 0
+                'practicantes' => 0,
+                'tsp' => 0
             ];
         }
 
@@ -2137,12 +2139,12 @@ class juntasController extends Controller
             }
         }
 
-        $faltan = $total - ($rotacion->assistencia + $rotacion->faltas + $rotacion->incapacidad + $rotacion->permisos_gose + $rotacion->permisos_sin_gose + $rotacion->vacaciones + $rotacion->retardos + $rotacion->suspension + $rotacion->practicantes);
+        $faltan = $total - ($rotacion->tsp + $rotacion->assistencia + $rotacion->faltas + $rotacion->incapacidad + $rotacion->permisos_gose + $rotacion->permisos_sin_gose + $rotacion->vacaciones + $rotacion->retardos + $rotacion->suspension + $rotacion->practicantes);
         $registrosDeAsistencia = [
             $rotacion->assistencia,
             $rotacion->faltas,
             $rotacion->incapacidad,
-            $rotacion->permisos_gose + $rotacion->permisos_sin_gose,
+            $rotacion->permisos_gose + $rotacion->permisos_sin_gose + $rotacion->tsp,
             $rotacion->vacaciones,
             $rotacion->retardos,
             $rotacion->suspension,
@@ -2166,7 +2168,7 @@ class juntasController extends Controller
         $diaActual = $dias[Carbon::now()->dayOfWeek - 1];
 
         if ($id == 'P') {
-            $datos = assistence::select('name')->where($diaActual, '=', 'PSS', 'OR', $diaActual, '=', 'PCS')->where('week', '=', $week)->get();
+            $datos = assistence::select('name')->where($diaActual, '=', 'PSS', 'OR', $diaActual, '=', 'PCS', 'OR', $diaActual, '=', 'TSP')->where('week', '=', $week)->get();
         } else {
             $datos = assistence::select('name')->where($diaActual, '=', $id)->where('week', '=', $week)->get();
         }
@@ -2197,9 +2199,11 @@ class juntasController extends Controller
             case 'R':
                 $id = 'retardos';
                 break;
+
             default:
                 $id = 'asistencia';
                 break;
+
         }
 
 

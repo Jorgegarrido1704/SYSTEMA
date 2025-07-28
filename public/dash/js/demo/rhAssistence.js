@@ -21,6 +21,7 @@ const rhAssistence = new Chart(assist, {
             "Retardos",
             "Suspensión",
             "Practicantes",
+            
         ],
         datasets: [
             {
@@ -46,6 +47,7 @@ const rhAssistence = new Chart(assist, {
                     "rgba(245, 13, 129, 1)",
                     "rgb(67, 18, 18)",
                     "rgba(103, 95, 95, 1)",
+
                 ],
                 borderWidth: 1,
                 borderSkipped: false,
@@ -129,11 +131,11 @@ const rota0 = new Chart(document.getElementById("rotation0"), {
         },
     },
     data: {
-        labels: ["Max rotacion: " + 3 + "%", "Rotacion: " +registroInicidencia[8] + "%"],
+        labels: ["Max rotacion: " + 3 + "%", "Rotacion: " +registroInicidencia[9] + "%"],
         datasets: [
             {
                 label: "Rotación de personal",
-                data: [3, registroInicidencia[8]],
+                data: [3, registroInicidencia[9]],
                 backgroundColor: [
                     "rgba(2, 164, 75, 0.25)",
                     "rgba(205, 2, 2, 0.25)",

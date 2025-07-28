@@ -21,6 +21,9 @@
 .text-gray {
   color: #473e3f; /* ejemplo de color vino */
 }
+.text-pinks{
+    color: #f06f7c;
+}
 a:hover {
     text-decoration: none;
 }
@@ -76,6 +79,7 @@ a:hover {
                             <td class="font-weight-bold text-gray font-size-24"><a class ="text-gray" href="{{ route('DatosRh', ['id' => 'PCT']) }}">Practicantes</a></td>
                             <td class="font-weight-bold font-size-24">{{$registrosDeAsistencia[7]}}</td>
                            </tr>
+                            
                         </table>
                     </div>
                     <div class="col-lg-8 col-md-8">
