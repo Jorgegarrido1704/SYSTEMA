@@ -1398,60 +1398,65 @@ class juntasController extends Controller
             $lmt = date('M', strtotime($lmt . ' +1 month'));
         }
 
-         $registroPPAP=[];
-            $i=0;
-        $registros = Wo::where('rev','LIKE', 'PRIM%' )->Orwhere('rev','LIKE', 'PPAP%' )->get();
+        $registroPPAP = [];
+        $i = 0;
+        $registros = Wo::where('rev', 'LIKE', 'PRIM%')->Orwhere('rev', 'LIKE', 'PPAP%')->get();
         foreach ($registros as $reg) {
-            $registroPPAP[$i][0]=$reg->cliente;
-            $registroPPAP[$i][1]=$reg->NumPart;
-            $registroPPAP[$i][3]=$reg->rev;
-            $registroWS=workScreduleModel::where('pn', $reg->NumPart)->orderBy('id', 'desc')->first();
-            if(empty($registroWS->size)){
-            $registroPPAP[$i][2]="-";
-            $registroPPAP[$i][4]="-";
-            $registroPPAP[$i][5]="-";
-            $registroPPAP[$i][6]="-";
-            $registroPPAP[$i][7]="-";
-            $registroPPAP[$i][15]="-";
-            $registroPPAP[$i][16]="-";
-
-            }else{
-            $registroPPAP[$i][2]=$registroWS->size;
-            $registroPPAP[$i][4]=$registroWS->receiptDate;
-            $registroPPAP[$i][5]=$registroWS->commitmentDate;
-            $registroPPAP[$i][6]=$registroWS->CompletionDate;
-            $registroPPAP[$i][7]=$registroWS->documentsApproved;
-            $registroPPAP[$i][15]=$registroWS->customerDate;
-            $registroPPAP[$i][16]=$registroWS->resposible;
-            $datosTiempos=tiempos::where('info',$registroWS->info)->first();
-            if(empty($datosTiempos)){
-                $registroPPAP[$i][8]="No Aun";
-            $registroPPAP[$i][9]="No Aun";
-            $registroPPAP[$i][10]="No Aun";
-            $registroPPAP[$i][11]="No Aun";
-            $registroPPAP[$i][12]="No Aun";
-            $registroPPAP[$i][13]="No Aun";
-            }else{
-            $registroPPAP[$i][8]=$datosTiempos->planeacion;
-            $registroPPAP[$i][9]=$datosTiempos->corte;
-            $registroPPAP[$i][10]=$datosTiempos->liberacion;
-            $registroPPAP[$i][11]=$datosTiempos->ensamble;
-            $registroPPAP[$i][12]=$datosTiempos->loom;
-            $registroPPAP[$i][13]=$datosTiempos->calidad;
+            $registroPPAP[$i][0] = $reg->cliente;
+            $registroPPAP[$i][1] = $reg->NumPart;
+            $registroPPAP[$i][3] = $reg->rev;
+            $registroWS = workScreduleModel::where('pn', $reg->NumPart)->orderBy('id', 'desc')->first();
+            if (empty($registroWS->size)) {
+                $registroPPAP[$i][2] = "-";
+                $registroPPAP[$i][4] = "-";
+                $registroPPAP[$i][5] = "-";
+                $registroPPAP[$i][6] = "-";
+                $registroPPAP[$i][7] = "-";
+                $registroPPAP[$i][15] = "-";
+                $registroPPAP[$i][16] = "-";
+                $registroPPAP[$i][8] = "No Aun";
+                $registroPPAP[$i][9] = "No Aun";
+                $registroPPAP[$i][10] = "No Aun";
+                $registroPPAP[$i][11] = "No Aun";
+                $registroPPAP[$i][12] = "No Aun";
+                $registroPPAP[$i][13] = "No Aun";
+            } else {
+                $registroPPAP[$i][2] = $registroWS->size;
+                $registroPPAP[$i][4] = $registroWS->receiptDate;
+                $registroPPAP[$i][5] = $registroWS->commitmentDate;
+                $registroPPAP[$i][6] = $registroWS->CompletionDate;
+                $registroPPAP[$i][7] = $registroWS->documentsApproved;
+                $registroPPAP[$i][15] = $registroWS->customerDate;
+                $registroPPAP[$i][16] = $registroWS->resposible;
+                $datosTiempos = tiempos::where('info', $registroWS->info)->first();
+                if (empty($datosTiempos)) {
+                    $registroPPAP[$i][8] = "No Aun";
+                    $registroPPAP[$i][9] = "No Aun";
+                    $registroPPAP[$i][10] = "No Aun";
+                    $registroPPAP[$i][11] = "No Aun";
+                    $registroPPAP[$i][12] = "No Aun";
+                    $registroPPAP[$i][13] = "No Aun";
+                } else {
+                    $registroPPAP[$i][8] = $datosTiempos->planeacion;
+                    $registroPPAP[$i][9] = $datosTiempos->corte;
+                    $registroPPAP[$i][10] = $datosTiempos->liberacion;
+                    $registroPPAP[$i][11] = $datosTiempos->ensamble;
+                    $registroPPAP[$i][12] = $datosTiempos->loom;
+                    $registroPPAP[$i][13] = $datosTiempos->calidad;
+                }
             }
-        }
-            if(substr($reg->rev,0,4)=='PPAP'){
-                $registroPPAP[$i][14]="96, 242, 83, 0.3";
-            }else{
-                $registroPPAP[$i][14]="236, 236, 9, 0.497";}
+            if (substr($reg->rev, 0, 4) == 'PPAP') {
+                $registroPPAP[$i][14] = "96, 242, 83, 0.3";
+            } else {
+                $registroPPAP[$i][14] = "236, 236, 9, 0.497";
+            }
 
 
             $i++;
-
         }
 
 
-        return view('juntas/ing', ['registroPPAP'=> $registroPPAP,'thisYearGoals' => $thisYearGoals, 'last12Months' => $last12Months, 'porcentaje' => $porcentaje, 'porcentajeMalos' => $porcentajeMalos, 'todas' => $todas, 'jesp' => $jesp, 'nanp' => $nanp, 'bp' => $bp, 'jcp' => $jcp, 'psp' => $psp, 'alv' => $alv, 'asp' => $asp, 'jg' => $jg, 'jesus' => $jesus, 'pao' => $pao, 'nancy' => $nancy, 'ale' => $ale, 'carlos' => $carlos, 'arturo' => $arturo, 'jorge' => $jorge, 'brandon' => $brandon, 'actividadesLastMonth' => $actividadesLastMonth, 'actividades' => $actividades, 'value' => session('user'), 'cat' => session('categoria')]);
+        return view('juntas/ing', ['registroPPAP' => $registroPPAP, 'thisYearGoals' => $thisYearGoals, 'last12Months' => $last12Months, 'porcentaje' => $porcentaje, 'porcentajeMalos' => $porcentajeMalos, 'todas' => $todas, 'jesp' => $jesp, 'nanp' => $nanp, 'bp' => $bp, 'jcp' => $jcp, 'psp' => $psp, 'alv' => $alv, 'asp' => $asp, 'jg' => $jg, 'jesus' => $jesus, 'pao' => $pao, 'nancy' => $nancy, 'ale' => $ale, 'carlos' => $carlos, 'arturo' => $arturo, 'jorge' => $jorge, 'brandon' => $brandon, 'actividadesLastMonth' => $actividadesLastMonth, 'actividades' => $actividades, 'value' => session('user'), 'cat' => session('categoria')]);
     }
     public function cutAndTerm()
     {
@@ -2259,7 +2264,6 @@ class juntasController extends Controller
             default:
                 $id = 'asistencia';
                 break;
-
         }
 
 
