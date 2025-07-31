@@ -93,14 +93,70 @@
             </div>
         </div>
 
-        <div class="col-xl-6 col-lg-6 mb-4">
+        <div class="col-xl-12 col-lg-12 mb-4">
             <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                     <h5 class="m-0 font-weight-bold text-primary">Registro de Actividades Ultimo Mes</h5>
                 </div>
                 <!-- table Body -->
                 <div class="card-body" style="overflow-y: auto; height: 400px;">
-                    <canvas id="procesosIngUltimoMes"></canvas>
+                    <table class="table table-striped table-bordered" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Cliente</th>
+                                <th>Numero de Parte</th>
+                                <th>size</th>
+                                <th>Revision</th>
+                                <th>Fecha de recibo</th>
+                                <th>Fecha compromiso</th>
+                                <th>Fecha de entrega</th>
+                                <th>Fecha del cliente</th>
+                                <th>Responsable</th>
+                                <th>Fecha de firmas <br>completadas Ingeinieria</th>
+                                <th>Planeacion</th>
+                                <th>Corte</th>
+                                <th>Liberacion</th>
+                                <th>ensamble //<br>cables especiales</th>
+                                <th>Loom</th>
+                                <th>Calidad</th>
+
+                            </tr>
+
+
+
+
+                        </thead>
+                        <tbody>
+                            @if(!empty($registroPPAP))
+                                @foreach ($registroPPAP as $ppaps )
+
+                                    <tr style="text-align: center; background-color:rgba({{ $ppaps[14] }}) ; text-align: center; color : black;">
+                                        <td>{{$ppaps[0]}} </td>
+                                        <td>{{$ppaps[1]}} </td>
+                                        <td>{{$ppaps[2]}} </td>
+                                        <td>{{$ppaps[3]}} </td>
+                                        <td>{{$ppaps[4]}} </td>
+                                        <td>{{$ppaps[5]}} </td>
+                                        <td>{{$ppaps[6]}} </td>
+                                        <td>{{$ppaps[15]}} </td>
+                                        <td>{{$ppaps[16]}} </td>
+                                        <td>{{$ppaps[7]}} </td>
+                                        <td>{{$ppaps[8]}} </td>
+                                        <td>{{$ppaps[9]}} </td>
+                                        <td>{{$ppaps[10]}} </td>
+                                        <td>{{$ppaps[11]}} </td>
+                                        <td>{{$ppaps[12]}} </td>
+                                        <td>{{$ppaps[13]}} </td>
+
+                                    </tr>
+
+                                @endforeach
+                            @endif
+
+                        </tbody>
+
+
+                    </table>
                 </div>
             </div>
         </div>

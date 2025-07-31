@@ -31,7 +31,6 @@ class Wo extends Model
 
     protected $table = 'registro'; // Adjust the table name if it's different
 
-    public $timestamps = false; // Set to false if you don't have created_at and updated_at columns
+    public $timestamps = false; 
 
-    // Define any relationships or additional methods here
 }

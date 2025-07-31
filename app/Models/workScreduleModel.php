@@ -35,6 +35,7 @@ class workScreduleModel extends Model
     {
         return workScreduleModel::all();
     }
+    
 
     public static function getDatesWorks($pn,$rev)
     {
@@ -44,6 +45,7 @@ class workScreduleModel extends Model
     {
         return workScreduleModel::where('status', '!=', 'Completed' )->get();
     }
+
 
 
 }
