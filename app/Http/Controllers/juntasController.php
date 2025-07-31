@@ -1428,7 +1428,7 @@ class juntasController extends Controller
                 $registroPPAP[$i][7] = $registroWS->documentsApproved;
                 $registroPPAP[$i][15] = $registroWS->customerDate;
                 $registroPPAP[$i][16] = $registroWS->resposible;
-                $datosTiempos = tiempos::where('info', $registroWS->info)->first();
+                $datosTiempos = tiempos::where('info', $reg->info)->first();
                 if (empty($datosTiempos)) {
                     $registroPPAP[$i][8] = "No Aun";
                     $registroPPAP[$i][9] = "No Aun";
