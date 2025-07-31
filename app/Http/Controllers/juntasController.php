@@ -1422,7 +1422,7 @@ class juntasController extends Controller
             $registroPPAP[$i][6]=$registroWS->CompletionDate;
             $registroPPAP[$i][7]=$registroWS->documentsApproved;
             $registroPPAP[$i][15]=$registroWS->customerDate;
-            $registroPPAP[$i][16]=$registroWS->resposible;}
+            $registroPPAP[$i][16]=$registroWS->resposible;
             $datosTiempos=tiempos::where('info',$registroWS->info)->first();
             if(empty($datosTiempos)){
                 $registroPPAP[$i][8]="No Aun";
@@ -1439,6 +1439,7 @@ class juntasController extends Controller
             $registroPPAP[$i][12]=$datosTiempos->loom;
             $registroPPAP[$i][13]=$datosTiempos->calidad;
             }
+        }
             if(substr($reg->rev,0,4)=='PPAP'){
                 $registroPPAP[$i][14]="96, 242, 83, 0.3";
             }else{
