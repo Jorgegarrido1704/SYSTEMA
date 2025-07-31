@@ -24,7 +24,7 @@ class BackupDatabaseCommand extends Command
 
         foreach ($registroTipos as $tipo) {
             $sqlDump = $this->generateSqlDump($tipo);
-            $fileName = "{$tipo}{$date}.sql";
+            $fileName = "{$tipo}.sql";
             $zipName = "{$fileName}.zip";
 
             // Guarda el archivo SQL
