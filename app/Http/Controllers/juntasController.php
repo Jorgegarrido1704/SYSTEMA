@@ -1408,14 +1408,21 @@ class juntasController extends Controller
             $registroWS=workScreduleModel::where('pn', $reg->NumPart)->orderBy('id', 'desc')->first();
             if(empty($registroWS->size)){
             $registroPPAP[$i][2]="-";
+            $registroPPAP[$i][4]="-";
+            $registroPPAP[$i][5]="-";
+            $registroPPAP[$i][6]="-";
+            $registroPPAP[$i][7]="-";
+            $registroPPAP[$i][15]="-";
+            $registroPPAP[$i][16]="-";
+
             }else{
-            $registroPPAP[$i][2]=$registroWS->size;}
+            $registroPPAP[$i][2]=$registroWS->size;
             $registroPPAP[$i][4]=$registroWS->receiptDate;
             $registroPPAP[$i][5]=$registroWS->commitmentDate;
             $registroPPAP[$i][6]=$registroWS->CompletionDate;
             $registroPPAP[$i][7]=$registroWS->documentsApproved;
             $registroPPAP[$i][15]=$registroWS->customerDate;
-            $registroPPAP[$i][16]=$registroWS->resposible;
+            $registroPPAP[$i][16]=$registroWS->resposible;}
             $datosTiempos=tiempos::where('info',$registroWS->info)->first();
             if(empty($datosTiempos)){
                 $registroPPAP[$i][8]="No Aun";
