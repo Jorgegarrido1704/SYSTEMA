@@ -14,8 +14,8 @@ class rotacionModel extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'id_rotacion', 'assistencia', 'fecha_rotacion', 'vacaciones', 'faltas',
-        'permisos_gose', 'permisos_sin_gose', 'incapacidad', 'estado', 'retardos', 'suspension', 'practicantes'
+        'id_rotacion', 'assistencia', 'fecha_rotacion', 'vacaciones', 'faltas','ServiciosComprados','tsp',
+        'permisos_gose', 'permisos_sin_gose', 'incapacidad', 'estado', 'retardos', 'suspension', 'practicantes','asimilados'
     ];
     protected $casts = [
         'id_rotacion' => 'integer',
@@ -44,7 +44,11 @@ class rotacionModel extends Model
         'incapacidad' => 0,
         'retardos' => 0,
         'suspension' => 0,
-        'practicantes' => 0
+        'practicantes' => 0,
+        'tsp' => 0,
+        'asimilados' => 0,
+        'ServiciosComprados' => 0,
+
 
 
     ];
