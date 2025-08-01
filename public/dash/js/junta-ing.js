@@ -312,7 +312,7 @@ try {
     const buen=(buenos);
     const mal=(malos);
 
-    const cakeIng = new Chart(cake, {
+const cakeIng = new Chart(cake, {
       type: 'doughnut',
       data: {
         labels: ['on Time', 'Delayed'],
@@ -354,25 +354,25 @@ catch (error) {
 }
 try {
     goals = [];
-    const labelsreg=Object.keys(mothLess12);
-    const datareg=Object.values(mothLess12);
+    const labelsreg=Object.keys(compGoals);
+    const datareg=Object.values(compGoals);
     for (let i = 0; i < labelsreg.length; i++) {
         goals[i] = parseInt(95);
     }
-    const comp=Object.values(compGoals);
+    const comp=Object.values(mothLess12);
     const cake2 = document.getElementById("cakes2");
   const data = {
   labels:labelsreg,
   datasets: [{
     type: 'bar',
-    label: 'Last Year',
+    label: 'This Year',
     data: datareg,
     borderColor: 'rgb(255, 162, 238)',
     backgroundColor: 'rgba(226, 60, 223, 0.2)',
     borderWidth: 1,
   },{
     type: 'bar',
-    label: 'This Year',
+    label: 'Last Year',
     data: comp,
     backgroundColor: 'rgba(12, 36, 254, 0.2)',
     borderColor: 'rgb(33, 58, 251)',

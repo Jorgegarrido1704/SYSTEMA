@@ -1309,95 +1309,40 @@ class juntasController extends Controller
         }
 
         //work Schedule dounut
-        $month = (int) date('m');
-        $year = date('Y');
-        $lmt =  'Jan';
+
         $porcentaje = $porcentajeMalos = $buenos = $malos = $total = 0;
         $porcentajemes1 = $porcentajemes = 0;
-        $last12Months = $thisYearGoals = [];
-        $workSchedule = DB::table('workschedule')
+        $last12Months = $thisYearGoals = $registrosArray = [];
 
-            ->where('commitmentDate', 'LIKE',   $month . '/%/' . $year)
-            ->where('CompletionDate', '!=', '')
-            ->orderBy('id', 'desc')
-            ->get();
-        foreach ($workSchedule as $row) {
-            $timeIni = $timeFin = 0;
-            $timeIni = strtotime($row->commitmentDate);
-            $timeFin = strtotime($row->CompletionDate);
-            if ($timeFin > $timeIni) {
-                $malos += 1;
-            } else {
-                $buenos += 1;
-            }
-            $total++;
-        }
-        if ($total > 0) {
-            $porcentaje = round(($buenos / $total) * 100, 2);
-            $porcentajeMalos = round(($malos / $total) * 100, 2);
-        } else {
-            $porcentaje = 0;
-            $porcentajeMalos = 0;
-        }
-        //this year goals
-
-        for ($i = 0; $i < 12; $i++) {
-            $total = $buenos = $malos = 0;
-            $last12Month = DB::table('workschedule')
-                ->where('commitmentDate', 'LIKE', $i + 1 . '/%/' . $year)
-                ->where('CompletionDate', '!=', '')
-                ->orderBy('id', 'desc')
-                ->get();
-            foreach ($last12Month as $row) {
-                $timeIni = $timeFin = 0;
-                $timeIni = strtotime($row->commitmentDate);
-                $timeFin = strtotime($row->CompletionDate);
-                if ($timeFin > $timeIni) {
-                    $malos += 1;
-                } else {
-                    $buenos += 1;
+            $datos = workScreduleModel::whereYear('commitmentDate', date('Y'))->orderBy('commitmentDate', 'ASC')->get();
+            foreach ($datos as $row) {
+                if(carbon::parse($row->commitmentDate)->year == date('Y')) {
+                    if(carbon::parse($row->commitmentDate) > carbon::parse($row->CompletionDate)) {
+                        if(!key_exists(carbon::parse($row->commitmentDate)->month, $registrosArray)) {
+                            $registrosArray[carbon::parse($row->commitmentDate)->month] = [0,0];
+                        }
+                       $registrosArray[Carbon::parse($row->commitmentDate)->month][0] +=1;
+                    }else{
+                        if(!key_exists(carbon::parse($row->commitmentDate)->month, $registrosArray)) {
+                            $registrosArray[carbon::parse($row->commitmentDate)->month] = [0,0];
+                        }
+                        $registrosArray[Carbon::parse($row->commitmentDate)->month][1] +=1;
+                    }
                 }
-                $total++;
             }
-            if ($total > 0) {
-                $porcentajemes1 = round(($buenos / $total) * 100, 2);
-            } else {
-                $porcentajemes1 = 0;
+            foreach ($registrosArray as $key => $value) {
+                $thisYearGoals[$key] = round($value[0]/($value[0]+$value[1])*100,2);
             }
-            $thisYearGoals[$i . ' ' . $lmt . '-' . $year] = $porcentajemes1;
-            $lmt = date('M', strtotime($lmt . ' +1 month'));
-        }
+            $porcentaje=$thisYearGoals[intval(date('m'))-1];
+            $porcentajeMalos=100-$porcentaje;
 
-        //Last 12 Months Goals
-        $lmt = 'Jan';
-        $lmy = date('Y', strtotime('-1 year'));
-        for ($i = 0; $i < 12; $i++) {
-            $total = $buenos = $malos = 0;
-            $last12Month = DB::table('workschedule')
-                ->where('commitmentDate', 'LIKE', $i + 1 . '/%/' . $lmy)
-                ->where('CompletionDate', '!=', '')
-                ->orderBy('id', 'desc')
-                ->get();
-            foreach ($last12Month as $row) {
-                $timeIni = $timeFin = 0;
-                $timeIni = strtotime($row->commitmentDate);
-                $timeFin = strtotime($row->CompletionDate);
-                if ($timeFin > $timeIni) {
-                    $malos += 1;
-                } else {
-                    $buenos += 1;
-                }
-                $total++;
-            }
-            if ($total > 0) {
-                $porcentajemes = round(($buenos / $total) * 100, 2);
-            } else {
-                $porcentajemes = 0;
-            }
-            $last12Months[$i . ' ' . $lmt . '-' . $lmy] = $porcentajemes;
-            $lmt = date('M', strtotime($lmt . ' +1 month'));
-        }
 
+
+
+
+
+
+  // PPAP and PRIM Insofor
         $registroPPAP = [];
         $i =0;
          $WS = workScreduleModel::where('status','!=','Completed','OR','status','!=','CANCELLED')->orderBy('id', 'desc')->get();

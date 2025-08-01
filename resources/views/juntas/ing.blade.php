@@ -37,6 +37,8 @@
             const malos = {!! json_encode($porcentajeMalos) !!};
             const mothLess12 = {!! json_encode($last12Months) !!};
                 const compGoals = {!! json_encode($thisYearGoals) !!};
+                console.log(mothLess12);
+                console.log(compGoals);
             // console.log(compGoals);
     </script>
 
@@ -76,7 +78,7 @@
                  <div class="card-body" style="overflow-y: auto; height: 450px;">
                 <div style="display: flex; gap: 20px;">
                     <div>
-                        <label for="paretoTime">Record for the month: {{$porcentaje}} %</label>
+                        <label for="paretoTime">Record for the last month: {{$porcentaje}} %</label>
                         <canvas id="cakes" width="400" height="300" ></canvas>
                     </div>
                  <div>
