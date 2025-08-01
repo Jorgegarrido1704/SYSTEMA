@@ -1399,8 +1399,34 @@ class juntasController extends Controller
         }
 
         $registroPPAP = [];
-        $i = 0;
-        $registros = Wo::where('rev', 'LIKE', 'PRIM%')->Orwhere('rev', 'LIKE', 'PPAP%')->get();
+        $i =0;
+         $WS = workScreduleModel::where('status','!=','Completed','OR','status','!=','CANCELLED')->orderBy('id', 'desc')->get();
+        foreach ($WS as $res) {
+            $registroPPAP[$i][0] = $res->customer;
+            $registroPPAP[$i][1] = $res->pn;
+            $registroPPAP[$i][2] = $res->size;
+            $registroPPAP[$i][3] = $res->WorkRev;
+            $registroPPAP[$i][4] = $res->receiptDate;
+            $registroPPAP[$i][5] = $res->commitmentDate;
+            $registroPPAP[$i][6] = $res->CompletionDate;
+            $registroPPAP[$i][7] = $res->documentsApproved;
+            $registroPPAP[$i][8] = "No Aun";
+            $registroPPAP[$i][9] = "No Aun";
+            $registroPPAP[$i][10] = "No Aun";
+            $registroPPAP[$i][11] = "No Aun";
+            $registroPPAP[$i][12] = "No Aun";
+            $registroPPAP[$i][13] = "No Aun";
+            $registroPPAP[$i][14] = "255,255,255,0.5";
+          $registroPPAP[$i][15] = $res->customerDate;
+                $registroPPAP[$i][16] = $res->resposible;
+                if(carbon::parse($res->commitmentDate)< carbon::parse($res->CompletionDate)){
+                    $registroPPAP[$i][17] = "Red";
+                }else{
+                    $registroPPAP[$i][17] = "Black";}
+                    $i++;
+        }
+
+        $registros = Wo::where('rev', 'LIKE', 'PRIM%')->Orwhere('rev', 'LIKE', 'PPAP%')->orderBy('cliente', 'asc') ->get();
         foreach ($registros as $reg) {
             $registroPPAP[$i][0] = $reg->cliente;
             $registroPPAP[$i][1] = $reg->NumPart;
