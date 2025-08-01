@@ -8,23 +8,21 @@ if (Error) {
 </script>
 <!-- First Period -->
 <div class="row">
-    <div class="col-lg-12 col-md-12 mb-4 text-center">
-        <h2 class="h3 mb-2 text-gray-800">Reporte</h2>
-        
-    </div>
     <div class="col-lg-12 col-lx-12 mb-4">
         <style>
-            #OK {background-color: rgba(76, 175, 80, 0.5); color: white;}
-            #F{background-color: rgba(255, 47, 47, 0.75); color: white;}
-            #PSS{background-color: rgba(237, 142, 1, 0.75); color: white;}
-            #PCS{background-color: rgba(237, 142, 1, 0.8); color: white;}
-            #INC{background-color: rgba(253, 207, 71, 0.84); color: white;}
-            #V{background-color: rgba(73, 50, 204, 0.5); color: white;}
-            #R{background-color: rgba(245, 13, 129, 0.35);color: white;}
-            #SUS{background-color: rgba(100, 9, 9, 0.81); color: white;}
+            #OK {background-color: rgba(76, 175, 80, 0.5); color: black;}
+            #F{background-color: rgba(255, 47, 47, 0.75); color: black;}
+            #PSS{background-color: rgba(237, 142, 1, 0.75); color: black;}
+            #PCS{background-color: rgba(237, 142, 1, 0.8); color: black;}
+            #INC{background-color: rgba(253, 207, 71, 0.84); color: black;}
+            #V{background-color: rgba(73, 50, 204, 0.5); color: black;}
+            #R{background-color: rgba(245, 13, 129, 0.35);color: black;}
+            #SUS{background-color: rgba(100, 9, 9, 0.81); color: black;}
             #PCT{background-color: rgba(103, 95, 95, 0.35); color: black;}
             #TSP{background-color: rgba(247, 130, 159, 0.35); color: black;}
             #empleado{background-color: rgba(255, 255, 255, 0.5); color: black; font-weight: bold; font-size: 16px;}
+            #ASM{background-color: rgba(102, 33, 146, 0.5); color: black; font-weight: bold; font-size: 16px;}
+            #SCE{background-color: rgba(239, 3, 164, 0.5); color: black; font-weight: bold; font-size: 16px;}
             #AddPersonal,#modificarEmpleado{display: none; }
         </style>
 
@@ -63,77 +61,79 @@ if (Error) {
                                     <label for="area" class="form-label">Area de trabajo</label>
                                    <select id="area" name="area" class="form-select">
                                     <option selected>Choose...</option>
-                                      <option value="Ingenieria">Ingenieria</option>
-                    <option value="Corte">Corte</option>
-                    <option value="Ensamble">Ensamble</option>
-                    <option value="Servicio al cliente">Servicio al cliente</option>
-                    <option value="Liberacion">Liberacion</option>
-                    <option value="Almacen">Almacen</option>
-                    <option value="Calidad">Calidad</option>
-                    <option value="Comercio Internacional">Comercio Internacional</option>
-                    <option value="Embarques">Embarques</option>
-                    <option value="Limpieza">Limpieza</option>
-                    <option value="Mantenimiento">Mantenimiento</option>
-                    <option value="Materiales">Materiales</option>
-                    <option value="Vigilancia">Vigilancia</option>
-                    <option value="EMBARQUE">EMBARQUE</option>
-                    <option value="PRODUCCION">PRODUCCION</option>
-                    <option value="Finanzas">Finanzas</option>
-                    <option value="Compras">Compras</option>
-                    <option value="Enfermeria">Enfermeria</option>
-                    <option value="Planeacion">Planeacion</option>
-                    <option value="RECURSOS HUMANOS">RECURSOS HUMANOS</option>
-                    <option value="Nomina">Nomina</option>
-                    <option value="Operaciones">Operaciones</option>
-                    <option value="PPAP">PPAP</option>
+                                    <option value="Ingenieria">Ingenieria</option>
+                                    <option value="Corte">Corte</option>
+                                    <option value="Ensamble">Ensamble</option>
+                                    <option value="Servicio al cliente">Servicio al cliente</option>
+                                    <option value="Liberacion">Liberacion</option>
+                                    <option value="Almacen">Almacen</option>
+                                    <option value="Calidad">Calidad</option>
+                                    <option value="Comercio Internacional">Comercio Internacional</option>
+                                    <option value="Embarques">Embarques</option>
+                                    <option value="Limpieza">Limpieza</option>
+                                    <option value="Mantenimiento">Mantenimiento</option>
+                                    <option value="Materiales">Materiales</option>
+                                    <option value="Vigilancia">Vigilancia</option>
+                                    <option value="EMBARQUE">EMBARQUE</option>
+                                    <option value="PRODUCCION">PRODUCCION</option>
+                                    <option value="Finanzas">Finanzas</option>
+                                    <option value="Compras">Compras</option>
+                                    <option value="Enfermeria">Enfermeria</option>
+                                    <option value="Planeacion">Planeacion</option>
+                                    <option value="RECURSOS HUMANOS">RECURSOS HUMANOS</option>
+                                    <option value="Nomina">Nomina</option>
+                                    <option value="Operaciones">Operaciones</option>
+                                    <option value="PPAP">PPAP</option>
                                     </select>
                                 </div>
                                 <div class="col-md-1">
                                     <label for="lider" class="form-label">Lider de empleado</label>
                                    <select id="lider" name="lider" class="form-select">
                                     <option selected >Choose...</option>
-                                     <option value="Jesus_C">Jesus_C</option>
-                    <option value="Juan G">Juan G</option>
-                    <option value="Chava Cort">Chava Cort</option>
-                    <option value="Juan O">Juan O</option>
-                    <option value="Jessi_S">Jessi_S</option>
-                    <option value="David V">David V</option>
-                    <option value="Saul">Saul</option>
-                    <option value="loom.manue">loom.manue</option>
-                    <option value="Angel_G">Angel_G</option>
-                    <option value="Gamboa J">Gamboa J</option>
-                    <option value="Andrea P">Andrea P</option>
-                    <option value="Efrain V">Efrain V</option>
-                    <option value="Edward M">Edward M</option>
-                    <option value="Luis R">Luis R</option>
-                    <option value="Rocio F">Rocio F</option>
-                    <option value="Paco G">Paco G</option>
-                    <option value="Paola A">Paola A</option>
-                    <option value="Javier C">Javier C</option>
+                                        <option value="Jesus_C">Jesus_C</option>
+                                        <option value="Juan G">Juan G</option>
+                                        <option value="Chava Cort">Chava Cort</option>
+                                        <option value="Juan O">Juan O</option>
+                                        <option value="Jessi_S">Jessi_S</option>
+                                        <option value="David V">David V</option>
+                                        <option value="Saul">Saul</option>
+                                        <option value="loom.manue">loom.manue</option>
+                                        <option value="Angel_G">Angel_G</option>
+                                        <option value="Gamboa J">Gamboa J</option>
+                                        <option value="Andrea P">Andrea P</option>
+                                        <option value="Efrain V">Efrain V</option>
+                                        <option value="Edward M">Edward M</option>
+                                        <option value="Luis R">Luis R</option>
+                                        <option value="Rocio F">Rocio F</option>
+                                        <option value="Paco G">Paco G</option>
+                                        <option value="Paola A">Paola A</option>
+                                        <option value="Javier C">Javier C</option>
                                     </select>
                                 </div>
                                   <div class="col-md-1">
                                     <label for="tipoDeTrabajador" class="form-label">Tipo de empleado</label>
                                    <select id="tipoDeTrabajador" name="tipoDeTrabajador" class="form-select">
-                                    <option selected >Choose...</option>
-                                    <option value="Directo">Directo</option><option value="Indirecto">Indirecto</option>
-                    <option value="Practicante">Practicante</option>
+                                        <option selected >Choose...</option>
+                                        <option value="Directo">Directo</option>
+                                        <option value="Indirecto">Indirecto</option>
+                                        <option value="Practicante">Practicante</option>
+                                        <option value="asimilado ">asimilado </option>
+                                        <option value="servicio comprado">servicio comprado</option>
                                     </select>
                                 </div>
 
                                 <div class="col-1">
-                                    <button type="submit" class="btn btn-primary">Sign in</button>
+                                    <button type="submit" class="btn btn-primary">Agregar empleado</button>
                                 </div>
                             </form>
                         </div>
                         <div id="modificarEmpleado">
                                 <hr>
-                                <div class= "row g-3">
-                                <div class="col-md-2">
-                                <label for="nombreEmpleado" class="form-label">Buscar empleado: </label><input type="text" name="nombreEmpleado" id="nombreEmpleado" onchange="buscarempleado()"></div>
+                                    <div class= "row g-3">
+                                    <div class="col-md-2">
+                                    <label for="nombreEmpleado" class="form-label">Buscar empleado: </label><input type="text" name="nombreEmpleado" id="nombreEmpleado" onchange="buscarempleado()"></div>
                                 <hr>
-                                <div id="datos"></div>
-
+                                 <div id="datos"></div>
                                 </div>
                         </div>
                         @endif
@@ -159,6 +159,13 @@ if (Error) {
                                     <th id="SUS">SUS = Suspension</th>
                                     <th id="PCT">PCT = Practicante</th>
                                     <th id="TSP">TSP = Tiempo Permiso Salida</th>
+                                    </tr>
+                                    <tr>
+                                    <th id="ASM">ASM = Asimilado</th>
+                                    <th id="SCE">SCE = Servicion Comprado</th>
+                                    <th id=""></th>
+                                    <th id=""></th>
+                                    <th id=""></th>
                                     </tr>
                                 </thead>
                             </table>

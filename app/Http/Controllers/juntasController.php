@@ -1314,27 +1314,27 @@ class juntasController extends Controller
         $porcentajemes1 = $porcentajemes = 0;
         $last12Months = $thisYearGoals = $registrosArray = [];
 
-            $datos = workScreduleModel::whereYear('commitmentDate', date('Y'))->orderBy('commitmentDate', 'ASC')->get();
-            foreach ($datos as $row) {
-                if(carbon::parse($row->commitmentDate)->year == date('Y')) {
-                    if(carbon::parse($row->commitmentDate) > carbon::parse($row->CompletionDate)) {
-                        if(!key_exists(carbon::parse($row->commitmentDate)->month, $registrosArray)) {
-                            $registrosArray[carbon::parse($row->commitmentDate)->month] = [0,0];
-                        }
-                       $registrosArray[Carbon::parse($row->commitmentDate)->month][0] +=1;
-                    }else{
-                        if(!key_exists(carbon::parse($row->commitmentDate)->month, $registrosArray)) {
-                            $registrosArray[carbon::parse($row->commitmentDate)->month] = [0,0];
-                        }
-                        $registrosArray[Carbon::parse($row->commitmentDate)->month][1] +=1;
+        $datos = workScreduleModel::whereYear('commitmentDate', date('Y'))->orderBy('commitmentDate', 'ASC')->get();
+        foreach ($datos as $row) {
+            if (carbon::parse($row->commitmentDate)->year == date('Y')) {
+                if (carbon::parse($row->commitmentDate) > carbon::parse($row->CompletionDate)) {
+                    if (!key_exists(carbon::parse($row->commitmentDate)->month, $registrosArray)) {
+                        $registrosArray[carbon::parse($row->commitmentDate)->month] = [0, 0];
                     }
+                    $registrosArray[Carbon::parse($row->commitmentDate)->month][0] += 1;
+                } else {
+                    if (!key_exists(carbon::parse($row->commitmentDate)->month, $registrosArray)) {
+                        $registrosArray[carbon::parse($row->commitmentDate)->month] = [0, 0];
+                    }
+                    $registrosArray[Carbon::parse($row->commitmentDate)->month][1] += 1;
                 }
             }
-            foreach ($registrosArray as $key => $value) {
-                $thisYearGoals[$key] = round($value[0]/($value[0]+$value[1])*100,2);
-            }
-            $porcentaje=$thisYearGoals[intval(date('m'))-1];
-            $porcentajeMalos=100-$porcentaje;
+        }
+        foreach ($registrosArray as $key => $value) {
+            $thisYearGoals[$key] = round($value[0] / ($value[0] + $value[1]) * 100, 2);
+        }
+        $porcentaje = $thisYearGoals[intval(date('m')) - 1];
+        $porcentajeMalos = 100 - $porcentaje;
 
 
 
@@ -1342,10 +1342,10 @@ class juntasController extends Controller
 
 
 
-  // PPAP and PRIM Insofor
+        // PPAP and PRIM Insofor
         $registroPPAP = [];
-        $i =0;
-         $WS = workScreduleModel::where('status','!=','Completed','OR','status','!=','CANCELLED')->orderBy('id', 'desc')->get();
+        $i = 0;
+        $WS = workScreduleModel::where('status', '!=', 'Completed', 'OR', 'status', '!=', 'CANCELLED')->orderBy('id', 'desc')->get();
         foreach ($WS as $res) {
             $registroPPAP[$i][0] = $res->customer;
             $registroPPAP[$i][1] = $res->pn;
@@ -1362,16 +1362,17 @@ class juntasController extends Controller
             $registroPPAP[$i][12] = "No Aun";
             $registroPPAP[$i][13] = "No Aun";
             $registroPPAP[$i][14] = "255,255,255,0.5";
-          $registroPPAP[$i][15] = $res->customerDate;
-                $registroPPAP[$i][16] = $res->resposible;
-                if(carbon::parse($res->commitmentDate)< carbon::parse($res->CompletionDate)){
-                    $registroPPAP[$i][17] = "Red";
-                }else{
-                    $registroPPAP[$i][17] = "Black";}
-                    $i++;
+            $registroPPAP[$i][15] = $res->customerDate;
+            $registroPPAP[$i][16] = $res->resposible;
+            if (carbon::parse($res->commitmentDate) < carbon::parse($res->CompletionDate)) {
+                $registroPPAP[$i][17] = "Red";
+            } else {
+                $registroPPAP[$i][17] = "Black";
+            }
+            $i++;
         }
 
-        $registros = Wo::where('rev', 'LIKE', 'PRIM%')->Orwhere('rev', 'LIKE', 'PPAP%')->orderBy('cliente', 'asc') ->get();
+        $registros = Wo::where('rev', 'LIKE', 'PRIM%')->Orwhere('rev', 'LIKE', 'PPAP%')->orderBy('cliente', 'asc')->get();
         foreach ($registros as $reg) {
             $registroPPAP[$i][0] = $reg->cliente;
             $registroPPAP[$i][1] = $reg->NumPart;
@@ -1400,10 +1401,11 @@ class juntasController extends Controller
                 $registroPPAP[$i][7] = $registroWS->documentsApproved;
                 $registroPPAP[$i][15] = $registroWS->customerDate;
                 $registroPPAP[$i][16] = $registroWS->resposible;
-                if(carbon::parse($registroWS->commitmentDate)< carbon::parse($registroWS->CompletionDate)){
+                if (carbon::parse($registroWS->commitmentDate) < carbon::parse($registroWS->CompletionDate)) {
                     $registroPPAP[$i][17] = "Red";
-                }else{
-                    $registroPPAP[$i][17] = "Black";}
+                } else {
+                    $registroPPAP[$i][17] = "Black";
+                }
                 $datosTiempos = tiempos::where('info', $reg->info)->first();
                 if (empty($datosTiempos)) {
                     $registroPPAP[$i][8] = "No Aun";
@@ -2098,7 +2100,7 @@ class juntasController extends Controller
                 $tipoTrabajador[0]++;
             } else if ($datoGenero->typeWorker == 'Indirecto') {
                 $tipoTrabajador[1]++;
-            } else if ($datoGenero->typeWorker == 'Practicante') {
+            } else  {
                 $tipoTrabajador[2]++;
             }
             $total++;
@@ -2132,7 +2134,6 @@ class juntasController extends Controller
             $aus += (int) $ausentismo->permisos_sin_gose;
             $aus += (int) $ausentismo->retardos;
             $aus += (int) $ausentismo->suspension;
-            $aus += (int) $ausentismo->practicantes;
             $aus += (int) $ausentismo->tsp;
         }
         if ($aus == 0 && $falt == 0) {
@@ -2157,7 +2158,9 @@ class juntasController extends Controller
                 'retardos' => 0,
                 'suspension' => 0,
                 'practicantes' => 0,
-                'tsp' => 0
+                'tsp' => 0,
+                'asimilados' => 0,
+                'ServiciosComprados' => 0
             ];
         }
 
@@ -2186,6 +2189,8 @@ class juntasController extends Controller
             $rotacion->retardos,
             $rotacion->suspension,
             $rotacion->practicantes,
+            $rotacion->asimilados,
+            $rotacion->ServiciosComprados,
             $totalRotacion
         ];
 
@@ -2207,6 +2212,7 @@ class juntasController extends Controller
         if ($id == 'P') {
             $datos = assistence::select('name')->where($diaActual, '=', 'PSS', 'OR', $diaActual, '=', 'PCS', 'OR', $diaActual, '=', 'TSP')->where('week', '=', $week)->get();
         } else {
+         
             $datos = assistence::select('name')->where($diaActual, '=', $id)->where('week', '=', $week)->get();
         }
 
@@ -2235,6 +2241,12 @@ class juntasController extends Controller
                 break;
             case 'R':
                 $id = 'retardos';
+                break;
+            case 'ASM':
+                $id = 'asimilados';
+                break;
+            case 'SCE':
+                $id = 'ServiciosComprados';
                 break;
 
             default:

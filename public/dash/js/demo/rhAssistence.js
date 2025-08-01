@@ -21,7 +21,9 @@ const rhAssistence = new Chart(assist, {
             "Retardos",
             "Suspensión",
             "Practicantes",
-            
+            "Asimilados",
+            "Servicios Comprados"
+
         ],
         datasets: [
             {
@@ -35,6 +37,8 @@ const rhAssistence = new Chart(assist, {
                     "rgba(245, 13, 129, 0.35)",
                     "rgba(100, 9, 9, 0.81)",
                     "rgba(103, 95, 95, 0.35)",
+                    "rgba(102, 33, 146, 0.5)",
+                    "rgba(239, 3, 164, 0.5)",
 
 
                 ],
@@ -47,6 +51,8 @@ const rhAssistence = new Chart(assist, {
                     "rgba(245, 13, 129, 1)",
                     "rgb(67, 18, 18)",
                     "rgba(103, 95, 95, 1)",
+                     "rgba(102, 33, 146, 1)",
+                    "rgba(239, 3, 164, 1)",
 
                 ],
                 borderWidth: 1,
@@ -311,7 +317,7 @@ const rota3 = new Chart(document.getElementById("rotation3"), {
         labels: [
             "Directos:" + tipoTrabajadors[0],
             "Indirectos:" + tipoTrabajadors[1],
-            "Practicantes:" + tipoTrabajadors[2],
+            "Externos:" + tipoTrabajadors[2],
         ],
         datasets: [
             {

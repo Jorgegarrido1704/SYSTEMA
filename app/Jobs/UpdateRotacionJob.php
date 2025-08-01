@@ -34,8 +34,8 @@ class UpdateRotacionJob implements ShouldQueue
         $days = ['domingo', 'lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado'];
         $dayNumber = Carbon::now()->dayOfWeek;
         $today = Carbon::now()->format('Y-m-d');
-        $vacaciones = $faltas = $permisosConGose = $permisosSinGose = $incapacidad = $assistencia = $retardos = $suspension = $practicantes =$tsp = 0;
-
+        $vacaciones = $faltas = $permisosConGose = $permisosSinGose = $incapacidad = $assistencia = $retardos =
+         $suspension = $practicantes =$tsp = $assimilados = $sce = $total = 0;
 
         $registroAssitenceDailyJob =  Db::table('assistence')
             ->select($days[$dayNumber])
@@ -74,6 +74,12 @@ class UpdateRotacionJob implements ShouldQueue
                 case 'TSP':
                     $tsp++;
                     break;
+                case 'ASM':
+                    $assimilados++;
+                    break;
+                case 'SCE':
+                    $sce++;
+                    break;
             }
 
         }
@@ -92,6 +98,8 @@ class UpdateRotacionJob implements ShouldQueue
                     'suspension' => $suspension,
                     'practicantes' => $practicantes,
                     'tsp' => $tsp,
+                    'asimilados' => $assimilados,
+                    'ServiciosComprados' => $sce
                 ]);
         } else {
             // Crea un nuevo registro
@@ -107,6 +115,8 @@ class UpdateRotacionJob implements ShouldQueue
                 'suspension' => $suspension,
                 'practicantes' => $practicantes,
                 'tsp' => $tsp,
+                'asimilados' => $assimilados,
+                'ServiciosComprados' => $sce
             ]);
         }
 

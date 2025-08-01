@@ -24,6 +24,12 @@
 .text-pinks{
     color: #f06f7c;
 }
+.text-morado{
+    color: #8f00c3;
+}
+.text-rosa{
+    color: #ff70ea;
+}
 a:hover {
     text-decoration: none;
 }
@@ -43,7 +49,7 @@ a:hover {
             <div class="card-header py-3">
                 <h5 class="m-1 font-weight-bold text-primary">Today assistence {{ date('Y-m-d') }} Faltan por registro: {{ $faltan }}</h5>
             </div>
-            <div class="card-body" style=" max-height: 450px;">
+            <div class="card-body" style=" max-height: 550px;">
                 <div class="row">
                     <div class="col-lg-4 col-md-4">
                         <table class="table table-borderless item-center">
@@ -79,7 +85,15 @@ a:hover {
                             <td class="font-weight-bold text-gray font-size-24"><a class ="text-gray" href="{{ route('DatosRh', ['id' => 'PCT']) }}">Practicantes</a></td>
                             <td class="font-weight-bold font-size-24">{{$registrosDeAsistencia[7]}}</td>
                            </tr>
-                            
+                            <tr>
+                            <td class="font-weight-bold text-gray font-size-24"><a class ="text-modado" href="{{ route('DatosRh', ['id' => 'ASM']) }}">Asimilados</a></td>
+                            <td class="font-weight-bold font-size-24">{{$registrosDeAsistencia[8]}}</td>
+                           </tr>
+                            <tr>
+                            <td class="font-weight-bold text-gray font-size-24"><a class ="text-rosa" href="{{ route('DatosRh', ['id' => 'SCE']) }}">Servicion comprados</a></td>
+                            <td class="font-weight-bold font-size-24">{{$registrosDeAsistencia[9]}}</td>
+                           </tr>
+
                         </table>
                     </div>
                     <div class="col-lg-8 col-md-8">
@@ -98,7 +112,7 @@ a:hover {
             <div class="card-header py-3">
                 <h5 class="m-1 font-weight-bold text-primary">Vacaciones en 2025</h5>
             </div>
-            <div class="card-body" style=" max-height: 450px;" >
+            <div class="card-body" style=" max-height: 550px;" >
                 <canvas id="vacations" style=" height: 400px;"></canvas>
             </div>
         </div>
