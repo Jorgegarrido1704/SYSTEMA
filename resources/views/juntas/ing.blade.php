@@ -99,9 +99,9 @@
                     <h5 class="m-0 font-weight-bold text-primary">Registro de Actividades Ultimo Mes</h5>
                 </div>
                 <!-- table Body -->
-                <div class="card-body" style="overflow-y: auto; height: 400px;">
-                    <table class="table table-striped table-bordered" width="100%" cellspacing="0">
-                        <thead>
+                <div  style="overflow-y: auto; height: 800px;">
+                    <table class="table table-striped table-bordered"  cellspacing="0" width="100%">
+                        <thead style=" position: sticky; z-index: 1; top: 0; text-align: center; background-color: white    ; ">
                             <tr>
                                 <th>Cliente</th>
                                 <th>Numero de Parte</th>
@@ -122,11 +122,9 @@
 
                             </tr>
 
-
-
-
                         </thead>
-                        <tbody>
+
+                            <tbody  >
                             @if(!empty($registroPPAP))
                                 @foreach ($registroPPAP as $ppaps )
 
@@ -137,7 +135,7 @@
                                         <td>{{$ppaps[3]}} </td>
                                         <td>{{$ppaps[4]}} </td>
                                         <td>{{$ppaps[5]}} </td>
-                                        <td>{{$ppaps[6]}} </td>
+                                        <td style="color: {{ $ppaps[17] }};" >{{ $ppaps[6] }} </td>
                                         <td>{{$ppaps[15]}} </td>
                                         <td>{{$ppaps[16]}} </td>
                                         <td>{{$ppaps[7]}} </td>
@@ -155,8 +153,8 @@
 
                         </tbody>
 
-
                     </table>
+                </div>
                 </div>
             </div>
         </div>
