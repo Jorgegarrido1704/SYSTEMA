@@ -2100,7 +2100,7 @@ class juntasController extends Controller
                 $tipoTrabajador[0]++;
             } else if ($datoGenero->typeWorker == 'Indirecto') {
                 $tipoTrabajador[1]++;
-            } else  {
+            } else if ($datoGenero->typeWorker != 'Directo' && $datoGenero->typeWorker != 'Indirecto') {
                 $tipoTrabajador[2]++;
             }
             $total++;
@@ -2212,7 +2212,7 @@ class juntasController extends Controller
         if ($id == 'P') {
             $datos = assistence::select('name')->where($diaActual, '=', 'PSS', 'OR', $diaActual, '=', 'PCS', 'OR', $diaActual, '=', 'TSP')->where('week', '=', $week)->get();
         } else {
-         
+
             $datos = assistence::select('name')->where($diaActual, '=', $id)->where('week', '=', $week)->get();
         }
 
