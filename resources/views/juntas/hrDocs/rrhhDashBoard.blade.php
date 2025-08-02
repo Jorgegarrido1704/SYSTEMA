@@ -40,8 +40,8 @@ if (Error) {
                                 <label for="semana" class="form-label">Reporte de Semana</label>
                                 <select name="semana" id="semana" class="form-control" required>
                                     <option value="" disabled selected> Seleccione Un Semana</option>
-                                    @for($i=1; $i<= $weekNum ; $i++)
-                                    <option value="{{$i}}">Semana {{$i}}</option>
+                                    @for($weekNum; $weekNum>=1 ; $weekNum--)
+                                    <option value="{{$weekNum}}">Semana {{$weekNum}}</option>
                                     @endfor
                                 </select>
 

@@ -369,7 +369,7 @@ class rrhhController extends Controller
         // Encabezados
         $headers = [
             'A1' => 'Empleado',
-            'B2' => 'Numero de empleado',
+            'B1' => 'Numero de empleado',
             'C1' => 'Lunes',
             'd1' => 'Martes',
             'e1' => 'Miércoles',
@@ -430,7 +430,7 @@ class rrhhController extends Controller
             $row = 2;
             foreach ($datos as $d) {
                 $sheet->setCellValue('A' . $row, $d->name);
-                $sheet->setCellValue('b' . $row, $d->id_empleado);
+                $sheet->setCellValue('b' . $row, substr($d->id_empleado,1));
                 $sheet->setCellValue('c' . $row, $d->lunes);
                 $sheet->setCellValue('d' . $row, $d->martes);
                 $sheet->setCellValue('e' . $row, $d->miercoles);
