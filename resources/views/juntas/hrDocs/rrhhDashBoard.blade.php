@@ -29,11 +29,30 @@ if (Error) {
 
                 <div class="card shadow mb-5 item-center">
                     <div class="card-header py-3 text-center">
-                        <h5 class="m-0 font-weight-bold text-primary">Modificaciones de Registos </h5>
+                        <h5 class="m-0 font-weight-bold text-primary">Modificaciones de Registos  Y reportes</h5>
                           @if($cat == "RRHH" or $cat == "SupAdmin")
                         <button class="btn btn-primary" data-toggle="modal" data-target="#addModal" id="addPersonal" onclick="addEmpleado();" >Agregar personal</button>
                         <button class="btn btn-success" data-toggle="modal" data-target="#addModal" id="modificarEmpleados" onclick="modificarEmpleado();">Modifiar empleado</button>
+                       <!-- //reportes de RRHH -->
+                        <form class="row g-3" action="{{ route('reporteSemanlInicidencias') }}" method="POST">
+                            @csrf
+                            <div class="col-md-1">
+                                <label for="semana" class="form-label">Reporte de Semana</label>
+                                <select name="semana" id="semana" class="form-control" required>
+                                    <option value="" disabled selected> Seleccione Un Semana</option>
+                                    @for($i=1; $i<= $weekNum ; $i++)
+                                    <option value="{{$i}}">Semana {{$i}}</option>
+                                    @endfor
+                                </select>
 
+                            </div>
+                            <div class="col-md-1">
+                                <button type="submit" class="btn btn-primary">Reporte</button>
+                            </div>
+                        </form>
+
+
+                       <!-- //ocultos de modal -->
                         <div id ="AddPersonal" >
                            <form class="row g-3" action="{{ route('addperson') }}" method="POST">
                             @csrf
