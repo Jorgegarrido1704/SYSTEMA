@@ -189,14 +189,14 @@ Route::controller(rrhhController::class)->group(function () {
     Route::POST('/rrhh/reporte', [rrhhController::class, 'reporteSemanlInicidencias'])->name('reporteSemanlInicidencias');
 
 });
-Route::controller(accionesCorrectivasController::class)->group(function () {
-    Route::get('/acciones-correctivas', [accionesCorrectivasController::class, 'index'])->name('accionesCorrectivas.index');
-    Route::post('/acciones-correctivas/create', [accionesCorrectivasController::class, 'create'])->name('accionesCorrectivas.create');
-    Route::get('/acciones-correctivas/{id}', [accionesCorrectivasController::class, 'show'])->name('accionesCorrectivas.show');
-    Route::post('/acciones-correctivas/guardarPorques', [accionesCorrectivasController::class, 'guardarPorques'])->name('accionesCorrectivas.guardarPorques');
-    Route::post('/acciones-correctivas/guardarIshikawa', [accionesCorrectivasController::class, 'guardarIshikawa'])->name('accionesCorrectivas.guardarIshikawa');
-    Route::post('/acciones-correctivas/guardarAccion', [accionesCorrectivasController::class, 'guardarAccion'])->name('accionesCorrectivas.guardarAccion');
-    Route::POST('/acciones-correctivas/guardarSeguimiento', [accionesCorrectivasController::class, 'guardarSeguimiento'])->name('accionesCorrectivas.guardarSeguimiento');
+Route::controller(AccionesCorrectivasController::class)->group(function () {
+    Route::get('/acciones-correctivas', [AccionesCorrectivasController::class, 'index'])->name('accionesCorrectivas.index');
+    Route::post('/acciones-correctivas/create', [AccionesCorrectivasController::class, 'create'])->name('accionesCorrectivas.create');
+    Route::get('/acciones-correctivas/{id}', [AccionesCorrectivasController::class, 'show'])->name('accionesCorrectivas.show');
+    Route::post('/acciones-correctivas/guardarPorques', [AccionesCorrectivasController::class, 'guardarPorques'])->name('accionesCorrectivas.guardarPorques');
+    Route::post('/acciones-correctivas/guardarIshikawa', [AccionesCorrectivasController::class, 'guardarIshikawa'])->name('accionesCorrectivas.guardarIshikawa');
+    Route::post('/acciones-correctivas/guardarAccion', [AccionesCorrectivasController::class, 'guardarAccion'])->name('accionesCorrectivas.guardarAccion');
+    Route::POST('/acciones-correctivas/guardarSeguimiento', [AccionesCorrectivasController::class, 'guardarSeguimiento'])->name('accionesCorrectivas.guardarSeguimiento');
 });
 
 Route::controller(mailsController::class)->group(function () {
