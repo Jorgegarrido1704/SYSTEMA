@@ -2169,7 +2169,9 @@ class juntasController extends Controller
             ->where('week', '=', $week)
             ->get();
         foreach ($restroFaltantes as $faltante) {
-            if ($faltante->$diaActual == '-' or $faltante->$diaActual == '') {
+            if ($faltante->$diaActual != 'OK' or $faltante->$diaActual != 'F' or $faltante->$diaActual != 'PSS' or $faltante->$diaActual != 'PCS'
+            OR $faltante->$diaActual != 'INC' or $faltante->$diaActual != 'V' or $faltante->$diaActual != 'R' or $faltante->$diaActual != 'SUS'
+            OR $faltante->$diaActual != 'PCT' or $faltante->$diaActual != 'TSP' or $faltante->$diaActual != 'ASM' or $faltante->$diaActual != 'SCE') {
 
                 if (in_array($faltante->lider, $faltantes)) {
                     continue;
@@ -2179,7 +2181,8 @@ class juntasController extends Controller
             }
         }
 
-        $faltan = $total - ($rotacion->tsp + $rotacion->assistencia + $rotacion->faltas + $rotacion->incapacidad + $rotacion->permisos_gose + $rotacion->permisos_sin_gose + $rotacion->vacaciones + $rotacion->retardos + $rotacion->suspension + $rotacion->practicantes);
+        $faltan = $total - ($rotacion->tsp + $rotacion->assistencia + $rotacion->faltas + $rotacion->incapacidad + $rotacion->permisos_gose +
+         $rotacion->permisos_sin_gose + $rotacion->vacaciones + $rotacion->retardos + $rotacion->suspension + $rotacion->practicantes + $rotacion->asimilados + $rotacion->ServiciosComprados);
         $registrosDeAsistencia = [
             $rotacion->assistencia,
             $rotacion->faltas,
