@@ -2165,20 +2165,12 @@ class juntasController extends Controller
         }
 
         $restroFaltantes = DB::table('assistence')
-            ->select('lider', $diaActual)
+            ->distinct('lider', $diaActual)
             ->where('week', '=', $week)
+            ->where($diaActual, '=', '-','or', $diaActual, '=', '')
             ->get();
         foreach ($restroFaltantes as $faltante) {
-            if ($faltante->$diaActual == 'OK' or $faltante->$diaActual == 'F' or $faltante->$diaActual == 'PSS' or $faltante->$diaActual == 'PCS'
-            OR $faltante->$diaActual == 'INC' or $faltante->$diaActual == 'V' or $faltante->$diaActual == 'R' or $faltante->$diaActual == 'SUS'
-            OR $faltante->$diaActual == 'PCT' or $faltante->$diaActual == 'TSP' or $faltante->$diaActual == 'ASM' or $faltante->$diaActual == 'SCE') {
-
-                if (in_array($faltante->lider, $faltantes)) {
-                    continue;
-                } else {
                     $faltantes[] = $faltante->lider;
-                }
-            }
         }
 
         $faltan = $total - ($rotacion->tsp + $rotacion->assistencia + $rotacion->faltas + $rotacion->incapacidad + $rotacion->permisos_gose +
