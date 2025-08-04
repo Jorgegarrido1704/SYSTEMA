@@ -2169,9 +2169,9 @@ class juntasController extends Controller
             ->where('week', '=', $week)
             ->get();
         foreach ($restroFaltantes as $faltante) {
-            if ($faltante->$diaActual != 'OK' or $faltante->$diaActual != 'F' or $faltante->$diaActual != 'PSS' or $faltante->$diaActual != 'PCS'
-            OR $faltante->$diaActual != 'INC' or $faltante->$diaActual != 'V' or $faltante->$diaActual != 'R' or $faltante->$diaActual != 'SUS'
-            OR $faltante->$diaActual != 'PCT' or $faltante->$diaActual != 'TSP' or $faltante->$diaActual != 'ASM' or $faltante->$diaActual != 'SCE') {
+            if ($faltante->$diaActual == 'OK' or $faltante->$diaActual == 'F' or $faltante->$diaActual == 'PSS' or $faltante->$diaActual == 'PCS'
+            OR $faltante->$diaActual == 'INC' or $faltante->$diaActual == 'V' or $faltante->$diaActual == 'R' or $faltante->$diaActual == 'SUS'
+            OR $faltante->$diaActual == 'PCT' or $faltante->$diaActual == 'TSP' or $faltante->$diaActual == 'ASM' or $faltante->$diaActual == 'SCE') {
 
                 if (in_array($faltante->lider, $faltantes)) {
                     continue;
