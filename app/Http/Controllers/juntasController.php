@@ -2163,14 +2163,18 @@ class juntasController extends Controller
                 'ServiciosComprados' => 0
             ];
         }
-
+$datosCorrector = ['OK','F','PSS','PCS','INC','V','R','SUS','PCT','TSP','ASI','SCE'];
         $restroFaltantes = DB::table('assistence')
-            ->distinct('lider', $diaActual)
+            ->select('lider', $diaActual)
             ->where('week', '=', $week)
-            ->where($diaActual, '=', '-','or', $diaActual, '=', '')
             ->get();
         foreach ($restroFaltantes as $faltante) {
-                    $faltantes[] = $faltante->lider;
+            if(!in_array($faltante->$diaActual,$datosCorrector)){
+                if(in_array($faltante->lider,$faltantes)){
+                    continue;
+                }
+                $faltantes[] = $faltante->lider;
+            }
         }
 
         $faltan = $total - ($rotacion->tsp + $rotacion->assistencia + $rotacion->faltas + $rotacion->incapacidad + $rotacion->permisos_gose +
