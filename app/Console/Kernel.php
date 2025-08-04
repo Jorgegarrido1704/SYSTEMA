@@ -24,7 +24,7 @@ class Kernel extends ConsoleKernel
         $schedule->job(new \App\Jobs\accionesCorrectivasJob)->dailyAt('07:00');
         $schedule->command('backup:database')
             ->hourly()
-            ->between('7:00', '19:00')
+            ->between('7:00', '20:00')
             ->days([1, 2, 3, 4, 5, 6]) // Lunes (1) a Sábado (6)
             ->appendOutputTo(storage_path('logs/backup.log'));
     }
