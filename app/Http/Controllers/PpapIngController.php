@@ -742,12 +742,12 @@ class PpapIngController extends Controller
         $customer =$ingResp= [];
         $value = session('user');
         $cat = session('categoria');
+        $reqCust = workScreduleModel::select('customer')->distinct()->where('customer', '!=', '')->get();
 
-        $reqCust = DB::table('workSchedule')->select('customer')->distinct()->where('customer', '!=', '')->get();
         foreach ($reqCust as $row) {
             $customer[$row->customer] = $row->customer;
         }
-        $ingSearch = DB::table('workSchedule')->select('resposible')->distinct()->where('resposible', '!=', '')->get();
+        $ingSearch = workScreduleModel::select('resposible')->distinct()->where('resposible', '!=', '')->get();
         foreach ($ingSearch as $row) {
             $ingResp[$row->resposible] = $row->resposible;
         }
