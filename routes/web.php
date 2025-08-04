@@ -19,8 +19,7 @@ use App\Http\Controllers\AlmacenController;
 use App\Http\Controllers\AdminSupControlloer;
 use App\Http\Controllers\rrhhController;
 use App\Http\Controllers\SaludController;
-use App\Models\accionesCorrectivas;
-use App\Http\Controllers\accionesCorrectivasController;
+use App\Http\Controllers\AccionesCorrectivasController;
 use App\Http\Controllers\mailsController;
 
 /*
