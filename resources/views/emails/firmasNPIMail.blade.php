@@ -18,6 +18,7 @@
  <p> Con la descripción : {{$accion->cambios}}</p><br>
  <br><p> Al Firmar esta solicitud usted acepta el proceso de trabajo que
 involucra a su departamento en este proceso.</p><br>
+<br> <p><b>Ingrese al CVTS para realizar su firma digital</b></p><br>
 
  <br><br><p> De antemano Agradezco su atencion<br>ATTE: J.G.</p><br>
 </body>
