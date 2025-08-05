@@ -26,7 +26,9 @@ class workScreduleModel extends Model
         'resposible',
         'customerDate',
         'comments',
-        'UpOrderDate'
+        'UpOrderDate',
+        'Color',
+        'qtyInPo'
     ];
 
     public $timestamps = false;
@@ -35,7 +37,7 @@ class workScreduleModel extends Model
     {
         return workScreduleModel::all();
     }
-    
+
 
     public static function getDatesWorks($pn,$rev)
     {

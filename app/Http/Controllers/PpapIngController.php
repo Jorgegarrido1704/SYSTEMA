@@ -799,11 +799,13 @@ class PpapIngController extends Controller
             'pn' => $input['pnWork'],
             'WorkRev' => $input['revWork'],
             'size' => $input['sizeWork'],
-            'receiptDate' => $input['receiptDateWork'],
-            'commitmentDate' => $input['commitmentDateWork'],
-            'customerDate' => $input['customerDateWork'],
-            'resposible' => $input['resposible'],
+            'receiptDate' => $input['receiptDateWork']?? NULL,
+            'commitmentDate' => $input['commitmentDateWork']?? NULL,
+            'customerDate' => $input['customerDateWork']?? NULL,
+            'resposible' => $input['resposible']?? NULL,
             'comments' => $input['comments'] ?? '',
+            'qtyInPo' => $input['qtyInPo'] ?? 0,
+            'Color' => $input['color'] ?? '',
         ]);
         $newRegistro->save();
         return redirect('/workSchedule');
@@ -816,20 +818,50 @@ class PpapIngController extends Controller
             return redirect('/workSchedule');
         }else if($request->input('id_edit') != null){
             $input = $request->all();
+             if($input['MRP'] != null and $input['receiptDate'] != null and $input['commitmentDate'] != null
+                and $input['CompletionDate'] != null and $input['documentsApproved'] != null and $input['customerDate'] != null) {
+                   $status='Completed';
+                }else if( $input['receiptDate'] != null and $input['commitmentDate'] != null){
+                    $status='In Progress';
+                }else {
+                    $status='Pending';
+                }
+                if($input['MRP'] != null or $input['MRP']=='0000-00-00'){
+                    $input['MRP'] = date('Y-m-d', strtotime($input['MRP']))?? NULL;
+                }
+                if($input['receiptDate'] != null or $input['receiptDate']=='0000-00-00'){
+                    $input['receiptDate'] = date('Y-m-d', strtotime($input['receiptDate']))?? NULL;
+                }
+                if($input['commitmentDate'] != null or $input['commitmentDate']=='0000-00-00'){
+                    $input['commitmentDate'] = date('Y-m-d', strtotime($input['commitmentDate']))?? NULL;
+                }
+                if($input['CompletionDate'] != null or $input['CompletionDate']=='0000-00-00'){
+                    $input['CompletionDate'] = date('Y-m-d', strtotime($input['CompletionDate']))?? NULL;
+                }
+                if($input['documentsApproved'] != null or $input['documentsApproved']=='0000-00-00'){
+                    $input['documentsApproved'] = date('Y-m-d', strtotime($input['documentsApproved']))?? NULL;
+                }
+                if($input['customerDate'] != null or $input['customerDate']=='0000-00-00'){
+                    $input['customerDate'] = date('Y-m-d', strtotime($input['customerDate']))?? NULL;
+                }
             $update=DB::table('workSchedule')->where('id', $request->input('id_edit'))
             ->update([
                 'WorkRev' => $input['WR'],
                 'size' => $input['s'],
                 'FullSize' => $input['FS'],
-                'MRP' => date('Y-m-d', strtotime($input['MRP'])),//'$input['MRP'],
-                'receiptDate' => date('Y-m-d', strtotime($input['receiptDate'])),// $input['receiptDate'],
-                'commitmentDate' => date('Y-m-d', strtotime($input['commitmentDate'])),//$input['commitmentDate'],
-                'CompletionDate' => date('Y-m-d', strtotime($input['CompletionDate'])),//$input['CompletionDate'],
-                'documentsApproved' => date('Y-m-d', strtotime($input['documentsApproved'])),//$input['documentsApproved'],
-                'Status' => $input['Status'],
-                'customerDate' => date('Y-m-d', strtotime($input['customerDate'])),//$input['customerDate'],
-                'resposible' => $input['resposible'],
+                'MRP' => $input['MRP'],
+                'receiptDate' => ($input['receiptDate']),// $input['receiptDate'],
+                'commitmentDate' => ($input['commitmentDate']),//$input['commitmentDate'],
+                'CompletionDate' => ($input['CompletionDate']),//$input['CompletionDate'],
+                'documentsApproved' => ($input['documentsApproved']),//$input['documentsApproved'],
+                'customerDate' => ($input['customerDate']),//$input['customerDate'],
+                'resposible' => $input['resposible']?? '',
                 'comments' => $input['comments'] ?? '',
+                'qtyInPo' => $input['qip'] ?? 0,
+                'Color' => $input['color'] ?? '',
+                'status' => $status,
+
+
             ]);
 
 

@@ -108,6 +108,15 @@
                         <div id="formularioRegistro"  style="display: none">
                             <form action="{{ route('saveWorkschedule') }}" method="GET">
                                 <div class="form-group">
+                                <label for="color">Color sheet:</label><br>
+                                    <select name="color" id="color">
+                                       <option value="" selected disabled>Color</option>
+                                       <option value="green">PPAP // Change Rev PPAP</option>
+                                       <option value="yellow">PRIM // Change Rev PRIM</option>
+                                       <option value="white">NO PPAP // Just documentation</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
                                 <label for="pnWork">PN:</label> <br>
                                 <input type="text" name="pnWork" id="pnWork" required>
                                 </div> <div class="form-group">
@@ -118,19 +127,27 @@
                                 <input type="text" name="revWork" id="revWork" required>
                                 </div>  <div>
                                 <label for="sizeWork">Size:</label><br>
-                                <input type="text" name="sizeWork" id="sizeWork" required>
+                                <select name="sizeWork" id="sizeWork" required>
+                                    <option value="" selected disabled>Size</option>
+                                    <option value="Ch">Ch</option>
+                                    <option value="M">M</option>
+                                    <option value="G">G</option>
+                                </select>
+                                </div> <div>
+                                <label for="qtyInPo">Qty in PO:</label><br>
+                                <input type="text" name="qtyInPo" id="qtyInPo" min=0>
                                 </div> <div>
                                 <label for="receiptDateWork">Receipt Date:</label><br>
-                                <input type="date" name="receiptDateWork" id="receiptDateWork" required>
+                                <input type="date" name="receiptDateWork" id="receiptDateWork" >
                                 </div><div>
                                 <label for="commitmentDateWork">Commitment Date:</label><br>
-                                <input type="date" name="commitmentDateWork" id="commitmentDateWork" required>
+                                <input type="date" name="commitmentDateWork" id="commitmentDateWork" >
                                 </div><div>
                                 <label for="customerDateWork">Customer Date:</label><br>
-                                <input type="date" name="customerDateWork" id="customerDateWork" required>
+                                <input type="date" name="customerDateWork" id="customerDateWork" >
                                 </div><div>
                                 <label for="resposible">Resposible:</label><br>
-                                <input type="text" name="resposible" id="resposible" required>
+                                <input type="text" name="resposible" id="resposible" >
                                 </div><div>
                                 <label for="comments">Comments:</label><br>
                                 <textarea name="comments" id="comments" cols="10" rows="3"></textarea>
@@ -151,6 +168,8 @@
                                 <tr>
                                     <th>PN</th>
                                     <th>Customer</th>
+                                    <th>Qty in PO</th>
+                                    <th>Color</th>
                                     <th>WorkRev</th>
                                     <th >Size</th>
                                     <th>FullSize</th>
