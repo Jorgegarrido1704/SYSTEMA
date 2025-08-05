@@ -18,6 +18,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use App\Models\workScreduleModel;
 use App\Models\regPar;
+use APP\Mail\firmasNPIEmail;
 
 class PpapIngController extends Controller
 {
@@ -487,6 +488,8 @@ class PpapIngController extends Controller
             $registro->gernete = '';
             $registro->count = 0;
             if ($registro->save()) {
+                $accion = PPAPandPRIM::where('count','=',0)->orderby('id','desc')->first();
+                Mail::to('jgarrido@mx.bergstrominc.com')->send(new \App\Mail\firmasNPIEmail($accion, 'New product Introduction - '.$pn));
                 return redirect('/ing');
             }
         }

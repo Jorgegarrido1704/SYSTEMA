@@ -29,7 +29,6 @@ class accionesCorrectivasJob implements ShouldQueue
     {
         $acciones = accionesCorrectivas::where('status', 'etapa 2 - Accion Correctiva')
             ->first();
-
             Mail::to('jgarrido@mx.bergstrominc.com')->send(new accionesCorrectivasRecordatorio($acciones, 'Acciones Correctivas Recordatorio'));
 
     }

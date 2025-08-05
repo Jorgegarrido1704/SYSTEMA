@@ -17,7 +17,6 @@ class PPAPandPRIM extends Model
   'REV1',
   'REV2',
   'cambios',
-
   'fecha',
   'eng',
   'quality',

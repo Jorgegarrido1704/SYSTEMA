@@ -9,18 +9,19 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
+use App\Models\PPAPandPRIM;
 
 class mailsController extends Controller
 {
     public function accionesCorrectivas()
     {
         $accion = accionesCorrectivas::where('status', 'etapa 2 - Accion Correctiva')
-
             ->first();
-
-        
-
         return view('emails.accionesCorrectivasMail', ['accion' => $accion]);
+    }
+    public function firmasNPI(){
+        $accion = PPAPandPRIM::where('count','=',0)->orderby('id','desc')->first();
+        return view('emails.firmasNPIMail', ['accion' => $accion]);
     }
 
 

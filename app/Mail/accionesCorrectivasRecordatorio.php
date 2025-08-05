@@ -11,6 +11,7 @@ use Illuminate\Queue\SerializesModels;
 class accionesCorrectivasRecordatorio extends Mailable
 {
     use Queueable, SerializesModels;
+    
     Public $subject;
     public $acciones;
 
