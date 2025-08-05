@@ -2163,7 +2163,7 @@ class juntasController extends Controller
                 'ServiciosComprados' => 0
             ];
         }
-$datosCorrector = ['OK','F','PSS','PCS','INC','V','R','SUS','PCT','TSP','ASI','SCE'];
+$datosCorrector = ['OK','F','PSS','PCS','INC','V','R','SUS','PCT','TSP','ASM','SCE'];
         $restroFaltantes = DB::table('assistence')
             ->select('lider', $diaActual)
             ->where('week', '=', $week)

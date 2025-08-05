@@ -123,19 +123,20 @@ a:hover {
     <div class="col-lg-8 col-md-8 mb-8">
         <div class="card shadow mb-5">
             <div class="card-header py-3">
-                <h5 class="m-1 font-weight-bold text-primary">Rotación</h5>
+                <h5 class="m-1 font-weight-bold text-primary">Graficas</h5>
             </div>
 
             <div class="card-body "  style="overflow-y: auto; max-height: 450px;">
                 <div class="row" >
-                        <div class="col-lg-6 col-md-6 mb-4">
-                            <div class="text-center font-weight-bold text-dark">
-                            <p >Rotacion</p>
+                    <div class="col-lg-6 col-md-6 mb-4">
+                        <div class="text-center font-weight-bold text-dark">
+                            <p >Ratios</p>
                         </div>
                         <div >
-                            <canvas id="rotation0"></canvas>
+                            <canvas id="rotation3"></canvas>
                         </div>
                     </div>
+
                     <div class="col-lg-6 col-md-6 mb-4">
                         <div class="text-center font-weight-bold text-dark">
                             <p >Diversidad</p>
@@ -152,12 +153,12 @@ a:hover {
                             <canvas id="rotation2"></canvas>
                         </div>
                     </div>
-                     <div class="col-lg-6 col-md-6 mb-4">
-                        <div class="text-center font-weight-bold text-dark">
-                            <p >Ratios</p>
+                    <div class="col-lg-6 col-md-6 mb-4">
+                            <div class="text-center font-weight-bold text-dark">
+                            <p >Rotacion</p>
                         </div>
                         <div >
-                            <canvas id="rotation3"></canvas>
+                            <canvas id="rotation0"></canvas>
                         </div>
                     </div>
                 </div>
