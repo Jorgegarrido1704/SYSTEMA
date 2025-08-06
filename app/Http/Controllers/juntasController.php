@@ -1314,7 +1314,7 @@ class juntasController extends Controller
         $porcentajemes1 = $porcentajemes = 0;
         $last12Months = $thisYearGoals = $registrosArray = [];
         $thismonth=carbon::now()->month;
-        for(intval($thismonth); intval($thismonth)>0; intval($thismonth)-1){
+
             $mes=Carbon::parse($thismonth)->month;
             $registrosArray[$mes] = [0, 0];
         $registrosArray[$mes] = workScreduleModel::getWorkScheduleCompleted(date('Y'), $mes);
@@ -1324,7 +1324,7 @@ class juntasController extends Controller
         }else{
             $thisYearGoals[$mes] = 0;
         }
-    }
+
         $porcentaje = $thisYearGoals[intval(date('m')) - 1];
         $porcentajeMalos = 100 - $porcentaje;
         $porcentajemes1= $registrosArray[intval(date('m')) - 1][0];
