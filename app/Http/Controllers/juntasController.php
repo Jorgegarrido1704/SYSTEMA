@@ -1313,7 +1313,7 @@ class juntasController extends Controller
         $porcentaje = $porcentajeMalos = $buenos = $malos = $total = 0;
         $porcentajemes1 = $porcentajemes = 0;
         $last12Months = $thisYearGoals = $registrosArray = [];
-        $thismonth=carbon::now()->month;
+        $thismonth=carbon::now()->addMonths(-1)->month;
         $datos = workScreduleModel::where('CompletionDate','LIKE' ,'2025-'.$thismonth.'%')->orderBy('CompletionDate', 'DESC')->get();
         foreach ($datos as $row) {
 
