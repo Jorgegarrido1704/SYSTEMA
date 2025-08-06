@@ -1345,7 +1345,7 @@ class juntasController extends Controller
         // PPAP and PRIM Insofor
         $registroPPAP = [];
         $i = 0;
-        $WS = workScreduleModel::where('status', '!=', 'Completed', 'OR', 'status', '!=', 'CANCELLED')->orderBy('id', 'desc')->get();
+        $WS = workScreduleModel::where('UpOrderDate', '!=', null , 'OR', 'status', '!=', 'CANCELLED')->orderBy('id', 'desc')->get();
         foreach ($WS as $res) {
             $registroPPAP[$i][0] = $res->customer;
             $registroPPAP[$i][1] = $res->pn;
@@ -2163,14 +2163,14 @@ class juntasController extends Controller
                 'ServiciosComprados' => 0
             ];
         }
-$datosCorrector = ['OK','F','PSS','PCS','INC','V','R','SUS','PCT','TSP','ASM','SCE'];
+        $datosCorrector = ['OK', 'F', 'PSS', 'PCS', 'INC', 'V', 'R', 'SUS', 'PCT', 'TSP', 'ASM', 'SCE'];
         $restroFaltantes = DB::table('assistence')
             ->select('lider', $diaActual)
             ->where('week', '=', $week)
             ->get();
         foreach ($restroFaltantes as $faltante) {
-            if(!in_array($faltante->$diaActual,$datosCorrector)){
-                if(in_array($faltante->lider,$faltantes)){
+            if (!in_array($faltante->$diaActual, $datosCorrector)) {
+                if (in_array($faltante->lider, $faltantes)) {
                     continue;
                 }
                 $faltantes[] = $faltante->lider;
@@ -2178,7 +2178,7 @@ $datosCorrector = ['OK','F','PSS','PCS','INC','V','R','SUS','PCT','TSP','ASM','S
         }
 
         $faltan = $total - ($rotacion->tsp + $rotacion->assistencia + $rotacion->faltas + $rotacion->incapacidad + $rotacion->permisos_gose +
-         $rotacion->permisos_sin_gose + $rotacion->vacaciones + $rotacion->retardos + $rotacion->suspension + $rotacion->practicantes + $rotacion->asimilados + $rotacion->ServiciosComprados);
+            $rotacion->permisos_sin_gose + $rotacion->vacaciones + $rotacion->retardos + $rotacion->suspension + $rotacion->practicantes + $rotacion->asimilados + $rotacion->ServiciosComprados);
         $registrosDeAsistencia = [
             $rotacion->assistencia,
             $rotacion->faltas,

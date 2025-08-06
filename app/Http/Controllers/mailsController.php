@@ -24,6 +24,17 @@ class mailsController extends Controller
         return view('emails.firmasNPIMail', ['accion' => $accion]);
     }
 
+    public function index(){
+        $value = session('user');
+        $cat=session('categoria');
+        if($value=='Rocio F' ){
+        $registroFirmas=PPAPandPRIM::where('count','=',1)->orderby('id','desc')->first();
+        }else {
+            $registroFirmas=[];
+        }
+        return view('firmas.npi.npi', ['registroFirmas' => $registroFirmas,'value' => $value, 'cat' => $cat]);
+    }
+
 
 
 }

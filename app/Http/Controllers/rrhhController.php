@@ -25,7 +25,7 @@ class rrhhController extends Controller
         $cat = session('categoria');
         $weekNum = Carbon::now()->weekOfYear;
         $datosRHWEEK = assistence::leader($value)->OrderBy('lider', 'desc')->get();
-        if ($value == 'Admin' or $value == 'Paola A') {
+        if ($value == 'Admin' or $cat  == 'RRHH') {
             $diasRegistro = ['', '', '', '', '', ''];
         } else {
             $diasRegistro = ['readonly', 'readonly', 'readonly', 'readonly', 'readonly'];
