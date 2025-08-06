@@ -1314,19 +1314,11 @@ class juntasController extends Controller
         $porcentajemes1 = $porcentajemes = 0;
         $last12Months = $thisYearGoals = $registrosArray = [];
         $thismonth=carbon::now()->month;
-        for(intval($thismonth)-1; intval($thismonth)>0; intval($thismonth)-1){
+        for(intval($thismonth); intval($thismonth)>0; intval($thismonth)-1){
             $mes=Carbon::parse($thismonth)->month;
             $registrosArray[$mes] = [0, 0];
-        $datos = workScreduleModel::where('CompletionDate','LIKE' ,'2025-'.$mes.'%')->orderBy('CompletionDate', 'DESC')->get();
-        foreach ($datos as $row) {
+        $registrosArray[$mes] = workScreduleModel::getWorkScheduleCompleted(date('Y'), $mes);
 
-                if (carbon::parse($row->commitmentDate) >= carbon::parse($row->CompletionDate)) {
-                    $registrosArray[$mes][0] += 1;
-                } else {
-                    $registrosArray[$mes][1] += 1;
-                }
-
-        }
         if($registrosArray[$mes][0]>0)  {
             $thisYearGoals[$mes] = round(($registrosArray[$mes][0] / ($registrosArray[$mes][0]+$registrosArray[$mes][1])*100 ) , 2);
         }else{
