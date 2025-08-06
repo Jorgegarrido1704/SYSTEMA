@@ -1316,26 +1316,21 @@ class juntasController extends Controller
         $thismonth=carbon::now()->month;
         for(intval($thismonth)-1; intval($thismonth)>0; intval($thismonth)-1){
             $mes=Carbon::parse($thismonth)->month;
+            $registrosArray[$mes] = [0, 0];
         $datos = workScreduleModel::where('CompletionDate','LIKE' ,'2025-'.$mes.'%')->orderBy('CompletionDate', 'DESC')->get();
         foreach ($datos as $row) {
 
                 if (carbon::parse($row->commitmentDate) >= carbon::parse($row->CompletionDate)) {
-                    if (!key_exists(carbon::parse($row->commitmentDate)->month, $registrosArray)) {
-                        $registrosArray[carbon::parse($row->commitmentDate)->month] = [0, 0];
-                    }
-                    $registrosArray[Carbon::parse($row->commitmentDate)->month][0] += 1;
+                    $registrosArray[$mes][0] += 1;
                 } else {
-                    if (!key_exists(carbon::parse($row->commitmentDate)->month, $registrosArray)) {
-                        $registrosArray[carbon::parse($row->commitmentDate)->month] = [0, 0];
-                    }
-                    $registrosArray[Carbon::parse($row->commitmentDate)->month][1] += 1;
+                    $registrosArray[$mes][1] += 1;
                 }
 
         }
         foreach ($registrosArray as $key => $valor) {
             $thisYearGoals[$key] = round(($valor[0]*100)/($valor[0]+$valor[1] ) , 2);
-
-        }}
+        }
+    }
         $porcentaje = $thisYearGoals[intval(date('m')) - 1];
         $porcentajeMalos = 100 - $porcentaje;
         $porcentajemes1= $registrosArray[intval(date('m')) - 1][0];
