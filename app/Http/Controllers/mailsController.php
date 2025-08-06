@@ -48,21 +48,21 @@ class mailsController extends Controller
 
     public function update(Request $request){
         $id=$request->input('id');
-        $how=$request->input('how');
-         if($how=='Rocio F' ){
+        $value=session('user');
+         if($value=='Rocio F' ){
         PPAPandPRIM::where('id','=',$id)->update(['ime' => carbon::now()->format('d-m-y H:i')]);
-        }else if($how=='Edward M' or $how=='Luis R' or $how=='Goretti Ro'){
+        }else if($value=='Edward M' or $value=='Luis R' or $value=='Goretti Ro'){
             PPAPandPRIM::where('id','=',$id)->update(['quality' => carbon::now()->format('d-m-y H:i')]);
-        }else if($how=='Jose Luis' ){
+        }else if($value=='Jose Luis' ){
             PPAPandPRIM::where('id','=',$id)->update(['test' => carbon::now()->format('d-m-y H:i')]);
-        }else if($how=='Valeria P' Or $how=='Julio R' ){
+        }else if($value=='Valeria P' Or $value=='Julio R' ){
              PPAPandPRIM::where('id','=',$id)->update(['compras' => carbon::now()->format('d-m-y H:i')]);
-        }else if($how=='Juan O' or $how=='David V'){
+        }else if($value=='Juan O' or $value=='David V'){
             PPAPandPRIM::where('id','=',$id)->update(['production' => carbon::now()->format('d-m-y H:i')]);
-        }else if($how== 'Estela G' or $how=='Gamboa J'){
+        }else if($value== 'Estela G' or $value=='Gamboa J'){
             PPAPandPRIM::where('id','=',$id)->update(['gernete' => carbon::now()->format('d-m-y H:i')]);
         }
-        if(PPAPandPRIM::where('id','=',$id)->where('ime','!=',null)->where('quality','!=',null)->where('test','!=',null)->where('compras','!=',null)->where('production','!=',null)->where('gernete','!=',null)->update(['count' => 2])){
+        if(PPAPandPRIM::where('id','=',$id)->where('ime','!=','')->where('quality','!=','')->where('test','!=','')->where('compras','!=','')->where('production','!=','')->where('gernete','!=','')->update(['count' => 2])){
 
             //$accion = PPAPandPRIM::where('id','=',$id)->first();
           //  Mail::to($accion->email)->send(new accionesCorrectivasRecordatorio($accion));
