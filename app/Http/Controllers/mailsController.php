@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 use App\Models\PPAPandPRIM;
+use App\Mail\firmasCompletas;
 
 class mailsController extends Controller
 {
@@ -63,9 +64,9 @@ class mailsController extends Controller
             PPAPandPRIM::where('id','=',$id)->update(['gernete' => carbon::now()->format('d-m-y H:i')]);
         }
         if(PPAPandPRIM::where('id','=',$id)->where('ime','!=','')->where('quality','!=','')->where('test','!=','')->where('compras','!=','')->where('production','!=','')->where('gernete','!=','')->update(['count' => 2])){
-
-            //$accion = PPAPandPRIM::where('id','=',$id)->first();
-          //  Mail::to($accion->email)->send(new accionesCorrectivasRecordatorio($accion));
+           $accion = PPAPandPRIM::where('id','=',$id)->first();
+           $receivers=['jcerver@mx.bergstromin.com','jamoreno@mx.bergstrominc.com','jgarrido@mx.bergstrominc.com','jcrodriguez@mx.bergstrominc.com'];
+            Mail::to($receivers )->send(new firmasCompletas($accion,'Firmas Completas NPI'));
         }
         return redirect('/Pendigs');
 

@@ -1317,7 +1317,7 @@ class juntasController extends Controller
         $datos = workScreduleModel::whereYear('commitmentDate', date('Y'))->orderBy('commitmentDate', 'ASC')->get();
         foreach ($datos as $row) {
             if (carbon::parse($row->commitmentDate)->year == date('Y')) {
-                if (carbon::parse($row->commitmentDate) > carbon::parse($row->CompletionDate)) {
+                if (carbon::parse($row->commitmentDate) <= carbon::parse($row->CompletionDate)) {
                     if (!key_exists(carbon::parse($row->commitmentDate)->month, $registrosArray)) {
                         $registrosArray[carbon::parse($row->commitmentDate)->month] = [0, 0];
                     }

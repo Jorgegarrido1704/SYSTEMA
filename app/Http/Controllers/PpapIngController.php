@@ -486,10 +486,16 @@ class PpapIngController extends Controller
             $registro->production = '';
             $registro->compras = '';
             $registro->gernete = '';
-            $registro->count = 0;
+            $registro->count = 1;
             if ($registro->save()) {
-                $accion = PPAPandPRIM::where('count','=',0)->orderby('id','desc')->first();
-                Mail::to('jgarrido@mx.bergstrominc.com')->send(new \App\Mail\firmasNPIEmail($accion, 'New product Introduction - '.$pn));
+                $accion = PPAPandPRIM::orderby('id','desc')->first();
+                $recipients=['jgarrido@mx.bergstrominc.com','rfandino@mx.bergstrominc.com,fsuarez@mx.bergstrominc.com',
+            'lramos@mx.bergstrominc.com','emedina@mx.bergstrominc.com','drocha@mx.bergstrominc.com',
+            'Jruiz@mx.bergstrominc.com','jrodriguez@mx.bergstrominc.com','vpichardo@mx.bergstrominc.com',
+            'jgamboa@mx.bergstrominc.com','egaona@mx.bergstrominc.com','jolaes@mx.bergstrominc.com','dvillalpando@mx.bergstrominc.com',
+           'jamoreno@mx.bergstrominc.com','jguillen@mx.bergstrominc.com','maleman@mx.bergstrominc.com','fgomez@mx.bergstrominc.com',
+           'lmireles@mx.bergstrominc.com'];
+                Mail::to($recipients)->send(new \App\Mail\firmasNPIEmail($accion, 'New product Introduction - '.$pn));
                 return redirect('/ing');
             }
         }
