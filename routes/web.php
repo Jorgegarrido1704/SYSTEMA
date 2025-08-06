@@ -201,5 +201,6 @@ Route::controller(AccionesCorrectivasController::class)->group(function () {
 Route::controller(mailsController::class)->group(function () {
   //  Route::get('/mails', [mailsController::class, 'accionesCorrectivas'])->name('mails.accionesCorrectivas');
   Route::get('/Pendigs', [mailsController::class, 'index'])->name('Pendings.index');
+  Route::post('/Pendigs/update', [mailsController::class, 'update'])->name('Pendings.update');
 
 });
