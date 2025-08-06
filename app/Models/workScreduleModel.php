@@ -51,26 +51,27 @@ class workScreduleModel extends Model
 {
     $datos = [];
 
-    $registros = workScreduleModel::whereYear('commitmentDate', $year)
-        ->orderBy('commitmentDate', 'asc')
+    $registros = workScreduleModel::where('CompletionDate','LIKE', $year.'-07%'  )->where('status', 'Completed')
+        ->orderBy('CompletionDate', 'DESC')
         ->get();
 
     foreach ($registros as $registro) {
-        $mes = substr($registro->commitmentDate, 5, 2); // "01" a "12"
+
+        $mes = intval(substr($registro->commitmentDate, 5, 2)); // "01" a "12"
 
         // Inicializar si no existe
         if (!isset($datos[$mes])) {
             $datos[$mes] = [0, 0]; // [buenos, malos]
         }
 
-        if ($registro->commitmentDate <= $registro->CompletionDate) {
+        if ($registro->commitmentDate >= $registro->CompletionDate) {
             $datos[$mes][0]++; // buenos
         } else {
             $datos[$mes][1]++; // malos
         }
     }
 
-    return $datos;
+    return ($datos);
 }
 
 
