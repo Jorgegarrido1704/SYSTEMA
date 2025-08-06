@@ -90,6 +90,12 @@
                         <canvas id="paretoTime" width="400" height="300"></canvas>
                     </div>
                 </div>
+                <div>
+                  buenos:  {{ $porcentajemes1 }}
+                  <br>
+                  malos:  {{ $porcentajemes }}
+                </div>
+
             </div>
 
             </div>

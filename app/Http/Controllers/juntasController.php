@@ -1330,11 +1330,13 @@ class juntasController extends Controller
                 }
 
         }
-        foreach ($registrosArray as $key => $value) {
-            $thisYearGoals[$key] = round($value[0] / ($value[0] + $value[1]) * 100, 2);
+        foreach ($registrosArray as $key => $valor) {
+            $thisYearGoals[$key] = round(($valor[0]*100)/($valor[0]+$valor[1] ) , 2);
         }
         $porcentaje = $thisYearGoals[intval(date('m')) - 1];
         $porcentajeMalos = 100 - $porcentaje;
+        $porcentajemes1= $thisYearGoals[intval(date('m')) - 1][0];
+        $porcentajemes= $thisYearGoals[intval(date('m')) - 1][1];
 
 
 
@@ -1434,7 +1436,7 @@ class juntasController extends Controller
         }
 
 
-        return view('juntas/ing', ['registroPPAP' => $registroPPAP, 'thisYearGoals' => $thisYearGoals, 'last12Months' => $last12Months, 'porcentaje' => $porcentaje, 'porcentajeMalos' => $porcentajeMalos, 'todas' => $todas, 'jesp' => $jesp, 'nanp' => $nanp, 'bp' => $bp, 'jcp' => $jcp, 'psp' => $psp, 'alv' => $alv, 'asp' => $asp, 'jg' => $jg, 'jesus' => $jesus, 'pao' => $pao, 'nancy' => $nancy, 'ale' => $ale, 'carlos' => $carlos, 'arturo' => $arturo, 'jorge' => $jorge, 'brandon' => $brandon, 'actividadesLastMonth' => $actividadesLastMonth, 'actividades' => $actividades, 'value' => session('user'), 'cat' => session('categoria')]);
+        return view('juntas/ing', ['porcentajemes'=>$porcentajemes,'porcentajemes1'=>$porcentajemes1,'registroPPAP' => $registroPPAP, 'thisYearGoals' => $thisYearGoals, 'last12Months' => $last12Months, 'porcentaje' => $porcentaje, 'porcentajeMalos' => $porcentajeMalos, 'todas' => $todas, 'jesp' => $jesp, 'nanp' => $nanp, 'bp' => $bp, 'jcp' => $jcp, 'psp' => $psp, 'alv' => $alv, 'asp' => $asp, 'jg' => $jg, 'jesus' => $jesus, 'pao' => $pao, 'nancy' => $nancy, 'ale' => $ale, 'carlos' => $carlos, 'arturo' => $arturo, 'jorge' => $jorge, 'brandon' => $brandon, 'actividadesLastMonth' => $actividadesLastMonth, 'actividades' => $actividades, 'value' => session('user'), 'cat' => session('categoria')]);
     }
     public function cutAndTerm()
     {
