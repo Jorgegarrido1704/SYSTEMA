@@ -47,16 +47,24 @@ class workScreduleModel extends Model
     {
         return workScreduleModel::where('status', '!=', 'Completed' )->get();
     }
-    public static function getWorkScheduleCompleted($year,$month)
+    public static function getWorkScheduleCompleted($year)
     {
-            $datos=[0,0];
-        $registros=workScreduleModel::whereYear('commitmentDate', '=', $year)->whereMonth('commitmentDate', '=', $month)->get();
+            $datos[]=[0,0];
+        $registros=workScreduleModel::whereYear('commitmentDate', '=', $year)->orderby('commitmentDate', 'asc')->get();
        foreach ($registros as $registro) {
+            if(key_exists(substr($registro->commitmentDate, 5, 2), $datos)){
            if ($registro->commitmentDate <= $registro->CompletionDate) {
-               $datos[0]++ ;
+               $datos[substr($registro->commitmentDate, 5, 2)][0]++ ;
            }else{
-            $datos[1]++;
+            $datos[substr($registro->commitmentDate, 5, 2)][1]++;
+           }}else{
+            if ($registro->commitmentDate <= $registro->CompletionDate) {
+                $datos[substr($registro->commitmentDate, 5, 2)][0]=1 ;
+            }else{
+                $datos[substr($registro->commitmentDate, 5, 2)][1]=1;
+            }
            }
+
        }
        return $datos;
     }
