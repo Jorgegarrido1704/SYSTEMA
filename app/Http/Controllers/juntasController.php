@@ -1321,10 +1321,10 @@ class juntasController extends Controller
         }
 
 
-        $porcentaje = $thisYearGoals[(date('m')) - 1];
+        $porcentaje = $thisYearGoals['07'];
         $porcentajeMalos = 100 - $porcentaje;
-        $porcentajemes1= $registrosArray[(date('m')) - 1][0];
-        $porcentajemes= $registrosArray[(date('m')) - 1][1];
+        $porcentajemes1= $registrosArray['07'][0];
+        $porcentajemes= $registrosArray['07'][1];
 
 
 
