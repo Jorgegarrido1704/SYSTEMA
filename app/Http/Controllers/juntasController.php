@@ -1313,7 +1313,7 @@ class juntasController extends Controller
         $porcentaje = $porcentajeMalos = $buenos = $malos = $total = 0;
         $porcentajemes1 = $porcentajemes = 0;
         $last12Months = $thisYearGoals = $registrosArray = [];
-        $thismonth=carbon::now()->month;
+        $thismonth=carbon::now()->addMonth(-1)->month;
 
             $mes=Carbon::parse($thismonth)->month;
             $registrosArray[$mes] = [0, 0];
