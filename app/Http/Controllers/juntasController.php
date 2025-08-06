@@ -1314,7 +1314,7 @@ class juntasController extends Controller
         $porcentajemes1 = $porcentajemes = 0;
         $last12Months = $thisYearGoals = $registrosArray = [];
 
-        $datos = workScreduleModel::whereYear('CompletionDate', date('Y'))->orderBy('CompletionDate', 'DESC')->get();
+        $datos = workScreduleModel::where('CompletionDate','LIKE' ,'2025-%')->orderBy('CompletionDate', 'DESC')->get();
         foreach ($datos as $row) {
 
                 if (carbon::parse($row->commitmentDate) >= carbon::parse($row->CompletionDate)) {
@@ -1332,7 +1332,7 @@ class juntasController extends Controller
         }
         foreach ($registrosArray as $key => $valor) {
             $thisYearGoals[$key] = round(($valor[0]*100)/($valor[0]+$valor[1] ) , 2);
-            
+
         }
         $porcentaje = $thisYearGoals[intval(date('m')) - 1];
         $porcentajeMalos = 100 - $porcentaje;
