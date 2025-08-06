@@ -1332,11 +1332,13 @@ class juntasController extends Controller
         }
         foreach ($registrosArray as $key => $valor) {
             $thisYearGoals[$key] = round(($valor[0]*100)/($valor[0]+$valor[1] ) , 2);
+            $buenos[$key] = $valor[0];
+            $malos[$key] = $valor[1];
         }
         $porcentaje = $thisYearGoals[intval(date('m')) - 1];
         $porcentajeMalos = 100 - $porcentaje;
-        $porcentajemes1= $thisYearGoals[intval(date('m')) - 1][0];
-        $porcentajemes= $thisYearGoals[intval(date('m')) - 1][1];
+        $porcentajemes1= $buenos[intval(date('m')) - 1][0];
+        $porcentajemes= $malos[intval(date('m')) - 1][1];
 
 
 
