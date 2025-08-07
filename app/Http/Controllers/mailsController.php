@@ -51,7 +51,7 @@ class mailsController extends Controller
     public function update(Request $request){
         $id=$request->input('id');
         $value=session('user');
-         if($value=='Rocio F' ){
+         if($value=='Rocio F' or $value=='Fatima S' ){
         PPAPandPRIM::where('id','=',$id)->update(['ime' => carbon::now()->format('d-m-y H:i')]);
         }else if($value=='Edward M' or $value=='Luis R' or $value=='Goretti Ro'){
             PPAPandPRIM::where('id','=',$id)->update(['quality' => carbon::now()->format('d-m-y H:i')]);
@@ -66,7 +66,8 @@ class mailsController extends Controller
         }
         if(PPAPandPRIM::where('id','=',$id)->where('ime','!=','')->where('quality','!=','')->where('test','!=','')->where('compras','!=','')->where('production','!=','')->where('gernete','!=','')->update(['count' => 2])){
            $accion = PPAPandPRIM::where('id','=',$id)->first();
-           $receivers=['jcerver@mx.bergstromin.com','jamoreno@mx.bergstrominc.com','jgarrido@mx.bergstrominc.com','jcrodriguez@mx.bergstrominc.com'];
+           $receivers=['jcerver@mx.bergstromin.com','jamoreno@mx.bergstrominc.com','jgarrido@mx.bergstrominc.com',
+           'jcrodriguez@mx.bergstrominc.com'];
             workScreduleModel::where('pn','=',$accion->pn)->orderby('id','desc')->first()->update(['documentsApproved' => carbon::now()->format('Y-m-d')]);
 
             Mail::to($receivers )->send(new firmasCompletas($accion,'Firmas Completas NPI'));
