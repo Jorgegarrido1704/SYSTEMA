@@ -829,15 +829,15 @@ class PpapIngController extends Controller
             return redirect('/workSchedule');
         }else if($request->input('id_edit') != null){
             $input = $request->all();
-            if($input['resposible'] != null or $input['resposible']==''){
+            if($input['responsable_H'] != null or $input['responsable_H']==''){
                 $status='Pending';
-            }else if($input['MRP'] != null and $input['receiptDate'] != null and $input['commitmentDate'] != null
-                and $input['CompletionDate'] != null and $input['resposible'] != null and $input['resposible'] != ''  ) {
+            }else if($input['MRP_H'] != null and $input['receiptDate_H'] != null and $input['commitmentDate_H'] != null
+                and $input['CompletionDate_H'] != null and $input['responsable_H'] != null and $input['responsable_H'] != ''  ) {
                    $status='Completed';
-                }else if( $input['resposible'] != null and $input['resposible'] != ''){
+                }else if( $input['responsable_H'] != null and $input['responsable_H'] != ''){
                     $status='In Progress';
-                }else {
-                    $status='Pending';
+                }else  {
+                    $status=$input['Status_H'];
                 }
                 if($input['MRP'] != null or $input['MRP']=='0000-00-00'){
                     $input['MRP'] = date('Y-m-d', strtotime($input['MRP']))?? NULL;
@@ -862,17 +862,17 @@ class PpapIngController extends Controller
                 'WorkRev' => $input['WR'],
                 'size' => $input['s'],
                 'FullSize' => $input['FS'],
-                'MRP' => $input['MRP'],
-                'receiptDate' => ($input['receiptDate']),// $input['receiptDate'],
-                'commitmentDate' => ($input['commitmentDate']),//$input['commitmentDate'],
-                'CompletionDate' => ($input['CompletionDate']),//$input['CompletionDate'],
-                'documentsApproved' => ($input['documentsApproved']),//$input['documentsApproved'],
-                'customerDate' => ($input['customerDate_']),//$input['customerDate'],
-                'resposible' => $input['resposible']?? '',
-                'comments' => $input['comments_'] ?? '',
+                'MRP' => $input['MRP_H'],
+                'receiptDate' => ($input['receiptDate_H']),// $input['receiptDate'],
+                'commitmentDate' => ($input['commitmentDate_H']),//$input['commitmentDate'],
+                'CompletionDate' => ($input['CompletionDate_H']),//$input['CompletionDate'],
+                'documentsApproved' => ($input['documentsApproved_H']),//$input['documentsApproved'],
+                'customerDate' => ($input['customerDate_H']),//$input['customerDate'],
+                'resposible' => $input['responsable_H']?? '',
+                'comments' => $input['comments_H'] ?? '',
                 'qtyInPo' => $input['qip'] ?? 0,
                 'Color' => $input['color'] ?? '',
-                'status' => $status,
+                'status' => $status??$input['Status_H'],
             ]);
 
 
