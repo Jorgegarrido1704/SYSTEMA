@@ -35,7 +35,7 @@
                             <h5 class="m-0 font-weight-bold text-primary">Filters</h5>
                         </div>
                         <div class="form-group position-relative row">
-                            <div class="col-2 m-0">
+                            <div class="col-1 m-0">
                                 <div class="form-group">
                                     <label for="customer" class="form-label">Customer</label>
                                 </div>
@@ -88,6 +88,10 @@
                                     <option value="customerDate">Customer Date</option>
                                 </select>
                                 </div>
+                            </div>
+                            <div class="col-1">
+                                <label for="empty">Empty</label>
+                                <br> <input type="checkbox" name="empty" id="empty" >
                             </div>
                             <div class="col-2">
                                 <label for="DateIni">Date Init:</label><input type="date" class="form-control" id="DateIni" ></label>
@@ -168,7 +172,7 @@
                                 <tr>
                                     <th>PN</th>
                                     <th>Customer</th>
-                                    <th>Qty in PO</th>
+
                                     <th>Color</th>
                                     <th>WorkRev</th>
                                     <th >Size</th>
@@ -181,6 +185,7 @@
                                     <th>Status</th>
                                     <th>Responsible</th>
                                     <th>Customer Date</th>
+                                    <th>Qty in PO</th>
                                     <th>Comments</th>
                                     <th>Edit</th>
                                     <th>Delete</th>

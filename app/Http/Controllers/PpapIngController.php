@@ -774,6 +774,7 @@ class PpapIngController extends Controller
         $size = $input['size'] ?? '';
         $dateIni = $input['Dateini'] ?? '';
         $dateFin = $input['DateFin'] ?? '';
+        $empty = $input['empty'] ?? false;
         $i=0;
 
         if ($pn != '') {
@@ -786,6 +787,8 @@ class PpapIngController extends Controller
             $buscar = DB::table('workSchedule')->where('size', 'LIKE', '%' . $size . '%')->get();
         } elseif ($filter != '' AND $dateIni != '' AND $dateFin != '') {
             $buscar = DB::table('workSchedule')->whereBetween($filter, [$dateIni, $dateFin])->get();
+        }elseif($filter != '' AND $empty==true){
+            $buscar = DB::table('workSchedule')->where($filter, null)->get();
         }
 
          if($buscar){
@@ -796,7 +799,6 @@ class PpapIngController extends Controller
         if( $buscar->isEmpty()){
             return json_encode(['mensaje'=>'No hay resultados']);
         }
-
         return json_encode($datos);
     }
     public function saveWorkschedule(Request $request)
