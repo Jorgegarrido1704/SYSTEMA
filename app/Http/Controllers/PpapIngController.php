@@ -832,9 +832,9 @@ class PpapIngController extends Controller
             if($input['resposible'] != null or $input['resposible']==''){
                 $status='Pending';
             }else if($input['MRP'] != null and $input['receiptDate'] != null and $input['commitmentDate'] != null
-                and $input['CompletionDate'] != null and $input['resposible'] != null and $input['resposible'] != ''  ) {
+                and $input['CompletionDate'] != null and $input['resposible'] != ''  ) {
                    $status='Completed';
-                }else if( $input['resposible'] != null and $input['resposible'] != ''){
+                }else if( $input['resposible'] != null or $input['resposible'] != ''){
                     $status='In Progress';
                 }else  {
                     $status=$input['Status_H'];
