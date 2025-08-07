@@ -79,8 +79,8 @@ function renderTable(data) {
                     <input type="hidden" name="documentsApproved" id="documentsApproved_H${item.id}">
                     <input type="hidden" name="Status" id="Status_H${item.id}">
                     <input type="hidden" name="resposible" id="responsable_H${item.id}">
-                    <input type="hidden" name="customerDate" id="customerDate_H${item.id}">
-                    <input type="hidden" name="comments" id="comments_H${item.id}">
+                    <input type="hidden" name="customerDate_" id="customerDate_H${item.id}">
+                    <input type="hidden" name="comments_" id="comments_H${item.id}">
                     <button class="btn btn-success">Edit</button>
                 </form>
             </td>
@@ -108,7 +108,7 @@ function prepareEdit(id) {
     document.getElementById(`documentsApproved_H${id}`).value = document.getElementById(`documentsApproved${id}`).value;
     document.getElementById(`Status_H${id}`).value = document.getElementById(`Status${id}`).value;
     document.getElementById(`responsable_H${id}`).value = document.getElementById(`responsable${id}`).value;
-    document.getElementById(`customerDate_H${id}`).value = document.getElementById(`customerDate${id}`).value;
+    document.getElementById(`customerDate_H${id}`).value = document.getElementById(`dueDate${id}`).value;
     document.getElementById(`comments_H${id}`).value = document.getElementById(`comments${id}`).value;
 }
 
