@@ -778,17 +778,17 @@ class PpapIngController extends Controller
         $i=0;
 
         if ($pn != '') {
-            $buscar = DB::table('workSchedule')->where('pn', 'LIKE', '%' . $pn . '%')->get();
+            $buscar = DB::table('workschedule')->where('pn', 'LIKE', '%' . $pn . '%')->get();
         } else if ($customer != '') {
-            $buscar = DB::table('workSchedule')->where('customer', 'LIKE', '%' . $customer . '%')->get();
+            $buscar = DB::table('workschedule')->where('customer', 'LIKE', '%' . $customer . '%')->get();
         } else if ($resposible != '') {
-            $buscar = DB::table('workSchedule')->where('resposible', 'LIKE', '%' . $resposible . '%')->get();
+            $buscar = DB::table('workschedule')->where('resposible', 'LIKE', '%' . $resposible . '%')->get();
         } else if ($size != '') {
-            $buscar = DB::table('workSchedule')->where('size', 'LIKE', '%' . $size . '%')->get();
+            $buscar = DB::table('workschedule')->where('size', 'LIKE', '%' . $size . '%')->get();
         } elseif ($filter != '' AND $dateIni != '' AND $dateFin != '') {
-            $buscar = DB::table('workSchedule')->whereBetween($filter, [$dateIni, $dateFin])->get();
+            $buscar = DB::table('workschedule')->whereBetween($filter, [$dateIni, $dateFin])->get();
         }elseif($filter != '' AND $empty==true){
-            $buscar = DB::table('workSchedule')->where($filter, null)->get();
+            $buscar = DB::table('workschedule')->where($filter, null)->get();
         }
 
          if($buscar){
@@ -837,7 +837,7 @@ class PpapIngController extends Controller
                 }else if( $input['resposible'] != null or $input['resposible'] != ''){
                     $status='In Progress';
                 }else  {
-                    $status=$input['Status_H'];
+                    $status=$input['Status'];
                 }
                 if($input['MRP'] != null or $input['MRP']=='0000-00-00'){
                     $input['MRP'] = date('Y-m-d', strtotime($input['MRP']))?? NULL;
