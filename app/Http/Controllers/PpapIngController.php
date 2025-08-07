@@ -489,7 +489,7 @@ class PpapIngController extends Controller
             $registro->count = 1;
             if ($registro->save()) {
                 $accion = PPAPandPRIM::orderby('id','desc')->first();
-                $recipients=['jgarrido@mx.bergstrominc.com','rfandino@mx.bergstrominc.com,fsuarez@mx.bergstrominc.com',
+                $recipients=['jgarrido@mx.bergstrominc.com','rfandino@mx.bergstrominc.com','fsuarez@mx.bergstrominc.com',
             'lramos@mx.bergstrominc.com','emedina@mx.bergstrominc.com','drocha@mx.bergstrominc.com',
             'Jruiz@mx.bergstrominc.com','jrodriguez@mx.bergstrominc.com','vpichardo@mx.bergstrominc.com',
             'jgamboa@mx.bergstrominc.com','egaona@mx.bergstrominc.com','jolaes@mx.bergstrominc.com','dvillalpando@mx.bergstrominc.com',
