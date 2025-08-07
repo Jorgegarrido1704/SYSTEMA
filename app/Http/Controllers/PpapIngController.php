@@ -861,7 +861,7 @@ class PpapIngController extends Controller
             ->update([
                 'WorkRev' => $input['WR'],
                 'size' => $input['s'],
-                'FullSize' => $input['FS'],
+                'FullSize' => $input['FS']??'',
                 'MRP' => $input['MRP_H'],
                 'receiptDate' => ($input['receiptDate_H']),// $input['receiptDate'],
                 'commitmentDate' => ($input['commitmentDate_H']),//$input['commitmentDate'],

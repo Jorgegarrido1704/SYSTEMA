@@ -34,6 +34,7 @@ function renderTable(data) {
         if(item.CompletionDate==null || item.CompletionDate==''){ colorCompletion="0,255,255,0.33";}else{ colorCompletion="192,190,190,0.15"}
         if(item.documentsApproved==null || item.documentsApproved==''){ colorDocumentsApproved="0,255,255,0.33";}else{ colorDocumentsApproved="192,190,190,0.15"}
         if(item.customerDate==null || item.customerDate==''){ colorDueDate="0,255,255,0.33";}else{ colorDueDate="192,190,190,0.15"}
+        if(item.FullSize==null || item.FullSize==''){ colorFullSize="0,255,255,0.33";}else{ colorFullSize="192,190,190,0.15"}
 
 
         const row = document.createElement('tr');
@@ -49,7 +50,7 @@ function renderTable(data) {
             <td><textarea id="WorkRev${item.id}" rows="2" cols="10">${item.WorkRev}</textarea></td>
             <td> <select id="size${item.id}" name="size${item.id}"> <option value="${item.size}">${item.size}</option>
                 <option value="Ch">Ch </option><option value="M">M</option><option value="G">G</option></select></td>
-            <td><select id="FullSize${item.id}" >
+            <td style="background:rgba(${colorFullSize});"><select id="FullSize${item.id}" >
                 <option value="${item.FullSize}">${item.FullSize}</option>
                 <option value="SI">SI</option><option value="NO">NO</option></select>
             </td>
