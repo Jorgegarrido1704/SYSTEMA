@@ -39,41 +39,36 @@ class workScreduleModel extends Model
     }
 
 
-    public static function getDatesWorks($pn,$rev)
+    public static function getDatesWorks($pn, $rev)
     {
         return workScreduleModel::where('pn', $pn)->where('WorkRev', $rev)->first();
     }
     public static function getWorkScheduleStatus()
     {
-        return workScreduleModel::where('status', '!=', 'Completed' )->get();
+        return workScreduleModel::where('status', '!=', 'Completed')->get();
     }
     public static function getWorkScheduleCompleted($year)
-{
-    $datos = [];
-
-    $registros = workScreduleModel::where('CompletionDate','LIKE', $year.'-07%'  )->where('status', 'Completed')
-        ->orderBy('CompletionDate', 'DESC')
-        ->get();
-
-    foreach ($registros as $registro) {
-
-        $mes = intval(substr($registro->commitmentDate, 5, 2)); // "01" a "12"
-
-        // Inicializar si no existe
-        if (!isset($datos[$mes])) {
+    {
+        $datos = [];
+        for ($mes = 1; $mes <= 12; $mes++) {
             $datos[$mes] = [0, 0]; // [buenos, malos]
+            if ($mes < 10) {
+                $mes = '0' . $mes;
+            }
+            $registros = workScreduleModel::where('CompletionDate', 'LIKE', $year . '-' . $mes . '-%')->where('status', 'Completed')
+                ->orderBy('CompletionDate', 'DESC')
+                ->get();
+                $mes=intval($mes);
+            foreach ($registros as $registro) {
+
+                if ($registro->commitmentDate >= $registro->CompletionDate) {
+                    $datos[$mes][0]++; // buenos
+                } else {
+                    $datos[$mes][1]++; // malos
+                }
+            }
         }
 
-        if ($registro->commitmentDate >= $registro->CompletionDate) {
-            $datos[$mes][0]++; // buenos
-        } else {
-            $datos[$mes][1]++; // malos
-        }
+        return ($datos);
     }
-
-    return ($datos);
-}
-
-
-
 }

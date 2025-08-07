@@ -1317,14 +1317,18 @@ class juntasController extends Controller
 
         $registrosArray = workScreduleModel::getWorkScheduleCompleted(date('Y'));
         foreach ($registrosArray as $registro => $valor) {
+            if($valor[0] == 0){
+                $thisYearGoals[$registro] = 0;
+            }else{
             $thisYearGoals[$registro] = round($valor[0] * 100 / ($valor[1]+$valor[0]), 2);
+            }
         }
 
 
         $porcentaje = $thisYearGoals[7];
         $porcentajeMalos = 100 - $porcentaje;
-        $porcentajemes1= $registrosArray['7'][0];
-        $porcentajemes= $registrosArray['7'][1];
+       // $porcentajemes1= $registrosArray['7'][0];
+        //$porcentajemes= $registrosArray['7'][1];
 
 
 
