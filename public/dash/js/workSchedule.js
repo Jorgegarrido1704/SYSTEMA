@@ -39,13 +39,13 @@ function renderTable(data) {
         row.innerHTML = `
             <td>${item.pn}</td>
             <td>${item.customer}</td>
-            <td><input type="number" id="qtyInPo${item.id}" value="${item.qtyInPo}"></td>
+            <td><input type="number" id="qtyInPo${item.id}" value="${item.qtyInPo}" min="0"  style="max-width: 50px;"></td>
             <td style="background:${item.Color};">
             <select id="Color${item.id}" name="Color${item.id}">
             <option value="${item.Color}">Actual ${item.Color}</option>
             <option value="yellow">Yellow</option><option value="green">Green</option><option value="white">White</option></select>
             </td>
-            <td><textarea id="WorkRev${item.id}" rows="2" cols="14">${item.WorkRev}</textarea></td>
+            <td><textarea id="WorkRev${item.id}" rows="2" cols="10">${item.WorkRev}</textarea></td>
             <td> <select id="size${item.id}" name="size${item.id}"> <option value="${item.size}">${item.size}</option>
                 <option value="Ch">Ch </option><option value="M">M</option><option value="G">G</option></select></td>
             <td><select id="FullSize${item.id}" >
@@ -63,7 +63,7 @@ function renderTable(data) {
             <option value="Pending">Pending</option><option value="Completed">Completed</option><option value= 'In Progress'>In Progress</option></select></td>
             <td><input type="text" id="responsable${item.id}" value="${item.resposible}"></td>
             <td style="background:rgba(${colorDueDate});"><input type="date" id="dueDate${item.id}" value="${item.customerDate}"></td>
-            <td><textarea id="comments${item.id}" rows="2" cols="15">${item.comments || ''}</textarea></td>
+            <td><textarea id="comments${item.id}" rows="2" cols="10">${item.comments || ''}</textarea></td>
             <td>
                 <form id="form-${item.id}" method="GET" action="/editDelite" onsubmit="prepareEdit(${item.id})">
                     <input type="hidden" name="id_edit" value="${item.id}">

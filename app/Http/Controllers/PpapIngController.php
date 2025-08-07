@@ -827,7 +827,9 @@ class PpapIngController extends Controller
             return redirect('/workSchedule');
         }else if($request->input('id_edit') != null){
             $input = $request->all();
-             if($input['MRP'] != null and $input['receiptDate'] != null and $input['commitmentDate'] != null
+            if($input['resposible'] != null or $input['resposible']==''){
+                $status='Pending';
+            }else if($input['MRP'] != null and $input['receiptDate'] != null and $input['commitmentDate'] != null
                 and $input['CompletionDate'] != null and $input['documentsApproved'] != null and $input['customerDate_'] != null) {
                    $status='Completed';
                 }else if( $input['receiptDate'] != null and $input['commitmentDate'] != null){
@@ -869,8 +871,6 @@ class PpapIngController extends Controller
                 'qtyInPo' => $input['qip'] ?? 0,
                 'Color' => $input['color'] ?? '',
                 'status' => $status,
-
-
             ]);
 
 
