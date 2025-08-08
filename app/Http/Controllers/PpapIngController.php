@@ -376,7 +376,7 @@ class PpapIngController extends Controller
                 $update->finT = '';
                 $update->actividades = $buscarIng->actividades;
                 $update->desciption = $buscarIng->desciption;
-                $update->count = 0;
+                $update->count = 1;
                 $update->analisisPlano = '';
                 $update->bom = '';
                 $update->AyudasVizuales = '';
@@ -416,7 +416,7 @@ class PpapIngController extends Controller
         $regIng->finT = '';
         $regIng->actividades = $activiad;
         $regIng->desciption = $desc;
-        $regIng->count = 0;
+        $regIng->count = 1;
         $regIng->analisisPlano = '';
         $regIng->bom = '';
         $regIng->AyudasVizuales = '';
