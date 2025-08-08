@@ -12,6 +12,8 @@ use Carbon\Carbon;
 use App\Models\PPAPandPRIM;
 use App\Mail\firmasCompletas;
 use App\Models\workScreduleModel ;
+use App\Models\desviation;
+use App\Mail\desviacionesEmails;
 
 class mailsController extends Controller
 {
@@ -45,7 +47,15 @@ class mailsController extends Controller
         else {
             $registroFirmas=[];
         }
-        return view('firmas.npi.npi', ['registroFirmas' => $registroFirmas,'value' => $value, 'cat' => $cat]);
+        if($value=='Jesus_C' or $value=='Carlos R' or $value=='Nancy A' or $value=='Admin' or $value=='Jorge G'){
+            $desviations=desviation::Where('fing','=','')->where('count','<',4)->get();
+        }else if($value=='Edward M' or $value=='Luis R' or $value=='Goretti Ro'){
+            $desviations=desviation::Where('fing','!=','')->where('fcal','=','')->where('count','<',4)->get();
+        }else {
+            $desviations=[];
+        }
+
+        return view('firmas.npi.npi', ['desviations' => $desviations,'registroFirmas' => $registroFirmas,'value' => $value, 'cat' => $cat]);
     }
 
     public function update(Request $request){
@@ -76,7 +86,42 @@ class mailsController extends Controller
 
     }
 
+    public function desviationUpdate(Request $request){
+        $input=$request->validate([
+            'id' => 'required|integer',
+            'who'=>'required|string|max:12',
+        ]);
+        $id=$input['id'];
+        $who=$input['who'];
+        if($who=='Edward M' or $who=='Luis R' or $who=='Goretti Ro'){
+             desviation::where('id','=',$id)->update(['fcal' => carbon::now()->format('d-m-y H:i'),'count' => 4]);
+            $accion= desviation::where('id','=',$id)->first();
+            $receivers=['jcervera@mx.bergstromin.com','jamoreno@mx.bergstrominc.com','jgarrido@mx.bergstrominc.com',
+            'apacheco@mx.bergstrominc.com','jcrodriguez@mx.bergstrominc.com','lramos@mx.bergstrominc.com','emedina@mx.bergstrominc.com',
+            'drocha@mx.bergstrominc.com','enunez@mx.bergstrominc.com','fsuarez@mx.bergstrominc.com','rfandino@mx.bergstrominc.com',
+            'vpichardo@mx.bergstrominc.com','dflores@mx.bergstrominc.com','jrodriguez@mx.bergstrominc.com','jgamboa@mx.bergstrominc.com',
+            'jguillen@mx.bergstrominc.com'];
+            Mail::to($receivers)->send(new desviacionesEmails($accion,'Desviacion aprobada'));
+        }else  if($who=='Jesus_C' or $who=='Carlos R' or $who=='Nancy A' or $who=='Admin' or $who=='Jorge G'){
+            desviation::where('id','=',$id)->update(['fing' => carbon::now()->format('d-m-y H:i')]);
+        }
 
+        return redirect('/Pendigs');
+    }
+    public function desviationDenied(Request $request){
 
-}
+        $idq=$request->input('idq');
+        $rechaso=$request->input('rechaso');
+         $receivers=['jcervera@mx.bergstromin.com','jamoreno@mx.bergstrominc.com','jgarrido@mx.bergstrominc.com',
+            'apacheco@mx.bergstrominc.com','jcrodriguez@mx.bergstrominc.com','lramos@mx.bergstrominc.com','emedina@mx.bergstrominc.com',
+            'drocha@mx.bergstrominc.com','enunez@mx.bergstrominc.com','fsuarez@mx.bergstrominc.com','rfandino@mx.bergstrominc.com',
+            'vpichardo@mx.bergstrominc.com','dflores@mx.bergstrominc.com','jrodriguez@mx.bergstrominc.com','jgamboa@mx.bergstrominc.com',
+            'jguillen@mx.bergstrominc.com'];
+        desviation::where('id','=',$idq)->update(['fing' => carbon::now()->format('d-m-y H:i'),'fcal' => carbon::now()->format('d-m-y H:i'),'count' => 5,'rechazo' => $rechaso]);
+        $accion= desviation::where('id','=',$idq)->first();
+        Mail::to($receivers)->send(new desviacionesEmails($accion,'Desviacion Rechazada  '));
+
+        return redirect('/Pendigs');
+    }
+    }
 

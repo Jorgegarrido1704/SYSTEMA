@@ -10,7 +10,6 @@
     <p><strong>Descripción:</strong> {{ $acciones->accion ?? 'N/A' }}</p>
     <p><strong>Responsable:</strong> {{ $acciones->reponsableAccion ?? 'N/A' }}</p>
     <p><strong>Fecha Límite:</strong> {{ $acciones->fechaFinAccion ?? 'N/A' }}</p>
-
     <p>Favor de atender la acción correctiva lo antes posible.</p>
 </body>
 </html>

@@ -13,12 +13,12 @@ class desviacionesEmails extends Mailable
 {
     use Queueable, SerializesModels;
 
-    /**
-     * Create a new message instance.
-     */
-    public function __construct()
+    public $accion;
+    public $subject;
+    public function __construct($accion, $subject)
     {
-        //
+        $this->accion = $accion;
+        $this->subject = $subject;
     }
 
     /**
@@ -27,7 +27,7 @@ class desviacionesEmails extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Desviaciones Emails',
+            subject: $this->subject,
         );
     }
 
@@ -37,7 +37,8 @@ class desviacionesEmails extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            view: 'emails.desviaciones.desviasioneEmail',
+            with: ['accion' => $this->accion],
         );
     }
 
