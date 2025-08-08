@@ -29,7 +29,7 @@ class mailsController extends Controller
     public function index(){
         $value = session('user');
         $cat=session('categoria');
-        if($value=='Rocio F' ){
+        if($value=='Rocio F' or $value=='Fatima S' ){
         $registroFirmas=PPAPandPRIM::where('count','=',1)->where('ime','=','')->orderby('id','desc')->get();
         }else if($value=='Edward M' or $value=='Luis R' or $value=='Goretti Ro'){
             $registroFirmas=PPAPandPRIM::where('count','=',1)->where('quality','=','')->orderby('id','desc')->get();
