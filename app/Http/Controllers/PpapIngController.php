@@ -829,32 +829,32 @@ class PpapIngController extends Controller
             return redirect('/workSchedule');
         }else if($request->input('id_edit') != null){
             $input = $request->all();
-            if($input['resposible'] != null or $input['resposible']==''){
+            if($input['resposible']==''){
                 $status='Pending';
-            }else if($input['MRP'] != null and $input['receiptDate'] != null and $input['commitmentDate'] != null
-                and $input['CompletionDate'] != null and $input['resposible'] != ''  ) {
+            }else if($input['MRP'] != '' and $input['receiptDate'] != '' and $input['commitmentDate'] != ''
+                and $input['CompletionDate'] != '' and $input['resposible'] != ''  ) {
                    $status='Completed';
-                }else if( $input['resposible'] != null or $input['resposible'] != ''){
+                }else if( $input['resposible'] != '' or $input['resposible'] != ''){
                     $status='In Progress';
                 }else  {
                     $status=$input['Status'];
                 }
-                if($input['MRP'] != null or $input['MRP']=='0000-00-00'){
+                if($input['MRP'] != '' or $input['MRP']=='0000-00-00'){
                     $input['MRP'] = date('Y-m-d', strtotime($input['MRP']))?? NULL;
                 }
-                if($input['receiptDate'] != null or $input['receiptDate']=='0000-00-00'){
+                if($input['receiptDate'] !='' or $input['receiptDate']=='0000-00-00'){
                     $input['receiptDate'] = date('Y-m-d', strtotime($input['receiptDate']))?? NULL;
                 }
-                if($input['commitmentDate'] != null or $input['commitmentDate']=='0000-00-00'){
+                if($input['commitmentDate'] !='' or $input['commitmentDate']=='0000-00-00'){
                     $input['commitmentDate'] = date('Y-m-d', strtotime($input['commitmentDate']))?? NULL;
                 }
-                if($input['CompletionDate'] != null or $input['CompletionDate']=='0000-00-00'){
+                if($input['CompletionDate'] !='' or $input['CompletionDate']=='0000-00-00'){
                     $input['CompletionDate'] = date('Y-m-d', strtotime($input['CompletionDate']))?? NULL;
                 }
-                if($input['documentsApproved'] != null or $input['documentsApproved']=='0000-00-00'){
+                if($input['documentsApproved'] !='' or $input['documentsApproved']=='0000-00-00'){
                     $input['documentsApproved'] = date('Y-m-d', strtotime($input['documentsApproved']))?? NULL;
                 }
-                if($input['customerDate_'] != null or $input['customerDate_']=='0000-00-00'){
+                if($input['customerDate_'] !='' or $input['customerDate_']=='0000-00-00'){
                     $input['customerDate_'] = date('Y-m-d', strtotime($input['customerDate_']))?? NULL;
                 }
             $update=DB::table('workSchedule')->where('id', $request->input('id_edit'))
