@@ -30,6 +30,10 @@ class reporteGeneral implements ShouldQueue
     {
         $service = new ExcelReportService();
             $filePath = $service->generateWorkOrderReport();
-           Mail::to('jgarrido@mx.bergstrominc.com')->send(new WorkOrderReportMail($filePath));
+            $senders=['jgarrido@mx.bergstrominc.com','jguillen@mx.bergstrominc.com','jgamboa@mx.bergstrominc.com','jrodriguez@mx.bergstrominc.com',
+        'vpichardo@mx.bergstrominc.com','apacheco@mx.bergstrominc.com','jcervera@mx.bergstrominc.com','lramos@mx.bergstrominc.com',
+        'emedina@mx.bergstrominc.com','drocha@mx.bergstrominc.com','enunez@mx.bergstrominc.com','dflores@mx.bergstrominc.com',
+        'eceron@mx.bergstrominc.com','ejimenez@mx.bergstrominc.com','egaona@mx.bergstrominc.com','jolaes@mx.bergstrominc.com','dvillalpando@mx.bergstrominc.com'];
+           Mail::to($senders)->send(new WorkOrderReportMail($filePath));
     }
 }

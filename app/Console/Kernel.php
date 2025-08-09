@@ -37,7 +37,7 @@ class Kernel extends ConsoleKernel
         $schedule->job(new AddWeek())->dailyAt('07:00')->days([1, 2, 3, 4, 5]);
 
         //weekly list assistence
-        $schedule->job(new reporteGeneral())->everyMinute();  //dailyAt('06:00')->days([1, 2, 3, 4, 5]);;
+        $schedule->job(new reporteGeneral())->dailyAt('06:00')->days([1, 2, 3, 4, 5]);
     }
 
     /**
