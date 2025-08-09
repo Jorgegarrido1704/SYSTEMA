@@ -31,7 +31,7 @@ class AddWeek implements ShouldQueue
     {
         $week = carbon::now()->weekOfYear;
         $today = Carbon::now()->dayOfWeekIso;
-        $days = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes'];
+        $days = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
         $day = $days[$today - 1];
         $registrosEmpleados = personalBergsModel::where('status', '!=', 'Baja')->get();
         foreach ($registrosEmpleados as $registroEmpleado) {
@@ -42,20 +42,20 @@ class AddWeek implements ShouldQueue
                     'lider' => $registroEmpleado->employeeLider,
                     'name' => $registroEmpleado->employeeName,
                 ]);
-                switch ($registroEmpleado->typeWorker) {
-                    case 'Indirecto':
-                        assistence::where('week', '=', $week)->where('id_empleado', '=', $registroEmpleado->employeeNumber)->update([$day => 'OK']);
-                        break;
-                    case 'Practicante':
-                        assistence::where('week', '=', $week)->where('id_empleado', '=', $registroEmpleado->employeeNumber)->update([$day => 'PCT']);
-                        break;
-                    case 'Asimilado':
-                        assistence::where('week', '=', $week)->where('id_empleado', '=', $registroEmpleado->employeeNumber)->update([$day => 'ASM']);
-                        break;
-                    case 'Servicio comprado':
-                        assistence::where('week', '=', $week)->where('id_empleado', '=', $registroEmpleado->employeeNumber)->update([$day => 'SCE']);
-                        break;
-                }
+            }
+            switch ($registroEmpleado->typeWorker) {
+                case 'Indirecto':
+                    assistence::where('week', '=', $week)->where('id_empleado', '=', $registroEmpleado->employeeNumber)->update([$day => 'OK']);
+                    break;
+                case 'Practicante':
+                    assistence::where('week', '=', $week)->where('id_empleado', '=', $registroEmpleado->employeeNumber)->update([$day => 'PCT']);
+                    break;
+                case 'Asimilado':
+                    assistence::where('week', '=', $week)->where('id_empleado', '=', $registroEmpleado->employeeNumber)->update([$day => 'ASM']);
+                    break;
+                case 'Servicio comprado':
+                    assistence::where('week', '=', $week)->where('id_empleado', '=', $registroEmpleado->employeeNumber)->update([$day => 'SCE']);
+                    break;
             }
         }
     }

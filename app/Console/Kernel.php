@@ -3,9 +3,13 @@
 namespace App\Console;
 
 use App\Jobs\UpdateRotacionJob;
+use App\Jobs\accionesCorrectivasJob;
+use App\Jobs\AddWeek;
+use App\Jobs\reporteGeneral;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use App\Mail;
 
 class Kernel extends ConsoleKernel
 {
@@ -17,18 +21,23 @@ class Kernel extends ConsoleKernel
     ];
     protected function schedule(Schedule $schedule): void
     {
+        //save rotation daily
         $schedule->job(new \App\Jobs\UpdateRotacionJob)
             ->cron('10 6,9 * * *')
             ->timezone('America/Mexico_City');
 
         $schedule->job(new \App\Jobs\accionesCorrectivasJob)->dailyAt('07:00');
+        //Data base backup
         $schedule->command('backup:database')
             ->hourly()
             ->between('7:00', '20:00')
-            ->days([1, 2, 3, 4, 5, 6]) // Lunes (1) a Sábado (6)
+            ->days([1, 2, 3, 4, 5, 6])
             ->appendOutputTo(storage_path('logs/backup.log'));
-        $schedule->job(new \App\Jobs\AddWeek())->dailyAt('07:00')
-        ->days([1, 2, 3, 4, 5]);
+            // creacion de listas de asistencia y registros
+        $schedule->job(new AddWeek())->dailyAt('07:00')->days([1, 2, 3, 4, 5]);
+
+        //weekly list assistence
+        $schedule->job(new reporteGeneral())->everyMinute();  //dailyAt('06:00')->days([1, 2, 3, 4, 5]);;
     }
 
     /**
