@@ -825,7 +825,7 @@ class PpapIngController extends Controller
     public function editDelite(Request $request)
     {
         if($request->input('id_delete') != null){
-            DB::table('workSchedule')->where('id', $request->input('id_delete'))->delete();
+            DB::table('workschedule')->where('id', $request->input('id_delete'))->delete();
             return redirect('/workSchedule');
         }else if($request->input('id_edit') != null){
             $input = $request->all();
@@ -857,7 +857,7 @@ class PpapIngController extends Controller
                 if($input['customerDate_'] !='' or $input['customerDate_']=='0000-00-00'){
                     $input['customerDate_'] = date('Y-m-d', strtotime($input['customerDate_']))?? NULL;
                 }
-            $update=DB::table('workSchedule')->where('id', $request->input('id_edit'))
+            $update=DB::table('workschedule')->where('id', $request->input('id_edit'))
             ->update([
                 'WorkRev' => $input['WR'],
                 'size' => $input['s'],
