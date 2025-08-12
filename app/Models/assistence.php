@@ -64,7 +64,7 @@ class assistence extends Model
     $week = date('W');
     $dayNum = carbon::now()->dayOfWeek;
     $dias =['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
-    $diaActual = $dias[$dayNum - 1];
+    $diaActual = $dias[$dayNum - 2];
     if($leader == 'Admin' or $leader == 'Paola A'){
         return $query->where('week', $week)->OrderBy($diaActual, 'ASC');
     }else{
