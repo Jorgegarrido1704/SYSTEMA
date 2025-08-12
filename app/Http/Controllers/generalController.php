@@ -352,6 +352,8 @@ class generalController extends Controller
                     }
                 } else if (($donde === 'ensa' and $count === 7) or ($donde === 'ensa' and $ensaPar > 0 and ($count !== 6 or $count !== 15))) {
                     $noloom = [
+                        '621959',
+                        '621962',
                         '621963',
                         '621958',
                         '910657',
