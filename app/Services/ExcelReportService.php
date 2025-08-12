@@ -55,7 +55,7 @@ class ExcelReportService
 
             $faltantes = '';
             if ($reg) {
-                $faltantesRows = DB::table('issuesfloor')->where('actionOfComment','!=','Issue Fixed')->where('id_tiempos', $reg->id)->get();
+                $faltantesRows = DB::table('issuesfloor')->where('actionOfComment','!=','Issue Fixed')->where('actionOfComment','!=','Ok')->where('id_tiempos', $reg->id)->get();
                 foreach ($faltantesRows as $faltante) {
                     $faltantes .= ' //' . $faltante->comment_issue . ' // ' . $faltante->date . ' // ' . $faltante->responsable . "\n";
                 }

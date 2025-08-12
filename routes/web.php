@@ -165,6 +165,7 @@ Route::controller(juntasController::class)->group(function () {
     Route::get('juntas/cutAndTerm',   [juntasController::class, 'cutAndTerm'])->name('cutAndTerm');
     Route::get('juntas/asemblyLoom',   [juntasController::class, 'assemblyLoom'])->name('assemblyLoom');
     Route::get('juntas/seguimientos',   [juntasController::class, 'seguimientos'])->name('seguimientos');
+    Route::get('juntas/conSeguimientos',   [juntasController::class, 'conSeguimientos'])->name('conSeguimientos');
     Route::get('juntas/seguimiento/{id}',   [juntasController::class, 'seguimiento'])->name('seguimiento');
     Route::get('/registroComment', [juntasController::class, 'registroComment'])->name('registroComment');
     Route::get('/rhDashBoard', [juntasController::class, 'rhDashBoard'])->name('rhDashBoard');

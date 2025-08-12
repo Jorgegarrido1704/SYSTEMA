@@ -1855,6 +1855,7 @@ class juntasController extends Controller
         $buscar = DB::table('issuesfloor')
             ->where('id_tiempos', '=', $id)
             ->where('actionOfComment', '!=', 'Ok')
+            ->where('actionOfComment', '!=', 'Issue Fixed')
             ->orderBy('id_issues', 'desc')
             ->get();
 
@@ -1872,24 +1873,13 @@ class juntasController extends Controller
     public function registroComment(Request $request)
     {
         $datosOk = $request->input('dataok');
-        if ($datosOk) {
-            $updateRegistros = DB::table('issuesfloor')->where('id_tiempos', '=', $datosOk)->where('actionOfComment', '!=', 'Ok')->update(['actionOfComment' => 'Issue Fixed']);
-            $registroUp = new issuesFloor();
-            $registroUp->id_tiempos = $datosOk;
-            $registroUp->comment_issue = '-';
-            $registroUp->date = Carbon::now();
-            $registroUp->responsable = session('user') . ' ' . session('categoria');
-            $registroUp->actionOfComment = 'Ok';
-            $registroUp->save();
-        }
-        $request->validate([
-            'comments' => 'required',
-            'status_issue' => 'required',
+           DB::table('issuesfloor')->where('id_tiempos', '=', $datosOk)->where('actionOfComment', '!=', 'Issue Fixed')->update(['actionOfComment' => 'Issue Fixed']);
+            return redirect()->route('seguimientos');
+    }
+    public function conSeguimientos(Request $request) {
 
-        ]);
-        $value = session('user');
+         $value = session('user');
         $cat = session('categoria');
-
         $issuesRegister = new issuesFloor();
         $issuesRegister->id_tiempos = $request->input('id_issue');
         $issuesRegister->comment_issue = $request->input('comments');
@@ -1897,8 +1887,11 @@ class juntasController extends Controller
         $issuesRegister->responsable = $value . ' ' . $cat;
         $issuesRegister->actionOfComment = $request->input('status_issue');
         $issuesRegister->save();
-        return redirect()->route('seguimiento', ['id' => $request->input('id_issue')]);
+
+        return redirect()->route('seguimientos');
     }
+
+
     //RH Graphics
 
     public function vacations()

@@ -83,7 +83,7 @@
                             @if($value == 'Gamboa J' or $value == 'Juan G' or $value == 'Andrea P' or $value == 'Jesus_C' or
                             $value=='Luis R' or $value=='Edward M' or $value=='Carlos R' or $value=='Juan O' or $value=='David V'
                             or $value=='Estela G' or $value=='Mario V' or $value=='Admin' or $value=='Jesus_C' or $value=='Alex M')
-                            <form action="{{ route('registroComment') }}" method="get">
+                            <form action="{{ route('conSeguimientos') }}" method="get">
                             <td>
                                 <div class="form-group">
                                     <textarea class="form-control" id="comments" name="comments"  rows="2" cols="10" required></textarea>
@@ -124,7 +124,7 @@
                             <td>{{ $item[2] }}</td>
                             <td>{{ $item[1] }}</td>
                             <td>{{ $item[3] }}</td>
-                            @if($item[3] == 'On Hold')
+                            @if($item[3] == 'On Hold' or $item[3] == 'No stop')
                             <td>
                                 @if($value =='Admin' or $value == 'Gamboa J' or $value == 'Juan G' or $value == 'Andrea P' or $value == 'Jesus_C' or
                             $value=='Luis R' or $value=='Edward M' or $value=='Carlos R' or $value=='Juan O' or $value=='David V'
