@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class assistence extends Model
 {
@@ -61,10 +62,13 @@ class assistence extends Model
    public function scopeLeader($query,$leader)
 {
     $week = date('W');
+    $dayNum = carbon::now()->dayOfWeek;
+    $dias =['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
+    $diaActual = $dias[$dayNum - 1];
     if($leader == 'Admin' or $leader == 'Paola A'){
-        return $query->where('week', $week)->OrderBy('lider', 'desc');
+        return $query->where('week', $week)->OrderBy($diaActual, 'ASC');
     }else{
-    return $query->where('week', $week)->where('lider', '=', $leader)->OrderBy('lider', 'desc');
+    return $query->where('week', $week)->where('lider', '=', $leader)->OrderBy($diaActual, 'ASC');
         }
 }
 

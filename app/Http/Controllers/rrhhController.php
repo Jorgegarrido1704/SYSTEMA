@@ -24,14 +24,16 @@ class rrhhController extends Controller
         $value = session('user');
         $cat = session('categoria');
         $weekNum = Carbon::now()->weekOfYear;
-        $datosRHWEEK = assistence::leader($value)->OrderBy('lider', 'desc')->get();
+            $datosRHWEEK = [];
         if ($value == 'Admin' or $cat  == 'RRHH') {
+            $datosRHWEEK = assistence::leader($value)->OrderBy('lider', 'desc')->get();
             $diasRegistro = ['', '', '', '', '', ''];
         } else {
             $diasRegistro = ['readonly', 'readonly', 'readonly', 'readonly', 'readonly'];
+             $datosRHWEEK = assistence::leader($value, $cat)->OrderBy('lider', 'desc')->get();
             $diasRegistros = ['', '', '', '', ''];
         }
-        $datosRHWEEK = assistence::leader($value, $cat)->OrderBy('lider', 'desc')->get();
+
 
         $diaNum = carbon::now()->dayOfWeek; //
 
@@ -77,19 +79,19 @@ class rrhhController extends Controller
 
         foreach ($validated['numero_empleado'] as $index => $id_empleado) {
             $updateData = [
-                'lunes' => $validated['lun'][$index] ?  strtoupper(str_replace('-', '', $validated['lun'][$index])) : strtoupper('-', '', $validated['lun'][$index]),
+                'lunes' => $validated['lun'][$index] ?  strtoupper(str_replace('-', '', $validated['lun'][$index])) : "-",
                 'extLunes' => $validated['extra_lun'][$index],
-                'martes' => $validated['mar'][$index] ?  strtoupper(str_replace('-', '', $validated['mar'][$index])) : strtoupper($validated['mar'][$index]),
+                'martes' => $validated['mar'][$index] ?  strtoupper(str_replace('-', '', $validated['mar'][$index])) : "-",
                 'extMartes' => $validated['extra_mar'][$index],
-                'miercoles' => $validated['mie'][$index] ?  strtoupper(str_replace('-', '', $validated['mie'][$index])) : strtoupper($validated['mie'][$index]),
+                'miercoles' => $validated['mie'][$index] ?  strtoupper(str_replace('-', '', $validated['mie'][$index])) : "-",
                 'extMiercoles' => $validated['extra_mie'][$index],
-                'jueves' => $validated['jue'][$index] ?  strtoupper(str_replace('-', '', $validated['jue'][$index])) : strtoupper($validated['jue'][$index]),
+                'jueves' => $validated['jue'][$index] ?  strtoupper(str_replace('-', '', $validated['jue'][$index])) : "-",
                 'extJueves' => $validated['extra_jue'][$index],
-                'viernes' => $validated['vie'][$index] ?  strtoupper(str_replace('-', '', $validated['vie'][$index])) : strtoupper($validated['vie'][$index]),
+                'viernes' => $validated['vie'][$index] ?  strtoupper(str_replace('-', '', $validated['vie'][$index])) : "-",
                 'extViernes' => $validated['extra_vie'][$index],
-                'sabado' => $validated['sab'][$index] ?  strtoupper(str_replace('-', '', $validated['sab'][$index])) : strtoupper($validated['sab'][$index]),
+                'sabado' => $validated['sab'][$index] ?  strtoupper(str_replace('-', '', $validated['sab'][$index])) : "-",
                 'extSabado' => $validated['extra_sab'][$index],
-                'domingo' => $validated['dom'][$index] ?  strtoupper(str_replace('-', '', $validated['dom'][$index])) : strtoupper($validated['dom'][$index]),
+                'domingo' => $validated['dom'][$index] ?  strtoupper(str_replace('-', '', $validated['dom'][$index])) : "-",
                 'extDomingo' => $validated['extra_dom'][$index],
                 'extras' => $validated['extra_lun'][$index] + $validated['extra_mar'][$index] + $validated['extra_mie'][$index] + $validated['extra_jue'][$index] + $validated['extra_vie'][$index] + $validated['extra_sab'][$index] + $validated['extra_dom'][$index],
                 'tt_lunes' => $validated['tt_lunes'][$index],
@@ -416,9 +418,9 @@ class rrhhController extends Controller
                 ]
             ];
             $sheet->getStyle('A1:m1')->applyFromArray($headerStyle);
-    foreach (range('A', 'Z') as $col) {
-            $sheet->getColumnDimension($col)->setAutoSize(true);
-        }
+            foreach (range('A', 'Z') as $col) {
+                $sheet->getColumnDimension($col)->setAutoSize(true);
+            }
 
             // Obtener datos del líder
             $datos = assistence::where('week', $week)
@@ -430,22 +432,20 @@ class rrhhController extends Controller
             $row = 2;
             foreach ($datos as $d) {
                 $sheet->setCellValue('A' . $row, $d->name);
-                $sheet->setCellValue('b' . $row, substr($d->id_empleado,1));
+                $sheet->setCellValue('b' . $row, substr($d->id_empleado, 1));
                 $sheet->setCellValue('c' . $row, $d->lunes);
                 $sheet->setCellValue('d' . $row, $d->martes);
                 $sheet->setCellValue('e' . $row, $d->miercoles);
                 $sheet->setCellValue('f' . $row, $d->jueves);
                 $sheet->setCellValue('g' . $row, $d->viernes);
-               $sheet->setCellValue('h' . $row, $d->sabado);
+                $sheet->setCellValue('h' . $row, $d->sabado);
                 $sheet->setCellValue('i' . $row, $d->domingo);
-                 $sheet->setCellValue('j' . $row, $d->extras);
+                $sheet->setCellValue('j' . $row, $d->extras);
                 $sheet->setCellValue('k' . $row, $d->tiempoPorTiempo);
                 $sheet->setCellValue('l' . $row, $d->bonoAsistencia);
                 $sheet->setCellValue('m' . $row, $d->bonoPuntualidad);
                 $row++;
             }
-
-
         }
 
 
