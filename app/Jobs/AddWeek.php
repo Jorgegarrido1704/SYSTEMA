@@ -32,7 +32,7 @@ class AddWeek implements ShouldQueue
         $week = carbon::now()->weekOfYear;
         $today = Carbon::now()->dayOfWeekIso;
         $days = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
-        $day = $days[$today - 1];
+        $day = $days[$today - 2];
         $registrosEmpleados = personalBergsModel::where('status', '!=', 'Baja')->get();
         foreach ($registrosEmpleados as $registroEmpleado) {
             if (assistence::where('week', '=', $week)->where('id_empleado', '=', $registroEmpleado->employeeNumber)->count() == 0) {
