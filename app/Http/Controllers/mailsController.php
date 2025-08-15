@@ -76,7 +76,7 @@ class mailsController extends Controller
         }
         if(PPAPandPRIM::where('id','=',$id)->where('ime','!=','')->where('quality','!=','')->where('test','!=','')->where('compras','!=','')->where('production','!=','')->where('gernete','!=','')->update(['count' => 2])){
            $accion = PPAPandPRIM::where('id','=',$id)->first();
-           $receivers=['jcerver@mx.bergstromin.com','jamoreno@mx.bergstrominc.com','jgarrido@mx.bergstrominc.com',
+           $receivers=['jcervera@mx.bergstrominc.com','jamoreno@mx.bergstrominc.com','jgarrido@mx.bergstrominc.com',
            'jcrodriguez@mx.bergstrominc.com'];
             workScreduleModel::where('pn','=',$accion->pn)->orderby('id','desc')->first()->update(['documentsApproved' => carbon::now()->format('Y-m-d')]);
 
