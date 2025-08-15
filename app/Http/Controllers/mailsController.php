@@ -96,7 +96,7 @@ class mailsController extends Controller
         if($who=='Edward M' or $who=='Luis R' or $who=='Goretti Ro'){
              desviation::where('id','=',$id)->update(['fcal' => carbon::now()->format('d-m-y H:i'),'count' => 4]);
             $accion= desviation::where('id','=',$id)->first();
-            $receivers=['jcervera@mx.bergstromin.com','jamoreno@mx.bergstrominc.com','jgarrido@mx.bergstrominc.com',
+            $receivers=['jcervera@mx.bergstrominc.com','jamoreno@mx.bergstrominc.com','jgarrido@mx.bergstrominc.com',
             'apacheco@mx.bergstrominc.com','jcrodriguez@mx.bergstrominc.com','lramos@mx.bergstrominc.com','emedina@mx.bergstrominc.com',
             'drocha@mx.bergstrominc.com','enunez@mx.bergstrominc.com','fsuarez@mx.bergstrominc.com','rfandino@mx.bergstrominc.com',
             'vpichardo@mx.bergstrominc.com','dflores@mx.bergstrominc.com','jrodriguez@mx.bergstrominc.com','jgamboa@mx.bergstrominc.com',
@@ -112,7 +112,7 @@ class mailsController extends Controller
 
         $idq=$request->input('idq');
         $rechaso=$request->input('rechaso');
-         $receivers=['jcervera@mx.bergstromin.com','jamoreno@mx.bergstrominc.com','jgarrido@mx.bergstrominc.com',
+         $receivers=['jcervera@mx.bergstrominc.com','jamoreno@mx.bergstrominc.com','jgarrido@mx.bergstrominc.com',
             'apacheco@mx.bergstrominc.com','jcrodriguez@mx.bergstrominc.com','lramos@mx.bergstrominc.com','emedina@mx.bergstrominc.com',
             'drocha@mx.bergstrominc.com','enunez@mx.bergstrominc.com','fsuarez@mx.bergstrominc.com','rfandino@mx.bergstrominc.com',
             'vpichardo@mx.bergstrominc.com','dflores@mx.bergstrominc.com','jrodriguez@mx.bergstrominc.com','jgamboa@mx.bergstrominc.com',
