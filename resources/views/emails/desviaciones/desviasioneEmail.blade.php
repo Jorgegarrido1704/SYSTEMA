@@ -4,6 +4,13 @@
     <title>Alta desviacion</title>
 </head>
 <body>
+    @if($accion->count == 1)
+        <h2> Alta de desviacion</h2>
+    @elseif ($accion->count == 4)
+        <h2> Desviacion autorizada</h2>
+    @elseif($accion->count == 5)
+    <h2> Desviacion rechazada</h2>
+    @endif
 
     <p> Se registro una nueva desviacion por: {{$accion->quien}} con las siguineres caracteristicas: </p>
      <p> Con el folio de la desviacion: {{$accion->id}}</p>

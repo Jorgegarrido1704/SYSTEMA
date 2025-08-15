@@ -113,9 +113,9 @@
                                                     </form>
                                                 </td>
                                                 <td>
-                                                    <form onsubmit="return confirmDenied({{ $des->id }});" action="{{route('desviation.denied')}}" method="GET">
-                                                        <input type="hidden" name="idq" id="idq"  >
-                                                        <input type="hidden" name="rechaso" id="rechaso">
+                                                    <form  action="{{route('desviation.denied')}}" method="GET">
+                                                        <input type="hidden" name="idq" id="idq" value="{{ $des->id }}" >
+                                                       <textarea name="rechaso" id="rechaso" cols="10" rows="2"></textarea>
                                                         <button type="submit" class="btn btn-danger">Denied</button>
                                                     </form>
                                                 </td>
@@ -127,17 +127,7 @@
                             </div>
                         </div>
 </div>
-<script>
-    function confirmDenied(ides) {
-        alert(ides);
-        var result= prompt('Why you want to denied ID '+ides+' ?');
-        if (result) {
-            document.getElementById('idq').value = ides;
-            document.getElementById('rechaso').value = result;
-            return true;
-        }
-    }
-</script>
+
 
 
 @endsection
