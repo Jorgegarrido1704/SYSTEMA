@@ -4,7 +4,9 @@
     <title>Alta desviacion</title>
 </head>
 <body>
+
     <p> Se registro una nueva desviacion por: {{$accion->quien}} con las siguineres caracteristicas: </p>
+     <p> Con el folio de la desviacion: {{$accion->id}}</p>
     <p> Cliente: {{$accion->cliente}}</p>
     <p> Numero de parte: {{$accion->Mafec}}</p>
     <p>  Work Order: {{$accion->wo}}</p>

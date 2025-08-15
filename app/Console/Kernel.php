@@ -34,10 +34,10 @@ class Kernel extends ConsoleKernel
             ->days([1, 2, 3, 4, 5, 6])
             ->appendOutputTo(storage_path('logs/backup.log'));
             // creacion de listas de asistencia y registros
-        $schedule->job(new AddWeek())->dailyAt('07:00')->days([1, 2, 3, 4, 5]);
+        $schedule->job(new \App\Jobs\AddWeek())->dailyAt('07:00')->days([1, 2, 3, 4, 5]);
 
         //weekly list assistence
-        $schedule->job(new reporteGeneral())->dailyAt('06:00')->days([1, 2, 3, 4, 5, 6]);
+        $schedule->job(new \App\Jobs\reporteGeneral())->dailyAt('06:00')->days([1, 2, 3, 4, 5, 6]);
     }
 
     /**
