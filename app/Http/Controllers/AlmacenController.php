@@ -333,7 +333,6 @@ class AlmacenController extends Controller
             'vpichardo@mx.bergstrominc.com','dflores@mx.bergstrominc.com','jrodriguez@mx.bergstrominc.com','jgamboa@mx.bergstrominc.com',
             'jguillen@mx.bergstrominc.com'];
             Mail::to($receivers)->send(new desviacionesEmails($accion,'Alta de desviacion'));
-            Mail::to($receivers)->send(new desviacionesEmails($accion,'Desviacion aprobada'));
             return redirect('/almacen')->with('success', 'Data successfully saved.');
         } else {
             return redirect('/almacen')->with('error', 'Failed to save data.');

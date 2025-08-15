@@ -72,6 +72,7 @@
                                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                         <thead>
                                             <tr>
+                                                <th>Folio</th>
                                                 <th>Who request</th>
                                                 <th>Client</th>
                                                 <th>Part number</th>
@@ -91,6 +92,7 @@
                                             @if(!empty($desviations))
                                             @foreach($desviations as $des)
                                             <tr class="text-center text-black">
+                                                <td>{{$des->id}}</td>
                                                 <td>{{$des->quien}}</td>
                                                 <td>{{$des->cliente}}</td>
                                                 <td>{{$des->Mafec}}</td>
@@ -111,8 +113,7 @@
                                                     </form>
                                                 </td>
                                                 <td>
-                                                    <form onsubmit="return confirmDenied({{ $des->id }});" action="{{route('desviation.denied')}}" method="POST">
-                                                        @csrf
+                                                    <form onsubmit="return confirmDenied({{ $des->id }});" action="{{route('desviation.denied')}}" method="GET">
                                                         <input type="hidden" name="idq" id="idq"  >
                                                         <input type="hidden" name="rechaso" id="rechaso">
                                                         <button type="submit" class="btn btn-danger">Denied</button>
