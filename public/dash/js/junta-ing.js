@@ -403,3 +403,20 @@ const cakeIng2 = new Chart(cake2, config);
 catch (error) {
   //  console.error(error);
 }
+try{
+    function changeGraph(graph){
+       if(graph=='donaMes'){
+           document.getElementById("donaMes").style.display = "block";
+           document.getElementById("barraYear").style.display = "none";
+       }else{
+           document.getElementById("donaMes").style.display = "none";
+           document.getElementById("barraYear").style.display = "block";
+
+       }
+
+    }
+
+    }catch (error) {
+        //console.error(error);
+    }
+
