@@ -87,22 +87,48 @@
                     </div>
                 </div>
                 <!-- table Body -->
-                 <div class="card-body" style="overflow-y: auto; height: 450px;">
+                 <div class="card-body" style="overflow-y: auto; height: 480px;">
                 <div style="display: flex; gap: 20px;">
                     <div id="donaMes">
                         <label for="paretoTime">Record for the last month: {{$porcentaje}} %</label>
-                        <canvas id="cakes" width="400" height="300" ></canvas>
+                        <canvas id="cakes" width="320" height="200" ></canvas>
                     </div>
                  <div id="barraYear" >
                      <label for="paretoTime"> </label>
                      <label for="registros"></label>
                      <canvas id="cakes2" width="400" height="300" ></canvas>
                  </div>
-
+                    <div id="paretoTime" style="overflow-y: auto; height: 350px; display: none">
+                        @if(!empty($registrosmes))
+                        <table class="table table-striped table-bordered"  cellspacing="0" width="100%">
+                             <thead style=" position: sticky; z-index: 1; top: 0; text-align: center; background-color: white; color: black; ">
+                                <tr>
+                                    <th>Cliente</th>
+                                    <th>Numero de Parte</th>
+                                    <th>Fecha Compromiso</th>
+                                    <th>Fecha Completado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                        @foreach ($registrosmes as $registro  )
+                            <tr style="text-align: center;color: black;">
+                                <td>{{$registro->customer}}</td>
+                                <td>{{$registro->pn}}</td>
+                                @if($registro->commitmentDate > $registro->CompletionDate)
+                                <td style="background-color: rgba(137, 255, 101, 0.578);">{{$registro->commitmentDate}}</td>
+                                @else <td style="background-color: rgba(255, 123, 90, 0.588);">{{$registro->commitmentDate}}</td>
+                                @endif
+                                <td>{{$registro->CompletionDate}}</td>
+                            </tr>
+                        @endforeach
+                            @endif
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
 
-            </div>
+             </div>
 
             </div>
         </div>

@@ -1330,6 +1330,12 @@ class juntasController extends Controller
         $porcentaje = $thisYearGoals[$mesGrafica];
         $b=$buenos[$mesGrafica];
         $m=$malos[$mesGrafica];
+        $mes=date('m', strtotime('-1 month'));
+        $registrosmes = workScreduleModel::where('CompletionDate', 'LIKE', date('Y') . '-' . $mes . '-%')->where('status', 'Completed')
+                ->orderBy('CompletionDate', 'DESC')
+                ->get();
+
+
 
 
        // $porcentajemes1= $registrosArray['7'][0];
@@ -1445,7 +1451,7 @@ class juntasController extends Controller
         }
 
 
-        return view('juntas/ing', ['b'=>$b,'m'=>$m,'porcentajemes'=>$porcentajemes,'porcentajemes1'=>$porcentajemes1,'registroPPAP' => $registroPPAP, 'thisYearGoals' => $thisYearGoals, 'last12Months' => $last12Months, 'porcentaje' => $porcentaje,  'todas' => $todas, 'jesp' => $jesp, 'nanp' => $nanp, 'bp' => $bp, 'jcp' => $jcp, 'psp' => $psp, 'alv' => $alv, 'asp' => $asp, 'jg' => $jg, 'jesus' => $jesus, 'pao' => $pao, 'nancy' => $nancy, 'ale' => $ale, 'carlos' => $carlos, 'arturo' => $arturo, 'jorge' => $jorge, 'brandon' => $brandon, 'actividadesLastMonth' => $actividadesLastMonth, 'actividades' => $actividades, 'value' => session('user'), 'cat' => session('categoria')]);
+        return view('juntas/ing', ['registrosmes'=>$registrosmes,'b'=>$b,'m'=>$m,'porcentajemes'=>$porcentajemes,'porcentajemes1'=>$porcentajemes1,'registroPPAP' => $registroPPAP, 'thisYearGoals' => $thisYearGoals, 'last12Months' => $last12Months, 'porcentaje' => $porcentaje,  'todas' => $todas, 'jesp' => $jesp, 'nanp' => $nanp, 'bp' => $bp, 'jcp' => $jcp, 'psp' => $psp, 'alv' => $alv, 'asp' => $asp, 'jg' => $jg, 'jesus' => $jesus, 'pao' => $pao, 'nancy' => $nancy, 'ale' => $ale, 'carlos' => $carlos, 'arturo' => $arturo, 'jorge' => $jorge, 'brandon' => $brandon, 'actividadesLastMonth' => $actividadesLastMonth, 'actividades' => $actividades, 'value' => session('user'), 'cat' => session('categoria')]);
     }
     public function cutAndTerm()
     {

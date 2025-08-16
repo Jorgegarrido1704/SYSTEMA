@@ -408,9 +408,11 @@ try{
        if(graph=='donaMes'){
            document.getElementById("donaMes").style.display = "block";
            document.getElementById("barraYear").style.display = "none";
+           document.getElementById("paretoTime").style.display = "block";
        }else{
            document.getElementById("donaMes").style.display = "none";
            document.getElementById("barraYear").style.display = "block";
+           document.getElementById("paretoTime").style.display = "none";
 
        }
 
@@ -419,4 +421,5 @@ try{
     }catch (error) {
         //console.error(error);
     }
+
 
