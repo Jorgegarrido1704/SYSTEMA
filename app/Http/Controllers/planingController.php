@@ -15,6 +15,8 @@ use App\Models\Kits;
 use Illuminate\Mail\Mailables;
 use Illuminate\Support\Facades\Mail;
 use App\Models\regPar;
+use App\Models\workScreduleModel;
+use Carbon\Carbon;
 
 class planingController extends Controller
 {
@@ -555,6 +557,7 @@ class planingController extends Controller
                         $update = DB::table('registro')->where('wo', $wo)->update(['donde' => 'En espera de corte', 'count' => 2]);
                     }
                     //This time is not is accepted for cutting.
+                    workScreduleModel::where('pn', $np)->orderby('id', 'desc')->first()->update(['UpOrderDate' => carbon::now()->format('Y-m-d')]);
                     $updateTime = DB::table('tiempos')->where('info', $info)->update(['planeacion' => $tiempos]);
                     return redirect('/planing');
                 } else {

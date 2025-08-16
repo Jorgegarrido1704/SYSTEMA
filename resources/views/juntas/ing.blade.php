@@ -34,7 +34,8 @@
     <script>
                 //grafica trabajos
             const buenos = {!! json_encode($porcentaje) !!};
-            const malos = {!! json_encode($porcentajeMalos) !!};
+            const bien = {!! json_encode($b) !!};
+            const malos= {!! json_encode($m) !!};
             const mothLess12 = {!! json_encode($last12Months) !!};
                 const compGoals = {!! json_encode($thisYearGoals) !!};
                 console.log(mothLess12);
@@ -90,7 +91,7 @@
                         <canvas id="paretoTime" width="400" height="300"></canvas>
                     </div>
                 </div>
-                
+
 
             </div>
 
@@ -105,7 +106,7 @@
                 <!-- table Body -->
                 <div  style="overflow-y: auto; height: 800px;">
                     <table class="table table-striped table-bordered"  cellspacing="0" width="100%">
-                        <thead style=" position: sticky; z-index: 1; top: 0; text-align: center; background-color: white    ; ">
+                        <thead style=" position: sticky; z-index: 1; top: 0; text-align: center; background-color: white; color: black; ">
                             <tr>
                                 <th>Cliente</th>
                                 <th>Numero de Parte</th>
@@ -115,9 +116,12 @@
                                 <th>Fecha compromiso</th>
                                 <th>Fecha de entrega</th>
                                 <th>Fecha del cliente</th>
+                                <th>Cantidad en PO</th>
                                 <th>Responsable</th>
                                 <th>Fecha de firmas <br>completadas Ingeinieria</th>
                                 <th>Planeacion</th>
+                                <th>Work Order</th>
+                                <th>Cantidad en piso</th>
                                 <th>Corte</th>
                                 <th>Liberacion</th>
                                 <th>ensamble //<br>cables especiales</th>
@@ -141,9 +145,12 @@
                                         <td>{{$ppaps[5]}} </td>
                                         <td style="color: {{ $ppaps[17] }};" >{{ $ppaps[6] }} </td>
                                         <td>{{$ppaps[15]}} </td>
+                                         <td>{{$ppaps[18]}} </td>
                                         <td>{{$ppaps[16]}} </td>
                                         <td>{{$ppaps[7]}} </td>
                                         <td>{{$ppaps[8]}} </td>
+                                        <td>{{$ppaps[19]}} </td>
+                                        <td>{{$ppaps[20]}} </td>
                                         <td>{{$ppaps[9]}} </td>
                                         <td>{{$ppaps[10]}} </td>
                                         <td>{{$ppaps[11]}} </td>

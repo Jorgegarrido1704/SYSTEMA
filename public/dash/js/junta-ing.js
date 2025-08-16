@@ -309,13 +309,13 @@ catch (error) {
 try {
 
     const cake = document.getElementById("cakes");
-    const buen=(buenos);
+    const buen=(bien);
     const mal=(malos);
 
 const cakeIng = new Chart(cake, {
       type: 'doughnut',
       data: {
-        labels: ['on Time', 'Delayed'],
+        labels: ['on Time: '.concat(buen) , 'Delayed: '.concat(mal)],
         datasets: [{
           label: 'Cakes',
           data: [buen, mal],
@@ -362,7 +362,7 @@ try {
     const comp=Object.values(mothLess12);
     const cake2 = document.getElementById("cakes2");
   const data = {
-  labels:labelsreg,
+  labels: ['ENE', 'FEB', 'MAR', 'ABR', 'MAY', 'JUN', 'JUL', 'AGO', 'SEP', 'OCT', 'NOV', 'DIC'],
   datasets: [{
     type: 'bar',
     label: 'This Year',

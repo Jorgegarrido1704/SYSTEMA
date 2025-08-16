@@ -72,7 +72,7 @@
                         onmouseover=showEng();>engineering</a>
                         @if($cat=='inge' || $value=='Admin')
                     <ul class="submenu" id="engsub" style="display:none;">
-                        <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('workState') }}">Schedule Work</a>
+                        <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('workState') }}">Work Schedule</a>
                         </li>
                         <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('vacations') }}">Vacations</a>
                         </li>

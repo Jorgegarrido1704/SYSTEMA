@@ -166,13 +166,12 @@
 
                 <!-- Schedule work engineering -->
                 <div class="card-body" style="overflow-y: auto; ">
-                     <div class="table">
-                        <table class="table table-bordered table-striped table-hover">
-                            <thead class="table-dark">
+                     <div  style="overflow-y: auto; height: 800px;">
+                    <table class="table table-striped table-bordered"  cellspacing="0" width="100%">
+                        <thead style=" position: sticky; z-index: 1; top: 0; text-align: center; background-color: white; color: black; ">
                                 <tr>
                                     <th>PN</th>
                                     <th>Customer</th>
-
                                     <th>Color</th>
                                     <th>WorkRev</th>
                                     <th >Size</th>

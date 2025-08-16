@@ -1310,9 +1310,9 @@ class juntasController extends Controller
 
         //work Schedule dounut
 
-        $porcentaje = $porcentajeMalos = $buenos = $malos = $total = 0;
+        $porcentaje = $b = $m  = $total = 0;
         $porcentajemes1 = $porcentajemes = 0;
-        $last12Months = $thisYearGoals = $registrosArray = [];
+        $last12Months = $thisYearGoals = $registrosArray =$buenos=$malos= [];
 
 
         $registrosArray = workScreduleModel::getWorkScheduleCompleted(date('Y'));
@@ -1321,12 +1321,17 @@ class juntasController extends Controller
                 $thisYearGoals[$registro] = 0;
             }else{
             $thisYearGoals[$registro] = round($valor[0] * 100 / ($valor[1]+$valor[0]), 2);
+            $buenos[$registro]=$valor[0];
+            $malos[$registro]=$valor[1];
             }
         }
 
+    $mesGrafica=intval(carbon::now()->sub(1, 'month')->format('m'));
+        $porcentaje = $thisYearGoals[$mesGrafica];
+        $b=$buenos[$mesGrafica];
+        $m=$malos[$mesGrafica];
 
-        $porcentaje = $thisYearGoals[7];
-        $porcentajeMalos = 100 - $porcentaje;
+
        // $porcentajemes1= $registrosArray['7'][0];
         //$porcentajemes= $registrosArray['7'][1];
 
@@ -1351,6 +1356,8 @@ class juntasController extends Controller
             $registroPPAP[$i][7] = $res->documentsApproved;
             $registroPPAP[$i][8] = "No Aun";
             $registroPPAP[$i][9] = "No Aun";
+            $registroPPAP[$i][19] = "No Aun";
+            $registroPPAP[$i][20] = "0";
             $registroPPAP[$i][10] = "No Aun";
             $registroPPAP[$i][11] = "No Aun";
             $registroPPAP[$i][12] = "No Aun";
@@ -1363,6 +1370,7 @@ class juntasController extends Controller
             } else {
                 $registroPPAP[$i][17] = "Black";
             }
+            $registroPPAP[$i][18] = $res->qtyInPo;
             $i++;
         }
 
@@ -1383,10 +1391,13 @@ class juntasController extends Controller
                 $registroPPAP[$i][17] = "Black";
                 $registroPPAP[$i][8] = "No Aun";
                 $registroPPAP[$i][9] = "No Aun";
+                $registroPPAP[$i][19] = "No Aun";
+                $registroPPAP[$i][20] = "0";
                 $registroPPAP[$i][10] = "No Aun";
                 $registroPPAP[$i][11] = "No Aun";
                 $registroPPAP[$i][12] = "No Aun";
                 $registroPPAP[$i][13] = "No Aun";
+                $registroPPAP[$i][18] = "0";
             } else {
                 $registroPPAP[$i][2] = $registroWS->size;
                 $registroPPAP[$i][4] = $registroWS->receiptDate;
@@ -1404,18 +1415,23 @@ class juntasController extends Controller
                 if (empty($datosTiempos)) {
                     $registroPPAP[$i][8] = "No Aun";
                     $registroPPAP[$i][9] = "No Aun";
+                    $registroPPAP[$i][19] = "No Aun";
+                    $registroPPAP[$i][20] = "0";
                     $registroPPAP[$i][10] = "No Aun";
                     $registroPPAP[$i][11] = "No Aun";
                     $registroPPAP[$i][12] = "No Aun";
                     $registroPPAP[$i][13] = "No Aun";
                 } else {
                     $registroPPAP[$i][8] = $datosTiempos->planeacion;
+                    $registroPPAP[$i][19] = $reg->wo;
+                    $registroPPAP[$i][20] = $reg->Qty;
                     $registroPPAP[$i][9] = $datosTiempos->corte;
                     $registroPPAP[$i][10] = $datosTiempos->liberacion;
                     $registroPPAP[$i][11] = $datosTiempos->ensamble;
                     $registroPPAP[$i][12] = $datosTiempos->loom;
                     $registroPPAP[$i][13] = $datosTiempos->calidad;
                 }
+                $registroPPAP[$i][18] = $reg->qtyInPo;
             }
             if (substr($reg->rev, 0, 4) == 'PPAP') {
                 $registroPPAP[$i][14] = "96, 242, 83, 0.3";
@@ -1428,7 +1444,7 @@ class juntasController extends Controller
         }
 
 
-        return view('juntas/ing', ['porcentajemes'=>$porcentajemes,'porcentajemes1'=>$porcentajemes1,'registroPPAP' => $registroPPAP, 'thisYearGoals' => $thisYearGoals, 'last12Months' => $last12Months, 'porcentaje' => $porcentaje, 'porcentajeMalos' => $porcentajeMalos, 'todas' => $todas, 'jesp' => $jesp, 'nanp' => $nanp, 'bp' => $bp, 'jcp' => $jcp, 'psp' => $psp, 'alv' => $alv, 'asp' => $asp, 'jg' => $jg, 'jesus' => $jesus, 'pao' => $pao, 'nancy' => $nancy, 'ale' => $ale, 'carlos' => $carlos, 'arturo' => $arturo, 'jorge' => $jorge, 'brandon' => $brandon, 'actividadesLastMonth' => $actividadesLastMonth, 'actividades' => $actividades, 'value' => session('user'), 'cat' => session('categoria')]);
+        return view('juntas/ing', ['b'=>$b,'m'=>$m,'porcentajemes'=>$porcentajemes,'porcentajemes1'=>$porcentajemes1,'registroPPAP' => $registroPPAP, 'thisYearGoals' => $thisYearGoals, 'last12Months' => $last12Months, 'porcentaje' => $porcentaje,  'todas' => $todas, 'jesp' => $jesp, 'nanp' => $nanp, 'bp' => $bp, 'jcp' => $jcp, 'psp' => $psp, 'alv' => $alv, 'asp' => $asp, 'jg' => $jg, 'jesus' => $jesus, 'pao' => $pao, 'nancy' => $nancy, 'ale' => $ale, 'carlos' => $carlos, 'arturo' => $arturo, 'jorge' => $jorge, 'brandon' => $brandon, 'actividadesLastMonth' => $actividadesLastMonth, 'actividades' => $actividades, 'value' => session('user'), 'cat' => session('categoria')]);
     }
     public function cutAndTerm()
     {
