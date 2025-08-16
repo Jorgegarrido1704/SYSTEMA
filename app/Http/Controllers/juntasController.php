@@ -1421,6 +1421,7 @@ class juntasController extends Controller
                     $registroPPAP[$i][11] = "No Aun";
                     $registroPPAP[$i][12] = "No Aun";
                     $registroPPAP[$i][13] = "No Aun";
+                    $registroPPAP[$i][14] = "0";
                 } else {
                     $registroPPAP[$i][8] = $datosTiempos->planeacion;
                     $registroPPAP[$i][19] = $reg->wo;
@@ -1431,7 +1432,7 @@ class juntasController extends Controller
                     $registroPPAP[$i][12] = $datosTiempos->loom;
                     $registroPPAP[$i][13] = $datosTiempos->calidad;
                 }
-                $registroPPAP[$i][18] = $reg->qtyInPo;
+                $registroPPAP[$i][18] = $registroWS->qtyInPo;
             }
             if (substr($reg->rev, 0, 4) == 'PPAP') {
                 $registroPPAP[$i][14] = "96, 242, 83, 0.3";
