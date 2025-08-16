@@ -291,13 +291,13 @@ class PpapIngController extends Controller
         }
 
         if ($cuenta == 17) {
-            upRegistro(4, 'En espera de liberacion', $info, 'corte', $idIng, $today, 'libePar', $eng, $value);
+            upRegistro(16, 'Ingenieria// liberacion', $info, 'corte', $idIng, $today, 'eng', $eng, $value);
         } else if ($cuenta == 14) {
             upRegistro(10, 'En espera de calidad', $info, 'loom', $idIng, $today, 'preCalidad', $eng, $value);
         } else if ($cuenta == 13) {
-            upRegistro(8, 'En espera de loom', $info, 'ensamble', $idIng, $today, 'loomPar', $eng, $value);
+            upRegistro(14, 'Ingenieria // loom', $info, 'ensamble', $idIng, $today, 'eng', $eng, $value);
         } else if ($cuenta == 16) {
-            upRegistro(6, 'En espera de ensamble', $info, 'liberacion', $idIng, $today, 'ensaPar', $eng, $value);
+            upRegistro(13, 'Ingenieria // ensamble', $info, 'liberacion', $idIng, $today, 'eng', $eng, $value);
         } else if ($cuenta == 18) {
             upRegistro(12, 'En espera de embarque', $info, 'calidad', $idIng, $today, 'embPar', $eng, $value);
             $count = 12;
@@ -343,12 +343,12 @@ class PpapIngController extends Controller
                 'jcervera@mx.bergstrominc.com',
                 'jcrodriguez@mx.bergstrominc.com',
                 'egaona@mx.bergstrominc.com',
-                'mvaladez@mx.bergstrominc.com',
                 'dvillalpando@mx.bergstrominc.com',
                 'jolaes@mx.bergstrominc.com',
                 'lramos@mx.bergstrominc.com',
                 'emedina@mx.bergstrominc.com',
-                'vpichardo@mx.bergstrominc.com'
+                'vpichardo@mx.bergstrominc.com',
+                'jgamboa@mx.bergstrominc.com'
 
             ];
             Mail::to($recipients)->send(new \App\Mail\PPAPING($subject, $content));

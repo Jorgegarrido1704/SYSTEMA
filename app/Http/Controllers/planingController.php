@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Models\regPar;
 use App\Models\workScreduleModel;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class planingController extends Controller
 {
@@ -505,6 +506,7 @@ class planingController extends Controller
                 $info = $bucar_wo->info;
                 $count = $bucar_wo->count;
                 $qty_reg = $bucar_wo->Qty;
+                $rev = $bucar_wo->rev;
                 if ($count < 2) {
 
                     $noloom = array('621962','621959','621963','621958','911178', '910938', '1001828592', '1003617118', '1003581604', '1003547479', '1003647380', '16519276',
@@ -528,36 +530,31 @@ class planingController extends Controller
                             '910654', '910655', '910656', '910657', '910658', '910662', '910663', '910665', '910674', '910679', '910788', '910832', '910939', '910963',
                             '910989', '910990', '910991', '911025', '911026', '911027', 'CTT00002437', '146-4448', '40297A', 'CTT00002437');
                     $panel = array('0031539-4', '0031539-100', '26013301', '0031539-104', '0032192-70', '0032192-175', '0032192-77');
-                    if (in_array($np, $noloom)) {
                         $regcorte = new regPar();
                         $regcorte->pn = $np;
                         $regcorte->wo = $wo;
                         $regcorte->orgQty = $qty_reg;
-                        $regcorte->ensaPar = $qty_reg;
+                        if(substr($rev, 0, 4) == 'PPAP' or substr($rev,0,4)=='PRIM'){
+                        $update = DB::table('registro')->where('wo', $wo)->update(['donde' => 'En espera de Ingenieria // Corte', 'count' => 17]);
+                         $regcorte->eng = $qty_reg;
+                        }else{$regcorte->cortPar = $qty_reg;}
                         $regcorte->codeBar = $info;
                         $regcorte->save();
+                        if(substr($rev, 0, 4) == 'PPAP' or substr($rev,0,4)=='PRIM'){
+                        $update = DB::table('registro')->where('wo', $wo)->update(['donde' => 'En espera de Ingenieria // Corte', 'count' => 17]);
+                        }
+                        if((in_array($np, $noloom) or in_array($np, $panel)) and (substr($rev, 0, 4) != 'PPAP' or substr($rev,0,4) !='PRIM')){
                         $update = DB::table('registro')->where('wo', $wo)->update(['donde' => 'En espera de cables especiales', 'count' => 15]);
-                    } else if (in_array($np, $panel)) {
-                        $regcorte = new regPar();
-                        $regcorte->pn = $np;
-                        $regcorte->wo = $wo;
-                        $regcorte->orgQty = $qty_reg;
-                        $regcorte->ensaPar = $qty_reg;
-                        $regcorte->codeBar = $info;
-                        $regcorte->save();
-                        $update = DB::table('registro')->where('wo', $wo)->update(['donde' => 'En espera de ensamble', 'count' => 6]);
-                    } else {
-                        $regcorte = new regPar();
-                        $regcorte->pn = $np;
-                        $regcorte->wo = $wo;
-                        $regcorte->orgQty = $qty_reg;
-                        $regcorte->cortPar = $qty_reg;
-                        $regcorte->codeBar = $info;
-                        $regcorte->save();
-                        $update = DB::table('registro')->where('wo', $wo)->update(['donde' => 'En espera de corte', 'count' => 2]);
-                    }
+                        }else if( (substr($rev, 0, 4) != 'PPAP' or substr($rev,0,4)!='PRIM')){
+                            $update = DB::table('registro')->where('wo', $wo)->update(['donde' => 'En espera de corte', 'count' => 2]);
+                        }
+
                     //This time is not is accepted for cutting.
-                    workScreduleModel::where('pn', $np)->orderby('id', 'desc')->first()->update(['UpOrderDate' => carbon::now()->format('Y-m-d')]);
+                    try{
+                    workScreduleModel::where('pn', $np)->orderby('id', 'desc')->first()->update(['UpOrderDate' => carbon::now()->format('Y-m-d')]);}
+                    catch(\Exception $e){
+                        Log::info($e);
+                    }
                     $updateTime = DB::table('tiempos')->where('info', $info)->update(['planeacion' => $tiempos]);
                     return redirect('/planing');
                 } else {
