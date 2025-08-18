@@ -101,7 +101,7 @@
                     <div id="paretoTime" style="overflow-y: auto; height: 350px; display: none">
                         @if(!empty($registrosmes))
                         <table class="table table-striped table-bordered"  cellspacing="0" width="100%">
-                             <thead style=" position: sticky; z-index: 1; top: 0; text-align: center; background-color: white; color: black; ">
+                             <thead style=" position: sticky; z-index: 1; top: 0; text-align: center; background-color: black; color: white; ">
                                 <tr>
                                     <th>Cliente</th>
                                     <th>Numero de Parte</th>
@@ -142,7 +142,7 @@
                 <!-- table Body -->
                 <div  style="overflow-y: auto; height: 800px;">
                     <table class="table table-striped table-bordered"  cellspacing="0" width="100%">
-                        <thead style=" position: sticky; z-index: 1; top: 0; text-align: center; background-color: white; color: black; ">
+                        <thead style=" position: sticky; z-index: 1; top: 0; text-align: center; background-color: black; color: white; ">
                             <tr>
                                 <th>Cliente</th>
                                 <th>Numero de Parte</th>
