@@ -168,7 +168,7 @@
                 <div class="card-body" style="overflow-y: auto; ">
                      <div  style="overflow-y: auto; height: 800px;">
                     <table class="table table-striped table-bordered"  cellspacing="0" width="100%">
-                        <thead style=" position: sticky; z-index: 1; top: 0; text-align: center; background-color: white; color: black; ">
+                        <thead style=" position: sticky; z-index: 1; top: 0; text-align: center; background-color: black; color: white; ">
                                 <tr>
                                     <th>PN</th>
                                     <th>Customer</th>
