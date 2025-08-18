@@ -114,7 +114,7 @@
                             <tr style="text-align: center;color: black;">
                                 <td>{{$registro->customer}}</td>
                                 <td>{{$registro->pn}}</td>
-                                @if($registro->commitmentDate > $registro->CompletionDate)
+                                @if($registro->commitmentDate => $registro->CompletionDate)
                                 <td style="background-color: rgba(137, 255, 101, 0.578);">{{$registro->commitmentDate}}</td>
                                 @else <td style="background-color: rgba(255, 123, 90, 0.588);">{{$registro->commitmentDate}}</td>
                                 @endif
