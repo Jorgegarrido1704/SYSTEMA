@@ -127,7 +127,7 @@
                             @if($item[3] == 'On Hold' or $item[3] == 'No stop')
                             <td>
                                 @if($value =='Admin' or $value == 'Gamboa J' or $value == 'Juan G' or $value == 'Andrea P' or $value == 'Jesus_C' or
-                            $value=='Luis R' or $value=='Edward M' or $value=='Carlos R' or $value=='Juan O' or $value=='David V'
+                            $value=='Luis R' or $value=='Edward M' or $value=='Carlos R' or $value=='Juan O' or $value=='David V' or $value=='Andrea P'
                             or $value=='Estala G' or $value=='Mario V')
                                 <form action="{{ route('registroComment') }}" method="get">
                                     <input type="hidden" name="dataok" id="dataok'" value="{{$id}}">
