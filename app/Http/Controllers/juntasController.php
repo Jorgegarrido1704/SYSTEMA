@@ -310,23 +310,23 @@ class juntasController extends Controller
                     case '07':
                         $busarPrecio = DB::table('precios')->select('price')->where('pn', $rowstime->pn)->first();
 
-                        $sieteAm += $busarPrecio->price;
+                        $sieteAm += $busarPrecio->price??0;
                         break;
                     case '08':
                         $busarPrecio = DB::table('precios')->select('price')->where('pn', $rowstime->pn)->first();
-                        $ochoAm += $busarPrecio->price;
+                        $ochoAm += $busarPrecio->price??0;
                         break;
                     case '09':
                         $busarPrecio = DB::table('precios')->select('price')->where('pn', $rowstime->pn)->first();
-                        $nueveAm += $busarPrecio->price;
+                        $nueveAm += $busarPrecio->price??0;
                         break;
                     case '10':
                         $busarPrecio = DB::table('precios')->select('price')->where('pn', $rowstime->pn)->first();
-                        $diesAm += $busarPrecio->price;
+                        $diesAm += $busarPrecio->price??0;
                         break;
                     case '11':
                         $busarPrecio = DB::table('precios')->select('price')->where('pn', $rowstime->pn)->first();
-                        $onceAm += $busarPrecio->price;
+                        $onceAm += $busarPrecio->price??0;
                         break;
                     case '12':
                         $busarPrecio = DB::table('precios')->select('price')->where('pn', $rowstime->pn)->first();
@@ -342,7 +342,7 @@ class juntasController extends Controller
                         break;
                     case '15':
                         $busarPrecio = DB::table('precios')->select('price')->where('pn', $rowstime->pn)->first();
-                        $tresPm += $busarPrecio->price;
+                        $tresPm += $busarPrecio->price??0;
                         break;
                     case '16':
                         $busarPrecio = DB::table('precios')->select('price')->where('pn', $rowstime->pn)->first();
