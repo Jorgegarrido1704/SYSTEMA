@@ -309,7 +309,6 @@ class juntasController extends Controller
                 switch (substr($rowstime->fecha, 11, 2)) {
                     case '07':
                         $busarPrecio = DB::table('precios')->select('price')->where('pn', $rowstime->pn)->first();
-
                         $sieteAm += $busarPrecio->price??0;
                         break;
                     case '08':
@@ -330,15 +329,15 @@ class juntasController extends Controller
                         break;
                     case '12':
                         $busarPrecio = DB::table('precios')->select('price')->where('pn', $rowstime->pn)->first();
-                        $docePm += $busarPrecio->price;
+                        $docePm += $busarPrecio->price??0;
                         break;
                     case '13':
                         $busarPrecio = DB::table('precios')->select('price')->where('pn', $rowstime->pn)->first();
-                        $unaPm += $busarPrecio->price;
+                        $unaPm += $busarPrecio->price??0;
                         break;
                     case '14':
                         $busarPrecio = DB::table('precios')->select('price')->where('pn', $rowstime->pn)->first();
-                        $dosPm += $busarPrecio->price;
+                        $dosPm += $busarPrecio->price??0;
                         break;
                     case '15':
                         $busarPrecio = DB::table('precios')->select('price')->where('pn', $rowstime->pn)->first();
@@ -346,23 +345,23 @@ class juntasController extends Controller
                         break;
                     case '16':
                         $busarPrecio = DB::table('precios')->select('price')->where('pn', $rowstime->pn)->first();
-                        $cuatroPm += $busarPrecio->price;
+                        $cuatroPm += $busarPrecio->price??0;
                         break;
                     case '17':
                         $busarPrecio = DB::table('precios')->select('price')->where('pn', $rowstime->pn)->first();
-                        $cincoPm += $busarPrecio->price;
+                        $cincoPm += $busarPrecio->price??0;
                         break;
                     case '18':
                         $busarPrecio = DB::table('precios')->select('price')->where('pn', $rowstime->pn)->first();
-                        $seisPm += $busarPrecio->price;
+                        $seisPm += $busarPrecio->price??0;
                         break;
                     case '19':
                         $busarPrecio = DB::table('precios')->select('price')->where('pn', $rowstime->pn)->first();
-                        $sietePm += $busarPrecio->price;
+                        $sietePm += $busarPrecio->price??0;
                         break;
                     case '20':
                         $busarPrecio = DB::table('precios')->select('price')->where('pn', $rowstime->pn)->first();
-                        $sietePm += $busarPrecio->price;
+                        $sietePm += $busarPrecio->price??0;
                         break;
                 }
             }
