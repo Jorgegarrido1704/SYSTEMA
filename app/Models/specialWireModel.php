@@ -11,8 +11,15 @@ class specialWireModel extends Model
 
     protected$fiilable = [
         'id',
-        'partNumber'
+        'partNumber',
+        'created_at',
+        'updated_at'
     ];
     public $timestamps = true;
     protected $table = 'special_wire_models';
+
+    public function scopeSpecialWire()
+    {
+       return specialWireModel::all();
+    }
 }

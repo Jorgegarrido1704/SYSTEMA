@@ -20,6 +20,10 @@ class loginController extends Controller
         //
         return view('login');
     }
+    public function index()
+    {
+        return view('login');
+    }
 
 
     public function create()
