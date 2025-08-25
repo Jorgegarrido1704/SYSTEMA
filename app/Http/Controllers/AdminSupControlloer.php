@@ -6,7 +6,7 @@ use App\Models\regPar;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\routingModel;
-
+use App\Jobs\AddWeek;
 
 class AdminSupControlloer extends Controller
 {
@@ -233,7 +233,7 @@ class AdminSupControlloer extends Controller
             return redirect('/login');
         }
         $np = $request->input('np');
-        
+
         if ($np) {
             $registros = routingModel::Search($np);
         }else{
@@ -241,5 +241,16 @@ class AdminSupControlloer extends Controller
 
 
         return view('scheduleWork.timeLine', ['registros' => $registros	,'value' => session('user'), 'cat' => session('categoria')]);
+    }
+    public function registrosGenerales(Request $request)
+    {
+        if (session('categoria') != 'SupAdmin') {
+            return redirect('/login');
+        }else{
+            if($request->input('setAddWeek') == 1){
+               \App\Jobs\AddWeek::dispatch();
+            }
+        }
+       return redirect('/SupAdmin');
     }
 }

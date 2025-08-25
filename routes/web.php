@@ -146,6 +146,7 @@ Route::controller(AdminSupControlloer::class)->group(function () {
     Route::get('/altaDatos', [AdminSupControlloer::class, 'altaDatos'])->name('altaDatos');
     Route::get('/workSchedule/VSM', [AdminSupControlloer::class, 'vsm_schedule'])->name('vsm_schedule');
     Route::get('/workSchedule/timeLine', [AdminSupControlloer::class, 'timeLine'])->name('timeLine');
+    Route::get('/registrosGenerales', [AdminSupControlloer::class, 'registrosGenerales'])->name('registrosGenerales');
 });
 
 Route::controller(globalInventario::class)->group(function () {
