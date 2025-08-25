@@ -20,6 +20,6 @@ class specialWireModel extends Model
 
     public function scopeSpecialWire()
     {
-       return specialWireModel::all();
+       return specialWireModel::select( 'partNumber');
     }
 }
