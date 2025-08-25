@@ -509,6 +509,7 @@ class planingController extends Controller
                 $qty_reg = $bucar_wo->Qty;
                 $rev = $bucar_wo->rev;
                 if ($count < 2) {
+                    $noloom =[];
                     $registrosNoLoom = specialWireModel::SpecialWire();
                     foreach ($registrosNoLoom as $row) {
                         $noloom[] = $row->PartNumber;
