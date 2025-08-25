@@ -353,6 +353,7 @@ class generalController extends Controller
                     }
                 } else if (($donde === 'ensa' and $count === 7) or ($donde === 'ensa' and $ensaPar > 0 and ($count !== 6 or $count !== 15))) {
                     $nolooms = specialWireModel::SpecialWire();
+                    $noloom = [];
                     foreach ($nolooms as $row) {
                         $noloom[] = $row->partNumber;
 
