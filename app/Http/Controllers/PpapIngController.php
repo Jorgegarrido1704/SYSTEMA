@@ -742,7 +742,7 @@ class PpapIngController extends Controller
         $date = date("d-m-Y H:i");
         $buscar = DB::table('errores')->where('id', $id)->first();
         if ($buscar) {
-            DB::table('errores')->where('id', $id)->update(['DateOff' => $date, 'mostrar_ing' => 1]);
+            DB::table('errores')->where('id', $id)->update(['DateOff' => $date, 'mostrar_ing' => 2]);
             return redirect('/ing');
         }
     }
