@@ -839,7 +839,7 @@ class juntasController extends Controller
         }
         $todayD = date('d');
         for ($i = 0; $i < $todayD; $i++)
-            if ($labelQ[$i] == 7 or $labelQ[$i] == 20 or $labelQ[$i] == 445 or $labelQ[$i] == 66) {
+            if ($labelQ[$i] == 7 or $labelQ[$i] == 20 or $labelQ[$i] == 27 or $labelQ[$i] == 66) {
                 $colorQ[$i] = 'red';
             } else {
                 $colorQ[$i] = 'green';
