@@ -1966,7 +1966,7 @@ class juntasController extends Controller
         $vacaciones = DB::table('registro_vacaciones')
             ->where('fecha_de_solicitud', 'LIKE', $currentYear . '%')
             ->where('estatus', '=', 'Confirmado')
-            ->where('superVisor','!=',$value)
+            ->where('superVisor','=',$value)
             ->orderBy('fecha_de_solicitud', 'asc')
             ->get();
 
