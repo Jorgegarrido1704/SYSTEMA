@@ -1936,10 +1936,7 @@ class juntasController extends Controller
         $busqueda =personalBergsModel::where('employeeLider', '=', $value)
             ->where('status', '=', 'Activo')
             ->get();
-
-
-
-        foreach ($busqueda as $rows) {
+  foreach ($busqueda as $rows) {
             $empleados[$rows->employeeName][0] = $rows->employeeName;
             $empleados[$rows->employeeName][1] = $rows->DateIngreso;
             // $empleados[$rows->employeeName][2] = $rows->lastYear;
@@ -1972,6 +1969,22 @@ class juntasController extends Controller
             ->where('superVisor','=',$value)
             ->orderBy('fecha_de_solicitud', 'asc')
             ->get();
+        if(count($vacaciones) == 0){
+            if(session('categoria') == 'inge'){
+                $equipo = 'Ingenieria';
+            }
+                $busquedaRelacionadas =personalBergsModel::select('employeeLider')->where('employeeArea', '=', $equipo)
+                ->limit(1)->first();
+                $Leader = $busquedaRelacionadas->employeeLider;
+
+            $vacaciones = registroVacacionesModel::wherebetween('fecha_de_solicitud', [$InicioYear->toDateString(), $FinYear->toDateString()])
+            // ->where('fecha_de_solicitud', 'LIKE', $currentYear . '%')
+            ->where('estatus', '=', 'Confirmado')
+            ->where('superVisor','=',$Leader)
+            ->orderBy('fecha_de_solicitud', 'asc')
+            ->get();
+        }
+
 
         // Crear array asociativo: 'Y-m-d' => [id_empleado, ...]
         $vacacions = [];
