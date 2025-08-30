@@ -16,7 +16,7 @@ class personalBergsModel extends Model
     protected $fillable = [
         'employeeNumber', 'employeeName', 'employeeArea', 'employeeLider',
          'DateIngreso', 'DaysVacationsAvailble', 'lastYear', 'currentYear',
-         'nextYear', 'Gender', 'typeWorker', 'status', 'DateSalida'
+         'nextYear', 'Gender', 'typeWorker', 'status', 'DateSalida','email',
     ];
-    
+
 }

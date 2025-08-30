@@ -19,6 +19,7 @@ use ZipArchive;
 use App\Models\workScreduleModel;
 use App\Models\Wo;
 use App\Models\tiempos;
+use App\Models\registroVacacionesModel;
 
 class juntasController extends Controller
 {
@@ -1928,16 +1929,12 @@ class juntasController extends Controller
         $diasAviles = [];
         $value = session('user');
         $cat = session('categoria');
-        if ($cat == 'inge') {
-            $vacacionesRegistro = 'Ingenieria';
-        } else {
-            $vacacionesRegistro = 'RH';
-        }
+
 
         $diasAviles = [];
         $empleados = [];
-        $busqueda = DB::table('personalberg')
-            ->where('employeeLider', '=', $value)
+        $busqueda =personalBergsModel::where('employeeLider', '=', $value)
+            ->where('status', '=', 'Activo')
             ->get();
 
 
@@ -1959,12 +1956,18 @@ class juntasController extends Controller
             $empleados[$rows->employeeName][9] = $rows->lastYear;
         }
         $diasAviles = [];
+        if(Carbon::now()->month >6){
+            $newYear = $currentYear +1;
+              $InicioYear = Carbon::createFromDate($currentYear, 7, 1);
+        $FinYear = Carbon::createFromDate($newYear, 6, 31);
+        }else{
         $InicioYear = Carbon::createFromDate($currentYear, 1, 1);
         $FinYear = Carbon::createFromDate($currentYear, 12, 31);
+    }
 
         // Obtener vacaciones del año
-        $vacaciones = DB::table('registro_vacaciones')
-            ->where('fecha_de_solicitud', 'LIKE', $currentYear . '%')
+        $vacaciones = registroVacacionesModel::wherebetween('fecha_de_solicitud', [$InicioYear->toDateString(), $FinYear->toDateString()])
+            // ->where('fecha_de_solicitud', 'LIKE', $currentYear . '%')
             ->where('estatus', '=', 'Confirmado')
             ->where('superVisor','=',$value)
             ->orderBy('fecha_de_solicitud', 'asc')
