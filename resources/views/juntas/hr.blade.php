@@ -41,6 +41,7 @@ a:hover {
     const genero = @json($genero);
     const tipoTrabajador = @json($tipoTrabajador);
     const promaus = @json($promaus);
+    const vacaciones = @json($vacas);
 </script>
 <div class="row">
     <!-- Asistencia -->

@@ -4,7 +4,7 @@ const registroInicidencia = Object.values(registros);
 
 const generos = Object.values(genero);
 const tipoTrabajadors = Object.values(tipoTrabajador);
-const registroVacaciones = [10, 20, 15, 25, 30, 20, 15, 10, 5, 20, 30, 80, 90];
+const registroVacaciones = Object.values(vacaciones);
 const promau = promaus || 0; // Default to 0 if promaus is not defined
 
 //console.log(promau);

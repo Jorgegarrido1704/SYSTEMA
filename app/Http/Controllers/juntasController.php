@@ -310,59 +310,59 @@ class juntasController extends Controller
                 switch (substr($rowstime->fecha, 11, 2)) {
                     case '07':
                         $busarPrecio = DB::table('precios')->select('price')->where('pn', $rowstime->pn)->first();
-                        $sieteAm += $busarPrecio->price??0;
+                        $sieteAm += $busarPrecio->price ?? 0;
                         break;
                     case '08':
                         $busarPrecio = DB::table('precios')->select('price')->where('pn', $rowstime->pn)->first();
-                        $ochoAm += $busarPrecio->price??0;
+                        $ochoAm += $busarPrecio->price ?? 0;
                         break;
                     case '09':
                         $busarPrecio = DB::table('precios')->select('price')->where('pn', $rowstime->pn)->first();
-                        $nueveAm += $busarPrecio->price??0;
+                        $nueveAm += $busarPrecio->price ?? 0;
                         break;
                     case '10':
                         $busarPrecio = DB::table('precios')->select('price')->where('pn', $rowstime->pn)->first();
-                        $diesAm += $busarPrecio->price??0;
+                        $diesAm += $busarPrecio->price ?? 0;
                         break;
                     case '11':
                         $busarPrecio = DB::table('precios')->select('price')->where('pn', $rowstime->pn)->first();
-                        $onceAm += $busarPrecio->price??0;
+                        $onceAm += $busarPrecio->price ?? 0;
                         break;
                     case '12':
                         $busarPrecio = DB::table('precios')->select('price')->where('pn', $rowstime->pn)->first();
-                        $docePm += $busarPrecio->price??0;
+                        $docePm += $busarPrecio->price ?? 0;
                         break;
                     case '13':
                         $busarPrecio = DB::table('precios')->select('price')->where('pn', $rowstime->pn)->first();
-                        $unaPm += $busarPrecio->price??0;
+                        $unaPm += $busarPrecio->price ?? 0;
                         break;
                     case '14':
                         $busarPrecio = DB::table('precios')->select('price')->where('pn', $rowstime->pn)->first();
-                        $dosPm += $busarPrecio->price??0;
+                        $dosPm += $busarPrecio->price ?? 0;
                         break;
                     case '15':
                         $busarPrecio = DB::table('precios')->select('price')->where('pn', $rowstime->pn)->first();
-                        $tresPm += $busarPrecio->price??0;
+                        $tresPm += $busarPrecio->price ?? 0;
                         break;
                     case '16':
                         $busarPrecio = DB::table('precios')->select('price')->where('pn', $rowstime->pn)->first();
-                        $cuatroPm += $busarPrecio->price??0;
+                        $cuatroPm += $busarPrecio->price ?? 0;
                         break;
                     case '17':
                         $busarPrecio = DB::table('precios')->select('price')->where('pn', $rowstime->pn)->first();
-                        $cincoPm += $busarPrecio->price??0;
+                        $cincoPm += $busarPrecio->price ?? 0;
                         break;
                     case '18':
                         $busarPrecio = DB::table('precios')->select('price')->where('pn', $rowstime->pn)->first();
-                        $seisPm += $busarPrecio->price??0;
+                        $seisPm += $busarPrecio->price ?? 0;
                         break;
                     case '19':
                         $busarPrecio = DB::table('precios')->select('price')->where('pn', $rowstime->pn)->first();
-                        $sietePm += $busarPrecio->price??0;
+                        $sietePm += $busarPrecio->price ?? 0;
                         break;
                     case '20':
                         $busarPrecio = DB::table('precios')->select('price')->where('pn', $rowstime->pn)->first();
-                        $sietePm += $busarPrecio->price??0;
+                        $sietePm += $busarPrecio->price ?? 0;
                         break;
                 }
             }
@@ -1312,33 +1312,33 @@ class juntasController extends Controller
 
         $porcentaje = $b = $m  = $total = 0;
         $porcentajemes1 = $porcentajemes = 0;
-        $last12Months = $thisYearGoals = $registrosArray =$buenos=$malos= [];
+        $last12Months = $thisYearGoals = $registrosArray = $buenos = $malos = [];
 
 
         $registrosArray = workScreduleModel::getWorkScheduleCompleted(date('Y'));
         foreach ($registrosArray as $registro => $valor) {
-            if($valor[0] == 0){
+            if ($valor[0] == 0) {
                 $thisYearGoals[$registro] = 0;
-            }else{
-            $thisYearGoals[$registro] = round($valor[0] * 100 / ($valor[1]+$valor[0]), 2);
-            $buenos[$registro]=$valor[0];
-            $malos[$registro]=$valor[1];
+            } else {
+                $thisYearGoals[$registro] = round($valor[0] * 100 / ($valor[1] + $valor[0]), 2);
+                $buenos[$registro] = $valor[0];
+                $malos[$registro] = $valor[1];
             }
         }
 
-    $mesGrafica=intval(carbon::now()->sub(1, 'month')->format('m'));
+        $mesGrafica = intval(carbon::now()->sub(1, 'month')->format('m'));
         $porcentaje = $thisYearGoals[$mesGrafica];
-        $b=$buenos[$mesGrafica];
-        $m=$malos[$mesGrafica];
-        $mes=date('m', strtotime('-1 month'));
+        $b = $buenos[$mesGrafica];
+        $m = $malos[$mesGrafica];
+        $mes = date('m', strtotime('-1 month'));
         $registrosmes = workScreduleModel::where('CompletionDate', 'LIKE', date('Y') . '-' . $mes . '-%')->where('status', 'Completed')
-                ->orderBy('CompletionDate', 'DESC')
-                ->get();
+            ->orderBy('CompletionDate', 'DESC')
+            ->get();
 
 
 
 
-       // $porcentajemes1= $registrosArray['7'][0];
+        // $porcentajemes1= $registrosArray['7'][0];
         //$porcentajemes= $registrosArray['7'][1];
 
 
@@ -1350,7 +1350,7 @@ class juntasController extends Controller
         // PPAP and PRIM Insofor
         $registroPPAP = [];
         $i = 0;
-        $WS = workScreduleModel::where('UpOrderDate', '=', null , 'OR', 'status', '!=', 'CANCELLED')->orderBy('id', 'desc')->get();
+        $WS = workScreduleModel::where('UpOrderDate', '=', null, 'OR', 'status', '!=', 'CANCELLED')->orderBy('id', 'desc')->get();
         foreach ($WS as $res) {
             $registroPPAP[$i][0] = $res->customer;
             $registroPPAP[$i][1] = $res->pn;
@@ -1451,7 +1451,7 @@ class juntasController extends Controller
         }
 
 
-        return view('juntas/ing', ['registrosmes'=>$registrosmes,'b'=>$b,'m'=>$m,'porcentajemes'=>$porcentajemes,'porcentajemes1'=>$porcentajemes1,'registroPPAP' => $registroPPAP, 'thisYearGoals' => $thisYearGoals, 'last12Months' => $last12Months, 'porcentaje' => $porcentaje,  'todas' => $todas, 'jesp' => $jesp, 'nanp' => $nanp, 'bp' => $bp, 'jcp' => $jcp, 'psp' => $psp, 'alv' => $alv, 'asp' => $asp, 'jg' => $jg, 'jesus' => $jesus, 'pao' => $pao, 'nancy' => $nancy, 'ale' => $ale, 'carlos' => $carlos, 'arturo' => $arturo, 'jorge' => $jorge, 'brandon' => $brandon, 'actividadesLastMonth' => $actividadesLastMonth, 'actividades' => $actividades, 'value' => session('user'), 'cat' => session('categoria')]);
+        return view('juntas/ing', ['registrosmes' => $registrosmes, 'b' => $b, 'm' => $m, 'porcentajemes' => $porcentajemes, 'porcentajemes1' => $porcentajemes1, 'registroPPAP' => $registroPPAP, 'thisYearGoals' => $thisYearGoals, 'last12Months' => $last12Months, 'porcentaje' => $porcentaje,  'todas' => $todas, 'jesp' => $jesp, 'nanp' => $nanp, 'bp' => $bp, 'jcp' => $jcp, 'psp' => $psp, 'alv' => $alv, 'asp' => $asp, 'jg' => $jg, 'jesus' => $jesus, 'pao' => $pao, 'nancy' => $nancy, 'ale' => $ale, 'carlos' => $carlos, 'arturo' => $arturo, 'jorge' => $jorge, 'brandon' => $brandon, 'actividadesLastMonth' => $actividadesLastMonth, 'actividades' => $actividades, 'value' => session('user'), 'cat' => session('categoria')]);
     }
     public function cutAndTerm()
     {
@@ -1896,12 +1896,13 @@ class juntasController extends Controller
     public function registroComment(Request $request)
     {
         $datosOk = $request->input('dataok');
-           DB::table('issuesfloor')->where('id_tiempos', '=', $datosOk)->where('actionOfComment', '!=', 'Issue Fixed')->update(['actionOfComment' => 'Issue Fixed']);
-            return redirect()->route('seguimientos');
+        DB::table('issuesfloor')->where('id_tiempos', '=', $datosOk)->where('actionOfComment', '!=', 'Issue Fixed')->update(['actionOfComment' => 'Issue Fixed']);
+        return redirect()->route('seguimientos');
     }
-    public function conSeguimientos(Request $request) {
+    public function conSeguimientos(Request $request)
+    {
 
-         $value = session('user');
+        $value = session('user');
         $cat = session('categoria');
         $issuesRegister = new issuesFloor();
         $issuesRegister->id_tiempos = $request->input('id_issue');
@@ -1933,10 +1934,10 @@ class juntasController extends Controller
 
         $diasAviles = [];
         $empleados = [];
-        $busqueda =personalBergsModel::where('employeeLider', '=', $value)
+        $busqueda = personalBergsModel::where('employeeLider', '=', $value)
             ->where('status', '=', 'Activo')
             ->get();
-  foreach ($busqueda as $rows) {
+        foreach ($busqueda as $rows) {
             $empleados[$rows->employeeName][0] = $rows->employeeName;
             $empleados[$rows->employeeName][1] = $rows->DateIngreso;
             // $empleados[$rows->employeeName][2] = $rows->lastYear;
@@ -1953,36 +1954,36 @@ class juntasController extends Controller
             $empleados[$rows->employeeName][9] = $rows->lastYear;
         }
         $diasAviles = [];
-        if(Carbon::now()->month >6){
-            $newYear = $currentYear +1;
-              $InicioYear = Carbon::createFromDate($currentYear, 7, 1);
-        $FinYear = Carbon::createFromDate($newYear, 6, 31);
-        }else{
-        $InicioYear = Carbon::createFromDate($currentYear, 1, 1);
-        $FinYear = Carbon::createFromDate($currentYear, 12, 31);
-    }
+        if (Carbon::now()->month > 6) {
+            $newYear = $currentYear + 1;
+            $InicioYear = Carbon::createFromDate($currentYear, 7, 1);
+            $FinYear = Carbon::createFromDate($newYear, 6, 31);
+        } else {
+            $InicioYear = Carbon::createFromDate($currentYear, 1, 1);
+            $FinYear = Carbon::createFromDate($currentYear, 12, 31);
+        }
 
         // Obtener vacaciones del año
         $vacaciones = registroVacacionesModel::wherebetween('fecha_de_solicitud', [$InicioYear->toDateString(), $FinYear->toDateString()])
             // ->where('fecha_de_solicitud', 'LIKE', $currentYear . '%')
             ->where('estatus', '=', 'Confirmado')
-            ->where('superVisor','=',$value)
+            ->where('superVisor', '=', $value)
             ->orderBy('fecha_de_solicitud', 'asc')
             ->get();
-        if(count($vacaciones) == 0){
-            if(session('categoria') == 'inge'){
+        if (count($vacaciones) == 0) {
+            if (session('categoria') == 'inge') {
                 $equipo = 'Ingenieria';
             }
-                $busquedaRelacionadas =personalBergsModel::select('employeeLider')->where('employeeArea', '=', $equipo)
+            $busquedaRelacionadas = personalBergsModel::select('employeeLider')->where('employeeArea', '=', $equipo)
                 ->limit(1)->first();
-                $Leader = $busquedaRelacionadas->employeeLider;
+            $Leader = $busquedaRelacionadas->employeeLider;
 
             $vacaciones = registroVacacionesModel::wherebetween('fecha_de_solicitud', [$InicioYear->toDateString(), $FinYear->toDateString()])
-            // ->where('fecha_de_solicitud', 'LIKE', $currentYear . '%')
-            ->where('estatus', '=', 'Confirmado')
-            ->where('superVisor','=',$Leader)
-            ->orderBy('fecha_de_solicitud', 'asc')
-            ->get();
+                // ->where('fecha_de_solicitud', 'LIKE', $currentYear . '%')
+                ->where('estatus', '=', 'Confirmado')
+                ->where('superVisor', '=', $Leader)
+                ->orderBy('fecha_de_solicitud', 'asc')
+                ->get();
         }
 
 
@@ -2220,10 +2221,39 @@ class juntasController extends Controller
             $rotacion->ServiciosComprados,
             $totalRotacion
         ];
+        $vacacionesReporte = registroVacacionesModel::wherebetween('fecha_de_solicitud', [Carbon::now()->startOfYear()->toDateString(), Carbon::now()->endOfYear()->toDateString()])
+            ->get();
+            $vacas=[0,0,0,0,0,0,0,0,0,0,0,0];
+        foreach ($vacacionesReporte as $vacacione) {
+            if(intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m'))==1){
+                $vacas[0]++;
+            }else if(intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m'))==2){
+                $vacas[1]++;
+            }else if(intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m'))==3){
+                $vacas[2]++;
+            }else if(intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m'))==4){
+                $vacas[3]++;
+            }else if(intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m'))==5){
+                $vacas[4]++;
+            }else if(intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m'))==6){
+                $vacas[5]++;
+            }else if(intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m'))==7){
+                $vacas[6]++;
+            }else if(intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m'))==8){
+                $vacas[7]++;
+            }else if(intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m'))==9){
+                $vacas[8]++;
 
+            }else if(intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m'))==10){
+                $vacas[9]++;
+            }else if(intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m'))==11){
+                $vacas[10]++;
+            }else if(intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m'))==12){
+                $vacas[11]++;
+            }
+        }
 
-
-        return view('juntas.hr', ['promaus' => $promaus, 'diaActual' => $diaActual, 'tipoTrabajador' => $tipoTrabajador, 'faltantes' => $faltantes, 'faltan' => $faltan, 'genero' => $genero, 'registrosDeAsistencia' => $registrosDeAsistencia, 'value' => session('user'), 'cat' => session('categoria'), 'accidente' => $accidente]);
+        return view('juntas.hr', ['vacas'=>$vacas,'promaus' => $promaus, 'diaActual' => $diaActual, 'tipoTrabajador' => $tipoTrabajador, 'faltantes' => $faltantes, 'faltan' => $faltan, 'genero' => $genero, 'registrosDeAsistencia' => $registrosDeAsistencia, 'value' => session('user'), 'cat' => session('categoria'), 'accidente' => $accidente]);
     }
 
     //Show Names per category
