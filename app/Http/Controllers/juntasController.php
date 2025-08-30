@@ -1937,7 +1937,7 @@ class juntasController extends Controller
         $diasAviles = [];
         $empleados = [];
         $busqueda = DB::table('personalberg')
-            ->where('employeeArea', '=', $vacacionesRegistro)
+            ->where('employeeLider', '=', $value)
             ->get();
 
 
@@ -1975,7 +1975,7 @@ class juntasController extends Controller
         foreach ($vacaciones as $row) {
             $fecha = Carbon::parse($row->fecha_de_solicitud)->toDateString(); // 'YYYY-MM-DD'
             if (key_exists($fecha, $vacacions)) {
-                $vacacions[$fecha][0] .= $row->id_empleado;
+                $vacacions[$fecha][0] .= "-" . $row->id_empleado;
             } else {
                 $vacacions[$fecha][] = $row->id_empleado;
             }
@@ -2078,6 +2078,7 @@ class juntasController extends Controller
                     'estatus' => 'Confirmado',
                     'dias_solicitados' => 1,
                     'usedYear' => $years,
+                    'superVisor' => session('user')
 
                 ]);
             }

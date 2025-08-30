@@ -74,8 +74,7 @@
                     <ul class="submenu" id="engsub" style="display:none;">
                         <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('workState') }}">Work Scheduled</a>
                         </li>
-                        <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('vacations') }}">Vacations</a>
-                        </li>
+                       
                         <li class="submenu" id="engsub"><a style="color:white;" href="#">CutList</a>
                         </li>
                     </ul>
@@ -117,6 +116,7 @@
                 @endif
                 <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('rrhhDashBoard') }}">Assistance</a></li>
                 <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('Pendings.index') }}">Pendigs</a></li>
+                 <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('vacations') }}">Vacations</a></li>
 
             </ul>
         </li>

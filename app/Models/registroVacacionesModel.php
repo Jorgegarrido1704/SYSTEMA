@@ -12,7 +12,13 @@ class registroVacacionesModel extends Model
     protected $table = 'registro_vacaciones';
     protected $primaryKey = 'id';
 
-    protected $fillable = [ 'id_empleado', 'fecha_de_solicitud', 'estatus', 'dias_solicitados'   ];
+    protected $fillable = [ 'id_empleado', 'fecha_de_solicitud', 'estatus', 'dias_solicitados','usedYear','superVisor'  ];
     public $timestamps = false;
-    
+
+    public function scopeRegistros()
+    {
+        
+    }
+
+
 }
