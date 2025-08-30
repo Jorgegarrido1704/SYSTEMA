@@ -90,14 +90,15 @@
                         </div>
                          <div class="card shadow mb-4 col-lg-4">
                             <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">Shipping Area</h6>
+                                <h6 class="m-0 font-weight-bold text-primary">Reportes Generales</h6>
                             </div>
                                         <div class="card-body" style="overflow-y: auto; height: 360px;">
                                             <div class= "row">
                                                 <div class="col-lg-4 mb-4">
                                                             <form action="{{ route('registrosGenerales')}}" method="GET" >
+                                                                <label for="setAddWeek">Assitence week </label>
                                                                 <input type="hidden" name="setAddWeek" id="setAddWeek" value="1">
-                                                                <button type="submit" class="btn btn-primary">Generar Reporte</button>
+                                                                <button type="submit" class="btn btn-primary">Create</button>
 
                                                             </form>
                                                 </div>
