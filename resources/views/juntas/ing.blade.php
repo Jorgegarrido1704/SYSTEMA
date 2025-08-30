@@ -49,7 +49,7 @@
         <div class="col-xl-6 col-lg-6 mb-4">
             <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h5 class="m-0 font-weight-bold text-primary"> Tiempos de trabajo </h5>
+                    <h5 class="m-0 font-weight-bold text-primary"> KPI WORK TIMES </h5>
                 </div>
                 <!-- table Body -->
                 <div class="card-body" style="overflow-y: auto; height: 400px;">
@@ -60,7 +60,7 @@
         <div class="col-xl-6 col-lg-6 mb-4">
             <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h5 class="m-0 font-weight-bold text-primary">Registro de Actividades PPAP </h5>
+                    <h5 class="m-0 font-weight-bold text-primary">KPI NPI </h5>
                 </div>
                 <!-- table Body -->
                 <div class="card-body" style="overflow-y: auto; height: 400px;">
@@ -73,7 +73,7 @@
         <div class="col-xl-6 col-lg-6 mb-4">
             <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h5 class="m-0 font-weight-bold text-primary">Registro De Trabajos documentacion </h5>
+                <h5 class="m-0 font-weight-bold text-primary">KPI DOCUMENTATION DEVELOPMENT</h5>
                       <div class="dropdown no-arrow">
                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -103,10 +103,10 @@
                         <table class="table table-striped table-bordered"  cellspacing="0" width="100%">
                              <thead style=" position: sticky; z-index: 1; top: 0; text-align: center; background-color: black; color: white; ">
                                 <tr>
-                                    <th>Cliente</th>
-                                    <th>Numero de Parte</th>
-                                    <th>Fecha Compromiso</th>
-                                    <th>Fecha Completado</th>
+                                    <th>Customer</th>
+                                    <th>Part Number</th>
+                                    <th>Commitment Date</th>
+                                    <th>Completion Date</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -136,7 +136,38 @@
         <div class="col-xl-12 col-lg-12 mb-4">
             <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h5 class="m-0 font-weight-bold text-primary">Registro de Actividades Ultimo Mes</h5>
+                    <h5 class="m-0 font-weight-bold text-primary">Open NPI</h5><br>
+                    <form action="#" id="formNpi">
+                        <div class="row">
+                            <div class="col-lg-4 mb-4">
+                                <label for="fechaInicio">Type of NPI</label>
+                                <select id="tipoNpi" name="tipoNpi" class="form-control">
+                                    <option value="All">All</option>
+                                    <option value="green">PPAP</option>
+                                    <option value="yellow">PRIM</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-4 mb-4">
+                                <label for="Color">To:</label>
+                                <input type="date" id="fechaFin" name="fechaFin" class="form-control" value="{{ date('Y-m-d') }}">
+                            </div>
+                            <div class="col-lg-4 mb-4">
+                                <label for="filtrar">Filter</label>
+                                <button type="button" id="filtrar" class="btn btn-primary form-control">Apply</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <script>
+                        document.getElementById('filtrar').addEventListener('click', function() {
+                            const fechaInicio = document.getElementById('fechaInicio').value;
+                            const fechaFin = document.getElementById('fechaFin').value;
+                            const url = new URL(window.location.href);
+                            url.searchParams.set('fechaInicio', fechaInicio);
+                            url.searchParams.set('fechaFin', fechaFin);
+                            window.location.href = url.toString();
+                        });
+                    </script>
 
                 </div>
                 <!-- table Body -->
@@ -144,26 +175,25 @@
                     <table class="table table-striped table-bordered"  cellspacing="0" width="100%">
                         <thead style=" position: sticky; z-index: 1; top: 0; text-align: center; background-color: black; color: white; ">
                             <tr>
-                                <th>Cliente</th>
-                                <th>Numero de Parte</th>
+                                <th>Custoemrs</th>
+                                <th>Part Numbers</th>
                                 <th>size</th>
                                 <th>Revision</th>
-                                <th>Fecha de recibo</th>
-                                <th>Fecha compromiso</th>
-                                <th>Fecha de entrega</th>
-                                <th>Fecha del cliente</th>
-                                <th>Cantidad en PO</th>
+                                <th>Reception Date</th>
+                                <th>Commitment Date</th>
+                                <th>Completion Date</th>
+                                <th>Requiriment Date</th>
+                                <th>Po Qty</th>
                                 <th>Responsable</th>
-                                <th>Fecha de firmas <br>completadas Ingeinieria</th>
-                                <th>Planeacion</th>
+                                <th>Last Sign Date</th>
+                                <th>Plannig Date</th>
                                 <th>Work Order</th>
-                                <th>Cantidad en piso</th>
-                                <th>Corte</th>
-                                <th>Liberacion</th>
-                                <th>ensamble //<br>cables especiales</th>
+                                <th>Produciton Qty</th>
+                                <th>Cutting</th>
+                                <th>Terminals</th>
+                                <th>Assembly //<br>Special Assembly</th>
                                 <th>Loom</th>
-                                <th>Calidad</th>
-
+                                <th>Quality</th>
                             </tr>
 
                         </thead>
