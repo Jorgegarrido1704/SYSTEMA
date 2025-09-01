@@ -152,25 +152,26 @@
                                         </thead>
                                         <tbody>
                                             @if(!empty($vacaciones))
-                                            @foreach($vacaciones as $vacacione)
+                                            @foreach($vacaciones as $vacacion)
                                             <tr class="text-center text-black">
-                                                <td>{{$vacacione->tp}}</td>
-                                                <td>{{$vacacione->client}}</td>
-                                                <td>{{$vacacione->tipo}}</td>
-                                                <td>{{$vacacione->pn}}</td>
-                                                @if($vacacione->REV2 !='N/A')
-                                                <td>{{ $vacacione->REV1}} To {{$npi->REV2}}</td>
-                                                @else
-                                                <td>{{$npi->REV1}}</td>
-                                                @endif
-                                                <td>{{$npi->cambios}}</td>
-                                                <td>{{$npi->fecha}}</td>
-                                                <td>{{$npi->eng}}</td>
+                                                <td>{{$vacacion->Folio}}</td>
+                                                <td>{{$vacacion->nombre}}</td>
+                                                <td>{{$vacacion->id_empleado}}</td>
+                                                <td>{{$vacacion->area}}</td>
+                                                <td>{{$vacacion->supervisor}}</td>
+                                                <td>{{$vacacion->fecha_solicitud}}</td>
+                                                <td>{{$vacacion->dias_solicitados}}</td>
+
                                                 <td>
-                                                    <form action="{{route('Pendings.update')}}" method="POST">
+                                                    <form action="{{route('vacaciones.update')}}" method="POST">
                                                         @csrf
-                                                        <input type="hidden" name="id" value="{{$npi->id}}">
-                                                        <input type="hidden" name="who" value="{{$value}}">
+                                                        <input type="hidden" name="folio" value="{{$vacacion->Folio}}">
+                                                        <input type="hidden" name="nombre" value="{{$vacacion->nombre}}">
+                                                        <input type="hidden" name="id_vac" value="{{$vacacion->id_empleado}}">
+                                                        <input type="hidden" name="area" value="{{$vacacion->area}}">
+                                                        <input type="hidden" name="fecha" value="{{$vacacion->fecha_solicitud}}">
+                                                        <input type="hidden" name="dias" value="{{$vacacion->dias_solicitados}}">
+                                                        <input type="hidden" name="who" value="{{$vacacion->supervisor}}">
                                                         <button type="submit" class="btn btn-primary">Sign</button>
                                                     </form>
                                                 </td>

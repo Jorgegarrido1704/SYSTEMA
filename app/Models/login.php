@@ -11,7 +11,10 @@ class login extends Model
     protected $fillable = [
         'user',
         'clave',
-        'category'
+        'category',
+        'user_email',
+        
+
 
 
     ];

@@ -1964,10 +1964,13 @@ class juntasController extends Controller
         if (count($vacaciones) == 0) {
             if (session('categoria') == 'inge') {
                 $equipo = 'Ingenieria';
-            }
+
             $busquedaRelacionadas = personalBergsModel::select('employeeLider')->where('employeeArea', '=', $equipo)
                 ->limit(1)->first();
-            $Leader = $busquedaRelacionadas->employeeLider;
+            $Leader = $busquedaRelacionadas->employeeLider;}
+            else {
+                $Leader =$value;
+            }
 
             $vacaciones = registroVacacionesModel::wherebetween('fecha_de_solicitud', [$InicioYear->toDateString(), $FinYear->toDateString()])
                 // ->where('fecha_de_solicitud', 'LIKE', $currentYear . '%')
@@ -2057,6 +2060,7 @@ class juntasController extends Controller
         $fecha_de_solicitud =$endDate->toDateString();
         $dias_solicitados =$diasT;
         $contend=[
+            'asunto'=>'Solicitud de Vacaciones',
             'nombre'=>$nombre,
             'departamento'=>$area,
             'supervisor'=>$supervisor,

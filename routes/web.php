@@ -206,5 +206,6 @@ Route::controller(mailsController::class)->group(function () {
   Route::post('/Pendigs/update', [mailsController::class, 'update'])->name('Pendings.update');
   Route::post('/desviation/update', [mailsController::class, 'desviationUpdate'])->name('desviation.update');
   Route::get('/desviation/denied', [mailsController::class, 'desviationDenied'])->name('desviation.denied');
+  Route::post('/vacaciones/update', [mailsController::class, 'vacacionesUpdate'])->name('vacaciones.update');
 
 });

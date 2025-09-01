@@ -4,7 +4,7 @@
     <title>Solicitud de Vacaciones </title>
 </head>
 <body>
-    <p> Se registro una nueva solicitud de vacaciones</p><br><br>
+    <p> {{ $contend['asunto'] }}</p><br><br>
     <p> Folio:{{$contend['Folio']}} </p>
     <p> Fecha de Solicitud:{{$contend['fecha_de_solicitud']}} </p>
     <p> Dias Solicitados:{{$contend['dias_solicitados']}}
@@ -12,7 +12,7 @@
     <p> Departamento:{{$contend['departamento']}} </p>
     <p> Supervisor:{{$contend['supervisor']}} </p>
 
-    <p>Favor de revisar la solicitud y firmarla en el CVTS </p>
+    <p>Favor de revisar la solicitud en el CVTS </p>
 
 
 

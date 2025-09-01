@@ -14,7 +14,10 @@ use App\Mail\firmasCompletas;
 use App\Models\workScreduleModel ;
 use App\Models\desviation;
 use App\Mail\desviacionesEmails;
+use App\Models\login;
+use App\Models\personalBergsModel;
 use App\Models\registroVacacionesModel;
+use App\Mail\solicitudVacacionesMail;
 
 class mailsController extends Controller
 {
@@ -56,14 +59,29 @@ class mailsController extends Controller
             $desviations=[];
         }
         if($value=='Admin' or $value=='Juan G'){
-            $vacaciones=registroVacacionesModel::where('estatus','=','Pendiente')->get();
+            $foliosVacaciones=registroVacacionesModel::where('estatus','=','Pendiente')->get();
 
         }elseif($value=='Paola A' or $value=='Angy B'){
-            $vacaciones=registroVacacionesModel::where('estatus','=','Pendiente RH')->get();
+            $foliosVacaciones=registroVacacionesModel::where('estatus','=','Pendiente RH')->get();
         }else{
-            $vacaciones=[];
+            $foliosVacaciones=[];
         }
-        
+        $vacaciones=[];
+        $i=0;
+        foreach($foliosVacaciones as $vaca){
+           $buscardatos=personalBergsModel::where('employeeNumber','=',$vaca->id_empleado)->first();
+           $vacaciones[$i]= (object) [
+            'Folio' => $vaca->id,
+            'nombre' => $buscardatos->employeeName,
+            'area' => $buscardatos->employeeArea,
+            'supervisor' => $buscardatos->employeeLider,
+            'id_empleado' => $vaca->id_empleado,
+            'fecha_solicitud' => $vaca->fecha_de_solicitud,
+            'dias_solicitados' => 1,
+           ];
+           $i++;
+        }
+
 
 
         return view('firmas.npi.npi', ['vacaciones' => $vacaciones,'desviations' => $desviations,'registroFirmas' => $registroFirmas,'value' => $value, 'cat' => $cat]);
@@ -136,13 +154,35 @@ class mailsController extends Controller
     }
 
     public function vacacionesUpdate(Request $request){
-        $id=$request->input('id');
-        $datos=$request->input('datos');
+        $id_emp=$request->input('id_vac');
+        $folio=$request->input('folio');
+        $who=$request->input('who');
+        $nombre=$request->input('nombre');
+        $dias=$request->input('dias');
+        $area=$request->input('area');
+        $fecha=$request->input('fecha');
+        $correo=login::select('user_email')->where('user','=',$who)->first();
+        if($correo->user_email==null or $correo->user_email==''){
+            $correo->user_email='jgarrido@mx.bergstrominc.com';
+        }
+        $receivers=$correo->user_email;
+        $structure=[
+            'asunto'=>'Solicitud de Vacaciones Aprobada',
+            'nombre'=>$nombre,
+            'Folio'=>'VAC-'.$folio,
+            'fecha_de_solicitud'=>$fecha,
+            'departamento'=>$area,
+            'dias_solicitados'=>$dias,
+            'supervisor'=>$who,
+        ];
+
         $value=session('user');
          if($value=='Admin' or $value=='Juan G'){
-        registroVacacionesModel::where('id','=',$id)->update(['estatus' => 'Pendiente RH']);
+        registroVacacionesModel::where('id','=',$folio)->update(['estatus' => 'Pendiente RH']);
         }else if($value=='Paola A' or $value=='Angy B'){
-            registroVacacionesModel::where('id','=',$id)->update(['estatus' => 'Confirmado']);
+            registroVacacionesModel::where('id','=',$folio)->update(['estatus' => 'Confirmado']);
+
+            Mail::to($receivers)->send(new solicitudVacacionesMail($structure,'Solicitud de Vacaciones Aprobada'));
         }
         return redirect('/Pendigs');
     }
