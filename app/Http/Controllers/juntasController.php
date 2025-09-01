@@ -1223,13 +1223,6 @@ class juntasController extends Controller
                     $pao[$row->actividades] = $timetotal;
                 }
             }
-            if ($row->Id_request == 'Alejandro V') {
-                if (key_exists($row->actividades, $ale)) {
-                    $ale[$row->actividades] += $timetotal;
-                } else {
-                    $ale[$row->actividades] = $timetotal;
-                }
-            }
             if ($row->Id_request == 'Carlos R') {
                 if (key_exists($row->actividades, $carlos)) {
                     $carlos[$row->actividades] += $timetotal;
@@ -1250,13 +1243,7 @@ class juntasController extends Controller
                     $jorge[$row->actividades] = $timetotal;
                 }
             }
-            if ($row->Id_request == 'Brandon S') {
-                if (key_exists($row->actividades, $brandon)) {
-                    $brandon[$row->actividades] += $timetotal;
-                } else {
-                    $brandon[$row->actividades] = $timetotal;
-                }
-            }
+
         }
         $tiemposDatosIng = DB::table('ingactividades')
             ->where('count', '=', '4')
@@ -1315,8 +1302,9 @@ class juntasController extends Controller
         $porcentaje = $b = $m  = $total = 0;
         $porcentajemes1 = $porcentajemes = 0;
         $last12Months = $thisYearGoals = $registrosArray = $buenos = $malos = [];
+        $registrosmes = [];
 
-
+/*
         $registrosArray = workScreduleModel::getWorkScheduleCompleted(date('Y'));
         foreach ($registrosArray as $registro => $valor) {
             if ($valor[0] == 0) {
@@ -1344,7 +1332,7 @@ class juntasController extends Controller
         //$porcentajemes= $registrosArray['7'][1];
 
 
-
+*/
 
 
 
