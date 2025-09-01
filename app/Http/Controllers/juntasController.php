@@ -2092,7 +2092,7 @@ class juntasController extends Controller
                 DB::table('registro_vacaciones')->insert([
                     'id_empleado' => $pesonal,
                     'fecha_de_solicitud' => $endDate,
-                    'estatus' => 'Confirmado',
+                    'estatus' => 'Pendiente',
                     'dias_solicitados' => 1,
                     'usedYear' => $years,
                     'superVisor' => session('user')
