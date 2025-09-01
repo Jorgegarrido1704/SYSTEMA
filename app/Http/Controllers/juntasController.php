@@ -1304,7 +1304,7 @@ class juntasController extends Controller
         $last12Months = $thisYearGoals = $registrosArray = $buenos = $malos = [];
         $registrosmes = [];
 
-/*
+
         $registrosArray = workScreduleModel::getWorkScheduleCompleted(date('Y'));
         foreach ($registrosArray as $registro => $valor) {
             if ($valor[0] == 0) {
@@ -1332,7 +1332,7 @@ class juntasController extends Controller
         //$porcentajemes= $registrosArray['7'][1];
 
 
-*/
+
 
 
 
@@ -1340,7 +1340,7 @@ class juntasController extends Controller
         // PPAP and PRIM Insofor
         $registroPPAP = [];
         $i = 0;
-      /*  $WS = workScreduleModel::where('UpOrderDate', '=', null, 'OR', 'status', '!=', 'CANCELLED')->orderBy('id', 'desc')->get();
+        $WS = workScreduleModel::where('UpOrderDate', '=', null, 'OR', 'status', '!=', 'CANCELLED')->orderBy('id', 'desc')->get();
         foreach ($WS as $res) {
             $registroPPAP[$i][0] = $res->customer;
             $registroPPAP[$i][1] = $res->pn;
@@ -1439,7 +1439,7 @@ class juntasController extends Controller
 
             $i++;
         }
-*/
+
 
         return view('juntas/ing', ['registrosmes' => $registrosmes, 'b' => $b, 'm' => $m, 'porcentajemes' => $porcentajemes, 'porcentajemes1' => $porcentajemes1, 'registroPPAP' => $registroPPAP, 'thisYearGoals' => $thisYearGoals, 'last12Months' => $last12Months, 'porcentaje' => $porcentaje,  'todas' => $todas, 'jesp' => $jesp, 'nanp' => $nanp, 'bp' => $bp, 'jcp' => $jcp, 'psp' => $psp, 'alv' => $alv, 'asp' => $asp, 'jg' => $jg, 'jesus' => $jesus, 'pao' => $pao, 'nancy' => $nancy, 'ale' => $ale, 'carlos' => $carlos, 'arturo' => $arturo, 'jorge' => $jorge, 'brandon' => $brandon, 'actividadesLastMonth' => $actividadesLastMonth, 'actividades' => $actividades, 'value' => session('user'), 'cat' => session('categoria')]);
     }
