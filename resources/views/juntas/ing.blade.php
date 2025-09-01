@@ -202,7 +202,7 @@
                             @if(!empty($registroPPAP))
                                 @foreach ($registroPPAP as $ppaps )
 
-                                    <tr id={{ $papas[14] }} style="text-align: center; background-color:rgba({{ $ppaps[14] }}) ; text-align: center; color : black;">
+                                    <tr id={{ $ppaps[14] }} style="text-align: center; background-color:rgba({{ $ppaps[14] }}) ; text-align: center; color : black;">
                                         <td>{{$ppaps[0]}} </td>
                                         <td>{{$ppaps[1]}} </td>
                                         <td>{{$ppaps[2]}} </td>
