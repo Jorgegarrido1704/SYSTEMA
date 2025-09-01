@@ -1340,7 +1340,7 @@ class juntasController extends Controller
         // PPAP and PRIM Insofor
         $registroPPAP = [];
         $i = 0;
-
+        /*
         $WS = workScreduleModel::where('UpOrderDate', '=', null, 'OR', 'status', '!=', 'CANCELLED')->orderBy('id', 'desc')->get();
         foreach ($WS as $res) {
             $registroPPAP[$i][0] = $res->customer;
@@ -1370,7 +1370,7 @@ class juntasController extends Controller
             $registroPPAP[$i][18] = $res->qtyInPo;
             $i++;
         }
-/*
+
         $registros = Wo::where('rev', 'LIKE', 'PRIM%')->Orwhere('rev', 'LIKE', 'PPAP%')->orderBY('count', 'asc')->orderBy('cliente', 'asc')->get();
         foreach ($registros as $reg) {
             $registroPPAP[$i][0] = $reg->cliente;
