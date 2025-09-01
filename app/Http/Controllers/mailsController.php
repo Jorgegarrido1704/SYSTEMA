@@ -179,6 +179,7 @@ class mailsController extends Controller
         $value=session('user');
          if($value=='Admin' or $value=='Juan G'){
         registroVacacionesModel::where('id','=',$folio)->update(['estatus' => 'Pendiente RH']);
+        Mail::to('paguilar@mx.bergstrominc.com,mabibarra@mx.bergstrominc.com')->send(new solicitudVacacionesMail($structure,'Solicitud de Vacaciones'));
         }else if($value=='Paola A' or $value=='Angy B'){
             registroVacacionesModel::where('id','=',$folio)->update(['estatus' => 'Confirmado']);
 

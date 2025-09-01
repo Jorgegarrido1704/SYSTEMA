@@ -2120,7 +2120,7 @@ class juntasController extends Controller
         $folio='VAC-'.$buscarFolio->id;
         $contend['fecha_de_solicitud']=$endDate->toDateString();
         $contend['Folio']=$folio;
-        Mail::to('jgarrido@mx.bergstrominc.com')->send(new solicitudVacacionesMail($contend, 'Solicitud de Vacaciones'));
+        Mail::to('jguillen@mx.bergstrominc.com')->send(new solicitudVacacionesMail($contend, 'Solicitud de Vacaciones'));
             $endDate->addDay(1);
         }
 
