@@ -14,6 +14,7 @@ use App\Mail\firmasCompletas;
 use App\Models\workScreduleModel ;
 use App\Models\desviation;
 use App\Mail\desviacionesEmails;
+use App\Models\registroVacacionesModel;
 
 class mailsController extends Controller
 {
@@ -54,8 +55,18 @@ class mailsController extends Controller
         }else {
             $desviations=[];
         }
+        if($value=='Admin' or $value=='Juan G'){
+            $vacaciones=registroVacacionesModel::where('estatus','=','Pendiente')->get();
 
-        return view('firmas.npi.npi', ['desviations' => $desviations,'registroFirmas' => $registroFirmas,'value' => $value, 'cat' => $cat]);
+        }elseif($value=='Paola A' or $value=='Angy B'){
+            $vacaciones=registroVacacionesModel::where('estatus','=','Pendiente RH')->get();
+        }else{
+            $vacaciones=[];
+        }
+        
+
+
+        return view('firmas.npi.npi', ['vacaciones' => $vacaciones,'desviations' => $desviations,'registroFirmas' => $registroFirmas,'value' => $value, 'cat' => $cat]);
     }
 
     public function update(Request $request){
@@ -123,5 +134,17 @@ class mailsController extends Controller
 
         return redirect('/Pendigs');
     }
+
+    public function vacacionesUpdate(Request $request){
+        $id=$request->input('id');
+        $datos=$request->input('datos');
+        $value=session('user');
+         if($value=='Admin' or $value=='Juan G'){
+        registroVacacionesModel::where('id','=',$id)->update(['estatus' => 'Pendiente RH']);
+        }else if($value=='Paola A' or $value=='Angy B'){
+            registroVacacionesModel::where('id','=',$id)->update(['estatus' => 'Confirmado']);
+        }
+        return redirect('/Pendigs');
     }
 
+}

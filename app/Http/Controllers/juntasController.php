@@ -2071,8 +2071,8 @@ class juntasController extends Controller
             'nombre'=>$nombre,
             'departamento'=>$area,
             'supervisor'=>$supervisor,
-            'fecha_de_solicitud'=>$fecha_de_solicitud,
-            'dias_solicitados'=>$dias_solicitados,
+            'fecha_de_solicitud'=>'',
+            'dias_solicitados'=>1,
             'Folio'=>''
         ];
 
@@ -2119,14 +2119,15 @@ class juntasController extends Controller
 
                 ]);
             }
-            $endDate->addDay(1);
-        }
-        $buscarFolio=DB::table('registro_vacaciones')
+               $buscarFolio=DB::table('registro_vacaciones')
         ->select('id')->where('id_empleado', '=', $pesonal)
         ->limit(1)->orderBy('id', 'desc')->first();
         $folio='VAC-'.$buscarFolio->id;
+        $contend['fecha_de_solicitud']=$endDate->toDateString();
         $contend['Folio']=$folio;
         Mail::to('jgarrido@mx.bergstrominc.com')->send(new solicitudVacacionesMail($contend, 'Solicitud de Vacaciones'));
+            $endDate->addDay(1);
+        }
 
         return redirect()->route('vacations')->with('success', 'Vacaciones agregadas correctamente.');
     }

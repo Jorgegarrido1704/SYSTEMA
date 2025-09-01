@@ -59,11 +59,13 @@ class loginController extends Controller
 
             if ($newLog->save()) {
                 // If login record is saved successfully, redirect to the admin page
-                $buscauser = DB::select("SELECT category FROM login WHERE user='$user'");
+                $buscauser = DB::select("SELECT category,user_email FROM login WHERE user='$user'");
                 foreach ($buscauser as $rowuser) {
                     $categoria = $rowuser->category;
+                    $email = $rowuser->user_email;
                 }
                 session((['categoria' => $categoria]));
+                session((['email' => $email]));
                 if ($categoria == 'Boss') {
                     return redirect('/boss');
                 } else if ($categoria == 'Admin') {
@@ -132,6 +134,8 @@ class loginController extends Controller
 
         if ($newLog->save()) {
             session()->forget('user');
+            session()->forget('categoria');
+            session()->forget('email');
             // Redirect the user after logout
             return redirect('/');
         } else {

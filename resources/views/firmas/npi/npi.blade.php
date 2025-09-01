@@ -5,7 +5,7 @@
 
 <div class="row">
 
-                        <!-- Firmar por completar -->
+                        <!-- Firmar por completar NPI -->
                         <div class="col-lg-12 mb-4">
 
                             <!-- Header Firmas -->
@@ -60,6 +60,7 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- Desviaciones -->
                           <div class="col-lg-12 mb-4">
 
                             <!-- Header Firmas -->
@@ -117,6 +118,60 @@
                                                         <input type="hidden" name="idq" id="idq" value="{{ $des->id }}" >
                                                        <textarea name="rechaso" id="rechaso" cols="10" rows="2"></textarea>
                                                         <button type="submit" class="btn btn-danger">Denied</button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                                    @endforeach
+                                                    @endif
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Vacaciones -->
+                          <div class="col-lg-12 mb-4">
+
+                            <!-- Header Firmas -->
+                            <div class="card shadow mb-4">
+                                <div  class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Vacations</h6>
+                                </div>
+                                <!--Firmas -->
+                                <div class="card-body">
+                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th>Folio</th>
+                                                <th>Employee name</th>
+                                                <th>Employee ID</th>
+                                                <th>Employee Area</th>
+                                                <th>Supervisor</th>
+                                                <th>Vacation start date</th>
+                                                <th>Days off</th>
+                                                <th>Sign</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if(!empty($vacaciones))
+                                            @foreach($vacaciones as $vacacione)
+                                            <tr class="text-center text-black">
+                                                <td>{{$vacacione->tp}}</td>
+                                                <td>{{$vacacione->client}}</td>
+                                                <td>{{$vacacione->tipo}}</td>
+                                                <td>{{$vacacione->pn}}</td>
+                                                @if($vacacione->REV2 !='N/A')
+                                                <td>{{ $vacacione->REV1}} To {{$npi->REV2}}</td>
+                                                @else
+                                                <td>{{$npi->REV1}}</td>
+                                                @endif
+                                                <td>{{$npi->cambios}}</td>
+                                                <td>{{$npi->fecha}}</td>
+                                                <td>{{$npi->eng}}</td>
+                                                <td>
+                                                    <form action="{{route('Pendings.update')}}" method="POST">
+                                                        @csrf
+                                                        <input type="hidden" name="id" value="{{$npi->id}}">
+                                                        <input type="hidden" name="who" value="{{$value}}">
+                                                        <button type="submit" class="btn btn-primary">Sign</button>
                                                     </form>
                                                 </td>
                                             </tr>
