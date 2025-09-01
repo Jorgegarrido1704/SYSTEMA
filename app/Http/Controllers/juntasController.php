@@ -1341,7 +1341,7 @@ class juntasController extends Controller
         $registroPPAP = [];
         $i = 0;
 
-        $WS = workScreduleModel::where( 'status', '!=', 'CANCELLED' ,'OR', 'UpOrderDate', '=', null)->orderBy('id', 'desc')->get();
+        $WS = workScreduleModel::where( 'status', '!=', 'CANCELLED' ,'OR', 'UpOrderDate', '!=', null)->orderBy('id', 'desc')->get();
         foreach ($WS as $res) {
             $registroPPAP[$i][0] = $res->customer;
             $registroPPAP[$i][1] = $res->pn;
