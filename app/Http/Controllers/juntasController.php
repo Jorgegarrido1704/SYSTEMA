@@ -20,6 +20,8 @@ use App\Models\workScreduleModel;
 use App\Models\Wo;
 use App\Models\tiempos;
 use App\Models\registroVacacionesModel;
+use App\Mail\solicitudVacacionesMail;
+use Illuminate\Support\Facades\Mail;
 
 class juntasController extends Controller
 {
@@ -2038,11 +2040,14 @@ class juntasController extends Controller
         $pesonal = $input['personalIng'];
         $endDate = Carbon::parse($input['endDate']);
         $diasT = $input['diasT'];
+
+
         // revisar si hay
         $datosVacaciones = DB::table('registro_vacaciones')
             ->select('dias_solicitados', 'id_empleado')
             ->where('fecha_de_solicitud', '=', $endDate)
             ->get();
+
         if ($datosVacaciones != null &&  count($datosVacaciones) > 2) {
             session()->flash('error', 'Ya hay vacaciones registradas para esta fecha.');
             return redirect()->back();
@@ -2056,6 +2061,21 @@ class juntasController extends Controller
         $lastyear = $buscarPersonal->lastYear;
         $currentYear = $buscarPersonal->currentYear;
         $nextYear = $buscarPersonal->nextYear;
+        //Datos para el registro
+        $nombre =$buscarPersonal->employeeName;
+        $area=$buscarPersonal->employeeArea;
+        $supervisor=$buscarPersonal->employeeLider;
+        $fecha_de_solicitud =$endDate->toDateString();
+        $dias_solicitados =$diasT;
+        $contend=[
+            'nombre'=>$nombre,
+            'departamento'=>$area,
+            'supervisor'=>$supervisor,
+            'fecha_de_solicitud'=>$fecha_de_solicitud,
+            'dias_solicitados'=>$dias_solicitados,
+            'Folio'=>''
+        ];
+
 
         if ($lastyear >= $diasT) {
             DB::table('personalberg')
@@ -2101,6 +2121,12 @@ class juntasController extends Controller
             }
             $endDate->addDay(1);
         }
+        $buscarFolio=DB::table('registro_vacaciones')
+        ->select('id')->where('id_empleado', '=', $pesonal)
+        ->limit(1)->orderBy('id', 'desc')->first();
+        $folio='VAC-'.$buscarFolio->id;
+        $contend['Folio']=$folio;
+        Mail::to('jgarrido@mx.bergstrominc.com')->send(new solicitudVacacionesMail($contend, 'Solicitud de Vacaciones'));
 
         return redirect()->route('vacations')->with('success', 'Vacaciones agregadas correctamente.');
     }
