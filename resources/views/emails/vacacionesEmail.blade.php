@@ -11,8 +11,20 @@
     <p> Empleado:{{$contend['nombre']}} </p>
     <p> Departamento:{{$contend['departamento']}} </p>
     <p> Supervisor:{{$contend['supervisor']}} </p>
-        <button style="background-color: #4CAF50; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer;"><a href="{{ $contend['link'] }}" >
-           Revisar Solicitud</a></button>
+
+    <p>
+        <a href="{{ $contend['link'] }}" target="_blank"
+           style="display:inline-block;
+                  padding:10px 20px;
+                  background-color:#007bff;
+                  color:#ffffff;
+                  text-decoration:none;
+                  border-radius:5px;
+                  font-weight:bold;">
+            Revisar Solicitud
+        </a>
+    </p>
+
     <br><br>
     <p>Favor de revisar la solicitud en el CVTS </p>
 
