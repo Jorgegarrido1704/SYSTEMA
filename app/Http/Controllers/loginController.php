@@ -164,10 +164,10 @@ class loginController extends Controller
             $newLog->userName = $user;
             $newLog->action = "login by email link - ".$user;
 
-            redirect()->to('/Pendigs');
+          return  redirect()->to('/Pendigs');
         } else {
             // If user does not exist with provided credentials, redirect back with an error message
-            return redirect()->route('/login')->with("error", "Invalid username or password");
+            return redirect('/login')->with("error", "Invalid username or password");
         }
     }
 }
