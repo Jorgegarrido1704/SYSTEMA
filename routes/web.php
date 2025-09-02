@@ -202,7 +202,7 @@ Route::controller(AccionesCorrectivasController::class)->group(function () {
 
 Route::controller(mailsController::class)->group(function () {
   //  Route::get('/mails', [mailsController::class, 'accionesCorrectivas'])->name('mails.accionesCorrectivas');
-  Route::get('/Pendigs', [mailsController::class, 'index'])->name('Pendings.index');
+  Route::get('/Pendigs', [mailsController::class, 'index'])->name('Pendings.index')->middleware('signed');
   Route::post('/Pendigs/update', [mailsController::class, 'update'])->name('Pendings.update');
   Route::post('/desviation/update', [mailsController::class, 'desviationUpdate'])->name('desviation.update');
   Route::get('/desviation/denied', [mailsController::class, 'desviationDenied'])->name('desviation.denied');
