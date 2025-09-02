@@ -7,6 +7,8 @@ use App\Models\accionesCorrectivas;
 use App\Mail\accionesCorrectivasRecordatorio;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 use App\Models\PPAPandPRIM;

@@ -11,7 +11,7 @@
     <p> Empleado:{{$contend['nombre']}} </p>
     <p> Departamento:{{$contend['departamento']}} </p>
     <p> Supervisor:{{$contend['supervisor']}} </p>
-
+        <button class="btn btn-primary"><a href="http://mxloficina.corp.internal.bergstrominc.com:8000/"></a></button>
     <p>Favor de revisar la solicitud en el CVTS </p>
 
 

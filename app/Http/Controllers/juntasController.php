@@ -9,6 +9,8 @@ use App\Models\personalBergsModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\URL;
 use Exception;
 use ZeroDivisionError;
 use Carbon\Carbon;
@@ -2061,6 +2063,7 @@ class juntasController extends Controller
         $supervisor=$buscarPersonal->employeeLider;
         $fecha_de_solicitud =$endDate->toDateString();
         $dias_solicitados =$diasT;
+        $link=URL::temporarySignedRoute('vacacionesUpdate', now()->addMinutes(30),['user'=>'Juan G']);
         $contend=[
             'asunto'=>'Solicitud de Vacaciones',
             'nombre'=>$nombre,
@@ -2068,7 +2071,8 @@ class juntasController extends Controller
             'supervisor'=>$supervisor,
             'fecha_de_solicitud'=>'',
             'dias_solicitados'=>1,
-            'Folio'=>''
+            'Folio'=>'',
+            'link'=>$link
         ];
 
 
@@ -2103,6 +2107,7 @@ class juntasController extends Controller
                     $years = Carbon::now()->subYear()->year;
                 }
 
+
                 //Insert into registro_vacaciones table
                 DB::table('registro_vacaciones')->insert([
                     'id_empleado' => $pesonal,
@@ -2120,7 +2125,7 @@ class juntasController extends Controller
         $folio='VAC-'.$buscarFolio->id;
         $contend['fecha_de_solicitud']=$endDate->toDateString();
         $contend['Folio']=$folio;
-        Mail::to('jguillen@mx.bergstrominc.com')->send(new solicitudVacacionesMail($contend, 'Solicitud de Vacaciones'));
+        Mail::to('jgarrido@mx.bergstrominc.com')->send(new solicitudVacacionesMail($contend, 'Solicitud de Vacaciones'));
             $endDate->addDay(1);
         }
 
