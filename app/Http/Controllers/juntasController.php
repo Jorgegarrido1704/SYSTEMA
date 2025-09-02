@@ -1245,7 +1245,6 @@ class juntasController extends Controller
                     $jorge[$row->actividades] = $timetotal;
                 }
             }
-
         }
         $tiemposDatosIng = DB::table('ingactividades')
             ->where('count', '=', '4')
@@ -1343,9 +1342,9 @@ class juntasController extends Controller
         $registroPPAP = [];
         $i = 0;
 
-        $WS = workScreduleModel::where( 'status', '!=', 'CANCELLED')
-        ->where('UpOrderDate', '=', null)
-        ->orderBy('id', 'desc')->get();
+        $WS = workScreduleModel::where('status', '!=', 'CANCELLED')
+            ->where('UpOrderDate', '=', null)
+            ->orderBy('id', 'desc')->get();
         foreach ($WS as $res) {
             $registroPPAP[$i][0] = $res->customer;
             $registroPPAP[$i][1] = $res->pn;
@@ -1969,11 +1968,11 @@ class juntasController extends Controller
             if (session('categoria') == 'inge') {
                 $equipo = 'Ingenieria';
 
-            $busquedaRelacionadas = personalBergsModel::select('employeeLider')->where('employeeArea', '=', $equipo)
-                ->limit(1)->first();
-            $Leader = $busquedaRelacionadas->employeeLider;}
-            else {
-                $Leader =$value;
+                $busquedaRelacionadas = personalBergsModel::select('employeeLider')->where('employeeArea', '=', $equipo)
+                    ->limit(1)->first();
+                $Leader = $busquedaRelacionadas->employeeLider;
+            } else {
+                $Leader = $value;
             }
 
             $vacaciones = registroVacacionesModel::wherebetween('fecha_de_solicitud', [$InicioYear->toDateString(), $FinYear->toDateString()])
@@ -2058,21 +2057,21 @@ class juntasController extends Controller
         $currentYear = $buscarPersonal->currentYear;
         $nextYear = $buscarPersonal->nextYear;
         //Datos para el registro
-        $nombre =$buscarPersonal->employeeName;
-        $area=$buscarPersonal->employeeArea;
-        $supervisor=$buscarPersonal->employeeLider;
-        $fecha_de_solicitud =$endDate->toDateString();
-        $dias_solicitados =$diasT;
-        $link=URL::temporarySignedRoute('loginWithoutSession', now()->addMinutes(30),['user'=>'Juan G']);
-        $contend=[
-            'asunto'=>'Solicitud de Vacaciones',
-            'nombre'=>$nombre,
-            'departamento'=>$area,
-            'supervisor'=>$supervisor,
-            'fecha_de_solicitud'=>'',
-            'dias_solicitados'=>1,
-            'Folio'=>'',
-            'link'=>$link
+        $nombre = $buscarPersonal->employeeName;
+        $area = $buscarPersonal->employeeArea;
+        $supervisor = $buscarPersonal->employeeLider;
+        $fecha_de_solicitud = $endDate->toDateString();
+        $dias_solicitados = $diasT;
+        $link = URL::temporarySignedRoute('loginWithoutSession', now()->addMinutes(30), ['user' => 'Juan G']);
+        $contend = [
+            'asunto' => 'Solicitud de Vacaciones',
+            'nombre' => $nombre,
+            'departamento' => $area,
+            'supervisor' => $supervisor,
+            'fecha_de_solicitud' => '',
+            'dias_solicitados' => 1,
+            'Folio' => '',
+            'link' => $link
         ];
 
 
@@ -2119,17 +2118,20 @@ class juntasController extends Controller
 
                 ]);
             }
-               $buscarFolio=DB::table('registro_vacaciones')
-        ->select('id')->where('id_empleado', '=', $pesonal)
-        ->limit(1)->orderBy('id', 'desc')->first();
-        $folio='VAC-'.$buscarFolio->id;
-        $contend['fecha_de_solicitud']=$endDate->toDateString();
-        $contend['Folio']=$folio;
-        $receivers='paguilar@mx.bergstrominc.com,mabibarra@mx.bergstrominc.com';
-        Mail::to($receivers)->send(new solicitudVacacionesMail($contend,'Solicitud de Vacaciones'));
+            $buscarFolio = DB::table('registro_vacaciones')
+                ->select('id')->where('id_empleado', '=', $pesonal)
+                ->limit(1)->orderBy('id', 'desc')->first();
+            $folio = 'VAC-' . $buscarFolio->id;
+            $contend['fecha_de_solicitud'] = $endDate->toDateString();
+            $contend['Folio'] = $folio;
+            $receivers = [
+                'paguilar@mx.bergstrominc.com',
+                'mabibarra@mx.bergstrominc.com'
+            ];
+            Mail::to($receivers)->send(new solicitudVacacionesMail($contend, 'Solicitud de Vacaciones'));
 
-        // Mail::to('jguillen@mx.bergstrominc.com')->send(new solicitudVacacionesMail($contend, 'Solicitud de Vacaciones'));
-       // Mail::to('jgarrido@mx.bergstrominc.com')->send(new solicitudVacacionesMail($contend, 'Solicitud de Vacaciones'));
+            // Mail::to('jguillen@mx.bergstrominc.com')->send(new solicitudVacacionesMail($contend, 'Solicitud de Vacaciones'));
+            // Mail::to('jgarrido@mx.bergstrominc.com')->send(new solicitudVacacionesMail($contend, 'Solicitud de Vacaciones'));
             $endDate->addDay(1);
         }
 
@@ -2254,37 +2256,36 @@ class juntasController extends Controller
         ];
         $vacacionesReporte = registroVacacionesModel::wherebetween('fecha_de_solicitud', [Carbon::now()->startOfYear()->toDateString(), Carbon::now()->endOfYear()->toDateString()])
             ->get();
-            $vacas=[0,0,0,0,0,0,0,0,0,0,0,0];
+        $vacas = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
         foreach ($vacacionesReporte as $vacacione) {
-            if(intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m'))==1){
+            if (intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m')) == 1) {
                 $vacas[0]++;
-            }else if(intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m'))==2){
+            } else if (intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m')) == 2) {
                 $vacas[1]++;
-            }else if(intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m'))==3){
+            } else if (intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m')) == 3) {
                 $vacas[2]++;
-            }else if(intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m'))==4){
+            } else if (intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m')) == 4) {
                 $vacas[3]++;
-            }else if(intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m'))==5){
+            } else if (intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m')) == 5) {
                 $vacas[4]++;
-            }else if(intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m'))==6){
+            } else if (intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m')) == 6) {
                 $vacas[5]++;
-            }else if(intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m'))==7){
+            } else if (intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m')) == 7) {
                 $vacas[6]++;
-            }else if(intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m'))==8){
+            } else if (intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m')) == 8) {
                 $vacas[7]++;
-            }else if(intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m'))==9){
+            } else if (intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m')) == 9) {
                 $vacas[8]++;
-
-            }else if(intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m'))==10){
+            } else if (intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m')) == 10) {
                 $vacas[9]++;
-            }else if(intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m'))==11){
+            } else if (intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m')) == 11) {
                 $vacas[10]++;
-            }else if(intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m'))==12){
+            } else if (intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m')) == 12) {
                 $vacas[11]++;
             }
         }
 
-        return view('juntas.hr', ['vacas'=>$vacas,'promaus' => $promaus, 'diaActual' => $diaActual, 'tipoTrabajador' => $tipoTrabajador, 'faltantes' => $faltantes, 'faltan' => $faltan, 'genero' => $genero, 'registrosDeAsistencia' => $registrosDeAsistencia, 'value' => session('user'), 'cat' => session('categoria'), 'accidente' => $accidente]);
+        return view('juntas.hr', ['vacas' => $vacas, 'promaus' => $promaus, 'diaActual' => $diaActual, 'tipoTrabajador' => $tipoTrabajador, 'faltantes' => $faltantes, 'faltan' => $faltan, 'genero' => $genero, 'registrosDeAsistencia' => $registrosDeAsistencia, 'value' => session('user'), 'cat' => session('categoria'), 'accidente' => $accidente]);
     }
 
     //Show Names per category
