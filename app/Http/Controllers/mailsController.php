@@ -183,8 +183,8 @@ class mailsController extends Controller
          if($value=='Admin' or $value=='Juan G'){
         registroVacacionesModel::where('id','=',$folio)->update(['estatus' => 'Pendiente RH']);
         $link=URL::temporarySignedRoute('Pendings.index', now()->addMinutes(30),['user'=>'Paola A']);
-        $structure['link']=$link;
-        Mail::to('paguilar@mx.bergstrominc.com,mabibarra@mx.bergstrominc.com')->send(new solicitudVacacionesMail($structure,'Solicitud de Vacaciones'));
+        $structure['link']=$link; $receivers='paguilar@mx.bergstrominc.com,mabibarra@mx.bergstrominc.com';
+        Mail::to($receivers)->send(new solicitudVacacionesMail($structure,'Solicitud de Vacaciones'));
         }else if($value=='Paola A' or $value=='Angy B'){
             registroVacacionesModel::where('id','=',$folio)->update(['estatus' => 'Confirmado']);
 
