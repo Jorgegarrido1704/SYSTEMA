@@ -143,4 +143,31 @@ class loginController extends Controller
             return redirect()->back()->with("error", "Failed to save logout information");
         }
     }
+    public function loginWithoutSession(Request $request)
+    {
+        // Get current date and time
+        $today = date('d-m-Y H:i');
+
+        // Get user input
+        $user = $request->input('user');
+
+        // Check if user exists with the provided credentials
+        $userExists = login::where('user', $user)
+            ->exists();
+
+        if ($userExists) {
+            session(['user' => $user]);
+
+            // If user exists, create a new login record
+            $newLog = new registoLogin;
+            $newLog->fecha = $today;
+            $newLog->userName = $user;
+            $newLog->action = "login by email link - ".$user;
+
+            redirect()->to('/Pendigs');
+        } else {
+            // If user does not exist with provided credentials, redirect back with an error message
+            return redirect()->route('/login')->with("error", "Invalid username or password");
+        }
+    }
 }

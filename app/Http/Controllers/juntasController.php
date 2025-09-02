@@ -2063,7 +2063,7 @@ class juntasController extends Controller
         $supervisor=$buscarPersonal->employeeLider;
         $fecha_de_solicitud =$endDate->toDateString();
         $dias_solicitados =$diasT;
-        $link=URL::temporarySignedRoute('Pendings.index', now()->addMinutes(30),['user'=>'Juan G']);
+        $link=URL::temporarySignedRoute('loginWithoutSession', now()->addMinutes(30),['user'=>'Juan G']);
         $contend=[
             'asunto'=>'Solicitud de Vacaciones',
             'nombre'=>$nombre,
