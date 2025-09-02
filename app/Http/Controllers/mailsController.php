@@ -163,6 +163,7 @@ class mailsController extends Controller
         $dias=$request->input('dias');
         $area=$request->input('area');
         $fecha=$request->input('fecha');
+
         $correo=login::select('user_email')->where('user','=',$who)->first();
         if($correo->user_email==null or $correo->user_email==''){
             $correo->user_email='jgarrido@mx.bergstrominc.com';
@@ -181,6 +182,8 @@ class mailsController extends Controller
         $value=session('user');
          if($value=='Admin' or $value=='Juan G'){
         registroVacacionesModel::where('id','=',$folio)->update(['estatus' => 'Pendiente RH']);
+        $link=URL::temporarySignedRoute('Pendings.index', now()->addMinutes(30),['user'=>'Paola A']);
+        $structure['link']=$link;
         Mail::to('paguilar@mx.bergstrominc.com,mabibarra@mx.bergstrominc.com')->send(new solicitudVacacionesMail($structure,'Solicitud de Vacaciones'));
         }else if($value=='Paola A' or $value=='Angy B'){
             registroVacacionesModel::where('id','=',$folio)->update(['estatus' => 'Confirmado']);
