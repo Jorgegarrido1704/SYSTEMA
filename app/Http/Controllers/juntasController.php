@@ -2035,6 +2035,7 @@ class juntasController extends Controller
         $pesonal = $input['personalIng'];
         $endDate = Carbon::parse($input['endDate']);
         $diasT = $input['diasT'];
+        $returnDate = $endDate;
 
 
         // revisar si hay
@@ -2043,7 +2044,7 @@ class juntasController extends Controller
             ->where('fecha_de_solicitud', '=', $endDate)
             ->get();
 
-        if ($datosVacaciones != null &&  count($datosVacaciones) > 2) {
+        if ($datosVacaciones != null &&  count($datosVacaciones) > 80) {
             session()->flash('error', 'Ya hay vacaciones registradas para esta fecha.');
             return redirect()->back();
         }
@@ -2095,7 +2096,7 @@ class juntasController extends Controller
         for ($i = 0; $i < $diasT; $i++) {
 
             //Check if the date is a weekend
-            if (Carbon::parse($endDate)->isWeekend()) {
+            if (Carbon::parse($returnDate)->isWeekend()) {
                 $diasT++;
             } else {
                 if (($diasReg - ($currentYear + $lastyear)) > 0) {
@@ -2105,19 +2106,22 @@ class juntasController extends Controller
                 } else {
                     $years = Carbon::now()->subYear()->year;
                 }
-
+                  }
+              $returnDate->addDay(1);
+        }
 
                 //Insert into registro_vacaciones table
                 DB::table('registro_vacaciones')->insert([
                     'id_empleado' => $pesonal,
                     'fecha_de_solicitud' => $endDate,
+                    'fehca_retorno' => $returnDate,
                     'estatus' => 'Pendiente RH',
-                    'dias_solicitados' => 1,
+                    'dias_solicitados' => $diasReg,
                     'usedYear' => $years,
                     'superVisor' => session('user')
 
                 ]);
-            }
+
             $buscarFolio = DB::table('registro_vacaciones')
                 ->select('id')->where('id_empleado', '=', $pesonal)
                 ->limit(1)->orderBy('id', 'desc')->first();
@@ -2132,8 +2136,7 @@ class juntasController extends Controller
 
             // Mail::to('jguillen@mx.bergstrominc.com')->send(new solicitudVacacionesMail($contend, 'Solicitud de Vacaciones'));
             // Mail::to('jgarrido@mx.bergstrominc.com')->send(new solicitudVacacionesMail($contend, 'Solicitud de Vacaciones'));
-            $endDate->addDay(1);
-        }
+
 
         return redirect()->route('vacations')->with('success', 'Vacaciones agregadas correctamente.');
     }

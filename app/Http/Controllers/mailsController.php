@@ -79,7 +79,8 @@ class mailsController extends Controller
                 'supervisor' => $buscardatos->employeeLider,
                 'id_empleado' => $vaca->id_empleado,
                 'fecha_solicitud' => $vaca->fecha_de_solicitud,
-                'dias_solicitados' => 1,
+                'dias_solicitados' => $vaca->dias_solicitados,
+                'fehca_retorno' => $vaca->fehca_retorno
             ];
             $i++;
         }
@@ -196,6 +197,7 @@ class mailsController extends Controller
         $dias = $request->input('dias');
         $area = $request->input('area');
         $fecha = $request->input('fecha');
+        $returnDate = $request->input('return_date');
 
         $correo = login::select('user_email')->where('user', '=', $who)->first();
         if ($correo->user_email == null or $correo->user_email == '') {
@@ -207,6 +209,7 @@ class mailsController extends Controller
             'nombre' => $nombre,
             'Folio' => 'VAC-' . $folio,
             'fecha_de_solicitud' => $fecha,
+            'fecha_retorno' => $returnDate,
             'departamento' => $area,
             'dias_solicitados' => $dias,
             'supervisor' => $who,
