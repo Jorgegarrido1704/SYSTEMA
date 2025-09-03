@@ -1928,7 +1928,7 @@ class juntasController extends Controller
 
         $diasAviles = [];
         $empleados = [];
-        $busqueda = personalBergsModel::where('employeeLider', '=', $value)
+        $busqueda = personalBergsModel::where('employeeLider', 'LIKE', '%'.$value.'%')
             ->where('status', '=', 'Activo')
             ->get();
         foreach ($busqueda as $rows) {
