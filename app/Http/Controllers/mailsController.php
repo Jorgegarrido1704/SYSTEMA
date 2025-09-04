@@ -228,7 +228,7 @@ class mailsController extends Controller
             Mail::to($receivers)->send(new solicitudVacacionesMail($structure, 'Solicitud de Vacaciones'));
         } else if ($value == 'Paola A' or $value == 'Angy B') {
             registroVacacionesModel::where('id', '=', $folio)->update(['estatus' => 'Confirmado']);
-
+            $structure['link'] = 'No es necesario responder este correo, su solicitud de vacaciones ha sido aprobada y registrada en el sistema.';
             Mail::to($receivers)->send(new solicitudVacacionesMail($structure, 'Solicitud de Vacaciones Aprobada'));
         }
         return redirect('/Pendigs');
