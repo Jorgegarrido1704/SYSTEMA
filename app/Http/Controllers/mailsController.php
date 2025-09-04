@@ -198,12 +198,24 @@ class mailsController extends Controller
         $area = $request->input('area');
         $fecha = $request->input('fecha');
         $returnDate = $request->input('return_date');
-
-        $correo = login::select('user_email')->where('user', '=', $who)->first();
-        if(empty($correo)){
-            $receivers= [ 'jgarrido@mx.bergstrominc.com'];
-        }else{
-            $receivers = [$correo->user_email];
+        $receivers = [];
+        if (strpos($who, ',')) {
+            $datosde = explode(',', $who);
+            for ($i = 0; $i < count($datosde); $i++) {
+                $correo = login::select('user_email')->where('user', '=', $who)->first();
+                if (empty($correo)) {
+                    $receivers = ['jgarrido@mx.bergstrominc.com'];
+                } else {
+                    $receivers[] += $correo->user_email;
+                }
+            }
+        } else {
+            $correo = login::select('user_email')->where('user', '=', $who)->first();
+            if (empty($correo)) {
+                $receivers = ['jgarrido@mx.bergstrominc.com'];
+            } else {
+                $receivers = [$correo->user_email];
+            }
         }
         $structure = [
             'asunto' => 'Solicitud de Vacaciones Aprobada',
