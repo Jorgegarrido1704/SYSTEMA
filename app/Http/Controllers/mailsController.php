@@ -200,10 +200,11 @@ class mailsController extends Controller
         $returnDate = $request->input('return_date');
 
         $correo = login::select('user_email')->where('user', '=', $who)->first();
-        if ($correo->user_email == null or $correo->user_email == '') {
-            $correo->user_email = 'jgarrido@mx.bergstrominc.com';
+        if(empty($correo)){
+            $receivers= [ 'jgarrido@mx.bergstrominc.com'];
+        }else{
+            $receivers = [$correo->user_email];
         }
-        $receivers = [$correo->user_email];
         $structure = [
             'asunto' => 'Solicitud de Vacaciones Aprobada',
             'nombre' => $nombre,
