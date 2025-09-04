@@ -203,7 +203,7 @@ class mailsController extends Controller
         if ($correo->user_email == null or $correo->user_email == '') {
             $correo->user_email = 'jgarrido@mx.bergstrominc.com';
         }
-        $receivers = $correo->user_email;
+        $receivers = [$correo->user_email];
         $structure = [
             'asunto' => 'Solicitud de Vacaciones Aprobada',
             'nombre' => $nombre,
