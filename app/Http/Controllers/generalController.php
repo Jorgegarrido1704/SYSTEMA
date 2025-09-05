@@ -339,7 +339,12 @@ class generalController extends Controller
                     $resp = "waiting for engineering Looming";
                     upRegistros(14, $codigo, $resp, $todays, 'loomF', $loomPar, $donde, $sesion, 'si');
                     $update = DB::table('registroparcial')->where('codeBar', "=", $codigo)->update(['loomPar' => '0', 'eng' => $loomPar]);
+                }else if ($count == 12) {
+                     $update =    DB::table('registroparcial')->where('codeBar', "=", $codigo)->update(['embPar' => '0']);
+                        upRegistros(20, $codigo, 'Harness Finished', $todays, 'embaF', $embPar, $donde, $sesion, 'si');
+                        $tiempoUp = DB::table('tiempos')->where('info', $codigo)->update(['embarque' => $todays]);
                 }
+
                 return redirect('general')->with('response', $resp);
             } else if ($cantidad >= 0) {
                 if(($donde ==='emba' and $count===12) or ($donde ==='emba' and $embPar > 0 and $count !== 20)) {
