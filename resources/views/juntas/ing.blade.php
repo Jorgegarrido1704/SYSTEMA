@@ -140,17 +140,16 @@
                     <form action="#" id="formNpi">
                         <div class="row">
                             <div class="col-lg-4 mb-4">
-                                <label for="fechaInicio">Type of NPI</label>
-                                <select id="tipoNpi" name="tipoNpi" class="form-control">
+                                <label for="tipoNpi">Type of NPI</label>
+                                <select id="tipoNpi" name="tipoNpi" class="form-control" onchange="tipoNpiChange()">
+                                    <option value="" selected disabled>Select one</option>
                                     <option value="All">All</option>
+                                    <option value="white">Pending</option>
                                     <option value="green">PPAP</option>
                                     <option value="yellow">PRIM</option>
                                 </select>
                             </div>
-                            <div class="col-lg-4 mb-4">
-                                <label for="Color">To:</label>
-                                <input type="date" id="fechaFin" name="fechaFin" class="form-control" value="{{ date('Y-m-d') }}">
-                            </div>
+
                             <div class="col-lg-4 mb-4">
                                 <label for="filtrar">Filter</label>
                                 <button type="button" id="filtrar" class="btn btn-primary form-control">Apply</button>
@@ -159,14 +158,7 @@
                     </form>
 
                     <script>
-                        document.getElementById('filtrar').addEventListener('click', function() {
-                            const fechaInicio = document.getElementById('fechaInicio').value;
-                            const fechaFin = document.getElementById('fechaFin').value;
-                            const url = new URL(window.location.href);
-                            url.searchParams.set('fechaInicio', fechaInicio);
-                            url.searchParams.set('fechaFin', fechaFin);
-                            window.location.href = url.toString();
-                        });
+
                     </script>
 
                 </div>
@@ -202,7 +194,7 @@
                             @if(!empty($registroPPAP))
                                 @foreach ($registroPPAP as $ppaps )
 
-                                    <tr id={{ $ppaps[14] }} style="text-align: center; background-color:rgba({{ $ppaps[14] }}) ; text-align: center; color : black;">
+                                    <tr id={{ $ppaps[21] }} style="text-align: center; background-color:rgba({{ $ppaps[14] }}) ; text-align: center; color : black;">
                                         <td>{{$ppaps[0]}} </td>
                                         <td>{{$ppaps[1]}} </td>
                                         <td>{{$ppaps[2]}} </td>

@@ -1371,6 +1371,7 @@ class juntasController extends Controller
                 $registroPPAP[$i][17] = "Black";
             }
             $registroPPAP[$i][18] = $res->qtyInPo;
+            $registroPPAP[$i][21] = "c-".$res->Color??"c-white";
             $i++;
         }
 
@@ -1398,6 +1399,7 @@ class juntasController extends Controller
                 $registroPPAP[$i][12] = "No Aun";
                 $registroPPAP[$i][13] = "No Aun";
                 $registroPPAP[$i][18] = "0";
+                $registroPPAP[$i][21] = "c-white";
             } else {
                 $registroPPAP[$i][2] = $registroWS->size;
                 $registroPPAP[$i][4] = $registroWS->receiptDate;
@@ -1439,6 +1441,7 @@ class juntasController extends Controller
             } else {
                 $registroPPAP[$i][14] = "236, 236, 9, 0.497";
             }
+            $registroPPAP[$i][21] = "c-".$res->Color??"c-white";;
 
 
             $i++;

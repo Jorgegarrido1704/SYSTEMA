@@ -423,3 +423,29 @@ try{
     }
 
 
+try{
+    function tipoNpiChange(){
+        const tipoNpi = document.getElementById('tipoNpi').value;
+        if (tipoNpi == "green") {
+            document.getElementById('c-green').style.display='block';
+            document.getElementById('c-yellow').style.display='none';
+            document.getElementById('c-white').style.display='none';
+
+        }else if(tipoNpi == "yellow"){
+            document.getElementById('c-green').style.display='none';
+            document.getElementById('c-yellow').style.display='block';
+            document.getElementById('c-white').style.display='none';
+        }else if(tipoNpi == "white"){
+            document.getElementById('c-green').style.display='none';
+            document.getElementById('c-yellow').style.display='none';
+            document.getElementById('c-white').style.display='block';
+        }else if(tipoNpi == "All"){
+            document.getElementById('c-green').style.display='block';
+            document.getElementById('c-yellow').style.display='block';
+            document.getElementById('c-white').style.display='block';
+        }
+        console.log(tipoNpi);
+    }
+}catch( error) {
+   // console.error(error);
+}
