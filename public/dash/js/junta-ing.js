@@ -1,4 +1,4 @@
-const { refreshPaths } = require("laravel-vite-plugin");
+
 
 try {
 const tiemposIng = document.getElementById("tiempos");
@@ -426,27 +426,53 @@ try{
 
 
 try{
-    function tipoNpiChange(){
-        const tipoNpi = document.getElementById('registros NPI');
-        const selectTipoNpi = document.getElementById('tipoNpi').value;
-        alert('Selected: '+selectTipoNpi);
-        tipoNpi.innerHTML='';
-        $.ajax({
-            method: 'GET',
-            url: url,
-            data: {
-                tipoNpi: selectTipoNpi
-            },
-            success: function(response) {
-                // Manejar la respuesta del servidor
-                console.log(response);
-            },
-            error: function(xhr, status, error) {
-                // Manejar errores
-                console.error(error);
-            }
-        });
-    }
+    function tipoNpiChange() {
+    const tipoNpi = document.getElementById('registrosNPI');
+    const selectTipoNpi = document.getElementById('tipoNpi').value;
+    alert('Selected: ' + selectTipoNpi);
+    tipoNpi.innerHTML = '';
+
+    $.ajax({
+        method: 'GET',
+        url: url, // define this
+        data: { tipoNpi: selectTipoNpi },
+        dataType: 'json',
+        success: function(response) {
+            let rows = '';
+            response.forEach(item => {
+                rows += `
+                    <tr>
+                        <td>${item[0] || item.col1}</td>
+                        <td>${item[1] || item.col2}</td>
+                        <td>${item[2] || item.col3}</td>
+                        <td>${item[3] || item.col4}</td>
+                        <td>${item[4] || item.col5}</td>
+                        <td>${item[5] || item.col6}</td>
+                        <td>${item[6] || item.col7}</td>
+                        <td>${item[7] || item.col8}</td>
+                        <td>${item[8] || item.col9}</td>
+                        <td>${item[9] || item.col10}</td>
+                        <td>${item[10] || item.col11}</td>
+                        <td>${item[11] || item.col12}</td>
+                        <td>${item[12] || item.col13}</td>
+                        <td>${item[13] || item.col14}</td>
+                        <td>${item[15] || item.col16}</td>
+                        <td>${item[16] || item.col17}</td>
+                        <td>${item[18] || item.col19}</td>
+                        <td>${item[19] || item.col20}</td>
+                        <td>${item[20] || item.col21}</td>
+
+                    </tr>`;
+            });
+            tipoNpi.innerHTML = rows;
+            console.log(response);
+        },
+        error: function(xhr, status, error) {
+            console.error(error);
+        }
+    });
+}
+
 }catch( error) {
    // console.error(error);
 }

@@ -190,7 +190,7 @@
 
                         </thead>
 
-                            <tbody  id="registros NPI">
+                            <tbody  id="registrosNPI">
                             @if(!empty($registroPPAP))
                                 @foreach ($registroPPAP as $ppaps )
 
