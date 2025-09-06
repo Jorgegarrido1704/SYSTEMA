@@ -15,6 +15,7 @@
         const arturo = {!! json_encode($arturo) !!};
         const jorge = {!! json_encode($jorge) !!};
         const brandon = {!! json_encode($brandon) !!};
+        const url = '{{ route('registrosajax') }}';
     </script>
 
     <script>
@@ -143,7 +144,6 @@
                                 <label for="tipoNpi">Type of NPI</label>
                                 <select id="tipoNpi" name="tipoNpi" class="form-control" onchange="tipoNpiChange()">
                                     <option value="" selected disabled>Select one</option>
-                                    <option value="All">All</option>
                                     <option value="white">Pending</option>
                                     <option value="green">PPAP</option>
                                     <option value="yellow">PRIM</option>
@@ -190,7 +190,7 @@
 
                         </thead>
 
-                            <tbody  >
+                            <tbody  id="registros NPI">
                             @if(!empty($registroPPAP))
                                 @foreach ($registroPPAP as $ppaps )
 

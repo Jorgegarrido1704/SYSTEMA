@@ -174,6 +174,7 @@ Route::controller(juntasController::class)->group(function () {
     Route::get('/vacations', [juntasController::class, 'vacations'])->name('vacations');
     Route::get('/vacations/addVacation', [juntasController::class, 'addVacation'])->name('addVacation');
     Route::get('/rrhh/DatosRh', [juntasController::class, 'DatosRh'])->name('DatosRh');
+    Route::get('/registrosajax', [juntasController::class, 'registrosajax'])->name('registrosajax');
 });
 
 Route::controller(SaludController::class)->group(function () {

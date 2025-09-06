@@ -2352,4 +2352,121 @@ class juntasController extends Controller
 
         return view('juntas.hrDocs.datosRh', ['datos' => $datos, 'value' => $value, 'cat' => $cat, 'id' => $id, 'diaActual' => $diaActual]);
     }
+
+    public function registrosajax(Request $request)
+    {
+        $id = $request->input('tipoNpi');
+        $value = session('user');
+        $cat = session('categoria');
+          // PPAP and PRIM Insofor
+        $registroPPAP = [];
+        $i = 0;
+
+        $WS = workScreduleModel::where('status', '!=', 'CANCELLED')
+            ->where('UpOrderDate', '=', null)
+             ->where('Color', '=', $id)
+            ->orderBy('id', 'desc')->get();
+        foreach ($WS as $res) {
+            $registroPPAP[$i][0] = $res->customer;
+            $registroPPAP[$i][1] = $res->pn;
+            $registroPPAP[$i][2] = $res->size;
+            $registroPPAP[$i][3] = $res->WorkRev;
+            $registroPPAP[$i][4] = $res->receiptDate;
+            $registroPPAP[$i][5] = $res->commitmentDate;
+            $registroPPAP[$i][6] = $res->CompletionDate;
+            $registroPPAP[$i][7] = $res->documentsApproved;
+            $registroPPAP[$i][8] = "No Aun";
+            $registroPPAP[$i][9] = "No Aun";
+            $registroPPAP[$i][19] = "No Aun";
+            $registroPPAP[$i][20] = "0";
+            $registroPPAP[$i][10] = "No Aun";
+            $registroPPAP[$i][11] = "No Aun";
+            $registroPPAP[$i][12] = "No Aun";
+            $registroPPAP[$i][13] = "No Aun";
+            $registroPPAP[$i][14] = "255,255,255,0.5";
+            $registroPPAP[$i][15] = $res->customerDate;
+            $registroPPAP[$i][16] = $res->resposible;
+            if (carbon::parse($res->commitmentDate) < carbon::parse($res->CompletionDate)) {
+                $registroPPAP[$i][17] = "Red";
+            } else {
+                $registroPPAP[$i][17] = "Black";
+            }
+            $registroPPAP[$i][18] = $res->qtyInPo;
+            $registroPPAP[$i][21] = "c-".$res->Color??"c-white";
+            $i++;
+        }
+
+        $registros = Wo::where('rev', 'LIKE', 'PRIM%')->Orwhere('rev', 'LIKE', 'PPAP%')->orderBY('count', 'asc')->orderBy('cliente', 'asc')->get();
+        foreach ($registros as $reg) {
+            $registroPPAP[$i][0] = $reg->cliente;
+            $registroPPAP[$i][1] = $reg->NumPart;
+            $registroPPAP[$i][3] = $reg->rev;
+            $registroWS = workScreduleModel::where('pn', $reg->NumPart)->orderBy('id', 'desc')->first();
+            if (empty($registroWS->size)) {
+                $registroPPAP[$i][2] = "-";
+                $registroPPAP[$i][4] = "-";
+                $registroPPAP[$i][5] = "-";
+                $registroPPAP[$i][6] = "-";
+                $registroPPAP[$i][7] = "-";
+                $registroPPAP[$i][15] = "-";
+                $registroPPAP[$i][16] = "-";
+                $registroPPAP[$i][17] = "Black";
+                $registroPPAP[$i][8] = "No Aun";
+                $registroPPAP[$i][9] = "No Aun";
+                $registroPPAP[$i][19] = "No Aun";
+                $registroPPAP[$i][20] = "0";
+                $registroPPAP[$i][10] = "No Aun";
+                $registroPPAP[$i][11] = "No Aun";
+                $registroPPAP[$i][12] = "No Aun";
+                $registroPPAP[$i][13] = "No Aun";
+                $registroPPAP[$i][18] = "0";
+                $registroPPAP[$i][21] = "c-white";
+            } else {
+                $registroPPAP[$i][2] = $registroWS->size;
+                $registroPPAP[$i][4] = $registroWS->receiptDate;
+                $registroPPAP[$i][5] = $registroWS->commitmentDate;
+                $registroPPAP[$i][6] = $registroWS->CompletionDate;
+                $registroPPAP[$i][7] = $registroWS->documentsApproved;
+                $registroPPAP[$i][15] = $registroWS->customerDate;
+                $registroPPAP[$i][16] = $registroWS->resposible;
+                if (carbon::parse($registroWS->commitmentDate) < carbon::parse($registroWS->CompletionDate)) {
+                    $registroPPAP[$i][17] = "Red";
+                } else {
+                    $registroPPAP[$i][17] = "Black";
+                }
+                $datosTiempos = tiempos::where('info', $reg->info)->first();
+                if (empty($datosTiempos)) {
+                    $registroPPAP[$i][8] = "No Aun";
+                    $registroPPAP[$i][9] = "No Aun";
+                    $registroPPAP[$i][19] = "No Aun";
+                    $registroPPAP[$i][20] = "0";
+                    $registroPPAP[$i][10] = "No Aun";
+                    $registroPPAP[$i][11] = "No Aun";
+                    $registroPPAP[$i][12] = "No Aun";
+                    $registroPPAP[$i][13] = "No Aun";
+                    $registroPPAP[$i][14] = "0";
+                } else {
+                    $registroPPAP[$i][8] = $datosTiempos->planeacion;
+                    $registroPPAP[$i][19] = $reg->wo;
+                    $registroPPAP[$i][20] = $reg->Qty;
+                    $registroPPAP[$i][9] = $datosTiempos->corte;
+                    $registroPPAP[$i][10] = $datosTiempos->liberacion;
+                    $registroPPAP[$i][11] = $datosTiempos->ensamble;
+                    $registroPPAP[$i][12] = $datosTiempos->loom;
+                    $registroPPAP[$i][13] = $datosTiempos->calidad;
+                }
+                $registroPPAP[$i][18] = $registroWS->qtyInPo;
+            }
+            if (substr($reg->rev, 0, 4) == 'PPAP') {
+                $registroPPAP[$i][14] = "96, 242, 83, 0.3";
+            } else {
+                $registroPPAP[$i][14] = "236, 236, 9, 0.497";
+            }
+            $registroPPAP[$i][21] = "c-".$res->Color??"c-white";;
+
+
+            $i++;
+        }
+        return json_encode($registroPPAP);
+    }
 }

@@ -1,3 +1,5 @@
+const { refreshPaths } = require("laravel-vite-plugin");
+
 try {
 const tiemposIng = document.getElementById("tiempos");
 const labelsAct=Object.keys(actividades);
@@ -425,26 +427,25 @@ try{
 
 try{
     function tipoNpiChange(){
-        const tipoNpi = document.getElementById('tipoNpi').value;
-        if (tipoNpi == "green") {
-            document.getElementById('c-green').style.display='block';
-            document.getElementById('c-yellow').style.display='none';
-            document.getElementById('c-white').style.display='none';
-
-        }else if(tipoNpi == "yellow"){
-            document.getElementById('c-green').style.display='none';
-            document.getElementById('c-yellow').style.display='block';
-            document.getElementById('c-white').style.display='none';
-        }else if(tipoNpi == "white"){
-            document.getElementById('c-green').style.display='none';
-            document.getElementById('c-yellow').style.display='none';
-            document.getElementById('c-white').style.display='block';
-        }else if(tipoNpi == "All"){
-            document.getElementById('c-green').style.display='block';
-            document.getElementById('c-yellow').style.display='block';
-            document.getElementById('c-white').style.display='block';
-        }
-        console.log(tipoNpi);
+        const tipoNpi = document.getElementById('registros NPI');
+        const selectTipoNpi = document.getElementById('tipoNpi').value;
+        alert('Selected: '+selectTipoNpi);
+        tipoNpi.innerHTML='';
+        $.ajax({
+            method: 'GET',
+            url: url,
+            data: {
+                tipoNpi: selectTipoNpi
+            },
+            success: function(response) {
+                // Manejar la respuesta del servidor
+                console.log(response);
+            },
+            error: function(xhr, status, error) {
+                // Manejar errores
+                console.error(error);
+            }
+        });
     }
 }catch( error) {
    // console.error(error);
