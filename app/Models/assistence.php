@@ -68,7 +68,7 @@ class assistence extends Model
     if($leader == 'Admin' or $leader == 'Paola A' or $leader == 'Angy B'){
         return $query->where('week', $week)->OrderBy($diaActual, 'ASC');
     }else{
-    return $query->where('week', $week)->where('lider', '=', $leader)->OrderBy($diaActual, 'ASC');
+    return $query->where('week', $week)->where('lider', 'LIKE', '%' . $leader.'%')->OrderBy($diaActual, 'ASC')->OrderBy($diaActual, 'ASC');
         }
 }
 
