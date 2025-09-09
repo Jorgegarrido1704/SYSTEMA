@@ -348,7 +348,7 @@ class generalController extends Controller
 
                 return redirect('general')->with('response', $resp);
             } else if ($cantidad >= 0) {
-                if (($donde === 'loom' and $count === 9) or ($donde === 'loom' and $loomPar > 0 and $count !== 8)) {
+                if ( ($donde === 'loom' and $loomPar > 0 and $count !== 8)) {
                     if ($cantidad >= ($loomPar)) {
                         $nuevo = $preCalidad + $loomPar;
                         $update = DB::table('registroparcial')->where('codeBar', "=", $codigo)->update(['loomPar' => '0', 'preCalidad' => $nuevo]);
@@ -362,7 +362,7 @@ class generalController extends Controller
                         $update = DB::table('registroparcial')->where('codeBar', "=", $codigo)->update(['loomPar' => $restoAnt, 'preCalidad' => $nuevo]);
                         upRegistros(9, $codigo, 'parcial Looming', $todays, 'loomF', $cantidad, $donde, $sesion, 'si');
                     }
-                } else if (($donde === 'ensa' and $count === 7) or ($donde === 'ensa' and $ensaPar > 0 and ($count !== 6 or $count !== 15))) {
+                } else if ( ($donde === 'ensa' and $ensaPar > 0 and ($count !== 6 or $count !== 15))) {
                     $nolooms = specialWireModel::SpecialWire();
                     $noloom = [];
                     foreach ($nolooms as $row) {
@@ -398,7 +398,7 @@ class generalController extends Controller
                             }
                         }
                     }
-                } else if ((($donde === 'libe') and $count === 5) or (($donde === 'libe') and $libePar > 0 and $count !== 4)) {
+                } else if ( (($donde === 'libe') and $libePar > 0 and $count !== 4)) {
                     if ($cantidad < ($libePar) and (substr($rev, 0, 4) != 'PRIM' or substr($rev, 0, 4) != 'PPAP')) {
                         $restoAnt = $libePar - $cantidad;
                         $nuevo = $ensaPar + $cantidad;
@@ -438,7 +438,7 @@ class generalController extends Controller
                             Mail::to($recipients)->send(new \App\Mail\PPAPING($subject, $content));
                         }
                     }
-                } else if ((($donde === 'cort') and $count === 3) or (($donde === 'cort') and $cortPar > 0 and $count !== 2)) {
+                } else if ( (($donde === 'cort') and $cortPar > 0 and $count !== 2)) {
                     if ($cantidad < $cortPar and (substr($rev, 0, 4) != 'PRIM' or substr($rev, 0, 4) != 'PPAP')) {
                         $restoAnt = $cortPar - $cantidad;
                         $nuevo = $libePar + $cantidad;
@@ -451,8 +451,7 @@ class generalController extends Controller
                         upRegistros(4, $codigo, 'Assembly Process', $todays, 'cutF', $cortPar, $donde, $sesion, 'si');
                         $tiempoUp = DB::table('tiempos')->where('info', $codigo)->update(['corte' => $todays]);
                     }
-                }
-                 if ($count ==12) {
+                }else if ($donde === 'emba' and $embPar > 0) {
                   if ($cantidad >= ($embPar) and $embPar < $totalPar) {
                     $resp = "Partial Shipped";
                         $nuevo = $preCalidad + $embPar;
