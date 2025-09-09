@@ -280,26 +280,7 @@ class generalController extends Controller
                 $resp = "Quantity not valid";
                 return redirect('general')->with('response', $resp);
             }
-            if ($count ==12) {
-                  if ($cantidad >= ($embPar) and $embPar < $totalPar) {
-                    $resp = "Partial Shipped";
-                        $nuevo = $preCalidad + $embPar;
-                     $update =   DB::table('registroparcial')->where('codeBar', "=", $codigo)->update(['embPar' => '0']);
-                        upRegistros(12, $codigo, 'Partial Shipped', $todays, 'embaF', $embPar, $donde, $sesion, 'si');
-                    }else if($cantidad < ($embPar)) {
-                    $resp = "Partial Shipped";
-                        $restoAnt = $embPar - $cantidad;
-                     DB::table('registroparcial')->where('codeBar', "=", $codigo)->update(['embPar' => $restoAnt]);
-                        upRegistros(12, $codigo, 'Partial Shipped', $todays, 'embaF', $cantidad, $donde, $sesion, 'si');
-                    }else if($cantidad>=$embPar and $embPar >= $totalPar){
-                    $resp = "shipped Harness Finished";
-                    $update =    DB::table('registroparcial')->where('codeBar', "=", $codigo)->update(['embPar' => '0']);
-                        upRegistros(20, $codigo, 'Harness Finished', $todays, 'embaF', $embPar, $donde, $sesion, 'si');
-                        $tiempoUp = DB::table('tiempos')->where('info', $codigo)->update(['embarque' => $todays]);
-                    }
 
-                return redirect('general')->with('response', $resp);
-            }
             if ($count === 2 or $count === 4 or $count === 6 or $count === 8 or $count === 15) {
                 if ($donde === 'loom' and $count === 8) {
                     $resp = "Looming Process";
@@ -486,6 +467,26 @@ class generalController extends Controller
                         $tiempoUp = DB::table('tiempos')->where('info', $codigo)->update(['corte' => $todays]);
                     }
                 }
+                 if ($count ==12) {
+                  if ($cantidad >= ($embPar) and $embPar < $totalPar) {
+                    $resp = "Partial Shipped";
+                        $nuevo = $preCalidad + $embPar;
+                     $update =   DB::table('registroparcial')->where('codeBar', "=", $codigo)->update(['embPar' => '0']);
+                        upRegistros(12, $codigo, 'Partial Shipped', $todays, 'embaF', $embPar, $donde, $sesion, 'si');
+                    }else if($cantidad < ($embPar)) {
+                    $resp = "Partial Shipped";
+                        $restoAnt = $embPar - $cantidad;
+                     DB::table('registroparcial')->where('codeBar', "=", $codigo)->update(['embPar' => $restoAnt]);
+                        upRegistros(12, $codigo, 'Partial Shipped', $todays, 'embaF', $cantidad, $donde, $sesion, 'si');
+                    }else if($cantidad>=$embPar and $embPar >= $totalPar){
+                    $resp = "shipped Harness Finished";
+                    $update =    DB::table('registroparcial')->where('codeBar', "=", $codigo)->update(['embPar' => '0']);
+                        upRegistros(20, $codigo, 'Harness Finished', $todays, 'embaF', $embPar, $donde, $sesion, 'si');
+                        $tiempoUp = DB::table('tiempos')->where('info', $codigo)->update(['embarque' => $todays]);
+                    }
+
+                return redirect('general')->with('response', $resp);
+            }
 
 
                 if ($resp == null or $resp == '') {
