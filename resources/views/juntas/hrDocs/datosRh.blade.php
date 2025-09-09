@@ -20,7 +20,11 @@
                                             <li class="list-group-item">
                                                 <strong>Dia:</strong> {{ $diaActual }}
                                           @foreach ($datos as $dato)
-                                              <li class="list-group-item">{{ $dato->name }}</li>
+                                                @if($id == 'vacaciones')
+                                              <li class="list-group-item"> Folio: {{ $dato->folio }} - Name {{ $dato->name }}</li>
+                                                @else
+                                              <li class="list-group-item"> Folio: {{ $dato->folio }} - Name {{ $dato->name }} - Apellido {{ $dato->apellido }}</li>
+                                              
                                           @endforeach
                                         </ul>
                                     </div>

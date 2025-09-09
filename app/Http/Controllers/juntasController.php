@@ -2302,11 +2302,26 @@ class juntasController extends Controller
         $cat = session('categoria');
         $dias = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
         $week = Carbon::now()->weekOfYear;
+        $hoy = Carbon::now()->format('Y-m-d');
         $diaActual = $dias[Carbon::now()->dayOfWeek - 1];
 
         if ($id == 'P') {
             $datos = assistence::select('name')->where($diaActual, '=', 'PSS', 'OR', $diaActual, '=', 'PCS', 'OR', $diaActual, '=', 'TSP')->where('week', '=', $week)->get();
-        } else {
+        }else if ($id == 'V') {
+            $Inicio = assistence::select('id_empleado','name')->where($diaActual, '=', 'V')->where('week', '=', $week)->get();
+            foreach ($Inicio as $row) {
+                $buscarVacaciones = registroVacacionesModel::where('id_empleado', '=', $row->id_empleado)
+                    ->where('estatus', '=', 'Confirmado')
+                    ->where('fecha_de_solicitud', '=', $hoy)
+                    ->first();
+                if ($buscarVacaciones) {
+                    $datos[] = (object) ['name' => $row->name,'folio'=>$buscarVacaciones->id];
+
+                }
+            }
+
+        }
+         else {
 
             $datos = assistence::select('name')->where($diaActual, '=', $id)->where('week', '=', $week)->get();
         }
