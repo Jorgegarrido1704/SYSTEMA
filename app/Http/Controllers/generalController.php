@@ -348,22 +348,7 @@ class generalController extends Controller
 
                 return redirect('general')->with('response', $resp);
             } else if ($cantidad >= 0) {
-                if(($donde ==='emba' and $count===12) or ($donde ==='emba' and $embPar > 0 and $count !== 20)) {
-                    if ($cantidad >= ($embPar) and $embPar < $totalPar) {
-                        $nuevo = $preCalidad + $embPar;
-                     $update =   DB::table('registroparcial')->where('codeBar', "=", $codigo)->update(['embPar' => '0']);
-                        upRegistros(12, $codigo, 'Partial Shipped', $todays, 'embaF', $embPar, $donde, $sesion, 'si');
-                    }else if($cantidad < ($embPar)) {
-                        $restoAnt = $embPar - $cantidad;
-                     DB::table('registroparcial')->where('codeBar', "=", $codigo)->update(['embPar' => $restoAnt]);
-                        upRegistros(12, $codigo, 'Partial Shipped', $todays, 'embaF', $cantidad, $donde, $sesion, 'si');
-                    }else if($cantidad>=$embPar and $embPar >= $totalPar){
-                    $update =    DB::table('registroparcial')->where('codeBar', "=", $codigo)->update(['embPar' => '0']);
-                        upRegistros(20, $codigo, 'Harness Finished', $todays, 'embaF', $embPar, $donde, $sesion, 'si');
-                        $tiempoUp = DB::table('tiempos')->where('info', $codigo)->update(['embarque' => $todays]);
-                    }
-                }
-                else if (($donde === 'loom' and $count === 9) or ($donde === 'loom' and $loomPar > 0 and $count !== 8)) {
+                if (($donde === 'loom' and $count === 9) or ($donde === 'loom' and $loomPar > 0 and $count !== 8)) {
                     if ($cantidad >= ($loomPar)) {
                         $nuevo = $preCalidad + $loomPar;
                         $update = DB::table('registroparcial')->where('codeBar', "=", $codigo)->update(['loomPar' => '0', 'preCalidad' => $nuevo]);

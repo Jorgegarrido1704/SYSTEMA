@@ -2304,6 +2304,7 @@ class juntasController extends Controller
         $week = Carbon::now()->weekOfYear;
         $hoy = Carbon::now()->format('Y-m-d');
         $diaActual = $dias[Carbon::now()->dayOfWeek - 1];
+        $datos = [];
 
         if ($id == 'P') {
             $datos = assistence::select('name')->where($diaActual, '=', 'PSS', 'OR', $diaActual, '=', 'PCS', 'OR', $diaActual, '=', 'TSP')->where('week', '=', $week)->get();
@@ -2315,7 +2316,7 @@ class juntasController extends Controller
                     ->where('fecha_de_solicitud', '=', $hoy)
                     ->first();
                 if ($buscarVacaciones) {
-                    $datos[] = (object) ['name' => $row->name,'folio'=>$buscarVacaciones->id];
+                    $datos[] =  ['name' => $row->name,'folio'=>$buscarVacaciones->id];
 
                 }
             }
