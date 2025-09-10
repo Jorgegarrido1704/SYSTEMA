@@ -21,6 +21,7 @@ use App\Http\Controllers\rrhhController;
 use App\Http\Controllers\SaludController;
 use App\Http\Controllers\AccionesCorrectivasController;
 use App\Http\Controllers\mailsController;
+use App\Http\Controllers\mantainenceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -210,4 +211,12 @@ Route::controller(mailsController::class)->group(function () {
   Route::get('/desviation/denied', [mailsController::class, 'desviationDenied'])->name('desviation.denied');
   Route::post('/vacaciones/update', [mailsController::class, 'vacacionesUpdate'])->name('vacaciones.update');
 
+});
+
+Route::controller(mantainenceController::class)->group(function () {
+    Route::get('/mantainence', [mantainenceController::class, 'index'])->name('mantainence.index');
+    Route::post('/mantainence/create', [mantainenceController::class, 'create'])->name('mantainence.create');
+    Route::get('/mantainence/{id}', [mantainenceController::class, 'show'])->name('mantainence.show');
+    Route::post('/mantainence/guardarMantencion', [mantainenceController::class, 'guardarMantencion'])->name('mantainence.guardarMantencion');
+    Route::post('/mantainence/guardarSeguimiento', [mantainenceController::class, 'guardarSeguimiento'])->name('mantainence.guardarSeguimiento');
 });
