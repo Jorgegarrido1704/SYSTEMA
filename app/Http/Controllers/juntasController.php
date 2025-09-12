@@ -493,10 +493,10 @@ class juntasController extends Controller
                 $index = count($etiq) - 1; // Index of the last added element
                 $datos[$etiq[$index]] = $rows->resto;
             }
-            if (in_array($rows->Responsable . " - " . $rows->pn. " Lider: " . $supRes->employeeLider, array_column($gultyY, 0))) {
-                $gultyY[array_search($rows->Responsable . " - " . $rows->pn, array_column($gultyY, 0))][1] += $rows->resto;
+            if (in_array($rows->Responsable . " - " . $rows->pn. "\n Lider: " . $supRes->employeeLider, array_column($gultyY, 0))) {
+                $gultyY[array_search($rows->Responsable . " - " . $rows->pn. "\n Lider: " . $supRes->employeeLider, array_column($gultyY, 0))][1] += $rows->resto;
             } else {
-                $gultyY[$j][0] = $rows->Responsable . " - " . $rows->pn . " Lider: " . $supRes->employeeLider;
+                $gultyY[$j][0] = $rows->Responsable . " - " . $rows->pn . " \n Lider: " . $supRes->employeeLider;
                 $gultyY[$j][1] = $rows->resto;
                 $j++;
             }
@@ -873,10 +873,11 @@ class juntasController extends Controller
                     $datosHoy[$issue->codigo . "-" . $issue->pn][3] = $issue->pn;
                     $i++;
                 }
-                if (in_array($issue->Responsable, array_column($gulty, 0))) {
-                    $gulty[array_search($issue->Responsable, array_column($gulty, 0))][1] += $issue->resto;
+                $gutlyleader=personalBergsModel::select('employeeLider')->where('employeeName',$issue->Responsable)->first();
+                if (in_array($issue->Responsable." Lider: ".$gutlyleader->employeeLider, array_column($gulty, 0))) {
+                    $gulty[array_search($issue->Responsable." Lider: ".$gutlyleader->employeeLider, array_column($gulty, 0))][1] += $issue->resto;
                 } else {
-                    $gulty[$x][0] = $issue->Responsable;
+                    $gulty[$x][0] = $issue->Responsable." Lider: ".$gutlyleader->employeeLider;
                     $gulty[$x][1] = $issue->resto;
                     $x++;
                 }
