@@ -2,7 +2,7 @@
 
 @section('contenido')
     <!-- Page Heading -->
-    <meta http-equiv="refresh" content="120">
+    <meta http-equiv="refresh" content="300">
     <style>
         table {
             width: 100%;
