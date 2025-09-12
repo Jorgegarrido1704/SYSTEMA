@@ -721,7 +721,7 @@ class juntasController extends Controller
             ->where('fecha', 'LIKE', "%$YearParto%")
             ->orderBy('Responsable', 'ASC')
             ->get();
-            
+
         foreach ($buscarValorPareto as $rowPareto) {
             if ($rowPareto->codigo == 'TODO BIEN') {
                 $yearGood += 1;
@@ -893,6 +893,8 @@ class juntasController extends Controller
             arsort($gultyY);
         }
         arsort($empleados); // Asegura que esté ordenado de mayor a menor
+        $personalYear = personalBergsModel::select('employeeName')->where('typeWorker', 'Directo')->get();
+
 
         $top5 = [];
         $i = 0;
@@ -900,11 +902,17 @@ class juntasController extends Controller
         foreach ($empleados as $nombre => $cantidad) {
             if ($i >= 10) break;
             $top5[$nombre] = $cantidad;
+               $registro = array_search($nombre, array_column($personalYear->toArray(), 'employeeName')) ;
+            if ($registro !== false) {
+                unset($personalYear[$registro]);
+            }
+
+
             $i++;
         }
         asort($top5);
 
-        return view('juntas/calidad', ['respemp' => $empRes, 'empleados' => $top5, 'days' => $days, 'hoyb' => $hoyb, 'hoymal' => $hoymal, 'parhoy' => $parhoy, 'gultyY' => $gultyY, 'gulty' => $gulty, 'datosHoy' => $datosHoy, 'totalm' => $totalm, 'totalb' => $totalb, 'monthAndYearPareto' => $monthAndYearPareto, 'datosT' => $datosT, 'datosS' => $datosS, 'datosF' => $datosF, 'labelQ' => $labelQ, 'colorQ' => $colorQ, 'value' => $value, 'cat' => $cat, 'datos' => $datos, 'pareto' => $pareto, 'Qdays' => $Qdays]);
+        return view('juntas/calidad', ['personalYear'=>$personalYear,'respemp' => $empRes, 'empleados' => $top5, 'days' => $days, 'hoyb' => $hoyb, 'hoymal' => $hoymal, 'parhoy' => $parhoy, 'gultyY' => $gultyY, 'gulty' => $gulty, 'datosHoy' => $datosHoy, 'totalm' => $totalm, 'totalb' => $totalb, 'monthAndYearPareto' => $monthAndYearPareto, 'datosT' => $datosT, 'datosS' => $datosS, 'datosF' => $datosF, 'labelQ' => $labelQ, 'colorQ' => $colorQ, 'value' => $value, 'cat' => $cat, 'datos' => $datos, 'pareto' => $pareto, 'Qdays' => $Qdays]);
     }
 
     public function litas_junta($id)
