@@ -493,10 +493,10 @@ class juntasController extends Controller
                 $index = count($etiq) - 1; // Index of the last added element
                 $datos[$etiq[$index]] = $rows->resto;
             }
-            if (in_array($rows->Responsable . " - " . $rows->pn. " <br> Lider: " . $supRes->employeeLider, array_column($gultyY, 0))) {
+            if (in_array($rows->Responsable . " - " . $rows->pn. " Lider: " . $supRes->employeeLider, array_column($gultyY, 0))) {
                 $gultyY[array_search($rows->Responsable . " - " . $rows->pn, array_column($gultyY, 0))][1] += $rows->resto;
             } else {
-                $gultyY[$j][0] = $rows->Responsable . " - " . $rows->pn . " <br> Lider: " . $supRes->employeeLider;
+                $gultyY[$j][0] = $rows->Responsable . " - " . $rows->pn . " Lider: " . $supRes->employeeLider;
                 $gultyY[$j][1] = $rows->resto;
                 $j++;
             }
