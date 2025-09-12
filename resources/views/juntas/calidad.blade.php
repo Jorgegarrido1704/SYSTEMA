@@ -122,7 +122,12 @@
                 <!-- Card scaneer -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                     <h5 class="m-0 font-weight-bold text-primary">FTQ (First Time Quality) <span></span>
-                        Tested:{{ $totalb + $totalm }} <span class="text-success">OK: </span> {{ $totalb }} <span class="text-danger">Oportunities:</span> {{ $totalm }} Porcentage: {{ round($totalb / ($totalb + $totalm) * 100,2) }} </h5>
+                        Tested:{{ $totalb + $totalm }} <span class="text-success">OK: </span> {{ $totalb }} <span class="text-danger">Oportunities:</span> {{ $totalm }} Porcentage:
+                        @if( (($totalb/($totalb + $totalm)) * 100) >97 )
+                        <span class="text-success">{{ round($totalb / ($totalb + $totalm) * 100,2) }}</span>
+                        @else
+                        <span class="text-danger">{{ round($totalb / ($totalb + $totalm) * 100,2) }}</span>
+                        @endif </h5>
 
                 </div>
 
@@ -187,7 +192,7 @@
             </div>
         </div>
         <div class="col-lg-4 mb-4" style="max-width: 40%">
-            <!-- AREAS -->
+            <!-- Reworks responsible yesterday -->
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
                     <h5 class="m-0 font-weight-bold text-primary">Reworks Responsible Yesterday </h5>
