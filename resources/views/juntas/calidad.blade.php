@@ -121,9 +121,8 @@
             <div class="card shadow mb-4">
                 <!-- Card scaneer -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h5 class="m-0 font-weight-bold text-primary">FTQ (First Time Quality) <span></span> Total
-                        tested:{{ $totalb + $totalm }} total Buenas: {{ $totalb }} total incidences:
-                        {{ $totalm }} </h5>
+                    <h5 class="m-0 font-weight-bold text-primary">FTQ (First Time Quality) <span></span>
+                        Tested:{{ $totalb + $totalm }} <span class="text-success">OK: </span> {{ $totalb }} <span class="text-danger">Oportunities:</span> {{ $totalm }} Porcentage: {{ $totalm / ($totalb + $totalm) * 100 }} </h5>
 
                 </div>
 
