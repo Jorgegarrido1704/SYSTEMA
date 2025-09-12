@@ -20,7 +20,7 @@
                                             <li class="list-group-item">
                                                 <strong>Dia:</strong> {{ $diaActual }}
                                           @foreach ($datos as $dato)
-                                                @if($id == 'vacaciones')
+                                                @if($id == 'V')
                                               <li class="list-group-item"> Folio: {{ $dato->folio }} - Name {{ $dato->name }}</li>
                                                 @else
                                               <li class="list-group-item"> Name {{ $dato->name }}</li>
