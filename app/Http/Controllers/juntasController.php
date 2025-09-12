@@ -904,9 +904,8 @@ class juntasController extends Controller
             if ($i >= 10) break;
             $top5[$nombre] = $cantidad;
                $registro = array_search($nombre, array_column($personalYear->toArray(), 'employeeName')) ;
-            if ($registro !== false) {
-                
-                array_pop($personalYear[$registro]);
+            if ($registro) {
+                unset($personalYear[$registro]);
             }
 
 
