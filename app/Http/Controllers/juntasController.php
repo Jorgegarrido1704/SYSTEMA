@@ -910,17 +910,22 @@ class juntasController extends Controller
             $i++;
         }
         asort($top5);
-        $personalYear=[];
-          $personalYearCulpables = personalBergsModel::select('employeeName')->where('typeWorker', 'Directo')
-            ->where('status', 'Activo')->get();
-            foreach ($personalYearCulpables as $row) {
-                $buscarculpables = calidadRegistro::where('Responsable', $row->employeeName)->where('fecha', 'LIKE', "%$YearParto%")
-            ->first();
-                if(count($buscarculpables) <= 0){
-                    array_push($personalYear, $row->employeeName);
-                }
+        $personalYear = [];
+        $personalYearCulpables = personalBergsModel::select('employeeName')
+            ->where('typeWorker', 'Directo')
+            ->where('status', 'Activo')
+            ->get();
 
+        foreach ($personalYearCulpables as $row) {
+            $buscarculpables = calidadRegistro::where('Responsable', $row->employeeName)
+                ->where('fecha', 'LIKE', "%$YearParto%")
+                ->first();
+
+            if (!$buscarculpables) { // si no existe ningún registro
+                $personalYear[] = $row->employeeName; // forma corta de array_push
             }
+        }
+
 
 
 
