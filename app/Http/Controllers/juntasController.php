@@ -721,6 +721,7 @@ class juntasController extends Controller
             ->where('fecha', 'LIKE', "%$YearParto%")
             ->orderBy('Responsable', 'ASC')
             ->get();
+            
         foreach ($buscarValorPareto as $rowPareto) {
             if ($rowPareto->codigo == 'TODO BIEN') {
                 $yearGood += 1;
