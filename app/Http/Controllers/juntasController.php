@@ -24,6 +24,7 @@ use App\Models\tiempos;
 use App\Models\registroVacacionesModel;
 use App\Mail\solicitudVacacionesMail;
 use Illuminate\Support\Facades\Mail;
+use App\Models\calidadRegistro;
 
 class juntasController extends Controller
 {
@@ -721,16 +722,12 @@ class juntasController extends Controller
             ->where('fecha', 'LIKE', "%$YearParto%")
             ->orderBy('Responsable', 'ASC')
             ->get();
-        $personalYear = personalBergsModel::select('employeeName')->where('typeWorker', 'Directo')
-            ->where('status', 'Activo')->get();
+
         foreach ($buscarValorPareto as $rowPareto) {
             if ($rowPareto->codigo == 'TODO BIEN') {
                 $yearGood += 1;
             } else {
-                $registrosporAno=array_search($rowPareto->Responsable, array_column($personalYear->toArray(), 'employeeName'));
-                if($registrosporAno){
-                    unset($personalYear[$registrosporAno]);
-                }
+
                 $yearBad += 1;
                 if (!in_array($rowPareto->Responsable, $empRes)) {
                     array_push($empRes, $rowPareto->Responsable);
@@ -913,6 +910,19 @@ class juntasController extends Controller
             $i++;
         }
         asort($top5);
+        $personalYear=[];
+          $personalYearCulpables = personalBergsModel::select('employeeName')->where('typeWorker', 'Directo')
+            ->where('status', 'Activo')->get();
+            foreach ($personalYearCulpables as $row) {
+                $buscarculpables = calidadRegistro::where('Responsable', $row->employeeName)->where('fecha', 'LIKE', "%-$YearParto%")
+            ->first();
+                if(empty($buscarculpables)){
+                    array_push($personalYear, $row->employeeName);
+                }
+
+            }
+
+
 
         return view('juntas/calidad', ['personalYear' => $personalYear, 'respemp' => $empRes, 'empleados' => $top5, 'days' => $days, 'hoyb' => $hoyb, 'hoymal' => $hoymal, 'parhoy' => $parhoy, 'gultyY' => $gultyY, 'gulty' => $gulty, 'datosHoy' => $datosHoy, 'totalm' => $totalm, 'totalb' => $totalb, 'monthAndYearPareto' => $monthAndYearPareto, 'datosT' => $datosT, 'datosS' => $datosS, 'datosF' => $datosF, 'labelQ' => $labelQ, 'colorQ' => $colorQ, 'value' => $value, 'cat' => $cat, 'datos' => $datos, 'pareto' => $pareto, 'Qdays' => $Qdays]);
     }
