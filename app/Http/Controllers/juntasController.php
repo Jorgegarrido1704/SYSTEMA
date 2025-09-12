@@ -484,7 +484,7 @@ class juntasController extends Controller
             ->where('fecha', 'LIKE', $crtl . '%')
             ->get();
         foreach ($buscarValoresMes as $rows) {
-            $supRes=personalBergsModel::select('employeeLider')->where('employeeName', $rows->Responsable)->first();
+            $supRes = personalBergsModel::select('employeeLider')->where('employeeName', $rows->Responsable)->first();
             if (in_array($rows->codigo, $etiq)) {
                 $index = array_search($rows->codigo, $etiq);
                 $datos[$etiq[$index]] += $rows->resto;
@@ -493,8 +493,8 @@ class juntasController extends Controller
                 $index = count($etiq) - 1; // Index of the last added element
                 $datos[$etiq[$index]] = $rows->resto;
             }
-            if (in_array($rows->Responsable . " - " . $rows->pn. " Lider: " . $supRes->employeeLider, array_column($gultyY, 0))) {
-                $gultyY[array_search($rows->Responsable . " - " . $rows->pn. " Lider: " . $supRes->employeeLider, array_column($gultyY, 0))][1] += $rows->resto;
+            if (in_array($rows->Responsable . " - " . $rows->pn . " Lider: " . $supRes->employeeLider, array_column($gultyY, 0))) {
+                $gultyY[array_search($rows->Responsable . " - " . $rows->pn . " Lider: " . $supRes->employeeLider, array_column($gultyY, 0))][1] += $rows->resto;
             } else {
                 $gultyY[$j][0] = $rows->Responsable . " - " . $rows->pn . " Lider: " . $supRes->employeeLider;
                 $gultyY[$j][1] = $rows->resto;
@@ -721,11 +721,15 @@ class juntasController extends Controller
             ->where('fecha', 'LIKE', "%$YearParto%")
             ->orderBy('Responsable', 'ASC')
             ->get();
-
+        $personalYear = personalBergsModel::select('employeeName')->where('typeWorker', 'Directo')
+            ->where('status', 'Activo')->get();
         foreach ($buscarValorPareto as $rowPareto) {
             if ($rowPareto->codigo == 'TODO BIEN') {
                 $yearGood += 1;
             } else {
+                if(key_exists($rowPareto->Responsable, $personalYear)){
+                unset($personalYear[$rowPareto->Responsable]);
+                }
                 $yearBad += 1;
                 if (!in_array($rowPareto->Responsable, $empRes)) {
                     array_push($empRes, $rowPareto->Responsable);
@@ -874,11 +878,11 @@ class juntasController extends Controller
                     $datosHoy[$issue->codigo . "-" . $issue->pn][3] = $issue->pn;
                     $i++;
                 }
-                $gutlyleader=personalBergsModel::select('employeeLider')->where('employeeName',$issue->Responsable)->first();
-                if (in_array($issue->Responsable." Lider: ".$gutlyleader->employeeLider, array_column($gulty, 0))) {
-                    $gulty[array_search($issue->Responsable." Lider: ".$gutlyleader->employeeLider, array_column($gulty, 0))][1] += $issue->resto;
+                $gutlyleader = personalBergsModel::select('employeeLider')->where('employeeName', $issue->Responsable)->first();
+                if (in_array($issue->Responsable . " Lider: " . $gutlyleader->employeeLider, array_column($gulty, 0))) {
+                    $gulty[array_search($issue->Responsable . " Lider: " . $gutlyleader->employeeLider, array_column($gulty, 0))][1] += $issue->resto;
                 } else {
-                    $gulty[$x][0] = $issue->Responsable." Lider: ".$gutlyleader->employeeLider;
+                    $gulty[$x][0] = $issue->Responsable . " Lider: " . $gutlyleader->employeeLider;
                     $gulty[$x][1] = $issue->resto;
                     $x++;
                 }
@@ -893,8 +897,7 @@ class juntasController extends Controller
             arsort($gultyY);
         }
         arsort($empleados); // Asegura que esté ordenado de mayor a menor
-        $personalYear = personalBergsModel::select('employeeName')->where('typeWorker', 'Directo')
-        ->where('status', 'Activo')->get();
+
 
 
         $top5 = [];
@@ -903,17 +906,14 @@ class juntasController extends Controller
         foreach ($empleados as $nombre => $cantidad) {
             if ($i >= 10) break;
             $top5[$nombre] = $cantidad;
-               $registro = array_search($nombre, array_column($personalYear->toArray(), 'employeeName')) ;
-            if ($registro) {
-                unset($personalYear[$registro]);
-            }
+
 
 
             $i++;
         }
         asort($top5);
 
-        return view('juntas/calidad', ['personalYear'=>$personalYear,'respemp' => $empRes, 'empleados' => $top5, 'days' => $days, 'hoyb' => $hoyb, 'hoymal' => $hoymal, 'parhoy' => $parhoy, 'gultyY' => $gultyY, 'gulty' => $gulty, 'datosHoy' => $datosHoy, 'totalm' => $totalm, 'totalb' => $totalb, 'monthAndYearPareto' => $monthAndYearPareto, 'datosT' => $datosT, 'datosS' => $datosS, 'datosF' => $datosF, 'labelQ' => $labelQ, 'colorQ' => $colorQ, 'value' => $value, 'cat' => $cat, 'datos' => $datos, 'pareto' => $pareto, 'Qdays' => $Qdays]);
+        return view('juntas/calidad', ['personalYear' => $personalYear, 'respemp' => $empRes, 'empleados' => $top5, 'days' => $days, 'hoyb' => $hoyb, 'hoymal' => $hoymal, 'parhoy' => $parhoy, 'gultyY' => $gultyY, 'gulty' => $gulty, 'datosHoy' => $datosHoy, 'totalm' => $totalm, 'totalb' => $totalb, 'monthAndYearPareto' => $monthAndYearPareto, 'datosT' => $datosT, 'datosS' => $datosS, 'datosF' => $datosF, 'labelQ' => $labelQ, 'colorQ' => $colorQ, 'value' => $value, 'cat' => $cat, 'datos' => $datos, 'pareto' => $pareto, 'Qdays' => $Qdays]);
     }
 
     public function litas_junta($id)
@@ -1383,7 +1383,7 @@ class juntasController extends Controller
                 $registroPPAP[$i][17] = "Black";
             }
             $registroPPAP[$i][18] = $res->qtyInPo;
-            $registroPPAP[$i][21] = "c-".$res->Color??"c-white";
+            $registroPPAP[$i][21] = "c-" . $res->Color ?? "c-white";
             $i++;
         }
 
@@ -1453,7 +1453,7 @@ class juntasController extends Controller
             } else {
                 $registroPPAP[$i][14] = "236, 236, 9, 0.497";
             }
-            $registroPPAP[$i][21] = "c-".$res->Color??"c-white";;
+            $registroPPAP[$i][21] = "c-" . $res->Color ?? "c-white";;
 
 
             $i++;
@@ -1943,7 +1943,7 @@ class juntasController extends Controller
 
         $diasAviles = [];
         $empleados = [];
-        $busqueda = personalBergsModel::where('employeeLider', 'LIKE', '%'.$value.'%')
+        $busqueda = personalBergsModel::where('employeeLider', 'LIKE', '%' . $value . '%')
             ->where('status', '=', 'Activo')
             ->get();
         foreach ($busqueda as $rows) {
@@ -2120,36 +2120,36 @@ class juntasController extends Controller
                 } else {
                     $years = Carbon::now()->subYear()->year;
                 }
-                  }
-              $returnDate->addDay(1);
+            }
+            $returnDate->addDay(1);
         }
 
-                //Insert into registro_vacaciones table
-                DB::table('registro_vacaciones')->insert([
-                    'id_empleado' => $pesonal,
-                    'fecha_de_solicitud' => $endDate,
-                    'fehca_retorno' => $returnDate,
-                    'estatus' => 'Pendiente RH',
-                    'dias_solicitados' => $diasReg,
-                    'usedYear' => $years,
-                    'superVisor' => session('user')
+        //Insert into registro_vacaciones table
+        DB::table('registro_vacaciones')->insert([
+            'id_empleado' => $pesonal,
+            'fecha_de_solicitud' => $endDate,
+            'fehca_retorno' => $returnDate,
+            'estatus' => 'Pendiente RH',
+            'dias_solicitados' => $diasReg,
+            'usedYear' => $years,
+            'superVisor' => session('user')
 
-                ]);
+        ]);
 
-            $buscarFolio = DB::table('registro_vacaciones')
-                ->select('id')->where('id_empleado', '=', $pesonal)
-                ->limit(1)->orderBy('id', 'desc')->first();
-            $folio = 'VAC-' . $buscarFolio->id;
-            $contend['fecha_de_solicitud'] = $endDate->toDateString();
-            $contend['Folio'] = $folio;
-            $receivers = [
-                'paguilar@mx.bergstrominc.com',
-                'mabibarra@mx.bergstrominc.com'
-            ];
-            Mail::to($receivers)->send(new solicitudVacacionesMail($contend, 'Solicitud de Vacaciones'));
+        $buscarFolio = DB::table('registro_vacaciones')
+            ->select('id')->where('id_empleado', '=', $pesonal)
+            ->limit(1)->orderBy('id', 'desc')->first();
+        $folio = 'VAC-' . $buscarFolio->id;
+        $contend['fecha_de_solicitud'] = $endDate->toDateString();
+        $contend['Folio'] = $folio;
+        $receivers = [
+            'paguilar@mx.bergstrominc.com',
+            'mabibarra@mx.bergstrominc.com'
+        ];
+        Mail::to($receivers)->send(new solicitudVacacionesMail($contend, 'Solicitud de Vacaciones'));
 
-            // Mail::to('jguillen@mx.bergstrominc.com')->send(new solicitudVacacionesMail($contend, 'Solicitud de Vacaciones'));
-            // Mail::to('jgarrido@mx.bergstrominc.com')->send(new solicitudVacacionesMail($contend, 'Solicitud de Vacaciones'));
+        // Mail::to('jguillen@mx.bergstrominc.com')->send(new solicitudVacacionesMail($contend, 'Solicitud de Vacaciones'));
+        // Mail::to('jgarrido@mx.bergstrominc.com')->send(new solicitudVacacionesMail($contend, 'Solicitud de Vacaciones'));
 
 
         return redirect()->route('vacations')->with('success', 'Vacaciones agregadas correctamente.');
@@ -2319,21 +2319,18 @@ class juntasController extends Controller
 
         if ($id == 'P') {
             $datos = assistence::select('name')->where($diaActual, '=', 'PSS', 'OR', $diaActual, '=', 'PCS', 'OR', $diaActual, '=', 'TSP')->where('week', '=', $week)->get();
-        }else if ($id == 'V') {
-            $Inicio = assistence::select('id_empleado','name')->where($diaActual, '=', 'V')->where('week', '=', $week)->get();
+        } else if ($id == 'V') {
+            $Inicio = assistence::select('id_empleado', 'name')->where($diaActual, '=', 'V')->where('week', '=', $week)->get();
             foreach ($Inicio as $row) {
                 $buscarVacaciones = registroVacacionesModel::where('id_empleado', '=', $row->id_empleado)
                     ->where('estatus', '=', 'Confirmado')
                     ->where('fecha_de_solicitud', '=', $hoy)
                     ->first();
                 if ($buscarVacaciones) {
-                    $datos[] =  ['name' => $row->name,'folio'=>$buscarVacaciones->id];
-
+                    $datos[] =  ['name' => $row->name, 'folio' => $buscarVacaciones->id];
                 }
             }
-
-        }
-         else {
+        } else {
 
             $datos = assistence::select('name')->where($diaActual, '=', $id)->where('week', '=', $week)->get();
         }
@@ -2385,13 +2382,13 @@ class juntasController extends Controller
         $id = $request->input('tipoNpi');
         $value = session('user');
         $cat = session('categoria');
-          // PPAP and PRIM Insofor
+        // PPAP and PRIM Insofor
         $registroPPAP = [];
         $i = 0;
 
         $WS = workScreduleModel::where('status', '!=', 'CANCELLED')
             ->where('UpOrderDate', '=', null)
-             ->where('Color', '=', $id)
+            ->where('Color', '=', $id)
             ->orderBy('id', 'desc')->get();
         foreach ($WS as $res) {
             $registroPPAP[$i][0] = $res->customer;
@@ -2419,7 +2416,7 @@ class juntasController extends Controller
                 $registroPPAP[$i][17] = "Black";
             }
             $registroPPAP[$i][18] = $res->qtyInPo;
-            $registroPPAP[$i][21] = "c-".$res->Color??"c-white";
+            $registroPPAP[$i][21] = "c-" . $res->Color ?? "c-white";
             $i++;
         }
 
@@ -2489,7 +2486,7 @@ class juntasController extends Controller
             } else {
                 $registroPPAP[$i][14] = "236, 236, 9, 0.497";
             }
-            $registroPPAP[$i][21] = "c-".$res->Color??"c-white";;
+            $registroPPAP[$i][21] = "c-" . $res->Color ?? "c-white";;
 
 
             $i++;
