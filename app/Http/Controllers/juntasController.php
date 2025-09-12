@@ -842,18 +842,32 @@ class juntasController extends Controller
         }
         //calidad Q
         $Qdays = $colorQ = $labelQ = [];
-        $maxDays = cal_days_in_month(CAL_GREGORIAN, date('m'), date('Y'));
-        for ($i = 0; $i < $maxDays; $i++) {
-            $Qdays[$i] = 1;
-            $labelQ[$i] = $i + 1;
-        }
-        $todayD = date('d');
-        for ($i = 0; $i < $todayD; $i++)
-            if ($labelQ[$i] == 4 or $labelQ[$i] == 3 or $labelQ[$i] == 10 or $labelQ[$i] == 11) {
-                $colorQ[$i] = 'red';
-            } else {
-                $colorQ[$i] = 'green';
-            }
+$maxDays = cal_days_in_month(CAL_GREGORIAN, date('m'), date('Y'));
+
+for ($i = 0; $i < $maxDays; $i++) {
+    $Qdays[$i] = 1;
+    $labelQ[$i] = $i + 1;
+}
+
+$reportesCustomer = registroQ::select('fecha')
+    ->where('fecha', 'LIKE', date('Y-m') . "%")
+    ->get();
+
+// Get all days from the reportes
+$daysReported = [];
+foreach ($reportesCustomer as $row) {
+    $daysReported[] = (int)date('d', strtotime($row->fecha));
+}
+
+$todayD = date('d');
+for ($i = 0; $i < $todayD; $i++) {
+    if (in_array($i + 1, $daysReported)) {
+        $colorQ[$i] = 'red';
+    } else {
+        $colorQ[$i] = 'green';
+    }
+}
+
         rsort($datosT);
         asort($datosS);
         rsort($datosF);
