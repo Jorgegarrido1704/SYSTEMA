@@ -74,6 +74,7 @@
                 </div>
             </div>
         </div>
+         <!-- Top 3 incidences -->
         <div class="col-lg-4 col-lx-4">
             <!-- AREAS -->
             <div class="card shadow mb-4">
@@ -116,14 +117,16 @@
                 </div>
             </div>
         </div>
-
+             <!-- FTQ Graph -->
         <div class="col-xl-8 col-lg-8">
             <div class="card shadow mb-4">
                 <!-- Card scaneer -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                     <h5 class="m-0 font-weight-bold text-primary">FTQ (First Time Quality)
                         @if($totalb + $totalm >0)
-                        Tested:{{ $totalb + $totalm }} <span class="text-success">OK: </span> <span class="text-dark">{{ $totalb }}</span> <span class="text-danger">Oportunities:</span> {{ $totalm }} Porcentage:
+                        Tested:{{ $totalb + $totalm }} <span class="text-success">OK: </span> <span class="text-dark">{{ $totalb }}</span>
+                        <span class="text-danger">Oportunities:</span> <span class="text-dark">{{ $totalm }}</span>
+                        Porcentage:
                         @if( (($totalb/($totalb + $totalm)) * 100) >97 )
                         <span class="text-success">{{ round($totalb / ($totalb + $totalm) * 100,2) }}</span>
                         @else
@@ -149,13 +152,41 @@
 
             </div>
         </div>
+             <!-- Customer Complains -->
         <div class="col-xl-4 col-lg-4">
             <!-- AREAS -->
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h5 class="m-0 font-weight-bold text-primary">Customer complains</h5>
+                    <h5 class="m-0 font-weight-bold text-primary">Customer complains  </h5><br>
+                     <div class="row">
+                            @if($value=='Admin' or $value=='Edward M' or $value=='Goretti Ro' or $value=='Luis R')
+
+                            <div class="col-md-3">
+                                <label for="dateIncidence" class="form-label">Incidence Date</label>
+                            </div>
+                            <div class="col-md-5">
+                                <input type="date" class="form-control" id="dateIncidence" name="dateIncidence" required>
+                            </div>
+
+
+                            <div class="col-md-2">
+                            <form id="guardasDateQ" action="{{ route('customerComplains') }}"  method="GET"  >
+                                <input type="hidden" name="gQ" id="gQ">
+                                <button type="submit" class="btn btn-success" onclick="guardarDateQ()">Guardar</button>
+                            </form>
+                            </div>
+                            <div class="col-md-2">
+                             <form id="borrarDateQ" action="{{ route('customerComplains') }}" method="GET">
+                                <input type="hidden" name="bQ" id="bQ">
+                                <button type="submit" class="btn btn-danger" onclick="borrarDateQ()">Borrar</button>
+                            </form>
+                            </div>
+
+                            @endif
+                        </div>
                 </div>
                 <div class="card-body" style="overflow-y: auto; height: 360px;">
+
                     <canvas id="Q"></canvas>
 
                 </div>
@@ -164,6 +195,7 @@
 
     </div>
     <div class="row">
+         <!-- Top 10 employees monthly -->
         <div class="col-lg-5 col-lx-5">
             <!-- AREAS -->
             <div class="card shadow mb-4">
@@ -175,6 +207,7 @@
                 </div>
             </div>
         </div>
+         <!-- whitout incidences  -->
         <div class="col-lg-3 col-lx-3">
             <!-- AREAS -->
             <div class="card shadow mb-4">
@@ -200,8 +233,8 @@
                 </div>
             </div>
         </div>
+         <!-- Reworks responsible yesterday -->
         <div class="col-lg-4 mb-4" style="max-width: 40%">
-            <!-- Reworks responsible yesterday -->
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
                     <h5 class="m-0 font-weight-bold text-primary">Reworks Responsible Yesterday </h5>
@@ -233,11 +266,8 @@
     </div>
     <!-- Graficas malas -->
     <div class="row">
-
-
-
+            <!-- FTQ Today -->
         <div class="col-lg-4 mb-4" style="max-width: 40%">
-            <!-- AREAS -->
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
                     <h5 class="m-0 font-weight-bold text-primary">FTQ Now (Good: {{ $hoyb }} Bad:
@@ -270,8 +300,9 @@
                 </div>
             </div>
         </div>
+        <!-- Reworks responsible -->
         <div class="col-lg-4 mb-4" style="max-width: 40%">
-            <!-- AREAS -->
+
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
                     <h5 class="m-0 font-weight-bold text-primary">Reworks Responsible Now </h5>

@@ -7,6 +7,7 @@ var pyl=Object.keys(paretoYear);
 var pyv=Object.values(paretoYear);
 var employees =Object.keys(empleados);
 var empvalues =Object.values(empleados);
+/*
 const personal=[
 ['2001','Jesus  Zamarripa Rodriguez','Lider Producción','Ensamble','DVillalpando'],
 ['2002','Rosario Hernandez Lopez','Inspector Calidad','','EVillegas'],
@@ -152,8 +153,25 @@ window.addEventListener('DOMContentLoaded', () => {
       row.appendChild(cell);
       tablaRes.appendChild(row);
     });
-  });
+  });*/
 
+   function guardarDateQ(){
+    const date =document.getElementById("dateIncidence").value;
+    alert(date);
+    document.getElementById("gQ").value = date;
+    alert(document.getElementById("gQ").value);
+    document.getElementById("bQ").value = "";
+    document.getElementById("guardasDateQ").submit;
+   }
+   function borrarDateQ(){
+    const date =document.getElementById("dateIncidence").value;
+    alert(date);
+    document.getElementById("gQ").value = "";
+    alert(document.getElementById("gQ").value);
+    document.getElementById("bQ").value = date;
+    alert(document.getElementById("bQ").value);
+    document.getElementById("borrarDateQ").submit;
+   }
 
 
 var totalp=[];

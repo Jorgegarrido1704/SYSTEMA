@@ -25,6 +25,7 @@ use App\Models\registroVacacionesModel;
 use App\Mail\solicitudVacacionesMail;
 use Illuminate\Support\Facades\Mail;
 use App\Models\calidadRegistro;
+use App\Models\registroQ;
 
 class juntasController extends Controller
 {
@@ -2508,5 +2509,22 @@ class juntasController extends Controller
             $i++;
         }
         return json_encode($registroPPAP);
+    }
+    public function customerComplains(Request $request){
+        $value = session('user');
+        $alta=$request->input('gQ');
+        $baja = $request->input('bQ');
+        if($alta!="" && $baja==""){
+        $registroAlta=   new registroQ();
+           $registroAlta->userReg=$value;
+           $registroAlta->fecha=$alta;
+           $registroAlta->presentacion="Alta";
+           $registroAlta->save();
+         return redirect()->route('calidad_junta');
+        }else if($alta=="" && $baja!=""){
+            $registroBaja = registroQ::where('fecha', $baja)->delete();
+             return redirect()->route('calidad_junta');
+        }
+    return redirect()->route('calidad_junta');
     }
 }
