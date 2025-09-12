@@ -914,9 +914,9 @@ class juntasController extends Controller
           $personalYearCulpables = personalBergsModel::select('employeeName')->where('typeWorker', 'Directo')
             ->where('status', 'Activo')->get();
             foreach ($personalYearCulpables as $row) {
-                $buscarculpables = calidadRegistro::where('Responsable', $row->employeeName)->where('fecha', 'LIKE', "%-$YearParto%")
+                $buscarculpables = calidadRegistro::where('Responsable', $row->employeeName)->where('fecha', 'LIKE', "%$YearParto%")
             ->first();
-                if(empty($buscarculpables)){
+                if(count($buscarculpables) <= 0){
                     array_push($personalYear, $row->employeeName);
                 }
 
