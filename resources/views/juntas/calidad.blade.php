@@ -190,7 +190,7 @@
                             @if(!@empty($personalYear))
                             @foreach ($personalYear as $datoPersonalYear)
                                 <tr>
-                                    <td>{{ $datoPersonalYear['employeeName'] }}</td>
+                                    <td>{{ $datoPersonalYear }}</td>
                                 </tr>
                             @endforeach
                             @endif
