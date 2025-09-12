@@ -8,7 +8,7 @@ var pyv=Object.values(paretoYear);
 var employees =Object.keys(empleados);
 var empvalues =Object.values(empleados);
 const personal=[
-    ['2001','Jesus  Zamarripa Rodriguez','Lider Producción','Ensamble','DVillalpando'],
+['2001','Jesus  Zamarripa Rodriguez','Lider Producción','Ensamble','DVillalpando'],
 ['2002','Rosario Hernandez Lopez','Inspector Calidad','','EVillegas'],
 ['2003','Andrea Pacheco','Supervisor Almacen','','JGUILLEN'],
 ['2004','Fabiola  Alonso','Inspector Calidad','','EVillegas'],
@@ -411,7 +411,7 @@ var incs = new Chart(inc, {
             {
                 label: 'Incidencias del mes',
                 data: empvalues,
-                backgroundColor: ['#1cc88a', 'red'],
+                backgroundColor: ['rgba(151, 200, 28, 1)','rgba(171, 200, 28, 1)','rgba(188, 200, 28, 1)','rgba(194, 200, 28, 1)','rgba(200, 154, 28, 1)','rgba(210, 150, 28, 1)','rgba(200, 131, 28, 1)','rgba(200, 117, 28, 1)','rgba(200, 94, 28, 1)','rgba(200, 48, 28, 1)'],
 
                 fill: false, // Evita rellenar el área debajo de la línea
                 borderWidth: 4
