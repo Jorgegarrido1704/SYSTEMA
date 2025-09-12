@@ -123,7 +123,7 @@
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                     <h5 class="m-0 font-weight-bold text-primary">FTQ (First Time Quality)
                         @if($totalb + $totalm >0)
-                        Tested:{{ $totalb + $totalm }} <span class="text-success">OK: </span> {{ $totalb }} <span class="text-danger">Oportunities:</span> {{ $totalm }} Porcentage:
+                        Tested:{{ $totalb + $totalm }} <span class="text-success">OK: </span> <span class="text-dark">{{ $totalb }}</span> <span class="text-danger">Oportunities:</span> {{ $totalm }} Porcentage:
                         @if( (($totalb/($totalb + $totalm)) * 100) >97 )
                         <span class="text-success">{{ round($totalb / ($totalb + $totalm) * 100,2) }}</span>
                         @else
