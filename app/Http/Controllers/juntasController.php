@@ -727,8 +727,9 @@ class juntasController extends Controller
             if ($rowPareto->codigo == 'TODO BIEN') {
                 $yearGood += 1;
             } else {
-                if(key_exists($rowPareto->Responsable, $personalYear)){
-                unset($personalYear[$rowPareto->Responsable]);
+                $registrosporAno=array_search($rowPareto->Responsable, array_column($personalYear->toArray(), 'employeeName'));
+                if($registrosporAno){
+                    unset($personalYear[$registrosporAno]);
                 }
                 $yearBad += 1;
                 if (!in_array($rowPareto->Responsable, $empRes)) {
