@@ -893,7 +893,8 @@ class juntasController extends Controller
             arsort($gultyY);
         }
         arsort($empleados); // Asegura que esté ordenado de mayor a menor
-        $personalYear = personalBergsModel::select('employeeName')->where('typeWorker', 'Directo')->get();
+        $personalYear = personalBergsModel::select('employeeName')->where('typeWorker', 'Directo')
+        ->where('status', 'Activo')->get();
 
 
         $top5 = [];
@@ -904,7 +905,8 @@ class juntasController extends Controller
             $top5[$nombre] = $cantidad;
                $registro = array_search($nombre, array_column($personalYear->toArray(), 'employeeName')) ;
             if ($registro !== false) {
-                unset($personalYear[$registro]);
+                
+                array_pop($personalYear[$registro]);
             }
 
 
