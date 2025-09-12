@@ -24,7 +24,7 @@
                                               <li class="list-group-item"> Folio: {{ $dato->folio }} - Name {{ $dato->name }}</li>
                                                 @else
                                               <li class="list-group-item"> Name {{ $dato->name }}</li>
-
+                                                @endif
                                           @endforeach
                                         </ul>
                                     </div>
