@@ -2038,8 +2038,7 @@ class juntasController extends Controller
         $pesonal = $input['personalIng'];
         $endDate = Carbon::parse($input['endDate']);
         $diasT = $input['diasT'];
-        $returnDate = $endDate;
-
+        $returnDate = Carbon::parse($input['endDate']);
 
         // revisar si hay
         $datosVacaciones = DB::table('registro_vacaciones')
@@ -2047,7 +2046,7 @@ class juntasController extends Controller
             ->where('fecha_de_solicitud', '=', $endDate)
             ->get();
 
-        if ($datosVacaciones != null &&  count($datosVacaciones) > 80) {
+        if ($datosVacaciones != null &&  count($datosVacaciones) > 200) {
             session()->flash('error', 'Ya hay vacaciones registradas para esta fecha.');
             return redirect()->back();
         }
