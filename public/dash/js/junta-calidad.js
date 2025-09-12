@@ -157,19 +157,19 @@ window.addEventListener('DOMContentLoaded', () => {
 
    function guardarDateQ(){
     const date =document.getElementById("dateIncidence").value;
-    alert(date);
+    //alert(date);
     document.getElementById("gQ").value = date;
-    alert(document.getElementById("gQ").value);
+    alert("Se ha guardado la Incidencia de la fecha " + document.getElementById("gQ").value);
     document.getElementById("bQ").value = "";
     document.getElementById("guardasDateQ").submit;
    }
    function borrarDateQ(){
     const date =document.getElementById("dateIncidence").value;
-    alert(date);
+    //alert(date);
     document.getElementById("gQ").value = "";
-    alert(document.getElementById("gQ").value);
+    //alert(document.getElementById("gQ").value);
     document.getElementById("bQ").value = date;
-    alert(document.getElementById("bQ").value);
+    alert("Se ha borrado la Incidencia de la fecha " + document.getElementById("bQ").value);
     document.getElementById("borrarDateQ").submit;
    }
 
