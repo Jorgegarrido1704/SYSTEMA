@@ -23,8 +23,8 @@
                                                 @if($id == 'vacaciones')
                                               <li class="list-group-item"> Folio: {{ $dato->folio }} - Name {{ $dato->name }}</li>
                                                 @else
-                                              <li class="list-group-item"> Folio: {{ $dato->folio }} - Name {{ $dato->name }} - Apellido {{ $dato->apellido }}</li>
-                                              
+                                              <li class="list-group-item"> Name {{ $dato->name }}</li>
+
                                           @endforeach
                                         </ul>
                                     </div>
