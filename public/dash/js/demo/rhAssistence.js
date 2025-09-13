@@ -1,4 +1,4 @@
-const assist = document.getElementById("assistence").getContext("2d");
+const assist = document.getElementById("assistence");
 
 const registroInicidencia = Object.values(registros);
 

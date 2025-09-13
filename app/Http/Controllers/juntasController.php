@@ -470,6 +470,7 @@ class juntasController extends Controller
     {
         $value = session('user');
         $cat = session('categoria');
+        $datosCalidad = [];
         $empRes = $empleados = $datos = $etiq = $gultyY = [];
         $totalb = $totalm = $j = 0;
         $monthAndYear = date("m-Y");
@@ -495,303 +496,152 @@ class juntasController extends Controller
                 $index = count($etiq) - 1; // Index of the last added element
                 $datos[$etiq[$index]] = $rows->resto;
             }
-            if (in_array($rows->Responsable . " - " . $rows->pn . " Lider: " . $supRes->employeeLider, array_column($gultyY, 0))) {
+            if (in_array($rows->Responsable . " - " . $rows->pn . " Lider: " . /*$supRes->employeeLider??*/ "", array_column($gultyY, 0))) {
                 $gultyY[array_search($rows->Responsable . " - " . $rows->pn . " Lider: " . $supRes->employeeLider, array_column($gultyY, 0))][1] += $rows->resto;
             } else {
-                $gultyY[$j][0] = $rows->Responsable . " - " . $rows->pn . " Lider: " . $supRes->employeeLider;
+                $gultyY[$j][0] = $rows->Responsable . " - " . $rows->pn . " Lider: " . /*$supRes->employeeLider*/ "";
                 $gultyY[$j][1] = $rows->resto;
                 $j++;
             }
         }
-        $regvg = $regvb = $regjg = $regjb = $regmg = $regmb = $regmtg = $regmtb = $reglg = $reglb = $regsg = $regsb = 0;
-        function Paretos($regb, $regM)
+        function Paretos($good, $bad)
         {
-            $regB = $regb;
-            $regm = $regM;
-            $registro = $regB + $regm;
-            if ($regB > 0) {
-                $rest = round((($regb / $registro) * 100), 2);
-            } else {
-                $rest = 0;
-            }
-            return $rest;
+            $total = $good + $bad;
+            return $total > 0 ? round(($good / $total) * 100, 2) : 0;
         }
-        $pareto = $monthAndYearPareto = [];
-        if (date("N") == 1) {
-            $datoss = (date("d-m-Y", strtotime("-2 days")));
-            $datosv = (date("d-m-Y", strtotime("-3 days")));
-            $datosj = (date("d-m-Y", strtotime("-4 days")));
-            $datosm = (date("d-m-Y", strtotime("-5 days")));
-            $datosmt = (date("d-m-Y", strtotime("-6 days")));
-            $datosl = (date("d-m-Y", strtotime("-7 days")));
-            $buscarValorespareto = DB::table('regsitrocalidad')
-                ->where('fecha', 'LIKE', "$datosv%")
-                ->orWhere('fecha', 'LIKE', "$datosj%")
-                ->orWhere('fecha', 'LIKE', "$datosm%")
-                ->orWhere('fecha', 'LIKE', "$datosmt%")
-                ->orWhere('fecha', 'LIKE', "$datosl%")
-                ->orWhere('fecha', 'LIKE', "$datoss%")
-                ->get();
-            foreach ($buscarValorespareto as $rowPareto) {
-                if (substr($rowPareto->fecha, 0, 10) == $datoss) {
-                    if ($rowPareto->codigo == 'TODO BIEN') {
-                        $regvg += 1;
-                    } else {
-                        $regvb += 1;
-                    }
-                }
-                if (substr($rowPareto->fecha, 0, 10) == $datosv) {
-                    if ($rowPareto->codigo == 'TODO BIEN') {
-                        $regvg += 1;
-                    } else {
-                        $regvb += 1;
-                    }
-                }
-                if (substr($rowPareto->fecha, 0, 10) == $datosj) {
-                    if ($rowPareto->codigo == 'TODO BIEN') {
-                        $regjg += 1;
-                    } else {
-                        $regjb += 1;
-                    }
-                }
-                if (substr($rowPareto->fecha, 0, 10) == $datosm) {
-                    if ($rowPareto->codigo == 'TODO BIEN') {
-                        $regmg += 1;
-                    } else {
-                        $regmb += 1;
-                    }
-                }
-                if (substr($rowPareto->fecha, 0, 10) == $datosmt) {
-                    if ($rowPareto->codigo == 'TODO BIEN') {
-                        $regmtg += 1;
-                    } else {
-                        $regmtb += 1;
-                    }
-                }
-                if (substr($rowPareto->fecha, 0, 10) == $datosl) {
-                    if ($rowPareto->codigo == 'TODO BIEN') {
-                        $reglg += 1;
-                    } else {
-                        $reglb += 1;
-                    }
-                }
-            }
-            $pareto[$datosl] = Paretos($reglg, $reglb);
-            $pareto[$datosmt] = Paretos($regmtg, $regmtb);
-            $pareto[$datosm] = Paretos($regmg, $regmb);
-            $pareto[$datosj] = Paretos($regjg, $regjb);
-            $pareto[$datosv] = Paretos($regvg, $regvb);
-            // $pareto[$datoss]=Paretos($regsg,$regsb);
-            $totalm = $regvb;
-            $totalb = $regvg;
-        } else if (date("N") == 2) {
-            $datosl = (date("d-m-Y", strtotime("-1 days")));
-            $buscarValorespareto = DB::table('regsitrocalidad')
-                ->Where('fecha', 'LIKE', "$datosl%")
-                ->get();
-            foreach ($buscarValorespareto as $rowPareto) {
-                if (substr($rowPareto->fecha, 0, 10) == $datosl) {
-                    if ($rowPareto->codigo == 'TODO BIEN') {
-                        $reglg += 1;
-                    } else {
-                        $reglb += 1;
-                    }
-                }
-            }
-            $pareto[$datosl] = Paretos($reglg, $reglb);
-            $totalm = $reglb;
-            $totalb = $reglg;
-        } elseif (date("N") == 3) {
-            $datosl = (date("d-m-Y", strtotime("-1 days")));
-            $datosmt = (date("d-m-Y", strtotime("-2 days")));
-            $buscarValorespareto = DB::table('regsitrocalidad')
-                ->Where('fecha', 'LIKE', "$datosmt%")
-                ->orWhere('fecha', 'LIKE', "$datosl%")
-                ->get();
-            foreach ($buscarValorespareto as $rowPareto) {
-                if (substr($rowPareto->fecha, 0, 10) == $datosmt) {
-                    if ($rowPareto->codigo == 'TODO BIEN') {
-                        $regmtg += 1;
-                    } else {
-                        $regmtb += 1;
-                    }
-                }
-                if (substr($rowPareto->fecha, 0, 10) == $datosl) {
-                    if ($rowPareto->codigo == 'TODO BIEN') {
-                        $reglg += 1;
-                    } else {
-                        $reglb += 1;
-                    }
-                }
-            }
-            $pareto[$datosl] = Paretos($reglg, $reglb);
-            $pareto[$datosmt] = Paretos($regmtg, $regmtb);
-            $totalm = $reglb;
-            $totalb = $reglg;
-        } elseif (date("N") == 4) {
-            $datosl = (date("d-m-Y", strtotime("-3 days")));
-            $datosmt = (date("d-m-Y", strtotime("-2 days")));
-            $datosm = (date("d-m-Y", strtotime("-1 days")));
-            $buscarValorespareto = DB::table('regsitrocalidad')
-                ->Where('fecha', 'LIKE', "$datosl%")
-                ->orWhere('fecha', 'LIKE', "$datosmt%")
-                ->orWhere('fecha', 'LIKE', "$datosm%")
-                ->get();
-            foreach ($buscarValorespareto as $rowPareto) {
-                if (substr($rowPareto->fecha, 0, 10) == $datosl) {
-                    if ($rowPareto->codigo == 'TODO BIEN') {
-                        $reglg += 1;
-                    } else {
-                        $reglb += 1;
-                    }
-                }
-                if (substr($rowPareto->fecha, 0, 10) == $datosmt) {
-                    if ($rowPareto->codigo == 'TODO BIEN') {
-                        $regmtg += 1;
-                    } else {
-                        $regmtb += 1;
-                    }
-                }
-                if (substr($rowPareto->fecha, 0, 10) == $datosm) {
-                    if ($rowPareto->codigo == 'TODO BIEN') {
-                        $regmg += 1;
-                    } else {
-                        $regmb += 1;
-                    }
-                }
-            }
-            $pareto[$datosl] = Paretos($reglg, $reglb);
-            $pareto[$datosmt] = Paretos($regmtg, $regmtb);
-            $pareto[$datosm] = Paretos($regmg, $regmb);
-            $totalm = $regmb;
-            $totalb = $regmg;
-        } elseif (date("N") == 6 or date("N") == 5) {
-            $datosl = (date("d-m-Y", strtotime("-1 days")));
-            $datosmt = (date("d-m-Y", strtotime("-2 days")));
-            $datosm = (date("d-m-Y", strtotime("-3 days")));
-            $datosj = (date("d-m-Y", strtotime("-4 days")));
-            $buscarValorespareto = DB::table('regsitrocalidad')
-                ->Where('fecha', 'LIKE', "$datosj%")
-                ->orWhere('fecha', 'LIKE', "$datosm%")
-                ->orWhere('fecha', 'LIKE', "$datosmt%")
-                ->orWhere('fecha', 'LIKE', "$datosl%")
-                ->get();
 
-            foreach ($buscarValorespareto as $rowPareto) {
-                if (substr($rowPareto->fecha, 0, 10) == $datosj) {
-                    if ($rowPareto->codigo == 'TODO BIEN') {
-                        $regjg += 1;
-                    } else {
-                        $regjb += 1;
-                    }
+        // Initialize
+        $pareto = [];
+        $totalGood = $totalBad = 0;
+
+        // Get current weekday (1 = Monday, 7 = Sunday)
+        $weekday = date("N");
+
+        // Map how many past days we want depending on weekday
+        $daysBackMap = [
+            1 => 7, // Monday → last 6 days (Tue-Sun)
+            2 => 1, // Tuesday → yesterday only
+            3 => 2, // Wednesday → last 2 days
+            4 => 3, // Thursday → last 3 days
+            5 => 4, // Friday → last 4 days
+            6 => 5, // Saturday → last 4 days
+            7 => 0, // Sunday → none (adjust if needed)
+        ];
+
+        $daysBack = $daysBackMap[$weekday] ?? 0;
+
+        // Generate the dates we want to check
+        $datesToCheck = [];
+        for ($i = 1; $i <= $daysBack; $i++) {
+            $datesToCheck[] = date("d-m-Y", strtotime("-$i days"));
+        }
+        $days = count($datesToCheck);
+        $buscarValores = DB::table('regsitrocalidad')->select('fecha', 'codigo')
+            ->where(function ($query) use ($datesToCheck) {
+                foreach ($datesToCheck as $date) {
+                    $query->orWhere('fecha', 'LIKE', "$date%");
                 }
-                if (substr($rowPareto->fecha, 0, 10) == $datosm) {
-                    if ($rowPareto->codigo == 'TODO BIEN') {
-                        $regmg += 1;
+            })
+            ->get();
+
+        foreach ($datesToCheck as $date) {
+            $good = $bad = 0;
+            foreach ($buscarValores as $row) {
+                if (substr($row->fecha, 0, 10) === $date) {
+                    if ($row->codigo === 'TODO BIEN') {
+                        $good++;
                     } else {
-                        $regmb += 1;
-                    }
-                }
-                if (substr($rowPareto->fecha, 0, 10) == $datosmt) {
-                    if ($rowPareto->codigo == 'TODO BIEN') {
-                        $regmtg += 1;
-                    } else {
-                        $regmtb += 1;
-                    }
-                }
-                if (substr($rowPareto->fecha, 0, 10) == $datosl) {
-                    if ($rowPareto->codigo == 'TODO BIEN') {
-                        $reglg += 1;
-                    } else {
-                        $reglb += 1;
+                        $bad++;
                     }
                 }
             }
-            $pareto[$datosl] = Paretos($reglg, $reglb);
-            $pareto[$datosmt] = Paretos($regmtg, $regmtb);
-            $pareto[$datosm] = Paretos($regmg, $regmb);
-            $pareto[$datosj] = Paretos($regjg, $regjb);
-            $totalm = $reglb;
-            $totalb = $reglg;
+            $pareto[$date] = Paretos($good, $bad);
+
+            $totalGood += $good;
+            $totalBad += $bad;
         }
-        $yearGood = $yearBad = $monthGood = $monthBad = $weekGood = $weekBad = $lastmonthGood = $lastmonthBad = 0;
-        $monthAndYear = date("m-Y");
+
+
+
         $YearParto = date("Y");
-        $lastyear = date("12-Y", strtotime("-1 years"));
-        $weekslas = "Week " . date("W", strtotime("-1 weeks"));
-        $buscarValorPareto = DB::table('regsitrocalidad')
-            ->where('fecha', 'LIKE', "%$YearParto%")
-            ->orderBy('Responsable', 'ASC')
-            ->get();
+        $month = date("m");
+        $lastmonth = date("m", strtotime("-1 months"));
+        $lastmonthYear = date("Y", strtotime("-1 months"));
+        $week = date("W");
+        $lastweek = date("W", strtotime("-1 weeks"));
+        $weekYear = date("Y");
 
-        foreach ($buscarValorPareto as $rowPareto) {
-            if ($rowPareto->codigo == 'TODO BIEN') {
-                $yearGood += 1;
-            } else {
+        $resultados = DB::table('regsitrocalidad')
+            ->selectRaw("
+        SUM(CASE WHEN YEAR(STR_TO_DATE(fecha, '%d-%m-%Y')) = ?
+                 AND codigo = 'TODO BIEN' THEN 1 ELSE 0 END) as yearGood,
+        SUM(CASE WHEN YEAR(STR_TO_DATE(fecha, '%d-%m-%Y')) = ?
+                 AND codigo != 'TODO BIEN' THEN 1 ELSE 0 END) as yearBad,
 
-                $yearBad += 1;
-                if (!in_array($rowPareto->Responsable, $empRes)) {
-                    array_push($empRes, $rowPareto->Responsable);
-                }
-            }
-            if (substr($rowPareto->fecha, 3, 7) == $monthAndYear) {
-                if ($rowPareto->codigo == 'TODO BIEN') {
-                    $monthGood += 1;
-                } else {
-                    $monthBad += 1;
-                    if (key_exists($rowPareto->Responsable, $empleados)) {
-                        $empleados[$rowPareto->Responsable] += 1;
-                    } else {
-                        $empleados[$rowPareto->Responsable] = 1;
-                    }
-                }
-            }
-        }
-        $monthAndYearPareto[$monthAndYear] = Paretos($monthGood, $monthBad);
+        SUM(CASE WHEN YEAR(STR_TO_DATE(fecha, '%d-%m-%Y')) = ?
+                 AND MONTH(STR_TO_DATE(fecha, '%d-%m-%Y')) = ?
+                 AND codigo = 'TODO BIEN' THEN 1 ELSE 0 END) as monthGood,
+        SUM(CASE WHEN YEAR(STR_TO_DATE(fecha, '%d-%m-%Y')) = ?
+                 AND MONTH(STR_TO_DATE(fecha, '%d-%m-%Y')) = ?
+                 AND codigo != 'TODO BIEN' THEN 1 ELSE 0 END) as monthBad,
+
+        SUM(CASE WHEN YEAR(STR_TO_DATE(fecha, '%d-%m-%Y')) = ?
+                 AND MONTH(STR_TO_DATE(fecha, '%d-%m-%Y')) = ?
+                 AND codigo = 'TODO BIEN' THEN 1 ELSE 0 END) as lastmonthGood,
+        SUM(CASE WHEN YEAR(STR_TO_DATE(fecha, '%d-%m-%Y')) = ?
+                 AND MONTH(STR_TO_DATE(fecha, '%d-%m-%Y')) = ?
+                 AND codigo != 'TODO BIEN' THEN 1 ELSE 0 END) as lastmonthBad,
+
+        SUM(CASE WHEN YEAR(STR_TO_DATE(fecha, '%d-%m-%Y')) = ?
+                 AND WEEK(STR_TO_DATE(fecha, '%d-%m-%Y'), 3) = ?
+                 AND codigo = 'TODO BIEN' THEN 1 ELSE 0 END) as weekGood,
+        SUM(CASE WHEN YEAR(STR_TO_DATE(fecha, '%d-%m-%Y')) = ?
+                 AND WEEK(STR_TO_DATE(fecha, '%d-%m-%Y'), 3) = ?
+                 AND codigo != 'TODO BIEN' THEN 1 ELSE 0 END) as weekBad
+    ", [
+                $YearParto,
+                $YearParto,   // yearGood, yearBad
+                $YearParto,
+                $month,       // monthGood
+                $YearParto,
+                $month,       // monthBad
+                $lastmonthYear,
+                $lastmonth, // lastmonthGood
+                $lastmonthYear,
+                $lastmonth, // lastmonthBad
+                $weekYear,
+                $lastweek,     // weekGood
+                $weekYear,
+                $lastweek      // weekBad
+            ])
+            ->first();
+
+        // Ahora tienes todos los valores listos:
+        $yearGood = $resultados->yearGood;
+        $yearBad = $resultados->yearBad;
+        $monthGood = $resultados->monthGood;
+        $monthBad = $resultados->monthBad;
+        $lastmonthGood = $resultados->lastmonthGood;
+        $lastmonthBad = $resultados->lastmonthBad;
+        $weekGood = $resultados->weekGood;
+        $weekBad = $resultados->weekBad;
+
+        $monthAndYearPareto[date("m-Y")] = Paretos($monthGood, $monthBad);
         $monthAndYearPareto[$YearParto] = Paretos($yearGood, $yearBad);
-        $lastmonth = date("m-Y", strtotime("-1 months"));
-        $registrosCalidad = DB::table('regsitrocalidad')
-            ->where('fecha', 'LIKE', "%$lastmonth%")
-            ->get();
-        foreach ($registrosCalidad as $rowPareto) {
-            if ($rowPareto->codigo == 'TODO BIEN') {
-                $lastmonthGood += 1;
-            } else {
-                $lastmonthBad += 1;
-            }
-        }
-        $monthAndYearPareto[$lastmonth] = Paretos($lastmonthGood, $lastmonthBad);
+        $monthAndYearPareto[date("m-Y", strtotime("-1 months"))] = Paretos($lastmonthGood, $lastmonthBad);
+        $monthAndYearPareto["Week " . $lastweek] = Paretos($weekGood, $weekBad);
 
-        function getDaysForWeek()
-        {
-            $days = [];
-            for ($day = 1; $day <= 7; $day++) {
-                $weekNumber = date("W", strtotime("-1 weeks"));
-                $year = date("Y");
-                $date = Carbon::now()
-                    ->setISODate($year, $weekNumber, $day);
-                $days[] = $date->format('d-m-Y');
-            }
-            return $days;
-        }
-        $days = getDaysForWeek();
-        $weevalues = DB::table('regsitrocalidad')
-            ->where('fecha', 'LIKE', "$days[0]%")
-            ->orWhere('fecha', 'LIKE', "$days[1]%")
-            ->orWhere('fecha', 'LIKE', "$days[2]%")
-            ->orWhere('fecha', 'LIKE', "$days[3]%")
-            ->orWhere('fecha', 'LIKE', "$days[4]%")
-            ->orWhere('fecha', 'LIKE', "$days[5]%")
-            ->orWhere('fecha', 'LIKE', "$days[6]%")
+
+        $empleados = DB::table('regsitrocalidad')
+            ->selectRaw("Responsable, COUNT(*) as errores")
+            ->whereRaw("YEAR(STR_TO_DATE(fecha, '%d-%m-%Y')) = ? AND MONTH(STR_TO_DATE(fecha, '%d-%m-%Y')) = ?", [$YearParto, $month])
+            ->where('codigo', '!=', 'TODO BIEN')
+            ->groupBy('Responsable')
+            ->orderByDesc('errores')
+            ->limit(10)
             ->get();
-        foreach ($weevalues as $rowParetos) {
-            if ($rowParetos->codigo == 'TODO BIEN') {
-                $weekGood += 1;
-            } else {
-                $weekBad += 1;
-            }
-        }
-        $monthAndYearPareto[$weekslas] = Paretos($weekGood, $weekBad);
+
+
 
         // arsort($monthAndYearPareto);
         //ksort($pareto);
@@ -842,31 +692,31 @@ class juntasController extends Controller
         }
         //calidad Q
         $Qdays = $colorQ = $labelQ = [];
-$maxDays = cal_days_in_month(CAL_GREGORIAN, date('m'), date('Y'));
+        $maxDays = cal_days_in_month(CAL_GREGORIAN, date('m'), date('Y'));
 
-for ($i = 0; $i < $maxDays; $i++) {
-    $Qdays[$i] = 1;
-    $labelQ[$i] = $i + 1;
-}
+        for ($i = 0; $i < $maxDays; $i++) {
+            $Qdays[$i] = 1;
+            $labelQ[$i] = $i + 1;
+        }
 
-$reportesCustomer = registroQ::select('fecha')
-    ->where('fecha', 'LIKE', date('Y-m') . "%")
-    ->get();
+        $reportesCustomer = registroQ::select('fecha')
+            ->where('fecha', 'LIKE', date('Y-m') . "%")
+            ->get();
 
-// Get all days from the reportes
-$daysReported = [];
-foreach ($reportesCustomer as $row) {
-    $daysReported[] = (int)date('d', strtotime($row->fecha));
-}
+        // Get all days from the reportes
+        $daysReported = [];
+        foreach ($reportesCustomer as $row) {
+            $daysReported[] = (int)date('d', strtotime($row->fecha));
+        }
 
-$todayD = date('d');
-for ($i = 0; $i < $todayD; $i++) {
-    if (in_array($i + 1, $daysReported)) {
-        $colorQ[$i] = 'red';
-    } else {
-        $colorQ[$i] = 'green';
-    }
-}
+        $todayD = date('d');
+        for ($i = 0; $i < $todayD; $i++) {
+            if (in_array($i + 1, $daysReported)) {
+                $colorQ[$i] = 'red';
+            } else {
+                $colorQ[$i] = 'green';
+            }
+        }
 
         rsort($datosT);
         asort($datosS);
@@ -909,42 +759,32 @@ for ($i = 0; $i < $todayD; $i++) {
         if (!empty($gultyY)) {
             arsort($gultyY);
         }
-        arsort($empleados); // Asegura que esté ordenado de mayor a menor
 
 
 
-        $top5 = [];
-        $i = 0;
-
-        foreach ($empleados as $nombre => $cantidad) {
-            if ($i >= 10) break;
-            $top5[$nombre] = $cantidad;
+        $top5 = $empleados ?? [];
 
 
+        $YearParto = date('Y');
 
-            $i++;
-        }
-        asort($top5);
-        $personalYear = [];
-        $personalYearCulpables = personalBergsModel::select('employeeName')
-            ->where('typeWorker', 'Directo')
+        $personalYearCulpables = personalBergsModel::where('typeWorker', 'Directo')
             ->where('status', 'Activo')
-            ->get();
+            ->pluck('employeeName');
 
-        foreach ($personalYearCulpables as $row) {
-            $buscarculpables = calidadRegistro::where('Responsable', $row->employeeName)
-                ->where('fecha', 'LIKE', "%$YearParto%")
-                ->first();
-
-            if (!$buscarculpables) { // si no existe ningún registro
-                $personalYear[] = $row->employeeName; // forma corta de array_push
-            }
-        }
+        $culpables = calidadRegistro::where('codigo', '!=', 'TODO BIEN')
+            ->where('fecha', 'LIKE', "%$YearParto%")
+            ->pluck('Responsable')
+            ->unique()
+            ->toArray();
 
 
+        $personalYear = $personalYearCulpables->filter(fn($name) => !in_array($name, $culpables))
+            ->values()
+            ->toArray();
 
 
-        return view('juntas/calidad', ['personalYear' => $personalYear, 'respemp' => $empRes, 'empleados' => $top5, 'days' => $days, 'hoyb' => $hoyb, 'hoymal' => $hoymal, 'parhoy' => $parhoy, 'gultyY' => $gultyY, 'gulty' => $gulty, 'datosHoy' => $datosHoy, 'totalm' => $totalm, 'totalb' => $totalb, 'monthAndYearPareto' => $monthAndYearPareto, 'datosT' => $datosT, 'datosS' => $datosS, 'datosF' => $datosF, 'labelQ' => $labelQ, 'colorQ' => $colorQ, 'value' => $value, 'cat' => $cat, 'datos' => $datos, 'pareto' => $pareto, 'Qdays' => $Qdays]);
+
+        return view('juntas/calidad', ['days' => $days, 'personalYear' => $personalYear, 'respemp' => $empRes, 'empleados' => $top5,  'hoyb' => $hoyb, 'hoymal' => $hoymal, 'parhoy' => $parhoy, 'gultyY' => $gultyY, 'gulty' => $gulty, 'datosHoy' => $datosHoy, 'totalm' => $totalm, 'totalb' => $totalb, 'monthAndYearPareto' => $monthAndYearPareto, 'datosT' => $datosT, 'datosS' => $datosS, 'datosF' => $datosF, 'labelQ' => $labelQ, 'colorQ' => $colorQ, 'value' => $value, 'cat' => $cat, 'datos' => $datos, 'pareto' => $pareto, 'Qdays' => $Qdays]);
     }
 
     public function litas_junta($id)
@@ -2524,21 +2364,22 @@ for ($i = 0; $i < $todayD; $i++) {
         }
         return json_encode($registroPPAP);
     }
-    public function customerComplains(Request $request){
+    public function customerComplains(Request $request)
+    {
         $value = session('user');
-        $alta=$request->input('gQ');
+        $alta = $request->input('gQ');
         $baja = $request->input('bQ');
-        if($alta!="" && $baja==""){
-        $registroAlta=   new registroQ();
-           $registroAlta->userReg=$value;
-           $registroAlta->fecha=$alta;
-           $registroAlta->presentacion="Alta";
-           $registroAlta->save();
-         return redirect()->route('calidad_junta');
-        }else if($alta=="" && $baja!=""){
+        if ($alta != "" && $baja == "") {
+            $registroAlta =   new registroQ();
+            $registroAlta->userReg = $value;
+            $registroAlta->fecha = $alta;
+            $registroAlta->presentacion = "Alta";
+            $registroAlta->save();
+            return redirect()->route('calidad_junta');
+        } else if ($alta == "" && $baja != "") {
             $registroBaja = registroQ::where('fecha', $baja)->delete();
-             return redirect()->route('calidad_junta');
+            return redirect()->route('calidad_junta');
         }
-    return redirect()->route('calidad_junta');
+        return redirect()->route('calidad_junta');
     }
 }
