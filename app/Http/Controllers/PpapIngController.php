@@ -900,8 +900,10 @@ class PpapIngController extends Controller
         $value = session('user');
         $cat = session('categoria');
         $data = [];
+        $registroAntes1 = $registroAntes2 = 0;
+        $lastDayoffMonth = Carbon::now()->endOfMonth()->format('d');
         $registros = workScreduleModel::select('pn', 'customer', 'size', 'receiptDate')
-            ->where('receiptDate','LIKE',Carbon::now()->format('Y-m').'%')
+            ->where('receiptDate', 'LIKE', Carbon::now()->format('Y-m') . '%')
 
             ->orderBy('receiptDate', 'asc')
             ->orderBy('size', 'asc')
@@ -909,14 +911,30 @@ class PpapIngController extends Controller
 
         foreach ($registros as $row) {
             $daysToAdd = match ($row->size) {
-                'Ch' => 3,
-                'M'  => 5,
-                'G'  => 7,
+                'Ch' => 4,
+                'M'  => 7,
+                'G'  => 10,
                 default => 4,
             };
 
-            $final = Carbon::parse($row->receiptDate)->addWeekdays($daysToAdd)->format('Y-m-d');
+            $start = intval(Carbon::parse($row->receiptDate)->format('d'));
 
+            $final = intval(Carbon::parse($row->receiptDate)->addWeekdays($daysToAdd)->format('d'));
+            if ($final > $lastDayoffMonth) {
+                $final = $lastDayoffMonth;
+            }
+            if(count($data) > 0){
+                foreach($data as $d){
+                    if($d['start'] == $start){
+                        $start = $start + 1;
+                        $final = $final + 1;
+                    }
+                }
+            }
+           
+
+
+            // Asignar color según size
             $color = match ($row->size) {
                 'Ch' => 'rgba(75, 192, 192, 0.8)',
                 'M'  => 'rgba(255, 159, 64, 0.8)',
@@ -924,14 +942,16 @@ class PpapIngController extends Controller
                 default => 'rgba(201, 203, 207, 0.8)',
             };
 
+            // Agregar al arreglo final
             $data[] = [
-                'name' => $row->pn . ' - ' . $row->customer,
-                'start' => $row->receiptDate,
-                'end' => $final,
+                'name'  => $row->pn . ' - ' . $row->customer,
+                'start' => $start,
+                'end'   => $final,
                 'color' => $color
             ];
         }
 
-        return view('inge.graficaGantt', ['value' => $value, 'cat' => $cat, 'data' => $data]);
+
+        return view('inge.graficaGantt', ['value' => $value, 'cat' => $cat, 'data' => $data, 'lastDayoffMonth' => $lastDayoffMonth]);
     }
 }
