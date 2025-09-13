@@ -274,9 +274,9 @@ class PpapIngController extends Controller
         $cuenta = $request->input('count');
         $info = $request->input('info');
         $today = date('d-m-Y H:i');
-        $regpart=regPar::where('codeBar', $info)->update(['eng' => 0, 'cortPar' => 0, 'libePar' => 0, 'ensaPar' => 0, 'loomPar' => 0, 'testPar' => 0, 'embPar' => 0, 'preCalidad' => 0,'fallasCalidad' => 0,'specialWire' => 0]);
-        $datosRegistro= Wo::select('Qty')->where('info', $info)->first();
-        $eng=$datosRegistro->Qty;
+        $regpart = regPar::where('codeBar', $info)->update(['eng' => 0, 'cortPar' => 0, 'libePar' => 0, 'ensaPar' => 0, 'loomPar' => 0, 'testPar' => 0, 'embPar' => 0, 'preCalidad' => 0, 'fallasCalidad' => 0, 'specialWire' => 0]);
+        $datosRegistro = Wo::select('Qty')->where('info', $info)->first();
+        $eng = $datosRegistro->Qty;
         function upRegistro($count, $donde, $info, $area, $idIng, $today, $mas, $newQty, $value)
         {
             $updateTiempo = DB::table('tiempos')->where('info', $info)->update([$area => $today]);
@@ -488,14 +488,28 @@ class PpapIngController extends Controller
             $registro->gernete = '';
             $registro->count = 1;
             if ($registro->save()) {
-                $accion = PPAPandPRIM::orderby('id','desc')->first();
-                $recipients=['jgarrido@mx.bergstrominc.com','rfandino@mx.bergstrominc.com','fsuarez@mx.bergstrominc.com',
-            'lramos@mx.bergstrominc.com','emedina@mx.bergstrominc.com','drocha@mx.bergstrominc.com',
-            'Jruiz@mx.bergstrominc.com','jrodriguez@mx.bergstrominc.com','vpichardo@mx.bergstrominc.com',
-            'jgamboa@mx.bergstrominc.com','egaona@mx.bergstrominc.com','jolaes@mx.bergstrominc.com','dvillalpando@mx.bergstrominc.com',
-           'jamoreno@mx.bergstrominc.com','jguillen@mx.bergstrominc.com','maleman@mx.bergstrominc.com','fgomez@mx.bergstrominc.com',
-           'lmireles@mx.bergstrominc.com'];
-                Mail::to($recipients)->send(new \App\Mail\firmasNPIEmail($accion, 'New product Introduction - '.$pn));
+                $accion = PPAPandPRIM::orderby('id', 'desc')->first();
+                $recipients = [
+                    'jgarrido@mx.bergstrominc.com',
+                    'rfandino@mx.bergstrominc.com',
+                    'fsuarez@mx.bergstrominc.com',
+                    'lramos@mx.bergstrominc.com',
+                    'emedina@mx.bergstrominc.com',
+                    'drocha@mx.bergstrominc.com',
+                    'Jruiz@mx.bergstrominc.com',
+                    'jrodriguez@mx.bergstrominc.com',
+                    'vpichardo@mx.bergstrominc.com',
+                    'jgamboa@mx.bergstrominc.com',
+                    'egaona@mx.bergstrominc.com',
+                    'jolaes@mx.bergstrominc.com',
+                    'dvillalpando@mx.bergstrominc.com',
+                    'jamoreno@mx.bergstrominc.com',
+                    'jguillen@mx.bergstrominc.com',
+                    'maleman@mx.bergstrominc.com',
+                    'fgomez@mx.bergstrominc.com',
+                    'lmireles@mx.bergstrominc.com'
+                ];
+                Mail::to($recipients)->send(new \App\Mail\firmasNPIEmail($accion, 'New product Introduction - ' . $pn));
                 return redirect('/ing');
             }
         }
@@ -748,7 +762,7 @@ class PpapIngController extends Controller
     }
     public function workState(Request $request)
     {
-        $customer =$ingResp= [];
+        $customer = $ingResp = [];
         $value = session('user');
         $cat = session('categoria');
         $reqCust = workScreduleModel::select('customer')->distinct()->where('customer', '!=', '')->get();
@@ -761,7 +775,7 @@ class PpapIngController extends Controller
             $ingResp[$row->resposible] = $row->resposible;
         }
 
-        return view('juntas/workSchedules/workSchedule', ['ingResp' => $ingResp,'customer' => $customer,'cat' => $cat, 'value' => $value]);
+        return view('juntas/workSchedules/workSchedule', ['ingResp' => $ingResp, 'customer' => $customer, 'cat' => $cat, 'value' => $value]);
     }
     public function workStateJason(Request $request)
     {
@@ -775,7 +789,7 @@ class PpapIngController extends Controller
         $dateIni = $input['Dateini'] ?? '';
         $dateFin = $input['DateFin'] ?? '';
         $empty = $input['empty'] ?? false;
-        $i=0;
+        $i = 0;
 
         if ($pn != '') {
             $buscar = DB::table('workschedule')->where('pn', 'LIKE', '%' . $pn . '%')->get();
@@ -785,102 +799,139 @@ class PpapIngController extends Controller
             $buscar = DB::table('workschedule')->where('resposible', 'LIKE', '%' . $resposible . '%')->get();
         } else if ($size != '') {
             $buscar = DB::table('workschedule')->where('size', 'LIKE', '%' . $size . '%')->get();
-        } elseif ($filter != '' AND $dateIni != '' AND $dateFin != '') {
+        } elseif ($filter != '' and $dateIni != '' and $dateFin != '') {
             $buscar = DB::table('workschedule')->whereBetween($filter, [$dateIni, $dateFin])->get();
-        }elseif($filter != '' AND $empty==true){
+        } elseif ($filter != '' and $empty == true) {
             $buscar = DB::table('workschedule')->where($filter, null)->get();
         }
 
-         if($buscar){
+        if ($buscar) {
             foreach ($buscar as $row) {
-                            $datos[$i++] = $row;
-                        }
+                $datos[$i++] = $row;
+            }
         }
-        if( $buscar->isEmpty()){
-            return json_encode(['mensaje'=>'No hay resultados']);
+        if ($buscar->isEmpty()) {
+            return json_encode(['mensaje' => 'No hay resultados']);
         }
         return json_encode($datos);
     }
     public function saveWorkschedule(Request $request)
     {
-      $input = $request->all();
-        $newRegistro=new workScreduleModel();
+        $input = $request->all();
+        $newRegistro = new workScreduleModel();
         $newRegistro->fill([
             'customer' => $input['customerWork'],
             'pn' => $input['pnWork'],
             'WorkRev' => $input['revWork'],
             'size' => $input['sizeWork'],
-            'receiptDate' => $input['receiptDateWork']?? NULL,
-            'commitmentDate' => $input['commitmentDateWork']?? NULL,
-            'customerDate' => $input['customerDateWork']?? NULL,
-            'resposible' => $input['resposible']?? NULL,
+            'receiptDate' => $input['receiptDateWork'] ?? NULL,
+            'commitmentDate' => $input['commitmentDateWork'] ?? NULL,
+            'customerDate' => $input['customerDateWork'] ?? NULL,
+            'resposible' => $input['resposible'] ?? NULL,
             'comments' => $input['comments'] ?? '',
             'qtyInPo' => $input['qtyInPo'] ?? 0,
             'Color' => $input['color'] ?? '',
         ]);
         $newRegistro->save();
         return redirect('/workSchedule');
-
     }
     public function editDelite(Request $request)
     {
-        if($request->input('id_delete') != null){
+        if ($request->input('id_delete') != null) {
             DB::table('workschedule')->where('id', $request->input('id_delete'))->delete();
             return redirect('/workSchedule');
-        }else if($request->input('id_edit') != null){
+        } else if ($request->input('id_edit') != null) {
             $input = $request->all();
-            if($input['resposible']==''){
-                $status='Pending';
-            }else if($input['MRP'] != '' and $input['receiptDate'] != '' and $input['commitmentDate'] != ''
-                and $input['CompletionDate'] != '' and $input['resposible'] != ''  ) {
-                   $status='Completed';
-                }else if( $input['resposible'] != '' or $input['resposible'] != ''){
-                    $status='In Progress';
-                }else  {
-                    $status=$input['Status'];
-                }
-                if($input['MRP'] != '' or $input['MRP']=='0000-00-00'){
-                    $input['MRP'] = date('Y-m-d', strtotime($input['MRP']))?? NULL;
-                }
-                if($input['receiptDate'] !='' or $input['receiptDate']=='0000-00-00'){
-                    $input['receiptDate'] = date('Y-m-d', strtotime($input['receiptDate']))?? NULL;
-                }
-                if($input['commitmentDate'] !='' or $input['commitmentDate']=='0000-00-00'){
-                    $input['commitmentDate'] = date('Y-m-d', strtotime($input['commitmentDate']))?? NULL;
-                }
-                if($input['CompletionDate'] !='' or $input['CompletionDate']=='0000-00-00'){
-                    $input['CompletionDate'] = date('Y-m-d', strtotime($input['CompletionDate']))?? NULL;
-                }
-                if($input['documentsApproved'] !='' or $input['documentsApproved']=='0000-00-00'){
-                    $input['documentsApproved'] = date('Y-m-d', strtotime($input['documentsApproved']))?? NULL;
-                }
-                if($input['customerDate_'] !='' or $input['customerDate_']=='0000-00-00'){
-                    $input['customerDate_'] = date('Y-m-d', strtotime($input['customerDate_']))?? NULL;
-                }
-            $update=DB::table('workschedule')->where('id', $request->input('id_edit'))
-            ->update([
-                'WorkRev' => $input['WR'],
-                'size' => $input['s'],
-                'FullSize' => $input['FS']??'',
-                'MRP' => $input['MRP'],
-                'receiptDate' => ($input['receiptDate']),// $input['receiptDate'],
-                'commitmentDate' => ($input['commitmentDate']),//$input['commitmentDate'],
-                'CompletionDate' => ($input['CompletionDate']),//$input['CompletionDate'],
-                'documentsApproved' => ($input['documentsApproved']),//$input['documentsApproved'],
-                'customerDate' => ($input['customerDate_']),//$input['customerDate'],
-                'resposible' => $input['resposible']?? '',
-                'comments' => $input['comments_'] ?? '',
-                'qtyInPo' => $input['qip'] ?? 0,
-                'Color' => $input['color'] ?? '',
-                'status' => $status??$input['Status'],
-            ]);
+            if ($input['resposible'] == '') {
+                $status = 'Pending';
+            } else if (
+                $input['MRP'] != '' and $input['receiptDate'] != '' and $input['commitmentDate'] != ''
+                and $input['CompletionDate'] != '' and $input['resposible'] != ''
+            ) {
+                $status = 'Completed';
+            } else if ($input['resposible'] != '' or $input['resposible'] != '') {
+                $status = 'In Progress';
+            } else {
+                $status = $input['Status'];
+            }
+            if ($input['MRP'] != '' or $input['MRP'] == '0000-00-00') {
+                $input['MRP'] = date('Y-m-d', strtotime($input['MRP'])) ?? NULL;
+            }
+            if ($input['receiptDate'] != '' or $input['receiptDate'] == '0000-00-00') {
+                $input['receiptDate'] = date('Y-m-d', strtotime($input['receiptDate'])) ?? NULL;
+            }
+            if ($input['commitmentDate'] != '' or $input['commitmentDate'] == '0000-00-00') {
+                $input['commitmentDate'] = date('Y-m-d', strtotime($input['commitmentDate'])) ?? NULL;
+            }
+            if ($input['CompletionDate'] != '' or $input['CompletionDate'] == '0000-00-00') {
+                $input['CompletionDate'] = date('Y-m-d', strtotime($input['CompletionDate'])) ?? NULL;
+            }
+            if ($input['documentsApproved'] != '' or $input['documentsApproved'] == '0000-00-00') {
+                $input['documentsApproved'] = date('Y-m-d', strtotime($input['documentsApproved'])) ?? NULL;
+            }
+            if ($input['customerDate_'] != '' or $input['customerDate_'] == '0000-00-00') {
+                $input['customerDate_'] = date('Y-m-d', strtotime($input['customerDate_'])) ?? NULL;
+            }
+            $update = DB::table('workschedule')->where('id', $request->input('id_edit'))
+                ->update([
+                    'WorkRev' => $input['WR'],
+                    'size' => $input['s'],
+                    'FullSize' => $input['FS'] ?? '',
+                    'MRP' => $input['MRP'],
+                    'receiptDate' => ($input['receiptDate']), // $input['receiptDate'],
+                    'commitmentDate' => ($input['commitmentDate']), //$input['commitmentDate'],
+                    'CompletionDate' => ($input['CompletionDate']), //$input['CompletionDate'],
+                    'documentsApproved' => ($input['documentsApproved']), //$input['documentsApproved'],
+                    'customerDate' => ($input['customerDate_']), //$input['customerDate'],
+                    'resposible' => $input['resposible'] ?? '',
+                    'comments' => $input['comments_'] ?? '',
+                    'qtyInPo' => $input['qip'] ?? 0,
+                    'Color' => $input['color'] ?? '',
+                    'status' => $status ?? $input['Status'],
+                ]);
 
 
 
             return redirect('/workSchedule');
         }
-
     }
+    public function ganttGraph()
+    {
+        $value = session('user');
+        $cat = session('categoria');
+        $data = [];
+        $registros = workScreduleModel::select('pn', 'customer', 'size', 'receiptDate')
+            ->where('receiptDate','LIKE',Carbon::now()->format('Y-m').'%')
 
+            ->orderBy('receiptDate', 'asc')
+            ->orderBy('size', 'asc')
+            ->get();
 
+        foreach ($registros as $row) {
+            $daysToAdd = match ($row->size) {
+                'Ch' => 3,
+                'M'  => 5,
+                'G'  => 7,
+                default => 4,
+            };
+
+            $final = Carbon::parse($row->receiptDate)->addWeekdays($daysToAdd)->format('Y-m-d');
+
+            $color = match ($row->size) {
+                'Ch' => 'rgba(75, 192, 192, 0.8)',
+                'M'  => 'rgba(255, 159, 64, 0.8)',
+                'G'  => 'rgba(255, 99, 132, 0.8)',
+                default => 'rgba(201, 203, 207, 0.8)',
+            };
+
+            $data[] = [
+                'name' => $row->pn . ' - ' . $row->customer,
+                'start' => $row->receiptDate,
+                'end' => $final,
+                'color' => $color
+            ];
+        }
+
+        return view('inge.graficaGantt', ['value' => $value, 'cat' => $cat, 'data' => $data]);
+    }
 }

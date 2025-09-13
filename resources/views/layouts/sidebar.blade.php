@@ -72,9 +72,8 @@
                         onmouseover=showEng();>engineering</a>
                         @if($cat=='inge' || $value=='Admin')
                     <ul class="submenu" id="engsub" style="display:none;">
-                        <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('workState') }}">Work Scheduled</a>
-                        </li>
-                       
+                        <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('workState') }}">Work Scheduled</a></li>
+                        <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('ganttGraph') }}">Gantt</a>
                         <li class="submenu" id="engsub"><a style="color:white;" href="#">CutList</a>
                         </li>
                     </ul>

@@ -90,6 +90,7 @@ Route::controller(PpapIngController::class)->group(function () {
     Route::get('/workStateJason', [PpapIngController::class, 'workStateJason'])->name('workStateJason');
     Route::get('/saveWorkschedule', [PpapIngController::class, 'saveWorkschedule'])->name('saveWorkschedule');
     Route::get('/editDelite', [PpapIngController::class, 'editDelite'])->name('editDelite');
+    Route::get('/ganttGraph', [PpapIngController::class, 'ganttGraph'])->name('ganttGraph');
 });
 
 Route::controller(AlmacenController::class)->group(function () {
