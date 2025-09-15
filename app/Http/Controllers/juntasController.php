@@ -559,6 +559,8 @@ class juntasController extends Controller
 
             $totalGood += $good;
             $totalBad += $bad;
+            $totalb =$totalGood??0;
+            $totalm =$totalBad??0;
         }
 
 
