@@ -519,7 +519,7 @@ class juntasController extends Controller
 
         // Map how many past days we want depending on weekday
         $daysBackMap = [
-            1 => 7, // Monday → last 6 days (Tue-Sun)
+            1 => 3, // Monday → last 6 days (Tue-Sun)
             2 => 1, // Tuesday → yesterday only
             3 => 2, // Wednesday → last 2 days
             4 => 3, // Thursday → last 3 days
