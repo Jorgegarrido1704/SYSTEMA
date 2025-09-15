@@ -496,10 +496,10 @@ class juntasController extends Controller
                 $index = count($etiq) - 1; // Index of the last added element
                 $datos[$etiq[$index]] = $rows->resto;
             }
-            if (in_array($rows->Responsable . " - " . $rows->pn . " Lider: " . /*$supRes->employeeLider??*/ "", array_column($gultyY, 0))) {
-                $gultyY[array_search($rows->Responsable . " - " . $rows->pn . " Lider: " . $supRes->employeeLider, array_column($gultyY, 0))][1] += $rows->resto;
+            if (in_array($rows->Responsable . " - " . $rows->pn . " Lider: " . $supRes->employeeLider"", array_column($gultyY, 0))) {
+                $gultyY[array_search($rows->Responsable . " - " . $rows->pn . " Lider: " .$supRes->employeeLider, array_column($gultyY, 0))][1] += $rows->resto;
             } else {
-                $gultyY[$j][0] = $rows->Responsable . " - " . $rows->pn . " Lider: " . /*$supRes->employeeLider*/ "";
+                $gultyY[$j][0] = $rows->Responsable . " - " . $rows->pn . " Lider: " .$supRes->employeeLider"";
                 $gultyY[$j][1] = $rows->resto;
                 $j++;
             }
@@ -682,7 +682,7 @@ class juntasController extends Controller
         $buscardatosClientes3 = DB::table('regsitrocalidad')->where('codigo', $thirdKey)
             ->where('fecha', 'LIKE', $crtl . '%')->orderBy('codigo')->get();
         foreach ($buscardatosClientes3 as $rowDatos3) {
-            //
+
             if (in_array($rowDatos3->client, array_column($datosT, 0)) and (in_array($rowDatos3->pn, array_column($datosT, 3)))) {
                 $datosT[$rowDatos3->pn][2] += $rowDatos3->resto;
             } else {
@@ -791,6 +791,7 @@ class juntasController extends Controller
 
     public function litas_junta($id)
     {
+
         $value = session('user');
         $cat = session('categoria');
         $datosTabla = [];
