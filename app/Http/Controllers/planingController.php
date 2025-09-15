@@ -509,10 +509,10 @@ class planingController extends Controller
                 $qty_reg = $bucar_wo->Qty;
                 $rev = $bucar_wo->rev;
                 if ($count < 2) {
-                    $noloom =[];
-                    $registrosNoLoom = specialWireModel::SpecialWire();
-                    foreach ($registrosNoLoom as $row) {
-                        $noloom[] = $row->PartNumber;
+                    $noloom='';
+                    $registrosNoLoom = specialWireModel::SpecialWire($np);
+                    if (!empty($registrosNoLoom)) {
+                        $noloom = $registrosNoLoom->PartNumber;
                     }
                     $panel = array('0031539-4', '0031539-100', '26013301', '0031539-104', '0032192-70', '0032192-175', '0032192-77');
                     $regcorte = new regPar();
@@ -520,7 +520,7 @@ class planingController extends Controller
                     $regcorte->wo = $wo;
                     $regcorte->orgQty = $qty_reg;
                     if (substr($rev, 0, 4) == 'PPAP' or substr($rev, 0, 4) == 'PRIM') {
-                        if ((in_array($np, $noloom) or in_array($np, $panel))) {
+                        if ((($np==$noloom) or in_array($np, $panel))) {
                         $update = DB::table('registro')->where('wo', $wo)->update(['donde' => 'En espera Ingenieria // cables especiales', 'count' => 13]);
                         }else{
                         $update = DB::table('registro')->where('wo', $wo)->update(['donde' => 'En espera de Ingenieria // Corte', 'count' => 17]);
@@ -533,7 +533,7 @@ class planingController extends Controller
 
                         $regcorte->eng = $qty_reg;
                     } else {
-                         if ((in_array($np, $noloom) or in_array($np, $panel)) ) {
+                         if ((($np==$noloom) or in_array($np, $panel)) ) {
                         $update = DB::table('registro')->where('wo', $wo)->update(['donde' => 'En espera de cables especiales', 'count' => 15]);
                         $regcorte->ensaPar = $qty_reg;
                     }else{

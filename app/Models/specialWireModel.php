@@ -18,8 +18,9 @@ class specialWireModel extends Model
     public $timestamps = true;
     protected $table = 'special_wire_models';
 
-    public function scopeSpecialWire()
+    public function scopeSpecialWire($registroLoom)
     {
-       return specialWireModel::select( 'partNumber');
+
+       return specialWireModel::where('partNumber', $registroLoom)->orderBy('id', 'desc')->first();
     }
 }
