@@ -486,6 +486,9 @@ class juntasController extends Controller
             ->where('codigo', '!=', "TODO BIEN")
             ->where('fecha', 'LIKE', $crtl . '%')
             ->get();
+            $cuentaBuenas= calidadRegistro::where ('fecha', 'LIKE', $crtl . '%')->where('codigo', 'TODO BIEN')->count();
+            $totalb= count($cuentaBuenas);
+            $totalm= count($buscarValoresMes);
         foreach ($buscarValoresMes as $rows) {
             $supRes = personalBergsModel::select('employeeLider')->where('employeeName', $rows->Responsable)->first();
             if (in_array($rows->codigo, $etiq)) {
@@ -559,8 +562,7 @@ class juntasController extends Controller
 
             $totalGood += $good;
             $totalBad += $bad;
-            $totalb =$totalGood??0;
-            $totalm =$totalBad??0;
+
         }
 
 
