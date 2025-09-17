@@ -510,7 +510,7 @@ class planingController extends Controller
                 $rev = $bucar_wo->rev;
                 if ($count < 2) {
                     $noloom='';
-                    $registrosNoLoom = specialWireModel::SpecialWire($np);
+                    $registrosNoLoom = specialWireModel::where('partNumber','=', $np)->orderBy('id', 'desc')->first();
                     if (!empty($registrosNoLoom)) {
                         $noloom = $registrosNoLoom->PartNumber;
                     }
