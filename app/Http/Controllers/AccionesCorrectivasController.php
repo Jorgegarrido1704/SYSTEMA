@@ -105,7 +105,7 @@ class AccionesCorrectivasController extends Controller
             'categorias' => $categorias,
             'diasRestantes' => $diasRestantes,
             'registroPorquest' => $registroPorquest,
-            'registrosSeguimientos' => $registrosSeguimientos
+            'registrosSeguimientos' => $registrosSeguimientos??[],
 
         ]);
     }

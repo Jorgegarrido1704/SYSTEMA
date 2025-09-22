@@ -482,12 +482,10 @@ class juntasController extends Controller
             $datecontrol = strtotime(date("d-m-Y 00:00", strtotime("-1 days")));
             $crtl = date("d-m-Y", strtotime("-1 days"));
         }
-        $buscarValoresMes = DB::table('regsitrocalidad')
-            ->where('codigo', '!=', "TODO BIEN")
+        $buscarValoresMes = calidadRegistro::where('codigo', '!=', "TODO BIEN")
             ->where('fecha', 'LIKE', $crtl . '%')
             ->get();
             $totalb= calidadRegistro::where ('fecha', 'LIKE', $crtl . '%')->where('codigo', 'TODO BIEN')->count();
-            
             $totalm= count($buscarValoresMes);
         foreach ($buscarValoresMes as $rows) {
             $supRes = personalBergsModel::select('employeeLider')->where('employeeName', $rows->Responsable)->first();
