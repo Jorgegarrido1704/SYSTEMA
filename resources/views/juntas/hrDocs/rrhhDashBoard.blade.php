@@ -109,25 +109,26 @@ if (Error) {
                                     <label for="lider" class="form-label">Lider de empleado</label>
                                    <select id="lider" name="lider" class="form-select">
                                     <option selected >Choose...</option>
-                                        <option value="Jesus_C">Jesus Cervera</option>
+                                        <option value="Jesus_C,Juan G">Jesus Cervera</option>
                                         <option value="Juan G">Juan Guillen</option>
-                                        <option value="Chava Cort">Salvador Galvan</option>
-                                        <option value="Juan O">Juan Olaes</option>
-                                        <option value="Jessi_S">Jessica Sanchez</option>
-                                        <option value="David V">David Villalpando</option>
-                                        <option value="Saul">Saul Castro</option>
-                                        <option value="loom.manue">Manuel Jimenez</option>
-                                        <option value="Angel_G">Angel Gonzalez</option>
-                                        <option value="Gamboa J">Jorge Gamboa</option>
-                                        <option value="Andrea P">Andrea Pacheco</option>
-                                        <option value="Efrain V">Efrain Vera</option>
-                                        <option value="Edward M">Edward Medina</option>
-                                        <option value="Luis R">Luis Ramos</option>
-                                        <option value="Rocio F">Rocio Fandino</option>
-                                        <option value="Paco G">Francisco Gomez</option>
+                                        <option value="Chava Cort,Juan O">Salvador Galvan</option>
+                                        <option value="Juan O,Juan G">Juan Olaes</option>
+                                        <option value="Jessi_S,Juan O">Jessica Sanchez</option>
+                                        <option value="David V,Juan G">David Villalpando</option>
+                                        <option value="Saul,David V">Saul Castro</option>
+                                        <option value="loom.manue,David V">Manuel Jimenez</option>
+                                        <option value="Angel_G,Juan O">Angel Gonzalez</option>
+                                        <option value="Gamboa J,Juan G">Jorge Gamboa</option>
+                                        <option value="Andrea P,Gamboa J">Andrea Pacheco</option>
+                                        <option value="Efrain V,Luis R">Efrain Vera</option>
+                                        <option value="Edward M,Luis R">Edward Medina</option>
+                                        <option value="Luis R,Juan G">Luis Ramos</option>
+                                        <option value="Rocio F,Juan G">Rocio Fandino</option>
+                                        <option value="Paco G,Gamboa J">Francisco Gomez</option>
                                         <option value="Paola A">Paola Aguilar</option>
-                                        <option value="Javier C">Javier Cervantes</option>
-                                        <option value="Esther_M">Esther Mandujano</option>
+                                        <option value="Javier C,Juan G">Javier Cervantes</option>
+                                        <option value="Esther_M,David V">Esther Mandujano</option>
+                                        <option value="Alex M,Gamboa J">Alejandro Moreno</option>
                                     </select>
                                 </div>
                                   <div class="col-md-1">
