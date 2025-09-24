@@ -167,7 +167,7 @@
                     <table class="table table-striped table-bordered"  cellspacing="0" width="100%">
                         <thead style=" position: sticky; z-index: 1; top: 0; text-align: center; background-color: black; color: white; ">
                             <tr>
-                                <th>Custoemrs</th>
+                                <th>Customers</th>
                                 <th>Part Numbers</th>
                                 <th>size</th>
                                 <th>Revision</th>

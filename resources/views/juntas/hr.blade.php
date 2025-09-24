@@ -91,7 +91,7 @@ a:hover {
                             <td class="font-weight-bold font-size-24">{{$registrosDeAsistencia[8]}}</td>
                            </tr>
                             <tr>
-                            <td class="font-weight-bold text-gray font-size-24"><a class ="text-rosa" href="{{ route('DatosRh', ['id' => 'SCE']) }}">Servicion comprados</a></td>
+                            <td class="font-weight-bold text-gray font-size-24"><a class ="text-rosa" href="{{ route('DatosRh', ['id' => 'SCE']) }}">Servicio comprados</a></td>
                             <td class="font-weight-bold font-size-24">{{$registrosDeAsistencia[9]}}</td>
                            </tr>
 

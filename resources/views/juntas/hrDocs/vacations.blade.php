@@ -33,7 +33,7 @@
                                             </select>
                                     </div>
                                     <div class="col-md-4 mb-3">
-                                        <label for="endDate">Fecha de fin:</label>
+                                        <label for="endDate">Fecha de inicio:</label>
                                         <input type="date" class="form-control" id="endDate" name="endDate" required>
                                     </div>
                                     <div class="col-md-4 mb-3">
