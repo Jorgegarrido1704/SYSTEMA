@@ -485,8 +485,8 @@ class juntasController extends Controller
         $buscarValoresMes = calidadRegistro::where('codigo', '!=', "TODO BIEN")
             ->where('fecha', 'LIKE', $crtl . '%')
             ->get();
-            $totalb= calidadRegistro::where ('fecha', 'LIKE', $crtl . '%')->where('codigo', 'TODO BIEN')->count();
-            $totalm= count($buscarValoresMes);
+        $totalb = calidadRegistro::where('fecha', 'LIKE', $crtl . '%')->where('codigo', 'TODO BIEN')->count();
+        $totalm = count($buscarValoresMes);
         foreach ($buscarValoresMes as $rows) {
             $supRes = personalBergsModel::select('employeeLider')->where('employeeName', $rows->Responsable)->first();
             if (in_array($rows->codigo, $etiq)) {
@@ -498,9 +498,9 @@ class juntasController extends Controller
                 $datos[$etiq[$index]] = $rows->resto;
             }
             if (in_array($rows->Responsable . " - " . $rows->pn . " Lider: " . $supRes->employeeLider, array_column($gultyY, 0))) {
-                $gultyY[array_search($rows->Responsable . " - " . $rows->pn . " Lider: " .$supRes->employeeLider, array_column($gultyY, 0))][1] += $rows->resto;
+                $gultyY[array_search($rows->Responsable . " - " . $rows->pn . " Lider: " . $supRes->employeeLider, array_column($gultyY, 0))][1] += $rows->resto;
             } else {
-                $gultyY[$j][0] = $rows->Responsable . " - " . $rows->pn . " Lider: " .$supRes->employeeLider;
+                $gultyY[$j][0] = $rows->Responsable . " - " . $rows->pn . " Lider: " . $supRes->employeeLider;
                 $gultyY[$j][1] = $rows->resto;
                 $j++;
             }
@@ -560,7 +560,6 @@ class juntasController extends Controller
 
             $totalGood += $good;
             $totalBad += $bad;
-
         }
 
 
@@ -600,7 +599,7 @@ class juntasController extends Controller
         SUM(CASE WHEN YEAR(STR_TO_DATE(fecha, '%d-%m-%Y')) = ?
                  AND WEEK(STR_TO_DATE(fecha, '%d-%m-%Y'), 3) = ?
                  AND codigo != 'TODO BIEN' THEN 1 ELSE 0 END) as weekBad
-    ", [
+     ", [
                 $YearParto,
                 $YearParto,   // yearGood, yearBad
                 $YearParto,
