@@ -1973,7 +1973,7 @@ foreach ($vacaciones as $row) {
             'departamento' => $area,
             'supervisor' => $supervisor,
             'fecha_de_solicitud' => '',
-            'dias_solicitados' => 1,
+            'dias_solicitados' => $dias_solicitados??1 ,
             'Folio' => '',
             'link' => $link
         ];
