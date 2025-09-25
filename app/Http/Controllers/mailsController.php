@@ -200,9 +200,9 @@ class mailsController extends Controller
         $returnDate = $request->input('return_date');
         $receivers [0]= '';
         if (strpos($who, ',')) {
-            $who=str_replace(' ', '', $who);
+           
             $datosde = explode(',', $who);
-            
+
                 $correo = login::select('user_email')->where('user', '=', $datosde[0])->first();
                 if (empty($correo)) {
                     $receivers[0] = 'jgarrido@mx.bergstrominc.com';
