@@ -1889,7 +1889,7 @@ foreach ($vacaciones as $row) {
 
         $carbonFecha = Carbon::parse($fecha);
         if ($carbonFecha->dayOfWeek == 5) {
-            $fecha = $carbonFecha->addDays(2)->toDateString(); // convertir a string
+            $fecha = $carbonFecha->addDays(3)->toDateString(); // convertir a string
         } else {
             $fecha = $carbonFecha->addDays(1)->toDateString(); // convertir a string
         }
