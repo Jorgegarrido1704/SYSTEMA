@@ -1874,14 +1874,30 @@ class juntasController extends Controller
 
         // Crear array asociativo: 'Y-m-d' => [id_empleado, ...]
         $vacacions = [];
-        foreach ($vacaciones as $row) {
-            $fecha = Carbon::parse($row->fecha_de_solicitud)->toDateString(); // 'YYYY-MM-DD'
-            if (key_exists($fecha, $vacacions)) {
-                $vacacions[$fecha][0] .= "-" . $row->id_empleado;
-            } else {
-                $vacacions[$fecha][] = $row->id_empleado;
-            }
+
+foreach ($vacaciones as $row) {
+    $fechaInicial = Carbon::parse($row->fecha_de_solicitud)->toDateString(); // 'YYYY-MM-DD'
+    $fecha = $fechaInicial;
+    for ($i = 0; $i < $row->dias_solicitados; $i++) {
+
+
+        if (array_key_exists($fecha, $vacacions)) {
+            $vacacions[$fecha][0] .= "-" . $row->id_empleado;
+        } else {
+            $vacacions[$fecha][] = $row->id_empleado;
         }
+
+        $carbonFecha = Carbon::parse($fecha);
+        if ($carbonFecha->dayOfWeek == 5) {
+            $fecha = $carbonFecha->addDays(2)->toDateString(); // convertir a string
+        } else {
+            $fecha = $carbonFecha->addDays(1)->toDateString(); // convertir a string
+        }
+
+    }
+
+}
+
 
         // Recorrer cada día hábil del año
         while ($InicioYear <= $FinYear) {
