@@ -25,7 +25,7 @@
                     <h5 class="m-0 font-weight-bold text-primary">Trabajos ingenieria</h5>
                 </div>
 
-                <!-- table Body -->
+                <!-- tabla de trabajos -->
                 <div class="card-body" style="overflow-y: auto; height: 460px;">
                     <div class="chart-area" id="chart-area">
                         <style>
@@ -250,7 +250,7 @@
             <div class="card shadow mb-4" id="card2">
                 <!-- Set Work -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h5 class="m-0 font-weight-bold text-primary">Set Work</h5>
+                    <h5 class="m-0 font-weight-bold text-primary">Set  in the system</h5>
 
                 </div>
 
@@ -315,15 +315,9 @@
                             </label>
                             <select name="Inge" id="Inge" required>
                                 <option value=""></option>
-                                <option value="Jesus C">Jesus Cervera</option>
-                                <option value="Jorge G">Jorge Garrido</option>
-                                <option value="Carlos R">Carlos Rodriguez</option>
-                                <option value="Paola S">Paola Silva</option>
-                                <option value="Nancy A">Nancy Aldana</option>
-                                <option value="Alejandro V">Alejandro Vargas</option>
-                                <option value="Brandon S">Brandon Sanchez</option>
-                                <option value="Arturo S">Arturo Santos</option>
-                                <option value="Todos">Todos El equipo</option>
+                                @foreach($ingenieros_en_piso as $ingesPiso)
+                                <option value="{{ $ingesPiso->user }}">{{ $ingesPiso->user }}</option>
+                                @endforeach
                             </select>
 
                             <label for="act">
@@ -610,15 +604,9 @@
 
                                 <select name="quien" id="quien" required>
                                     <option value=""></option>
-                                    <option value="Jesus C">Jesus Cervera</option>
-                                    <option value="Victor E">Victor Estrada</option>
-                                    <option value="Carlos R">Carlos Rodriguez</option>
-                                    <option value="Paola S">Paola Silva</option>
-                                    <option value="Nancy A">Nancy Aldana</option>
-                                    <option value="Jorge G">Jorge Garrido</option>
-                                    <option value="Alejandro V">Alejandro Vargas</option>
-                                    <option value="Brandon S">Brandon Sanchez</option>
-
+                                     @foreach($ingenieros_en_piso as $ingesPiso)
+                                <option value="{{ $ingesPiso->user }}">{{ $ingesPiso->user }}</option>
+                                @endforeach
 
                                 </select>
                                 <input type="submit" value="Submit">
