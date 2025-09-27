@@ -768,7 +768,6 @@ class juntasController extends Controller
         $top5 = $empleados ?? [];
 
 
-        $YearParto = date('Y');
 
         $personalYearCulpables = personalBergsModel::where('typeWorker', 'Directo')
             ->where('status', 'Activo')
@@ -784,10 +783,29 @@ class juntasController extends Controller
         $personalYear = $personalYearCulpables->filter(fn($name) => !in_array($name, $culpables))
             ->values()
             ->toArray();
+        $supIssue = [];
+        $empleados = DB::table('regsitrocalidad')
+            ->select("Responsable")
+            ->where("fecha", "LIKE", "%$month-$YearParto%")
+            ->where('codigo', '!=', 'TODO BIEN')
+            ->orderByDesc('codigo')
+            ->get();
+        foreach ($empleados as $rowEmp) {
+            $supRes = personalBergsModel::select('employeeLider')->where('employeeName', $rowEmp->Responsable)->first();
+            if(!isset($supRes->employeeLider)){
+                continue;
+            }
+            if (!in_array($supRes->employeeLider, array_keys($supIssue))) {
+                $supIssue[$supRes->employeeLider] = 1;
+            } else {
+                $supIssue[$supRes->employeeLider]++;
+            }
+        }
+        $supIssue = array_filter($supIssue, fn($count) => $count > 2);
+        arsort($supIssue);
 
 
-
-        return view('juntas/calidad', ['days' => $days, 'personalYear' => $personalYear, 'respemp' => $empRes, 'empleados' => $top5,  'hoyb' => $hoyb, 'hoymal' => $hoymal, 'parhoy' => $parhoy, 'gultyY' => $gultyY, 'gulty' => $gulty, 'datosHoy' => $datosHoy, 'totalm' => $totalm, 'totalb' => $totalb, 'monthAndYearPareto' => $monthAndYearPareto, 'datosT' => $datosT, 'datosS' => $datosS, 'datosF' => $datosF, 'labelQ' => $labelQ, 'colorQ' => $colorQ, 'value' => $value, 'cat' => $cat, 'datos' => $datos, 'pareto' => $pareto, 'Qdays' => $Qdays]);
+        return view('juntas/calidad', ['supIssue' => $supIssue, 'days' => $days, 'personalYear' => $personalYear, 'respemp' => $empRes, 'empleados' => $top5,  'hoyb' => $hoyb, 'hoymal' => $hoymal, 'parhoy' => $parhoy, 'gultyY' => $gultyY, 'gulty' => $gulty, 'datosHoy' => $datosHoy, 'totalm' => $totalm, 'totalb' => $totalb, 'monthAndYearPareto' => $monthAndYearPareto, 'datosT' => $datosT, 'datosS' => $datosS, 'datosF' => $datosF, 'labelQ' => $labelQ, 'colorQ' => $colorQ, 'value' => $value, 'cat' => $cat, 'datos' => $datos, 'pareto' => $pareto, 'Qdays' => $Qdays]);
     }
 
     public function litas_junta($id)
@@ -2116,7 +2134,7 @@ class juntasController extends Controller
                 $faltantes[] = $faltante->lider;
             }
         }
-        $enplanta=($rotacion->assistencia+$rotacion->retardos+$rotacion->practicantes+$rotacion->tsp+$rotacion->ServiciosComprados);
+        $enplanta = ($rotacion->assistencia + $rotacion->retardos + $rotacion->practicantes + $rotacion->tsp + $rotacion->ServiciosComprados);
 
         $faltan = $total - ($rotacion->tsp + $rotacion->assistencia + $rotacion->faltas + $rotacion->incapacidad + $rotacion->permisos_gose +
             $rotacion->permisos_sin_gose + $rotacion->vacaciones + $rotacion->retardos + $rotacion->suspension + $rotacion->practicantes + $rotacion->asimilados + $rotacion->ServiciosComprados);
@@ -2164,7 +2182,7 @@ class juntasController extends Controller
             }
         }
 
-        return view('juntas.hr', ['enplanta'=> $enplanta,'vacas' => $vacas, 'promaus' => $promaus, 'diaActual' => $diaActual, 'tipoTrabajador' => $tipoTrabajador, 'faltantes' => $faltantes, 'faltan' => $faltan, 'genero' => $genero, 'registrosDeAsistencia' => $registrosDeAsistencia, 'value' => session('user'), 'cat' => session('categoria'), 'accidente' => $accidente]);
+        return view('juntas.hr', ['enplanta' => $enplanta, 'vacas' => $vacas, 'promaus' => $promaus, 'diaActual' => $diaActual, 'tipoTrabajador' => $tipoTrabajador, 'faltantes' => $faltantes, 'faltan' => $faltan, 'genero' => $genero, 'registrosDeAsistencia' => $registrosDeAsistencia, 'value' => session('user'), 'cat' => session('categoria'), 'accidente' => $accidente]);
     }
 
     //Show Names per category

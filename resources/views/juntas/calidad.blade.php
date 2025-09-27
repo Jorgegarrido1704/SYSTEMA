@@ -51,6 +51,8 @@
         var dias = {!! json_encode($days) !!};
         var empleados = {!! json_encode($empleados) !!};
         var respo = {!! json_encode($respemp) !!};
+        var supIssue = {!! json_encode($supIssue) !!};
+        console.log(supIssue);
     </script>
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
 
@@ -207,34 +209,20 @@
                 </div>
             </div>
         </div>
-         <!-- whitout incidences  -->
-        <div class="col-lg-3 col-lx-3">
-            <!-- AREAS -->
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h5 class="m-0 font-weight-bold text-primary">Employees without incidents in 2025</h5>
-                </div>
-                <div class="card-body" style="overflow-y: auto; height: 360px;" id="tableChange">
-                    <table id="table-harness" class="table-harness">
-                        <thead>
-                            <th>Employees</th>
-                        </thead>
-                        <tbody >
-                            @if(!@empty($personalYear))
-                            @foreach ($personalYear as $datoPersonalYear)
-                                <tr>
-                                    <td>{{ $datoPersonalYear }}</td>
-                                </tr>
-                            @endforeach
-                            @endif
+        <!-- Table Supervisors -->
+                <div class="col-lg-4 mb-4" >
 
-                        </tbody>
-                    </table>
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h5 class="m-0 font-weight-bold text-primary">Supervisors Issues in the month </h5>
+                        </div>
+                        <div class="card-body" style="overflow-y: auto; height: 360px;" >
+                            <canvas id="Supervisorissues"></canvas>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
          <!-- Reworks responsible yesterday -->
-        <div class="col-lg-4 mb-4" style="max-width: 40%">
+        <div class="col-lg-3 mb-3" style="max-width: 40%">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
                     <h5 class="m-0 font-weight-bold text-primary">Reworks Responsible Yesterday </h5>
@@ -267,7 +255,7 @@
     <!-- Graficas malas -->
     <div class="row">
             <!-- FTQ Today -->
-        <div class="col-lg-4 mb-4" style="max-width: 40%">
+        <div class="col-lg-4 mb-3">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
                     <h5 class="m-0 font-weight-bold text-primary">FTQ Now (Good: {{ $hoyb }} Bad:
@@ -301,7 +289,7 @@
             </div>
         </div>
         <!-- Reworks responsible -->
-        <div class="col-lg-4 mb-4" style="max-width: 40%">
+        <div class="col-lg-4 mb-4">
 
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
@@ -327,6 +315,33 @@
                         </table>
 
                     </div>
+                </div>
+            </div>
+        </div>
+
+          <!-- whitout incidences  -->
+        <div class="col-lg-4 col-lx-4">
+            <!-- AREAS -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h5 class="m-0 font-weight-bold text-primary">Employees without incidents in 2025</h5>
+                </div>
+                <div class="card-body" style="overflow-y: auto; height: 360px;" id="tableChange">
+                    <table id="table-harness" class="table-harness">
+                        <thead>
+                            <th>Employees</th>
+                        </thead>
+                        <tbody >
+                            @if(!@empty($personalYear))
+                            @foreach ($personalYear as $datoPersonalYear)
+                                <tr>
+                                    <td>{{ $datoPersonalYear }}</td>
+                                </tr>
+                            @endforeach
+                            @endif
+
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

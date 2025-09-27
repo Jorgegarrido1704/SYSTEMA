@@ -337,3 +337,76 @@ var incs = new Chart(inc, {
         }
     }
 });
+
+try {
+
+
+var incidencias = [];
+var supnames = Object.keys(supIssue);
+var supvalues = Object.values(supIssue);
+var sups = document.getElementById("Supervisorissues");
+var supss = new Chart(sups, {
+    type: 'bar',
+    data: {
+        labels: supnames,
+        datasets: [
+            {
+                label: 'Incidencias del mes',
+                data: supvalues,
+                backgroundColor:[
+  'rgba(200, 48, 28, 1)',
+  'rgba(200, 94, 28, 1)',
+  'rgba(200, 117, 28, 1)',
+  'rgba(200, 131, 28, 1)',
+  'rgba(210, 150, 28, 1)',
+  'rgba(200, 154, 28, 1)',
+  'rgba(194, 200, 28, 1)',
+  'rgba(188, 200, 28, 1)',
+  'rgba(171, 200, 28, 1)',
+  'rgba(151, 200, 28, 1)'
+],
+                fill: false, // Evita rellenar el área debajo de la línea
+                borderWidth: 4
+            },
+
+        ]
+    },
+    options: {
+        maintainAspectRatio: false,
+        tooltips: {
+            backgroundColor: "rgb(255,255,255)",
+            bodyFontColor: "#858796",
+            borderColor: '#dddfeb',
+            borderWidth: 1,
+            xPadding: 15,
+            yPadding: 15,
+            displayColors: false,
+
+        },
+        legend: {
+            display: true
+        },
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true,
+                    min: 1,
+                    max: 100,
+                    stepSize: 10,
+                },
+                gridLines: {
+                    color: '#e3e3e3',
+                    drawBorder: false,
+                },
+            }],
+            xAxes: [{
+                gridLines: {
+                    display: false,
+                },
+            }]
+        }
+    }
+    });
+}catch (error) {
+    console.log("No hay fecha guardada");
+}
