@@ -1063,8 +1063,8 @@ class juntasController extends Controller
     {
         $monthYear = date('m-Y');
         $lastMonth = date('m-Y', strtotime("-1 months"));
-         $datosPpap = $todas  =$actividades= $actividadesLastMonth=[];
- $personaIng=login::select('user')->where('category','inge')->get();
+        $datosPpap = $todas  = $actividades = $actividadesLastMonth = [];
+        $personaIng = login::select('user')->where('category', 'inge')->get();
         $datos = ['Soporte en piso', 'Seguimiento PPAP', 'Otro', 'Juntas', 'Documentacion', 'Comida', 'Colocacion de full size'];
         foreach ($personaIng as $ing) {
             $actividades[$ing->user] = array_combine($datos, array_fill(0, count($datos), 0));
@@ -1079,15 +1079,11 @@ class juntasController extends Controller
             $timeIni = strtotime($row->fecha);
             $timeFin = strtotime($row->finT);
             $timetotal = ($timeFin - $timeIni) / 60;
-            if(key_exists($row->actividades, $actividades[$row->Id_request])){
+            if (key_exists($row->actividades, $actividades[$row->Id_request])) {
                 $actividades[$row->Id_request][$row->actividades] += $timetotal;
-            }else{
+            } else {
                 $actividades[$row->Id_request][$row->actividades] = $timetotal;
             }
-
-
-
-
         }
         $tiemposDatosIng = DB::table('ingactividades')
             ->where('count', '=', '4')
@@ -1118,7 +1114,7 @@ class juntasController extends Controller
             ->orderBy('codigo', 'desc')
             ->get();
         foreach ($datosIng as $row) {
-            if(in_array($row->codigo, array_keys($datosPpap))){
+            if (in_array($row->codigo, array_keys($datosPpap))) {
                 $datosPpap[$row->codigo][$row->area] += 1;
             }
             $todas[$row->area] += 1;
@@ -1152,20 +1148,10 @@ class juntasController extends Controller
             ->orderBy('CompletionDate', 'DESC')
             ->get();
 
-
-
-
-        // $porcentajemes1= $registrosArray['7'][0];
-        //$porcentajemes= $registrosArray['7'][1];
-
-
-
-
-
-
-
-        // PPAP and PRIM Insofor
+        //work Schedule dounut final
+        // ppap table
         $registroPPAP = [];
+         $ingependinses= $porbajara =$totalgeneral= $enproceso =$totalprim=$totalppap= 0;
         $i = 0;
 
         $WS = workScreduleModel::where('status', '!=', 'CANCELLED')
@@ -1198,10 +1184,16 @@ class juntasController extends Controller
             }
             $registroPPAP[$i][18] = $res->qtyInPo;
             $registroPPAP[$i][21] = "c-" . $res->Color ?? "c-white";
+            if($res->documentsApproved!="" && $res->documentsApproved!=null){
+                $porbajara++;
+            }else{
+                $ingependinses++;
+            }
             $i++;
+
         }
 
-        $registros = Wo::where('rev', 'LIKE', 'PRIM%')->Orwhere('rev', 'LIKE', 'PPAP%')->orderBY('count', 'asc')->orderBy('cliente', 'asc')->get();
+        $registros = Wo::where('rev', 'LIKE', 'PRIM%')->Orwhere('rev', 'LIKE', 'PPAP%')->where('count','!=',12)->orderBY('id', 'asc')->orderBy('cliente', 'asc')->get();
         foreach ($registros as $reg) {
             $registroPPAP[$i][0] = $reg->cliente;
             $registroPPAP[$i][1] = $reg->NumPart;
@@ -1251,14 +1243,14 @@ class juntasController extends Controller
                     $registroPPAP[$i][13] = "No Aun";
                     $registroPPAP[$i][14] = "0";
                 } else {
-                    $registroPPAP[$i][8] = $datosTiempos->planeacion;
+                    $registroPPAP[$i][8] = carbon::parse($datosTiempos->planeacion)->format('Y-m-d');
                     $registroPPAP[$i][19] = $reg->wo;
                     $registroPPAP[$i][20] = $reg->Qty;
-                    $registroPPAP[$i][9] = $datosTiempos->corte;
-                    $registroPPAP[$i][10] = $datosTiempos->liberacion;
-                    $registroPPAP[$i][11] = $datosTiempos->ensamble;
-                    $registroPPAP[$i][12] = $datosTiempos->loom;
-                    $registroPPAP[$i][13] = $datosTiempos->calidad;
+                    $registroPPAP[$i][9] = carbon::parse($datosTiempos->corte)->format('Y-m-d');
+                    $registroPPAP[$i][10] = carbon::parse($datosTiempos->liberacion)->format('Y-m-d');
+                    $registroPPAP[$i][11] = carbon::parse($datosTiempos->ensamble)->format('Y-m-d');
+                    $registroPPAP[$i][12] = carbon::parse($datosTiempos->loom)->format('Y-m-d');
+                    $registroPPAP[$i][13] = carbon::parse($datosTiempos->calidad)->format('Y-m-d');
                 }
                 $registroPPAP[$i][18] = $registroWS->qtyInPo;
             }
@@ -1268,14 +1260,39 @@ class juntasController extends Controller
                 $registroPPAP[$i][14] = "236, 236, 9, 0.497";
             }
             $registroPPAP[$i][21] = "c-" . $res->Color ?? "c-white";;
-
+            if($res->Color=='yellow'){ $totalprim++;
+            }else if($res->Color=='green'){ $totalppap++;}
 
             $i++;
+
+
         }
+        $enproceso=count($registros);
+        $totalgeneral+=$i;
 
-
-        return view('juntas/ing', ['registrosmes' => $registrosmes, 'b' => $b, 'm' => $m, 'porcentajemes' => $porcentajemes, 'porcentajemes1' => $porcentajemes1, 'registroPPAP' => $registroPPAP, 'thisYearGoals' => $thisYearGoals, 'last12Months' => $last12Months, 'porcentaje' => $porcentaje,  'todas' => $todas,'datosPpap'=>$datosPpap,
-          'actividadesLastMonth' => $actividadesLastMonth, 'actividades' => $actividades, 'value' => session('user'), 'cat' => session('categoria')]);
+        return view('juntas/ing', [
+            'ingependinses' => $ingependinses,
+            'porbajara' =>$porbajara,
+            'totalgeneral'=>$totalgeneral,
+            'enproceso'=> $enproceso,
+            'totalprim' => $totalprim,
+            'totalppap' => $totalppap,
+            'registrosmes' => $registrosmes,
+            'b' => $b,
+            'm' => $m,
+            'porcentajemes' => $porcentajemes,
+            'porcentajemes1' => $porcentajemes1,
+            'registroPPAP' => $registroPPAP,
+            'thisYearGoals' => $thisYearGoals,
+            'last12Months' => $last12Months,
+            'porcentaje' => $porcentaje,
+            'todas' => $todas,
+            'datosPpap' => $datosPpap,
+            'actividadesLastMonth' => $actividadesLastMonth,
+            'actividades' => $actividades,
+            'value' => session('user'),
+            'cat' => session('categoria')
+        ]);
     }
     public function cutAndTerm()
     {
@@ -1817,28 +1834,26 @@ class juntasController extends Controller
         // Crear array asociativo: 'Y-m-d' => [id_empleado, ...]
         $vacacions = [];
 
-foreach ($vacaciones as $row) {
-    $fechaInicial = Carbon::parse($row->fecha_de_solicitud)->toDateString(); // 'YYYY-MM-DD'
-    $fecha = $fechaInicial;
-    for ($i = 0; $i < $row->dias_solicitados; $i++) {
+        foreach ($vacaciones as $row) {
+            $fechaInicial = Carbon::parse($row->fecha_de_solicitud)->toDateString(); // 'YYYY-MM-DD'
+            $fecha = $fechaInicial;
+            for ($i = 0; $i < $row->dias_solicitados; $i++) {
 
 
-        if (array_key_exists($fecha, $vacacions)) {
-            $vacacions[$fecha][0] .= "-" . $row->id_empleado;
-        } else {
-            $vacacions[$fecha][] = $row->id_empleado;
+                if (array_key_exists($fecha, $vacacions)) {
+                    $vacacions[$fecha][0] .= "-" . $row->id_empleado;
+                } else {
+                    $vacacions[$fecha][] = $row->id_empleado;
+                }
+
+                $carbonFecha = Carbon::parse($fecha);
+                if ($carbonFecha->dayOfWeek == 5) {
+                    $fecha = $carbonFecha->addDays(3)->toDateString(); // convertir a string
+                } else {
+                    $fecha = $carbonFecha->addDays(1)->toDateString(); // convertir a string
+                }
+            }
         }
-
-        $carbonFecha = Carbon::parse($fecha);
-        if ($carbonFecha->dayOfWeek == 5) {
-            $fecha = $carbonFecha->addDays(3)->toDateString(); // convertir a string
-        } else {
-            $fecha = $carbonFecha->addDays(1)->toDateString(); // convertir a string
-        }
-
-    }
-
-}
 
 
         // Recorrer cada día hábil del año
@@ -1915,7 +1930,7 @@ foreach ($vacaciones as $row) {
             'departamento' => $area,
             'supervisor' => $supervisor,
             'fecha_de_solicitud' => '',
-            'dias_solicitados' => $dias_solicitados??1 ,
+            'dias_solicitados' => $dias_solicitados ?? 1,
             'Folio' => '',
             'link' => $link
         ];
