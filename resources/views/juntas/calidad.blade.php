@@ -214,7 +214,7 @@
 
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h5 class="m-0 font-weight-bold text-primary">Supervisors Issues in the month </h5>
+                            <h5 class="m-0 font-weight-bold text-primary">Supervisor Issues in the month </h5>
                         </div>
                         <div class="card-body" style="overflow-y: auto; height: 360px;" >
                             <canvas id="Supervisorissues"></canvas>
