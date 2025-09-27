@@ -1151,7 +1151,7 @@ class juntasController extends Controller
         //work Schedule dounut final
         // ppap table
         $registroPPAP = [];
-         $ingependinses= $porbajara =$totalgeneral= $enproceso =$totalprim=$totalppap= 0;
+        $ingependinses = $porbajara = $totalgeneral = $enproceso = $totalprim = $totalppap = 0;
         $i = 0;
 
         $WS = workScreduleModel::where('status', '!=', 'CANCELLED')
@@ -1184,16 +1184,33 @@ class juntasController extends Controller
             }
             $registroPPAP[$i][18] = $res->qtyInPo;
             $registroPPAP[$i][21] = "c-" . $res->Color ?? "c-white";
-            if($res->documentsApproved!="" && $res->documentsApproved!=null){
+            if ($res->documentsApproved != "" && $res->documentsApproved != null) {
                 $porbajara++;
-            }else{
+            } else {
                 $ingependinses++;
             }
             $i++;
-
         }
+        function formatoFecha($fecha)
+        {
+            if (empty($fecha)) {
+                return ''; // si es null o vacío
+            }
 
-        $registros = Wo::where('rev', 'LIKE', 'PRIM%')->Orwhere('rev', 'LIKE', 'PPAP%')->orderBY('id', 'asc')->orderBy('cliente', 'asc')->get();
+            try {
+                return Carbon::createFromFormat('d-m-Y H:i', $fecha)->format('Y-m-d');
+            } catch (\Exception $e) {
+                return ''; // si no coincide con el formato
+            }
+        }
+        $registros = Wo::where('count', '!=', 12)
+            ->where(function ($q) {
+                $q->where('rev', 'LIKE', 'PRIM%')
+                    ->orWhere('rev', 'LIKE', 'PPAP%');
+            })
+            ->orderBy('id', 'asc')
+            ->orderBy('cliente', 'asc')
+            ->get();
         foreach ($registros as $reg) {
             $registroPPAP[$i][0] = $reg->cliente;
             $registroPPAP[$i][1] = $reg->NumPart;
@@ -1243,14 +1260,15 @@ class juntasController extends Controller
                     $registroPPAP[$i][13] = "No Aun";
                     $registroPPAP[$i][14] = "0";
                 } else {
-                    $registroPPAP[$i][8] = carbon::parse($datosTiempos->planeacion)->format('Y-m-d');
+                    $registroPPAP[$i][8]  = formatoFecha($datosTiempos->planeacion);
+                    $registroPPAP[$i][9]  = formatoFecha($datosTiempos->corte);
+                    $registroPPAP[$i][10] = formatoFecha($datosTiempos->liberacion);
+                    $registroPPAP[$i][11] = formatoFecha($datosTiempos->ensamble);
+                    $registroPPAP[$i][12] = formatoFecha($datosTiempos->loom);
+                    $registroPPAP[$i][13] = formatoFecha($datosTiempos->calidad);
+
                     $registroPPAP[$i][19] = $reg->wo;
                     $registroPPAP[$i][20] = $reg->Qty;
-                    $registroPPAP[$i][9] = carbon::parse($datosTiempos->corte)->format('Y-m-d');
-                    $registroPPAP[$i][10] = carbon::parse($datosTiempos->liberacion)->format('Y-m-d');
-                    $registroPPAP[$i][11] = carbon::parse($datosTiempos->ensamble)->format('Y-m-d');
-                    $registroPPAP[$i][12] = carbon::parse($datosTiempos->loom)->format('Y-m-d');
-                    $registroPPAP[$i][13] = carbon::parse($datosTiempos->calidad)->format('Y-m-d');
                 }
                 $registroPPAP[$i][18] = $registroWS->qtyInPo;
             }
@@ -1264,14 +1282,14 @@ class juntasController extends Controller
             $registroPPAP[$i][21] = "c-" . $res->Color ?? "c-white";;
             $i++;
         }
-        $enproceso=count($registros);
-        $totalgeneral+=$i;
+        $enproceso = count($registros);
+        $totalgeneral += $i;
 
         return view('juntas/ing', [
             'ingependinses' => $ingependinses,
-            'porbajara' =>$porbajara,
-            'totalgeneral'=>$totalgeneral,
-            'enproceso'=> $enproceso,
+            'porbajara' => $porbajara,
+            'totalgeneral' => $totalgeneral,
+            'enproceso' => $enproceso,
             'totalprim' => $totalprim,
             'totalppap' => $totalppap,
             'registrosmes' => $registrosmes,
