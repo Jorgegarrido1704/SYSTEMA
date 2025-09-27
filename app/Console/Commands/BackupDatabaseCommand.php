@@ -17,9 +17,7 @@ class BackupDatabaseCommand extends Command
     public function handle(): void
     {
         $date = Carbon::now()->format('d-m-Y');
-        $registroTipos = ['principal', 'reg1', 'reg2', 'reg3',
-    'reg4' ,'reg5','reg6', 'reg7' , 'reg8' , 'reg9' , 'reg10' , 'reg11' ,
- 'reg12' , 'reg13' ];
+        $registroTipos = ['Resto', 'corte', 'actividades', 'calidad', 'acciones', 'auditoria', 'embarques', 'inventario', 'mantenimiento', 'po', 'registros', 'routing', 'timeproces', 'tiempos'];
         $outputPath = storage_path("app/respaldos/");
 
         foreach ($registroTipos as $tipo) {
@@ -46,7 +44,7 @@ class BackupDatabaseCommand extends Command
 
     private function generateSqlDump(string $registro): string
     {
-        $tables_locate = ['corte', 'datos', 'itemsconsumidos', 'listascorte'];
+        $tables_locate = ['corte',  'itemsconsumidos', 'listascorte'];
         $tables_locate2 = ['precios', 'registros', 'registro_paro', 'registro_pull', 'ingactividades'];
         $tabla_calidad = ['regsitrocalidad'];
         $table_accione = ['accidentes', 'acciones', 'acciones_correctivas','almacen','assets','assistence','auditoria'];
@@ -70,20 +68,20 @@ class BackupDatabaseCommand extends Command
 
         foreach ($tables as $table) {
             $include = match ($registro) {
-                'principal' => !in_array($table, $tables_locate) && !in_array($table, $tables_locate2) && !in_array($table, $tabla_calidad),
-                'reg1' => in_array($table, $tables_locate),
-                'reg2' => in_array($table, $tables_locate2),
-                'reg3' => in_array($table, $tabla_calidad),
-                'reg4' => in_array($table, $table_accione),
-                'reg5' => in_array($table, $table_auditoria),
-                'reg6' => in_array($table, $table_embarques),
-                'reg7' => in_array($table, $table_inv),
-                'reg8' => in_array($table, $table_mant),
-                'reg9' => in_array($table, $table_po),
-                'reg10' => in_array($table, $table_qr),
-                'reg11' => in_array($table, $table_wa),
-                'reg12' => in_array($table, $table_wa2),
-                'reg13' => in_array($table, $table_wa3),
+                'Resto' => !in_array($table, $tables_locate) && !in_array($table, $tables_locate2) && !in_array($table, $tabla_calidad)
+                    && !in_array($table, $table_accione) && !in_array($table, $table_auditoria) && !in_array($table, $table_embarques)
+                    && !in_array($table, $table_inv) && !in_array($table, $table_mant) && !in_array($table, $table_po)
+                    && !in_array($table, $table_qr) && !in_array($table, $table_wa) && !in_array($table, $table_wa2)
+                    && !in_array($table, $table_wa3),
+                'corte' => in_array($table, $tables_locate),'actividades' => in_array($table, $tables_locate2),'calidad' => in_array($table, $tabla_calidad),
+                'acciones' => in_array($table, $table_accione),'auditoria' => in_array($table, $table_auditoria),'embarques' => in_array($table, $table_embarques),
+                'inventario' => in_array($table, $table_inv),
+                'mantenimiento' => in_array($table, $table_mant),
+                'po' => in_array($table, $table_po),
+                'registros' => in_array($table, $table_qr),
+                'routing' => in_array($table, $table_wa),
+                'timeproces' => in_array($table, $table_wa2),
+                'tiempos' => in_array($table, $table_wa3),
 
 
                 default => false,
