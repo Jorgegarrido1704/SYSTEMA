@@ -1193,7 +1193,7 @@ class juntasController extends Controller
 
         }
 
-        $registros = Wo::where('rev', 'LIKE', 'PRIM%')->Orwhere('rev', 'LIKE', 'PPAP%')->where('count','!=',12)->orderBY('id', 'asc')->orderBy('cliente', 'asc')->get();
+        $registros = Wo::where('rev', 'LIKE', 'PRIM%')->Orwhere('rev', 'LIKE', 'PPAP%')->orderBY('id', 'asc')->orderBy('cliente', 'asc')->get();
         foreach ($registros as $reg) {
             $registroPPAP[$i][0] = $reg->cliente;
             $registroPPAP[$i][1] = $reg->NumPart;
