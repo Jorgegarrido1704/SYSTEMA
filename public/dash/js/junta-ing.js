@@ -14,6 +14,7 @@ const datoste = ingenieros.map(name => ({
   data: actions.map(action => datosPpap[name][action]),
   backgroundColor: getRandomColor(name),
   borderWidth: 1
+
 }));
 
 // Función para colores aleatorios/fijos
@@ -40,7 +41,7 @@ function getRandomColor(nombre) {
 }
 
 const tiemposing = new Chart(tiemposIng, {
-  type: 'line',
+  type: 'bar',
   data: {
     labels: actions,  // <<--- Aquí cambié actividades por actions
     datasets: datoste
