@@ -7,8 +7,6 @@
          //grafica tiempos
         const actividades = {!! json_encode($actividades) !!};
         const actividadesLastMonth = {!! json_encode($actividadesLastMonth) !!};
-        console.log(actividades);
-
         const url = '{{ route('registrosajax') }}';
     </script>
 
@@ -16,8 +14,7 @@
         //grafica ppaps
        // $jesp=$nanp=$bp=$jcp=$psp=$alv=$asp=$jg
      const datosPpap = {!! json_encode($datosPpap) !!};
-     console.log(datosPpap);
-        const todas = {!! json_encode($todas) !!};
+     const todas = {!! json_encode($todas) !!};
     </script>
 
     <script>
@@ -27,9 +24,6 @@
             const malos= {!! json_encode($m) !!};
             const mothLess12 = {!! json_encode($last12Months) !!};
                 const compGoals = {!! json_encode($thisYearGoals) !!};
-                console.log(mothLess12);
-                console.log(compGoals);
-            // console.log(compGoals);
     </script>
 
     <div class="d-sm-flex align-items-center justify-content-between mb-4"></div>
