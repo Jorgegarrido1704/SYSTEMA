@@ -2,9 +2,10 @@
 
 namespace App\Console;
 
-use App\Jobs\UpdateRotacionJob;
+use App\Jobs\VacacionesRegistrosJob;
 use App\Jobs\accionesCorrectivasJob;
 use App\Jobs\AddWeek;
+use App\Jobs\UpdateVacations;
 use App\Jobs\reporteGeneral;
 
 use Illuminate\Console\Scheduling\Schedule;
@@ -25,6 +26,8 @@ class Kernel extends ConsoleKernel
         $schedule->job(new \App\Jobs\UpdateRotacionJob)
             ->cron('10 6,9 * * *')
             ->timezone('America/Mexico_City');
+
+        $schedule->job(new \App\Jobs\VacacionesRegistrosJob)->cron('1 0,7 * * *');
 
         $schedule->job(new \App\Jobs\accionesCorrectivasJob)->dailyAt('07:00');
         //Data base backup
