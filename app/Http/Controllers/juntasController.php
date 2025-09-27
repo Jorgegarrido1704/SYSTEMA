@@ -1256,16 +1256,13 @@ class juntasController extends Controller
             }
             if (substr($reg->rev, 0, 4) == 'PPAP') {
                 $registroPPAP[$i][14] = "96, 242, 83, 0.3";
+                $totalppap++;
             } else {
                 $registroPPAP[$i][14] = "236, 236, 9, 0.497";
+                $totalprim++;
             }
             $registroPPAP[$i][21] = "c-" . $res->Color ?? "c-white";;
-            if($res->Color=='yellow'){ $totalprim++;
-            }else if($res->Color=='green'){ $totalppap++;}
-
             $i++;
-
-
         }
         $enproceso=count($registros);
         $totalgeneral+=$i;
