@@ -19,14 +19,14 @@ const datoste = Object.keys(actividades).map(name => ({
 
 function getRandomColor(nombre) {
   let color;
-  if (nombre === 'Paola S') color = '#7b06b6ff';
-  else if (nombre === 'Carlos R') color = '#005404ff';
-  else if (nombre === 'Nancy A') color = '#f3a1dfff';
-  else if (nombre === 'Arturo S') color = '#0073c0ff';
-  else if (nombre === 'Jorge G') color = '#ec7921ff';
-  else if (nombre === 'Jesus_C') color = '#83c8f6ff';
-  else if (nombre === 'Eliot D') color = '#a64577ff';
-  else color = '#ffab91';
+   if (nombre === 'Paola S') color = 'rgba(123, 6, 182, 0.4)';      // #7b06b6
+  else if (nombre === 'Carlos R') color = 'rgba(0, 84, 4, 0.4)';    // #005404
+  else if (nombre === 'Nancy A') color = 'rgba(243, 161, 223, 0.4)';// #f3a1df
+  else if (nombre === 'Arturo S') color = 'rgba(0, 115, 192, 0.4)'; // #0073c0
+  else if (nombre === 'Jorge G') color = 'rgba(236, 121, 33, 0.4)'; // #ec7921
+  else if (nombre === 'Jesus_C') color = 'rgba(131, 200, 246, 0.4)';// #83c8f6
+  else if (nombre === 'Eliot D') color = 'rgba(166, 69, 119, 0.4)'; // #a64577
+  else color = 'rgba(255, 171, 145, 0.4)';
   return color;
 }
 
@@ -78,24 +78,14 @@ const datasets = personas.map(nombre => ({
 
 // Función para colores aleatorios
 function getRandomColor(nombre) {
-   if( nombre == 'Paola S'){
-    color = '#7b06b6ff'; // color fijo para estos nombres
-   }
-    else if(nombre == 'Carlos R'){
-     color = '#005404ff'; }
-      else if(nombre == 'Nancy A'){
-     color = '#f3a1dfff'; }
-      else if(nombre == 'Arturo S'){
-     color = '#0073c0ff'; }
-      else if(nombre == 'Jorge G'){
-     color = '#ec7921ff'; }
-      else if(nombre == 'Jesus_C'){
-     color = '#83c8f6ff'; }
-      else if(nombre == 'Eliot D'){
-     color = '#a64577ff'; }
-
-     else {
-     color = '#ffab91'; }
+ if (nombre === 'Paola S') color = 'rgba(123, 6, 182, 0.4)';      // #7b06b6
+  else if (nombre === 'Carlos R') color = 'rgba(0, 84, 4, 0.4)';    // #005404
+  else if (nombre === 'Nancy A') color = 'rgba(243, 161, 223, 0.4)';// #f3a1df
+  else if (nombre === 'Arturo S') color = 'rgba(0, 115, 192, 0.4)'; // #0073c0
+  else if (nombre === 'Jorge G') color = 'rgba(236, 121, 33, 0.4)'; // #ec7921
+  else if (nombre === 'Jesus_C') color = 'rgba(131, 200, 246, 0.4)';// #83c8f6
+  else if (nombre === 'Eliot D') color = 'rgba(166, 69, 119, 0.4)'; // #a64577
+  else color = 'rgba(255, 171, 145, 0.4)';     
     return color;
 }
 const ppapIng = new Chart(ppap, {
