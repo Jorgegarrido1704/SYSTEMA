@@ -2024,7 +2024,7 @@ class juntasController extends Controller
         $month = date('Y-m');
 
 
-        $total = $aus = $falt = $promaus = 0;
+        $total = $aus = $falt = $promaus = $enPlanta = 0;
         $dias = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
         $datoGeneros = DB::table('personalberg')
             ->select('Gender', 'typeWorker')
@@ -2116,6 +2116,7 @@ class juntasController extends Controller
                 $faltantes[] = $faltante->lider;
             }
         }
+        $enplanta=($rotacion->assistencia+$rotacion->retardos+$rotacion->practicantes+$rotacion->tsp+$rotacion->ServiciosComprados);
 
         $faltan = $total - ($rotacion->tsp + $rotacion->assistencia + $rotacion->faltas + $rotacion->incapacidad + $rotacion->permisos_gose +
             $rotacion->permisos_sin_gose + $rotacion->vacaciones + $rotacion->retardos + $rotacion->suspension + $rotacion->practicantes + $rotacion->asimilados + $rotacion->ServiciosComprados);
@@ -2163,7 +2164,7 @@ class juntasController extends Controller
             }
         }
 
-        return view('juntas.hr', ['vacas' => $vacas, 'promaus' => $promaus, 'diaActual' => $diaActual, 'tipoTrabajador' => $tipoTrabajador, 'faltantes' => $faltantes, 'faltan' => $faltan, 'genero' => $genero, 'registrosDeAsistencia' => $registrosDeAsistencia, 'value' => session('user'), 'cat' => session('categoria'), 'accidente' => $accidente]);
+        return view('juntas.hr', ['enplanta'=> $enplanta,'vacas' => $vacas, 'promaus' => $promaus, 'diaActual' => $diaActual, 'tipoTrabajador' => $tipoTrabajador, 'faltantes' => $faltantes, 'faltan' => $faltan, 'genero' => $genero, 'registrosDeAsistencia' => $registrosDeAsistencia, 'value' => session('user'), 'cat' => session('categoria'), 'accidente' => $accidente]);
     }
 
     //Show Names per category
