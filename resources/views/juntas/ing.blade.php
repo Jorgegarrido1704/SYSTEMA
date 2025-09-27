@@ -7,28 +7,16 @@
          //grafica tiempos
         const actividades = {!! json_encode($actividades) !!};
         const actividadesLastMonth = {!! json_encode($actividadesLastMonth) !!};
-        const jesus = {!! json_encode($jesus) !!};
-        const paos = {!! json_encode($pao) !!};
-        const nancy = {!! json_encode($nancy) !!};
-        const ale = {!! json_encode($ale) !!};
-        const carlos = {!! json_encode($carlos) !!};
-        const arturo = {!! json_encode($arturo) !!};
-        const jorge = {!! json_encode($jorge) !!};
-        const brandon = {!! json_encode($brandon) !!};
+        console.log(actividades);
+
         const url = '{{ route('registrosajax') }}';
     </script>
 
     <script>
         //grafica ppaps
        // $jesp=$nanp=$bp=$jcp=$psp=$alv=$asp=$jg
-        const jesp = {!! json_encode($jesp) !!};
-        const nanp = {!! json_encode($nanp) !!};
-        const bp = {!! json_encode($bp) !!};
-        const jcp = {!! json_encode($jcp) !!};
-        const psp = {!! json_encode($psp) !!};
-        const alv = {!! json_encode($alv) !!};
-        const asp = {!! json_encode($asp) !!};
-        const jg = {!! json_encode($jg) !!};
+     const datosPpap = {!! json_encode($datosPpap) !!};
+     console.log(datosPpap);
         const todas = {!! json_encode($todas) !!};
     </script>
 
@@ -138,6 +126,8 @@
             <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                     <h5 class="m-0 font-weight-bold text-primary">Open NPI</h5><br>
+                    <span>Open by engineer:</span>
+
                     <form action="#" id="formNpi">
                         <div class="row">
                             <div class="col-lg-4 mb-4">
@@ -157,9 +147,6 @@
                         </div>
                     </form>
 
-                    <script>
-
-                    </script>
 
                 </div>
                 <!-- table Body -->

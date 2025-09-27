@@ -48,7 +48,7 @@ class PpapIngController extends Controller
                 $inges[$i][8] = $rowInge->info;
                 $i++;
             }
-            $ingenieros_en_piso=login::select('user')->where('category','inge')->get();
+            $ingenieros_en_piso = login::select('user')->where('category', 'inge')->get();
 
             $i = 0;
             $SearchAct = DB::table('ingactividades')->where('count', '<', '4')->orderby("Id_request")->get();
@@ -266,7 +266,7 @@ class PpapIngController extends Controller
 
 
 
-            return view('/ing', ['ingenieros_en_piso'=>$ingenieros_en_piso,'problem' => $problem, 'paolaTdesc' => $paolaTdesc, 'alexTdesc' => $alexTdesc, 'paolaT' => $paolaT, 'alexT' => $alexT, 'alex' => $alex, 'alexDesc' => $alexDesc, 'paola' => $paola, 'paoDesc' => $paoDesc, 'soporte' => $soporte, 'fullreq' => $fullreq, 'graficasLate' => $graficasLate, 'graficOnTime' => $graficOnTime, 'cat' => $cat, 'inges' => $inges, 'value' => $value, 'enginners' => $enginners, 'answer' => $answer, 'dias_mes' => $dias_mes, 'cronoGram' => $cronoGram]);
+            return view('/ing', ['ingenieros_en_piso' => $ingenieros_en_piso, 'problem' => $problem, 'paolaTdesc' => $paolaTdesc, 'alexTdesc' => $alexTdesc, 'paolaT' => $paolaT, 'alexT' => $alexT, 'alex' => $alex, 'alexDesc' => $alexDesc, 'paola' => $paola, 'paoDesc' => $paoDesc, 'soporte' => $soporte, 'fullreq' => $fullreq, 'graficasLate' => $graficasLate, 'graficOnTime' => $graficOnTime, 'cat' => $cat, 'inges' => $inges, 'value' => $value, 'enginners' => $enginners, 'answer' => $answer, 'dias_mes' => $dias_mes, 'cronoGram' => $cronoGram]);
         }
     }
 
@@ -926,9 +926,9 @@ class PpapIngController extends Controller
             if ($final > $lastDayoffMonth) {
                 $final = $lastDayoffMonth;
             }
-            if(count($data) > 0){
-                foreach($data as $d){
-                    if($d['start'] == $start){
+            if (count($data) > 0) {
+                foreach ($data as $d) {
+                    if ($d['start'] == $start) {
                         $start = $start + 1;
                         $final = $final + 1;
                     }

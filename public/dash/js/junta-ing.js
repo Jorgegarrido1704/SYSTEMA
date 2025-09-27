@@ -1,120 +1,49 @@
 
 
+
 try {
-const tiemposIng = document.getElementById("tiempos");
-const labelsAct=Object.keys(actividades);
-const dataAct=Object.values(actividades);
-const jes =Object.values(jesus);
-const pao =Object.values(paos);
-const nancys =Object.values(nancy);
-const ales =Object.values(ale);
-const carloss =Object.values(carlos);
-const arturos =Object.values(arturo);
-const jorges =Object.values(jorge);
-const brandos =Object.values(brandon);
+  const tiemposIng = document.getElementById("tiempos");
 
-const lastActData=Object.values(actividadesLastMonth);
-const timeIng = new Chart(tiemposIng, {
-  type: 'bar',
+// Sacar acciones y personas
+const actions = Object.keys(Object.values(actividades)[0]);
+const ingenieros = Object.keys(actividades);
+
+// Generar un dataset por cada persona
+const datoste = ingenieros.map(name => ({
+  label: name,
+  data: actions.map(action => datosPpap[name][action]),
+  backgroundColor: getRandomColor(name),
+  borderWidth: 1
+}));
+
+// Función para colores aleatorios/fijos
+function getRandomColor(nombre) {
+  let color;
+  if (nombre === 'Paola S') {
+    color = '#7b06b6ff';
+  } else if (nombre === 'Carlos R') {
+    color = '#005404ff';
+  } else if (nombre === 'Nancy A') {
+    color = '#f3a1dfff';
+  } else if (nombre === 'Arturo S') {
+    color = '#0073c0ff';
+  } else if (nombre === 'Jorge G') {
+    color = '#ec7921ff';
+  } else if (nombre === 'Jesus_C') {
+    color = '#83c8f6ff';
+  } else if (nombre === 'Eliot D') {
+    color = '#a64577ff';
+  } else {
+    color = '#ffab91';
+  }
+  return color;
+}
+
+const tiemposing = new Chart(tiemposIng, {
+  type: 'line',
   data: {
-    labels: labelsAct,
-    datasets: [{
-      label: 'Mes Actual',
-      data: dataAct,
-      backgroundColor: '#fff861',
-      hoverBackgroundColor: '#fff861',
-      borderColor: '#fff861',
-      borderWidth: 1,
-      borderSkipped: false,
-      hidden: true,
-
-    },
-    {
-    label: 'Mes Anterior',
-    data: lastActData,
-    backgroundColor: '#ff5e54',
-    hoverBackgroundColor: '#ff5e54',
-    borderColor: '#4e73df',
-    borderWidth: 1,
-    borderSkipped: false,
-    hidden: true,
-
-  },
-        {
-            label: 'Jesus C',
-            data: jes,
-            borderColor: '#64d1fa',
-            borderWidth: 3,
-            borderSkipped: false,
-            stack: 'combined',
-            type: 'line',
-          },
-          {
-            label: 'Paola S',
-            data: pao,
-            borderColor: '#cf64fa',
-            borderWidth: 3,
-            borderSkipped: false,
-            stack: 'combined',
-            type: 'line',
-          },
-          {
-            label: 'Nancy A',
-            data: nancys,
-            borderColor: '#ff3399',
-            borderWidth: 3,
-            borderSkipped: false,
-            stack: 'combined',
-            type: 'line',
-          },
-          {
-            label: 'Alejandro V',
-            data: ales,
-            borderColor: '#c2f005',
-            borderWidth: 3,
-            borderSkipped: false,
-            stack: 'combined',
-            type: 'line',
-          },
-          {
-            label: 'Carlos R',
-            data: carloss,
-            borderColor: '#1e9207',
-            borderWidth: 3,
-            borderSkipped: false,
-            stack: 'combined',
-            type: 'line',
-          },
-          {
-            label: 'Arturo S',
-            data: arturos,
-            borderColor: '#ccfa10',
-            borderWidth: 3,
-            borderSkipped: false,
-            stack: 'combined',
-            type: 'line',
-          },
-          {
-            label: 'Jorge G',
-            data: jorges,
-            borderColor: '#fb5e05',
-            borderWidth: 3,
-            borderSkipped: false,
-            stack: 'combined',
-            type: 'line',
-          },
-          {
-            label: 'Brando S',
-            data: brandos,
-            borderColor: '#c4ee18',
-            borderWidth: 3,
-            borderSkipped: false,
-            stack: 'combined',
-            type: 'line',
-          },
-
-    ]
-
+    labels: actions,  // <<--- Aquí cambié actividades por actions
+    datasets: datoste
   },
   options: {
     responsive: true,
@@ -123,7 +52,7 @@ const timeIng = new Chart(tiemposIng, {
       x: {
         title: {
           display: true,
-          text: 'Nombre'
+          text: 'Actividades'
         }
       },
       y: {
@@ -145,6 +74,7 @@ const timeIng = new Chart(tiemposIng, {
     }
   }
 });
+
 }
 
 catch (error) {
@@ -154,123 +84,45 @@ catch (error) {
 try {
 
     const ppap = document.getElementById("procesosIngPpap");
-    const jespL=Object.keys(jesp);
-    const jespV = Object.values(jesp);
-    const jgV= Object.values(jg);
-    const aspV= Object.values(asp);
-    const alvV = Object.values(alv);
-    const pspV = Object.values(psp);
-    const nanpV = Object.values(nanp);
-    const bpV = Object.values(bp);
-    const jcpV = Object.values(jcp);
-    const toda = Object.values(todas);
+  const areas = Object.keys(Object.values(datosPpap)[0]);
+const personas = Object.keys(datosPpap);
 
+// Generar un dataset por cada persona
+const datasets = personas.map(nombre => ({
+  label: nombre,
+  data: areas.map(area => datosPpap[nombre][area]),
+  backgroundColor: getRandomColor(nombre),
+  borderWidth: 1,
+  stack: 'combined'
+}));
 
-    const ppapIng = new Chart(ppap, {
-      type: 'bar',
-      data: {
-        labels: jespL,
-        datasets: [{
-          label: 'Jesus C',
-          data: jespV,
-          backgroundColor:
-            'rgba(62, 177, 249, 0.2)',
-          borderColor:
-            'rgb(62,177,249)',
-          borderWidth: 1,
-          borderSkipped: false,
-          stack: 'combined',
-      },
-      {
-        label: 'Jorge G',
-        data: jgV,
-        backgroundColor:
-          'rgba(246, 160, 31, 0.2)',
+// Función para colores aleatorios
+function getRandomColor(nombre) {
+   if( nombre == 'Paola S'){
+    color = '#7b06b6ff'; // color fijo para estos nombres
+   }
+    else if(nombre == 'Carlos R'){
+     color = '#005404ff'; }
+      else if(nombre == 'Nancy A'){
+     color = '#f3a1dfff'; }
+      else if(nombre == 'Arturo S'){
+     color = '#0073c0ff'; }
+      else if(nombre == 'Jorge G'){
+     color = '#ec7921ff'; }
+      else if(nombre == 'Jesus_C'){
+     color = '#83c8f6ff'; }
+      else if(nombre == 'Eliot D'){
+     color = '#a64577ff'; }
 
-        borderColor:
-          'rgb(246,160,31)',
-        borderWidth: 1,
-        borderSkipped: false,
-        stack: 'combined',
-      },
-      {
-        label: 'Arturo S',
-        data: aspV,
-        backgroundColor:
-        'rgba(164, 240, 143, 0.2)',
-        borderColor:
-          'rgb(164, 240, 142)',
-        borderWidth: 1,
-        borderSkipped: false,
-        stack: 'combined',
-      },
-      {
-        label: 'Alejandro V',
-        data: alvV,
-        backgroundColor:
-        'rgba(164, 240, 143, 0.2)',
-        borderColor:
-          'rgb(164, 240, 141)',
-        borderWidth: 1,
-        borderSkipped: false,
-        stack: 'combined',
-
-      },{
-        label: 'Paola S',
-        data: pspV,
-        backgroundColor:
-          'rgba(123, 8, 79, 0.2)',
-        borderColor:
-          'rgb(123, 8, 79)',
-        borderWidth: 1,
-        borderSkipped: false,
-        stack: 'combined',
-      },
-      {
-        label: 'Nancy A',
-        data: nanpV,
-        backgroundColor:
-          'rgba(251, 139, 208, 0.2)',
-        borderColor:
-          'rgb(251,139,208)',
-        borderWidth: 1,
-        borderSkipped: false,
-        stack: 'combined',
-      },
-      {
-        label: 'Brando S',
-        data: bpV,
-        backgroundColor:
-          'rgba(164, 240, 143, 0.2)',
-        borderColor:
-          'rgb(164, 240, 143)',
-        borderWidth: 1,
-        borderSkipped: false,
-        stack: 'combined',
-      },
-      {
-        label: 'Carlos R',
-        data: jcpV,
-        backgroundColor:
-          'rgba(3, 102, 18, 0.2)',
-        borderColor:
-          'rgb(3,102, 18)',
-        borderWidth: 1,
-        borderSkipped: false,
-        stack: 'combined',
-      },
-      {
-        label: 'Todas',
-        data: toda,
-        backgroundColor:
-          'rgba(255, 48, 48, 0.2)',
-        borderColor:
-          'rgb(182, 0, 0)',
-        borderWidth: 1,
-        borderSkipped: false,
-      },
-
-    ]
+     else {
+     color = '#ffab91'; }
+    return color;
+}
+const ppapIng = new Chart(ppap, {
+  type: 'bar',
+  data: {
+    labels: areas,
+    datasets: datasets
 
     },
     options: {

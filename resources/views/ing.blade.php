@@ -717,9 +717,9 @@
                                 <button type="submit" class="btn btn-primary">Send Info</button>
                             </div>
                         </form>
-                    </div>
-                </div>
-            </div >
+                            </div>
+                        </div>
+                    </div >
                     <div >
                         <div class="card shadow mb-5">
                             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">

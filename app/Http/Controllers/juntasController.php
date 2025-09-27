@@ -26,6 +26,8 @@ use App\Mail\solicitudVacacionesMail;
 use Illuminate\Support\Facades\Mail;
 use App\Models\calidadRegistro;
 use App\Models\registroQ;
+use App\Models\registro;
+use App\Models\login;
 
 class juntasController extends Controller
 {
@@ -1061,19 +1063,12 @@ class juntasController extends Controller
     {
         $monthYear = date('m-Y');
         $lastMonth = date('m-Y', strtotime("-1 months"));
-
+         $datosPpap = $todas  =$actividades= $actividadesLastMonth=[];
+ $personaIng=login::select('user')->where('category','inge')->get();
         $datos = ['Soporte en piso', 'Seguimiento PPAP', 'Otro', 'Juntas', 'Documentacion', 'Comida', 'Colocacion de full size'];
-        $defaultValues = array_fill(0, count($datos), 0);
-        $actividades = array_combine($datos, $defaultValues);
-        $actividadesLastMonth = array_combine($datos, $defaultValues);
-        $jesus = array_combine($datos, $defaultValues);
-        $pao = array_combine($datos, $defaultValues);
-        $nancy = array_combine($datos, $defaultValues);
-        $ale = array_combine($datos, $defaultValues);
-        $carlos = array_combine($datos, $defaultValues);
-        $arturo = array_combine($datos, $defaultValues);
-        $jorge = array_combine($datos, $defaultValues);
-        $brandon = array_combine($datos, $defaultValues);
+        foreach ($personaIng as $ing) {
+            $actividades[$ing->user] = array_combine($datos, array_fill(0, count($datos), 0));
+        }
         $tiemposDatosIng = DB::table('ingactividades')
             ->where('count', '=', '4')
             ->where('fecha', 'LIKE', '%-' . $monthYear . '%')
@@ -1084,52 +1079,15 @@ class juntasController extends Controller
             $timeIni = strtotime($row->fecha);
             $timeFin = strtotime($row->finT);
             $timetotal = ($timeFin - $timeIni) / 60;
-            if (key_exists($row->actividades, $actividades)) {
-                $actividades[$row->actividades] += $timetotal;
-            } else {
-                $actividades[$row->actividades] = $timetotal;
+            if(key_exists($row->actividades, $actividades[$row->Id_request])){
+                $actividades[$row->Id_request][$row->actividades] += $timetotal;
+            }else{
+                $actividades[$row->Id_request][$row->actividades] = $timetotal;
             }
-            if ($row->Id_request == 'Nancy A') {
-                if (key_exists($row->actividades, $nancy)) {
-                    $nancy[$row->actividades] += $timetotal;
-                } else {
-                    $nancy[$row->actividades] = $timetotal;
-                }
-            }
-            if ($row->Id_request == 'Jesus C') {
-                if (key_exists($row->actividades, $jesus)) {
-                    $jesus[$row->actividades] += $timetotal;
-                } else {
-                    $jesus[$row->actividades] = $timetotal;
-                }
-            }
-            if ($row->Id_request == 'Paola S') {
-                if (key_exists($row->actividades, $pao)) {
-                    $pao[$row->actividades] += $timetotal;
-                } else {
-                    $pao[$row->actividades] = $timetotal;
-                }
-            }
-            if ($row->Id_request == 'Carlos R') {
-                if (key_exists($row->actividades, $carlos)) {
-                    $carlos[$row->actividades] += $timetotal;
-                } else {
-                    $carlos[$row->actividades] = $timetotal;
-                }
-            }
-            if ($row->Id_request == 'Arturo S') {
-                if (key_exists($row->actividades, $arturo)) {
-                    $arturo[$row->actividades] += $timetotal;
-                } else {
-                }
-            }
-            if ($row->Id_request == 'Jorge G') {
-                if (key_exists($row->actividades, $jorge)) {
-                    $jorge[$row->actividades] += $timetotal;
-                } else {
-                    $jorge[$row->actividades] = $timetotal;
-                }
-            }
+
+
+
+
         }
         $tiemposDatosIng = DB::table('ingactividades')
             ->where('count', '=', '4')
@@ -1147,38 +1105,21 @@ class juntasController extends Controller
                 $actividadesLastMonth[$row->actividades] = $timetotal;
             }
         }
-        $jesp = $nanp = $bp = $jcp = $psp = $alv = $asp = $jg = $todas = [];
+
         $datos2 = ['corte', 'liberacion', 'ensamble', 'loom', 'calidad'];
-        $defVal = array_fill(0, count($datos2), 0);
-        $jesp = array_combine($datos2, $defVal);
-        $nanp = array_combine($datos2, $defVal);
-        $bp = array_combine($datos2, $defVal);
-        $jcp = array_combine($datos2, $defVal);
-        $psp = array_combine($datos2, $defVal);
-        $alv = array_combine($datos2, $defVal);
-        $asp = array_combine($datos2, $defVal);
-        $jg = array_combine($datos2, $defVal);
-        $todas = array_combine($datos2, $defVal);
+
+        foreach ($personaIng as $ing) {
+            $datosPpap[$ing->user] = array_combine($datos2, array_fill(0, count($datos2), 0));
+        }
+        $todas = array_combine($datos2, array_fill(0, count($datos2), 0));
 
         $datosIng = DB::table('ppap')
             ->where('fecha', 'LIKE', '%-' . $monthYear . '%')
             ->orderBy('codigo', 'desc')
             ->get();
         foreach ($datosIng as $row) {
-            if ($row->codigo == 'Arturo S') {
-                $asp[$row->area] += 1;
-            } else if ($row->codigo == 'Jorge G') {
-                $jg[$row->area] += 1;
-            } else if ($row->codigo == 'PAOLA S') {
-                $psp[$row->area] += 1;
-            } else if ($row->codigo == 'Alejandro V' or $row->codigo == 'Alex V') {
-                $alv[$row->area] += 1;
-            } else if ($row->codigo == 'Carlos R') {
-                $jcp[$row->area] += 1;
-            } else if ($row->codigo == 'Jesus_C' or $row->codigo == 'Victor_E') {
-                $jesp[$row->area] += 1;
-            } else if ($row->codigo == 'Nancy A') {
-                $nanp[$row->area] += 1;
+            if(in_array($row->codigo, array_keys($datosPpap))){
+                $datosPpap[$row->codigo][$row->area] += 1;
             }
             $todas[$row->area] += 1;
         }
@@ -1333,7 +1274,8 @@ class juntasController extends Controller
         }
 
 
-        return view('juntas/ing', ['registrosmes' => $registrosmes, 'b' => $b, 'm' => $m, 'porcentajemes' => $porcentajemes, 'porcentajemes1' => $porcentajemes1, 'registroPPAP' => $registroPPAP, 'thisYearGoals' => $thisYearGoals, 'last12Months' => $last12Months, 'porcentaje' => $porcentaje,  'todas' => $todas, 'jesp' => $jesp, 'nanp' => $nanp, 'bp' => $bp, 'jcp' => $jcp, 'psp' => $psp, 'alv' => $alv, 'asp' => $asp, 'jg' => $jg, 'jesus' => $jesus, 'pao' => $pao, 'nancy' => $nancy, 'ale' => $ale, 'carlos' => $carlos, 'arturo' => $arturo, 'jorge' => $jorge, 'brandon' => $brandon, 'actividadesLastMonth' => $actividadesLastMonth, 'actividades' => $actividades, 'value' => session('user'), 'cat' => session('categoria')]);
+        return view('juntas/ing', ['registrosmes' => $registrosmes, 'b' => $b, 'm' => $m, 'porcentajemes' => $porcentajemes, 'porcentajemes1' => $porcentajemes1, 'registroPPAP' => $registroPPAP, 'thisYearGoals' => $thisYearGoals, 'last12Months' => $last12Months, 'porcentaje' => $porcentaje,  'todas' => $todas,'datosPpap'=>$datosPpap,
+          'actividadesLastMonth' => $actividadesLastMonth, 'actividades' => $actividades, 'value' => session('user'), 'cat' => session('categoria')]);
     }
     public function cutAndTerm()
     {
