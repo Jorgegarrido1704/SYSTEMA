@@ -2,48 +2,38 @@
 
 
 try {
-  const tiemposIng = document.getElementById("tiempos");
+ const tiemposIng = document.getElementById("tiempos");
 
-// Sacar acciones y personas
-const actions = Object.keys(Object.values(actividades)[0]);
-const ingenieros = Object.keys(actividades);
+// Tomar todas las acciones posibles de todos
+const actions = [
+  ...new Set(Object.values(actividades).flatMap(obj => Object.keys(obj)))
+];
 
-// Generar un dataset por cada persona
-const datoste = ingenieros.map(name => ({
+// Generar datasets
+const datoste = Object.keys(actividades).map(name => ({
   label: name,
-  data: actions.map(action => datosPpap[name][action]),
+  data: actions.map(action => actividades[name][action] ?? 0),
   backgroundColor: getRandomColor(name),
   borderWidth: 1
-
 }));
 
-// Función para colores aleatorios/fijos
 function getRandomColor(nombre) {
   let color;
-  if (nombre === 'Paola S') {
-    color = '#7b06b6ff';
-  } else if (nombre === 'Carlos R') {
-    color = '#005404ff';
-  } else if (nombre === 'Nancy A') {
-    color = '#f3a1dfff';
-  } else if (nombre === 'Arturo S') {
-    color = '#0073c0ff';
-  } else if (nombre === 'Jorge G') {
-    color = '#ec7921ff';
-  } else if (nombre === 'Jesus_C') {
-    color = '#83c8f6ff';
-  } else if (nombre === 'Eliot D') {
-    color = '#a64577ff';
-  } else {
-    color = '#ffab91';
-  }
+  if (nombre === 'Paola S') color = '#7b06b6ff';
+  else if (nombre === 'Carlos R') color = '#005404ff';
+  else if (nombre === 'Nancy A') color = '#f3a1dfff';
+  else if (nombre === 'Arturo S') color = '#0073c0ff';
+  else if (nombre === 'Jorge G') color = '#ec7921ff';
+  else if (nombre === 'Jesus_C') color = '#83c8f6ff';
+  else if (nombre === 'Eliot D') color = '#a64577ff';
+  else color = '#ffab91';
   return color;
 }
 
 const tiemposing = new Chart(tiemposIng, {
-  type: 'bar',
+  type: 'line',
   data: {
-    labels: actions,  // <<--- Aquí cambié actividades por actions
+    labels: actions,
     datasets: datoste
   },
   options: {
@@ -51,27 +41,16 @@ const tiemposing = new Chart(tiemposIng, {
     maintainAspectRatio: false,
     scales: {
       x: {
-        title: {
-          display: true,
-          text: 'Actividades'
-        }
+        title: { display: true, text: 'Actividades' }
       },
       y: {
         beginAtZero: true,
-        title: {
-          display: true,
-          text: 'Horas'
-        }
+        title: { display: true, text: 'Horas' }
       }
     },
     plugins: {
-      legend: {
-        display: true,
-        position: 'top'
-      },
-      tooltip: {
-        enabled: true
-      }
+      legend: { display: true, position: 'top' },
+      tooltip: { enabled: true }
     }
   }
 });

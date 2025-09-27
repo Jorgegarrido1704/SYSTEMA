@@ -1072,7 +1072,7 @@ class juntasController extends Controller
         $tiemposDatosIng = DB::table('ingactividades')
             ->where('count', '=', '4')
             ->where('fecha', 'LIKE', '%-' . $monthYear . '%')
-            ->orderBy('actividades', 'desc')
+            ->orderBy('actividades', 'ASC')
             ->get();
         foreach ($tiemposDatosIng as $row) {
             $timeIni = $timeFin = $timetotal = 0;
