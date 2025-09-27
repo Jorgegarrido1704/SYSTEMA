@@ -49,8 +49,8 @@ a:hover {
         <div class="card shadow mb-5">
             <div class="card-header py-3">
                 <h5 class="m-1 font-weight-bold text-primary">Today assistence {{ date('Y-m-d') }}
-                    <br> Personal en planta: {{ $enplanta }}
-                    <br> Faltan por registro: {{ $faltan }}</h5>
+                    <br> Personal en planta: {{ $enplanta??0 }}
+                    <br> Faltan por registro: {{ $faltan??0 }}</h5>
             </div>
             <div class="card-body" style=" max-height: 550px;">
                 <div class="row">
