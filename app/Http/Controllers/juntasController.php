@@ -28,7 +28,7 @@ use App\Models\calidadRegistro;
 use App\Models\registroQ;
 use App\Models\registro;
 use App\Models\login;
-use App\Models\Po;
+use App\Models\po;
 
 class juntasController extends Controller
 {
@@ -448,10 +448,10 @@ class juntasController extends Controller
                     $tiemposPas[2] += 1;
                 }
             }
-            $registrosPPAP=Po::select('pn','rev')->where('rev','LIKE','PPAP%')->where('rev','=','PRIM%')->get();
+            $registrosPPAP=po::select('pn','rev')->where('rev','LIKE','PPAP%')->where('rev','=','PRIM%')->get();
             foreach($registrosPPAP as $rowPPAP){
                 $rev=substr($rowPPAP->rev,5);
-                $deuplicados=Po::where('pn',$rowPPAP->pn)->where('rev','Like','%'.$rev)->count();
+                $deuplicados=po::where('pn',$rowPPAP->pn)->where('rev','Like','%'.$rev)->count();
                 if($deuplicados>1){
                     $lieaVenta[12]+=1;
                 }
