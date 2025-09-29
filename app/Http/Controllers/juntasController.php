@@ -805,13 +805,19 @@ class juntasController extends Controller
             ->get();
         foreach ($empleados as $rowEmp) {
             $supRes = personalBergsModel::select('employeeLider')->where('employeeName', $rowEmp->Responsable)->first();
+
             if(!isset($supRes->employeeLider)){
                 continue;
             }
-            if (!in_array($supRes->employeeLider, array_keys($supIssue))) {
-                $supIssue[$supRes->employeeLider] = 1;
+            if(strpos($supRes->employeeLider,",") !== false){
+               $superString= explode(",",$supRes->employeeLider)[0];
+            }else{
+                $superString=$supRes->employeeLider;
+            }
+            if (!in_array($superString, array_keys($supIssue))) {
+                $supIssue[$superString] = 1;
             } else {
-                $supIssue[$supRes->employeeLider]++;
+                $supIssue[$superString]++;
             }
         }
         $supIssue = array_filter($supIssue, fn($count) => $count > 2);

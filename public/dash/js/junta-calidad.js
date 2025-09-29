@@ -391,7 +391,7 @@ var supss = new Chart(sups, {
                 ticks: {
                     beginAtZero: true,
                     min: 1,
-                    max: 100,
+                    max: 150,
                     stepSize: 10,
                 },
                 gridLines: {
