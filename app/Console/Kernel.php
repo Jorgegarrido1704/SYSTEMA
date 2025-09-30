@@ -40,7 +40,7 @@ class Kernel extends ConsoleKernel
         $schedule->job(new \App\Jobs\AddWeek())->dailyAt('06:30');
 
         //weekly list assistence
-       $schedule->job(new \App\Jobs\reporteGeneral())->dailyAt('06:00')->days([1, 2, 3, 4, 5, 6]);
+       $schedule->job(new \App\Jobs\reporteGeneral())->dailyAt('06:30');
       // $schedule->job(new \App\Jobs\reporteGeneral())->everyMinute()->between('07:00', '20:00');
 
     }

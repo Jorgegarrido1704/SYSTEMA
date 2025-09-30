@@ -44,16 +44,21 @@
                                                          </script>
                                       <br> <br> <br>
 
-                                        <div class="d-flex justify-content-center"  >
-                                            <h4>Code #1
+                                        <div class="row d-flex justify-content-center"  >
+                                            <div class=" col-md-6 mt-2">Code #1
                                                 <input type="text" style="width:80px;margin-right:10px;" name="codigo1" id="codigo1" onchange="buscarcodigo1()">
                                                 <input type="text" style="width:280px;margin-right:80px;" name="rest_code1" id="rest_code1">
+                                            </div>
+                                            <div class="col-md-6 mt-2">
                                             <input type="hidden" style="width: 80px;margin-right:80px" name="1" id="1" value="0" >
                                             Responsable  <input type="text" style="width: 80px;margin-right:80px" name="responsable1" id="responsable1" value="0000" minlength="4" maxlength="4">
+                                            </div>
+                                            <div class="col-md-12 mt-2">
+                                                <input type="text" style="width: 380px;margin-right:80px" name="resp1" id="resp1" readonly>
                                             High Rework<input type="checkbox" name="check1" id="check1" value="1">
-                                            </h4>
+                                            </div>
                                         </div>
-
+                                        <hr>
                                         <div class="d-flex justify-content-center"  style="display:  {{ $cambioestados[3] }}">
                                             <h4>Code #2
                                                 <input type="text" style="width:80px;margin-right:10px;" name="codigo2" id="codigo2" onchange="buscarcodigo2()" {{ $cambioestados[1] }} >
