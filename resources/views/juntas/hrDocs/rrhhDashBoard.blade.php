@@ -370,6 +370,7 @@ if (Error) {
                             <option value="Paola A">Paola Aguilar</option>
                             <option value="Javier C">Javier Cervantes</option>
                             <option value="Esther_M">Esther Mandujano</option>
+                            <option value="Alex M,Gamboa J">Alejandro Moreno</option>
                     </select>
                 </td>
                 <td>

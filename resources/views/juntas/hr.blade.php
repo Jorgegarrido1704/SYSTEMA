@@ -8,31 +8,31 @@
 <style>
     #fullscreenPreview {
     transition: opacity 5s ease-in-out;
-}
-#accidente {
-   color:rgba(0, 0, 0, 0.95);
-   size: 14px;
-   font-style: oblique;
-   font: bold;
-    }
-    .text-wine {
-  color: #722f37; /* ejemplo de color vino */
-}
-.text-gray {
-  color: #473e3f; /* ejemplo de color vino */
-}
-.text-pinks{
-    color: #f06f7c;
-}
-.text-morado{
-    color: #8f00c3;
-}
-.text-rosa{
-    color: #ff70ea;
-}
-a:hover {
-    text-decoration: none;
-}
+        }
+        #accidente {
+        color:rgba(0, 0, 0, 0.95);
+        size: 14px;
+        font-style: oblique;
+        font: bold;
+            }
+            .text-wine {
+        color: #722f37; /* ejemplo de color vino */
+        }
+        .text-gray {
+        color: #473e3f; /* ejemplo de color vino */
+        }
+        .text-pinks{
+            color: #f06f7c;
+        }
+        .text-morado{
+            color: #8f00c3;
+        }
+        .text-rosa{
+            color: #ff70ea;
+        }
+        a:hover {
+            text-decoration: none;
+        }
 
 </style>
 <script>
