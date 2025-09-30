@@ -23,6 +23,7 @@ function buscarcodigo1() {
             } else {
                 document.getElementById("rest_code1").value = data;
             }
+            
         })
         .catch((error) => {
             console.error("Error:", error);
@@ -172,4 +173,27 @@ function checkCant() {
         document.getElementById("4").value = 0;
         document.getElementById("5").value = 0;
     }
+}
+function empleado1() {
+    const codigoValue = document.getElementById("responsable1").value;
+    const url = empleadosFallas;
+    fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": document
+                .querySelector('meta[name="csrf-token"]')
+                .getAttribute("content"),
+        },
+        body: JSON.stringify({ codigo1: codigoValue }),
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data);
+          const personalDef=data.employeeName ? data.employeeName : "";
+          document.getElementById("resp1").value = personalDef;
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
 }

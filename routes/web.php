@@ -125,6 +125,7 @@ Route::controller(caliController::class)->group(function () {
     Route::get('/accepted', [caliController::class, 'accepted'])->name('accepted');
     Route::get('/excel_calidad', [caliController::class, 'excel_calidad'])->name('excel_calidad');
     Route::get('/fallasCalidad', [caliController::class, 'fallasCalidad'])->name('fallasCalidad');
+    Route::post('/personalFallas', [caliController::class, 'personalFallas'])->name('personalFallas');
 });
 Route::controller(BossCaliController::class)->group(function () {
     Route::get('/BossCali', BossCaliController::class);

@@ -18,7 +18,7 @@ use App\Models\fallasCalidadModel;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use App\Models\calidad\calidad_registro_baja;
-
+use App\Models\personalBergsModel;
 
 class caliController extends generalController
 {
@@ -1084,4 +1084,14 @@ class caliController extends generalController
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
     }
+    public function personalFallas(Request $request)
+    {
+        $numero = $request->input('codigo1');
+        $numero ='i'.$numero;
+        $personaName=personalBergsModel::select('employeeName')->where('employeeNumber',$numero)
+        ->where('status','Activo')->where('typeWorker','Directo')->first();
+        return response()->json($personaName);
+
+    }
+
 }

@@ -6,11 +6,12 @@
  <script src="{{ asset('/dash/js/calidadReg.js')}}"></script>
 <script>
     const modificacionsCali = @json(route('buscarcodigo'));
+    const empleadosFallas = @json(route('personalFallas'));
     </script>
                     <!-- Content Row -->
         <div class="row">
                         <!-- Content Column -->
-                        <div class="col-lg-6 mb-6">
+                        <div class="col-lg-12 mb-12">
                             <!-- Project Card Example -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -29,72 +30,41 @@
                                                     <br>
                                                     <form action="{{route('saveData')}}" method="POST">
                                                         @csrf
-                                        <div> <h4>OK<input type="number" style="width:80px;margin-right:80px;" name="ok" id="ok" value="1"  max="{{ $cambioestados[0] }}" onchange="return checkOk()">      NOK<input type="number" style="width: 80px;margin-right:80px" name="nok" id="nok" value="0"  max="5" onchange="return checkOk()"></h4></div>
+                                        <div> <h4>OK<input type="number" style="width:80px;margin-right:80px;" name="ok" id="ok" value="0"  max="{{ $cambioestados[0] }}" onchange="return checkOk()">
+                                               NOK<input type="number" style="width: 80px;margin-right:80px" name="nok" id="nok" value="0"  max="5" onchange="return checkOk()"></h4></div>
                                                          <script>
-                                                            function checkOk(){
-                                                            var checkOk=document.getElementById('ok').value;
-                                                            var checkNok=document.getElementById('nok').value;
-                                                            var total=parseInt(checkOk)+parseInt(checkNok);
-                                                        if(total>{{$buscarInfor->qty}}){
-                                                            document.getElementById('ok').value=0;
-                                                            document.getElementById('nok').value=0;
+                                                                    function checkOk(){
+                                                                    var checkOk=document.getElementById('ok').value;
+                                                                    var checkNok=document.getElementById('nok').value;
+                                                                var total=parseInt(checkOk)+parseInt(checkNok);
+                                                                        if(total>{{$buscarInfor->qty}}){
+                                                                    document.getElementById('ok').value=0;
+                                                                    document.getElementById('nok').value=0;
 
-                                                        }
-                                                            }
+                                                                }
+                                                                    }
                                                          </script>
-                                      <br> <br> <br>
+                                      <br>
 
-                                        <div class="row d-flex justify-content-center"  >
-                                            <div class=" col-md-6 mt-2">Code #1
-                                                <input type="text" style="width:80px;margin-right:10px;" name="codigo1" id="codigo1" onchange="buscarcodigo1()">
-                                                <input type="text" style="width:280px;margin-right:80px;" name="rest_code1" id="rest_code1">
+                                        <div class="row d-flex justify-content-center" style="display:  {{ $cambioestados[3] }} ">
+                                            <div class=" col-md-2 mt-2">
+                                                <div class="d-flex justify-content-center">Code #1</div>
+                                                <div class="d-flex justify-content-center">
+                                                <input type="text" style="width:80px;" name="codigo1" id="codigo1" onchange="buscarcodigo1()">
+                                                <input type="text" style="width:280px;" name="rest_code1" id="rest_code1">
+                                                </div>
                                             </div>
-                                            <div class="col-md-6 mt-2">
-                                            <input type="hidden" style="width: 80px;margin-right:80px" name="1" id="1" value="0" >
-                                            Responsable  <input type="text" style="width: 80px;margin-right:80px" name="responsable1" id="responsable1" value="0000" minlength="4" maxlength="4">
+                                            <div class="col-md-2 mt-2">
+                                                <div class="d-flex justify-content-center">
+                                                    <input type="hidden" style="width: 80px;margin-right:80px" name="1" id="1" value="0" >
+                                                    Responsable
+                                                </div>
+                                                <div class="d-flex justify-content-center">
+                                                    <input type="text" style="width: 80px;margin-right:80px"
+                                                    name="responsable1" id="responsable1" value="0000" minlength="4" maxlength="4" onchange="empleado1()">
+                                                        <input type="text" style="width: 380px;margin-right:80px" name="resp1" id="resp1" readonly>
+                                                    High Rework<input type="checkbox" name="check1" id="check1" value="1">
                                             </div>
-                                            <div class="col-md-12 mt-2">
-                                                <input type="text" style="width: 380px;margin-right:80px" name="resp1" id="resp1" readonly>
-                                            High Rework<input type="checkbox" name="check1" id="check1" value="1">
-                                            </div>
-                                        </div>
-                                        <hr>
-                                        <div class="d-flex justify-content-center"  style="display:  {{ $cambioestados[3] }}">
-                                            <h4>Code #2
-                                                <input type="text" style="width:80px;margin-right:10px;" name="codigo2" id="codigo2" onchange="buscarcodigo2()" {{ $cambioestados[1] }} >
-                                                <input type="text" style="width:280px;margin-right:80px;" name="rest_code2" id="rest_code2"{{ $cambioestados[1] }} >
-                                                <input type="hidden" style="width: 80px;margin-right:80px" name="2" id="2" value="0" {{ $cambioestados[1] }}>
-                                                Responsable  <input type="text" style="width: 80px;margin-right:80px" name="responsable2" id="responsable2" value="0000" minlength="4" maxlength="4" {{ $cambioestados[1] }}>
-                                                High Rework<input type="checkbox" name="check2" id="check2" value="1" {{ $cambioestados[1] }}>
-                                            </h4>
-                                        </div>
-
-                                        <div class="d-flex justify-content-center"  style="display:  {{ $cambioestados[3] }}">
-                                            <h4>Code #3
-                                                <input type="text" style="width:80px;margin-right:10px;" name="codigo3" id="codigo3" onchange="buscarcodigo3()" {{ $cambioestados[1] }}>
-                                                <input type="text" style="width:280px;margin-right:80px;" name="rest_code3" id="rest_code3" {{ $cambioestados[1] }}>
-                                                <input type="hidden" style="width: 80px;margin-right:80px" name="3" id="3" value="0" {{ $cambioestados[1] }} >
-                                                Responsable  <input type="text" style="width: 80px;margin-right:80px" name="responsable3" id="responsable3" value="0000" minlength="4" maxlength="4" {{ $cambioestados[1] }} >
-                                                High Rework<input type="checkbox" name="check3" id="check3" value="1" {{ $cambioestados[1] }}>
-                                            </h4>
-                                        </div>
-                                        <div class="d-flex justify-content-center" style="display:  {{ $cambioestados[3] }}">
-                                            <h4>Code #4
-                                                <input type="text" style="width:80px;margin-right:10px;" name="codigo4" id="codigo4" onchange="buscarcodigo4()" {{ $cambioestados[1] }}>
-                                                <input type="text" style="width:280px;margin-right:80px;" name="rest_code4" id="rest_code4" {{ $cambioestados[1] }}>
-                                                <input type="hidden" style="width: 80px;margin-right:80px" name="4" id="4" value="0" {{ $cambioestados[1] }} >
-                                                Responsable  <input type="text" style="width: 80px;margin-right:80px" name="responsable4" id="responsable4" value="0000" minlength="4" maxlength="4" {{ $cambioestados[1] }}>
-                                                High Rework<input type="checkbox" name="check4" id="check4" value="1" {{ $cambioestados[1] }}>
-                                            </h4>
-                                        </div>
-                                        <div class="d-flex justify-content-center" style="display: {{ $cambioestados[3] }}">
-                                            <h4>Code #5
-                                                <input type="text" style="width:80px;margin-right:10px;" name="codigo5" id="codigo5" onchange="buscarcodigo5()" {{ $cambioestados[1] }}>
-                                                <input type="text" style="width:280px;margin-right:80px;" name="rest_code5" id="rest_code5" {{ $cambioestados[1] }}>
-                                                <input type="hidden" style="width: 80px;margin-right:80px" name="5" id="5"  value="0" {{ $cambioestados[1] }} >
-                                                Responsable  <input type="text" style="width: 80px;margin-right:80px" name="responsable5" id="responsable5" value="0000" minlength="4" maxlength="4" {{ $cambioestados[1] }}>
-                                                High Rework<input type="checkbox" name="check5" id="check5" value="1" {{ $cambioestados[1] }}>
-                                            </h4>
                                         </div>
 
 
@@ -105,7 +75,8 @@
                                         <input type="hidden" name="pn_cali" id="pn_cali" value="{{$buscarInfor->np}}">
                                         <input type="hidden" name="id_cali" id="id_cali" value="{{$buscarInfor->id}}">
                                          <input type="submit" name="enviar" id="enviar" value="Save">
-                                        </div>
+                                        </form>
+                                    </div>
 
 
 
