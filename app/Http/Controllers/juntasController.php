@@ -30,6 +30,7 @@ use App\Models\registro;
 use App\Models\login;
 use App\Models\po;
 
+
 class juntasController extends Controller
 {
 
@@ -505,8 +506,6 @@ class juntasController extends Controller
         foreach ($buscarValoresMes as $rows) {
             $supRes = personalBergsModel::select('employeeLider')->where('employeeName', $rows->Responsable)->first();
             if(!$supRes){
-
-                $supRes = new stdClass();
                 $supRes->employeeLider = " ";
             }
             if (in_array($rows->codigo, $etiq)) {
