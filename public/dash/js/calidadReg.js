@@ -23,7 +23,7 @@ function buscarcodigo1() {
             } else {
                 document.getElementById("rest_code1").value = data;
             }
-            
+
         })
         .catch((error) => {
             console.error("Error:", error);
@@ -197,3 +197,96 @@ function empleado1() {
             console.error("Error:", error);
         });
 }
+function empleado2() {
+    const codigoValue = document.getElementById("responsable2").value;
+    const url = empleadosFallas;
+    fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": document
+                .querySelector('meta[name="csrf-token"]')
+                .getAttribute("content"),
+        },
+        body: JSON.stringify({ codigo1: codigoValue }),
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data);
+          const personalDef=data.employeeName ? data.employeeName : "";
+          document.getElementById("resp2").value = personalDef;
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
+}
+function empleado3() {
+    const codigoValue = document.getElementById("responsable3").value;
+    const url = empleadosFallas;
+    fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": document
+                .querySelector('meta[name="csrf-token"]')
+                .getAttribute("content"),
+        },
+        body: JSON.stringify({ codigo1: codigoValue }),
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data);
+          const personalDef=data.employeeName ? data.employeeName : "";
+          document.getElementById("resp3").value = personalDef;
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
+}
+function empleado4() {
+    const codigoValue = document.getElementById("responsable4").value;
+    const url = empleadosFallas;
+    fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": document
+                .querySelector('meta[name="csrf-token"]')
+                .getAttribute("content"),
+        },
+        body: JSON.stringify({ codigo1: codigoValue }),
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data);
+          const personalDef=data.employeeName ? data.employeeName : "";
+          document.getElementById("resp4").value = personalDef;
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
+}
+function empleado5() {
+    const codigoValue = document.getElementById("responsable5").value;
+    const url = empleadosFallas;
+    fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": document
+                .querySelector('meta[name="csrf-token"]')
+                .getAttribute("content"),
+        },
+        body: JSON.stringify({ codigo1: codigoValue }),
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data);
+          const personalDef=data.employeeName ? data.employeeName : "";
+          document.getElementById("resp5").value = personalDef;
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
+}
+

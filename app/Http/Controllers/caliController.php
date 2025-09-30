@@ -1087,9 +1087,17 @@ class caliController extends generalController
     public function personalFallas(Request $request)
     {
         $numero = $request->input('codigo1');
+        if ($numero==2153 or $numero == 2128) {
+            $numero = 'i'.$numero;
+            $personaName=personalBergsModel::select('employeeName')->where('employeeNumber',$numero)
+        ->where('status','Activo')->first();
+
+        }else{
         $numero ='i'.$numero;
+
         $personaName=personalBergsModel::select('employeeName')->where('employeeNumber',$numero)
         ->where('status','Activo')->where('typeWorker','Directo')->first();
+        }
         return response()->json($personaName);
 
     }

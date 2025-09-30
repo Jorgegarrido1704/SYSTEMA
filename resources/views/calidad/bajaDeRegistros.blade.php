@@ -11,7 +11,7 @@
                     <!-- Content Row -->
         <div class="row">
                         <!-- Content Column -->
-                        <div class="col-lg-12 mb-12">
+                        <div class="col-lg-8 mb-8">
                             <!-- Project Card Example -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -47,14 +47,14 @@
                                       <br>
 
                                         <div class="row d-flex justify-content-center" style="display:  {{ $cambioestados[3] }} ">
-                                            <div class=" col-md-2 mt-2">
+                                            <div class=" col-md-6 mt-6">
                                                 <div class="d-flex justify-content-center">Code #1</div>
                                                 <div class="d-flex justify-content-center">
                                                 <input type="text" style="width:80px;" name="codigo1" id="codigo1" onchange="buscarcodigo1()">
                                                 <input type="text" style="width:280px;" name="rest_code1" id="rest_code1">
                                                 </div>
                                             </div>
-                                            <div class="col-md-2 mt-2">
+                                            <div class="col-md-6 mt-6">
                                                 <div class="d-flex justify-content-center">
                                                     <input type="hidden" style="width: 80px;margin-right:80px" name="1" id="1" value="0" >
                                                     Responsable
@@ -65,10 +65,105 @@
                                                         <input type="text" style="width: 380px;margin-right:80px" name="resp1" id="resp1" readonly>
                                                     High Rework<input type="checkbox" name="check1" id="check1" value="1">
                                             </div>
+                                            </div>
                                         </div>
+                                        <hr>
 
+                                        <div class="row d-flex justify-content-center" style="display:  {{ $cambioestados[3] }} ">
+                                            <div class=" col-md-6 mt-6">
+                                                <div class="d-flex justify-content-center">Code #2</div>
+                                                <div class="d-flex justify-content-center">
+                                                <input type="text" style="width:80px;" name="codigo2" id="codigo2" onchange="buscarcodigo2()">
+                                                <input type="text" style="width:280px;" name="rest_code2" id="rest_code2">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 mt-6">
+                                                <div class="d-flex justify-content-center">
+                                                    <input type="hidden" style="width: 80px;margin-right:80px" name="2" id="2" value="0" >
+                                                    Responsable
+                                                </div>
+                                                <div class="d-flex justify-content-center">
+                                                    <input type="text" style="width: 80px;margin-right:80px"
+                                                    name="responsable2" id="responsable2" value="0000" minlength="4" maxlength="4" onchange="empleado2()">
+                                                        <input type="text" style="width: 380px;margin-right:80px" name="resp2" id="resp2" readonly>
+                                                    High Rework<input type="checkbox" name="check2" id="check2" value="1">
+                                            </div>
+                                         </div>
+                                        </div>
+                                        <hr>
 
-                                         <div><h4>Serial <input type="text" style="width: 180px" name="serial" id="serial" {{ $cambioestados[2] }} {{ $cambioestados[4] }}> </h4></div>
+                                        <div class="row d-flex justify-content-center" style="display:  {{ $cambioestados[3] }} ">
+                                            <div class=" col-md-6 mt-6">
+                                                <div class="d-flex justify-content-center">Code #3</div>
+                                                <div class="d-flex justify-content-center">
+                                                <input type="text" style="width:80px;" name="codigo3" id="codigo3" onchange="buscarcodigo3()">
+                                                <input type="text" style="width:280px;" name="rest_code3" id="rest_code3">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 mt-6">
+                                                <div class="d-flex justify-content-center">
+                                                    <input type="hidden" style="width: 80px;margin-right:80px" name="3" id="3" value="0" >
+                                                    Responsable
+                                                </div>
+                                                <div class="d-flex justify-content-center">
+                                                    <input type="text" style="width: 80px;margin-right:80px"
+                                                    name="responsable3" id="responsable3" value="0000" minlength="4" maxlength="4" onchange="empleado3()">
+                                                        <input type="text" style="width: 380px;margin-right:80px" name="resp3" id="resp3" readonly>
+                                                    High Rework<input type="checkbox" name="check3" id="check3" value="1">
+                                            </div>
+                                         </div>
+                                        </div>
+                                        <hr>
+
+                                        <div class="row d-flex justify-content-center" style="display:  {{ $cambioestados[3] }} ">
+                                            <div class=" col-md-6 mt-6">
+                                                <div class="d-flex justify-content-center">Code #4</div>
+                                                <div class="d-flex justify-content-center">
+                                                <input type="text" style="width:80px;" name="codigo4" id="codigo4" onchange="buscarcodigo4()">
+                                                <input type="text" style="width:280px;" name="rest_code4" id="rest_code4">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 mt-6">
+                                                <div class="d-flex justify-content-center">
+                                                    <input type="hidden" style="width: 80px;margin-right:80px" name="4" id="4" value="0" >
+                                                    Responsable
+                                                </div>
+                                                <div class="d-flex justify-content-center">
+                                                    <input type="text" style="width: 80px;margin-right:80px"
+                                                    name="responsable4" id="responsable4" value="0000" minlength="4" maxlength="4" onchange="empleado4()">
+                                                        <input type="text" style="width: 380px;margin-right:80px" name="resp4" id="resp4" readonly>
+                                                    High Rework<input type="checkbox" name="check4" id="check4" value="1">
+                                            </div>
+                                            </div>
+                                        </div>
+                                        <hr>
+
+                                        <div class="row d-flex justify-content-center" style="display:  {{ $cambioestados[3] }} ">
+                                            <div class=" col-md-6 mt-6">
+                                                <div class="d-flex justify-content-center">Code #5</div>
+                                                <div class="d-flex justify-content-center">
+                                                <input type="text" style="width:80px;" name="codigo5" id="codigo5" onchange="buscarcodigo5()">
+                                                <input type="text" style="width:280px;" name="rest_code5" id="rest_code5">
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6 mt-6">
+                                                <div class="d-flex justify-content-center">
+                                                    <input type="hidden" style="width: 80px;margin-right:80px" name="5" id="5" value="0" >
+                                                    Responsable
+                                                </div>
+                                                <div class="d-flex justify-content-center">
+                                                    <input type="text" style="width: 80px;margin-right:80px"
+                                                    name="responsable5" id="responsable5" value="0000" minlength="4" maxlength="4" onchange="empleado5()">
+                                                        <input type="text" style="width: 380px;margin-right:80px" name="resp5" id="resp5" readonly>
+                                                    High Rework<input type="checkbox" name="check5" id="check5" value="1">
+                                                </div>
+                                               </div>
+                                        </div>
+                                        <hr>
+
+                                      <br>
+                                         <div class="d-flex justify-content-center"><h4>Serial <input type="text" style="width: 180px" name="serial" id="serial" {{ $cambioestados[2] }} {{ $cambioestados[4] }}> </h4></div>
                                         <br>
                                         <input type="hidden" name="clienteErr" id="clienteErr" value="{{$buscarInfor->client}}">
                                         <input type="hidden" name="infoCal" id="infoCal" value="{{$buscarInfor->info}}">
@@ -86,7 +181,7 @@
                             </div>
                            </div>
                         <!-- Content Column -->
-                        <div class="col-lg-6 mb-6">
+                        <div class="col-lg-4 mb-4">
                             <!-- Project Card Example -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
