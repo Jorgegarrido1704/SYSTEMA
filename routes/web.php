@@ -22,6 +22,7 @@ use App\Http\Controllers\SaludController;
 use App\Http\Controllers\AccionesCorrectivasController;
 use App\Http\Controllers\mailsController;
 use App\Http\Controllers\mantainenceController;
+use App\Http\Controllers\InventariosController;
 
 /*
 |--------------------------------------------------------------------------
@@ -136,6 +137,13 @@ Route::controller(InventarioController::class)->group(function () {
     Route::get('/kits', [InventarioController::class, 'kits'])->name('kits');
     Route::post('/trabajoKits', [InventarioController::class, 'trabajoKits'])->name('trabajoKits');
 });
+
+Route::controller(InventariosController::class)->group(function(){
+Route::get('/inventarios', [InventariosController::class, 'index_inventarios'])->name('inventarios_index');
+
+
+});
+
 Route::controller(planingController::class)->group(function () {
 
     Route::get('/planing', [planingController::class, 'planning'])->name('planning');

@@ -11,6 +11,9 @@ class globalInventario extends Controller
     public function index_inventario(Request $request){
         $cat=session('categoria');
         $value=session('user');
+        if( $value=="" ){
+            return redirect('/');
+        }else{
         //Moviment registered
         $itemOut=$inventario=$kitsReg=[];
         $i=$y=0;
@@ -47,6 +50,7 @@ class globalInventario extends Controller
         }
         return view('globalInventary', ['cat'=>$cat,'value'=>$value,'itemOut'=>$itemOut,'inventario'=>$inventario,'kitsReg'=>$kitsReg]);
     }
+}
 /*    public function index_inventario(Request $request){
         $cat=session('categoria');
         $user=session('user');

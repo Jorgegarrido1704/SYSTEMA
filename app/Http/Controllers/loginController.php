@@ -90,8 +90,8 @@ class loginController extends Controller
                     return redirect('/almacen');
                 } else if ($categoria == 'BCali') {
                     return redirect('/BossCali');
-                } else if ($categoria == 'inv') {
-                    return redirect('/inventario');
+                } else if ($categoria == 'inventario') {
+                    return redirect('/inventarios');
                 } else if ($categoria == 'junta') {
                     return redirect('/juntas');
                 } else if ($categoria == 'SupAdmin') {
