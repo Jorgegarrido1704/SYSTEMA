@@ -35,7 +35,7 @@ class AddWeek implements ShouldQueue
         $day = $days[$today - 1];
         $registrosEmpleados = personalBergsModel::where('status', '!=', 'Baja')->get();
         foreach ($registrosEmpleados as $registroEmpleado) {
-            if (assistence::where('week', '=', $week)->where('id_empleado', '=', $registroEmpleado->employeeNumber)->orderBy('typeWorker', 'desc')->count() == 0) {
+            if (assistence::where('week', '=', $week)->where('id_empleado', '=', $registroEmpleado->employeeNumber)->count() == 0) {
                 assistence::insert([
                     'id_empleado' => $registroEmpleado->employeeNumber,
                     'week' => $week,
