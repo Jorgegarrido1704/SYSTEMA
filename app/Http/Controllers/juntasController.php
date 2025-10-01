@@ -2212,6 +2212,7 @@ class juntasController extends Controller
     public function DatosRh(Request $request)
     {
         $id = $request->input('id');
+        dd($id);
         $value = session('user');
         $cat = session('categoria');
         $dias = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
@@ -2231,6 +2232,8 @@ class juntasController extends Controller
                     ->first();
                 if ($buscarVacaciones) {
                     $datos[] =  ['name' => $row->name, 'folio' => $buscarVacaciones->id];
+                }else{
+                    $datos[] =  ['name' => $row->name, 'folio' => 'No registrado en sistema'];
                 }
             }
         } else {
