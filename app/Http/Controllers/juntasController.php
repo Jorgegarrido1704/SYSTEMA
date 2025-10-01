@@ -2212,7 +2212,7 @@ class juntasController extends Controller
     public function DatosRh(Request $request)
     {
         $id = $request->input('id');
-        dd($id);
+       
         $value = session('user');
         $cat = session('categoria');
         $dias = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
