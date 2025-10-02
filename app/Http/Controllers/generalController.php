@@ -362,7 +362,7 @@ class generalController extends Controller
                         upRegistros(9, $codigo, 'parcial Looming', $todays, 'loomF', $cantidad, $donde, $sesion, 'si');
                     }
                 } else if (($donde === 'ensa' and $ensaPar > 0 and ($count !== 6 or $count !== 15))) {
-                    $noloom = specialWireModel::where('partNumber', '=', $pnReg)->orderBy('id', 'desc')->first();
+                    $nolooms = specialWireModel::where('partNumber', '=', $pnReg)->first();
                     if (!empty($nolooms)) {
                         $noloom = $nolooms->PartNumber;
                     }
