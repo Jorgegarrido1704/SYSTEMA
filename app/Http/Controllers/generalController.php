@@ -273,7 +273,6 @@ class generalController extends Controller
                     $fallasCalidad = $buscarCantidades->fallasCalidad;
                     $specialWire = $buscarCantidades->specialWire;
                     $totalPar = $cortPar + $libePar + $ensaPar + $loomPar + $testPar + $embPar + $preCalidad + $engPar + $fallasCalidad + $specialWire;
-
                 }
             }
             if ($cantidad <= 0 or $cantidad == NULL) {
@@ -340,15 +339,15 @@ class generalController extends Controller
                     $resp = "waiting for engineering Looming";
                     upRegistros(14, $codigo, $resp, $todays, 'loomF', $loomPar, $donde, $sesion, 'si');
                     $update = DB::table('registroparcial')->where('codeBar', "=", $codigo)->update(['loomPar' => '0', 'eng' => $loomPar]);
-                }else if ($count == 12) {
-                     $update =    DB::table('registroparcial')->where('codeBar', "=", $codigo)->update(['embPar' => '0']);
-                        upRegistros(20, $codigo, 'Harness Finished', $todays, 'embaF', $embPar, $donde, $sesion, 'si');
-                        $tiempoUp = DB::table('tiempos')->where('info', $codigo)->update(['embarque' => $todays]);
+                } else if ($count == 12) {
+                    $update =    DB::table('registroparcial')->where('codeBar', "=", $codigo)->update(['embPar' => '0']);
+                    upRegistros(20, $codigo, 'Harness Finished', $todays, 'embaF', $embPar, $donde, $sesion, 'si');
+                    $tiempoUp = DB::table('tiempos')->where('info', $codigo)->update(['embarque' => $todays]);
                 }
 
                 return redirect('general')->with('response', $resp);
             } else if ($cantidad >= 0) {
-                if ( ($donde === 'loom' and $loomPar > 0 and $count !== 8)) {
+                if (($donde === 'loom' and $loomPar > 0 and $count !== 8)) {
                     if ($cantidad >= ($loomPar)) {
                         $nuevo = $preCalidad + $loomPar;
                         $update = DB::table('registroparcial')->where('codeBar', "=", $codigo)->update(['loomPar' => '0', 'preCalidad' => $nuevo]);
@@ -362,9 +361,9 @@ class generalController extends Controller
                         $update = DB::table('registroparcial')->where('codeBar', "=", $codigo)->update(['loomPar' => $restoAnt, 'preCalidad' => $nuevo]);
                         upRegistros(9, $codigo, 'parcial Looming', $todays, 'loomF', $cantidad, $donde, $sesion, 'si');
                     }
-                } else if ( ($donde === 'ensa' and $ensaPar > 0 and ($count !== 6 or $count !== 15))) {
-                    $noloom = specialWireModel::where('partNumber','=', $pnReg)->orderBy('id', 'desc')->first();
-                    if(!empty($nolooms)){
+                } else if (($donde === 'ensa' and $ensaPar > 0 and ($count !== 6 or $count !== 15))) {
+                    $noloom = specialWireModel::where('partNumber', '=', $pnReg)->orderBy('id', 'desc')->first();
+                    if (!empty($nolooms)) {
                         $noloom = $nolooms->PartNumber;
                     }
                     if ($pnReg == $noloom) {
@@ -381,8 +380,6 @@ class generalController extends Controller
                         }
                     } else {
                         if ($cantidad < ($ensaPar) and (substr($rev, 0, 4) != 'PRIM' or substr($rev, 0, 4) != 'PPAP')) {
-
-
                             $restoAnt = $ensaPar - $cantidad;
                             $nuevo = $loomPar + $cantidad;
                             $update = DB::table('registroparcial')->where('codeBar', "=", $codigo)->update(['ensaPar' => $restoAnt, 'loomPar' => $nuevo]);
@@ -396,7 +393,7 @@ class generalController extends Controller
                             }
                         }
                     }
-                } else if ( (($donde === 'libe') and $libePar > 0 and $count !== 4)) {
+                } else if ((($donde === 'libe') and $libePar > 0 and $count !== 4)) {
                     if ($cantidad < ($libePar) and (substr($rev, 0, 4) != 'PRIM' or substr($rev, 0, 4) != 'PPAP')) {
                         $restoAnt = $libePar - $cantidad;
                         $nuevo = $ensaPar + $cantidad;
@@ -436,7 +433,7 @@ class generalController extends Controller
                             Mail::to($recipients)->send(new \App\Mail\PPAPING($subject, $content));
                         }
                     }
-                } else if ( (($donde === 'cort') and $cortPar > 0 and $count !== 2)) {
+                } else if ((($donde === 'cort') and $cortPar > 0 and $count !== 2)) {
                     if ($cantidad < $cortPar and (substr($rev, 0, 4) != 'PRIM' or substr($rev, 0, 4) != 'PPAP')) {
                         $restoAnt = $cortPar - $cantidad;
                         $nuevo = $libePar + $cantidad;
@@ -449,26 +446,26 @@ class generalController extends Controller
                         upRegistros(4, $codigo, 'Assembly Process', $todays, 'cutF', $cortPar, $donde, $sesion, 'si');
                         $tiempoUp = DB::table('tiempos')->where('info', $codigo)->update(['corte' => $todays]);
                     }
-                }else if ($donde === 'emba' and $embPar > 0) {
-                  if ($cantidad >= ($embPar) and $embPar < $totalPar) {
-                    $resp = "Partial Shipped";
+                } else if ($donde === 'emba' and $embPar > 0) {
+                    if ($cantidad >= ($embPar) and $embPar < $totalPar) {
+                        $resp = "Partial Shipped";
                         $nuevo = $preCalidad + $embPar;
-                     $update =   DB::table('registroparcial')->where('codeBar', "=", $codigo)->update(['embPar' => '0']);
+                        $update =   DB::table('registroparcial')->where('codeBar', "=", $codigo)->update(['embPar' => '0']);
                         upRegistros(12, $codigo, 'Partial Shipped', $todays, 'embaF', $embPar, $donde, $sesion, 'si');
-                    }else if($cantidad < ($embPar)) {
-                    $resp = "Partial Shipped";
+                    } else if ($cantidad < ($embPar)) {
+                        $resp = "Partial Shipped";
                         $restoAnt = $embPar - $cantidad;
-                     DB::table('registroparcial')->where('codeBar', "=", $codigo)->update(['embPar' => $restoAnt]);
+                        DB::table('registroparcial')->where('codeBar', "=", $codigo)->update(['embPar' => $restoAnt]);
                         upRegistros(12, $codigo, 'Partial Shipped', $todays, 'embaF', $cantidad, $donde, $sesion, 'si');
-                    }else if($cantidad>=$embPar and $embPar >= $totalPar){
-                    $resp = "shipped Harness Finished";
-                    $update =    DB::table('registroparcial')->where('codeBar', "=", $codigo)->update(['embPar' => '0']);
+                    } else if ($cantidad >= $embPar and $embPar >= $totalPar) {
+                        $resp = "shipped Harness Finished";
+                        $update =    DB::table('registroparcial')->where('codeBar', "=", $codigo)->update(['embPar' => '0']);
                         upRegistros(20, $codigo, 'Harness Finished', $todays, 'embaF', $embPar, $donde, $sesion, 'si');
                         $tiempoUp = DB::table('tiempos')->where('info', $codigo)->update(['embarque' => $todays]);
                     }
 
-                return redirect('general')->with('response', $resp);
-            }
+                    return redirect('general')->with('response', $resp);
+                }
 
 
                 if ($resp == null or $resp == '') {
