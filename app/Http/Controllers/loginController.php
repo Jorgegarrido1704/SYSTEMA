@@ -82,8 +82,48 @@ class loginController extends Controller
                     return redirect('/almacen');
                 } else if ($categoria == 'BCali') {
                     return redirect('/BossCali');
-                } else if ($categoria == 'invreg1' || $categoria == 'invreg2' || $categoria == 'capt' || $categoria == 'invwo1' || $categoria == 'invwo2') {
+                } else if ($categoria == 'invreg1' || $categoria == 'invreg2' || $categoria == 'capt' || $categoria == 'invwo1' || $categoria == 'invwo2' ) {
                     return redirect('/inventarios');
+                } else if ($categoria == 'auditor') {
+                    return redirect('/pisoWork');
+                } else if ($categoria == 'Pendings') {
+                    return redirect('/Pendigs');
+                } else if ($categoria == 'produ') {
+                    return redirect('/produccion');
+                } else if ($categoria == 'mante') {
+                    return redirect('/mantenimiento');
+                } else if ($categoria == 'segur') {
+                    return redirect('/seguridad');
+                } else if ($categoria == 'cajero') {
+                    return redirect('/caja');
+                } else if ($categoria == 'ventas') {
+                    return redirect('/ventas');
+                } else if ($categoria == 'compra') {
+                    return redirect('/compras');
+                } else if ($categoria == 'diseño') {
+                    return redirect('/diseno');
+                } else if ($categoria == 'empresarial') {
+                    return redirect('/empresarial');
+                } else if ($categoria == 'sistemas') {
+                    return redirect('/sistemas');
+                } else if ($categoria == 'factura') {
+                    return redirect('/facturacion');
+                } else if ($categoria == 'logis') {
+                    return redirect('/logistica');
+                } else if ($categoria == 'exporta') {
+                    return redirect('/exportacion');
+                } else if ($categoria == 'importa') {
+                    return redirect('/importacion');
+                } else if ($categoria == 'diseno') {
+                    return redirect('/diseno');
+                } else if ($categoria == 'calibra') {
+                    return redirect('/calibracion');
+                } else if ($categoria == 'prose') {
+                    return redirect('/procesos');
+                } else if ($categoria == 'recep') {
+                    return redirect('/recepcion');
+                } else if ($categoria == 'provee') {
+                    return redirect('/proveedores');
                 } else if ($categoria == 'junta') {
                     return redirect('/juntas');
                 } else if ($categoria == 'SupAdmin') {
