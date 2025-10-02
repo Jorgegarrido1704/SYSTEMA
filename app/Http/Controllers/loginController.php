@@ -72,15 +72,7 @@ class loginController extends Controller
                     return redirect('/admin');
                 } else if ($categoria == 'cali') {
                     return redirect('/calidad');
-                } else if ($categoria == 'ensa') {
-                    return redirect('/general');
-                } else if ($categoria == 'emba') {
-                    return redirect('/general');
-                } else if ($categoria == 'libe') {
-                    return redirect('/general');
-                } else if ($categoria == 'cort') {
-                    return redirect('/general');
-                } else if ($categoria == 'loom') {
+                } else if ($categoria == 'ensa' || $categoria == 'emba' || $categoria == 'libe' || $categoria == 'cort' || $categoria == 'loom') {
                     return redirect('/general');
                 } else if ($categoria == 'plan') {
                     return redirect('/planing');
@@ -90,7 +82,7 @@ class loginController extends Controller
                     return redirect('/almacen');
                 } else if ($categoria == 'BCali') {
                     return redirect('/BossCali');
-                } else if ($categoria == 'inventario') {
+                } else if ($categoria == 'invreg1' || $categoria == 'invreg2' || $categoria == 'capt' || $categoria == 'invwo1' || $categoria == 'invwo2') {
                     return redirect('/inventarios');
                 } else if ($categoria == 'junta') {
                     return redirect('/juntas');

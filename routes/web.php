@@ -141,7 +141,7 @@ Route::controller(InventarioController::class)->group(function () {
 
 Route::controller(InventariosController::class)->group(function(){
 Route::get('/inventarios', [InventariosController::class, 'index_inventarios'])->name('inventarios_index');
-Route::get('/addInventarios', [InventariosController::class, 'addInventarios'])->name('addInventarios');
+Route::post('/addInventarios', [InventariosController::class, 'addInventarios'])->name('addInventarios');
 Route::get('/pisoWork', [InventariosController::class, 'pisoWork'])->name('pisoWork');
 Route::post('/getDatosInventarioWork', [InventariosController::class, 'getDatosInventarioWork'])->name('getDatosInventarioWork');
 

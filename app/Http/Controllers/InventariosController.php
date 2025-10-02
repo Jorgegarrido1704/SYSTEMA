@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\globalInventarios;
 use Illuminate\Support\Facades\DB;
 use App\Models\Wo;
+use Carbon\Carbon;
+use Validator;
 
 class InventariosController extends Controller
 {
@@ -63,4 +65,47 @@ class InventariosController extends Controller
         $datosRegistros=DB::table('datos')->select('item','qty')->where('part_num', $partNum)->where('rev', $rev)->get();
         return response()->json(['status' => 'success', 'data' => $datosRegistros]);
     }
+    public function addInventarios( Request $request)
+    {
+        $cat=session('categoria');
+     $request->validate([
+            'item' => 'required|string',
+            'qty' => 'required|numeric',
+            'folios' => 'required|string',
+        ]);
+         if($cat == "invreg1" ){
+            $buscarfolios=globalInventarios::where('Folio_sheet_audited','=',$request->input('folios'))->exists();
+        if($buscarfolios){
+            return redirect()->back()->with('message', 'The folio needs a second count.');
+        }else{
+        $inventario = new globalInventarios();
+        $inventario->items = $request->input('item');
+        $inventario->Register_first_count = session('user');
+            $inventario->first_qty_count = $request->input('qty');
+            $inventario->date_first_count = Carbon::now()->format('Y-m-d H:i');
+        $inventario->Folio_sheet_audited = $request->input('folios');
+        $inventario->status_folio_general = 'First Count';
+        $inventario->save();
+        return redirect()->back()->with('message', 'Inventory added successfully.');
+          }
+         }else if($cat == "invreg2" ) {
+            $buscarfolios=globalInventarios::where('Folio_sheet_audited','=',$request->input('folios'))->first();
+        if(!$buscarfolios){
+            return redirect()->back()->with('message', 'The folio needs a first count.');
+        }else{
+          
+           $difference =abs($buscarfolios->first_qty_count - $request->input('qty'));
+
+        $inventario = globalInventarios::where('Folio_sheet_audited','=',$request->input('folios'))->update([
+            'Register_second_count' => session('user'),
+            'second_qty_count' => $request->input('qty'),
+            'date_second_count' => Carbon::now()->format('Y-m-d H:i'),
+            'status_folio_general' => 'Second Count',
+            'difference' => $difference,
+        ]);
+        return redirect()->back()->with('message', 'Inventory updated successfully.');
+
+    }}
+
+}
 }

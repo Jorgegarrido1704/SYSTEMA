@@ -19,6 +19,7 @@
                                     <th>Item</th>
                                     <th>first count register</th>
                                     <th>Qty first count</th>
+                                    <th>second count register</th>
                                     <th>Qty second count</th>
                                     <th>Difference</th>
                                 </tr>
@@ -30,6 +31,7 @@
                                     <td>{{ $itemDatos->items }}</td>
                                     <td>{{ $itemDatos->Register_first_count }}</td>
                                     <td>{{ $itemDatos->first_qty_count }}</td>
+                                    <td>{{ $itemDatos->Register_second_count }}</td>
                                     <td>{{ $itemDatos->second_qty_count }}</td>
                                     <td>{{ $itemDatos->difference }}</td>
                                 </tr>
@@ -47,7 +49,22 @@
                         <h5 class="m-0 font-weight-bold text-primary">Registro Datos</h5>
                     </div>
                     <div class="card-body" style="overflow-y: auto; height: 360px;"  >
-
+                        <form action="{{ route('addInventarios') }}" method="POST">
+                        @csrf
+                        <div class="form-group col-lg-6 col-lx-6">
+                            <label for="folios">Folio</label>
+                            <input type="number" class="form-control" id="folios" name="folios" step="1" required>
+                        </div>
+                        <div class="form-group col-lg-6 col-lx-6">
+                            <label for="items">Item</label>
+                            <input type="text" class="form-control" id="item" name="item" required>
+                        </div>
+                        <div class="form-group col-lg-6 col-lx-6">
+                            <label for="qty">Quantity</label>
+                            <input type="number" class="form-control" id="qty" name="qty"  step="0.01" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -88,6 +105,10 @@
 
 
     <script>
+        let resppuesta = {{ session('massage') }}
+        if(resppuesta){
+            alert(resppuesta);
+        }
         const url=@json('getDatosInventarioWork');
         function datosWorkOrder(){
           fetch(url,{
