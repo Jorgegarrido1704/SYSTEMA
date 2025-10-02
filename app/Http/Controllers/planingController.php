@@ -527,9 +527,9 @@ class planingController extends Controller
                         }
                           try {
                         workScreduleModel::where('pn', $np)->orderby('id', 'desc')->first()->update(['UpOrderDate' => carbon::now()->format('Y-m-d')]);
-                    } catch (\Exception $e) {
-                        Log::info($e);
-                    }
+                        } catch (\Exception $e) {
+                            Log::info($e);
+                        }
 
                         $regcorte->eng = $qty_reg;
                     } else {
@@ -537,8 +537,9 @@ class planingController extends Controller
                         $update = DB::table('registro')->where('wo', $wo)->update(['donde' => 'En espera de cables especiales', 'count' => 15]);
                         $regcorte->ensaPar = $qty_reg;
                     }else{
-                        $update = DB::table('registro')->where('wo', $wo)->update(['donde' => 'En espera de corte', 'count' => 2]);}
+                        $update = DB::table('registro')->where('wo', $wo)->update(['donde' => 'En espera de corte', 'count' => 2]);
                     $regcorte->cortPar = $qty_reg;
+                    }
                     }
                     $regcorte->codeBar = $info;
                     $regcorte->save();
