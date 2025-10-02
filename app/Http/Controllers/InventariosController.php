@@ -17,20 +17,21 @@ class InventariosController extends Controller
     {
         $cat = session('categoria');
         $value = session('user');
+        $folio="";
         $datosRegistros = [];
         if ($value == "") {
             return redirect('/');
         }
         if ($cat == "invreg1" || $cat == "invreg2" || $cat == "capt" || $cat == "invwo1" || $cat == "invwo2") {
-
-            $datosRegistros = globalInventarios::where('Register_first_count', '=', $value)->orWhere('Register_second_count', '=', $value)->get();
+            $folio=globalInventarios::where('Register_first_count', '=', $value)->orderBy('id_item', 'desc')->first();
+            $datosRegistros = globalInventarios::where('Register_first_count', '=', $value)->orWhere('Register_second_count', '=', $value)->orderBy('difference', 'desc')->get();
         } else if ($cat == "auditor") {
             $datosRegistros = globalInventarios::all();
         }
 
         return view(
             'inventarios.InventarioGeneral',
-            ['value' => session('user'), 'cat' => session('categoria'), 'datosRegistros' => $datosRegistros]
+            ['value' => session('user'), 'cat' => session('categoria'), 'datosRegistros' => $datosRegistros,'folio'=>$folio]
         );
     }
 
@@ -78,12 +79,12 @@ class InventariosController extends Controller
             'folios' => 'required|string',
         ]);
         if ($cat == "invreg1") {
-            $buscarfolios = globalInventarios::where('Folio_sheet_audited', '=', $request->input('folios'))->exists();
+            $buscarfolios = globalInventarios::where('Folio_sheet_audited', '=', $request->input('folios'))->where('items','=',$request->input('item'))->exists();
             if ($buscarfolios) {
                 return redirect()->back()->with('message', 'The folio needs a second count.');
             } else {
                 $inventario = new globalInventarios();
-                $inventario->items = $request->input('item');
+                $inventario->items = strtoupper($request->input('item'));
                 $inventario->Register_first_count = session('user');
                 $inventario->first_qty_count = $request->input('qty');
                 $inventario->date_first_count = Carbon::now()->format('Y-m-d H:i');
@@ -93,14 +94,14 @@ class InventariosController extends Controller
                 return redirect()->back()->with('message', 'Inventory added successfully.');
             }
         } else if ($cat == "invreg2") {
-            $buscarfolios = globalInventarios::where('Folio_sheet_audited', '=', $request->input('folios'))->first();
+            $buscarfolios = globalInventarios::where('Folio_sheet_audited', '=', $request->input('folios'))->where('items','=',$request->input('item'))->first();
             if (!$buscarfolios) {
                 return redirect()->back()->with('message', 'The folio needs a first count.');
             } else {
 
                 $difference = abs($buscarfolios->first_qty_count - $request->input('qty'));
 
-                $inventario = globalInventarios::where('Folio_sheet_audited', '=', $request->input('folios'))->update([
+                $inventario = globalInventarios::where('Folio_sheet_audited', '=', $request->input('folios'))->where('items','=',$request->input('item'))->update([
                     'Register_second_count' => session('user'),
                     'second_qty_count' => $request->input('qty'),
                     'date_second_count' => Carbon::now()->format('Y-m-d H:i'),

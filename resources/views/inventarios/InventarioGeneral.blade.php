@@ -61,7 +61,7 @@
                         @csrf
                         <div class="form-group col-lg-6 col-lx-6">
                             <label for="folios">Folio</label>
-                            <input type="number" class="form-control" id="folios" name="folios" step="1" required>
+                            <input type="text" class="form-control" id="folios" name="folios" value="{{ $folio->Folio_sheet_audited}}" required>
                         </div>
                         <div class="form-group col-lg-6 col-lx-6">
                             <label for="items">Item</label>
@@ -107,6 +107,10 @@
 
 
     <script>
+        var messege = @json(session('message'));
+        if (messege) {
+            alert(messege);
+        }
 
         const url=@json('getDatosInventarioWork');
         function datosWorkOrder(){

@@ -24,7 +24,7 @@ return new class extends Migration
             $table->decimal('difference', 10, 2)->default(0);
             $table->string('id_workOrder')->nullable();
             $table->string('auditor')->nullable();
-            $table->integer('Folio_sheet_audited')->nullable();
+            $table->string('Folio_sheet_audited')->nullable();
             $table->date('fecha_auditor')->nullable();
             $table->string('status_folio_general')->default('Ok');
 
