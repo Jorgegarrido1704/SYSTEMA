@@ -124,11 +124,19 @@ class InventariosController extends Controller
             'qty' => 'required|array',
             'id_workOrder' => 'required|string',
         ]);
+        $repWO= explode("-", session('user'))[1]."-".$request->input('id_workOrder');
         if ($cat == "invwo1") {
-            $buscarfolios = globalInventarios::where('id_workOrder', '=', $request->input('id_workOrder'))
-            ->where('Register_first_count','=',session('user'))->exists();
-            if ($buscarfolios) {
-                return redirect()->back()->with('message', 'The folio needs a second count.');
+            $buscarfolios = globalInventarios::where('id_workOrder', '=', $repWO)->first();
+            if (!empty($buscarfolios)) {
+                 for ($i=0; $i < count($request->input('item')); $i++) {
+                    $buscaYaregistro = globalInventarios::where('id_workOrder', '=', $repWO)
+                    ->where('items','=',$request->input('item')[$i])->first();
+                    $updatedatos=globalInventarios::where('id_workOrder', '=', $repWO)
+                    ->where('items','=',$request->input('item')[$i])->update([
+                        'first_qty_count' => $buscaYaregistro->first_qty_count+$request->input('qty')[$i]
+                    ]);
+                }
+                return redirect()->back()->with('message', 'Inventory added successfully.');
             } else {
                 for ($i=0; $i < count($request->input('item')); $i++) {
                     $item = $request->input('item')[$i];
@@ -147,10 +155,18 @@ class InventariosController extends Controller
             }
         } else if ($cat == "invreg2") {
             $buscarfolios = globalInventarios::where('id_workOrder', '=', $request->input('id_workOrder'))
-            ->where('Register_second_count','=', session('user'))
-            ->exists();
+            ->where('second_qty_count','!=', '0')
+            ->first();
             if ($buscarfolios) {
-                return redirect()->back()->with('message', 'The folio needs a first count.');
+                for ($i=0; $i < count($request->input('item')); $i++) {
+                    $buscaYaregistro = globalInventarios::where('id_workOrder', '=', $repWO)
+                    ->where('items','=',$request->input('item')[$i])->first();
+                    $updatedatos=globalInventarios::where('id_workOrder', '=', $repWO)
+                    ->where('items','=',$request->input('item')[$i])->update([
+                        'first_qty_count' => $buscaYaregistro->first_qty_count+$request->input('qty')[$i]
+                    ]);
+                }
+                return redirect()->back()->with('message', 'Inventory added successfully.');
             } else {
                  for ($i=0; $i < count($request->input('item')); $i++) {
                     $item = $request->input('item')[$i];
