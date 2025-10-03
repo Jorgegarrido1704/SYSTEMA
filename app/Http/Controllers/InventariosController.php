@@ -59,6 +59,7 @@ class InventariosController extends Controller
             return redirect('/');
         }
         $workOrder = $request->input('workOrder');
+        $cantidad = $request->input('cantidad')??0;
         $datosWo = Wo::select('NumPart', 'rev', 'Qty')->where('wo', $workOrder)->first();
         if (!$datosWo) {
             return response()->json(['status' => 'error', 'message' => 'Work Order not found']);
@@ -67,7 +68,7 @@ class InventariosController extends Controller
         $rev = $datosWo->rev;
         $qtyWo = $datosWo->Qty;
 
-        $datosRegistros = DB::table('datos')->select('item', DB::raw('(Round(qty,2)*' . $qtyWo . ') as qty'))->where('part_num', $partNum)->where('rev', $rev)->get();
+        $datosRegistros = DB::table('datos')->select('item', DB::raw('(Round(qty,2)*' . $cantidad . ') as qty'))->where('part_num', $partNum)->where('rev', $rev)->get();
         return response()->json(['status' => 'success', 'data' => $datosRegistros]);
     }
     public function addInventarios(Request $request)

@@ -87,6 +87,8 @@
                     <div class="card-body" style="overflow-y: auto; "  >
                     <div class="row">
                           <div class="col-lg-12 col-lx-12">
+                            <label for="cantidad">quantity</label>
+                            <input type="number" class="form-control" id="cantidad" name="cantidad" min="0" step="1" required>
                             <label for="workOrder">Work Order</label>
                             <input type="text" class="form-control" id="workOrder" name="workOrder" minlength="6" maxlength="6" onchange="datosWorkOrder()">
                         </div>
@@ -123,7 +125,8 @@
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
             },
             body:JSON.stringify({
-                workOrder:document.getElementById('workOrder').value
+                workOrder:document.getElementById('workOrder').value,
+                cantidad:document.getElementById('cantidad').value
             })
           })
           .then(response => response.json())
