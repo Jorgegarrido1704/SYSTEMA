@@ -66,6 +66,9 @@ class InventariosController extends Controller
         }
         $partNum = $datosWo->NumPart;
         $rev = $datosWo->rev;
+        if(strpos($rev," ")){$rev=explode(" ",$rev)[1];  }
+
+
         $qtyWo = $datosWo->Qty;
 
         $datosRegistros = DB::table('datos')->select('item', DB::raw('(Round(qty,2)*' . $cantidad . ') as qty'))->where('part_num', $partNum)->where('rev', $rev)->get();
