@@ -163,7 +163,7 @@ class InventariosController extends Controller
                 return redirect()->back()->with('message', 'Inventory added successfully.');
             }
         } else if ($cat == "invreg2") {
-            $buscarfolios = globalInventarios::where('id_workOrder', '=', $request->input('id_workOrder'))
+            $buscarfolios = globalInventarios::where('id_workOrder', '=', $repWO)
             ->where('second_qty_count','!=', '0')
             ->first();
             if ($buscarfolios) {
@@ -185,7 +185,7 @@ class InventariosController extends Controller
 
                 $difference = abs($buscarfolios->first_qty_count - $qty);
 
-                $inventario = globalInventarios::where('id_workOrder', '=', $request->input('id_workOrder'))
+                $inventario = globalInventarios::where('id_workOrder', '=', $repWO)
                 ->where('items', '=', $item)->update([
                     'Register_second_count' => session('user'),
                     'second_qty_count' => $qty,
