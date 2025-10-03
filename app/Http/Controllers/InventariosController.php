@@ -86,7 +86,12 @@ class InventariosController extends Controller
         if ($cat == "invreg1") {
             $buscarfolios = globalInventarios::where('Folio_sheet_audited', '=', $request->input('folios'))->where('items','=',$request->input('item'))->exists();
             if ($buscarfolios) {
-                return redirect()->back()->with('message', 'The folio needs a second count.');
+                $agregar= globalInventarios::where('Folio_sheet_audited', '=', $request->input('folios'))->where('items','=',$request->input('item'))->first();
+                $primero=$agregar->first_qty_count??0;
+                $actualizado=globalInventarios::where('Folio_sheet_audited', '=', $request->input('folios'))->where('items','=',$request->input('item'))->update([
+                    'first_qty_count' => $primero+$request->input('qty')
+                ]);
+                return redirect()->back()->with('message', 'Inventory added successfully.');
             } else {
                 $inventario = new globalInventarios();
                 $inventario->items = strtoupper($request->input('item'));
