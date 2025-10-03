@@ -162,7 +162,7 @@ class InventariosController extends Controller
                 }
                 return redirect()->back()->with('message', 'Inventory added successfully.');
             }
-        } else if ($cat == "invreg2") {
+        } else if ($cat == "invwo2") {
             $buscarfolios = globalInventarios::where('id_workOrder', '=', $repWO)
             ->where('second_qty_count','!=', '0')
             ->first();
