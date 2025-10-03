@@ -132,7 +132,7 @@ class InventariosController extends Controller
             'qty' => 'required|array',
             'id_workOrder' => 'required|string',
         ]);
-        $repWO= explode("-", session('user'))[1]."-".$request->input('id_workOrder');
+        $repWO= "wip-".$request->input('id_workOrder');
         if ($cat == "invwo1") {
             $buscarfolios = globalInventarios::where('id_workOrder', '=', $repWO)->first();
             if (!empty($buscarfolios)) {
