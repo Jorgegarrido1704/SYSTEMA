@@ -183,7 +183,7 @@ class InventariosController extends Controller
                     $item = strtoupper($item);
                     $qty = $request->input('qty')[$i];
 
-                $difference = abs($buscarfolios->first_qty_count - $qty);
+                $difference = abs($buscarfolios->first_qty_count??0 - $qty);
 
                 $inventario = globalInventarios::where('id_workOrder', '=', $repWO)
                 ->where('items', '=', $item)->update([
