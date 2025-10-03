@@ -134,9 +134,10 @@ class InventariosController extends Controller
                  for ($i=0; $i < count($request->input('item')); $i++) {
                     $buscaYaregistro = globalInventarios::where('id_workOrder', '=', $repWO)
                     ->where('items','=',$request->input('item')[$i])->first();
+                    $cantidad=$buscaYaregistro->first_qty_count;
                     $updatedatos=globalInventarios::where('id_workOrder', '=', $repWO)
                     ->where('items','=',$request->input('item')[$i])->update([
-                        'first_qty_count' => $buscaYaregistro->first_qty_count+$request->input('qty')[$i]
+                        'first_qty_count' => $cantidad+$request->input('qty')[$i]
                     ]);
                 }
                 return redirect()->back()->with('message', 'Inventory added successfully.');
@@ -164,9 +165,10 @@ class InventariosController extends Controller
                 for ($i=0; $i < count($request->input('item')); $i++) {
                     $buscaYaregistro = globalInventarios::where('id_workOrder', '=', $repWO)
                     ->where('items','=',$request->input('item')[$i])->first();
+                    $cantidad = $buscaYaregistro->first_qty_count;
                     $updatedatos=globalInventarios::where('id_workOrder', '=', $repWO)
                     ->where('items','=',$request->input('item')[$i])->update([
-                        'first_qty_count' => $buscaYaregistro->first_qty_count+$request->input('qty')[$i]
+                        'first_qty_count' => $cantidad+$request->input('qty')[$i]
                     ]);
                 }
                 return redirect()->back()->with('message', 'Inventory added successfully.');
