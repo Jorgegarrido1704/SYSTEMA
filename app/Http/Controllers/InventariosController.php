@@ -78,6 +78,7 @@ class InventariosController extends Controller
             'qty' => 'required|numeric',
             'folios' => 'required|string',
         ]);
+        $registros=explode("-", session('user'))[1];
         if ($cat == "invreg1") {
             $buscarfolios = globalInventarios::where('Folio_sheet_audited', '=', $request->input('folios'))->where('items','=',$request->input('item'))->exists();
             if ($buscarfolios) {
@@ -86,6 +87,7 @@ class InventariosController extends Controller
                 $inventario = new globalInventarios();
                 $inventario->items = strtoupper($request->input('item'));
                 $inventario->Register_first_count = session('user');
+                $inventario->id_workOrder = $registros;
                 $inventario->first_qty_count = $request->input('qty');
                 $inventario->date_first_count = Carbon::now()->format('Y-m-d H:i');
                 $inventario->Folio_sheet_audited = $request->input('folios');
@@ -115,13 +117,15 @@ class InventariosController extends Controller
     public function addWorkOrder(Request $request)
     {
         $cat = session('categoria');
+        $registros=explode("-", session('user'))[1];
         $request->validate([
             'item' => 'required|array',
             'qty' => 'required|array',
             'id_workOrder' => 'required|string',
         ]);
         if ($cat == "invwo1") {
-            $buscarfolios = globalInventarios::where('id_workOrder', '=', $request->input('id_workOrder'))->exists();
+            $buscarfolios = globalInventarios::where('id_workOrder', '=', $request->input('id_workOrder'))
+            ->where('Register_first_count','=',session('user'))->exists();
             if ($buscarfolios) {
                 return redirect()->back()->with('message', 'The folio needs a second count.');
             } else {
@@ -134,15 +138,17 @@ class InventariosController extends Controller
                     $inventario->Register_first_count = session('user');
                     $inventario->first_qty_count = $qty;
                     $inventario->date_first_count = Carbon::now()->format('Y-m-d H:i');
-                    $inventario->id_workOrder = $request->input('id_workOrder');
+                    $inventario->id_workOrder = $registros.'-'.$request->input('id_workOrder');
                     $inventario->status_folio_general = 'First Count';
                     $inventario->save();
                 }
                 return redirect()->back()->with('message', 'Inventory added successfully.');
             }
         } else if ($cat == "invreg2") {
-            $buscarfolios = globalInventarios::where('id_workOrder', '=', $request->input('id_workOrder'))->first();
-            if (!$buscarfolios) {
+            $buscarfolios = globalInventarios::where('id_workOrder', '=', $request->input('id_workOrder'))
+            ->where('Register_second_count','=', session('user'))
+            ->exists();
+            if ($buscarfolios) {
                 return redirect()->back()->with('message', 'The folio needs a first count.');
             } else {
                  for ($i=0; $i < count($request->input('item')); $i++) {
@@ -152,7 +158,8 @@ class InventariosController extends Controller
 
                 $difference = abs($buscarfolios->first_qty_count - $qty);
 
-                $inventario = globalInventarios::where('id_workOrder', '=', $request->input('id_workOrder'))->where('items', '=', $item)->update([
+                $inventario = globalInventarios::where('id_workOrder', '=', $request->input('id_workOrder'))
+                ->where('items', '=', $item)->update([
                     'Register_second_count' => session('user'),
                     'second_qty_count' => $qty,
                     'date_second_count' => Carbon::now()->format('Y-m-d H:i'),
