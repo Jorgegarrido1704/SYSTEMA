@@ -23,7 +23,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {{ dd($datosRegistros) }}
+                               
                                 @foreach ($datosRegistros as $inventario)
 
                                 <tr>
