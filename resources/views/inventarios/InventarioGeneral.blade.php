@@ -25,7 +25,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($datosRegistros as $itemDatos)
+                             <!--   @foreach($datosRegistros as $itemDatos)
                                 <tr>
                                      @if($cat=="invwo1" || $cat=="invwo2"  )
                                     <td>{{ $itemDatos->id_workOrder }}</td>
@@ -44,6 +44,7 @@
                                     @endif
                                 </tr>
                                 @endforeach
+                            -->
                             </tbody>
                         </table>
                     </div>
