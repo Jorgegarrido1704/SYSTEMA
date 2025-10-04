@@ -26,7 +26,7 @@ class InventariosController extends Controller
             $folio=globalInventarios::where('Register_first_count', '=', $value)->orderBy('id_item', 'desc')->first();
             $datosRegistros = globalInventarios::where('Register_first_count', '=', $value)->orWhere('Register_second_count', '=', $value)->orderBy('difference', 'desc')->get();
         } else if ($cat == "auditor") {
-            $datosRegistros = globalInventarios::all()->orderBy('difference', 'desc');
+            $datosRegistros = globalInventarios::all()->sortBy('difference', 'desc');
         }
 
         return view(
