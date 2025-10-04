@@ -23,7 +23,9 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                {{ dd($datosRegistros) }}
                                 @foreach ($datosRegistros as $inventario)
+
                                 <tr>
                                     <td>{{ $inventario->items }}</td>
                                     <td>{{ $inventario->first_qty_count }}</td>
