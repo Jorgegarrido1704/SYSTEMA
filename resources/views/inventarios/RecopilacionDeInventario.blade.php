@@ -23,7 +23,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                               
+                              <!--
                                 @foreach ($datosRegistros as $inventario)
 
                                 <tr>
@@ -33,7 +33,7 @@
                                     <td>{{ $inventario->difference }}</td>
                                 </tr>
                                 @endforeach
-
+                            -->
                         </table>
                     </div>
                 </div>
