@@ -42,8 +42,9 @@ class InventariosController extends Controller
         if ($value == "") {
             return redirect('/');
         }
-        $datosRegistros = globalInventarios::where('second_qty_count', '>', 0)->orderby('difference', 'desc');
+        $datosRegistros = globalInventarios::all();
         $datosPendientes = globalInventarios::where('second_qty_count', '=', null)->orderby('difference', 'desc');
+        dd($datosPendientes);
         return view(
             'inventarios.RecopilacionDeInventario',
             ['value' => session('user'), 'cat' => session('categoria'), 'datosRegistros' => $datosRegistros, 'datosPendientes' => $datosPendientes]
