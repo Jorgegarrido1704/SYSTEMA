@@ -42,7 +42,7 @@ class InventariosController extends Controller
         if ($value == "") {
             return redirect('/');
         }
-        $datosRegistros = globalInventarios::all()->orderby('difference', 'desc');
+        $datosRegistros = globalInventarios::orderby('difference', 'desc');
 
 
         return view(
