@@ -3,6 +3,7 @@
 @section('contenido')
 
 <!-- Page Heading -->
+    <meta http-equiv="refresh" content="60">
  <div class="d-sm-flex align-items-center justify-content-between mb-4"></div>
     <div class="row">
         <div class="col-lg-6 col-lx-6">
@@ -16,13 +17,20 @@
                             <thead>
                                 <tr>
                                     <th>Item</th>
-                                    <th>Total</th>
-                                    <th>Last update</th>
-                                    <th>Last data entry by</th>
-
+                                    <th>First update</th>
+                                    <th>second update</th>
+                                    <th>Diference</th>
                                 </tr>
                             </thead>
-
+                            <tbody>
+                                @foreach ($datosRegistros as $inventario)
+                                <tr>
+                                    <td>{{ $inventario->items }}</td>
+                                    <td>{{ $inventario->first_qty_count }}</td>
+                                    <td>{{ $inventario->second_qty_count }}</td>
+                                    <td>{{ $inventario->difference }}</td>
+                                </tr>
+                                @endforeach
 
                         </table>
                     </div>
@@ -35,19 +43,7 @@
                         <h5 class="m-0 font-weight-bold text-primary">Inventary</h5>
                     </div>
                     <div class="card-body" style="overflow-y: auto; height: 360px;"  >
-                        <table class="table table-bordered"  width="100%" cellspacing="0">
-                            <thead>
-                                <tr>
-                                    <th>Item</th>
-                                    <th>Total</th>
-                                    <th>Last update</th>
-                                    <th>Last data entry by</th>
 
-                                </tr>
-                            </thead>
-
-
-                        </table>
                     </div>
                 </div>
             </div>

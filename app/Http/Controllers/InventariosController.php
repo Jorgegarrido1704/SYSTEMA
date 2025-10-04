@@ -42,7 +42,7 @@ class InventariosController extends Controller
         if ($value == "") {
             return redirect('/');
         }
-        $datosRegistros = globalInventarios::where('Register_first_count', '=', $value)->orWhere('Register_second_count', '=', $value)->get();
+        $datosRegistros = globalInventarios::all()->orderby('difference', 'desc');
 
 
         return view(
