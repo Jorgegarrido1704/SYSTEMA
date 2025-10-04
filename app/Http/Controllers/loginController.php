@@ -82,9 +82,9 @@ class loginController extends Controller
                     return redirect('/almacen');
                 } else if ($categoria == 'BCali') {
                     return redirect('/BossCali');
-                } else if ($categoria == 'invreg1' || $categoria == 'invreg2' || $categoria == 'capt' || $categoria == 'invwo1' || $categoria == 'invwo2' ) {
+                } else if ($categoria == 'invreg1' || $categoria == 'invreg2' || $categoria == 'auditor' || $categoria == 'invwo1' || $categoria == 'invwo2' ) {
                     return redirect('/inventarios');
-                } else if ($categoria == 'auditor') {
+                } else if ($categoria == 'pisos') {
                     return redirect('/pisoWork');
                 } else if ($categoria == 'Pendings') {
                     return redirect('/Pendigs');
