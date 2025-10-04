@@ -24,15 +24,7 @@
                             </thead>
                             <tbody>
                               <!--
-                                @foreach ($datosRegistros as $inventario)
-
-                                <tr>
-                                    <td>{{ $inventario->items }}</td>
-                                    <td>{{ $inventario->first_qty_count }}</td>
-                                    <td>{{ $inventario->second_qty_count }}</td>
-                                    <td>{{ $inventario->difference }}</td>
-                                </tr>
-                                @endforeach
+                             
                             -->
                         </table>
                     </div>
