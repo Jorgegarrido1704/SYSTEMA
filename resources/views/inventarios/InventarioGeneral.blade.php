@@ -65,7 +65,7 @@
                         </div>
                         <div class="form-group col-lg-6 col-lx-6">
                             <label for="items">Item</label>
-                            <input type="text" class="form-control" id="item" name="item" required>
+                            <input type="text" class="form-control" id="item" name="item" required focus>
                         </div>
                         <div class="form-group col-lg-6 col-lx-6">
                             <label for="qty">Quantity</label>
