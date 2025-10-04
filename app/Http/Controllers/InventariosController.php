@@ -110,8 +110,11 @@ class InventariosController extends Controller
                 return redirect()->back()->with('message', 'The folio needs a first count.');
             } else {
                 if($buscarfolios->second_qty_count != null or $buscarfolios->second_qty_count != 0){
+                    $sum=$buscarfolios->second_qty_count+$request->input('qty');
+                    $difference = abs($buscarfolios->first_qty_count - $sum);
                     $agregar= globalInventarios::where('Folio_sheet_audited', '=', $request->input('folios'))->where('items','=',$request->input('item'))->update([
-                        "second_qty_count"=>$buscarfolios->second_qty_count+$request->input('qty')
+                        "second_qty_count"=>$sum,
+                        "difference"=>$difference
                     ]);
                 }else{
                 $difference = abs($buscarfolios->first_qty_count - $request->input('qty'));
