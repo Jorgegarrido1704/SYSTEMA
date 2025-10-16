@@ -102,6 +102,22 @@
 
                                                             </form>
                                                 </div>
+                                                 <div class="col-lg-4 mb-4">
+                                                            <form action="{{ route('registrosGenerales')}}" method="GET" >
+                                                                <label for="setAddWeek">reporte General</label>
+                                                                <input type="hidden" name="setAddWeek" id="setAddWeek" value="2">
+                                                                <button type="submit" class="btn btn-primary">Create</button>
+
+                                                            </form>
+                                                </div>
+                                                 <div class="col-lg-4 mb-4">
+                                                            <form action="{{ route('registrosGenerales')}}" method="GET" >
+                                                                <label for="setAddWeek">Vacaciones</label>
+                                                                <input type="hidden" name="setAddWeek" id="setAddWeek" value="3">
+                                                                <button type="submit" class="btn btn-primary">Create</button>
+
+                                                            </form>
+                                                </div>
                                             </div>
 
                                             </div>

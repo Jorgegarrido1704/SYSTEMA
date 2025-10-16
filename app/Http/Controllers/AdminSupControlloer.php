@@ -249,6 +249,10 @@ class AdminSupControlloer extends Controller
         }else{
             if($request->input('setAddWeek') == 1){
                \App\Jobs\AddWeek::dispatch();
+            }else if($request->input('setAddWeek') == 2){
+                \App\Jobs\reporteGeneral::dispatch();
+            }else if($request->input('setAddWeek') == 3){
+                \App\Jobs\VacacionesRegistrosJob::dispatch();
             }
         }
        return redirect('/SupAdmin');
