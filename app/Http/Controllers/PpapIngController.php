@@ -510,7 +510,12 @@ class PpapIngController extends Controller
                     'jguillen@mx.bergstrominc.com',
                     'maleman@mx.bergstrominc.com',
                     'fgomez@mx.bergstrominc.com',
-                    'lmireles@mx.bergstrominc.com'
+                    'lmireles@mx.bergstrominc.com',
+                    'apacheco@mx.bergstrominc.com',
+                    'naldana@mx.bergstrominc.com',
+                    'psilva@mx.bergstrominc.com',
+                    'jcrodriguez@mx.bergstrominc.com',
+                    'jcervera@mx.bergstrominc.com',
                 ];
                 Mail::to($recipients)->send(new \App\Mail\firmasNPIEmail($accion, 'New product Introduction - ' . $pn));
                 return redirect('/ing');
