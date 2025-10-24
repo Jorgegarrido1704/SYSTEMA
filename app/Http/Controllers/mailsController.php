@@ -113,7 +113,8 @@ class mailsController extends Controller
                 'jcervera@mx.bergstrominc.com',
                 'jamoreno@mx.bergstrominc.com',
                 'jgarrido@mx.bergstrominc.com',
-                'jcrodriguez@mx.bergstrominc.com'
+                'jcrodriguez@mx.bergstrominc.com',
+                'naldana@mx.bergstrominc.com'
             ];
             workScreduleModel::where('pn', '=', $accion->pn)->orderby('id', 'desc')->first()->update(['documentsApproved' => carbon::now()->format('Y-m-d')]);
 
@@ -200,7 +201,7 @@ class mailsController extends Controller
         $returnDate = $request->input('return_date');
         $receivers [0]= '';
         if (strpos($who, ',')) {
-           
+
             $datosde = explode(',', $who);
 
                 $correo = login::select('user_email')->where('user', '=', $datosde[0])->first();
