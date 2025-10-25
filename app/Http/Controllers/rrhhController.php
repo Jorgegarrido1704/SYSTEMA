@@ -23,6 +23,7 @@ class rrhhController extends Controller
     {
         $value = session('user');
         $cat = session('categoria');
+       // $leadername = personalBergsModel::select('employeeName' )->where('user', '=', $value)->first();
         $weekNum = Carbon::now()->weekOfYear;
             $datosRHWEEK = [];
         if ($value == 'Admin' or $cat  == 'RRHH') {

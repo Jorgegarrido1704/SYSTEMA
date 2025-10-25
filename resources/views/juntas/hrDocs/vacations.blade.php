@@ -46,8 +46,8 @@
                         </div>
                         <hr>
                         <div class="row">
-                            <div class="col-12">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <div class="col-12" style="overflow-x: auto; max-height: 750px;" >
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" >
                                     <thead>
                                         <tr>
                                             <th>Employee</th>

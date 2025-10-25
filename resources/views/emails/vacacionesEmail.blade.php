@@ -12,8 +12,8 @@
     <p> Departamento:{{$contend['departamento']}} </p>
     <p> Supervisor:{{$contend['supervisor']}} </p>
 
-    <p>
-        <a href="{{ $contend['link'] }}" target="_blank"
+   <!-- <p>
+        <a href="$contend['link'] }}" target="_blank"
            style="display:inline-block;
                   padding:10px 20px;
                   background-color:#007bff;
@@ -23,7 +23,7 @@
                   font-weight:bold;">
             Revisar Solicitud
         </a>
-    </p>
+    </p>-->
 
     <br><br>
     <p>Favor de revisar la solicitud en el CVTS </p>

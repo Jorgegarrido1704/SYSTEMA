@@ -17,6 +17,7 @@ class personalBergsModel extends Model
         'employeeNumber', 'employeeName', 'employeeArea', 'employeeLider',
          'DateIngreso', 'DaysVacationsAvailble', 'lastYear', 'currentYear',
          'nextYear', 'Gender', 'typeWorker', 'status', 'DateSalida','email',
+         'user','clave','category'
     ];
 
 }

@@ -449,12 +449,12 @@ class juntasController extends Controller
                     $tiemposPas[2] += 1;
                 }
             }
-            $registrosPPAP=po::select('pn','rev')->where('rev','LIKE','PPAP%')->where('rev','=','PRIM%')->get();
-            foreach($registrosPPAP as $rowPPAP){
-                $rev=substr($rowPPAP->rev,5);
-                $deuplicados=po::where('pn',$rowPPAP->pn)->where('rev','Like','%'.$rev)->count();
-                if($deuplicados>1){
-                    $lieaVenta[12]+=1;
+            $registrosPPAP = po::select('pn', 'rev')->where('rev', 'LIKE', 'PPAP%')->where('rev', '=', 'PRIM%')->get();
+            foreach ($registrosPPAP as $rowPPAP) {
+                $rev = substr($rowPPAP->rev, 5);
+                $deuplicados = po::where('pn', $rowPPAP->pn)->where('rev', 'Like', '%' . $rev)->count();
+                if ($deuplicados > 1) {
+                    $lieaVenta[12] += 1;
                 }
             }
 
@@ -505,7 +505,7 @@ class juntasController extends Controller
         $totalm = count($buscarValoresMes);
         foreach ($buscarValoresMes as $rows) {
             $supRes = personalBergsModel::select('employeeLider')->where('employeeName', $rows->Responsable)->first();
-            if(!$supRes){
+            if (!$supRes) {
                 $supRes->employeeLider = " ";
             }
             if (in_array($rows->codigo, $etiq)) {
@@ -810,13 +810,13 @@ class juntasController extends Controller
         foreach ($empleados as $rowEmp) {
             $supRes = personalBergsModel::select('employeeLider')->where('employeeName', $rowEmp->Responsable)->first();
 
-            if(!isset($supRes->employeeLider)){
+            if (!isset($supRes->employeeLider)) {
                 continue;
             }
-            if(strpos($supRes->employeeLider,",") !== false){
-               $superString= explode(",",$supRes->employeeLider)[0];
-            }else{
-                $superString=$supRes->employeeLider;
+            if (strpos($supRes->employeeLider, ",") !== false) {
+                $superString = explode(",", $supRes->employeeLider)[0];
+            } else {
+                $superString = $supRes->employeeLider;
             }
             if (!in_array($superString, array_keys($supIssue))) {
                 $supIssue[$superString] = 1;
@@ -1825,15 +1825,18 @@ class juntasController extends Controller
         $nextYear = Carbon::now()->addYear()->year;
         $anos = [$lastYear, $currentYear, $nextYear, $lastLastYear];
         $diasAviles = [];
+        $empleados = [];
         $value = session('user');
         $cat = session('categoria');
+        $lidername = personalBergsModel::select('employeeName', 'employeeLider', 'employeeArea')->where('user', '=', $value)->first();
 
 
-        $diasAviles = [];
-        $empleados = [];
-        $busqueda = personalBergsModel::where('employeeLider', 'LIKE', '%' . $value . '%')
+            $busqueda = personalBergsModel::where('employeeName', '=', $lidername->employeeName)
+            ->orwhere('employeeLider', '=',  $lidername->employeeName)
             ->where('status', '=', 'Activo')
             ->get();
+
+
         foreach ($busqueda as $rows) {
             $empleados[$rows->employeeName][0] = $rows->employeeName;
             $empleados[$rows->employeeName][1] = $rows->DateIngreso;
@@ -1864,16 +1867,16 @@ class juntasController extends Controller
         $vacaciones = registroVacacionesModel::wherebetween('fecha_de_solicitud', [$InicioYear->toDateString(), $FinYear->toDateString()])
             // ->where('fecha_de_solicitud', 'LIKE', $currentYear . '%')
             ->where('estatus', '=', 'Confirmado')
-            ->where('superVisor', '=', $value)
+            ->where('area', '=', $lidername->employeeArea)
             ->orderBy('fecha_de_solicitud', 'asc')
             ->get();
-        if (count($vacaciones) == 0) {
+        /*    if (count($vacaciones) == 0) {
             if (session('categoria') == 'inge') {
                 $equipo = 'Ingenieria';
 
                 $busquedaRelacionadas = personalBergsModel::select('employeeLider')->where('employeeArea', '=', $equipo)
                     ->limit(1)->first();
-                $Leader = $busquedaRelacionadas->employeeLider;
+                strpos($busquedaRelacionadas->employeeLider, ',')?$Leader=explode(',',$busquedaRelacionadas->employeeLider)[0]:$Leader = $busquedaRelacionadas->employeeLider;
             } else {
                 $Leader = $value;
             }
@@ -1884,7 +1887,7 @@ class juntasController extends Controller
                 ->where('superVisor', '=', $Leader)
                 ->orderBy('fecha_de_solicitud', 'asc')
                 ->get();
-        }
+        }*/
 
 
         // Crear array asociativo: 'Y-m-d' => [id_empleado, ...]
@@ -1893,7 +1896,7 @@ class juntasController extends Controller
         foreach ($vacaciones as $row) {
             $fechaInicial = Carbon::parse($row->fecha_de_solicitud)->toDateString(); // 'YYYY-MM-DD'
             $fecha = $fechaInicial;
-            for ($i = 0; $i < $row->dias_solicitados; $i++) {
+            for ($i = 0; $i <1; $i++) {
 
 
                 if (array_key_exists($fecha, $vacacions)) {
@@ -1979,16 +1982,16 @@ class juntasController extends Controller
         $supervisor = $buscarPersonal->employeeLider;
         $fecha_de_solicitud = $endDate->toDateString();
         $dias_solicitados = $diasT;
-        $link = URL::temporarySignedRoute('loginWithoutSession', now()->addMinutes(30), ['user' => 'Juan G']);
+        //$link = URL::temporarySignedRoute('loginWithoutSession', now()->addMinutes(30), ['user' => 'Juan G']);
         $contend = [
             'asunto' => 'Solicitud de Vacaciones',
             'nombre' => $nombre,
             'departamento' => $area,
             'supervisor' => $supervisor,
             'fecha_de_solicitud' => '',
+            'fecha_retorno' => '',
             'dias_solicitados' => $dias_solicitados ?? 1,
             'Folio' => '',
-            'link' => $link
         ];
 
 
@@ -2022,33 +2025,35 @@ class juntasController extends Controller
                 } else {
                     $years = Carbon::now()->subYear()->year;
                 }
+                //Insert into registro_vacaciones table
+                DB::table('registro_vacaciones')->insert([
+                    'id_empleado' => $pesonal,
+                    'fecha_de_solicitud' => $returnDate,
+                    'fehca_retorno' => $returnDate,
+                    'estatus' => 'Pendiente RH',
+                    'dias_solicitados' => $diasReg,
+                    'usedYear' => $years,
+                    'superVisor' => session('user'),
+                    'area' => $area,
+
+                ]);
             }
             $returnDate->addDay(1);
         }
 
-        //Insert into registro_vacaciones table
-        DB::table('registro_vacaciones')->insert([
-            'id_empleado' => $pesonal,
-            'fecha_de_solicitud' => $endDate,
-            'fehca_retorno' => $returnDate,
-            'estatus' => 'Pendiente RH',
-            'dias_solicitados' => $diasReg,
-            'usedYear' => $years,
-            'superVisor' => session('user')
 
-        ]);
 
         $buscarFolio = DB::table('registro_vacaciones')
-            ->select('id')->where('id_empleado', '=', $pesonal)
+            ->select('id', 'superVisor', 'dias_solicitados', 'fecha_de_solicitud')->where('id_empleado', '=', $pesonal)
             ->limit(1)->orderBy('id', 'desc')->first();
+
         $folio = 'VAC-' . $buscarFolio->id;
-        $contend['fecha_de_solicitud'] = $endDate->toDateString();
+        $fechadeSolicitud = Carbon::parse($buscarFolio->fecha_de_solicitud)->addWeekdays(-$buscarFolio->dias_solicitados);
+        $contend['fecha_de_solicitud'] = $fechadeSolicitud->toDateString();
         $contend['Folio'] = $folio;
-        $receivers = [
-            'paguilar@mx.bergstrominc.com',
-            'mabibarra@mx.bergstrominc.com'
-        ];
-        Mail::to($receivers)->send(new solicitudVacacionesMail($contend, 'Solicitud de Vacaciones'));
+        $buscarEmails = personalBergsModel::select('email')->where('user', '=', $buscarFolio->superVisor)->first();
+
+        Mail::to($buscarEmails->email)->send(new solicitudVacacionesMail($contend, 'Solicitud de Vacaciones'));
 
         // Mail::to('jguillen@mx.bergstrominc.com')->send(new solicitudVacacionesMail($contend, 'Solicitud de Vacaciones'));
         // Mail::to('jgarrido@mx.bergstrominc.com')->send(new solicitudVacacionesMail($contend, 'Solicitud de Vacaciones'));
@@ -2212,7 +2217,7 @@ class juntasController extends Controller
     public function DatosRh(Request $request)
     {
         $id = $request->input('id');
-       
+
         $value = session('user');
         $cat = session('categoria');
         $dias = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
@@ -2232,7 +2237,7 @@ class juntasController extends Controller
                     ->first();
                 if ($buscarVacaciones) {
                     $datos[] =  ['name' => $row->name, 'folio' => $buscarVacaciones->id];
-                }else{
+                } else {
                     $datos[] =  ['name' => $row->name, 'folio' => 'No registrado en sistema'];
                 }
             }
