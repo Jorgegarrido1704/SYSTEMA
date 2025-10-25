@@ -4,8 +4,20 @@
 
 <script src="{{ asset('/dash/js/vacaciones.js') }}"></script>
 
+@if (session('error'))
+<script>
+Swal.fire({
+    icon: 'error',
+    title: 'Error',
+    text: "{{ session('error') }}"
+});
+</script>
+@endif
+
 
 <div class="d-sm-flex align-items-center justify-content-between mb-4">  </div>
+
+@push('scripts')
 
 
 <!-- First Period -->

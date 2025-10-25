@@ -712,6 +712,8 @@
 @yield('scripts')
 
 
+
+
 </body>
 
 </html>

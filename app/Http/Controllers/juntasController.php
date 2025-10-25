@@ -1831,7 +1831,7 @@ class juntasController extends Controller
         $lidername = personalBergsModel::select('employeeName', 'employeeLider', 'employeeArea')->where('user', '=', $value)->first();
 
 
-            $busqueda = personalBergsModel::where('employeeName', '=', $lidername->employeeName)
+        $busqueda = personalBergsModel::where('employeeName', '=', $lidername->employeeName)
             ->orwhere('employeeLider', '=',  $lidername->employeeName)
             ->where('status', '=', 'Activo')
             ->get();
@@ -1896,7 +1896,7 @@ class juntasController extends Controller
         foreach ($vacaciones as $row) {
             $fechaInicial = Carbon::parse($row->fecha_de_solicitud)->toDateString(); // 'YYYY-MM-DD'
             $fecha = $fechaInicial;
-            for ($i = 0; $i <1; $i++) {
+            for ($i = 0; $i < 1; $i++) {
 
 
                 if (array_key_exists($fecha, $vacacions)) {
@@ -1956,19 +1956,7 @@ class juntasController extends Controller
         $endDate = Carbon::parse($input['endDate']);
         $diasT = $input['diasT'];
         $returnDate = Carbon::parse($input['endDate']);
-
-        // revisar si hay
-        $datosVacaciones = DB::table('registro_vacaciones')
-            ->select('dias_solicitados', 'id_empleado')
-            ->where('fecha_de_solicitud', '=', $endDate)
-            ->get();
-
-        if ($datosVacaciones != null &&  count($datosVacaciones) > 200) {
-            session()->flash('error', 'Ya hay vacaciones registradas para esta fecha.');
-            return redirect()->back();
-        }
-
-
+        $checkDias = Carbon::parse($input['endDate']);
 
         $buscarPersonal = DB::table('personalberg')
             ->where('employeeNumber', '=', $pesonal)
@@ -1981,6 +1969,32 @@ class juntasController extends Controller
         $area = $buscarPersonal->employeeArea;
         $supervisor = $buscarPersonal->employeeLider;
         $fecha_de_solicitud = $endDate->toDateString();
+        $noposible = 0;
+
+        // revisar si hay disponibilidad de vacaciones en la fecha solicitada
+        for ($i = 0; $i < $diasT; $i++) {
+            if (Carbon::parse($checkDias)->isWeekend()) {
+                $diasT++;
+            } else {
+                $datosVacaciones = DB::table('registro_vacaciones')
+                    ->where('fecha_de_solicitud', '=', $checkDias->toDateString())
+                    ->where('area', '=', $area)
+                    ->count();
+                if ($datosVacaciones > 1) {
+                    $noposible += 1;
+                }
+            }
+            $checkDias->addDay(1);
+        }
+
+
+        if ($noposible > 0) {
+           return redirect()->back()->with('error', 'Alguno de los días solicitados ya tiene el máximo de vacaciones aprobadas en su área.
+Por favor, revise con su supervisor y elija otras fechas.');
+        }
+
+
+
         $dias_solicitados = $diasT;
         //$link = URL::temporarySignedRoute('loginWithoutSession', now()->addMinutes(30), ['user' => 'Juan G']);
         $contend = [
