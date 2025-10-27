@@ -671,6 +671,7 @@ class PpapIngController extends Controller
     {
         $value = session('user');
         $date = date("d-m-Y H:i");
+
         $pn = $request->input('pnIs');
         $wo = $request->input('workIs');
         $rev = $request->input('revIs');
@@ -961,5 +962,22 @@ class PpapIngController extends Controller
 
 
         return view('inge.graficaGantt', ['value' => $value, 'cat' => $cat, 'data' => $data, 'lastDayoffMonth' => $lastDayoffMonth]);
+    }
+    public function datosWo(){
+        $wo= request()->input('workOrder');
+        $data=[];
+        $datosWO= Wo::select( 'NumPart','Cliente','rev','Qty')->where('wo',$wo)->first();
+        if(!$datosWO){
+
+            return response()->json($data);
+        }
+       $data=[
+           'status'=>'ok',
+            'NumPart'=>$datosWO->NumPart,
+            'Cliente'=>$datosWO->Cliente,
+            'rev'=>$datosWO->rev,
+            'Qty'=>$datosWO->Qty,
+             ];
+        return response()->json($data);
     }
 }

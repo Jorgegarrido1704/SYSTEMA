@@ -10,8 +10,36 @@
         var paoT = @json($paolaT);
         var alexT = @json($alexT);
         var paoTd = @json($paolaTdesc);
-        console.log(paoT + paoTd);
-        console.log(alex + alexDesc);
+        var url = @json(route('datosWO'));
+
+    //    console.log(paoT + paoTd);
+     //   console.log(alex + alexDesc);
+        function workOrder() {
+            var workOrder = document.getElementById('workIs').value;
+           fetch( url, {
+                method: 'POST',
+                body: JSON.stringify({ workOrder: workOrder }),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status=='ok') {
+                    
+                        document.getElementById('pnIs').value = data.NumPart;
+                        document.getElementById('revIs').value = data.rev;
+                    } else {
+                        alert('Work Order not found.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching work order info:', error);
+                });
+            }
+
+
     </script>
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
 
@@ -690,7 +718,7 @@
                             <div class="col-md-6">
                                 <label for="workIs" class="form-label">Work Order</label>
                                 <input type="text" class="form-control" name="workIs" id="workIs" minlength="6"
-                                    required>
+                                    required onchange="workOrder();">
                             </div>
                             <div class="col-md-6">
                                 <label for="revIs" class="form-label">Revision</label>
