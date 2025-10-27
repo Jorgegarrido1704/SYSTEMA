@@ -512,7 +512,7 @@ class PpapIngController extends Controller
                     'fgomez@mx.bergstrominc.com',
                     'lmireles@mx.bergstrominc.com',
                     'apacheco@mx.bergstrominc.com',
-                    'naldana@mx.bergstrominc.com',
+                    'naldan@mx.bergstrominc.com',
                     'psilva@mx.bergstrominc.com',
                     'jcrodriguez@mx.bergstrominc.com',
                     'jcervera@mx.bergstrominc.com',

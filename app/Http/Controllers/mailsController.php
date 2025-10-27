@@ -114,7 +114,7 @@ class mailsController extends Controller
                 'jamoreno@mx.bergstrominc.com',
                 'jgarrido@mx.bergstrominc.com',
                 'jcrodriguez@mx.bergstrominc.com',
-                'naldana@mx.bergstrominc.com'
+                'naldan@mx.bergstrominc.com'
             ];
             workScreduleModel::where('pn', '=', $accion->pn)->orderby('id', 'desc')->first()->update(['documentsApproved' => carbon::now()->format('Y-m-d')]);
 
