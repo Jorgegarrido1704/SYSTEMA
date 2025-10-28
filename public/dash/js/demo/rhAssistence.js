@@ -137,11 +137,11 @@ const rota0 = new Chart(document.getElementById("rotation0"), {
         },
     },
     data: {
-        labels: ["Max rotacion: " + 3 + "%", "Rotacion: " +registroInicidencia[9] + "%"],
+        labels: ["Max rotacion: " + 3 + "%", "Rotacion: " +registroInicidencia[10] + "%"],
         datasets: [
             {
                 label: "Rotación de personal",
-                data: [3, registroInicidencia[9]],
+                data: [3, registroInicidencia[10]],
                 backgroundColor: [
                     "rgba(2, 164, 75, 0.25)",
                     "rgba(205, 2, 2, 0.25)",

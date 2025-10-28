@@ -1989,8 +1989,8 @@ class juntasController extends Controller
 
 
         if ($noposible > 0) {
-           return redirect()->back()->with('error', 'Alguno de los días solicitados ya tiene el máximo de vacaciones aprobadas en su área.
-Por favor, revise con su supervisor y elija otras fechas.');
+            return redirect()->back()->with('error', 'Alguno de los días solicitados ya tiene el máximo de vacaciones aprobadas en su área.
+        Por favor, revise con su supervisor y elija otras fechas.');
         }
 
 
@@ -2111,7 +2111,7 @@ Por favor, revise con su supervisor y elija otras fechas.');
             ->get();
         $rotacionTotal = count($registroRotacion);
 
-        $totalRotacion = round($rotacionTotal / $total * 100, 2);
+        $totalRotacion = round($rotacionTotal / ($rotacionTotal + $total) * 100, 2);
 
         $selectDia = Carbon::now()->dayOfWeek;
         $diaActual = $dias[$selectDia - 1];
@@ -2223,6 +2223,9 @@ Por favor, revise con su supervisor y elija otras fechas.');
                 $vacas[11]++;
             }
         }
+        //Rotacion por mes
+
+
 
         return view('juntas.hr', ['enplanta' => $enplanta, 'vacas' => $vacas, 'promaus' => $promaus, 'diaActual' => $diaActual, 'tipoTrabajador' => $tipoTrabajador, 'faltantes' => $faltantes, 'faltan' => $faltan, 'genero' => $genero, 'registrosDeAsistencia' => $registrosDeAsistencia, 'value' => session('user'), 'cat' => session('categoria'), 'accidente' => $accidente]);
     }
