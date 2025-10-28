@@ -171,7 +171,7 @@ const rota0 = new Chart(document.getElementById("rotation0"), {
                     chart.chartArea.top +
                     (chart.chartArea.bottom - chart.chartArea.top) / 2;
                 ctx.fillText(
-                    `${( registroInicidencia[8])}%`,
+                    `${( registroInicidencia[10])}%`,
                     centerX,
                     centerY
                 );
