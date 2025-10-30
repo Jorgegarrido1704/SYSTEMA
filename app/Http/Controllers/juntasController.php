@@ -2065,9 +2065,11 @@ class juntasController extends Controller
         $fechadeSolicitud = Carbon::parse($buscarFolio->fecha_de_solicitud)->addWeekdays(-$buscarFolio->dias_solicitados);
         $contend['fecha_de_solicitud'] = $fechadeSolicitud->toDateString();
         $contend['Folio'] = $folio;
-        $buscarEmails = personalBergsModel::select('email')->where('user', '=', $buscarFolio->superVisor)->first();
+        $buscarEmails = personalBergsModel::select('employeeLider')->where('user', '=', session('user'))->first();
+        $buscarEmailsLider = personalBergsModel::select('email')->where('employeeName', '=', $buscarEmails->employeeLider)->first();
 
-        Mail::to($buscarEmails->email)->send(new solicitudVacacionesMail($contend, 'Solicitud de Vacaciones'));
+
+        Mail::to($buscarEmailsLider->email)->send(new solicitudVacacionesMail($contend, 'Solicitud de Vacaciones'));
 
         // Mail::to('jguillen@mx.bergstrominc.com')->send(new solicitudVacacionesMail($contend, 'Solicitud de Vacaciones'));
         // Mail::to('jgarrido@mx.bergstrominc.com')->send(new solicitudVacacionesMail($contend, 'Solicitud de Vacaciones'));
