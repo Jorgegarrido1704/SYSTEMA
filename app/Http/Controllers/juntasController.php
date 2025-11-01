@@ -1797,7 +1797,8 @@ class juntasController extends Controller
     {
         $cat=session('categoria');
         $datosOk = $request->input('dataok');
-        DB::table('issuesfloor')->where('id_tiempos', '=', $datosOk)->where('actionOfComment', '!=', 'Issue Fixed')->update(['actionOfComment' => 'Issue Fixed']);
+        $finDate=Carbon::now()->format('Y-m-d H:i:s');
+        DB::table('issuesfloor')->where('id_tiempos', '=', $datosOk)->where('actionOfComment', '!=', 'Issue Fixed')->update(['actionOfComment' => 'Issue Fixed', 'finReg'=>$finDate]);
           if($cat=='inge'){
             return redirect()->route('ing_junta');
         }
@@ -1808,12 +1809,14 @@ class juntasController extends Controller
 
         $value = session('user');
         $cat = session('categoria');
+
         $issuesRegister = new issuesFloor();
         $issuesRegister->id_tiempos = $request->input('id_issue');
         $issuesRegister->comment_issue = $request->input('comments');
         $issuesRegister->date = $request->input('date_issue');
         $issuesRegister->responsable = $value . ' ' . $cat;
         $issuesRegister->actionOfComment = $request->input('status_issue');
+        $issuesRegister->inicioReg = Carbon::now()->format('Y-m-d H:i:s');
         $issuesRegister->save();
         if($cat=='inge'){
             return redirect()->route('ing_junta');

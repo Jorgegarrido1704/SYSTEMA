@@ -10,7 +10,7 @@ class issuesFloor extends Model
     use HasFactory;
 
     protected $table = 'issuesfloor';
-    protected $fillable = ['id_tiempos', 'comment_issue', 'date', 'responsable','actionOfComment'];
+    protected $fillable = ['id_tiempos', 'comment_issue', 'date', 'responsable','actionOfComment', 'inicioReg', 'finReg'];
     public $timestamps = false ;
     protected $primaryKey = 'id_issuesfloor';
     protected $keyType = 'string';
@@ -21,7 +21,9 @@ class issuesFloor extends Model
         'comment_issue' => 'string',
         'date' => 'datetime',
         'responsable' => 'string',
-        'actionOfComment' => 'string'
+        'actionOfComment' => 'string',
+        'inicioReg' => 'datetime',
+        'finReg' => 'datetime',
     ];
 
 }
