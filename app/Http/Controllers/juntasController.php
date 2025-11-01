@@ -2534,11 +2534,11 @@ class juntasController extends Controller
                 $materiales='OK';
                 $corte='OK';
                 $ensamble='OK';
-                $calidad='pending';
+                $calidad='In process';
                 $aprovado='-';
             }elseif($reg->count==17 or $reg->count==16){
                 $materiales='OK';
-                $corte='-';
+                $corte='In process';
                 $ensamble='-';
                 $calidad='-';
                 $aprovado='-';
@@ -2546,7 +2546,7 @@ class juntasController extends Controller
             }else if($reg->count==14 or $reg->count==14){
                 $materiales='OK';
                 $corte='OK';
-                $ensamble='-';
+                $ensamble='In process';
                 $calidad='-';
                 $aprovado='-';
             }
