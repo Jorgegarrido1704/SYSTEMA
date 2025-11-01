@@ -181,10 +181,12 @@
                                 @foreach ($registroPPAP as $ppaps )
 
                                     <tr id={{ $ppaps[21] }} style="text-align: center; background-color:rgba({{ $ppaps[14] }}) ; text-align: center; color : black;">
+
                                         <td>{{$ppaps[0]}} </td>
-                                        <td>{{$ppaps[1]}} </td>
+                                        <td> <a href="{{ route('seguimiento', $ppaps[22]) }}">{{$ppaps[1]}} </a> </td>
                                         <td>{{$ppaps[2]}} </td>
                                         <td>{{$ppaps[3]}} </td>
+                                      
                                         <td>{{$ppaps[4]}} </td>
                                         <td>{{$ppaps[5]}} </td>
                                         <td style="color: {{ $ppaps[17] }};" >{{ $ppaps[6] }} </td>
@@ -202,6 +204,7 @@
                                         <td>{{$ppaps[13]}} </td>
 
                                     </tr>
+                                    </a>
 
                                 @endforeach
                             @endif

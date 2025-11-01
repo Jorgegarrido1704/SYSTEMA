@@ -1182,8 +1182,8 @@ class juntasController extends Controller
 
         $mesGrafica = intval(carbon::now()->sub(1, 'month')->format('m'));
         $porcentaje = $thisYearGoals[$mesGrafica];
-        $b = $buenos[$mesGrafica];
-        $m = $malos[$mesGrafica];
+        $b = $buenos[$mesGrafica]??0;
+        $m = $malos[$mesGrafica]??0;
         $mes = date('m', strtotime('-1 month'));
         $registrosmes = workScreduleModel::where('CompletionDate', 'LIKE', date('Y') . '-' . $mes . '-%')->where('status', 'Completed')
             ->orderBy('CompletionDate', 'DESC')
@@ -1225,6 +1225,7 @@ class juntasController extends Controller
             }
             $registroPPAP[$i][18] = $res->qtyInPo;
             $registroPPAP[$i][21] = "c-" . $res->Color ?? "c-white";
+            $registroPPAP[$i][22] = "#";
             if ($res->documentsApproved != "" && $res->documentsApproved != null) {
                 $porbajara++;
             } else {
@@ -1320,7 +1321,8 @@ class juntasController extends Controller
                 $registroPPAP[$i][14] = "236, 236, 9, 0.497";
                 $totalprim++;
             }
-            $registroPPAP[$i][21] = "c-" . $res->Color ?? "c-white";;
+            $registroPPAP[$i][21] = "c-" . $res->Color ?? "c-white";
+            $registroPPAP[$i][22] = $reg->id;
             $i++;
         }
         $enproceso = count($registros);
@@ -1738,6 +1740,7 @@ class juntasController extends Controller
     //Show seguimiento according ID
     public function seguimiento($id)
     {
+        $cat=session('categoria');
         $i = 0;
         $datosInforRegistro = $commentsBefore = [];
         $bucarRegistros = DB::table('registro')
@@ -1792,8 +1795,12 @@ class juntasController extends Controller
     //Save commets
     public function registroComment(Request $request)
     {
+        $cat=session('categoria');
         $datosOk = $request->input('dataok');
         DB::table('issuesfloor')->where('id_tiempos', '=', $datosOk)->where('actionOfComment', '!=', 'Issue Fixed')->update(['actionOfComment' => 'Issue Fixed']);
+          if($cat=='inge'){
+            return redirect()->route('ing_junta');
+        }
         return redirect()->route('seguimientos');
     }
     public function conSeguimientos(Request $request)
@@ -1808,6 +1815,9 @@ class juntasController extends Controller
         $issuesRegister->responsable = $value . ' ' . $cat;
         $issuesRegister->actionOfComment = $request->input('status_issue');
         $issuesRegister->save();
+        if($cat=='inge'){
+            return redirect()->route('ing_junta');
+        }
 
         return redirect()->route('seguimientos');
     }
