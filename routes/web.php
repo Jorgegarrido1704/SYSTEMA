@@ -191,6 +191,7 @@ Route::controller(juntasController::class)->group(function () {
     Route::get('/rrhh/DatosRh', [juntasController::class, 'DatosRh'])->name('DatosRh');
     Route::get('/registrosajax', [juntasController::class, 'registrosajax'])->name('registrosajax');
     Route::get('/RegistroQuality', [juntasController::class, 'customerComplains'])->name('customerComplains');
+    Route::get('/npi', [juntasController::class, 'npi'])->name('juntas.npi');
 });
 
 Route::controller(SaludController::class)->group(function () {

@@ -1182,8 +1182,8 @@ class juntasController extends Controller
 
         $mesGrafica = intval(carbon::now()->sub(1, 'month')->format('m'));
         $porcentaje = $thisYearGoals[$mesGrafica];
-        $b = $buenos[$mesGrafica]??0;
-        $m = $malos[$mesGrafica]??0;
+        $b = $buenos[$mesGrafica] ?? 0;
+        $m = $malos[$mesGrafica] ?? 0;
         $mes = date('m', strtotime('-1 month'));
         $registrosmes = workScreduleModel::where('CompletionDate', 'LIKE', date('Y') . '-' . $mes . '-%')->where('status', 'Completed')
             ->orderBy('CompletionDate', 'DESC')
@@ -1740,7 +1740,7 @@ class juntasController extends Controller
     //Show seguimiento according ID
     public function seguimiento($id)
     {
-        $cat=session('categoria');
+        $cat = session('categoria');
         $i = 0;
         $datosInforRegistro = $commentsBefore = [];
         $bucarRegistros = DB::table('registro')
@@ -1795,11 +1795,11 @@ class juntasController extends Controller
     //Save commets
     public function registroComment(Request $request)
     {
-        $cat=session('categoria');
+        $cat = session('categoria');
         $datosOk = $request->input('dataok');
-        $finDate=Carbon::now()->format('Y-m-d H:i:s');
-        DB::table('issuesfloor')->where('id_tiempos', '=', $datosOk)->where('actionOfComment', '!=', 'Issue Fixed')->update(['actionOfComment' => 'Issue Fixed', 'finReg'=>$finDate]);
-          if($cat=='inge'){
+        $finDate = Carbon::now()->format('Y-m-d H:i:s');
+        DB::table('issuesfloor')->where('id_tiempos', '=', $datosOk)->where('actionOfComment', '!=', 'Issue Fixed')->update(['actionOfComment' => 'Issue Fixed', 'finReg' => $finDate]);
+        if ($cat == 'inge') {
             return redirect()->route('ing_junta');
         }
         return redirect()->route('seguimientos');
@@ -1818,7 +1818,7 @@ class juntasController extends Controller
         $issuesRegister->actionOfComment = $request->input('status_issue');
         $issuesRegister->inicioReg = Carbon::now()->format('Y-m-d H:i:s');
         $issuesRegister->save();
-        if($cat=='inge'){
+        if ($cat == 'inge') {
             return redirect()->route('ing_junta');
         }
 
@@ -2453,5 +2453,142 @@ class juntasController extends Controller
             return redirect()->route('calidad_junta');
         }
         return redirect()->route('calidad_junta');
+    }
+    public function npi()
+    {
+        $value = session('user');
+        $cat = session('categoria');
+
+        $registroPPAP = [];
+        $ingependinses = $porbajara = $totalgeneral = $enproceso = $totalprim = $totalppap = 0;
+
+        // --- Función para determinar el color según la diferencia de días ---
+        function colorRetrado($fecha)
+        {
+            if (empty($fecha)) {
+                return 'gray'; // Sin fecha
+            }
+
+            $hoy = \Carbon\Carbon::now();
+            $fechaCarbon = \Carbon\Carbon::parse($fecha);
+
+            // Diferencia en días (puede ser negativa si está en el futuro)
+            $diasDiff = $hoy->diffInDays($fechaCarbon, false);
+
+            if ($diasDiff <= 4) {
+                return 'rgba(255, 0, 0, 0.5)'; // Urgente
+            } elseif ($diasDiff <= 6) {
+                return 'rgba(255, 255, 0, 0.5)'; // Próximo
+            } else {
+                return 'rgba(0, 255, 0, 0.5)'; // A tiempo
+            }
+        }
+
+        // --- 1. Datos de Work Schedule ---
+        $WS = workScreduleModel::where('status', '!=', 'CANCELLED')
+            ->whereNull('UpOrderDate')
+            ->orderBy('customerDate', 'ASC')
+            ->get();
+
+        foreach ($WS as $res) {
+            $registroPPAP[] = [
+                'cliente' => $res->customer,
+                'pn' => $res->pn,
+                'rev' => $res->WorkRev,
+                'prioridad' => $res->customerDate,
+                'color' => colorRetrado($res->customerDate),
+                'tipo' => 'WS',
+                'comments' => $res->comments,
+                'materiales' => '-',
+                'ingeniria' => 'pending',
+                'cutting' => '-',
+                'ensamble' => '-',
+                'calidad' => '-',
+                'aprovado'=> '-',
+            ];
+
+            if (!empty($res->documentsApproved)) {
+                $porbajara++;
+            } else {
+                $ingependinses++;
+            }
+        }
+
+        // --- 2. Datos de Work Orders (Wo) ---
+        $registros = Wo::where('count', '!=', 12)
+            ->where(function ($q) {
+                $q->where('rev', 'LIKE', 'PRIM%')
+                    ->orWhere('rev', 'LIKE', 'PPAP%');
+            })
+            ->orderBy('id', 'asc')
+            ->orderBy('cliente', 'asc')
+            ->get();
+
+        foreach ($registros as $reg) {
+            $registroWS = workScreduleModel::where('pn', $reg->NumPart)
+                ->orderBy('id', 'desc')
+                ->first();
+            $issuesfloor=issuesFloor::select('comment_issue')->where('id_tiempos',$reg->id)->first();
+
+            if($res->count==18 or $res->count==10){
+                $materiales='OK';
+                $corte='OK';
+                $ensamble='OK';
+                $calidad='-pending';
+                $aprovado='-';
+            }elseif($res->count==17 or $res->count==16){
+                $materiales='OK';
+                $corte='-';
+                $ensamble='-';
+                $calidad='-';
+                $aprovado='-';
+            }else if($res->count==20 or $res->count==12){
+                $materiales='OK';
+                $corte='OK';
+                $ensamble='OK';
+                $calidad='OK';
+                $aprovado='PENDING';
+            }else if($res->count==14 or $res->count==14){
+                $materiales='OK';
+                $corte='OK';
+                $ensamble='-';
+                $calidad='-';
+                $aprovado='-';
+            }
+            $fecha = $registroWS ? $registroWS->customerDate : null;
+
+            $registroPPAP[] = [
+                'cliente' => $reg->cliente,
+                'pn' => $reg->NumPart,
+                'rev' => $reg->rev,
+                'prioridad' => $fecha,
+                'color' => colorRetrado($fecha),
+                'tipo' => 'WO',
+                'comments' => $issuesfloor ? $issuesfloor->comment_issue : '',
+                'materiales' => $materiales ?? '-',
+                'ingeniria' => 'OK',
+                'cutting' => $corte ?? '-',
+                 'ensamble' => $ensamble ?? '-',
+                'calidad' => $calidad ?? '-',
+                'aprovado'=>$aprovado ?? 'No',
+            ];
+        }
+
+        // --- 3. Ordenar por prioridad (fecha más próxima primero) ---
+        usort($registroPPAP, function ($a, $b) {
+            return strtotime($a['prioridad']) <=> strtotime($b['prioridad']);
+        });
+
+        // --- 4. Retornar vista ---
+        $enproceso = count($registros);
+        $totalgeneral = count($registroPPAP);
+
+        return view('juntas.npi.npi', [
+            'value' => $value,
+            'cat' => $cat,
+            'registroPPAP' => $registroPPAP,
+            'enproceso' => $enproceso,
+            'totalgeneral' => $totalgeneral
+        ]);
     }
 }
