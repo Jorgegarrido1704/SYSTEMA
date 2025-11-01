@@ -2530,25 +2530,20 @@ class juntasController extends Controller
                 ->first();
             $issuesfloor=issuesFloor::select('comment_issue')->where('id_tiempos',$reg->id)->first();
 
-            if($res->count==18 or $res->count==10){
+            if($reg->count==18 or $reg->count==10){
                 $materiales='OK';
                 $corte='OK';
                 $ensamble='OK';
-                $calidad='-pending';
+                $calidad='pending';
                 $aprovado='-';
-            }elseif($res->count==17 or $res->count==16){
+            }elseif($reg->count==17 or $reg->count==16){
                 $materiales='OK';
                 $corte='-';
                 $ensamble='-';
                 $calidad='-';
                 $aprovado='-';
-            }else if($res->count==20 or $res->count==12){
-                $materiales='OK';
-                $corte='OK';
-                $ensamble='OK';
-                $calidad='OK';
-                $aprovado='PENDING';
-            }else if($res->count==14 or $res->count==14){
+
+            }else if($reg->count==14 or $reg->count==14){
                 $materiales='OK';
                 $corte='OK';
                 $ensamble='-';
