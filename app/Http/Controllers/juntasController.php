@@ -2491,6 +2491,9 @@ class juntasController extends Controller
             ->get();
 
         foreach ($WS as $res) {
+            $ing='';
+        if($res->documentsApproved==null){$ing='Pending by engineering';}
+        else{$ing='Pending by creation WO';}
             $registroPPAP[] = [
                 'cliente' => $res->customer,
                 'pn' => $res->pn,
@@ -2500,7 +2503,7 @@ class juntasController extends Controller
                 'tipo' => 'WS',
                 'comments' => $res->comments,
                 'materiales' => '-',
-                'ingeniria' => 'pending',
+                'ingeniria' => $ing,
                 'cutting' => '-',
                 'ensamble' => '-',
                 'calidad' => '-',
