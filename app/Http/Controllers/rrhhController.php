@@ -393,7 +393,8 @@ class rrhhController extends Controller
         foreach ($leaders as $l) {
             // Crear hoja por líder
             $sheet = $spreadsheet->createSheet();
-            $sheet->setTitle($l->lider);
+            $leader=explode(" ",$l->lider)[0]??str_split($l->lider,5)[0];
+            $sheet->setTitle($leader);
 
             // Agregar encabezados
             foreach ($headers as $cell => $value) {
