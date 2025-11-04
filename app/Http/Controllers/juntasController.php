@@ -1968,6 +1968,7 @@ class juntasController extends Controller
         $pesonal = $input['personalIng'];
         $endDate = Carbon::parse($input['endDate']);
         $diasT = $input['diasT'];
+        $dias_solicitados = $revDias = $diasT;
         $returnDate = Carbon::parse($input['endDate']);
         $checkDias = Carbon::parse($input['endDate']);
 
@@ -1985,9 +1986,9 @@ class juntasController extends Controller
         $noposible = 0;
 
         // revisar si hay disponibilidad de vacaciones en la fecha solicitada
-        for ($i = 0; $i < $diasT; $i++) {
+        for ($i = 0; $i < $revDias; $i++) {
             if (Carbon::parse($checkDias)->isWeekend()) {
-                $diasT++;
+                $revDias++;
             } else {
                 $datosVacaciones = DB::table('registro_vacaciones')
                     ->where('fecha_de_solicitud', '=', $checkDias->toDateString())
@@ -2008,7 +2009,7 @@ class juntasController extends Controller
 
 
 
-        $dias_solicitados = $diasT;
+
         //$link = URL::temporarySignedRoute('loginWithoutSession', now()->addMinutes(30), ['user' => 'Juan G']);
         $contend = [
             'asunto' => 'Solicitud de Vacaciones',
