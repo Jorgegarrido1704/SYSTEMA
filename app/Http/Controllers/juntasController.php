@@ -1981,9 +1981,22 @@ class juntasController extends Controller
         //Datos para el registro
         $nombre = $buscarPersonal->employeeName;
         $area = $buscarPersonal->employeeArea;
-        $supervisor = $buscarPersonal->employeeLider;
+        $lider = $buscarPersonal->user;
         $fecha_de_solicitud = $endDate->toDateString();
         $noposible = 0;
+        $email = null;
+
+        if($lider=='Rocio F' or $lider == 'Juan G' or $lider == 'Paola A' or $lider == 'Jesus_C' or $lider == 'Luis R'
+        or $lider == 'Juan O' or $lider == 'Gamboa J' or $lider == 'David V'){
+        $supervisor = $lider;
+            $email=personalBergsModel::select('email')->where('user', '=', $lider)->first();
+        }
+        else{
+            $buscarEmails = personalBergsModel::select('employeeLider')->where('user', '=', $lider)->first();
+        $buscarEmailsLider = personalBergsModel::select('email', 'user')->where('employeeName', '=', $buscarEmails->employeeLider)->first();
+        $supervisor = $buscarEmailsLider->user;
+        $email=$buscarEmailsLider->email;
+        }
 
         // revisar si hay disponibilidad de vacaciones en la fecha solicitada
         for ($i = 0; $i < $revDias; $i++) {
@@ -2006,9 +2019,6 @@ class juntasController extends Controller
             return redirect()->back()->with('error', 'Alguno de los días solicitados ya tiene el máximo de vacaciones aprobadas en su área.
         Por favor, revise con su supervisor y elija otras fechas.');
         }
-
-
-
 
         //$link = URL::temporarySignedRoute('loginWithoutSession', now()->addMinutes(30), ['user' => 'Juan G']);
         $contend = [
@@ -2079,11 +2089,9 @@ class juntasController extends Controller
         $fechadeSolicitud = Carbon::parse($buscarFolio->fecha_de_solicitud)->addWeekdays(-$buscarFolio->dias_solicitados);
         $contend['fecha_de_solicitud'] = $fechadeSolicitud->toDateString();
         $contend['Folio'] = $folio;
-        $buscarEmails = personalBergsModel::select('employeeLider')->where('user', '=', session('user'))->first();
-        $buscarEmailsLider = personalBergsModel::select('email')->where('employeeName', '=', $buscarEmails->employeeLider)->first();
 
 
-        Mail::to($buscarEmailsLider->email)->send(new solicitudVacacionesMail($contend, 'Solicitud de Vacaciones'));
+        Mail::to($email)->send(new solicitudVacacionesMail($contend, 'Solicitud de Vacaciones'));
 
         // Mail::to('jguillen@mx.bergstrominc.com')->send(new solicitudVacacionesMail($contend, 'Solicitud de Vacaciones'));
         // Mail::to('jgarrido@mx.bergstrominc.com')->send(new solicitudVacacionesMail($contend, 'Solicitud de Vacaciones'));

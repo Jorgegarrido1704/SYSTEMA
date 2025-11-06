@@ -61,13 +61,13 @@ class mailsController extends Controller
         } else {
             $desviations = [];
         }
-        if ($value == 'Admin' or $value == 'Juan G') {
-            $foliosVacaciones = registroVacacionesModel::where('estatus', '=', 'Pendiente')->get();
-        } elseif ($value == 'Paola A' or $value == 'Angy B') {
-            $foliosVacaciones = registroVacacionesModel::where('estatus', '=', 'Pendiente RH')->get();
-        } else {
-            $foliosVacaciones = [];
-        }
+
+            $foliosVacaciones = registroVacacionesModel::where('estatus', '=', 'Pendiente RH')
+            ->where('superVisor', '=', $value)->get();
+            if($foliosVacaciones == null){
+                $foliosVacaciones = [];
+            }
+
         $vacaciones = [];
         $i = 0;
         foreach ($foliosVacaciones as $vaca) {
@@ -199,26 +199,16 @@ class mailsController extends Controller
         $area = $request->input('area');
         $fecha = $request->input('fecha');
         $returnDate = $request->input('return_date');
+
         $receivers [0]= '';
-        if (strpos($who, ',')) {
+        $buscarlider=personalBergsModel::select('employeeLider')->where('employeeName', '=', $nombre)->first();
+        $buscaremailLeder=personalBergsModel::select('email')->where('employeeName', '=', $buscarlider->employeeLider)->first();
+        if($buscaremailLeder->email != null){
+            $receivers [0] = $buscaremailLeder->email;
+        }else{
+        $mail = personalBergsModel::select('email')->where('user', '=', $who)->first();
+        $receivers [0] = $mail->email;}
 
-            $datosde = explode(',', $who);
-
-                $correo = login::select('user_email')->where('user', '=', $datosde[0])->first();
-                if (empty($correo)) {
-                    $receivers[0] = 'jgarrido@mx.bergstrominc.com';
-                } else {
-                    $receivers[0] .= $correo->user_email;
-                }
-
-        } else {
-            $correo = login::select('user_email')->where('user', '=', $who)->first();
-            if (empty($correo)) {
-                $receivers = ['jgarrido@mx.bergstrominc.com'];
-            } else {
-                $receivers = [$correo->user_email];
-            }
-        }
         $structure = [
             'asunto' => 'Solicitud de Vacaciones Aprobada',
             'nombre' => $nombre,
@@ -230,21 +220,13 @@ class mailsController extends Controller
             'supervisor' => $who,
         ];
 
-        $value = session('user');
-        if ($value == 'Admin' or $value == 'Juan G') {
-            registroVacacionesModel::where('id', '=', $folio)->update(['estatus' => 'Pendiente RH']);
-            $link = URL::temporarySignedRoute('Pendings.index', now()->addMinutes(30), ['user' => 'Paola A']);
-            $structure['link'] = $link;
-            $receivers = [
-                'paguilar@mx.bergstrominc.com',
-                'mabibarra@mx.bergstrominc.com'
-            ];
-            Mail::to($receivers)->send(new solicitudVacacionesMail($structure, 'Solicitud de Vacaciones'));
-        } else if ($value == 'Paola A' or $value == 'Angy B') {
+
+
+
             registroVacacionesModel::where('id', '=', $folio)->update(['estatus' => 'Confirmado']);
             $structure['link'] = 'No es necesario responder este correo, su solicitud de vacaciones ha sido aprobada y registrada en el sistema.';
             Mail::to($receivers)->send(new solicitudVacacionesMail($structure, 'Solicitud de Vacaciones Aprobada'));
-        }
+
         return redirect('/Pendigs');
     }
 }
