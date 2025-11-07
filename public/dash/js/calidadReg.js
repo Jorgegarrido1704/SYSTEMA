@@ -13,20 +13,21 @@ function buscarcodigo1() {
     })
         .then((response) => response.json())
         .then((data) => {
-            console.log(data);
+           //console.log(data);
             const defecto = data && data.defecto ? data.defecto : "";
             document.getElementById("1").value = 1;
             var Nok = parseInt(document.getElementById("nok").value);
             document.getElementById("nok").value = Nok + 1;
             if (defecto != "") {
                 document.getElementById("rest_code1").value = defecto;
-            } else {
-                document.getElementById("rest_code1").value = data;
             }
 
         })
         .catch((error) => {
             console.error("Error:", error);
+            alert('No existe el código');
+            window.location.reload();
+
         });
 }
 function buscarcodigo2() {
