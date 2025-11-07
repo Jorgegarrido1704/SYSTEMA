@@ -505,8 +505,9 @@ class juntasController extends Controller
         $totalm = count($buscarValoresMes);
         foreach ($buscarValoresMes as $rows) {
             $supRes = personalBergsModel::select('employeeLider')->where('employeeName', $rows->Responsable)->first();
-            dd($supRes);
-            if ($supRes) {
+           // dd($supRes);
+            if ($supRes==null) {
+
                 $supRes->employeeLider = " ";
             }
             if (in_array($rows->codigo, $etiq)) {
