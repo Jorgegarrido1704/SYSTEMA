@@ -191,6 +191,9 @@ function empleado1() {
         .then((data) => {
             console.log(data);
           const personalDef=data.employeeName ? data.employeeName : "";
+          if(personalDef == ""){
+            alert("El empleado no existe");
+          }
           document.getElementById("resp1").value = personalDef;
         })
         .catch((error) => {
