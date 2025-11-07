@@ -2082,7 +2082,7 @@ class juntasController extends Controller
                     'estatus' => 'Pendiente RH',
                     'dias_solicitados' => $diasReg,
                     'usedYear' => $years,
-                    'superVisor' => session('user'),
+                    'superVisor' => $supervisor,
                     'area' => $area,
 
                 ]);
