@@ -160,7 +160,7 @@
                                                 <td>{{$vacacion->area}}</td>
                                                 <td>{{$vacacion->supervisor}}</td>
                                                 <td>{{$vacacion->fecha_solicitud}}</td>
-                                                <td>{{$vacacion->dias_solicitados}}</td>
+                                                <td>1</td>
 
                                                 <td>
                                                     <form action="{{route('vacaciones.update')}}" method="POST">
