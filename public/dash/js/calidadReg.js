@@ -189,10 +189,11 @@ function empleado1() {
     })
         .then((response) => response.json())
         .then((data) => {
-            console.log(data);
+           // console.log(data);
           const personalDef=data.employeeName ? data.employeeName : "";
           if(personalDef == ""){
             alert("El empleado no existe");
+             window.location.reload();
           }
           document.getElementById("resp1").value = personalDef;
         })
@@ -215,8 +216,12 @@ function empleado2() {
     })
         .then((response) => response.json())
         .then((data) => {
-            console.log(data);
+           // console.log(data);
           const personalDef=data.employeeName ? data.employeeName : "";
+          if(personalDef == ""){
+            alert("El empleado no existe");
+             window.location.reload();
+          }
           document.getElementById("resp2").value = personalDef;
         })
         .catch((error) => {
@@ -238,8 +243,12 @@ function empleado3() {
     })
         .then((response) => response.json())
         .then((data) => {
-            console.log(data);
+         //   console.log(data);
           const personalDef=data.employeeName ? data.employeeName : "";
+          if(personalDef == ""){
+            alert("El empleado no existe");
+             window.location.reload();
+          }
           document.getElementById("resp3").value = personalDef;
         })
         .catch((error) => {
@@ -261,8 +270,12 @@ function empleado4() {
     })
         .then((response) => response.json())
         .then((data) => {
-            console.log(data);
+           // console.log(data);
           const personalDef=data.employeeName ? data.employeeName : "";
+          if(personalDef == ""){
+            alert("El empleado no existe");
+             window.location.reload();
+          }
           document.getElementById("resp4").value = personalDef;
         })
         .catch((error) => {
@@ -284,8 +297,12 @@ function empleado5() {
     })
         .then((response) => response.json())
         .then((data) => {
-            console.log(data);
+        //    console.log(data);
           const personalDef=data.employeeName ? data.employeeName : "";
+          if(personalDef == ""){
+            alert("El empleado no existe");
+            window.location.reload();
+          }
           document.getElementById("resp5").value = personalDef;
         })
         .catch((error) => {
