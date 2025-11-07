@@ -1984,12 +1984,12 @@ class juntasController extends Controller
         $area = $buscarPersonal->employeeArea;
         $lider = $buscarPersonal->employeeLider;
         $fecha_de_solicitud = $endDate->toDateString();
-        $noposible = 0;
+        $noposible = $repetidosDias= 0;
         $email = null;
 
         if($value=='Rocio F' or $value == 'Juan G' or $value == 'Paola A' or $value == 'Jesus_C' or $value == 'Luis R'
         or $value == 'Juan O' or $value == 'Gamboa J' or $value == 'David V'){
-        $supervisor = $value;
+            $supervisor = $value;
             $email=personalBergsModel::select('email')->where('user', '=', $lider)->first();
         }
         else{
@@ -2008,8 +2008,15 @@ class juntasController extends Controller
                     ->where('fecha_de_solicitud', '=', $checkDias->toDateString())
                     ->where('area', '=', $area)
                     ->count();
+                    $diasRepetidos = DB::table('registro_vacaciones')
+                    ->where('fecha_de_solicitud', '=', $checkDias->toDateString())
+                    ->where('id_empleado', '=', $pesonal)
+                    ->count();
                 if ($datosVacaciones > 1) {
                     $noposible += 1;
+                }
+                if ($diasRepetidos > 0) {
+                    $repetidosDias += 1;
                 }
             }
             $checkDias->addDay(1);
@@ -2019,6 +2026,9 @@ class juntasController extends Controller
         if ($noposible > 0) {
             return redirect()->back()->with('error', 'Alguno de los días solicitados ya tiene el máximo de vacaciones aprobadas en su área.
         Por favor, revise con su supervisor y elija otras fechas.');
+        }if($repetidosDias > 0){
+            return redirect()->back()->with('error', 'Alguno de los días solicitados ya tiene una solicitud de vacaciones aprobada.
+            Por favor, revise con su supervisor y elija otras fechas.');
         }
 
         //$link = URL::temporarySignedRoute('loginWithoutSession', now()->addMinutes(30), ['user' => 'Juan G']);
