@@ -507,8 +507,7 @@ class juntasController extends Controller
             $supRes = personalBergsModel::select('employeeLider')->where('employeeName', $rows->Responsable)->first();
            // dd($supRes);
             if ($supRes==null) {
-
-                $supRes->employeeLider = " ";
+                 $supRes = personalBergsModel::select('employeeLider')->where('employeeName', 'VERA VILLEGAS EFRAIN')->first();
             }
             if (in_array($rows->codigo, $etiq)) {
                 $index = array_search($rows->codigo, $etiq);
