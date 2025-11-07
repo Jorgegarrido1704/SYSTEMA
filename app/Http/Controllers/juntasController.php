@@ -1963,7 +1963,7 @@ class juntasController extends Controller
             'endDate' => 'required|date',
             'diasT' => 'required|integer|min:1|max:20',
         ]);
-
+        $value=session('user');
 
 
         $pesonal = $input['personalIng'];
@@ -1982,18 +1982,18 @@ class juntasController extends Controller
         //Datos para el registro
         $nombre = $buscarPersonal->employeeName;
         $area = $buscarPersonal->employeeArea;
-        $lider = $buscarPersonal->user;
+        $lider = $buscarPersonal->employeeLider;
         $fecha_de_solicitud = $endDate->toDateString();
         $noposible = 0;
         $email = null;
 
-        if($lider=='Rocio F' or $lider == 'Juan G' or $lider == 'Paola A' or $lider == 'Jesus_C' or $lider == 'Luis R'
-        or $lider == 'Juan O' or $lider == 'Gamboa J' or $lider == 'David V'){
-        $supervisor = $lider;
+        if($value=='Rocio F' or $value == 'Juan G' or $value == 'Paola A' or $value == 'Jesus_C' or $value == 'Luis R'
+        or $value == 'Juan O' or $value == 'Gamboa J' or $value == 'David V'){
+        $supervisor = $value;
             $email=personalBergsModel::select('email')->where('user', '=', $lider)->first();
         }
         else{
-            $buscarEmails = personalBergsModel::select('employeeLider')->where('user', '=', $lider)->first();
+            $buscarEmails = personalBergsModel::select('employeeLider')->where('employeeName', '=', $lider)->first();
         $buscarEmailsLider = personalBergsModel::select('email', 'user')->where('employeeName', '=', $buscarEmails->employeeLider)->first();
         $supervisor = $buscarEmailsLider->user;
         $email=$buscarEmailsLider->email;
