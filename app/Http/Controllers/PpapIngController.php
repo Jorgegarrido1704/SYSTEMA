@@ -673,6 +673,9 @@ class PpapIngController extends Controller
     public function problemas(Request $request)
     {
         $value = session('user');
+        if($value == null){
+            return redirect('/');
+        }
         $date = date("d-m-Y H:i");
 
         $pn = $request->input('pnIs');
