@@ -939,6 +939,7 @@ class generalController extends Controller
             return redirect('/general');
         }
     }
+    
     public function problemas_general(Request $request)
     {
         $value = session('user');

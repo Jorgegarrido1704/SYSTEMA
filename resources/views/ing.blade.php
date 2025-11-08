@@ -27,7 +27,7 @@
             .then(response => response.json())
             .then(data => {
                 if (data.status=='ok') {
-                    
+
                         document.getElementById('pnIs').value = data.NumPart;
                         document.getElementById('revIs').value = data.rev;
                     } else {
@@ -41,22 +41,7 @@
 
 
     </script>
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-
-    </div>
-    <div class="row">
-
-        <!-- Table and Graph -->
-        <div class="col-xl-9 col-lg-9">
-            <div class="card shadow mb-4" id="card">
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h5 class="m-0 font-weight-bold text-primary">Trabajos ingenieria</h5>
-                </div>
-
-                <!-- tabla de trabajos -->
-                <div class="card-body" style="overflow-y: auto; height: 460px;">
-                    <div class="chart-area" id="chart-area">
-                        <style>
+     <style>
                             .ppap {
                                 text-align: center;
                                 font-weight: bold;
@@ -109,9 +94,24 @@
                                 font-weight: bold;
                                 background-color: rgb(88, 8, 247);
                             }
-                        </style>
+            </style>
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+
+    </div>
+    <div class="row">
+
+        <!-- Table and Graph -->
+        <div class="col-xl-6 col-lg-6">
+            <div class="card shadow mb-4" id="card">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h5 class="m-0 font-weight-bold text-primary">Regist PPAP</h5>
+                </div>
+
+                <!-- tabla de trabajos -->
+                <div class="card-body" style="overflow-y: auto; height: 260px;">
+                    <div class="chart-area" id="chart-area">
                         <table id="table-harness" class="table-harness">
-                            <thead>
+                            <thead style=" position: sticky; z-index: 1; top: 0; text-align: center; background-color: #bd0606; color: white; ">
                                 <tr>
                                     <th class="ppap"></th>
                                     <th class="ppap"></th>
@@ -153,6 +153,8 @@
                                                 <td>Cutting</td>
                                             @elseif ($inge[7] == 18)
                                                 <td>Quality</td>
+                                            @elseif ($inge[7] == 19)
+                                                <td>Electrical testing</td>
                                             @endif
                                             <td><input type="hidden" id='iding' name='iding'
                                                     value="{{ $inge[6] }}">
@@ -167,8 +169,23 @@
                                 @endforeach
                             </tbody>
                         </table>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="col-xl-6 col-lg-6">
+            <div class="card shadow mb-4" id="card">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h5 class="m-0 font-weight-bold text-primary">FULLS SIZE Requested</h5>
+                </div>
+                <!-- tabla de trabajos -->
+                <div class="card-body" style="overflow-y: auto; height: 260px;">
+                    <div class="chart-area" id="chart-area">
                         <table id="table-harness" class="table-harness">
-                            <thead>
+                           <thead style=" position: sticky; z-index: 1; top: 0; text-align: center; background-color: #bd0606; color: white; ">
                                 <tr>
                                     <th class="table-header"></th>
                                     <th class="table-header"></th>
@@ -182,16 +199,16 @@
                                     <th class="table-header"> </th>
                                 </tr>
                                 <tr>
-                                    <th>Solcitado por</th>
-                                    <th>Fecha de solictud</th>
-                                    <th>np</th>
+                                    <th>Requested By</th>
+                                    <th>Date</th>
+                                    <th>Part Number</th>
                                     <th>rev</th>
-                                    <th>Cliente</th>
-                                    <th>Cantidad requerida</th>
-                                    <th>Tablero</th>
-                                    <th>Estatus</th>
-                                    <th>Modificar</th>
-                                    <th>Finalizar</th>
+                                    <th>Client</th>
+                                    <th>Quantity</th>
+                                    <th>Board</th>
+                                    <th>status</th>
+                                    <th>Modify</th>
+                                    <th>Finish</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -225,13 +242,27 @@
                                 @endforeach
                             </tbody>
                         </table>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="col-xl-4 col-lg-4">
+            <div class="card shadow mb-4" id="card">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h5 class="m-0 font-weight-bold text-primary">Floor Support</h5>
+                </div>
+                <!-- tabla de trabajos -->
+                <div class="card-body" style="overflow-y: auto; height: 260px;">
+                    <div class="chart-area" id="chart-area">
                         <table>
-                            <thead>
+                            <thead style=" position: sticky; z-index: 1; top: 0; text-align: center; background-color: #bd0606; color: white; ">
                                 <tr>
                                     <th class="soporte"></th>
                                     <th class="soporte"></th>
                                     <th class="soporte"></th>
-                                    <th class="soporte">SOPORTE EN PISO</th>
+                                    <th class="soporte">Floor Support</th>
                                     <th class="soporte"></th>
                                     <th class="soporte"></th>
                                     <th class="soporte"></th>
@@ -272,104 +303,102 @@
             </div>
 
         </div>
+        <div class="col-xl-4 col-lg-4">
+            <div class="card shadow mb-4" id="card">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h5 class="m-0 font-weight-bold text-primary">Electrical Test Requested</h5>
+                </div>
 
+                <!-- tabla de trabajos -->
+                <div class="card-body" style="overflow-y: auto; height: 260px;">
+                    <div class="chart-area" id="chart-area">
 
-        <div class="col-xl-3 col-lg-3">
+                        <table id="table-harness" class="table-harness">
+                            <thead style=" position: sticky; z-index: 1; top: 0; text-align: center; background-color: #bd0606; color: white; ">
+
+                                    <th>Part Number</th>
+                                    <th>Client</th>
+                                    <th>REV</th>
+                                    <th>WO</th>
+
+                                    <th>Qty</th>
+
+                                    <th>Sign</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="col-xl-4 col-lg-4">
             <div class="card shadow mb-4" id="card2">
                 <!-- Set Work -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h5 class="m-0 font-weight-bold text-primary">Set  in the system</h5>
+                    <h5 class="m-0 font-weight-bold text-primary">Activades de Ingenieros</h5>
 
                 </div>
 
-                <div class="card-body" style="overflow-y: auto; height: 460px; ">
-                    <div class="row">
-
-                        <style>
-                            label {
-                                text-align: center;
-                                align-items: center;
-                                margin-bottom: 5px;
-
-                            }
+                <div class="card-body" style="overflow-y: auto; height: 260px; ">
 
 
-                            select {
-                                width: 100%;
-                                padding: 8px;
-                                border: 1px solid #ccc;
-                                border-radius: 4px;
-                                box-sizing: border-box;
-                                margin-bottom: 15px;
-                            }
 
-                            /* Style for submit button */
-                            #submit {
-                                text-align: center;
-                            }
-
-                            #sub {
-                                padding: 10px 20px;
-                                background-color: #007bff;
-                                color: #fff;
-                                border: none;
-                                border-radius: 4px;
-                                cursor: pointer;
-                            }
-
-                            #sub:hover {
-                                background-color: #0056b3;
-                            }
-
-                            /* Style for container */
-                            .container {
-                                width: 50%;
-                                margin: 0 auto;
-                                padding: 20px;
-                                border: 1px solid #ccc;
-                                border-radius: 8px;
-                                background-color: #f9f9f9;
-                            }
-
-
-                            #magia {
-                                border: solid 1px #ccc;
-                                padding-bottom: 10px;
-                            }
-                        </style>
                         <form action="{{ route('tareas') }}" method="GET" id='form'>
-                            <label for="Inge">
-                                <h4>Ingenier@ a cargo de la tarea</h4>
-                            </label>
-                            <select name="Inge" id="Inge" required>
-                                <option value=""></option>
-                                @foreach($ingenieros_en_piso as $ingesPiso)
-                                <option value="{{ $ingesPiso->user }}">{{ $ingesPiso->user }}</option>
-                                @endforeach
-                            </select>
+                            <div class="row">
+                                <div class="col-md-3 mb-4 mt-4 ">
+                                        <div class="form-group text-center">
+                                            <label for="Inge"><h4>Ingenier@</h4></label>
+                                        </div>
+                                        <div class="form-group">
+                                            <select name="Inge" id="Inge" required>
+                                            <option value=""></option>
+                                            @foreach($ingenieros_en_piso as $ingesPiso)
+                                            <option value="{{ $ingesPiso->user }}">{{ $ingesPiso->user }}</option>
+                                            @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group text-center">
+                                            <label for="act"><h4>Actividad a realizar</h4></label>
+                                        </div>
+                                        <div class="form-group">
+                                            <select name="act" id="act" required>
+                                                <option value=""></option>
+                                                <option value="Sistemas">Modificacion o creacion de sistemas</option>
+                                                <option value="Documentacion ">Documentacion PPAP</option>
+                                                <option value="Soporte en piso">Soporte en piso</option>
+                                                <option value="Colocacion de full size">Colocacion de full size</option>
+                                                <option value="Seguimiento PPAP">Seguimiento PPAP</option>
+                                                <option value="Diseno de piezas 3D">Diseño de piezas 3D</option>
+                                                <option value="Comida">Comida</option>
+                                                <option value="Retroalimentacion y aclaraciones a clientes">Retroalimentacion y
+                                                    aclaraciones a clientes</option>
+                                                <option value="Juntas">Juntas</option>
+                                                <option value="Otro">Otro</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group text-center">
+                                            <label for="info">Informacion adicional</label>
+                                        </div>
 
-                            <label for="act">
-                                <h4>Actividad a realizar</h4>
-                            </label>
-                            <select name="act" id="act" required>
-                                <option value=""></option>
-                                <option value="Sistemas">Modificacion o creacion de sistemas</option>
-                                <option value="Documentacion ">Documentacion PPAP</option>
-                                <option value="Soporte en piso">Soporte en piso</option>
-                                <option value="Colocacion de full size">Colocacion de full size</option>
-                                <option value="Seguimiento PPAP">Seguimiento PPAP</option>
-                                <option value="Diseno de piezas 3D">Diseño de piezas 3D</option>
-                                <option value="Comida">Comida</option>
-                                <option value="Retroalimentacion y aclaraciones a clientes">Retroalimentacion y
-                                    aclaraciones a clientes</option>
-                                <option value="Juntas">Juntas</option>
-                                <option value="Otro">Otro</option>
-                            </select>
-                            <textarea name="info" id="info" cols="50" rows="2" required></textarea>
-                            <br>
-                            <input type="submit" name="sub" id="sub" value="Guardar">
+                                        <div class="form-group">
+                                            <textarea name="info" id="info" cols="50" rows="2" required></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1 mt-5 md-5">
+                                    <input type="submit" name="sub" id="sub" value="Guardar">
+                                    </div>
+                            </div>
                         </form>
-                    </div>
+
                 </div>
 
             </div>

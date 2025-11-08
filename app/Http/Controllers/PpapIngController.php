@@ -35,7 +35,8 @@ class PpapIngController extends Controller
             $inges = $activ = $answer = $enginners = [];
             $buscarinfor = DB::table('registro')->where('count', '=', '13')
                 ->orwhere('count', '=', '17')->orwhere('count', '=', '14')->orwhere('count', '=', '16')
-                ->orwhere('count', '=', '18')->get();
+                ->orwhere('count', '=', '18') ->orwhere('count', '=', '19')->OrderBy('cliente', 'asc')
+                ->get();
             foreach ($buscarinfor as $rowInge) {
                 $inges[$i][0] = $rowInge->NumPart;
                 $inges[$i][1] = $rowInge->cliente;
@@ -295,9 +296,11 @@ class PpapIngController extends Controller
 
         if ($cuenta == 17) {
             upRegistro(16, 'Ingenieria// liberacion', $info, 'corte', $idIng, $today, 'eng', $eng, $value);
+        } else if ($cuenta == 19) {
+            upRegistro(10, 'En espera de calidad', $info, 'calidad', $idIng, $today, 'preCalidad', $eng, $value);
         } else if ($cuenta == 14) {
-            upRegistro(10, 'En espera de calidad', $info, 'loom', $idIng, $today, 'preCalidad', $eng, $value);
-        } else if ($cuenta == 13) {
+            upRegistro(19, 'Ingenieria // pruebas electricas', $info, 'loom', $idIng, $today, 'eng', $eng, $value);
+        }else if ($cuenta == 13) {
             upRegistro(14, 'Ingenieria // loom', $info, 'ensamble', $idIng, $today, 'eng', $eng, $value);
         } else if ($cuenta == 16) {
             upRegistro(13, 'Ingenieria // ensamble', $info, 'liberacion', $idIng, $today, 'eng', $eng, $value);
