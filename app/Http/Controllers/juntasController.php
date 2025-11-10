@@ -1993,10 +1993,10 @@ class juntasController extends Controller
             $email=personalBergsModel::select('email')->where('user', '=', $lider)->first();
         }
         else{
-            $buscarEmails = personalBergsModel::select('employeeLider','employeeName')->where('user', '=', $value)->first();
+            $buscarEmails = personalBergsModel::select('email','employeeLider','employeeName')->where('user', '=', $value)->first();
         $buscarEmailsLider = personalBergsModel::select('email', 'user')->where('employeeName', '=', $buscarEmails->employeeLider)->first();
-        $supervisor = $buscarEmailsLider->user;
-        $email=$buscarEmailsLider->email;
+        $supervisor = $value;
+        $email=$buscarEmails->email;
         }
 
         // revisar si hay disponibilidad de vacaciones en la fecha solicitada
@@ -2100,7 +2100,9 @@ class juntasController extends Controller
         $fechadeSolicitud = Carbon::parse($buscarFolio->fecha_de_solicitud)->addWeekdays(-$buscarFolio->dias_solicitados);
         $contend['fecha_de_solicitud'] = $fechadeSolicitud->toDateString();
         $contend['Folio'] = $folio;
-
+        if($email==null or $email==''){
+            $email = 'jgarrido@mx.bergstrominc.com';
+        }
 
         Mail::to($email)->send(new solicitudVacacionesMail($contend, 'Solicitud de Vacaciones'));
 

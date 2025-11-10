@@ -62,11 +62,16 @@ class mailsController extends Controller
             $desviations = [];
         }
 
-            $foliosVacaciones = registroVacacionesModel::where('estatus', '=', 'Pendiente RH')
-            ->where('superVisor', '=', $value)->get();
-            if($foliosVacaciones == null){
-                $foliosVacaciones = [];
-            }
+          $foliosVacaciones = registroVacacionesModel::where('estatus', 'Pendiente RH')
+            ->where('superVisor', $value)   
+            ->get();
+
+    if ($foliosVacaciones->isEmpty()) {
+    $foliosVacaciones = collect(); // o []
+}
+
+
+
 
         $vacaciones = [];
         $i = 0;
