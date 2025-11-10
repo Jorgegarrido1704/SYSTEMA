@@ -215,14 +215,16 @@ class mailsController extends Controller
         $fecha = $request->input('fecha');
         $returnDate = $request->input('return_date');
 
-        $receivers [0]= '';
-        $buscarlider=personalBergsModel::select('employeeLider')->where('employeeName', '=', $nombre)->first();
+
+        $receivers = '';
+        $buscarlider=personalBergsModel::select('employeeLider','employeeNumber')->where('employeeName', '=', $nombre)->first();
+        registroVacacionesModel::where('id_empleado', '=', $buscarlider->employeeNumber)->limit($dias)->orderBy('id', 'DESC')->update(['estatus' => 'Confirmado']);
         $buscaremailLeder=personalBergsModel::select('email')->where('employeeName', '=', $buscarlider->employeeLider)->first();
         if($buscaremailLeder->email != null){
-            $receivers [0] = $buscaremailLeder->email;
+            $receivers  = $buscaremailLeder->email;
         }else{
         $mail = personalBergsModel::select('email')->where('user', '=', $who)->first();
-        $receivers [0] = $mail->email;}
+        $receivers  = $mail->email;}
 
         $structure = [
             'asunto' => 'Solicitud de Vacaciones Aprobada',
@@ -238,7 +240,7 @@ class mailsController extends Controller
 
 
 
-            registroVacacionesModel::where('id', '=', $folio)->update(['estatus' => 'Confirmado']);
+
             $structure['link'] = 'No es necesario responder este correo, su solicitud de vacaciones ha sido aprobada y registrada en el sistema.';
             Mail::to($receivers)->send(new solicitudVacacionesMail($structure, 'Solicitud de Vacaciones Aprobada'));
 
