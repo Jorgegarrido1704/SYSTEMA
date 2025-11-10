@@ -1985,21 +1985,32 @@ class juntasController extends Controller
         $lider = $buscarPersonal->employeeLider;
         $fecha_de_solicitud = $endDate->toDateString();
         $noposible = $repetidosDias= 0;
-        $email = null;
+        $email = $buscarPersonal->email??null;
+        $supervisor = null;
+        if($lider == 'GUILLEN MIRANDA JUAN JOSE' or $lider == 'AGUILAR HERNANDEZ ANA PAOLA' or $lider= 'RAMOS CEDEÑO LUIS ALBERTO'){
+            $buscarEmails = personalBergsModel::select('email','user')->where('employeeName', '=', $lider)->first();
+            if($buscarEmails->email == null or $buscarEmails->email == ''){
+                 $email=$buscarEmails->email;
+            }else{
+                $email.=','.$buscarEmails->email;
+            }
 
-        if($value=='Rocio F' or $value == 'Juan G' or $value == 'Paola A' or $value == 'Jesus_C' or $value == 'Luis R'
-        or $value == 'Juan O' or $value == 'Gamboa J' or $value == 'David V'){
-            $supervisor = $value;
-            $email=personalBergsModel::select('email')->where('user', '=', $lider)->first();
+            $supervisor = $buscarEmails->user;
+        }else{
+        $liderInicial =personalBergsModel::select('employeeLider')->where('employeeName', '=', $lider)->first();
+        $buscarEmails = personalBergsModel::select('email','employeeLider','employeeName','user')->where('employeeName', '=', $liderInicial->employeeLider)->first();
+        $supervisor = $buscarEmails->user;
+       if($buscarEmails->email == null or $buscarEmails->email == ''){
+                 $email=$buscarEmails->email;
+            }else{
+                $email.=','.$buscarEmails->email;
+            }
+
         }
-        else{
-            $buscarEmails = personalBergsModel::select('email','employeeLider','employeeName')->where('user', '=', $value)->first();
-        $buscarEmailsLider = personalBergsModel::select('email', 'user')->where('employeeName', '=', $buscarEmails->employeeLider)->first();
-        $supervisor = $value;
-        $email=$buscarEmails->email;
-        }
+
 
         // revisar si hay disponibilidad de vacaciones en la fecha solicitada
+
         for ($i = 0; $i < $revDias; $i++) {
             if (Carbon::parse($checkDias)->isWeekend()) {
                 $revDias++;
