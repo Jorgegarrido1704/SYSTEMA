@@ -62,7 +62,7 @@ class mailsController extends Controller
             $desviations = [];
         }
 
-          $foliosVacaciones = registroVacacionesModel::select('id','id_empleado')->where('estatus', 'Pendiente RH')
+          $foliosVacaciones = registroVacacionesModel::select('id_empleado')->where('estatus', 'Pendiente RH')
             ->where('superVisor', $value)
             ->orderBy('id', 'desc')
             ->get();

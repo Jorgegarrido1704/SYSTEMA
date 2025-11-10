@@ -158,7 +158,7 @@
                                                 <td>{{$vacacion->nombre}}</td>
                                                 <td>{{$vacacion->id_empleado}}</td>
                                                 <td>{{$vacacion->area}}</td>
-                                                <td>{{$vacacion->supervisor}}</td>
+                                                <td>{{$vacacion->superVisor}}</td>
                                                 <td>{{$vacacion->fecha_de_solicitud}}</td>
                                                 <td>{{$vacacion->dias_solicitados}}</td>
 
@@ -171,7 +171,7 @@
                                                         <input type="hidden" name="area" value="{{$vacacion->area}}">
                                                         <input type="hidden" name="fecha" value="{{$vacacion->fecha_de_solicitud}}">
                                                         <input type="hidden" name="dias" value="{{$vacacion->dias_solicitados}}">
-                                                        <input type="hidden" name="who" value="{{$vacacion->supervisor}}">
+                                                        <input type="hidden" name="who" value="{{$vacacion->superVisor}}">
                                                         <input type="hidden" name="fecha_retorno" value="{{$vacacion->fehca_retorno}}">
                                                         <button type="submit" class="btn btn-primary">Sign</button>
                                                     </form>
