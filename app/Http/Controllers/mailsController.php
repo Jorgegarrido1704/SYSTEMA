@@ -62,13 +62,17 @@ class mailsController extends Controller
             $desviations = [];
         }
 
-          $foliosVacaciones = registroVacacionesModel::where('estatus', 'Pendiente RH')
-            ->where('superVisor', $value)   
+          $foliosVacaciones = registroVacacionesModel::select('id','id_empleado')->where('estatus', 'Pendiente RH')
+            ->where('superVisor', $value)
+            ->orderBy('id', 'desc')
             ->get();
+        if($foliosVacaciones == null){
+            $foliosVacaciones = [];
+        }else{
+           //remove duplicates in array
+            $foliosVacaciones = $foliosVacaciones->unique('id_empleado');
+        }
 
-    if ($foliosVacaciones->isEmpty()) {
-    $foliosVacaciones = collect(); // o []
-}
 
 
 
