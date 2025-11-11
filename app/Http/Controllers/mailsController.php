@@ -72,8 +72,9 @@ class mailsController extends Controller
            //remove duplicates in array
             $foliosV = $foliosV->unique('id_empleado');
         }
+       
         foreach ($foliosV as $folioV) {
-            $foliosVacaciones[] = registroVacacionesModel::where('id_empleado', '=', $folioV->id_empleado)
+            $foliosVacaciones = registroVacacionesModel::where('id_empleado', '=', $folioV->id_empleado)
                 ->where('estatus', 'Pendiente RH')
                 ->where('superVisor', $value)
                 ->orderBy('id', 'desc')
@@ -83,7 +84,7 @@ class mailsController extends Controller
 
 
 
-        $vacaciones = [];
+
         $i = 0;
         foreach ($foliosVacaciones as $vaca) {
             $buscardatos = personalBergsModel::where('employeeNumber', '=', $vaca->id_empleado)->first();
