@@ -72,7 +72,8 @@ class mailsController extends Controller
            //remove duplicates in array
             $foliosV = $foliosV->unique('id_empleado');
         }
-       
+
+        $foliosVacaciones = $vacaciones = [];
         foreach ($foliosV as $folioV) {
             $foliosVacaciones = registroVacacionesModel::where('id_empleado', '=', $folioV->id_empleado)
                 ->where('estatus', 'Pendiente RH')
