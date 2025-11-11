@@ -1994,7 +1994,7 @@ class juntasController extends Controller
         }else{
         $liderInicial =personalBergsModel::select('user','email','employeeLider')->where('employeeName', '=', $lider)->first();
         $buscarEmails = personalBergsModel::select('email','employeeLider','employeeName','user')->where('employeeName', '=', $liderInicial->employeeLider)->first();
-        $supervisor = $buscarEmails->user;
+        $supervisor = $liderInicial->user;
             if($liderInicial->email == null or $liderInicial->email == ''){
                  $email=$buscarEmails->email;
             }else{
