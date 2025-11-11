@@ -11,6 +11,8 @@ Swal.fire({
     title: 'Error',
     text: "{{ session('error') }}"
 });
+
+
 </script>
 @endif
 
@@ -46,7 +48,16 @@ Swal.fire({
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <label for="endDate">Fecha de inicio:</label>
-                                        <input type="date" class="form-control" id="endDate" name="endDate" required>
+                                        <input type="date" class="form-control" id="endDate" name="endDate" required >
+                                        <script>
+                                            var fechaEleegida = document.getElementById('endDate').value;
+                                            const hoy=new Date();
+                                            const desplazo = new Date();
+                                            desplazo.setDate(hoy.getDate() + 10);
+                                            //format YYYY-MM-DD
+                                            const format = d => d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2);
+                                             document.getElementById('endDate').min = format(desplazo);
+                                        </script>
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <label for="diasT">Dias:</label>
