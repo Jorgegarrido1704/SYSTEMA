@@ -1985,26 +1985,21 @@ class juntasController extends Controller
         $lider = $buscarPersonal->employeeLider;
         $fecha_de_solicitud = $endDate->toDateString();
         $noposible = $repetidosDias= 0;
-        $email = $buscarPersonal->email??null;
+        $email = null;
         $supervisor = null;
-        if($lider == 'GUILLEN MIRANDA JUAN JOSE' or $lider == 'AGUILAR HERNANDEZ ANA PAOLA' or $lider= 'RAMOS CEDEÑO LUIS ALBERTO'){
+        if($lider == 'GUILLEN MIRANDA JUAN JOSE' or $lider == 'AGUILAR HERNANDEZ ANA PAOLA' or $lider== 'RAMOS CEDEÑO LUIS ALBERTO'){
             $buscarEmails = personalBergsModel::select('email','user')->where('employeeName', '=', $lider)->first();
-            if($buscarEmails->email == null or $buscarEmails->email == ''){
                  $email=$buscarEmails->email;
-            }else{
-                $email.=','.$buscarEmails->email;
-            }
-
-            $supervisor = $buscarEmails->user;
+                 $supervisor = $buscarEmails->user;
         }else{
-        $liderInicial =personalBergsModel::select('employeeLider')->where('employeeName', '=', $lider)->first();
+        $liderInicial =personalBergsModel::select('user','email','employeeLider')->where('employeeName', '=', $lider)->first();
         $buscarEmails = personalBergsModel::select('email','employeeLider','employeeName','user')->where('employeeName', '=', $liderInicial->employeeLider)->first();
         $supervisor = $buscarEmails->user;
-       if($buscarEmails->email == null or $buscarEmails->email == ''){
+            if($liderInicial->email == null or $liderInicial->email == ''){
                  $email=$buscarEmails->email;
             }else{
-                $email.=','.$buscarEmails->email;
-            }
+                $email=[$liderInicial->email.','.$buscarEmails->email];
+           }
 
         }
 
