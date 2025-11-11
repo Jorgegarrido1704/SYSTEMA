@@ -74,30 +74,24 @@ class mailsController extends Controller
         }
 
         $foliosVacaciones = $vacaciones = [];
+         $i = 0;
         foreach ($foliosV as $folioV) {
             $foliosVacaciones = registroVacacionesModel::where('id_empleado', '=', $folioV->id_empleado)
                 ->where('estatus', 'Pendiente RH')
                 ->where('superVisor', $value)
                 ->orderBy('id', 'desc')
                 ->first();
-        }
 
-
-
-
-
-        $i = 0;
-        foreach ($foliosVacaciones as $vaca) {
-            $buscardatos = personalBergsModel::where('employeeNumber', '=', $vaca->id_empleado)->first();
+            $buscardatos = personalBergsModel::where('employeeNumber', '=', $foliosVacaciones->id_empleado)->first();
             $vacaciones[$i] = (object) [
-                'Folio' => $vaca->id,
+                'Folio' => $foliosVacaciones->id,
                 'nombre' => $buscardatos->employeeName,
                 'area' => $buscardatos->employeeArea,
                 'supervisor' => $buscardatos->employeeLider,
-                'id_empleado' => $vaca->id_empleado,
-                'fecha_solicitud' => $vaca->fecha_de_solicitud,
-                'dias_solicitados' => $vaca->dias_solicitados,
-                'fehca_retorno' => $vaca->fehca_retorno
+                'id_empleado' => $foliosVacaciones->id_empleado,
+                'fecha_solicitud' => $foliosVacaciones->fecha_de_solicitud,
+                'dias_solicitados' => $foliosVacaciones->dias_solicitados,
+                'fehca_retorno' => $foliosVacaciones->fehca_retorno
             ];
             $i++;
         }
