@@ -61,6 +61,7 @@ class mailsController extends Controller
         } else {
             $desviations = [];
         }
+        
 
           $foliosV = registroVacacionesModel::select('id_empleado')->where('estatus', 'Pendiente RH')
             ->where('superVisor', $value)

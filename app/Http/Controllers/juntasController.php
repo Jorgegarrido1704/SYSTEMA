@@ -1881,7 +1881,7 @@ class juntasController extends Controller
         $vacaciones = registroVacacionesModel::wherebetween('fecha_de_solicitud', [$InicioYear->toDateString(), $FinYear->toDateString()])
             // ->where('fecha_de_solicitud', 'LIKE', $currentYear . '%')
             ->where('estatus', '=', 'Confirmado')
-            ->where('superVisor', '=', $value)
+            ->where('area', '=', $lidername->employeeArea)
             ->orderBy('fecha_de_solicitud', 'asc')
             ->get();
         /*    if (count($vacaciones) == 0) {
@@ -1987,14 +1987,16 @@ class juntasController extends Controller
         $noposible = $repetidosDias= 0;
         $email = null;
         $supervisor = null;
-        if($lider == 'GUILLEN MIRANDA JUAN JOSE' or $lider == 'AGUILAR HERNANDEZ ANA PAOLA' or $lider== 'RAMOS CEDEÑO LUIS ALBERTO'){
+        if($lider == 'GUILLEN MIRANDA JUAN JOSE' or $lider == 'AGUILAR HERNANDEZ ANA PAOLA' or $lider== 'RAMOS CEDEÑO LUIS ALBERTO'
+            or $lider== 'GAMBOA RIOS JORGE ALEJANDRO' or $lider== 'Jose de Jesus Cervera Lopez' or $lider== 'VILLALPANDO RODRIGUEZ DAVID'
+            or $lider== 'OLAES FRAGA JUAN JOSE'){
             $buscarEmails = personalBergsModel::select('email','user')->where('employeeName', '=', $lider)->first();
                  $email=$buscarEmails->email;
                  $supervisor = $buscarEmails->user;
         }else{
         $liderInicial =personalBergsModel::select('user','email','employeeLider')->where('employeeName', '=', $lider)->first();
         $buscarEmails = personalBergsModel::select('email','employeeLider','employeeName','user')->where('employeeName', '=', $liderInicial->employeeLider)->first();
-        $supervisor = $liderInicial->user;
+        $supervisor = $buscarEmails->user;
             if($liderInicial->email == null or $liderInicial->email == ''){
                  $email=$buscarEmails->email;
             }else{
