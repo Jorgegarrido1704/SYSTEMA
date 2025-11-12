@@ -1876,12 +1876,19 @@ class juntasController extends Controller
             $InicioYear = Carbon::createFromDate($currentYear, 1, 1);
             $FinYear = Carbon::createFromDate($currentYear, 12, 31);
         }
-
+        if(strpos($lidername->employeeArea," ")){
+            $area1=explode(" ",$lidername->employeeArea)[0];
+            $area2=explode(" ",$lidername->employeeArea)[1];
+        }else{
+            $area1=$lidername->employeeArea;
+            $area2=$lidername->employeeArea;
+        }
         // Obtener vacaciones del año
         $vacaciones = registroVacacionesModel::wherebetween('fecha_de_solicitud', [$InicioYear->toDateString(), $FinYear->toDateString()])
             // ->where('fecha_de_solicitud', 'LIKE', $currentYear . '%')
             ->where('estatus', '=', 'Confirmado')
-            ->where('area', '=', $lidername->employeeArea)
+            ->where('area', '=',$area1)
+            ->OrWhere('area', '=',$area2)
             ->orderBy('fecha_de_solicitud', 'asc')
             ->get();
         /*    if (count($vacaciones) == 0) {
