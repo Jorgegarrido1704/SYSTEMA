@@ -19,6 +19,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use App\Models\calidad\calidad_registro_baja;
 use App\Models\personalBergsModel;
+use App\Models\Wo;
 
 class caliController extends generalController
 {
@@ -1102,4 +1103,20 @@ class caliController extends generalController
 
     }
 
+    //Request Testing
+    public function RequestTesting (Request $request)
+    {
+        $numero = $request->input('WorkOrder');
+        $buscarWo="default";
+        return response()->json($buscarWo);
+
+    }
+
+    //fetch show WO info
+    public function information(Request $request)
+    {
+        $numero = $request->input('WorkOrder');
+        $buscarWo=Wo::select('NumPart','Cliente','rev','Qty')->where('wo',$numero)->first();
+        return response()->json($buscarWo);
+    }
 }

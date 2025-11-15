@@ -1996,7 +1996,7 @@ class juntasController extends Controller
         $supervisor = null;
         if($lider == 'GUILLEN MIRANDA JUAN JOSE' or $lider == 'AGUILAR HERNANDEZ ANA PAOLA' or $lider== 'RAMOS CEDEÑO LUIS ALBERTO'
             or $lider== 'GAMBOA RIOS JORGE ALEJANDRO' or $lider== 'Jose de Jesus Cervera Lopez' or $lider== 'VILLALPANDO RODRIGUEZ DAVID'
-            or $lider== 'OLAES FRAGA JUAN JOSE'){
+            or $lider== 'OLAES FRAGA JUAN JOSE' or $lider == 'FANDIÑO TORRES ROCIO'){
             $buscarEmails = personalBergsModel::select('email','user')->where('employeeName', '=', $lider)->first();
                  $email=$buscarEmails->email;
                  $supervisor = $buscarEmails->user;
