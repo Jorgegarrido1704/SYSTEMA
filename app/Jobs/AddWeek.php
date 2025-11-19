@@ -10,6 +10,8 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Carbon\Carbon;
 use App\Models\personalBergsModel;
+use Illuminate\Support\Facades\DB;
+
 
 
 class AddWeek implements ShouldQueue
@@ -34,8 +36,16 @@ class AddWeek implements ShouldQueue
         $days = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
         $day = $days[$today - 1];
         $dates = Carbon::now()->format('Y-m-d');
-        $hollyDays=['2026-01-01','2025-12-12','2025-12-25','2025-12-26','2026-01-02'];
+        $hollyDays = [
+            '2026-01-01',
+            '2025-12-12',
+            '2025-12-25',
+            '2025-12-26',
+            '2026-01-02'
+        ];
+
         $registrosEmpleados = personalBergsModel::where('status', '!=', 'Baja')->get();
+
         foreach ($registrosEmpleados as $registroEmpleado) {
             if (assistence::where('week', '=', $week)->where('id_empleado', '=', $registroEmpleado->employeeNumber)->count() == 0) {
                 assistence::insert([
@@ -46,7 +56,9 @@ class AddWeek implements ShouldQueue
                 ]);
             }
             if(in_array($dates,$hollyDays)){
-                assistence::where('week', '=', $week)->where('id_empleado', '=', $registroEmpleado->employeeNumber)->update([$day => 'PCS']);
+                assistence::where('week', '=', $week)
+          ->where('id_empleado', '=', $registroEmpleado->employeeNumber)
+          ->update([$day => 'PCS']);
             }else{
             switch ($registroEmpleado->typeWorker) {
 
