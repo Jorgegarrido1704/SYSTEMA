@@ -21,7 +21,7 @@ use App\Models\regPar;
 use APP\Mail\firmasNPIEmail;
 use App\Models\login;
 use App\Models\personalBergsModel;
-use App\Models\electricaltesting;
+use App\Models\electricalTesting;
 
 class PpapIngController extends Controller
 {
