@@ -39,7 +39,7 @@
                 });
             }
 
-
+            if()
     </script>
      <style>
                             .ppap {
@@ -315,18 +315,32 @@
 
                         <table id="table-harness" class="table-harness">
                             <thead style=" position: sticky; z-index: 1; top: 0; text-align: center; background-color: #bd0606; color: white; ">
-
                                     <th>Part Number</th>
                                     <th>Client</th>
-                                    <th>REV</th>
                                     <th>WO</th>
-
-                                    <th>Qty</th>
-
-                                    <th>Sign</th>
+                                    <th>Requested By</th>
+                                    <th>Date Requested</th>
+                                    <th>Status</th>
+                                    <th>Dispatch</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach ($electicalTesting as $elec)
+                                    <tr>
+                                        <td>{{ $elec->pn }}</td>
+                                        <td>{{ $elec->client }}</td>
+                                        <td>{{ $elec->wo }}</td>
+                                        <td>{{ $elec->requested_by }}</td>
+                                        <td>{{ $elec->created_at }}</td>
+                                        <td>{{ $elec->status_of_order }}</td>
+                                        <td>
+                                            <form action="{{ route('dispatchElecticalTest') }}" method="GET">
+                                                <input type="hidden" name="id" id="id" value="{{ $elec->id }}">
+                                                <button type="submit">Dispatch</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
 
                             </tbody>
                         </table>

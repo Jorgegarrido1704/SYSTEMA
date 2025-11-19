@@ -151,8 +151,95 @@
                                                     </div>
                                                 </div>
                                         </div>
+        </div>
+        <div class=row >
+             <div class="col-lg-6 mb-4">
+                            <!-- Request Testing -->
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h4 class="m-0 font-weight-bold text-primary">Request Testing</h4>
+                                </div>
+                            </div>
 
-         <!-- <div class="row">
+                            <div class="card body" style="overflow-y: scroll; height: 360px">
+                                <form action="{{ route('RequestTesting') }}" method="POST">
+                                    @csrf
+                                    <div class="row">
+
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label for="text">WO:</label>
+                                                <input type="text" class="form-control" name="workElectrical" id="workElectrical" minlength="6" maxlength="6" required onchange="updateInfoCalidad()">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label for="text">Part Number:</label>
+                                                <input type="text" class="form-control" name="pn" id="pn" required disabled>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label for="text">Customer:</label>
+                                                <input type="text" class="form-control" name="cust" id="cust" required disabled>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label for="text">Revision:</label>
+                                                <input type="text" class="form-control" name="rev" id="rev" required disabled>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label for="text">QTY</label>
+                                                <input type="number" class="form-control" name="qty" id="qty" step="1" required min="1" max="1">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12 mt-2 text-center align-items-center justify-content-center">
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-success">Request</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </form>
+
+
+                            </div>
+             </div>
+
+        </div>
+
+        <script>
+            function updateInfoCalidad() {
+                var wo = document.getElementById('workElectrical').value;
+                var url= @json(route('informationWo'));
+                fetch(url, {
+                    method: 'post',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: JSON.stringify({ workElectrical: wo })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+
+                       console.log(data);
+                        document.getElementById('pn').value = data.NumPart;
+                        document.getElementById('cust').value = data.cliente;
+                        document.getElementById('qty').value = 1;
+                        document.getElementById('rev').value = data.rev;
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+
+            }
+        </script>
+               <!-- <div class="row">
 
                <div class="col-lg-6 mb-4">
                             <-- AREAS
@@ -464,7 +551,7 @@
                                 </div>
                             </div>
                         </div> -->
-                    </div>
+
 
 
 

@@ -20,6 +20,8 @@ use App\Models\workScreduleModel;
 use App\Models\regPar;
 use APP\Mail\firmasNPIEmail;
 use App\Models\login;
+use App\Models\personalBergsModel;
+use App\Models\electricaltesting;
 
 class PpapIngController extends Controller
 {
@@ -264,10 +266,12 @@ class PpapIngController extends Controller
                 $problem[$i][6] = $problemas->DateIs;
                 $i++;
             }
+            //electical testing
+            $electicalTesting = electricaltesting::where('status_of_order', '=', 'Pending')->get();
 
 
 
-            return view('/ing', ['ingenieros_en_piso' => $ingenieros_en_piso, 'problem' => $problem, 'paolaTdesc' => $paolaTdesc, 'alexTdesc' => $alexTdesc, 'paolaT' => $paolaT, 'alexT' => $alexT, 'alex' => $alex, 'alexDesc' => $alexDesc, 'paola' => $paola, 'paoDesc' => $paoDesc, 'soporte' => $soporte, 'fullreq' => $fullreq, 'graficasLate' => $graficasLate, 'graficOnTime' => $graficOnTime, 'cat' => $cat, 'inges' => $inges, 'value' => $value, 'enginners' => $enginners, 'answer' => $answer, 'dias_mes' => $dias_mes, 'cronoGram' => $cronoGram]);
+            return view('/ing', ['electicalTesting'=> $electicalTesting,'ingenieros_en_piso' => $ingenieros_en_piso, 'problem' => $problem, 'paolaTdesc' => $paolaTdesc, 'alexTdesc' => $alexTdesc, 'paolaT' => $paolaT, 'alexT' => $alexT, 'alex' => $alex, 'alexDesc' => $alexDesc, 'paola' => $paola, 'paoDesc' => $paoDesc, 'soporte' => $soporte, 'fullreq' => $fullreq, 'graficasLate' => $graficasLate, 'graficOnTime' => $graficOnTime, 'cat' => $cat, 'inges' => $inges, 'value' => $value, 'enginners' => $enginners, 'answer' => $answer, 'dias_mes' => $dias_mes, 'cronoGram' => $cronoGram]);
         }
     }
 
@@ -759,8 +763,6 @@ class PpapIngController extends Controller
         $writer->save('php://output');
     }
 
-
-
     public function problemasFin(Request $request)
     {
         $value = session('user');
@@ -985,5 +987,10 @@ class PpapIngController extends Controller
             'Qty'=>$datosWO->Qty,
              ];
         return response()->json($data);
+    }
+    public function dispatchElecticalTest(request $request){
+        $distch=electricaltesting::where('id',$request->input('id'))->update([
+            'status_of_order'=>'Completed']);
+            return redirect()->back()->with('message', 'Inventory added successfully.');
     }
 }

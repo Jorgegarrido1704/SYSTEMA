@@ -20,6 +20,7 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use App\Models\calidad\calidad_registro_baja;
 use App\Models\personalBergsModel;
 use App\Models\Wo;
+use App\Models\electricaltesting;
 
 class caliController extends generalController
 {
@@ -1106,17 +1107,28 @@ class caliController extends generalController
     //Request Testing
     public function RequestTesting (Request $request)
     {
-        $numero = $request->input('WorkOrder');
-        $buscarWo="default";
-        return response()->json($buscarWo);
+        $value = session('user');
+        $numero = $request->input('workElectrical');
+        $status = 'Pending';
+        $buscarWo=Wo::select('NumPart','cliente','rev')->where('wo',$numero)->first();
+        $registos= new electricalTesting;
+        $registos->pn=$buscarWo->NumPart;
+        $registos->client=$buscarWo->cliente;
+        $registos->wo=$request->input('workElectrical');
+        $registos->requested_by=$value;
+        $registos->save();
+
+        return redirect()->route('calidad')->with('success', 'Se ha creado un nuevo registro de testing');
+
+
 
     }
 
     //fetch show WO info
-    public function information(Request $request)
+    public function informationWo(Request $request)
     {
-        $numero = $request->input('WorkOrder');
-        $buscarWo=Wo::select('NumPart','Cliente','rev','Qty')->where('wo',$numero)->first();
+        $numero = $request->input('workElectrical');
+        $buscarWo=Wo::select('NumPart','cliente','rev')->where('wo',$numero)->first();
         return response()->json($buscarWo);
     }
 }

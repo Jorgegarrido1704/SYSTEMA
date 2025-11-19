@@ -93,6 +93,7 @@ Route::controller(PpapIngController::class)->group(function () {
     Route::get('/editDelite', [PpapIngController::class, 'editDelite'])->name('editDelite');
     Route::get('/ganttGraph', [PpapIngController::class, 'ganttGraph'])->name('ganttGraph');
     Route::post('/datosWO', [PpapIngController::class, 'datosWo'])->name('datosWO');
+    Route::get('/dispatchElecticalTest', [PpapIngController::class, 'dispatchElecticalTest'])->name('dispatchElecticalTest');
 });
 
 Route::controller(AlmacenController::class)->group(function () {
@@ -127,6 +128,8 @@ Route::controller(caliController::class)->group(function () {
     Route::get('/excel_calidad', [caliController::class, 'excel_calidad'])->name('excel_calidad');
     Route::get('/fallasCalidad', [caliController::class, 'fallasCalidad'])->name('fallasCalidad');
     Route::post('/personalFallas', [caliController::class, 'personalFallas'])->name('personalFallas');
+    Route::post('/RequestTesting', [caliController::class, 'RequestTesting'])->name('RequestTesting');
+    Route::post('/informationWo', [caliController::class, 'informationWo'])->name('informationWo');
 });
 Route::controller(BossCaliController::class)->group(function () {
     Route::get('/BossCali', BossCaliController::class);
