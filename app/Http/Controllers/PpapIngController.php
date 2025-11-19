@@ -267,7 +267,7 @@ class PpapIngController extends Controller
                 $i++;
             }
             //electical testing
-            $electicalTesting = electricaltesting::where('status_of_order', '=', 'Pending')->get();
+            $electicalTesting = electricalTesting::where('status_of_order', '=', 'Pending')->get();
 
 
 
