@@ -1109,6 +1109,13 @@ class caliController extends generalController
     {
         $value = session('user');
         $numero = $request->input('workElectrical');
+        if($value == null){
+            return redirect('/');
+        }
+        if($numero == null or $numero == ''){
+            return redirect('/calidad');
+        }
+
         $status = 'Pending';
         $buscarWo=Wo::select('NumPart','cliente','rev')->where('wo',$numero)->first();
         $registos= new electricalTesting;
