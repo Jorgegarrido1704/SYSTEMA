@@ -2,20 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
-use App\Models\assistence;
-use App\Models\rrhh\rotacionModel;
-use Illuminate\Http\Request;
 use App\Jobs\UpdateRotacionJob;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+use App\Models\assistence;
 use App\Models\personalBergsModel;
-use Illuminate\Database\Eloquent\Casts\Json;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class rrhhController extends Controller
 {
@@ -23,18 +19,18 @@ class rrhhController extends Controller
     {
         $value = session('user');
         $cat = session('categoria');
-        $leadername = personalBergsModel::select('employeeName' )->where('user', '=', $value)->first();
+        $leadername = personalBergsModel::select('employeeName')->where('user', '=', $value)->first();
+        $lidername = personalBergsModel::select('employeeLider')->distinct()->get();
         $weekNum = Carbon::now()->weekOfYear;
-            $datosRHWEEK = [];
-        if ($value == 'Admin' or $cat  == 'RRHH') {
+        $datosRHWEEK = [];
+        if ($value == 'Admin' or $cat == 'RRHH') {
             $datosRHWEEK = assistence::leader($value)->OrderBy('lider', 'desc')->get();
             $diasRegistro = ['', '', '', '', '', ''];
         } else {
             $diasRegistro = ['readonly', 'readonly', 'readonly', 'readonly', 'readonly'];
-             $datosRHWEEK = assistence::leader($leadername->employeeName, $cat)->OrderBy('lider', 'desc')->get();
+            $datosRHWEEK = assistence::leader($leadername->employeeName, $cat)->OrderBy('lider', 'desc')->get();
             $diasRegistros = ['', '', '', '', ''];
         }
-
 
         $diaNum = carbon::now()->dayOfWeek; //
 
@@ -46,7 +42,7 @@ class rrhhController extends Controller
             $diasRegistros[$diaNum - 1] = '';
         }
 
-        return view('juntas.hrDocs.rrhhDashBoard', ['weekNum' => $weekNum, 'diasRegistros' => $diasRegistros, 'diasRegistro' => $diasRegistro, 'datosRHWEEK' => $datosRHWEEK, 'value' => $value, 'cat' => $cat]);
+        return view('juntas.hrDocs.rrhhDashBoard', ['lidername' => $lidername, 'weekNum' => $weekNum, 'diasRegistros' => $diasRegistros, 'diasRegistro' => $diasRegistro, 'datosRHWEEK' => $datosRHWEEK, 'value' => $value, 'cat' => $cat]);
     }
 
     public function updateAsistencia(Request $request)
@@ -80,19 +76,19 @@ class rrhhController extends Controller
 
         foreach ($validated['numero_empleado'] as $index => $id_empleado) {
             $updateData = [
-                'lunes' => $validated['lun'][$index] ?  strtoupper(str_replace('-', '', $validated['lun'][$index])) : "-",
+                'lunes' => $validated['lun'][$index] ? strtoupper(str_replace('-', '', $validated['lun'][$index])) : '-',
                 'extLunes' => $validated['extra_lun'][$index],
-                'martes' => $validated['mar'][$index] ?  strtoupper(str_replace('-', '', $validated['mar'][$index])) : "-",
+                'martes' => $validated['mar'][$index] ? strtoupper(str_replace('-', '', $validated['mar'][$index])) : '-',
                 'extMartes' => $validated['extra_mar'][$index],
-                'miercoles' => $validated['mie'][$index] ?  strtoupper(str_replace('-', '', $validated['mie'][$index])) : "-",
+                'miercoles' => $validated['mie'][$index] ? strtoupper(str_replace('-', '', $validated['mie'][$index])) : '-',
                 'extMiercoles' => $validated['extra_mie'][$index],
-                'jueves' => $validated['jue'][$index] ?  strtoupper(str_replace('-', '', $validated['jue'][$index])) : "-",
+                'jueves' => $validated['jue'][$index] ? strtoupper(str_replace('-', '', $validated['jue'][$index])) : '-',
                 'extJueves' => $validated['extra_jue'][$index],
-                'viernes' => $validated['vie'][$index] ?  strtoupper(str_replace('-', '', $validated['vie'][$index])) : "-",
+                'viernes' => $validated['vie'][$index] ? strtoupper(str_replace('-', '', $validated['vie'][$index])) : '-',
                 'extViernes' => $validated['extra_vie'][$index],
-                'sabado' => $validated['sab'][$index] ?  strtoupper(str_replace('-', '', $validated['sab'][$index])) : "-",
+                'sabado' => $validated['sab'][$index] ? strtoupper(str_replace('-', '', $validated['sab'][$index])) : '-',
                 'extSabado' => $validated['extra_sab'][$index],
-                'domingo' => $validated['dom'][$index] ?  strtoupper(str_replace('-', '', $validated['dom'][$index])) : "-",
+                'domingo' => $validated['dom'][$index] ? strtoupper(str_replace('-', '', $validated['dom'][$index])) : '-',
                 'extDomingo' => $validated['extra_dom'][$index],
                 'extras' => $validated['extra_lun'][$index] + $validated['extra_mar'][$index] + $validated['extra_mie'][$index] + $validated['extra_jue'][$index] + $validated['extra_vie'][$index] + $validated['extra_sab'][$index] + $validated['extra_dom'][$index],
                 'tt_lunes' => $validated['tt_lunes'][$index],
@@ -109,12 +105,12 @@ class rrhhController extends Controller
                 ->where('week', $week)
                 ->update($updateData);
         }
-        //send a job to update rotacion
+        // send a job to update rotacion
         UpdateRotacionJob::dispatch();
-
 
         return redirect()->route('rrhhDashBoard');
     }
+
     public function addperson(Request $request)
     {
         $validated = $request->validate([
@@ -127,12 +123,12 @@ class rrhhController extends Controller
             'Genero' => 'required|string',
         ]);
 
-        if (personalBergsModel::where('employeeNumber', '=', 'i' . $validated['id_empleado'])->exists()) {
+        if (personalBergsModel::where('employeeNumber', '=', 'i'.$validated['id_empleado'])->exists()) {
             return redirect()->route('rrhhDashBoard')->with('error', 'El empleado ya existe en la base de datos.');
         } else {
             personalBergsModel::create([
-                'employeeName' =>  $validated['nombre'],
-                'employeeNumber' => 'i' . $validated['id_empleado'],
+                'employeeName' => $validated['nombre'],
+                'employeeNumber' => 'i'.$validated['id_empleado'],
                 'DateIngreso' => $validated['ingreso'],
                 'employeeArea' => $validated['area'],
                 'employeeLider' => $validated['lider'],
@@ -143,22 +139,25 @@ class rrhhController extends Controller
                 'week' => date('W'),
                 'lider' => $validated['lider'],
                 'name' => $validated['nombre'],
-                'id_empleado' => 'i' . $validated['id_empleado']
+                'id_empleado' => 'i'.$validated['id_empleado'],
             ]);
 
             return redirect()->route('rrhhDashBoard')->with('error', 'Empleado agregado correctamente.');
         }
     }
+
     public function modificarEmpleado(Request $request)
     {
         $datos = $request->input('dato');
         if (is_numeric($datos)) {
             $data = personalBergsModel::where('employeeNumber', '=', $datos)->get();
         } else {
-            $data = personalBergsModel::where('employeeName', 'LIKE', $datos . '%')->orWhere('employeeName', 'LIKE', '%' . $datos . '%')->get();
+            $data = personalBergsModel::where('employeeName', 'LIKE', $datos.'%')->orWhere('employeeName', 'LIKE', '%'.$datos.'%')->get();
         }
+
         return response()->json($data);
     }
+
     public function editarEmepleado(Request $request)
     {
         $valued = $request->input('valor');
@@ -178,31 +177,32 @@ class rrhhController extends Controller
             ]);
             assistence::where('id_empleado', '=', $valued, 'AND', 'Status', '=', 'Baja', 'AND', 'week', '=', $semana)->delete();
             UpdateRotacionJob::dispatch();
-        }
-
-        $datosAdd =    personalBergsModel::where('employeeNumber', '=', $valued)->update([
-            'employeeNumber' => 'i' . $id_empleado,
-            'employeeName' => $name,
-            'employeeArea' => $area,
-            'employeeLider' => $lider,
-            'typeWorker' => $tipoDeTrabajador,
-            'Gender' => $Genero,
-            'status' => $status,
-        ]);
-        if ($datosAdd) {
-            $datos = "realizado";
         } else {
-            $datos = "error // no cambio de empleado";
-        }
 
+            $datosAdd = personalBergsModel::where('employeeNumber', '=', $valued)->update([
+                'employeeNumber' => 'i'.$id_empleado,
+                'employeeName' => $name,
+                'employeeArea' => $area,
+                'employeeLider' => $lider,
+                'typeWorker' => $tipoDeTrabajador,
+                'Gender' => $Genero,
+                'status' => $status,
+                'DaysVacationsAvailble' => 0,
+                'lastYear' => 0,
+                'currentYear' => 0,
+                'nextYear' => 0,
+
+            ]);
+
+            if ($datosAdd) {
+                $datos = 'realizado';
+            } else {
+                $datos = 'error // no cambio de empleado';
+            }
+        }
 
         return response()->json($datos);
     }
-
-
-
-
-
 
     public function reporteSemanlInicidencias(Request $request)
     {
@@ -219,7 +219,7 @@ class rrhhController extends Controller
         $sabado = Carbon::now()->setISODate($year, $weekNumber, 6);
         $domingo = Carbon::now()->setISODate($year, $weekNumber, 7);
 
-        $spreadsheet = new Spreadsheet();
+        $spreadsheet = new Spreadsheet;
         $sheets = $spreadsheet->getActiveSheet();
         foreach (range('A', 'Z') as $col) {
             $sheets->getColumnDimension($col)->setAutoSize(true);
@@ -247,7 +247,7 @@ class rrhhController extends Controller
         $sheets->setCellValue('A13', 'Servicion Comprado');
         $sheets->setCellValue('A14', 'Total Extras');
         $sheets->setCellValue('A15', 'Total Tiempo por Tiempo');
-        //ok
+        // ok
         $sheets->setCellValue('B2', assistence::where('week', $week)->where('lunes', 'OK')->count());
         $sheets->setCellValue('C2', assistence::where('week', $week)->where('martes', 'OK')->count());
         $sheets->setCellValue('D2', assistence::where('week', $week)->where('miercoles', 'OK')->count());
@@ -255,7 +255,7 @@ class rrhhController extends Controller
         $sheets->setCellValue('F2', assistence::where('week', $week)->where('viernes', 'OK')->count());
         $sheets->setCellValue('G2', assistence::where('week', $week)->where('sabado', 'OK')->count());
         $sheets->setCellValue('H2', assistence::where('week', $week)->where('domingo', 'OK')->count());
-        //f
+        // f
         $sheets->setCellValue('B3', assistence::where('week', $week)->where('lunes', 'F')->count());
         $sheets->setCellValue('C3', assistence::where('week', $week)->where('martes', 'F')->count());
         $sheets->setCellValue('D3', assistence::where('week', $week)->where('miercoles', 'F')->count());
@@ -263,7 +263,7 @@ class rrhhController extends Controller
         $sheets->setCellValue('F3', assistence::where('week', $week)->where('viernes', 'F')->count());
         $sheets->setCellValue('G3', assistence::where('week', $week)->where('sabado', 'F')->count());
         $sheets->setCellValue('H3', assistence::where('week', $week)->where('domingo', 'F')->count());
-        //PSS
+        // PSS
         $sheets->setCellValue('B4', assistence::where('week', $week)->where('lunes', 'PSS')->count());
         $sheets->setCellValue('C4', assistence::where('week', $week)->where('martes', 'PSS')->count());
         $sheets->setCellValue('D4', assistence::where('week', $week)->where('miercoles', 'PSS')->count());
@@ -271,7 +271,7 @@ class rrhhController extends Controller
         $sheets->setCellValue('F4', assistence::where('week', $week)->where('viernes', 'PSS')->count());
         $sheets->setCellValue('G4', assistence::where('week', $week)->where('sabado', 'PSS')->count());
         $sheets->setCellValue('H4', assistence::where('week', $week)->where('domingo', 'PSS')->count());
-        //PCS
+        // PCS
         $sheets->setCellValue('B5', assistence::where('week', $week)->where('lunes', 'PCS')->count());
         $sheets->setCellValue('C5', assistence::where('week', $week)->where('martes', 'PCS')->count());
         $sheets->setCellValue('D5', assistence::where('week', $week)->where('miercoles', 'PCS')->count());
@@ -279,7 +279,7 @@ class rrhhController extends Controller
         $sheets->setCellValue('F5', assistence::where('week', $week)->where('viernes', 'PCS')->count());
         $sheets->setCellValue('G5', assistence::where('week', $week)->where('sabado', 'PCS')->count());
         $sheets->setCellValue('H5', assistence::where('week', $week)->where('domingo', 'PCS')->count());
-        //INC
+        // INC
         $sheets->setCellValue('B6', assistence::where('week', $week)->where('lunes', 'INC')->count());
         $sheets->setCellValue('C6', assistence::where('week', $week)->where('martes', 'INC')->count());
         $sheets->setCellValue('D6', assistence::where('week', $week)->where('miercoles', 'INC')->count());
@@ -287,7 +287,7 @@ class rrhhController extends Controller
         $sheets->setCellValue('F6', assistence::where('week', $week)->where('viernes', 'INC')->count());
         $sheets->setCellValue('G6', assistence::where('week', $week)->where('sabado', 'INC')->count());
         $sheets->setCellValue('H6', assistence::where('week', $week)->where('domingo', 'INC')->count());
-        //V
+        // V
         $sheets->setCellValue('B7', assistence::where('week', $week)->where('lunes', 'V')->count());
         $sheets->setCellValue('C7', assistence::where('week', $week)->where('martes', 'V')->count());
         $sheets->setCellValue('D7', assistence::where('week', $week)->where('miercoles', 'V')->count());
@@ -295,7 +295,7 @@ class rrhhController extends Controller
         $sheets->setCellValue('F7', assistence::where('week', $week)->where('viernes', 'V')->count());
         $sheets->setCellValue('G7', assistence::where('week', $week)->where('sabado', 'V')->count());
         $sheets->setCellValue('H7', assistence::where('week', $week)->where('domingo', 'V')->count());
-        //R
+        // R
         $sheets->setCellValue('B8', assistence::where('week', $week)->where('lunes', 'R')->count());
         $sheets->setCellValue('C8', assistence::where('week', $week)->where('martes', 'R')->count());
         $sheets->setCellValue('D8', assistence::where('week', $week)->where('miercoles', 'R')->count());
@@ -303,7 +303,7 @@ class rrhhController extends Controller
         $sheets->setCellValue('F8', assistence::where('week', $week)->where('viernes', 'R')->count());
         $sheets->setCellValue('G8', assistence::where('week', $week)->where('sabado', 'R')->count());
         $sheets->setCellValue('H8', assistence::where('week', $week)->where('domingo', 'R')->count());
-        //SUS
+        // SUS
         $sheets->setCellValue('B9', assistence::where('week', $week)->where('lunes', 'SUS')->count());
         $sheets->setCellValue('C9', assistence::where('week', $week)->where('martes', 'SUS')->count());
         $sheets->setCellValue('D9', assistence::where('week', $week)->where('miercoles', 'SUS')->count());
@@ -311,7 +311,7 @@ class rrhhController extends Controller
         $sheets->setCellValue('F9', assistence::where('week', $week)->where('viernes', 'SUS')->count());
         $sheets->setCellValue('G9', assistence::where('week', $week)->where('sabado', 'SUS')->count());
         $sheets->setCellValue('H9', assistence::where('week', $week)->where('domingo', 'SUS')->count());
-        //TSP
+        // TSP
         $sheets->setCellValue('B10', assistence::where('week', $week)->where('lunes', 'TSP')->count());
         $sheets->setCellValue('C10', assistence::where('week', $week)->where('martes', 'TSP')->count());
         $sheets->setCellValue('D10', assistence::where('week', $week)->where('miercoles', 'TSP')->count());
@@ -319,7 +319,7 @@ class rrhhController extends Controller
         $sheets->setCellValue('F10', assistence::where('week', $week)->where('viernes', 'TSP')->count());
         $sheets->setCellValue('G10', assistence::where('week', $week)->where('sabado', 'TSP')->count());
         $sheets->setCellValue('H10', assistence::where('week', $week)->where('domingo', 'TSP')->count());
-        //PCT
+        // PCT
         $sheets->setCellValue('B11', assistence::where('week', $week)->where('lunes', 'PCT')->count());
         $sheets->setCellValue('C11', assistence::where('week', $week)->where('martes', 'PCT')->count());
         $sheets->setCellValue('D11', assistence::where('week', $week)->where('miercoles', 'PCT')->count());
@@ -327,7 +327,7 @@ class rrhhController extends Controller
         $sheets->setCellValue('F11', assistence::where('week', $week)->where('viernes', 'PCT')->count());
         $sheets->setCellValue('G11', assistence::where('week', $week)->where('sabado', 'PCT')->count());
         $sheets->setCellValue('H11', assistence::where('week', $week)->where('domingo', 'PCT')->count());
-        //ASM
+        // ASM
         $sheets->setCellValue('B12', assistence::where('week', $week)->where('lunes', 'ASM')->count());
         $sheets->setCellValue('C12', assistence::where('week', $week)->where('martes', 'ASM')->count());
         $sheets->setCellValue('D12', assistence::where('week', $week)->where('miercoles', 'ASM')->count());
@@ -335,7 +335,7 @@ class rrhhController extends Controller
         $sheets->setCellValue('F12', assistence::where('week', $week)->where('viernes', 'ASM')->count());
         $sheets->setCellValue('G12', assistence::where('week', $week)->where('sabado', 'ASM')->count());
         $sheets->setCellValue('H12', assistence::where('week', $week)->where('domingo', 'ASM')->count());
-        //SCE
+        // SCE
         $sheets->setCellValue('B13', assistence::where('week', $week)->where('lunes', 'SCE')->count());
         $sheets->setCellValue('C13', assistence::where('week', $week)->where('martes', 'SCE')->count());
         $sheets->setCellValue('D13', assistence::where('week', $week)->where('miercoles', 'SCE')->count());
@@ -343,7 +343,7 @@ class rrhhController extends Controller
         $sheets->setCellValue('F13', assistence::where('week', $week)->where('viernes', 'SCE')->count());
         $sheets->setCellValue('G13', assistence::where('week', $week)->where('sabado', 'SCE')->count());
         $sheets->setCellValue('H13', assistence::where('week', $week)->where('domingo', 'SCE')->count());
-        //TE
+        // TE
         $sheets->setCellValue('B14', assistence::where('week', $week)->SUM('extLunes'));
         $sheets->setCellValue('C14', assistence::where('week', $week)->sum('extMartes'));
         $sheets->setCellValue('D14', assistence::where('week', $week)->sum('extMiercoles'));
@@ -351,7 +351,7 @@ class rrhhController extends Controller
         $sheets->setCellValue('F14', assistence::where('week', $week)->sum('extViernes'));
         $sheets->setCellValue('G14', assistence::where('week', $week)->sum('extSabado'));
         $sheets->setCellValue('H14', assistence::where('week', $week)->sum('extDomingo'));
-        //TPT
+        // TPT
         $sheets->setCellValue('B15', assistence::where('week', $week)->sum('tt_lunes'));
         $sheets->setCellValue('C15', assistence::where('week', $week)->sum('tt_martes'));
         $sheets->setCellValue('D15', assistence::where('week', $week)->sum('tt_miercoles'));
@@ -359,9 +359,6 @@ class rrhhController extends Controller
         $sheets->setCellValue('F15', assistence::where('week', $week)->sum('tt_viernes'));
         $sheets->setCellValue('G15', assistence::where('week', $week)->sum('tt_sabado'));
         $sheets->setCellValue('H15', assistence::where('week', $week)->sum('tt_domingo'));
-
-
-
 
         // Obtener líderes únicos por semana
         $leaders = assistence::select('lider')
@@ -383,17 +380,13 @@ class rrhhController extends Controller
             'j1' => 'Total de Extras',
             'k1' => 'Total de Tiempo por Tiempo',
             'l1' => 'Bono de Asistencia',
-            'm1' => 'Bono de puntualidad'
+            'm1' => 'Bono de puntualidad',
         ];
-
-
-
-
 
         foreach ($leaders as $l) {
             // Crear hoja por líder
             $sheet = $spreadsheet->createSheet();
-            $leader=explode(" ",$l->lider)[0]??str_split($l->lider,5)[0];
+            $leader = explode(' ', $l->lider)[0] ?? str_split($l->lider, 5)[0];
             $sheet->setTitle($leader);
 
             // Agregar encabezados
@@ -401,23 +394,22 @@ class rrhhController extends Controller
                 $sheet->setCellValue($cell, $value);
             }
 
-
             // Estilo para encabezados
             $headerStyle = [
                 'font' => ['bold' => true],
                 'fill' => [
                     'fillType' => Fill::FILL_SOLID,
-                    'startColor' => ['argb' => 'FFB0C4DE']
+                    'startColor' => ['argb' => 'FFB0C4DE'],
                 ],
                 'alignment' => [
-                    'horizontal' => Alignment::HORIZONTAL_CENTER
+                    'horizontal' => Alignment::HORIZONTAL_CENTER,
                 ],
                 'borders' => [
                     'allBorders' => [
-                        'borderStyle' => Border::BORDER_THIN
-                    ]
+                        'borderStyle' => Border::BORDER_THIN,
+                    ],
 
-                ]
+                ],
             ];
             $sheet->getStyle('A1:m1')->applyFromArray($headerStyle);
             foreach (range('A', 'Z') as $col) {
@@ -433,31 +425,29 @@ class rrhhController extends Controller
             // Agregar datos
             $row = 2;
             foreach ($datos as $d) {
-                $sheet->setCellValue('A' . $row, $d->name);
-                $sheet->setCellValue('b' . $row, substr($d->id_empleado, 1));
-                $sheet->setCellValue('c' . $row, $d->lunes);
-                $sheet->setCellValue('d' . $row, $d->martes);
-                $sheet->setCellValue('e' . $row, $d->miercoles);
-                $sheet->setCellValue('f' . $row, $d->jueves);
-                $sheet->setCellValue('g' . $row, $d->viernes);
-                $sheet->setCellValue('h' . $row, $d->sabado);
-                $sheet->setCellValue('i' . $row, $d->domingo);
-                $sheet->setCellValue('j' . $row, $d->extras);
-                $sheet->setCellValue('k' . $row, $d->tiempoPorTiempo);
-                $sheet->setCellValue('l' . $row, $d->bonoAsistencia);
-                $sheet->setCellValue('m' . $row, $d->bonoPuntualidad);
+                $sheet->setCellValue('A'.$row, $d->name);
+                $sheet->setCellValue('b'.$row, substr($d->id_empleado, 1));
+                $sheet->setCellValue('c'.$row, $d->lunes);
+                $sheet->setCellValue('d'.$row, $d->martes);
+                $sheet->setCellValue('e'.$row, $d->miercoles);
+                $sheet->setCellValue('f'.$row, $d->jueves);
+                $sheet->setCellValue('g'.$row, $d->viernes);
+                $sheet->setCellValue('h'.$row, $d->sabado);
+                $sheet->setCellValue('i'.$row, $d->domingo);
+                $sheet->setCellValue('j'.$row, $d->extras);
+                $sheet->setCellValue('k'.$row, $d->tiempoPorTiempo);
+                $sheet->setCellValue('l'.$row, $d->bonoAsistencia);
+                $sheet->setCellValue('m'.$row, $d->bonoPuntualidad);
                 $row++;
             }
         }
 
-
-
         // Enviar archivo
         $writer = new Xlsx($spreadsheet);
-        $fileName = 'Reporte_incidencias_semana_' . $week . '.xlsx';
+        $fileName = 'Reporte_incidencias_semana_'.$week.'.xlsx';
 
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment; filename="' . $fileName . '"');
+        header('Content-Disposition: attachment; filename="'.$fileName.'"');
         header('Cache-Control: max-age=0');
 
         $writer->save('php://output');
