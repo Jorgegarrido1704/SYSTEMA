@@ -187,10 +187,7 @@ class rrhhController extends Controller
                 'typeWorker' => $tipoDeTrabajador,
                 'Gender' => $Genero,
                 'status' => $status,
-                'DaysVacationsAvailble' => 0,
-                'lastYear' => 0,
-                'currentYear' => 0,
-                'nextYear' => 0,
+                'DateSalida' => null,
 
             ]);
 
