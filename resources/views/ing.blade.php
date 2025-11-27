@@ -12,21 +12,23 @@
         var paoTd = @json($paolaTdesc);
         var url = @json(route('datosWO'));
 
-    //    console.log(paoT + paoTd);
-     //   console.log(alex + alexDesc);
+        //    console.log(paoT + paoTd);
+        //   console.log(alex + alexDesc);
         function workOrder() {
             var workOrder = document.getElementById('workIs').value;
-           fetch( url, {
-                method: 'POST',
-                body: JSON.stringify({ workOrder: workOrder }),
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status=='ok') {
+            fetch(url, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        workOrder: workOrder
+                    }),
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status == 'ok') {
 
                         document.getElementById('pnIs').value = data.NumPart;
                         document.getElementById('revIs').value = data.rev;
@@ -37,64 +39,64 @@
                 .catch(error => {
                     console.error('Error fetching work order info:', error);
                 });
-            }
+        }
 
-            if()
+        if ()
     </script>
-     <style>
-                            .ppap {
-                                text-align: center;
-                                font-weight: bold;
-                                background-color: rgb(53, 243, 75);
-                            }
+    <style>
+        .ppap {
+            text-align: center;
+            font-weight: bold;
+            background-color: rgb(53, 243, 75);
+        }
 
-                            .prim {
-                                text-align: center;
-                                font-weight: bold;
-                                background-color: rgb(240, 243, 53);
-                            }
+        .prim {
+            text-align: center;
+            font-weight: bold;
+            background-color: rgb(240, 243, 53);
+        }
 
-                            .table-header {
-                                text-align: center;
-                                font-weight: bold;
-                                background-color: rgb(235, 83, 202);
-                            }
+        .table-header {
+            text-align: center;
+            font-weight: bold;
+            background-color: rgb(235, 83, 202);
+        }
 
-                            table {
-                                width: 100%;
-                            }
+        table {
+            width: 100%;
+        }
 
-                            td,
-                            th {
-                                text-align: center;
-                            }
+        td,
+        th {
+            text-align: center;
+        }
 
-                            td {
-                                border-bottom: solid 2px lightblue;
-                            }
+        td {
+            border-bottom: solid 2px lightblue;
+        }
 
-                            thead {
-                                background-color: #bd0606;
-                                color: white;
-                            }
+        thead {
+            background-color: #bd0606;
+            color: white;
+        }
 
-                            a {
-                                text-decoration: none;
-                                color: whitesmoke;
-                            }
+        a {
+            text-decoration: none;
+            color: whitesmoke;
+        }
 
-                            a:hover {
-                                text-decoration: none;
-                                color: white;
-                                font: bold;
-                            }
+        a:hover {
+            text-decoration: none;
+            color: white;
+            font: bold;
+        }
 
-                            .soporte {
-                                text-align: center;
-                                font-weight: bold;
-                                background-color: rgb(88, 8, 247);
-                            }
-            </style>
+        .soporte {
+            text-align: center;
+            font-weight: bold;
+            background-color: rgb(88, 8, 247);
+        }
+    </style>
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
 
     </div>
@@ -111,12 +113,12 @@
                 <div class="card-body" style="overflow-y: auto; height: 260px;">
                     <div class="chart-area" id="chart-area">
                         <table id="table-harness" class="table-harness">
-                            <thead style=" position: sticky; z-index: 1; top: 0; text-align: center; background-color: #bd0606; color: white; ">
+                            <thead
+                                style=" position: sticky; z-index: 1; top: 0; text-align: center; background-color: #bd0606; color: white; ">
                                 <tr>
                                     <th class="ppap"></th>
                                     <th class="ppap"></th>
                                     <th class="ppap">PPAP</th>
-                                    <th class="ppap"></th>
                                     <th class="prim"> </th>
                                     <th class="prim"> </th>
                                     <th class="prim">PRIM </th>
@@ -127,7 +129,6 @@
                                     <th>Client</th>
                                     <th>REV</th>
                                     <th>WO</th>
-                                    <th>PO</th>
                                     <th>Qty</th>
                                     <th>Area</th>
                                     <th>Sign</th>
@@ -137,31 +138,30 @@
                                 @foreach ($inges as $inge)
                                     <tr>
                                         <form action="{{ route('autorizar') }}" method="GET">
-                                            <td>{{ $inge[0] }}</td>
-                                            <td>{{ $inge[1] }}</td>
-                                            <td>{{ $inge[2] }}</td>
-                                            <td>{{ $inge[3] }}</td>
-                                            <td>{{ $inge[4] }}</td>
-                                            <td>{{ $inge[5] }}</td>
-                                            @if ($inge[7] == 13)
+                                            <td>{{ $inge->NumPart }}</td>
+                                            <td>{{ $inge->cliente }}</td>
+                                            <td>{{ $inge->rev }}</td>
+                                            <td>{{ $inge->wo }}</td>
+                                            <td>{{ $inge->Qty }}</td>
+                                            @if ($inge->count == 13)
                                                 <td>Assembly</td>
-                                            @elseif ($inge[7] == 14)
+                                            @elseif ($inge->count == 14)
                                                 <td>Loom</td>
-                                            @elseif ($inge[7] == 16)
+                                            @elseif ($inge->count == 16)
                                                 <td>Terminals</td>
-                                            @elseif ($inge[7] == 17)
+                                            @elseif ($inge->count == 17)
                                                 <td>Cutting</td>
-                                            @elseif ($inge[7] == 18)
+                                            @elseif ($inge->count == 18)
                                                 <td>Quality</td>
-                                            @elseif ($inge[7] == 19)
+                                            @elseif ($inge->count == 19)
                                                 <td>Electrical testing</td>
                                             @endif
                                             <td><input type="hidden" id='iding' name='iding'
-                                                    value="{{ $inge[6] }}">
+                                                    value="{{ $inge->id }}">
                                                 <input type="hidden" id='count' name='count'
-                                                    value="{{ $inge[7] }}">
+                                                    value="{{ $inge->count }}">
                                                 <input type="hidden" id='info' name='info'
-                                                    value="{{ $inge[8] }}">
+                                                    value="{{ $inge->info }}">
                                                 <input type="submit" name="enviar" id="enviar" value='Autorizar'>
                                             </td>
                                         </form>
@@ -185,7 +185,8 @@
                 <div class="card-body" style="overflow-y: auto; height: 260px;">
                     <div class="chart-area" id="chart-area">
                         <table id="table-harness" class="table-harness">
-                           <thead style=" position: sticky; z-index: 1; top: 0; text-align: center; background-color: #bd0606; color: white; ">
+                            <thead
+                                style=" position: sticky; z-index: 1; top: 0; text-align: center; background-color: #bd0606; color: white; ">
                                 <tr>
                                     <th class="table-header"></th>
                                     <th class="table-header"></th>
@@ -214,27 +215,27 @@
                             <tbody>
                                 @foreach ($fullreq as $inge)
                                     <tr>
-                                        <td>{{ $inge[1] }}</td>
-                                        <td>{{ $inge[2] }}</td>
-                                        <td>{{ $inge[3] }}</td>
-                                        <td>{{ $inge[4] }}</td>
-                                        <td>{{ $inge[5] }}</td>
-                                        <td>{{ $inge[6] }}</td>
-                                        <td>{{ $inge[8] }}</td>
+                                        <td>{{ $inge->SolicitadoPor }}</td>
+                                        <td>{{ $inge->fechaSolicitud }}</td>
+                                        <td>{{ $inge->np }}</td>
+                                        <td>{{ $inge->rev }}</td>
+                                        <td>{{ $inge->cliente }}</td>
+                                        <td>{{ $inge->Cuantos }}</td>
+                                        <td>{{ $inge->tablero }}</td>
                                         <form action="{{ 'modifull' }}" method="GET">
                                             <td><select name="estatus" id="estatus">
-                                                    <option value="{{ $inge[7] }}">{{ $inge[7] }}</option>
+                                                    <option value="{{ $inge->estatus }}">{{ $inge->estatus }}</option>
                                                     <option value="En_proceso">En proceso</option>
                                                     <option value="Pausado">Pausado</option>
                                                 </select></td>
                                             <td><input type="hidden" id='mod' name='mod'
-                                                    value="{{ $inge[0] }}">
+                                                    value="{{ $inge->id }}">
                                                 <input type="submit" name="enviar" id="enviar" value='Modificar'>
                                             </td>
                                         </form>
                                         <form action="{{ 'modifull' }}" method="GET">
                                             <td><input type="hidden" id='finAct' name='finAct'
-                                                    value="{{ $inge[0] }}">
+                                                    value="{{ $inge->id }}">
                                                 <input type="submit" name="enviar" id="enviar" value='Finalizar'>
                                             </td>
                                         </form>
@@ -257,12 +258,13 @@
                 <div class="card-body" style="overflow-y: auto; height: 260px;">
                     <div class="chart-area" id="chart-area">
                         <table>
-                            <thead style=" position: sticky; z-index: 1; top: 0; text-align: center; background-color: #bd0606; color: white; ">
+                            <thead
+                                style=" position: sticky; z-index: 1; top: 0; text-align: center; background-color: #bd0606; color: white; ">
                                 <tr>
                                     <th class="soporte"></th>
-                                    <th class="soporte"></th>
-                                    <th class="soporte"></th>
                                     <th class="soporte">Floor Support</th>
+                                    <th class="soporte"></th>
+                                    <th class="soporte"></th>
                                     <th class="soporte"></th>
                                     <th class="soporte"></th>
                                     <th class="soporte"></th>
@@ -270,32 +272,34 @@
                                 </tr>
                                 <tr>
                                     <th>Part Number</th>
-                                    <th>WO</th>
-                                    <th>REV</th>
                                     <th>Problem</th>
-                                    <th>Who requested</th>
-                                    <th>Date</th>
-                                    <th>Take action</th>
+                                    <th>Validation By</th>
+                                    <th>Time</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($soporte as $sop)
+                                @foreach ($problem as $problema)
                                     <tr>
-                                        <td>{{ $sop[1] }}</td>
-                                        <td>{{ $sop[2] }}</td>
-                                        <td>{{ $sop[3] }}</td>
-                                        <td>{{ $sop[4] }}</td>
-                                        <td>{{ $sop[5] }}</td>
-                                        <td>{{ $sop[6] }}</td>
+                                        <td>Pn: {{ $problema->pn }}
+                                            <br>
+                                            WO: {{ $problema->wo }}
+                                            <br>
+                                            REV: {{ $problema->rev }}
+                                        </td>
+                                        <td>{{ $problema->descriptionIs }}</td>
+                                        <td>{{ $problema->WhoReg }}</td>
+                                        <td>{{ $problema->DateIs }}</td>
                                         <td>
-                                            <form action="#">
-                                                <button type="submit">iniciar</button>
+                                            <form action="{{ 'problemasFin' }}">
+                                                <input type="hidden" name="id_problema" id="id_problema"
+                                                    value="{{ $problema->id }}">
+                                                <button class="btn btn-success">Finish</button>
                                             </form>
                                         </td>
                                     </tr>
                                 @endforeach
                             </tbody>
-
                         </table>
                     </div>
                 </div>
@@ -314,14 +318,15 @@
                     <div class="chart-area" id="chart-area">
 
                         <table id="table-harness" class="table-harness">
-                            <thead style=" position: sticky; z-index: 1; top: 0; text-align: center; background-color: #bd0606; color: white; ">
-                                    <th>Part Number</th>
-                                    <th>Client</th>
-                                    <th>WO</th>
-                                    <th>Requested By</th>
-                                    <th>Date Requested</th>
-                                    <th>Status</th>
-                                    <th>Dispatch</th>
+                            <thead
+                                style=" position: sticky; z-index: 1; top: 0; text-align: center; background-color: #bd0606; color: white; ">
+                                <th>Part Number</th>
+                                <th>Client</th>
+                                <th>WO</th>
+                                <th>Requested By</th>
+                                <th>Date Requested</th>
+                                <th>Status</th>
+                                <th>Dispatch</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -335,7 +340,8 @@
                                         <td>{{ $elec->status_of_order }}</td>
                                         <td>
                                             <form action="{{ route('dispatchElecticalTest') }}" method="GET">
-                                                <input type="hidden" name="id" id="id" value="{{ $elec->id }}">
+                                                <input type="hidden" name="id" id="id"
+                                                    value="{{ $elec->id }}">
                                                 <button type="submit">Dispatch</button>
                                             </form>
                                         </td>
@@ -362,56 +368,60 @@
 
 
 
-                        <form action="{{ route('tareas') }}" method="GET" id='form'>
-                            <div class="row">
-                                <div class="col-md-3 mb-4 mt-4 ">
-                                        <div class="form-group text-center">
-                                            <label for="Inge"><h4>Ingenier@</h4></label>
-                                        </div>
-                                        <div class="form-group">
-                                            <select name="Inge" id="Inge" required>
-                                            <option value=""></option>
-                                            @foreach($ingenieros_en_piso as $ingesPiso)
+                    <form action="{{ route('tareas') }}" method="GET" id='form'>
+                        <div class="row">
+                            <div class="col-md-3 mb-4 mt-4 ">
+                                <div class="form-group text-center">
+                                    <label for="Inge">
+                                        <h4>Ingenier@</h4>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <select name="Inge" id="Inge" required>
+                                        <option value=""></option>
+                                        @foreach ($ingenieros_en_piso as $ingesPiso)
                                             <option value="{{ $ingesPiso->user }}">{{ $ingesPiso->user }}</option>
-                                            @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group text-center">
-                                            <label for="act"><h4>Actividad a realizar</h4></label>
-                                        </div>
-                                        <div class="form-group">
-                                            <select name="act" id="act" required>
-                                                <option value=""></option>
-                                                <option value="Sistemas">Modificacion o creacion de sistemas</option>
-                                                <option value="Documentacion ">Documentacion PPAP</option>
-                                                <option value="Soporte en piso">Soporte en piso</option>
-                                                <option value="Colocacion de full size">Colocacion de full size</option>
-                                                <option value="Seguimiento PPAP">Seguimiento PPAP</option>
-                                                <option value="Diseno de piezas 3D">Diseño de piezas 3D</option>
-                                                <option value="Comida">Comida</option>
-                                                <option value="Retroalimentacion y aclaraciones a clientes">Retroalimentacion y
-                                                    aclaraciones a clientes</option>
-                                                <option value="Juntas">Juntas</option>
-                                                <option value="Otro">Otro</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group text-center">
-                                            <label for="info">Informacion adicional</label>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <textarea name="info" id="info" cols="50" rows="2" required></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-1 mt-5 md-5">
-                                    <input type="submit" name="sub" id="sub" value="Guardar">
-                                    </div>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
-                        </form>
+                            <div class="col-md-3">
+                                <div class="form-group text-center">
+                                    <label for="act">
+                                        <h4>Actividad a realizar</h4>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <select name="act" id="act" required>
+                                        <option value=""></option>
+                                        <option value="Sistemas">Modificacion o creacion de sistemas</option>
+                                        <option value="Documentacion ">Documentacion PPAP</option>
+                                        <option value="Soporte en piso">Soporte en piso</option>
+                                        <option value="Colocacion de full size">Colocacion de full size</option>
+                                        <option value="Seguimiento PPAP">Seguimiento PPAP</option>
+                                        <option value="Diseno de piezas 3D">Diseño de piezas 3D</option>
+                                        <option value="Comida">Comida</option>
+                                        <option value="Retroalimentacion y aclaraciones a clientes">Retroalimentacion y
+                                            aclaraciones a clientes</option>
+                                        <option value="Juntas">Juntas</option>
+                                        <option value="Otro">Otro</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group text-center">
+                                    <label for="info">Informacion adicional</label>
+                                </div>
+
+                                <div class="form-group">
+                                    <textarea name="info" id="info" cols="50" rows="2" required></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-1 mt-5 md-5">
+                                <input type="submit" name="sub" id="sub" value="Guardar">
+                            </div>
+                        </div>
+                    </form>
 
                 </div>
 
@@ -451,23 +461,31 @@
                                 @if (!empty($enginners))
                                     @foreach ($enginners as $eng)
                                         <tr>
-                                            <td>{{ $eng[1] }}</td>
-                                            <td>{{ $eng[3] }}</td>
-                                            <td>{{ $eng[4] }}</td>
-                                            <td>{{ $eng[2] }}</td>
+                                            <td>{{ $eng->Id_request }}</td>
+                                            //fecha para comparacion
+                                            <td>{{ $eng->actividades }}</td>
+                                            <td>{{ $eng->desciption }}
+                                            <td><span id="{{ $eng->id }}">
+                                                @if(\Carbon\Carbon::parse($eng->fecha)->diffInMinutes(\Carbon\Carbon::now())>60)
+                                                {{ \Carbon\Carbon::parse($eng->fecha)->diffInHours(\Carbon\Carbon::now()) }} hr</span></td>
+
+                                                @else
+                                                {{ \Carbon\Carbon::parse($eng->fecha)->diffInMinutes(\Carbon\Carbon::now()) }} min</span></td>
+                                                @endif
+
                                             <td>
                                                 <form action="{{ route('action') }}" method="GET">
-                                                    <input type="hidden" name="id" value="{{ $eng[0] }}">
-                                                    @if ($eng[5] != 'pausado')
+                                                    <input type="hidden" name="id" value="{{ $eng->id }}">
+                                                    @if ($eng->fechaEncuesta != 'pausado')
                                                         <button type="submit">Pausar</button>
-                                                    @elseif ($eng[5] == 'pausado')
+                                                    @elseif ($eng->fechaEncuesta == 'pausado')
                                                         <button type="submit">Continuar</button>
                                                     @endif
                                                 </form>
                                             </td>
                                             <td>
                                                 <form action="{{ route('action') }}" method="GET">
-                                                    <input type="hidden" name="id_f" value="{{ $eng[0] }}">
+                                                    <input type="hidden" name="id_f" value="{{ $eng->id }}">
 
                                                     <button type="submit">Finalizar</button>
                                                 </form>
@@ -675,9 +693,9 @@
 
                                 <select name="quien" id="quien" required>
                                     <option value=""></option>
-                                     @foreach($ingenieros_en_piso as $ingesPiso)
-                                <option value="{{ $ingesPiso->user }}">{{ $ingesPiso->user }}</option>
-                                @endforeach
+                                    @foreach ($ingenieros_en_piso as $ingesPiso)
+                                        <option value="{{ $ingesPiso->user }}">{{ $ingesPiso->user }}</option>
+                                    @endforeach
 
                                 </select>
                                 <input type="submit" value="Submit">
@@ -730,23 +748,23 @@
                 color: #007bff;
             }
         </style>
-       <!-- <div class="col-lg-6 mb-4">
-             AREAS
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h5 class="m-0 font-weight-bold text-primary">Cronograma Diario</h5>
-                </div>
-                <div class="card-body" style="overflow-y: auto; height: 660px;">
-                    <canvas id="Paola S" style="width: 100%; height: 100%;"></canvas>
-                    <canvas id="Alex V" style="width: 100%; height: 100%;"></canvas>
-                </div>
-            </div>
-        </div>-->
+        <!-- <div class="col-lg-6 mb-4">
+                         AREAS
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h5 class="m-0 font-weight-bold text-primary">Cronograma Diario</h5>
+                            </div>
+                            <div class="card-body" style="overflow-y: auto; height: 660px;">
+                                <canvas id="Paola S" style="width: 100%; height: 100%;"></canvas>
+                                <canvas id="Alex V" style="width: 100%; height: 100%;"></canvas>
+                            </div>
+                        </div>
+                    </div>-->
 
         <!-- Reportes -->
         <!--<div class="row">-->
-            <div class="col-lg-6 col-xl-7 mb-5">
-                <div >
+        <div class="col-lg-6 col-xl-7 mb-5">
+            <div>
                 <div class="card shadow mb-5">
                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                         <h5 class="m-0 font-weight-bold text-primary">Problems on the floor</h5>
@@ -788,151 +806,110 @@
                                 <button type="submit" class="btn btn-primary">Send Info</button>
                             </div>
                         </form>
-                            </div>
-                        </div>
-                    </div >
-                    <div >
-                        <div class="card shadow mb-5">
-                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                <h5 class="m-0 font-weight-bold text-primary">Problems on the floor Table</h5>
-
-                            </div>
-                            <div class="card-body" style="overflow-x: auto; max-height:415px;">
-                                <div class="table-responsive">
-                                    <table class="table table-bordered"  cellspacing="0">
-                                        <thead>
-                                            <tr>
-                                                <th>Part Number</th>
-                                                <th>Problem</th>
-                                                <th>Validation By</th>
-                                                <th>Time</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($problem as $problema)
-                                                <tr>
-                                                    <td>Pn: {{ $problema[1] }}
-                                                        <br>
-                                                           WO: {{ $problema[2] }}
-                                                        <br>
-                                                         REV:   {{ $problema[3] }}
-                                                    </td>
-                                                    <td>{{ $problema[4] }}</td>
-                                                    <td>{{ $problema[5] }}</td>
-                                                    <td>{{ $problema[6] }}</td>
-                                                    <td><form action="{{ 'problemasFin'}}">
-                                                        <input type="hidden" name="id_problema" id="id_problema"
-                                                            value="{{ $problema[0] }}">
-                                                        <button type="submit">Finish</button></form></td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div >
-            </div>
-
-            <!-- Cronograma
-            <div class="col-lg-6 mb-4">
-
-
-                <div class="card shadow mb-4" id="tiempos">
-                    <div class="card-header py-3">
-                        <h5 class="m-0 font-weight-bold text-primary">Cronograma de Trabajo ING</h5>
-                        <button><a href="/ing">Mes actual</a></button><button><a href="/ing?mont='fr'">Siguiente
-                                mes</a></button>
-                    </div>
-                    <div class="card-body" style="overflow-y: auto; height: 560px; " id="">
-                        <div class="row">
-                            <div id="table">
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Cliente</th>
-                                            <th>No. Parte</th>
-                                            <th>REV</th>
-                                            <th>Fecha Fecha Compromiso Inicial</th>
-                                            <th>Fecha Compromiso con cambios</th>
-                                            @foreach ($dias_mes as $dias)
-                                                <th>{{ $dias }}</th>
-                                            @endforeach
-                                            <th>Nueva Fecha</th>
-                                            <th>Guardar cambio</th>
-                                            <th>Finalizar</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-
-                                        @foreach ($cronoGram as $cron)
-                                            <tr>
-                                                <td>{{ $cron[1] }}</td>
-                                                <td>{{ $cron[2] }}</td>
-                                                <td>{{ $cron[3] }}</td>
-                                                <td>{{ $cron[5] }}</td>
-                                                @if ($cron[5] == $cron[6])
-                                                    <td></td>
-                                                @else
-                                                    <td> {{ $cron[6] }}</td>
-                                                @endif
-                                                @foreach ($dias_mes as $dias)
-                                                    @if ($dias >= $cron[11] && $dias <= $cron[10] && $cron[5] == $cron[6])
-                                                        <td><input type="box" name="check" id="check"
-                                                                style="background-color:GREEN; width: 20px; height: 20px;">
-                                                        </td>
-                                                    @elseif ($dias >= $cron[11] && $dias <= $cron[10] && $cron[5] != $cron[6])
-                                                        @if ($dias >= $cron[11] && $dias <= $cron[10] - $cron[12])
-                                                            <td><input type="box" name="check" id="check"
-                                                                    style="background-color:GREEN; width: 20px; height: 20px;">
-                                                            </td>
-                                                        @else
-                                                            <td><input type="box" name="check" id="check"
-                                                                    style="background-color:lightblue; width: 20px; height: 20px;">
-                                                            </td>
-                                                        @endif
-                                                    @else
-                                                        <td><input type="box" name="check" id="check"
-                                                                style=" width: 20px; height: 20px;"></td>
-                                                    @endif
-                                                @endforeach
-                                                <form action="{{ route('cronoReg') }}" method="GET">
-                                                    <td>
-                                                        <input type="date" name="nuevaFecha" id="nuevaFecha">
-                                                    </td>
-                                                    <td>
-                                                        <input type="hidden" name="id_cambio" id="id_cambio"
-                                                            value="{{ $cron[0] }}">
-                                                        <input type="submit" name="enviar" id="enviar"
-                                                            value='Guardar'>
-                                                    </td>
-                                                </form>
-                                                <td>
-                                                    <form action="{{ route('cronoReg') }}" method="GET">
-                                                        <input type="hidden" name="id_fin" id="id_fin"
-                                                            value="{{ $cron[0] }}">
-                                                        <input type="submit" name="enviar" id="enviar"
-                                                            value='Finalizar'>
-                                                    </form>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-
-
-                                    </tbody>
-                                </table>
-                                <canvas id="regGraf"></canvas>
-
-                            </div>
-
-                        </div>
-
                     </div>
                 </div>
-            </div>-->
+            </div>
 
-      <!--  </div>-->
+        </div>
+
+        <!-- Cronograma
+                        <div class="col-lg-6 mb-4">
+
+
+                            <div class="card shadow mb-4" id="tiempos">
+                                <div class="card-header py-3">
+                                    <h5 class="m-0 font-weight-bold text-primary">Cronograma de Trabajo ING</h5>
+                                    <button><a href="/ing">Mes actual</a></button><button><a href="/ing?mont='fr'">Siguiente
+                                            mes</a></button>
+                                </div>
+                                <div class="card-body" style="overflow-y: auto; height: 560px; " id="">
+                                    <div class="row">
+                                        <div id="table">
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <th>Cliente</th>
+                                                        <th>No. Parte</th>
+                                                        <th>REV</th>
+                                                        <th>Fecha Fecha Compromiso Inicial</th>
+                                                        <th>Fecha Compromiso con cambios</th>
+                                                        @foreach ($dias_mes as $dias)
+    <th>{{ $dias }}</th>
+    @endforeach
+                                                        <th>Nueva Fecha</th>
+                                                        <th>Guardar cambio</th>
+                                                        <th>Finalizar</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                    @foreach ($cronoGram as $cron)
+    <tr>
+                                                            <td>{{ $cron[1] }}</td>
+                                                            <td>{{ $cron[2] }}</td>
+                                                            <td>{{ $cron[3] }}</td>
+                                                            <td>{{ $cron[5] }}</td>
+                                                            @if ($cron[5] == $cron[6])
+    <td></td>
+@else
+    <td> {{ $cron[6] }}</td>
+    @endif
+                                                            @foreach ($dias_mes as $dias)
+    @if ($dias >= $cron[11] && $dias <= $cron[10] && $cron[5] == $cron[6])
+    <td><input type="box" name="check" id="check"
+                                                                            style="background-color:GREEN; width: 20px; height: 20px;">
+                                                                    </td>
+@elseif ($dias >= $cron[11] && $dias <= $cron[10] && $cron[5] != $cron[6])
+    @if ($dias >= $cron[11] && $dias <= $cron[10] - $cron[12])
+    <td><input type="box" name="check" id="check"
+                                                                                style="background-color:GREEN; width: 20px; height: 20px;">
+                                                                        </td>
+@else
+    <td><input type="box" name="check" id="check"
+                                                                                style="background-color:lightblue; width: 20px; height: 20px;">
+                                                                        </td>
+    @endif
+@else
+    <td><input type="box" name="check" id="check"
+                                                                            style=" width: 20px; height: 20px;"></td>
+    @endif
+    @endforeach
+                                                            <form action="{{ route('cronoReg') }}" method="GET">
+                                                                <td>
+                                                                    <input type="date" name="nuevaFecha" id="nuevaFecha">
+                                                                </td>
+                                                                <td>
+                                                                    <input type="hidden" name="id_cambio" id="id_cambio"
+                                                                        value="{{ $cron[0] }}">
+                                                                    <input type="submit" name="enviar" id="enviar"
+                                                                        value='Guardar'>
+                                                                </td>
+                                                            </form>
+                                                            <td>
+                                                                <form action="{{ route('cronoReg') }}" method="GET">
+                                                                    <input type="hidden" name="id_fin" id="id_fin"
+                                                                        value="{{ $cron[0] }}">
+                                                                    <input type="submit" name="enviar" id="enviar"
+                                                                        value='Finalizar'>
+                                                                </form>
+                                                            </td>
+                                                        </tr>
+    @endforeach
+
+
+                                                </tbody>
+                                            </table>
+                                            <canvas id="regGraf"></canvas>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>-->
+
+        <!--  </div>-->
     </div>
 
 @endsection
