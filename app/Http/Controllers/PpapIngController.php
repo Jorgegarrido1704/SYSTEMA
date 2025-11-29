@@ -861,43 +861,33 @@ class PpapIngController extends Controller
         }
     }
 
-    public function ganttGraph()
+    public function ganttGraph(Request $request)
     {
         $value = session('user');
         $cat = session('categoria');
-        $data = [];
-        $registroAntes1 = $registroAntes2 = 0;
+        $data = $origData = [];
+        $personal = $request->input('personal') ?? 1;
+        $registroAntes1 = $registroAntes2 = $i = 0;
         $lastDayoffMonth = Carbon::now()->endOfMonth()->format('d');
-        $registros = workScreduleModel::select('pn', 'customer', 'size', 'receiptDate')
+        $registros = workScreduleModel::select('pn', 'customer', 'size', 'receiptDate', 'commitmentDate', 'completionDate')
             ->where('receiptDate', 'LIKE', Carbon::now()->format('Y-m').'%')
-
-            ->orderBy('receiptDate', 'asc')
+            ->orderBy('commitmentDate', 'asc')
             ->orderBy('size', 'asc')
             ->get();
 
         foreach ($registros as $row) {
             $daysToAdd = match ($row->size) {
-                'Ch' => 4,
-                'M' => 7,
-                'G' => 10,
-                default => 4,
+                'Ch' => 0.6,
+                'M' => 1.8,
+                'G' => 6.4,
+                default => 5,
             };
-
-            $start = intval(Carbon::parse($row->receiptDate)->format('d'));
-
-            $final = intval(Carbon::parse($row->receiptDate)->addWeekdays($daysToAdd)->format('d'));
-            if ($final > $lastDayoffMonth) {
-                $final = $lastDayoffMonth;
+            if ($i == 0) {
+                $final = intval(Carbon::parse($row->commitmentDate)->format('d'));
+                $start = round($final - ($daysToAdd / $personal), 1);
+            } else {
+                $final = round($start + ($daysToAdd / $personal), 2);
             }
-            if (count($data) > 0) {
-                foreach ($data as $d) {
-                    if ($d['start'] == $start) {
-                        $start = $start + 1;
-                        $final = $final + 1;
-                    }
-                }
-            }
-
             // Asignar color según size
             $color = match ($row->size) {
                 'Ch' => 'rgba(75, 192, 192, 0.8)',
@@ -913,9 +903,18 @@ class PpapIngController extends Controller
                 'end' => $final,
                 'color' => $color,
             ];
+            $origData[] = [
+                'name' => $row->pn.' - '.$row->customer,
+                'start' => carbon::parse($row->receiptDate)->format('d'),
+                'end' => carbon::parse($row->completionDate)->format('d') ?? carbon::now()->format('d'),
+            ];
+
+            $start = $final;
+            $i++;
+
         }
 
-        return view('inge.graficaGantt', ['value' => $value, 'cat' => $cat, 'data' => $data, 'lastDayoffMonth' => $lastDayoffMonth]);
+        return view('inge.graficaGantt', ['origData' => $origData, 'personal' => $personal, 'value' => $value, 'cat' => $cat, 'data' => $data, 'lastDayoffMonth' => $lastDayoffMonth]);
     }
 
     public function datosWo()
