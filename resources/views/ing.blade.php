@@ -404,6 +404,7 @@
                                         <option value="Retroalimentacion y aclaraciones a clientes">Retroalimentacion y
                                             aclaraciones a clientes</option>
                                         <option value="Juntas">Juntas</option>
+                                        <option value="pruebas electricas">Pruebas electricas y validacion</option>
                                         <option value="Otro">Otro</option>
                                     </select>
                                 </div>
@@ -462,7 +463,7 @@
                                     @foreach ($enginners as $eng)
                                         <tr>
                                             <td>{{ $eng->Id_request }}</td>
-                                            //fecha para comparacion
+
                                             <td>{{ $eng->actividades }}</td>
                                             <td>{{ $eng->desciption }}
                                             <td><span id="{{ $eng->id }}">
