@@ -3,12 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\login;
-use Illuminate\Http\Request;
 use App\Models\registoLogin;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
-
 
 class loginController extends Controller
 {
@@ -20,11 +17,11 @@ class loginController extends Controller
         //
         return view('login');
     }
+
     public function index()
     {
         return view('login');
     }
-
 
     public function create()
     {
@@ -49,13 +46,11 @@ class loginController extends Controller
         if ($userExists) {
             session(['user' => $user]);
 
-
-
             // If user exists, create a new login record
             $newLog = new registoLogin;
             $newLog->fecha = $today;
             $newLog->userName = $user;
-            $newLog->action = "login";
+            $newLog->action = 'login';
 
             if ($newLog->save()) {
                 // If login record is saved successfully, redirect to the admin page
@@ -68,113 +63,116 @@ class loginController extends Controller
                 session((['email' => $email]));
                 if ($categoria == 'Boss') {
                     return redirect('/boss');
-                } else if ($categoria == 'Admin') {
+                } elseif ($categoria == 'Admin') {
                     return redirect('/admin');
-                } else if ($categoria == 'cali') {
+                } elseif ($categoria == 'cali') {
                     return redirect('/calidad');
-                } else if ($categoria == 'ensa' || $categoria == 'emba' || $categoria == 'libe' || $categoria == 'cort' || $categoria == 'loom') {
+                } elseif ($categoria == 'ensa' || $categoria == 'emba' || $categoria == 'libe' || $categoria == 'cort' || $categoria == 'loom') {
                     return redirect('/general');
-                } else if ($categoria == 'plan') {
+                } elseif ($categoria == 'plan') {
                     return redirect('/planing');
-                } else if ($categoria == 'inge') {
+                } elseif ($categoria == 'inge') {
                     return redirect('/ing');
-                } else if ($categoria == 'alma') {
+                } elseif ($categoria == 'alma') {
                     return redirect('/almacen');
-                } else if ($categoria == 'BCali') {
+                } elseif ($categoria == 'BCali') {
                     return redirect('/BossCali');
-                } else if ($categoria == 'invreg1' || $categoria == 'invreg2' || $categoria == 'auditor' || $categoria == 'invwo1' || $categoria == 'invwo2' ) {
+                } elseif ($categoria == 'invreg1' || $categoria == 'invreg2' || $categoria == 'auditor' || $categoria == 'invwo1' || $categoria == 'invwo2') {
                     return redirect('/inventarios');
-                } else if ($categoria == 'pisos') {
+                } elseif ($categoria == 'pisos') {
                     return redirect('/pisoWork');
-                } else if ($categoria == 'Pendings') {
+                } elseif ($categoria == 'Pendings') {
                     return redirect('/Pendigs');
-                } else if ($categoria == 'produ') {
+                } elseif ($categoria == 'produ') {
                     return redirect('/produccion');
-                } else if ($categoria == 'mante') {
-                    return redirect('/mantenimiento');
-                } else if ($categoria == 'segur') {
+                } elseif ($categoria == 'mante') {
+                    return redirect('/mantainence');
+                } elseif ($categoria == 'segur') {
                     return redirect('/seguridad');
-                } else if ($categoria == 'cajero') {
+                } elseif ($categoria == 'cajero') {
                     return redirect('/caja');
-                } else if ($categoria == 'ventas') {
+                } elseif ($categoria == 'ventas') {
                     return redirect('/ventas');
-                } else if ($categoria == 'compra') {
+                } elseif ($categoria == 'compra') {
                     return redirect('/compras');
-                } else if ($categoria == 'diseño') {
+                } elseif ($categoria == 'diseño') {
                     return redirect('/diseno');
-                } else if ($categoria == 'empresarial') {
+                } elseif ($categoria == 'empresarial') {
                     return redirect('/empresarial');
-                } else if ($categoria == 'sistemas') {
+                } elseif ($categoria == 'sistemas') {
                     return redirect('/sistemas');
-                } else if ($categoria == 'factura') {
+                } elseif ($categoria == 'factura') {
                     return redirect('/facturacion');
-                } else if ($categoria == 'logis') {
+                } elseif ($categoria == 'logis') {
                     return redirect('/logistica');
-                } else if ($categoria == 'exporta') {
+                } elseif ($categoria == 'exporta') {
                     return redirect('/exportacion');
-                } else if ($categoria == 'importa') {
+                } elseif ($categoria == 'importa') {
                     return redirect('/importacion');
-                } else if ($categoria == 'diseno') {
+                } elseif ($categoria == 'diseno') {
                     return redirect('/diseno');
-                } else if ($categoria == 'calibra') {
+                } elseif ($categoria == 'calibra') {
                     return redirect('/calibracion');
-                } else if ($categoria == 'prose') {
+                } elseif ($categoria == 'prose') {
                     return redirect('/procesos');
-                } else if ($categoria == 'recep') {
+                } elseif ($categoria == 'recep') {
                     return redirect('/recepcion');
-                } else if ($categoria == 'provee') {
+                } elseif ($categoria == 'provee') {
                     return redirect('/proveedores');
-                } else if ($categoria == 'junta') {
+                } elseif ($categoria == 'junta') {
                     return redirect('/juntas');
-                } else if ($categoria == 'SupAdmin') {
+                } elseif ($categoria == 'SupAdmin') {
                     return redirect('/SupAdmin');
-                } else if ($categoria == 'invent') {
+                } elseif ($categoria == 'invent') {
                     return redirect('/globalInventario');
-                } else if ($categoria == 'nurse') {
+                } elseif ($categoria == 'nurse') {
                     return redirect('/salud');
-                } else if ($categoria == 'RRHH') {
+                } elseif ($categoria == 'RRHH') {
                     return redirect('/rhDashBoard');
                 } else {
 
                     // If unable to save login record, redirect back with an error message
-                    return redirect()->back()->with("error", "Failed to save login information");
+                    return redirect()->back()->with('error', 'Failed to save login information');
                 }
             } else {
                 // If user does not exist with provided credentials, redirect back with an error message
-                return redirect()->back()->with("error", "Invalid username or password");
+                return redirect()->back()->with('error', 'Invalid username or password');
             }
         } else {
             // If user does not exist with provided credentials, redirect back with an error message
-            return redirect()->back()->with("error", "Invalid username or password");
+            return redirect()->back()->with('error', 'Invalid username or password');
         }
     }
+
     public function logout()
     {
         // Get current date and time
         $today = date('d-m-Y H:i');
 
         $user = session('user');
-        if ($user == NULL) {
-            $user = "Error";
+        if ($user == null) {
+            $user = 'Error';
         }
 
         // Create a new record for the logout action
         $newLog = new registoLogin;
         $newLog->fecha = $today;
         $newLog->userName = $user;
-        $newLog->action = "logout";
+        $newLog->action = 'logout';
 
         if ($newLog->save()) {
             session()->forget('user');
             session()->forget('categoria');
             session()->forget('email');
+
             // Redirect the user after logout
             return redirect('/');
         } else {
             // If unable to save login record, redirect back with an error message
-            return redirect()->back()->with("error", "Failed to save logout information");
+            return redirect()->back()->with('error', 'Failed to save logout information');
         }
     }
+
     public function loginWithoutSession(Request $request)
     {
         // Get current date and time
@@ -194,12 +192,12 @@ class loginController extends Controller
             $newLog = new registoLogin;
             $newLog->fecha = $today;
             $newLog->userName = $user;
-            $newLog->action = "login by email link - ".$user;
+            $newLog->action = 'login by email link - '.$user;
 
-          return  redirect()->to('/Pendigs');
+            return redirect()->to('/Pendigs');
         } else {
             // If user does not exist with provided credentials, redirect back with an error message
-            return redirect('/login')->with("error", "Invalid username or password");
+            return redirect('/login')->with('error', 'Invalid username or password');
         }
     }
 }

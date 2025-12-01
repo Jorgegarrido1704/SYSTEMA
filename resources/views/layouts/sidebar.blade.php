@@ -58,6 +58,8 @@
                                     <a class="nav-link" href="/ing">
                                     @elseif($cat == 'SupAdmin')
                                         <a class="nav-link" href="/SupAdmin">
+                                            @elseif($cat == 'mante')
+                                                 <a class="nav-link" href="/mantainence">
                                         @else
                                             <a class="nav-link" href="/general">
             @endif

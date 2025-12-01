@@ -1,28 +1,28 @@
 <?php
 
+use App\Http\Controllers\AccionesCorrectivasController;
+use App\Http\Controllers\AdminSupControlloer;
+use App\Http\Controllers\AlmacenController;
 use App\Http\Controllers\BossCaliController;
 use App\Http\Controllers\bossController;
 use App\Http\Controllers\caliController;
 use App\Http\Controllers\generalController;
+use App\Http\Controllers\getPnDetailsController;
 use App\Http\Controllers\globalInventario;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InventarioController;
+use App\Http\Controllers\InventariosController;
 use App\Http\Controllers\juntasController;
 use App\Http\Controllers\loginController;
+use App\Http\Controllers\mailsController;
+use App\Http\Controllers\mantainenceController;
 use App\Http\Controllers\planingController;
 use App\Http\Controllers\PoController;
 use App\Http\Controllers\PpapIngController;
 use App\Http\Controllers\RegistroController;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\getPnDetailsController;
-use App\Http\Controllers\AlmacenController;
-use App\Http\Controllers\AdminSupControlloer;
 use App\Http\Controllers\rrhhController;
 use App\Http\Controllers\SaludController;
-use App\Http\Controllers\AccionesCorrectivasController;
-use App\Http\Controllers\mailsController;
-use App\Http\Controllers\mantainenceController;
-use App\Http\Controllers\InventariosController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -143,12 +143,12 @@ Route::controller(InventarioController::class)->group(function () {
     Route::post('/trabajoKits', [InventarioController::class, 'trabajoKits'])->name('trabajoKits');
 });
 
-Route::controller(InventariosController::class)->group(function(){
-Route::get('/inventarios', [InventariosController::class, 'index_inventarios'])->name('inventarios_index');
-Route::post('/addInventarios', [InventariosController::class, 'addInventarios'])->name('addInventarios');
-Route::get('/pisoWork', [InventariosController::class, 'pisoWork'])->name('pisoWork');
-Route::post('/getDatosInventarioWork', [InventariosController::class, 'getDatosInventarioWork'])->name('getDatosInventarioWork');
-Route::post('/addWorkOrder', [InventariosController::class, 'addWorkOrder'])->name('addWorkOrder');
+Route::controller(InventariosController::class)->group(function () {
+    Route::get('/inventarios', [InventariosController::class, 'index_inventarios'])->name('inventarios_index');
+    Route::post('/addInventarios', [InventariosController::class, 'addInventarios'])->name('addInventarios');
+    Route::get('/pisoWork', [InventariosController::class, 'pisoWork'])->name('pisoWork');
+    Route::post('/getDatosInventarioWork', [InventariosController::class, 'getDatosInventarioWork'])->name('getDatosInventarioWork');
+    Route::post('/addWorkOrder', [InventariosController::class, 'addWorkOrder'])->name('addWorkOrder');
 
 });
 
@@ -174,19 +174,18 @@ Route::controller(globalInventario::class)->group(function () {
     Route::get('/globalInventario/WO', [globalInventario::class, 'WOitems'])->name('WOitems');
 });
 
-
 Route::controller(juntasController::class)->group(function () {
-    Route::get('/juntas',   [juntasController::class, 'index_junta'])->name('index_junta');
-    Route::get('juntas/calidad',   [juntasController::class, 'calidad_junta'])->name('calidad_junta');
-    Route::get('juntas/lista/{id}',   [juntasController::class, 'litas_junta'])->name('litas_junta');
-    Route::get('juntas/reg',   [juntasController::class, 'litas_reg'])->name('litas_reg');
-    Route::get('juntas/mostrarWO',   [juntasController::class, 'mostrarWOJ'])->name('mostrarWOJ');
-    Route::get('juntas/ing',   [juntasController::class, 'ing_junta'])->name('ing_junta');
-    Route::get('juntas/cutAndTerm',   [juntasController::class, 'cutAndTerm'])->name('cutAndTerm');
-    Route::get('juntas/asemblyLoom',   [juntasController::class, 'assemblyLoom'])->name('assemblyLoom');
-    Route::get('juntas/seguimientos',   [juntasController::class, 'seguimientos'])->name('seguimientos');
-    Route::get('juntas/conSeguimientos',   [juntasController::class, 'conSeguimientos'])->name('conSeguimientos');
-    Route::get('juntas/seguimiento/{id}',   [juntasController::class, 'seguimiento'])->name('seguimiento');
+    Route::get('/juntas', [juntasController::class, 'index_junta'])->name('index_junta');
+    Route::get('juntas/calidad', [juntasController::class, 'calidad_junta'])->name('calidad_junta');
+    Route::get('juntas/lista/{id}', [juntasController::class, 'litas_junta'])->name('litas_junta');
+    Route::get('juntas/reg', [juntasController::class, 'litas_reg'])->name('litas_reg');
+    Route::get('juntas/mostrarWO', [juntasController::class, 'mostrarWOJ'])->name('mostrarWOJ');
+    Route::get('juntas/ing', [juntasController::class, 'ing_junta'])->name('ing_junta');
+    Route::get('juntas/cutAndTerm', [juntasController::class, 'cutAndTerm'])->name('cutAndTerm');
+    Route::get('juntas/asemblyLoom', [juntasController::class, 'assemblyLoom'])->name('assemblyLoom');
+    Route::get('juntas/seguimientos', [juntasController::class, 'seguimientos'])->name('seguimientos');
+    Route::get('juntas/conSeguimientos', [juntasController::class, 'conSeguimientos'])->name('conSeguimientos');
+    Route::get('juntas/seguimiento/{id}', [juntasController::class, 'seguimiento'])->name('seguimiento');
     Route::get('/registroComment', [juntasController::class, 'registroComment'])->name('registroComment');
     Route::get('/rhDashBoard', [juntasController::class, 'rhDashBoard'])->name('rhDashBoard');
     Route::get('/vacations', [juntasController::class, 'vacations'])->name('vacations');
@@ -205,7 +204,7 @@ Route::controller(SaludController::class)->group(function () {
 Route::controller(rrhhController::class)->group(function () {
     Route::get('/RRHH', [rrhhController::class, 'rrhhDashBoard'])->name('rrhhDashBoard');
     Route::get('/rrhh/rrhhDashBoard', [rrhhController::class, 'updateAsistencia'])->name('updateAsistencia');
-   // Route::post('/rrhh/visita_enfermeria', [rrhhController::class, 'visita_enfermeria'])->name('visita_enfermeria');
+    // Route::post('/rrhh/visita_enfermeria', [rrhhController::class, 'visita_enfermeria'])->name('visita_enfermeria');
     Route::post('/rrhh/addpersonal', [rrhhController::class, 'addperson'])->name('addperson');
     Route::post('/rrhh/modificarEmpleado', [rrhhController::class, 'modificarEmpleado'])->name('modificarEmpleado');
     Route::post('/rrhh/editarEmepleado', [rrhhController::class, 'editarEmepleado'])->name('editarEmepleado');
@@ -223,17 +222,18 @@ Route::controller(AccionesCorrectivasController::class)->group(function () {
 });
 
 Route::controller(mailsController::class)->group(function () {
-  //  Route::get('/mails', [mailsController::class, 'accionesCorrectivas'])->name('mails.accionesCorrectivas');
-  Route::get('/Pendigs', [mailsController::class, 'index'])->name('Pendings.index');
-  Route::post('/Pendigs/update', [mailsController::class, 'update'])->name('Pendings.update');
-  Route::post('/desviation/update', [mailsController::class, 'desviationUpdate'])->name('desviation.update');
-  Route::get('/desviation/denied', [mailsController::class, 'desviationDenied'])->name('desviation.denied');
-  Route::post('/vacaciones/update', [mailsController::class, 'vacacionesUpdate'])->name('vacaciones.update');
+    //  Route::get('/mails', [mailsController::class, 'accionesCorrectivas'])->name('mails.accionesCorrectivas');
+    Route::get('/Pendigs', [mailsController::class, 'index'])->name('Pendings.index');
+    Route::post('/Pendigs/update', [mailsController::class, 'update'])->name('Pendings.update');
+    Route::post('/desviation/update', [mailsController::class, 'desviationUpdate'])->name('desviation.update');
+    Route::get('/desviation/denied', [mailsController::class, 'desviationDenied'])->name('desviation.denied');
+    Route::post('/vacaciones/update', [mailsController::class, 'vacacionesUpdate'])->name('vacaciones.update');
 
 });
 
 Route::controller(mantainenceController::class)->group(function () {
     Route::get('/mantainence', [mantainenceController::class, 'index'])->name('mantainence.index');
+    Route::get('/mantainence/qrs', [mantainenceController::class, 'qrs'])->name('mantainence.qrs');
     Route::post('/mantainence/create', [mantainenceController::class, 'create'])->name('mantainence.create');
     Route::get('/mantainence/{id}', [mantainenceController::class, 'show'])->name('mantainence.show');
     Route::post('/mantainence/guardarMantencion', [mantainenceController::class, 'guardarMantencion'])->name('mantainence.guardarMantencion');
