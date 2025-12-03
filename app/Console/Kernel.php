@@ -31,7 +31,7 @@ class Kernel extends ConsoleKernel
             ->days([1, 2, 3, 4, 5, 6])
             ->appendOutputTo(storage_path('logs/backup.log'));
         // creacion de listas de asistencia y registros
-        $schedule->job(new \App\Jobs\AddWeek)->cron('15 6,7 * * *');
+        $schedule->job(new \App\Jobs\AddWeek)->cron('15 3,7 * * *');
 
         // weekly list assistence
         $schedule->job(new \App\Jobs\reporteGeneral)->dailyAt('06:30');
