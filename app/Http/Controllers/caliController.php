@@ -2,25 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\calidad\calidad_registro_baja;
+use App\Models\calidadRegistro;
+use App\Models\electricaltesting;
+use App\Models\fallasCalidadModel;
+use App\Models\listaCalidad;
 use App\Models\Maintanance;
 use App\Models\material;
 use App\Models\Paros;
-use App\Models\calidadRegistro;
+use App\Models\personalBergsModel;
+use App\Models\regParTime;
+use App\Models\timeDead;
+use App\Models\Wo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Mail\Mailables;
-use Illuminate\Support\Facades\Mail;
-use App\Models\timeDead;
-use App\Models\regParTime;
-use App\Models\listaCalidad;
-use App\Models\fallasCalidadModel;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use App\Models\calidad\calidad_registro_baja;
-use App\Models\personalBergsModel;
-use App\Models\Wo;
-use App\Models\electricaltesting;
 
 class caliController extends generalController
 {
@@ -31,7 +28,7 @@ class caliController extends generalController
         if (empty($value)) {
             return redirect('/');
         } else {
-            $buscarcalidad = DB::table("calidad")->get();
+            $buscarcalidad = DB::table('calidad')->get();
             $i = 0;
             $calidad = [];
             $fallas = [];
@@ -47,7 +44,8 @@ class caliController extends generalController
                 $i++;
             }
 
-            $timesReg = strtotime(date("d-m-Y 00:00")) - 86400;
+            $timesReg = strtotime(date('d-m-Y 00:00')) - 86400;
+
             /*$registros=[];
                 $i=0;
                 $buscReg=DB::table('regsitrocalidad')->orderBy('id','DESC')->limit(250)->get();
@@ -81,11 +79,12 @@ class caliController extends generalController
                 $paros=$generalresult->getData()['paros'];
                 $desviations=$generalresult->getData()['desviations'];
                 $materials=$generalresult->getData()['materials'];*/
-            //se quitaron
-            //'fallas'=>$fallas,'registros'=>$registros,'week'=>$week,'assit'=>$assit,'paros'=>$paros,'desviations'=>$desviations,'materials'=>$materials
+            // se quitaron
+            // 'fallas'=>$fallas,'registros'=>$registros,'week'=>$week,'assit'=>$assit,'paros'=>$paros,'desviations'=>$desviations,'materials'=>$materials
             return view('cali', ['cat' => $cat, 'value' => $value, 'calidad' => $calidad]);
         }
     }
+
     public function baja(Request $request)
     {
 
@@ -97,31 +96,31 @@ class caliController extends generalController
         } else {
             $buscarInfor = calidad_registro_baja::find($id);
 
-            $numQr=[
+            $numQr = [
                 '185-4147',
                 '199-4942',
                 '199-6660',
                 '199-3871',
                 '189-6256',
                 '190-3559',
-                '185-4142'
+                '185-4142',
             ];
             if (in_array($buscarInfor->np, $numQr)) {
-                $cambioestados = [1, 'readonly', '', 'none','focus'];
+                $cambioestados = [1, 'readonly', '', 'none', 'focus'];
             } else {
                 $cambioestados = [100, '', 'readonly', '', ''];
             }
-
 
             return view('calidad.bajaDeRegistros', [
                 'value' => $value,
                 'id' => $id,
                 'buscarInfor' => $buscarInfor,
                 'cat' => $cat,
-                'cambioestados' => $cambioestados
+                'cambioestados' => $cambioestados,
             ]);
         }
     }
+
     public function saveData(Request $request)
     {
         $cat = session('categoria');
@@ -140,15 +139,15 @@ class caliController extends generalController
                         $regTimes->timeIni = strtotime($today);
                         $regTimes->whoDet = $value;
                         if (in_array($cod[$i], $loom)) {
-                            $regTimes->respArea = "Jesus Zamarripa";
-                        } else if (in_array($cod[$i], $corteLibe)) {
-                            $regTimes->respArea = "Juan Olaes";
-                        } else if (in_array($cod[$i], $ensa)) {
-                            $regTimes->respArea = "David Villalpando";
+                            $regTimes->respArea = 'Jesus Zamarripa';
+                        } elseif (in_array($cod[$i], $corteLibe)) {
+                            $regTimes->respArea = 'Juan Olaes';
+                        } elseif (in_array($cod[$i], $ensa)) {
+                            $regTimes->respArea = 'David Villalpando';
                         } else {
-                            $regTimes->respArea = "";
+                            $regTimes->respArea = '';
                         }
-                        $regTimes->area = "Calidad";
+                        $regTimes->area = 'Calidad';
                         $regTimes->save();
                     }
                 } else {
@@ -161,15 +160,15 @@ class caliController extends generalController
                     $regTimes->timeIni = strtotime($today);
                     $regTimes->whoDet = $value;
                     if (in_array($cod1, $loom)) {
-                        $regTimes->respArea = "Jesus Zamarripa";
-                    } else if (in_array($cod1, $corteLibe)) {
-                        $regTimes->respArea = "Juan Olaes";
-                    } else if (in_array($cod1, $ensa)) {
-                        $regTimes->respArea = "David Villalpando";
+                        $regTimes->respArea = 'Jesus Zamarripa';
+                    } elseif (in_array($cod1, $corteLibe)) {
+                        $regTimes->respArea = 'Juan Olaes';
+                    } elseif (in_array($cod1, $ensa)) {
+                        $regTimes->respArea = 'David Villalpando';
                     } else {
-                        $regTimes->respArea = "";
+                        $regTimes->respArea = '';
                     }
-                    $regTimes->area = "Calidad";
+                    $regTimes->area = 'Calidad';
                     $regTimes->save();
                 }
             }
@@ -196,10 +195,9 @@ class caliController extends generalController
                         DB::table('registroparcial')->where('codeBar', '=', $info)->update(['testPar' => DB::raw('testPar- 1'), 'embPar' => DB::raw('embPar+1')]);
                     }
                 }
+
                 return $serial;
             }
-
-
 
             $corteLibe = [
                 'Impresion de cable incorrecta',
@@ -225,14 +223,14 @@ class caliController extends generalController
                 'Tubo termocontractil mal colocado',
                 'Exceso de soldadura',
                 'Soldadura puenteada',
-                'Escasez de soldadura'
+                'Escasez de soldadura',
             ];
             $loom = [
                 'Encintado defectuoso de cables y-o de looming',
                 'Looming Corrugado danado',
                 'Looming Corrugado mal colocado ',
                 'Braid mal colocado y-o danado',
-                'Etiquetas invertidas'
+                'Etiquetas invertidas',
             ];
             $ensa = [
                 'Cables revueltos en los lotes',
@@ -246,7 +244,7 @@ class caliController extends generalController
                 'Componentes sin atar al arnes',
                 'Cables Invertidos en el conector',
                 ' no tiene Continuidad Electrica',
-                'Arnes con cortocircuito'
+                'Arnes con cortocircuito',
             ];
 
             $personal = [];
@@ -258,7 +256,7 @@ class caliController extends generalController
                     $rowPersonal->employeeName,
                     $rowPersonal->employeeArea,
                     $rowPersonal->typeWorker,
-                    $rowPersonal->employeeLider
+                    $rowPersonal->employeeLider,
                 ];
                 $x++;
             }
@@ -266,9 +264,9 @@ class caliController extends generalController
             $value = str($val);
             $diff = 0;
             $today = date('d-m-Y H:i');
-            $info = $request->input("infoCal");
-            $pn = $request->input("pn_cali");
-            $client = $request->input("clienteErr");
+            $info = $request->input('infoCal');
+            $pn = $request->input('pn_cali');
+            $client = $request->input('clienteErr');
             $ok = $request->input('ok');
             $nok = $request->input('nok');
             $cod1 = $request->input('rest_code1');
@@ -284,7 +282,7 @@ class caliController extends generalController
             $serial = $request->input('serial');
             $id = $request->input('id_cali');
             if (strpos($serial, "'")) {
-                $serial = str_replace("'", "-", $serial);
+                $serial = str_replace("'", '-', $serial);
             }
             if (strpos($serial, ']')) {
                 $serial = str_replace(']', '|', $serial);
@@ -318,13 +316,12 @@ class caliController extends generalController
             if (strpos($responsable5, ',')) {
                 $responsable5 = str_replace(',', ';', $responsable5);
             }
-            if ($pn == "185-4147" or $pn == "199-4942" or $pn == "199-6660" or $pn == "199-3871" or $pn == "189-6256" or $pn == "190-3559" or $pn == "185-4142") {
+            if ($pn == '185-4147' or $pn == '199-4942' or $pn == '199-6660' or $pn == '199-3871' or $pn == '189-6256' or $pn == '190-3559' or $pn == '185-4142') {
 
-                if(DB::table('registroqrs')->where('CodigoIdentificaicon', '=', $serial)->exists()){
+                if (DB::table('registroqrs')->where('CodigoIdentificaicon', '=', $serial)->exists()) {
                     $registroQr = DB::table('registroqrs')->where('CodigoIdentificaicon', '=', $serial)->delete();
-                }
-                 else {
-                     return redirect()->route('baja', ['id' => $id])->with('response', "QR code not found in the database");
+                } else {
+                    return redirect()->route('baja', ['id' => $id])->with('response', 'QR code not found in the database');
                 }
 
             }
@@ -335,12 +332,12 @@ class caliController extends generalController
             $qty_cal = $busquedainfo->qty;
             $total = $ok + $nok;
             if ($total > 100) {
-                return redirect('calidad')->with('response', "No update you need to update 100 or less");
+                return redirect('calidad')->with('response', 'No update you need to update 100 or less');
             }
 
             $totalCant = $cant1 + $cant2 + $cant3 + $cant4 + $cant5;
             if ($total <= $qty_cal and $totalCant == $nok) {
-                //insert ok
+                // insert ok
                 for ($i = 0; $i < $ok; $i++) {
 
                     $ok_reg = new calidadRegistro;
@@ -349,13 +346,13 @@ class caliController extends generalController
                     $ok_reg->pn = $pn;
                     $ok_reg->info = $info;
                     $ok_reg->resto = 1;
-                    $ok_reg->codigo = "TODO BIEN";
+                    $ok_reg->codigo = 'TODO BIEN';
                     $ok_reg->prueba = $serial;
                     $ok_reg->usuario = $value;
                     $ok_reg->save();
                 }
 
-                if (!empty($cant1)) {
+                if (! empty($cant1)) {
                     foreach ($personal as $key => $var) {
                         if ($responsable1 == $personal[$key][0]) {
                             $responsable1 = ($personal[$key][1]);
@@ -365,7 +362,7 @@ class caliController extends generalController
                     $serial = RegistroCalidadFunc($cant1, $cod1, $today, $client, $pn, $info, $value, $responsable1, $serial, $check1);
                     //  deadTime($cod1,$today,$client,$pn,$info,$value,$loom,$corteLibe,$ensa);
                 }
-                if (!empty($cant2)) {
+                if (! empty($cant2)) {
                     foreach ($personal as $key => $var) {
                         if ($responsable2 == $personal[$key][0]) {
                             $responsable2 = ($personal[$key][1]);
@@ -375,7 +372,7 @@ class caliController extends generalController
                     $serial = RegistroCalidadFunc($cant2, $cod2, $today, $client, $pn, $info, $value, $responsable2, $serial, $check2);
                     // deadTime($cod2,$today,$client,$pn,$info,$value,$loom,$corteLibe,$ensa);
                 }
-                if (!empty($cant3)) {
+                if (! empty($cant3)) {
                     foreach ($personal as $key => $var) {
                         if ($responsable3 == $personal[$key][0]) {
                             $responsable3 = ($personal[$key][1]);
@@ -383,9 +380,9 @@ class caliController extends generalController
                         }
                     }
                     $serial = RegistroCalidadFunc($cant3, $cod3, $today, $client, $pn, $info, $value, $responsable3, $serial, $check3);
-                    //deadTime($cod3,$today,$client,$pn,$info,$value,$loom,$corteLibe,$ensa);
+                    // deadTime($cod3,$today,$client,$pn,$info,$value,$loom,$corteLibe,$ensa);
                 }
-                if (!empty($cant4)) {
+                if (! empty($cant4)) {
                     foreach ($personal as $key => $var) {
                         if ($responsable4 == $personal[$key][0]) {
                             $responsable4 = ($personal[$key][1]);
@@ -393,9 +390,9 @@ class caliController extends generalController
                         }
                     }
                     $serial = RegistroCalidadFunc($cant4, $cod4, $today, $client, $pn, $info, $value, $responsable4, $serial, $check4);
-                    //deadTime($cod4,$today,$client,$pn,$info,$value,$loom,$corteLibe,$ensa);
+                    // deadTime($cod4,$today,$client,$pn,$info,$value,$loom,$corteLibe,$ensa);
                 }
-                if (!empty($cant5)) {
+                if (! empty($cant5)) {
                     foreach ($personal as $key => $var) {
                         if ($responsable5 == $personal[$key][0]) {
                             $responsable5 = ($personal[$key][1]);
@@ -403,7 +400,7 @@ class caliController extends generalController
                         }
                     }
                     $serial = RegistroCalidadFunc($cant5, $cod5, $today, $client, $pn, $info, $value, $responsable5, $serial, $check5);
-                    //deadTime($cod5,$today,$client,$pn,$info,$value,$loom,$corteLibe,$ensa);
+                    // deadTime($cod5,$today,$client,$pn,$info,$value,$loom,$corteLibe,$ensa);
                 }
 
                 $rest = $qty_cal - ($ok + $nok);
@@ -427,54 +424,56 @@ class caliController extends generalController
                 $regTimePar->fechaReg = $today;
                 $regTimePar->save();
 
-
                 if ($rest > 0) {
-                    $updacalidad = DB::table('calidad')->where("info", $info)->update(['qty' => $rest]);
-                    $updateToRegistro = DB::table('registro')->where("info", $info)->update(["paro" => "Parcial prueba electrica"]);
-                } else if ($rest <= 0) {
+                    $updacalidad = DB::table('calidad')->where('info', $info)->update(['qty' => $rest]);
+                    $updateToRegistro = DB::table('registro')->where('info', $info)->update(['paro' => 'Parcial prueba electrica']);
+                } elseif ($rest <= 0) {
                     $todays = (date('d-m-Y H:i'));
-                    $buscarReg = DB::table('registro')->where("info", $info)->first();
+                    $buscarReg = DB::table('registro')->where('info', $info)->first();
                     $rev = $buscarReg->rev;
                     $np = $buscarReg->NumPart;
                     if (substr($rev, 0, 4) == 'PPAP' || substr($rev, 0, 4) == 'PRIM') {
-                        $updateToEmbarque = DB::table('registro')->where("info", $info)->update(["count" => 18, "donde" => 'En espera de ingenieria', "paro" => ""]);
+                        $updateToEmbarque = DB::table('registro')->where('info', $info)->update(['count' => 18, 'donde' => 'En espera de ingenieria', 'paro' => '']);
                     } else {
-                        $updateToEmbarque = DB::table('registro')->where("info", $info)->update(["count" => 12, "donde" => 'En espera de embarque', "paro" => ""]);
+                        $updateToEmbarque = DB::table('registro')->where('info', $info)->update(['count' => 12, 'donde' => 'En espera de embarque', 'paro' => '']);
                     }
-                    $delteCalidad = DB::table('calidad')->where("info", $info)->delete();
+                    $delteCalidad = DB::table('calidad')->where('info', $info)->delete();
                     $updatetime = DB::table('timesharn')->where('bar', $info)->update(['qlyF' => $todays]);
                     if ($loom <= 0 && $corte <= 0 && $ensa <= 0 && $libe <= 0 && $preCalidad <= 0) {
                         $tiempoUp = DB::table('tiempos')->where('info', $info)->update(['calidad' => $todays]);
                     }
-                    return redirect('calidad')->with('response',"Registro actualizado correctamente");
+
+                    return redirect('calidad')->with('response', 'Registro actualizado correctamente');
                 }
-                return redirect()->route('baja', ['id' => $id])->with('response', "Registro actualizado correctamente");
+
+                return redirect()->route('baja', ['id' => $id])->with('response', 'Registro actualizado correctamente');
             } else {
-                return redirect()->route('baja', ['id' => $id])->with('response', "No update you need to update less than " . $qty_cal . " and the total of NOK must be equal to " . $qty_cal);
+                return redirect()->route('baja', ['id' => $id])->with('response', 'No update you need to update less than '.$qty_cal.' and the total of NOK must be equal to '.$qty_cal);
             }
         } else {
             $id = $request->input('id_cali');
-            return redirect()->route('baja', ['id' => $id])->with('response', "You do not have permission to perform this action");
+
+            return redirect()->route('baja', ['id' => $id])->with('response', 'You do not have permission to perform this action');
         }
     }
-
 
     public function buscarcodigo(Request $request)
     {
         $codig1 = $request->input('codigo1');
         $cod1 = [];
-        $restCodig = "";
+        $restCodig = '';
         if (strpos($codig1, ',')) {
-            $cod1 = explode(",", $codig1);
+            $cod1 = explode(',', $codig1);
             for ($i = 0; $i < count($cod1); $i++) {
                 $rest = DB::table('clavecali')->select('defecto')->where('clave', $cod1[$i])->first();
                 if ($i < count($cod1) - 1) {
 
-                    $restCodig = $restCodig . $rest->defecto . ';';
+                    $restCodig = $restCodig.$rest->defecto.';';
                 } else {
-                    $restCodig = $restCodig . $rest->defecto;
+                    $restCodig = $restCodig.$rest->defecto;
                 }
             }
+
             return response()->json($restCodig);
         } else {
             $buscar = DB::table('clavecali')->select('defecto')->where('clave', $codig1)->first();
@@ -482,51 +481,52 @@ class caliController extends generalController
 
                 $restCodig = $buscar;
             }
+
             return response()->json($restCodig);
         }
     }
+
     public function codigoCalidad(request $request)
     {
         $codigo = $request->input('code-bar');
         if (strpos($codigo, "'")) {
-            $codigo = str_replace("'", "-", $codigo);
+            $codigo = str_replace("'", '-', $codigo);
         }
-        $resp = "";
+        $resp = '';
         $buscar = DB::table('registroparcial')->where('codeBar', '=', $codigo)->first();
         if ($buscar) {
-            $resp = "PN: " . (string)$buscar->pn . " WO: " . (string)$buscar->wo . " ";
+            $resp = 'PN: '.(string) $buscar->pn.' WO: '.(string) $buscar->wo.' ';
             if ($buscar->cortPar) {
-                $resp .= " Cutting: " . (string)$buscar->cortPar;
+                $resp .= ' Cutting: '.(string) $buscar->cortPar;
             }
             if ($buscar->libePar) {
-                $resp .= " Terminals: " . (string)$buscar->libePar;
+                $resp .= ' Terminals: '.(string) $buscar->libePar;
             }
             if ($buscar->ensaPar) {
-                $resp .= " Assembly: " . (string)$buscar->ensaPar;
+                $resp .= ' Assembly: '.(string) $buscar->ensaPar;
             }
             if ($buscar->preCalidad) {
-                $resp .= " PreQuality: " . (string)$buscar->preCalidad;
+                $resp .= ' PreQuality: '.(string) $buscar->preCalidad;
             }
             if ($buscar->loomPar) {
-                $resp .= " Looming: " . (string)$buscar->loomPar;
+                $resp .= ' Looming: '.(string) $buscar->loomPar;
             }
             if ($buscar->testPar) {
-                $resp .= " Testing: " . (string)$buscar->testPar;
+                $resp .= ' Testing: '.(string) $buscar->testPar;
             }
             if ($buscar->embPar) {
-                $resp .= " Shipping: " . (string)$buscar->embPar;
+                $resp .= ' Shipping: '.(string) $buscar->embPar;
             }
             if ($buscar->eng) {
-                $resp .= " Engineering: " . (string)$buscar->eng;
+                $resp .= ' Engineering: '.(string) $buscar->eng;
             }
+
             return redirect('calidad')->with('response', $resp);
         } else {
 
-
-            return redirect('calidad')->with('response', "Record not found");
+            return redirect('calidad')->with('response', 'Record not found');
         }
     }
-
 
     public function fetchDatacali()
     {
@@ -544,11 +544,9 @@ class caliController extends generalController
             $serial = $registro->prueba;
             $dates = strtotime($date);
 
-            $fechacontrol = strtotime("01-01-2024 00:00");
-
+            $fechacontrol = strtotime('01-01-2024 00:00');
 
             if ($dates > $fechacontrol) {
-
 
                 $fecha[] = $date;
                 $cliente[] = $client;
@@ -562,12 +560,12 @@ class caliController extends generalController
         $tableContent = '';
         for ($j = 0; $j < $i; $j++) {
             $tableContent .= '<tr>';
-            $tableContent .= '<td>' . $fecha[$j] . '</td>';
-            $tableContent .= '<td>' . $pn[$j] . '</td>';
-            $tableContent .= '<td>' . $cliente[$j] . '</td>';
-            $tableContent .= '<td>' . $cantidad[$j] . '</td>';
-            $tableContent .= '<td>' . $codigo[$j] . '</td>';
-            $tableContent .= '<td>' . $prueba[$j] . '</td>';
+            $tableContent .= '<td>'.$fecha[$j].'</td>';
+            $tableContent .= '<td>'.$pn[$j].'</td>';
+            $tableContent .= '<td>'.$cliente[$j].'</td>';
+            $tableContent .= '<td>'.$cantidad[$j].'</td>';
+            $tableContent .= '<td>'.$codigo[$j].'</td>';
+            $tableContent .= '<td>'.$prueba[$j].'</td>';
             $tableContent .= '</tr>';
         }
         $labels = ['Planning', 'Cutting', 'Terminal'];
@@ -575,19 +573,18 @@ class caliController extends generalController
 
         $saldo = 0;
 
-
         // Create the updated data array
         $updatedData = [
             'tableContent' => $tableContent,
             'saldo' => $saldo,
             'backlock' => $backlock,
             'labels' => $labels,
-            'data' => $datos
+            'data' => $datos,
 
         ];
 
         // Return the updated data as JSON response
-        return response()->json($updatedData,);
+        return response()->json($updatedData);
     }
 
     public function mantCali(Request $request)
@@ -611,25 +608,26 @@ class caliController extends generalController
             'trabajo' => '',
             'Tiempo' => '',
             'inimant' => '',
-            'finhora' => ''
+            'finhora' => '',
         ]);
         if ($maint->save()) {
             return redirect('/calidad')->with('error', 'Failed to save data.');
         }
     }
+
     public function matCali(Request $request)
     {
 
         $value = session('user');
-        $today = date("d-m-Y");
+        $today = date('d-m-Y');
 
         for ($i = 0; $i < 5; $i++) {
-            $cant[$i] = $request->input('cant' . $i);
-            $articulo[$i] = $request->input('articulo' . $i);
-            $notas[$i] = $request->input('notas_adicionales' . $i);
+            $cant[$i] = $request->input('cant'.$i);
+            $articulo[$i] = $request->input('articulo'.$i);
+            $notas[$i] = $request->input('notas_adicionales'.$i);
         }
         $i = 0;
-        $foliant = DB::select("SELECT folio FROM material ORDER BY id DESC LIMIT 1 ");
+        $foliant = DB::select('SELECT folio FROM material ORDER BY id DESC LIMIT 1 ');
         $folio = $foliant[0]->folio;
         $folio += 1;
         while ($i < 5) {
@@ -641,9 +639,9 @@ class caliController extends generalController
                 $newarticulo->description = $articulo[$i];
                 $newarticulo->note = $notas[$i];
                 $newarticulo->qty = $cant[$i];
-                $newarticulo->aprovadaComp = "";
-                $newarticulo->negada = "";
-                if (!empty($cant[$i])) {
+                $newarticulo->aprovadaComp = '';
+                $newarticulo->negada = '';
+                if (! empty($cant[$i])) {
                     $newarticulo->save();
                 }
             }
@@ -667,9 +665,6 @@ class caliController extends generalController
         $dbp = $request->input('dbp');
         $dex = $request->input('dex');
         $id = $request->input('id');
-
-
-
 
         for ($i = 0; $i < count($names); $i++) {
             $name = $names[$i];
@@ -695,9 +690,10 @@ class caliController extends generalController
                     'domingo' => $value_ddo,
                     'bonoAsistencia' => $value_dba,
                     'bonoPuntualidad' => $value_dbp,
-                    'extras' => $value_dex
+                    'extras' => $value_dex,
                 ]);
         }
+
         return redirect('/calidad');
     }
 
@@ -710,8 +706,10 @@ class caliController extends generalController
         $Totaltime = $timeNow - $timeIni;
         $total = round($Totaltime / 60, 2);
         $update = DB::table('timedead')->where('id', '=', $id)->update(['timeFin' => $timeNow, 'total' => $total]);
+
         return redirect('/calidad');
     }
+
     public function accepted(Request $request)
     {
         $acpt = $request->input('acpt');
@@ -722,7 +720,7 @@ class caliController extends generalController
             $preorder = DB::table('registroparcial')->where('preCalidad', '>', 0)->get();
 
             return view('preorder', ['value' => $value, 'cat' => $cat, 'preorder' => $preorder]);
-        } else if (!empty($acpt)) {
+        } elseif (! empty($acpt)) {
             $preorder = DB::table('registroparcial')->where('id', '=', $acpt)->first();
             $barcode = $preorder->codeBar;
             $pn = $preorder->pn;
@@ -733,6 +731,7 @@ class caliController extends generalController
                 $qty = $buscarCalida->qty + $qtycal;
                 $update = DB::table('calidad')->where('info', '=', $barcode)->update(['qty' => $qty]);
                 $updateParcia = DB::table('registroparcial')->where('codeBar', '=', $barcode)->update(['preCalidad' => 0, 'testPar' => $qty]);
+
                 return redirect('/accepted');
             } else {
                 $buscarIfno = DB::table('registro')->where('info', '=', $barcode)->first();
@@ -749,7 +748,7 @@ class caliController extends generalController
 
                 return redirect('/accepted');
             }
-        } else if (!empty($denied)) {
+        } elseif (! empty($denied)) {
             $buscarParcial = DB::table('registroparcial')->where('id', '=', $denied)->first();
             $preCalidad = $buscarParcial->preCalidad;
             $loomPar = $buscarParcial->loomPar;
@@ -933,7 +932,7 @@ class caliController extends generalController
                 '40747',
                 '90894',
                 '90919',
-                '90941'
+                '90941',
             ];
             if (in_array($pn, $noloom)) {
                 $updateParcia = DB::table('registroparcial')->where('id', '=', $denied)->update(['preCalidad' => 0, 'ensaPar' => $noloomqy]);
@@ -942,6 +941,7 @@ class caliController extends generalController
                 $updateParcia = DB::table('registroparcial')->where('id', '=', $denied)->update(['preCalidad' => 0, 'loomPar' => $sum]);
                 $upCount = DB::table('registro')->where('info', '=', $barcode)->update(['count' => '8', 'donde' => 'Denid by Quality']);
             }
+
             return redirect('/accepted');
         }
     }
@@ -951,15 +951,16 @@ class caliController extends generalController
         $cat = session('categoria');
         $value = session('user');
         $fallasId = $request->input('fallas');
-        if (!empty($fallasId)) {
+        if (! empty($fallasId)) {
             $buscar = DB::table('regsitrocalidad')->where('id', '=', $fallasId)->first();
             $update = DB::table('registroparcial')
                 ->where('codeBar', '=', $buscar->info)
                 ->update([
                     'fallasCalidad' => DB::raw('fallasCalidad - 1'),
-                    'embPar' => DB::raw('embPar + 1')
+                    'embPar' => DB::raw('embPar + 1'),
                 ]);
             $deleteFall = DB::table('fallascalidad')->where('idCalidad', '=', $fallasId)->delete();
+
             return redirect('/calidad');
         } else {
             $registrosFallas = [];
@@ -976,31 +977,26 @@ class caliController extends generalController
                 $i++;
             }
 
-
             return view('calidad/retrabajos', ['value' => $value, 'cat' => $cat, 'registrosFallas' => $registrosFallas]);
         }
     }
 
-
-
     public function excel_calidad(Request $request)
     {
-        $di = $request->input('di'); //26-02-2025 00:00
+        $di = $request->input('di'); // 26-02-2025 00:00
         $df = $request->input('df'); // 26-02-2025 23.59
         $di = substr($di, 0, 10);
         $df = substr($df, 0, 10);
 
-
         // Initialize the spreadsheet
-        $spreadsheet = new Spreadsheet();
+        $spreadsheet = new Spreadsheet;
         $sheet = $spreadsheet->getActiveSheet();
         $t = 2; // Row counter for the data
-
 
         $dates = (date('-m-Y'));
         $regmin = DB::table('regsitrocalidad')
             ->select('id')
-            ->where('fecha', 'LiKE', $di . '%')
+            ->where('fecha', 'LiKE', $di.'%')
             ->orderBy('id', 'asc')
             ->first();
         if ($regmin) {
@@ -1008,14 +1004,14 @@ class caliController extends generalController
         } else {
             $regmin = DB::table('regsitrocalidad')
                 ->select('id')
-                ->where('fecha', 'LiKE', '%' . $dates . '%')
+                ->where('fecha', 'LiKE', '%'.$dates.'%')
                 ->orderBy('id', 'asc')
                 ->first();
             $min = $regmin->id;
         }
         $regmax = DB::table('regsitrocalidad')
             ->select('id')
-            ->where('fecha', 'LiKE', $df . '%')
+            ->where('fecha', 'LiKE', $df.'%')
             ->orderBy('id', 'desc')
             ->first();
         if ($regmax) {
@@ -1028,11 +1024,6 @@ class caliController extends generalController
                 ->first();
             $max = $regmax->id;
         }
-
-
-
-
-
 
         $registro = [];
 
@@ -1057,7 +1048,7 @@ class caliController extends generalController
             ->orderBy('Responsable', 'desc')
             ->get();
         foreach ($buscarinfo as $row) {
-            if (!isset($registro[$row->fecha][$row->pn][$row->codigo][$row->Responsable])) {
+            if (! isset($registro[$row->fecha][$row->pn][$row->codigo][$row->Responsable])) {
                 $registro[$row->fecha][$row->pn][$row->codigo][$row->Responsable] = 1;
             } else {
                 $registro[$row->fecha][$row->pn][$row->codigo][$row->Responsable]++;
@@ -1068,11 +1059,11 @@ class caliController extends generalController
             foreach ($pn as $pn => $codigo) {
                 foreach ($codigo as $codigo => $responsable) {
                     foreach ($responsable as $responsable => $cuenta) {
-                        $sheet->setCellValue('A' . $t, $fecha);
-                        $sheet->setCellValue('B' . $t, $pn);
-                        $sheet->setCellValue('C' . $t, $codigo);
-                        $sheet->setCellValue('D' . $t, $responsable);
-                        $sheet->setCellValue('E' . $t, $cuenta);
+                        $sheet->setCellValue('A'.$t, $fecha);
+                        $sheet->setCellValue('B'.$t, $pn);
+                        $sheet->setCellValue('C'.$t, $codigo);
+                        $sheet->setCellValue('D'.$t, $responsable);
+                        $sheet->setCellValue('E'.$t, $cuenta);
                         $t++;
                     }
                 }
@@ -1082,60 +1073,66 @@ class caliController extends generalController
         // Generate the Excel file and output it to the browser
         $writer = new Xlsx($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="Reporte de calidad del ' . $di . ' al ' . $df . '.xlsx"');
+        header('Content-Disposition: attachment;filename="Reporte de calidad del '.$di.' al '.$df.'.xlsx"');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
     }
+
     public function personalFallas(Request $request)
     {
         $numero = $request->input('codigo1');
-        if ($numero==2153 or $numero == 2128) {
+        if ($numero == 2153 or $numero == 2128) {
             $numero = 'i'.$numero;
-            $personaName=personalBergsModel::select('employeeName')->where('employeeNumber',$numero)
-        ->where('status','Activo')->first();
+            $personaName = personalBergsModel::select('employeeName')->where('employeeNumber', $numero)
+                ->where('status', 'Activo')->first();
 
-        }else{
-        $numero ='i'.$numero;
+        } else {
+            $numero = 'i'.$numero;
 
-        $personaName=personalBergsModel::select('employeeName')->where('employeeNumber',$numero)
-        ->where('status','Activo')->where('typeWorker','Directo')->first();
+            $personaName = personalBergsModel::select('employeeName')->where('employeeNumber', $numero)
+                ->where('status', 'Activo')->where('typeWorker', 'Directo')->first();
         }
+
         return response()->json($personaName);
 
     }
 
-    //Request Testing
-    public function RequestTesting (Request $request)
+    // Request Testing
+    public function RequestTesting(Request $request)
     {
         $value = session('user');
         $numero = $request->input('workElectrical');
-        if($value == null){
+        if ($value == null) {
             return redirect('/');
         }
-        if($numero == null or $numero == ''){
+        if ($numero == null or $numero == '') {
             return redirect('/calidad');
         }
 
         $status = 'Pending';
-        $buscarWo=Wo::select('NumPart','cliente','rev')->where('wo',$numero)->first();
-        $registos= new electricalTesting;
-        $registos->pn=$buscarWo->NumPart;
-        $registos->client=$buscarWo->cliente;
-        $registos->wo=$request->input('workElectrical');
-        $registos->requested_by=$value;
+        $buscarWo = Wo::select('NumPart', 'cliente', 'rev')->where('wo', $numero)->first();
+        $registos = new electricalTesting;
+        $registos->pn = $buscarWo->NumPart;
+        $registos->client = $buscarWo->cliente;
+        $registos->wo = $request->input('workElectrical');
+        $registos->requested_by = $value;
         $registos->save();
 
         return redirect()->route('calidad')->with('success', 'Se ha creado un nuevo registro de testing');
 
-
-
     }
 
-    //fetch show WO info
+    // fetch show WO info
     public function informationWo(Request $request)
     {
+        $value = session('user');
+        if ($value == null) {
+            return redirect('/');
+        }
+
         $numero = $request->input('workElectrical');
-        $buscarWo=Wo::select('NumPart','cliente','rev')->where('wo',$numero)->first();
+        $buscarWo = Wo::select('NumPart', 'cliente', 'rev')->where('wo', $numero)->first();
+
         return response()->json($buscarWo);
     }
 }
