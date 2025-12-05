@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\calidad\calidad_registro_baja;
 use App\Models\calidadRegistro;
-use App\Models\electricaltesting;
+use App\Models\electricalTesting;
 use App\Models\fallasCalidadModel;
 use App\Models\listaCalidad;
 use App\Models\Maintanance;
