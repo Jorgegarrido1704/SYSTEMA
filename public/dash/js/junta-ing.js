@@ -320,7 +320,7 @@ try{
             },
             {type: 'line',
              label: 'Average Delay',
-             data: Array(labelsTimeByPlaning.length).fill("5"),
+             data: Array(labelsTimeByPlaning.length).fill("3"),
              borderColor: 'rgba(54, 162, 235, 1)',
              borderWidth: 2,
              fill: false,
