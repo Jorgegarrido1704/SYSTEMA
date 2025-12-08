@@ -55,9 +55,7 @@ const tiemposing = new Chart(tiemposIng, {
   }
 });
 
-}
-
-catch (error) {
+}catch (error) {
     //console.error(error);
 
 }
@@ -85,7 +83,7 @@ function getRandomColor(nombre) {
   else if (nombre === 'Jorge G') color = 'rgba(236, 121, 33, 0.4)'; // #ec7921
   else if (nombre === 'Jesus_C') color = 'rgba(131, 200, 246, 0.4)';// #83c8f6
   else if (nombre === 'Eliot D') color = 'rgba(166, 69, 119, 0.4)'; // #a64577
-  else color = 'rgba(255, 171, 145, 0.4)';     
+  else color = 'rgba(255, 171, 145, 0.4)';
     return color;
 }
 const ppapIng = new Chart(ppap, {
@@ -126,8 +124,7 @@ const ppapIng = new Chart(ppap, {
 
     });
 
-}
-catch (error) {
+}catch (error) {
    // console.error(error);
 }
 try {
@@ -172,8 +169,7 @@ const cakeIng = new Chart(cake, {
     });
 
 
-}
-catch (error) {
+}catch (error) {
 //console.error(error);
 }
 try {
@@ -223,8 +219,7 @@ const config = {
 const cakeIng2 = new Chart(cake2, config);
 
 
-}
-catch (error) {
+}catch (error) {
   //  console.error(error);
 }
 try{
@@ -296,5 +291,73 @@ try{
 }
 
 }catch( error) {
+   // console.error(error);
+}
+try{
+    console.log(timesByPlaning);
+    const labelsTimeByPlaning = Object.keys(timesByPlaning);
+    const dataTimeByPlaning = Object.values(timesByPlaning);
+    const dataTimeByFirmas = Object.values(timesByFirmas);
+
+    const graficaRetasoPlaning = document.getElementById("diferencias");
+    const diferenciaPlaning = new Chart(graficaRetasoPlaning, {
+        type: 'bar',
+        data: {
+            labels: labelsTimeByPlaning,
+            datasets: [{
+                label: 'Days from Completion to Up Order Date',
+                data: dataTimeByPlaning,
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            },
+            {
+                label: 'Days from Completion to Signature Date',
+                data: dataTimeByFirmas,
+                backgroundColor: 'rgba(255, 206, 86, 0.2)',
+                borderColor: 'rgba(255, 206, 86, 1)',
+                borderWidth: 1
+            },
+            {type: 'line',
+             label: 'Average Delay',
+             data: Array(labelsTimeByPlaning.length).fill("5"),
+             borderColor: 'rgba(54, 162, 235, 1)',
+             borderWidth: 2,
+             fill: false,
+             tension: 0.1
+            }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Days'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Part Number'
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top'
+                },
+                tooltip: {
+                    enabled: true
+                }
+            }
+        }
+    });
+
+}catch(error){
    // console.error(error);
 }

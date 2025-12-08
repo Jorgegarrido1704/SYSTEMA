@@ -2,38 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\calidadController;
+use App\Mail\solicitudVacacionesMail;
 use App\Models\assistence;
+use App\Models\calidadRegistro;
 use App\Models\issuesFloor;
+use App\Models\login;
 use App\Models\personalBergsModel;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\URL;
-use Exception;
-use ZeroDivisionError;
+use App\Models\po;
+use App\Models\registro;
+use App\Models\registroQ;
+use App\Models\registroVacacionesModel;
+use App\Models\tiempos;
+use App\Models\Wo;
+use App\Models\workScreduleModel;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx\Rels;
-use Symfony\Contracts\Service\Attribute\Required;
-use ZipArchive;
-use App\Models\workScreduleModel;
-use App\Models\Wo;
-use App\Models\tiempos;
-use App\Models\registroVacacionesModel;
-use App\Mail\solicitudVacacionesMail;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
-use App\Models\calidadRegistro;
-use App\Models\registroQ;
-use App\Models\registro;
-use App\Models\login;
-use App\Models\po;
-
+use Illuminate\Support\Facades\URL;
 
 class juntasController extends Controller
 {
-
     public function index_junta(Request $request)
     {
         $value = session('user');
@@ -53,29 +43,29 @@ class juntasController extends Controller
                 $cant = $reg->Qty;
                 if ($reg->cliente == 'BERGSTROM') {
                     $client[0] = $client[0] + ($price * $cant);
-                } else if ($reg->cliente == 'ATLAS COPCO') {
+                } elseif ($reg->cliente == 'ATLAS COPCO') {
                     $client[1] += ($price * $cant);
-                } else if ($reg->cliente == 'BLUE BIRD') {
+                } elseif ($reg->cliente == 'BLUE BIRD') {
                     $client[2] += ($price * $cant);
-                } else if ($reg->cliente == 'COLLINS') {
+                } elseif ($reg->cliente == 'COLLINS') {
                     $client[3] += ($price * $cant);
-                } else if ($reg->cliente == 'EL DORADO CALIFORNIA') {
+                } elseif ($reg->cliente == 'EL DORADO CALIFORNIA') {
                     $client[4] += ($price * $cant);
-                } else if ($reg->cliente == 'FOREST' or $reg->cliente == 'FOREST RIVER') {
+                } elseif ($reg->cliente == 'FOREST' or $reg->cliente == 'FOREST RIVER') {
                     $client[5] += ($price * $cant);
-                } else if ($reg->cliente == 'KALMAR') {
+                } elseif ($reg->cliente == 'KALMAR') {
                     $client[6] += ($price * $cant);
-                } else if ($reg->cliente == 'MODINE') {
+                } elseif ($reg->cliente == 'MODINE') {
                     $client[7] += ($price * $cant);
-                } else if ($reg->cliente == 'PHOENIX MOTOR CARS' or $reg->cliente == 'PROTERRA') {
+                } elseif ($reg->cliente == 'PHOENIX MOTOR CARS' or $reg->cliente == 'PROTERRA') {
                     $client[8] += ($price * $cant);
-                } else if ($reg->cliente == 'SPARTAN') {
+                } elseif ($reg->cliente == 'SPARTAN') {
                     $client[9] += ($price * $cant);
-                } else if ($reg->cliente == 'TICO MANUFACTURING') {
+                } elseif ($reg->cliente == 'TICO MANUFACTURING') {
                     $client[10] += ($price * $cant);
-                } else if ($reg->cliente == 'UTILIMASTER') {
+                } elseif ($reg->cliente == 'UTILIMASTER') {
                     $client[11] += ($price * $cant);
-                } else if ($reg->cliente == 'ZOELLER') {
+                } elseif ($reg->cliente == 'ZOELLER') {
                     $client[12] += ($price * $cant);
                 }
                 $backlock += ($price * $cant);
@@ -83,7 +73,7 @@ class juntasController extends Controller
             for ($i = 0; $i < 13; $i++) {
                 $client[$i] = round((($client[$i] * 100) / $backlock), 3);
             }
-            //Stations
+            // Stations
             $ventasStation = [];
             for ($i = 0; $i < 13; $i++) {
                 $ventasStation[$i] = 0;
@@ -94,7 +84,7 @@ class juntasController extends Controller
                     $ventasStation[0] += round($reg->Qty * $reg->price, 2);
                 }
             }
-            $BuscarVenta = DB::select("SELECT * FROM registro JOIN registroparcial ON registro.info=registroparcial.codeBar");
+            $BuscarVenta = DB::select('SELECT * FROM registro JOIN registroparcial ON registro.info=registroparcial.codeBar');
             foreach ($BuscarVenta as $reg) {
                 if ($reg->cortPar > 0) {
                     $ventasStation[1] += round($reg->cortPar * $reg->price, 2);
@@ -136,7 +126,7 @@ class juntasController extends Controller
             if ($ventasStation[12] != 0) {
                 $ventasStation[13] = round($ventasStation[12] / $backlock, 2);
             }
-            //desviations
+            // desviations
             $i = 0;
             $info = [];
             $buscarInfo = DB::table('desvation')->where('fpro', '')->where('count', '!=', 5)->orderBy('id', 'DESC')->get();
@@ -155,19 +145,19 @@ class juntasController extends Controller
                 $info[$i][11] = $rowInf->id;
                 $i++;
             }
-            //ventas
-            if ($dia != "") {
-                $fechaVenta = substr($dia, 0, 2) . "-" . substr($dia, 3, 2) . "-" . substr($dia, 6, 4);
+            // ventas
+            if ($dia != '') {
+                $fechaVenta = substr($dia, 0, 2).'-'.substr($dia, 3, 2).'-'.substr($dia, 6, 4);
                 if (date('N', strtotime($fechaVenta)) == 1) {
-                    $fechaVenta = date("d-m-Y", strtotime("-3 days"));
+                    $fechaVenta = date('d-m-Y', strtotime('-3 days'));
                 } else {
-                    $fechaVenta = date("d-m-Y", strtotime("-1 days"));
+                    $fechaVenta = date('d-m-Y', strtotime('-1 days'));
                 }
             } else {
                 if (date('N') == 1) {
-                    $fechaVenta = date("d-m-Y", strtotime("-3 days"));
+                    $fechaVenta = date('d-m-Y', strtotime('-3 days'));
                 } else {
-                    $fechaVenta = date("d-m-Y", strtotime("-1 days"));
+                    $fechaVenta = date('d-m-Y', strtotime('-1 days'));
                 }
             }
 
@@ -179,7 +169,7 @@ class juntasController extends Controller
             // Obtener todos los PN únicos para la fecha dada
             $buscaprecio = DB::table('regsitrocalidad')
                 ->distinct('pn')
-                ->where('fecha', 'like', $fechaVenta . '%')
+                ->where('fecha', 'like', $fechaVenta.'%')
                 ->orderBy('id', 'DESC')
                 ->get();
 
@@ -192,7 +182,7 @@ class juntasController extends Controller
             foreach ($preReg as $pns) {
                 // Buscar todas las ocurrencias del PN en la misma fecha
                 $buscarcant = DB::table('regsitrocalidad')
-                    ->where('fecha', 'like', $fechaVenta . '%')
+                    ->where('fecha', 'like', $fechaVenta.'%')
                     ->where('pn', $pns)
                     ->count(); // Contamos las ocurrencias en lugar de obtener todos los registros
 
@@ -222,7 +212,6 @@ class juntasController extends Controller
                 }
             }
 
-
             $countReq = count($info);
 
             $buscarregistross = DB::select("SELECT * FROM registro WHERE Qty>'0'");
@@ -231,10 +220,10 @@ class juntasController extends Controller
                 $cant = $reg->Qty;
                 $backlock += ($price * $cant);
             }
-            if (date("N") == 1) {
-                $today = strtotime(date("d-m-Y 00:00", strtotime('-3 days')));
+            if (date('N') == 1) {
+                $today = strtotime(date('d-m-Y 00:00', strtotime('-3 days')));
             } else {
-                $today = strtotime(date("d-m-Y 00:00", strtotime('-1 days')));
+                $today = strtotime(date('d-m-Y 00:00', strtotime('-1 days')));
             }
             $count = $preciot = $saldos = 0;
             $fecha = $info = $cliente = $pn = $cantidad = [];
@@ -266,9 +255,9 @@ class juntasController extends Controller
 
             for ($i = 0; $i < $count; $i++) {
                 $precioparte = $pn[$i];
-                $precio = DB::select("SELECT price FROM precios WHERE pn=?", [$precioparte]);
+                $precio = DB::select('SELECT price FROM precios WHERE pn=?', [$precioparte]);
                 foreach ($precio as $pricepn) {
-                    //$saldos += $pricepn->price * $cantidad[$i];
+                    // $saldos += $pricepn->price * $cantidad[$i];
                 }
             }
 
@@ -276,45 +265,44 @@ class juntasController extends Controller
             $tableContent = '';
             for ($i = 0; $i < $count; $i++) {
                 $tableContent .= '<tr>';
-                $tableContent .= '<td>' . $fecha[$i] . '</td>';
-                $tableContent .= '<td>' . $pn[$i] . '</td>';
-                $tableContent .= '<td>' . $info[$i] . '</td>';
-                $tableContent .= '<td>' . $cliente[$i] . '</td>';
-                $tableContent .= '<td>' . $cantidad[$i] . '</td>';
+                $tableContent .= '<td>'.$fecha[$i].'</td>';
+                $tableContent .= '<td>'.$pn[$i].'</td>';
+                $tableContent .= '<td>'.$info[$i].'</td>';
+                $tableContent .= '<td>'.$cliente[$i].'</td>';
+                $tableContent .= '<td>'.$cantidad[$i].'</td>';
                 $tableContent .= '</tr>';
             }
-            if ($dia != "") {
-                $diario = substr($dia, 0, 2) . "-" . substr($dia, 3, 2) . "-" . substr($dia, 6, 4);
+            if ($dia != '') {
+                $diario = substr($dia, 0, 2).'-'.substr($dia, 3, 2).'-'.substr($dia, 6, 4);
                 if (date('N') == 1) {
-                    $diario = date("d-m-Y", strtotime("-3 days"));
+                    $diario = date('d-m-Y', strtotime('-3 days'));
                 } else {
                 }
-                $diario = date("d-m-Y", strtotime("-1 days"));
+                $diario = date('d-m-Y', strtotime('-1 days'));
             } else {
-                if (date("N") == 1) {
-                    $diario = date("d-m-Y", strtotime('-3 day'));
+                if (date('N') == 1) {
+                    $diario = date('d-m-Y', strtotime('-3 day'));
                 } else {
-                    $diario = date("d-m-Y", strtotime('-1 day'));
+                    $diario = date('d-m-Y', strtotime('-1 day'));
                 }
             }
             $ochoAm = $sieteAm = $nueveAm = $diesAm = $onceAm = $docePm = $unaPm = $dosPm = $tresPm = $cuatroPm = $cincoPm = $seisPm = $sietePm = 0;
 
-            $busPorTiemp = DB::table("regsitrocalidad")->where("fecha", "LIKE", "$diario 07:%")
-                ->orwhere("fecha", "LIKE", "$diario 08:%")
-                ->orwhere("fecha", "LIKE", "$diario 09:%")
-                ->orwhere("fecha", "LIKE", "$diario 10:%")
-                ->orwhere("fecha", "LIKE", "$diario 11:%")
-                ->orwhere("fecha", "LIKE", "$diario 12:%")
-                ->orwhere("fecha", "LIKE", "$diario 13:%")
-                ->orwhere("fecha", "LIKE", "$diario 14:%")
-                ->orwhere("fecha", "LIKE", "$diario 15:%")
-                ->orwhere("fecha", "LIKE", "$diario 16:%")
-                ->orwhere("fecha", "LIKE", "$diario 17:%")
-                ->orwhere("fecha", "LIKE", "$diario 18:%")
-                ->orwhere("fecha", "LIKE", "$diario 19:%")
-                ->orwhere("fecha", "LIKE", "$diario 20:%")
+            $busPorTiemp = DB::table('regsitrocalidad')->where('fecha', 'LIKE', "$diario 07:%")
+                ->orwhere('fecha', 'LIKE', "$diario 08:%")
+                ->orwhere('fecha', 'LIKE', "$diario 09:%")
+                ->orwhere('fecha', 'LIKE', "$diario 10:%")
+                ->orwhere('fecha', 'LIKE', "$diario 11:%")
+                ->orwhere('fecha', 'LIKE', "$diario 12:%")
+                ->orwhere('fecha', 'LIKE', "$diario 13:%")
+                ->orwhere('fecha', 'LIKE', "$diario 14:%")
+                ->orwhere('fecha', 'LIKE', "$diario 15:%")
+                ->orwhere('fecha', 'LIKE', "$diario 16:%")
+                ->orwhere('fecha', 'LIKE', "$diario 17:%")
+                ->orwhere('fecha', 'LIKE', "$diario 18:%")
+                ->orwhere('fecha', 'LIKE', "$diario 19:%")
+                ->orwhere('fecha', 'LIKE', "$diario 20:%")
                 ->get();
-
 
             foreach ($busPorTiemp as $rowstime) {
                 switch (substr($rowstime->fecha, 11, 2)) {
@@ -377,7 +365,7 @@ class juntasController extends Controller
                 }
             }
             $plan = $cort = $libe = $ensa = $cali = $espc = $loom = 0;
-            $buscarWoCount = DB::table("registro")->select('count')->where('count', '<', 20)->get();
+            $buscarWoCount = DB::table('registro')->select('count')->where('count', '<', 20)->get();
             foreach ($buscarWoCount as $rowReg) {
                 switch ($rowReg->count) {
                     case '1':
@@ -438,30 +426,25 @@ class juntasController extends Controller
             $saldos = $sieteAm + $ochoAm + $nueveAm + $diesAm + $onceAm + $docePm + $unaPm + $dosPm + $tresPm + $cuatroPm + $cincoPm + $seisPm + $sietePm;
             $buscarPassView = DB::table('registro')->select('*')->get();
             foreach ($buscarPassView as $rowPass) {
-                $fecha = strtotime(date("d-m-Y"));
+                $fecha = strtotime(date('d-m-Y'));
                 $entrega = strtotime($rowPass->reqday);
                 $fecha7 = strtotime('+7 days');
                 if ($fecha > $entrega) {
                     $tiemposPas[0] += 1;
-                } else if ($fecha <= $entrega and $fecha7 >= $entrega) {
+                } elseif ($fecha <= $entrega and $fecha7 >= $entrega) {
                     $tiemposPas[1] += 1;
-                } else if ($fecha7 < $entrega) {
+                } elseif ($fecha7 < $entrega) {
                     $tiemposPas[2] += 1;
                 }
             }
             $registrosPPAP = po::select('pn', 'rev')->where('rev', 'LIKE', 'PPAP%')->where('rev', '=', 'PRIM%')->get();
             foreach ($registrosPPAP as $rowPPAP) {
                 $rev = substr($rowPPAP->rev, 5);
-                $deuplicados = po::where('pn', $rowPPAP->pn)->where('rev', 'Like', '%' . $rev)->count();
+                $deuplicados = po::where('pn', $rowPPAP->pn)->where('rev', 'Like', '%'.$rev)->count();
                 if ($deuplicados > 1) {
                     $lieaVenta[12] += 1;
                 }
             }
-
-
-
-
-
 
             return view('juntas')->with([
                 'ventasStation' => $ventasStation,
@@ -478,10 +461,11 @@ class juntasController extends Controller
                 'label' => $label,
                 'dato' => $dato,
                 'tiemposPas' => $tiemposPas,
-                'lieaVenta' => $lieaVenta
+                'lieaVenta' => $lieaVenta,
             ]);
         }
     }
+
     public function calidad_junta()
     {
         $value = session('user');
@@ -489,25 +473,25 @@ class juntasController extends Controller
         $datosCalidad = [];
         $empRes = $empleados = $datos = $etiq = $gultyY = [];
         $totalb = $totalm = $j = 0;
-        $monthAndYear = date("m-Y");
+        $monthAndYear = date('m-Y');
         $today = date('d-m-Y 00:00');
-        if (date("N") == 1) {
-            $datecontrol = strtotime(date("d-m-Y 00:00", strtotime("-3 days")));
-            $crtl = date("d-m-Y", strtotime("-3 days"));
+        if (date('N') == 1) {
+            $datecontrol = strtotime(date('d-m-Y 00:00', strtotime('-3 days')));
+            $crtl = date('d-m-Y', strtotime('-3 days'));
         } else {
-            $datecontrol = strtotime(date("d-m-Y 00:00", strtotime("-1 days")));
-            $crtl = date("d-m-Y", strtotime("-1 days"));
+            $datecontrol = strtotime(date('d-m-Y 00:00', strtotime('-1 days')));
+            $crtl = date('d-m-Y', strtotime('-1 days'));
         }
-        $buscarValoresMes = calidadRegistro::where('codigo', '!=', "TODO BIEN")
-            ->where('fecha', 'LIKE', $crtl . '%')
+        $buscarValoresMes = calidadRegistro::where('codigo', '!=', 'TODO BIEN')
+            ->where('fecha', 'LIKE', $crtl.'%')
             ->get();
-        $totalb = calidadRegistro::where('fecha', 'LIKE', $crtl . '%')->where('codigo', 'TODO BIEN')->count();
+        $totalb = calidadRegistro::where('fecha', 'LIKE', $crtl.'%')->where('codigo', 'TODO BIEN')->count();
         $totalm = count($buscarValoresMes);
         foreach ($buscarValoresMes as $rows) {
             $supRes = personalBergsModel::select('employeeLider')->where('employeeName', $rows->Responsable)->first();
-           // dd($supRes);
-            if ($supRes==null) {
-                 $supRes = personalBergsModel::select('employeeLider')->where('employeeName', 'VERA VILLEGAS EFRAIN')->first();
+            // dd($supRes);
+            if ($supRes == null) {
+                $supRes = personalBergsModel::select('employeeLider')->where('employeeName', 'VERA VILLEGAS EFRAIN')->first();
             }
             if (in_array($rows->codigo, $etiq)) {
                 $index = array_search($rows->codigo, $etiq);
@@ -517,10 +501,10 @@ class juntasController extends Controller
                 $index = count($etiq) - 1; // Index of the last added element
                 $datos[$etiq[$index]] = $rows->resto;
             }
-            if (in_array($rows->Responsable . " - " . $rows->pn . " Lider: " . $supRes->employeeLider, array_column($gultyY, 0))) {
-                $gultyY[array_search($rows->Responsable . " - " . $rows->pn . " Lider: " . $supRes->employeeLider, array_column($gultyY, 0))][1] += $rows->resto;
+            if (in_array($rows->Responsable.' - '.$rows->pn.' Lider: '.$supRes->employeeLider, array_column($gultyY, 0))) {
+                $gultyY[array_search($rows->Responsable.' - '.$rows->pn.' Lider: '.$supRes->employeeLider, array_column($gultyY, 0))][1] += $rows->resto;
             } else {
-                $gultyY[$j][0] = $rows->Responsable . " - " . $rows->pn . " Lider: " . $supRes->employeeLider;
+                $gultyY[$j][0] = $rows->Responsable.' - '.$rows->pn.' Lider: '.$supRes->employeeLider;
                 $gultyY[$j][1] = $rows->resto;
                 $j++;
             }
@@ -528,6 +512,7 @@ class juntasController extends Controller
         function Paretos($good, $bad)
         {
             $total = $good + $bad;
+
             return $total > 0 ? round(($good / $total) * 100, 2) : 0;
         }
 
@@ -536,7 +521,7 @@ class juntasController extends Controller
         $totalGood = $totalBad = 0;
 
         // Get current weekday (1 = Monday, 7 = Sunday)
-        $weekday = date("N");
+        $weekday = date('N');
 
         // Map how many past days we want depending on weekday
         $daysBackMap = [
@@ -554,7 +539,7 @@ class juntasController extends Controller
         // Generate the dates we want to check
         $datesToCheck = [];
         for ($i = 1; $i <= $daysBack; $i++) {
-            $datesToCheck[] = date("d-m-Y", strtotime("-$i days"));
+            $datesToCheck[] = date('d-m-Y', strtotime("-$i days"));
         }
         $days = count($datesToCheck);
         $buscarValores = DB::table('regsitrocalidad')->select('fecha', 'codigo')
@@ -582,15 +567,13 @@ class juntasController extends Controller
             $totalBad += $bad;
         }
 
-
-
-        $YearParto = date("Y");
-        $month = date("m");
-        $lastmonth = date("m", strtotime("-1 months"));
-        $lastmonthYear = date("Y", strtotime("-1 months"));
-        $week = date("W");
-        $lastweek = date("W", strtotime("-1 weeks"));
-        $weekYear = date("Y");
+        $YearParto = date('Y');
+        $month = date('m');
+        $lastmonth = date('m', strtotime('-1 months'));
+        $lastmonthYear = date('Y', strtotime('-1 months'));
+        $week = date('W');
+        $lastweek = date('W', strtotime('-1 weeks'));
+        $weekYear = date('Y');
 
         $resultados = DB::table('regsitrocalidad')
             ->selectRaw("
@@ -633,7 +616,7 @@ class juntasController extends Controller
                 $weekYear,
                 $lastweek,     // weekGood
                 $weekYear,
-                $lastweek      // weekBad
+                $lastweek,      // weekBad
             ])
             ->first();
 
@@ -647,14 +630,13 @@ class juntasController extends Controller
         $weekGood = $resultados->weekGood;
         $weekBad = $resultados->weekBad;
 
-        $monthAndYearPareto[date("m-Y")] = Paretos($monthGood, $monthBad);
+        $monthAndYearPareto[date('m-Y')] = Paretos($monthGood, $monthBad);
         $monthAndYearPareto[$YearParto] = Paretos($yearGood, $yearBad);
-        $monthAndYearPareto[date("m-Y", strtotime("-1 months"))] = Paretos($lastmonthGood, $lastmonthBad);
-        $monthAndYearPareto["Week " . $lastweek] = Paretos($weekGood, $weekBad);
-
+        $monthAndYearPareto[date('m-Y', strtotime('-1 months'))] = Paretos($lastmonthGood, $lastmonthBad);
+        $monthAndYearPareto['Week '.$lastweek] = Paretos($weekGood, $weekBad);
 
         $empleados = DB::table('regsitrocalidad')
-            ->selectRaw("Responsable, COUNT(*) as errores")
+            ->selectRaw('Responsable, COUNT(*) as errores')
             ->whereRaw("YEAR(STR_TO_DATE(fecha, '%d-%m-%Y')) = ? AND MONTH(STR_TO_DATE(fecha, '%d-%m-%Y')) = ?", [$YearParto, $month])
             ->where('codigo', '!=', 'TODO BIEN')
             ->groupBy('Responsable')
@@ -662,16 +644,14 @@ class juntasController extends Controller
             ->limit(10)
             ->get();
 
-
-
         // arsort($monthAndYearPareto);
-        //ksort($pareto);
+        // ksort($pareto);
         arsort($datos);
         $firstKey = key($datos);
         $datosF = $pnrs = $datosT = $datosS = [];
         // Query the database to retrieve records where 'codigo' column matches the $firstKey
         $buscardatosClientes = DB::table('regsitrocalidad')->where('codigo', '=', $firstKey)
-            ->where('fecha', 'LIKE', $crtl . '%')->orderBy('pn')->get();
+            ->where('fecha', 'LIKE', $crtl.'%')->orderBy('pn')->get();
         foreach ($buscardatosClientes as $rowDatos) {
             if ((in_array($rowDatos->client, array_column($datosF, 0)) and (in_array($rowDatos->pn, array_column($datosF, 3))))) {
                 $datosF[$rowDatos->pn][2] += $rowDatos->resto;
@@ -685,7 +665,7 @@ class juntasController extends Controller
         next($datos);
         $secondKey = key($datos);
         $buscardatosClientes2 = DB::table('regsitrocalidad')->where('codigo', '=', $secondKey)
-            ->where('fecha', 'LIKE', $crtl . '%')->orderBy('pn')->get();
+            ->where('fecha', 'LIKE', $crtl.'%')->orderBy('pn')->get();
         foreach ($buscardatosClientes2 as $rowDatos2) {
             if ((in_array($rowDatos2->client, array_column($datosS, 0)) and (in_array($rowDatos2->pn, array_column($datosS, 3))))) {
                 $datosS[$rowDatos2->pn][2] += $rowDatos2->resto;
@@ -699,7 +679,7 @@ class juntasController extends Controller
         next($datos);
         $thirdKey = key($datos);
         $buscardatosClientes3 = DB::table('regsitrocalidad')->where('codigo', $thirdKey)
-            ->where('fecha', 'LIKE', $crtl . '%')->orderBy('codigo')->get();
+            ->where('fecha', 'LIKE', $crtl.'%')->orderBy('codigo')->get();
         foreach ($buscardatosClientes3 as $rowDatos3) {
 
             if (in_array($rowDatos3->client, array_column($datosT, 0)) and (in_array($rowDatos3->pn, array_column($datosT, 3)))) {
@@ -711,7 +691,7 @@ class juntasController extends Controller
                 $datosT[$rowDatos3->pn][3] = $rowDatos3->pn;
             }
         }
-        //calidad Q
+        // calidad Q
         $Qdays = $colorQ = $labelQ = [];
         $maxDays = cal_days_in_month(CAL_GREGORIAN, date('m'), date('Y'));
 
@@ -721,13 +701,13 @@ class juntasController extends Controller
         }
 
         $reportesCustomer = registroQ::select('fecha')
-            ->where('fecha', 'LIKE', date('Y-m') . "%")
+            ->where('fecha', 'LIKE', date('Y-m').'%')
             ->get();
 
         // Get all days from the reportes
         $daysReported = [];
         foreach ($reportesCustomer as $row) {
-            $daysReported[] = (int)date('d', strtotime($row->fecha));
+            $daysReported[] = (int) date('d', strtotime($row->fecha));
         }
 
         $todayD = date('d');
@@ -745,7 +725,7 @@ class juntasController extends Controller
         $datosHoy = $gulty = [];
         $i = $x = $hoyb = $hoymal = $parhoy = 0;
         $issues = DB::table('regsitrocalidad')
-            ->where('fecha', 'LIKE', date('d-m-Y') . "%")
+            ->where('fecha', 'LIKE', date('d-m-Y').'%')
             ->get();
         foreach ($issues as $issue) {
             if ($issue->codigo == 'TODO BIEN') {
@@ -753,20 +733,20 @@ class juntasController extends Controller
             } else {
                 $hoymal += $issue->resto;
 
-                if (key_exists($issue->codigo . "-" . $issue->pn, $datosHoy)) {
-                    $datosHoy[$issue->codigo . "-" . $issue->pn][2] += $issue->resto;
+                if (array_key_exists($issue->codigo.'-'.$issue->pn, $datosHoy)) {
+                    $datosHoy[$issue->codigo.'-'.$issue->pn][2] += $issue->resto;
                 } else {
-                    $datosHoy[$issue->codigo . "-" . $issue->pn][0] = $issue->client;
-                    $datosHoy[$issue->codigo . "-" . $issue->pn][1] = $issue->codigo;
-                    $datosHoy[$issue->codigo . "-" . $issue->pn][2] = $issue->resto;
-                    $datosHoy[$issue->codigo . "-" . $issue->pn][3] = $issue->pn;
+                    $datosHoy[$issue->codigo.'-'.$issue->pn][0] = $issue->client;
+                    $datosHoy[$issue->codigo.'-'.$issue->pn][1] = $issue->codigo;
+                    $datosHoy[$issue->codigo.'-'.$issue->pn][2] = $issue->resto;
+                    $datosHoy[$issue->codigo.'-'.$issue->pn][3] = $issue->pn;
                     $i++;
                 }
                 $gutlyleader = personalBergsModel::select('employeeLider')->where('employeeName', $issue->Responsable)->first();
-                if (in_array($issue->Responsable . " Lider: " . $gutlyleader->employeeLider, array_column($gulty, 0))) {
-                    $gulty[array_search($issue->Responsable . " Lider: " . $gutlyleader->employeeLider, array_column($gulty, 0))][1] += $issue->resto;
+                if (in_array($issue->Responsable.' Lider: '.$gutlyleader->employeeLider, array_column($gulty, 0))) {
+                    $gulty[array_search($issue->Responsable.' Lider: '.$gutlyleader->employeeLider, array_column($gulty, 0))][1] += $issue->resto;
                 } else {
-                    $gulty[$x][0] = $issue->Responsable . " Lider: " . $gutlyleader->employeeLider;
+                    $gulty[$x][0] = $issue->Responsable.' Lider: '.$gutlyleader->employeeLider;
                     $gulty[$x][1] = $issue->resto;
                     $x++;
                 }
@@ -774,18 +754,14 @@ class juntasController extends Controller
         }
         $parhoy = Paretos($hoyb, $hoymal);
         ksort($datosHoy);
-        if (!empty($gulty)) {
+        if (! empty($gulty)) {
             arsort($gulty);
         }
-        if (!empty($gultyY)) {
+        if (! empty($gultyY)) {
             arsort($gultyY);
         }
 
-
-
         $top5 = $empleados ?? [];
-
-
 
         $personalYearCulpables = personalBergsModel::where('typeWorker', 'Directo')
             ->where('status', 'Activo')
@@ -797,37 +773,35 @@ class juntasController extends Controller
             ->unique()
             ->toArray();
 
-
-        $personalYear = $personalYearCulpables->filter(fn($name) => !in_array($name, $culpables))
+        $personalYear = $personalYearCulpables->filter(fn ($name) => ! in_array($name, $culpables))
             ->values()
             ->toArray();
         $supIssue = [];
         $empleados = DB::table('regsitrocalidad')
-            ->select("Responsable")
-            ->where("fecha", "LIKE", "%$month-$YearParto%")
+            ->select('Responsable')
+            ->where('fecha', 'LIKE', "%$month-$YearParto%")
             ->where('codigo', '!=', 'TODO BIEN')
             ->orderByDesc('codigo')
             ->get();
         foreach ($empleados as $rowEmp) {
             $supRes = personalBergsModel::select('employeeLider')->where('employeeName', $rowEmp->Responsable)->first();
 
-            if (!isset($supRes->employeeLider)) {
+            if (! isset($supRes->employeeLider)) {
                 continue;
             }
-            if (strpos($supRes->employeeLider, ",") !== false) {
-                $superString = explode(",", $supRes->employeeLider)[0];
+            if (strpos($supRes->employeeLider, ',') !== false) {
+                $superString = explode(',', $supRes->employeeLider)[0];
             } else {
                 $superString = $supRes->employeeLider;
             }
-            if (!in_array($superString, array_keys($supIssue))) {
+            if (! in_array($superString, array_keys($supIssue))) {
                 $supIssue[$superString] = 1;
             } else {
                 $supIssue[$superString]++;
             }
         }
-        $supIssue = array_filter($supIssue, fn($count) => $count > 2);
+        $supIssue = array_filter($supIssue, fn ($count) => $count > 2);
         arsort($supIssue);
-
 
         return view('juntas/calidad', ['supIssue' => $supIssue, 'days' => $days, 'personalYear' => $personalYear, 'respemp' => $empRes, 'empleados' => $top5,  'hoyb' => $hoyb, 'hoymal' => $hoymal, 'parhoy' => $parhoy, 'gultyY' => $gultyY, 'gulty' => $gulty, 'datosHoy' => $datosHoy, 'totalm' => $totalm, 'totalb' => $totalb, 'monthAndYearPareto' => $monthAndYearPareto, 'datosT' => $datosT, 'datosS' => $datosS, 'datosF' => $datosF, 'labelQ' => $labelQ, 'colorQ' => $colorQ, 'value' => $value, 'cat' => $cat, 'datos' => $datos, 'pareto' => $pareto, 'Qdays' => $Qdays]);
     }
@@ -838,9 +812,9 @@ class juntasController extends Controller
         $value = session('user');
         $cat = session('categoria');
         $datosTabla = [];
-        if ($id == "") {
+        if ($id == '') {
             redirect()->route('index_junta');
-        } else if ($id == "planeacion") {
+        } elseif ($id == 'planeacion') {
             $buscarDatos = DB::table('registro')
                 ->where('count', '=', '1')
                 ->orderBy('tiempototal', 'DESC')
@@ -857,7 +831,7 @@ class juntasController extends Controller
                 $datosTabla[$i][7] = $rows->reqday;
                 $i++;
             }
-        } else if ($id == "corte") {
+        } elseif ($id == 'corte') {
             $buscarDatos = DB::table('registro')
                 ->join('registroparcial', 'registro.info', '=', 'registroparcial.codeBar')
                 ->where('cortPar', '!=', '0')
@@ -874,7 +848,7 @@ class juntasController extends Controller
                 $datosTabla[$i][7] = $rows->reqday;
                 $i++;
             }
-        } else if ($id == "liberacion") {
+        } elseif ($id == 'liberacion') {
             $buscarDatos = DB::table('registro')
                 ->join('registroparcial', 'registro.info', '=', 'registroparcial.codeBar')
                 ->where('libePar', '!=', '0')
@@ -891,7 +865,7 @@ class juntasController extends Controller
                 $datosTabla[$i][7] = $rows->reqday;
                 $i++;
             }
-        } else if ($id == "ensamble") {
+        } elseif ($id == 'ensamble') {
             $buscarDatos = DB::table('registro')
                 ->join('registroparcial', 'registro.info', '=', 'registroparcial.codeBar')
                 ->where('ensaPar', '!=', '0')
@@ -908,7 +882,7 @@ class juntasController extends Controller
                 $datosTabla[$i][7] = $rows->reqday;
                 $i++;
             }
-        } else if ($id == "loom") {
+        } elseif ($id == 'loom') {
             $buscarDatos = DB::table('registro')
                 ->join('registroparcial', 'registro.info', '=', 'registroparcial.codeBar')
                 ->where('loomPar', '!=', '0')
@@ -925,7 +899,7 @@ class juntasController extends Controller
                 $datosTabla[$i][7] = $rows->reqday;
                 $i++;
             }
-        } else if ($id == "prueba") {
+        } elseif ($id == 'prueba') {
             $buscarDatos = DB::table('registro')
                 ->join('registroparcial', 'registro.info', '=', 'registroparcial.codeBar')
                 ->where('testPar', '!=', '0')
@@ -942,7 +916,7 @@ class juntasController extends Controller
                 $datosTabla[$i][7] = $rows->reqday;
                 $i++;
             }
-        } else if ($id == "embarque") {
+        } elseif ($id == 'embarque') {
             $buscarDatos = DB::table('registro')
                 ->join('registroparcial', 'registro.info', '=', 'registroparcial.codeBar')
                 ->where('embPar', '!=', '0')
@@ -969,6 +943,7 @@ class juntasController extends Controller
 
         return view('juntas.reg', ['value' => session('user'), 'cat' => session('categoria')]);
     }
+
     public function mostrarWOJ(Request $request)
     {
         $buscarWo = $request->input('buscarWo');
@@ -976,29 +951,28 @@ class juntasController extends Controller
         $tableContent = $tableReg = $tableftq = $pullTest = '';
         $i = $ok = $nog = 0;
 
-
         if ($buscarWo == null or $buscarWo == '') {
             $buscarWo = 0;
         } else {
             $buscar = DB::table('registroparcial')
-                ->orwhere('pn', 'like', $buscarWo . '%')
-                ->orWhere('pn', 'like', '%' . $buscarWo)
+                ->orwhere('pn', 'like', $buscarWo.'%')
+                ->orWhere('pn', 'like', '%'.$buscarWo)
                 ->orderBy('pn', 'asc')
                 ->orderBy('wo', 'asc')
                 ->get();
             foreach ($buscar as $row) {
                 $tableContent .= '<tr>';
-                $tableContent .= '<td>' . $row->pn . '</td>';
-                $tableContent .= '<td>' . $row->wo . '</td>';
-                $tableContent .= '<td>' . $row->orgQty . '</td>';
-                $tableContent .= '<td>' . $row->cortPar . '</td>';
-                $tableContent .= '<td>' . $row->libePar . '</td>';
-                $tableContent .= '<td>' . $row->ensaPar . '</td>';
-                $tableContent .= '<td>' . $row->loomPar . '</td>';
-                $tableContent .= '<td>' . $row->preCalidad . '</td>';
-                $tableContent .= '<td>' . $row->testPar . '</td>';
-                $tableContent .= '<td>' . $row->embPar . '</td>';
-                $tableContent .= '<td>' . $row->eng . '</td>';
+                $tableContent .= '<td>'.$row->pn.'</td>';
+                $tableContent .= '<td>'.$row->wo.'</td>';
+                $tableContent .= '<td>'.$row->orgQty.'</td>';
+                $tableContent .= '<td>'.$row->cortPar.'</td>';
+                $tableContent .= '<td>'.$row->libePar.'</td>';
+                $tableContent .= '<td>'.$row->ensaPar.'</td>';
+                $tableContent .= '<td>'.$row->loomPar.'</td>';
+                $tableContent .= '<td>'.$row->preCalidad.'</td>';
+                $tableContent .= '<td>'.$row->testPar.'</td>';
+                $tableContent .= '<td>'.$row->embPar.'</td>';
+                $tableContent .= '<td>'.$row->eng.'</td>';
                 $tableContent .= '</tr>';
                 $pnReg[$i] = $row->pn;
                 $i++;
@@ -1012,18 +986,18 @@ class juntasController extends Controller
                 if (count($buscarR) > 0) {
                     foreach ($buscarR as $rowR) {
                         $tableReg .= '<tr>';
-                        $tableReg .= '<td>' . $rowR->np . '</td>';
-                        $tableReg .= '<td>' . $rowR->wo . '</td>';
-                        $tableReg .= '<td>' . $rowR->qty . '</td>';
-                        $tableReg .= '<td>' . $rowR->fechaout . '</td>';
+                        $tableReg .= '<td>'.$rowR->np.'</td>';
+                        $tableReg .= '<td>'.$rowR->wo.'</td>';
+                        $tableReg .= '<td>'.$rowR->qty.'</td>';
+                        $tableReg .= '<td>'.$rowR->fechaout.'</td>';
                         $tableReg .= '</tr>';
                     }
                 } else {
                     $tableReg .= '<tr>';
                     $tableReg .= '<td></td>';
-                    $tableReg .= '<td>' . '0' . '</td>';
-                    $tableReg .= '<td>' . '0' . '</td>';
-                    $tableReg .= '<td>' . '0' . '</td>';
+                    $tableReg .= '<td>'.'0'.'</td>';
+                    $tableReg .= '<td>'.'0'.'</td>';
+                    $tableReg .= '<td>'.'0'.'</td>';
                     $tableReg .= '</tr>';
                 }
 
@@ -1047,8 +1021,8 @@ class juntasController extends Controller
 
                     foreach ($regftq as $key => $value) {
                         $tableftq .= '<tr>';
-                        $tableftq .= '<td>' . $key . '</td>';
-                        $tableftq .= '<td>' . $value . '</td>';
+                        $tableftq .= '<td>'.$key.'</td>';
+                        $tableftq .= '<td>'.$value.'</td>';
                         $tableftq .= '</tr>';
                     }
 
@@ -1064,15 +1038,15 @@ class juntasController extends Controller
                         foreach ($buscarRegistroPull as $rowPull) {
 
                             $pullTest .= '<tr>';
-                            $pullTest .= '<td>' . $rowPull->fecha . '</td>';
-                            $pullTest .= '<td>' . $rowPull->Num_part . '</td>';
-                            $pullTest .= '<td>' . $rowPull->calibre . '</td>';
-                            $pullTest .= '<td>' . $rowPull->presion . '</td>';
-                            $pullTest .= '<td>' . $rowPull->forma . '</td>';
-                            $pullTest .= '<td>' . $rowPull->cont . '</td>';
-                            $pullTest .= '<td>' . $rowPull->quien . '</td>';
-                            $pullTest .= '<td>' . $rowPull->val . '</td>';
-                            $pullTest .= '<td>' . $rowPull->tipo . '</td>';
+                            $pullTest .= '<td>'.$rowPull->fecha.'</td>';
+                            $pullTest .= '<td>'.$rowPull->Num_part.'</td>';
+                            $pullTest .= '<td>'.$rowPull->calibre.'</td>';
+                            $pullTest .= '<td>'.$rowPull->presion.'</td>';
+                            $pullTest .= '<td>'.$rowPull->forma.'</td>';
+                            $pullTest .= '<td>'.$rowPull->cont.'</td>';
+                            $pullTest .= '<td>'.$rowPull->quien.'</td>';
+                            $pullTest .= '<td>'.$rowPull->val.'</td>';
+                            $pullTest .= '<td>'.$rowPull->tipo.'</td>';
                         }
                     } else {
                         $pullTest = '';
@@ -1082,15 +1056,14 @@ class juntasController extends Controller
                     $paretos[1] = 0;
                     $paretos[2] = 0;
                     $tableftq .= '<tr>';
-                    $tableftq .= '<td>' . '0' . '</td>';
-                    $tableftq .= '<td>' . '0' . '</td>';
+                    $tableftq .= '<td>'.'0'.'</td>';
+                    $tableftq .= '<td>'.'0'.'</td>';
                     $tableftq .= '</tr>';
                     $regftq['no se encontro'] = 0;
                     $pullTest = '';
                 }
             }
         }
-
 
         return response()->json([
             'pullTest' => $pullTest,
@@ -1104,8 +1077,8 @@ class juntasController extends Controller
     public function ing_junta()
     {
         $monthYear = date('m-Y');
-        $lastMonth = date('m-Y', strtotime("-1 months"));
-        $datosPpap = $todas  = $actividades = $actividadesLastMonth = [];
+        $lastMonth = date('m-Y', strtotime('-1 months'));
+        $datosPpap = $todas = $actividades = $actividadesLastMonth = [];
         $personaIng = login::select('user')->where('category', 'inge')->get();
         $datos = ['Soporte en piso', 'Seguimiento PPAP', 'Otro', 'Juntas', 'Documentacion', 'Comida', 'Colocacion de full size'];
         foreach ($personaIng as $ing) {
@@ -1113,7 +1086,7 @@ class juntasController extends Controller
         }
         $tiemposDatosIng = DB::table('ingactividades')
             ->where('count', '=', '4')
-            ->where('fecha', 'LIKE', '%-' . $monthYear . '%')
+            ->where('fecha', 'LIKE', '%-'.$monthYear.'%')
             ->orderBy('actividades', 'ASC')
             ->get();
         foreach ($tiemposDatosIng as $row) {
@@ -1121,7 +1094,7 @@ class juntasController extends Controller
             $timeIni = strtotime($row->fecha);
             $timeFin = strtotime($row->finT);
             $timetotal = ($timeFin - $timeIni) / 60;
-            if (key_exists($row->actividades, $actividades[$row->Id_request])) {
+            if (array_key_exists($row->actividades, $actividades[$row->Id_request])) {
                 $actividades[$row->Id_request][$row->actividades] += $timetotal;
             } else {
                 $actividades[$row->Id_request][$row->actividades] = $timetotal;
@@ -1129,7 +1102,7 @@ class juntasController extends Controller
         }
         $tiemposDatosIng = DB::table('ingactividades')
             ->where('count', '=', '4')
-            ->where('fecha', 'LIKE', '%-' . $lastMonth . '%')
+            ->where('fecha', 'LIKE', '%-'.$lastMonth.'%')
             ->orderBy('actividades', 'desc')
             ->get();
         foreach ($tiemposDatosIng as $row) {
@@ -1137,7 +1110,7 @@ class juntasController extends Controller
             $timeIni = strtotime($row->fecha);
             $timeFin = strtotime($row->finT);
             $timetotal = ($timeFin - $timeIni) / 60;
-            if (key_exists($row->actividades, $actividadesLastMonth)) {
+            if (array_key_exists($row->actividades, $actividadesLastMonth)) {
                 $actividadesLastMonth[$row->actividades] += $timetotal;
             } else {
                 $actividadesLastMonth[$row->actividades] = $timetotal;
@@ -1152,7 +1125,7 @@ class juntasController extends Controller
         $todas = array_combine($datos2, array_fill(0, count($datos2), 0));
 
         $datosIng = DB::table('ppap')
-            ->where('fecha', 'LIKE', '%-' . $monthYear . '%')
+            ->where('fecha', 'LIKE', '%-'.$monthYear.'%')
             ->orderBy('codigo', 'desc')
             ->get();
         foreach ($datosIng as $row) {
@@ -1162,14 +1135,12 @@ class juntasController extends Controller
             $todas[$row->area] += 1;
         }
 
-        //work Schedule dounut
+        // work Schedule dounut
 
-        $porcentaje = $b = $m  = $total = 0;
+        $porcentaje = $b = $m = $total = 0;
         $porcentajemes1 = $porcentajemes = 0;
         $last12Months = $thisYearGoals = $registrosArray = $buenos = $malos = [];
-        $registrosmes = [];
-
-
+        $registrosmes = $retasoPorPlan = [];
         $registrosArray = workScreduleModel::getWorkScheduleCompleted(date('Y'));
         foreach ($registrosArray as $registro => $valor) {
             if ($valor[0] == 0) {
@@ -1186,11 +1157,11 @@ class juntasController extends Controller
         $b = $buenos[$mesGrafica] ?? 0;
         $m = $malos[$mesGrafica] ?? 0;
         $mes = date('m', strtotime('-1 month'));
-        $registrosmes = workScreduleModel::where('CompletionDate', 'LIKE', date('Y') . '-' . $mes . '-%')->where('status', 'Completed')
+        $registrosmes = workScreduleModel::where('CompletionDate', 'LIKE', date('Y').'-'.$mes.'-%')->where('status', 'Completed')
             ->orderBy('CompletionDate', 'DESC')
             ->get();
 
-        //work Schedule dounut final
+        // work Schedule dounut final
         // ppap table
         $registroPPAP = [];
         $ingependinses = $porbajara = $totalgeneral = $enproceso = $totalprim = $totalppap = 0;
@@ -1208,26 +1179,26 @@ class juntasController extends Controller
             $registroPPAP[$i][5] = $res->commitmentDate;
             $registroPPAP[$i][6] = $res->CompletionDate;
             $registroPPAP[$i][7] = $res->documentsApproved;
-            $registroPPAP[$i][8] = "No Aun";
-            $registroPPAP[$i][9] = "No Aun";
-            $registroPPAP[$i][19] = "No Aun";
-            $registroPPAP[$i][20] = "0";
-            $registroPPAP[$i][10] = "No Aun";
-            $registroPPAP[$i][11] = "No Aun";
-            $registroPPAP[$i][12] = "No Aun";
-            $registroPPAP[$i][13] = "No Aun";
-            $registroPPAP[$i][14] = "255,255,255,0.5";
+            $registroPPAP[$i][8] = 'No Aun';
+            $registroPPAP[$i][9] = 'No Aun';
+            $registroPPAP[$i][19] = 'No Aun';
+            $registroPPAP[$i][20] = '0';
+            $registroPPAP[$i][10] = 'No Aun';
+            $registroPPAP[$i][11] = 'No Aun';
+            $registroPPAP[$i][12] = 'No Aun';
+            $registroPPAP[$i][13] = 'No Aun';
+            $registroPPAP[$i][14] = '255,255,255,0.5';
             $registroPPAP[$i][15] = $res->customerDate;
             $registroPPAP[$i][16] = $res->resposible;
             if (carbon::parse($res->commitmentDate) < carbon::parse($res->CompletionDate)) {
-                $registroPPAP[$i][17] = "Red";
+                $registroPPAP[$i][17] = 'Red';
             } else {
-                $registroPPAP[$i][17] = "Black";
+                $registroPPAP[$i][17] = 'Black';
             }
             $registroPPAP[$i][18] = $res->qtyInPo;
-            $registroPPAP[$i][21] = "c-" . $res->Color ?? "c-white";
-            $registroPPAP[$i][22] = "#";
-            if ($res->documentsApproved != "" && $res->documentsApproved != null) {
+            $registroPPAP[$i][21] = 'c-'.$res->Color ?? 'c-white';
+            $registroPPAP[$i][22] = '#';
+            if ($res->documentsApproved != '' && $res->documentsApproved != null) {
                 $porbajara++;
             } else {
                 $ingependinses++;
@@ -1260,24 +1231,24 @@ class juntasController extends Controller
             $registroPPAP[$i][3] = $reg->rev;
             $registroWS = workScreduleModel::where('pn', $reg->NumPart)->orderBy('id', 'desc')->first();
             if (empty($registroWS->size)) {
-                $registroPPAP[$i][2] = "-";
-                $registroPPAP[$i][4] = "-";
-                $registroPPAP[$i][5] = "-";
-                $registroPPAP[$i][6] = "-";
-                $registroPPAP[$i][7] = "-";
-                $registroPPAP[$i][15] = "-";
-                $registroPPAP[$i][16] = "-";
-                $registroPPAP[$i][17] = "Black";
-                $registroPPAP[$i][8] = "No Aun";
-                $registroPPAP[$i][9] = "No Aun";
-                $registroPPAP[$i][19] = "No Aun";
-                $registroPPAP[$i][20] = "0";
-                $registroPPAP[$i][10] = "No Aun";
-                $registroPPAP[$i][11] = "No Aun";
-                $registroPPAP[$i][12] = "No Aun";
-                $registroPPAP[$i][13] = "No Aun";
-                $registroPPAP[$i][18] = "0";
-                $registroPPAP[$i][21] = "c-white";
+                $registroPPAP[$i][2] = '-';
+                $registroPPAP[$i][4] = '-';
+                $registroPPAP[$i][5] = '-';
+                $registroPPAP[$i][6] = '-';
+                $registroPPAP[$i][7] = '-';
+                $registroPPAP[$i][15] = '-';
+                $registroPPAP[$i][16] = '-';
+                $registroPPAP[$i][17] = 'Black';
+                $registroPPAP[$i][8] = 'No Aun';
+                $registroPPAP[$i][9] = 'No Aun';
+                $registroPPAP[$i][19] = 'No Aun';
+                $registroPPAP[$i][20] = '0';
+                $registroPPAP[$i][10] = 'No Aun';
+                $registroPPAP[$i][11] = 'No Aun';
+                $registroPPAP[$i][12] = 'No Aun';
+                $registroPPAP[$i][13] = 'No Aun';
+                $registroPPAP[$i][18] = '0';
+                $registroPPAP[$i][21] = 'c-white';
             } else {
                 $registroPPAP[$i][2] = $registroWS->size;
                 $registroPPAP[$i][4] = $registroWS->receiptDate;
@@ -1287,24 +1258,24 @@ class juntasController extends Controller
                 $registroPPAP[$i][15] = $registroWS->customerDate;
                 $registroPPAP[$i][16] = $registroWS->resposible;
                 if (carbon::parse($registroWS->commitmentDate) < carbon::parse($registroWS->CompletionDate)) {
-                    $registroPPAP[$i][17] = "Red";
+                    $registroPPAP[$i][17] = 'Red';
                 } else {
-                    $registroPPAP[$i][17] = "Black";
+                    $registroPPAP[$i][17] = 'Black';
                 }
                 $datosTiempos = tiempos::where('info', $reg->info)->first();
                 if (empty($datosTiempos)) {
-                    $registroPPAP[$i][8] = "No Aun";
-                    $registroPPAP[$i][9] = "No Aun";
-                    $registroPPAP[$i][19] = "No Aun";
-                    $registroPPAP[$i][20] = "0";
-                    $registroPPAP[$i][10] = "No Aun";
-                    $registroPPAP[$i][11] = "No Aun";
-                    $registroPPAP[$i][12] = "No Aun";
-                    $registroPPAP[$i][13] = "No Aun";
-                    $registroPPAP[$i][14] = "0";
+                    $registroPPAP[$i][8] = 'No Aun';
+                    $registroPPAP[$i][9] = 'No Aun';
+                    $registroPPAP[$i][19] = 'No Aun';
+                    $registroPPAP[$i][20] = '0';
+                    $registroPPAP[$i][10] = 'No Aun';
+                    $registroPPAP[$i][11] = 'No Aun';
+                    $registroPPAP[$i][12] = 'No Aun';
+                    $registroPPAP[$i][13] = 'No Aun';
+                    $registroPPAP[$i][14] = '0';
                 } else {
-                    $registroPPAP[$i][8]  = formatoFecha($datosTiempos->planeacion);
-                    $registroPPAP[$i][9]  = formatoFecha($datosTiempos->corte);
+                    $registroPPAP[$i][8] = formatoFecha($datosTiempos->planeacion);
+                    $registroPPAP[$i][9] = formatoFecha($datosTiempos->corte);
                     $registroPPAP[$i][10] = formatoFecha($datosTiempos->liberacion);
                     $registroPPAP[$i][11] = formatoFecha($datosTiempos->ensamble);
                     $registroPPAP[$i][12] = formatoFecha($datosTiempos->loom);
@@ -1316,20 +1287,33 @@ class juntasController extends Controller
                 $registroPPAP[$i][18] = $registroWS->qtyInPo;
             }
             if (substr($reg->rev, 0, 4) == 'PPAP') {
-                $registroPPAP[$i][14] = "96, 242, 83, 0.3";
+                $registroPPAP[$i][14] = '96, 242, 83, 0.3';
                 $totalppap++;
             } else {
-                $registroPPAP[$i][14] = "236, 236, 9, 0.497";
+                $registroPPAP[$i][14] = '236, 236, 9, 0.497';
                 $totalprim++;
             }
-            $registroPPAP[$i][21] = "c-" . $res->Color ?? "c-white";
+            $registroPPAP[$i][21] = 'c-'.$res->Color ?? 'c-white';
             $registroPPAP[$i][22] = $reg->id;
             $i++;
         }
         $enproceso = count($registros);
         $totalgeneral += $i;
+        $tiemposDatosTiemposPlaning = workScreduleModel::select('pn', 'CompletionDate', 'UpOrderDate', 'documentsApproved')->where('status', '=', 'Completed')
+            ->whereRaw('MONTH(STR_TO_DATE(CompletionDate, "%Y-%m-%d")) = ?', [date('m', strtotime('-1 month'))])
+            ->WhereRaw('YEAR(STR_TO_DATE(CompletionDate, "%Y-%m-%d")) = ?', [date('Y')])
+            ->orderBy('CompletionDate', 'desc')
+            ->get();
+        foreach ($tiemposDatosTiemposPlaning as $tiemposRow) {
+            $retasoPorPlan[$tiemposRow->pn] = (carbon::parse($tiemposRow->CompletionDate)->diffInDays(carbon::parse($tiemposRow->UpOrderDate)) ?: (
+                carbon::parse($tiemposRow->CompletionDate)->diffInDays(carbon::parse(date('Y-m-d')))));
+            $registoPorFirmas[$tiemposRow->pn] = (carbon::parse($tiemposRow->documentsApproved)->diffInDays(carbon::parse($tiemposRow->UpOrderDate)) ?: (
+                carbon::parse($tiemposRow->CompletionDate)->diffInDays(carbon::parse(date('Y-m-d')))));
+        }
 
         return view('juntas/ing', [
+            'registoPorFirmas' => $registoPorFirmas,
+            'retasoPorPlan' => $retasoPorPlan,
             'ingependinses' => $ingependinses,
             'porbajara' => $porbajara,
             'totalgeneral' => $totalgeneral,
@@ -1350,28 +1334,31 @@ class juntasController extends Controller
             'actividadesLastMonth' => $actividadesLastMonth,
             'actividades' => $actividades,
             'value' => session('user'),
-            'cat' => session('categoria')
+            'cat' => session('categoria'),
         ]);
     }
+
     public function cutAndTerm()
     {
         $value = session('user');
         $cat = session('categoria');
         $i = $j = 0;
         $cutData = $libeData = [];
-        //days
+        // days
         function DiasEntre($startDate, $endDate)
         {
             $period = CarbonPeriod::create($startDate, $endDate);
+
             return collect($period)
-                ->filter(fn($date) => $date->isWeekday())
+                ->filter(fn ($date) => $date->isWeekday())
                 ->count();
         }
-        if (!$value and !$cat) {
+        if (! $value and ! $cat) {
             session()->flash('error', 'No tienes acceso a esta sección.');
+
             return redirect()->route('login');
         }
-        //Search cutting on registro table and join with tiempo table to get time
+        // Search cutting on registro table and join with tiempo table to get time
         $buscarCorte = DB::table('registro')
             ->join('tiempos', 'registro.info', '=', 'tiempos.info')
             ->where('planeacion', '!=', '')
@@ -1385,7 +1372,7 @@ class juntasController extends Controller
                     $cutData[$i][0] = $rows->cliente;
                     $cutData[$i][1] = $rows->NumPart;
                     $cutData[$i][2] = $rows->wo;
-                    //search info on registroparcial table
+                    // search info on registroparcial table
                     $buscarInfo = DB::table('registroparcial')
                         ->where('codeBar', '=', $rows->info)
                         ->first();
@@ -1397,32 +1384,32 @@ class juntasController extends Controller
                     $cutData[$i][4] = $rows->planeacion;
                     if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) >= 5 and $rows->cliente == 'TICO MANUFACTURING') {
                         $cutData[$i][5] = 'rgba(255, 1, 1, 0.6)';
-                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 4 and $rows->cliente == 'TICO MANUFACTURING') {
+                    } elseif (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 4 and $rows->cliente == 'TICO MANUFACTURING') {
                         $cutData[$i][5] = 'rgba(249, 104, 0, 0.6)';
-                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 3 and $rows->cliente == 'TICO MANUFACTURING') {
+                    } elseif (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 3 and $rows->cliente == 'TICO MANUFACTURING') {
                         $cutData[$i][5] = 'rgba(255, 234, 0, 0.6)';
-                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 2 and $rows->cliente == 'TICO MANUFACTURING') {
+                    } elseif (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 2 and $rows->cliente == 'TICO MANUFACTURING') {
                         $cutData[$i][5] = 'rgba(145, 255, 0,0.6)';
-                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 1 and $rows->cliente == 'TICO MANUFACTURING') {
+                    } elseif (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 1 and $rows->cliente == 'TICO MANUFACTURING') {
                         $cutData[$i][5] = 'rgba(51, 131, 51,0.6)';
-                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) >= 4) {
+                    } elseif (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) >= 4) {
                         $cutData[$i][5] = 'rgba(237, 52, 52,0.6)';
-                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 3) {
+                    } elseif (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 3) {
                         $cutData[$i][5] = 'rgba(249, 131, 48,0.6)';
-                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 2) {
+                    } elseif (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 2) {
                         $cutData[$i][5] = 'rgba(249, 231, 48,0.6)';
-                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 1) {
+                    } elseif (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 1) {
                         $cutData[$i][5] = 'rgba(121, 193, 27,0.6)';
                     } else {
                         $cutData[$i][5] = 'rgba(0, 0, 0,0.6)';
                     }
 
                     $i++;
-                } else if ($rows->count < 6) {
+                } elseif ($rows->count < 6) {
                     $libeData[$j][0] = $rows->cliente;
                     $libeData[$j][1] = $rows->NumPart;
                     $libeData[$j][2] = $rows->wo;
-                    //search info on registroparcial table
+                    // search info on registroparcial table
                     $buscarInfo = DB::table('registroparcial')
                         ->where('codeBar', '=', $rows->info)
                         ->first();
@@ -1434,21 +1421,21 @@ class juntasController extends Controller
                     $libeData[$j][4] = $rows->planeacion;
                     if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) >= 5 and $rows->cliente == 'TICO MANUFACTURING') {
                         $libeData[$j][5] = 'rgba(255, 0, 0, 0.6)';
-                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 4 and $rows->cliente == 'TICO MANUFACTURING') {
+                    } elseif (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 4 and $rows->cliente == 'TICO MANUFACTURING') {
                         $libeData[$j][5] = 'rgba(249, 131, 48,0.6)';
-                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 3 and $rows->cliente == 'TICO MANUFACTURING') {
+                    } elseif (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 3 and $rows->cliente == 'TICO MANUFACTURING') {
                         $libeData[$j][5] = 'rgba(249, 231, 48,0.6)';
-                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 2 and $rows->cliente == 'TICO MANUFACTURING') {
+                    } elseif (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 2 and $rows->cliente == 'TICO MANUFACTURING') {
                         $libeData[$j][5] = 'rgba(121, 193, 27,0.6)';
-                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 1 and $rows->cliente == 'TICO MANUFACTURING') {
+                    } elseif (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 1 and $rows->cliente == 'TICO MANUFACTURING') {
                         $libeData[$j][5] = 'rgba(51, 131, 51,0.6)';
-                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) >= 4) {
+                    } elseif (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) >= 4) {
                         $libeData[$j][5] = 'rgba(237, 52, 52,0.6)';
-                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 3) {
+                    } elseif (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 3) {
                         $libeData[$j][5] = 'rgba(249, 131, 48,0.6)';
-                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 2) {
+                    } elseif (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 2) {
                         $libeData[$j][5] = 'rgba(249, 231, 48,0.6)';
-                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 1) {
+                    } elseif (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 1) {
                         $libeData[$j][5] = 'rgba(121, 193, 27,0.6)';
                     }
 
@@ -1462,21 +1449,24 @@ class juntasController extends Controller
                 }
             }
         }
+
         return view('juntas/cutAndTerm', ['value' => $value, 'cat' => $cat, 'cutData' => $cutData, 'libeData' => $libeData]);
     }
-    function assemblyLoom()
+
+    public function assemblyLoom()
     {
         $value = session('user');
         $cat = session('categoria');
         $i = $j = 0;
         $cutData = $loomData = [];
-        //days
+        // days
 
-        if (!$value and !$cat) {
+        if (! $value and ! $cat) {
             session()->flash('error', 'No tienes acceso a esta sección.');
+
             return redirect()->route('login');
         }
-        //Search cutting on registro table and join with tiempo table to get time
+        // Search cutting on registro table and join with tiempo table to get time
         $buscarCorte = DB::table('registro')
             ->join('tiempos', 'registro.info', '=', 'tiempos.info')
             ->where('planeacion', '!=', '')
@@ -1490,7 +1480,7 @@ class juntasController extends Controller
                     $cutData[$i][0] = $rows->cliente;
                     $cutData[$i][1] = $rows->NumPart;
                     $cutData[$i][2] = $rows->wo;
-                    //search info on registroparcial table
+                    // search info on registroparcial table
                     $buscarInfo = DB::table('registroparcial')
                         ->where('codeBar', '=', $rows->info)
                         ->first();
@@ -1502,32 +1492,32 @@ class juntasController extends Controller
                     $cutData[$i][4] = $rows->planeacion;
                     if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) >= 5 and $rows->cliente == 'TICO MANUFACTURING') {
                         $cutData[$i][5] = 'rgba(255, 1, 1, 0.6)';
-                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 4 and $rows->cliente == 'TICO MANUFACTURING') {
+                    } elseif (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 4 and $rows->cliente == 'TICO MANUFACTURING') {
                         $cutData[$i][5] = 'rgba(249, 104, 0, 0.6)';
-                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 3 and $rows->cliente == 'TICO MANUFACTURING') {
+                    } elseif (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 3 and $rows->cliente == 'TICO MANUFACTURING') {
                         $cutData[$i][5] = 'rgba(255, 234, 0, 0.6)';
-                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 2 and $rows->cliente == 'TICO MANUFACTURING') {
+                    } elseif (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 2 and $rows->cliente == 'TICO MANUFACTURING') {
                         $cutData[$i][5] = 'rgba(145, 255, 0,0.6)';
-                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 1 and $rows->cliente == 'TICO MANUFACTURING') {
+                    } elseif (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 1 and $rows->cliente == 'TICO MANUFACTURING') {
                         $cutData[$i][5] = 'rgba(51, 131, 51,0.6)';
-                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) >= 4) {
+                    } elseif (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) >= 4) {
                         $cutData[$i][5] = 'rgba(237, 52, 52,0.6)';
-                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 3) {
+                    } elseif (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 3) {
                         $cutData[$i][5] = 'rgba(249, 131, 48,0.6)';
-                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 2) {
+                    } elseif (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 2) {
                         $cutData[$i][5] = 'rgba(249, 231, 48,0.6)';
-                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 1) {
+                    } elseif (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 1) {
                         $cutData[$i][5] = 'rgba(121, 193, 27,0.6)';
                     } else {
                         $cutData[$i][5] = 'rgba(0, 0, 0,0.6)';
                     }
 
                     $i++;
-                } else if ($rows->count < 6) {
+                } elseif ($rows->count < 6) {
                     $loomData[$j][0] = $rows->cliente;
                     $loomData[$j][1] = $rows->NumPart;
                     $loomData[$j][2] = $rows->wo;
-                    //search info on registroparcial table
+                    // search info on registroparcial table
                     $buscarInfo = DB::table('registroparcial')
                         ->where('codeBar', '=', $rows->info)
                         ->first();
@@ -1539,21 +1529,21 @@ class juntasController extends Controller
                     $loomData[$j][4] = $rows->planeacion;
                     if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) >= 5 and $rows->cliente == 'TICO MANUFACTURING') {
                         $loomData[$j][5] = 'rgba(255, 0, 0, 0.6)';
-                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 4 and $rows->cliente == 'TICO MANUFACTURING') {
+                    } elseif (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 4 and $rows->cliente == 'TICO MANUFACTURING') {
                         $loomData[$j][5] = 'rgba(249, 131, 48,0.6)';
-                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 3 and $rows->cliente == 'TICO MANUFACTURING') {
+                    } elseif (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 3 and $rows->cliente == 'TICO MANUFACTURING') {
                         $loomData[$j][5] = 'rgba(249, 231, 48,0.6)';
-                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 2 and $rows->cliente == 'TICO MANUFACTURING') {
+                    } elseif (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 2 and $rows->cliente == 'TICO MANUFACTURING') {
                         $loomData[$j][5] = 'rgba(121, 193, 27,0.6)';
-                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 1 and $rows->cliente == 'TICO MANUFACTURING') {
+                    } elseif (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 1 and $rows->cliente == 'TICO MANUFACTURING') {
                         $loomData[$j][5] = 'rgba(51, 131, 51,0.6)';
-                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) >= 4) {
+                    } elseif (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) >= 4) {
                         $loomData[$j][5] = 'rgba(237, 52, 52,0.6)';
-                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 3) {
+                    } elseif (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 3) {
                         $loomData[$j][5] = 'rgba(249, 131, 48,0.6)';
-                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 2) {
+                    } elseif (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 2) {
                         $loomData[$j][5] = 'rgba(249, 231, 48,0.6)';
-                    } else if (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 1) {
+                    } elseif (DiasEntre(substr($rows->planeacion, 0, 10), date('d-m-Y')) == 1) {
                         $loomData[$j][5] = 'rgba(121, 193, 27,0.6)';
                     }
 
@@ -1567,6 +1557,7 @@ class juntasController extends Controller
                 }
             }
         }
+
         return view('juntas/cutAndTerm', ['value' => $value, 'cat' => $cat, 'cutData' => $cutData, 'loomData' => $loomData]);
     }
 
@@ -1594,17 +1585,18 @@ class juntasController extends Controller
                         $diasHabiles++;
                     }
                 }
+
                 return $diasHabiles;
             };
 
-            $filtro =  $DiasEntre($InitDays, $systemFinish);
+            $filtro = $DiasEntre($InitDays, $systemFinish);
             if ($lastStatus == 'ini' or $lastStatus != 'late') {
                 if ($dias == 1) {
                     if ($filtro == 0) {
                         return 'onWorking';
-                    } else if ($filtro == 1) {
+                    } elseif ($filtro == 1) {
                         return 'closeToexpiring';
-                    } else if ($filtro > 1) {
+                    } elseif ($filtro > 1) {
                         return 'late';
                     } else {
                         return '';
@@ -1612,9 +1604,9 @@ class juntasController extends Controller
                 } else {
                     if ($filtro == 0) {
                         return 'onWorking';
-                    } else if ($filtro == 1) {
+                    } elseif ($filtro == 1) {
                         return 'closeToexpiring';
-                    } else if ($filtro >= 2) {
+                    } elseif ($filtro >= 2) {
                         return 'late';
                     } else {
                         return '';
@@ -1624,9 +1616,9 @@ class juntasController extends Controller
                 if ($dias == 1) {
                     if ($filtro == 0) {
                         return 'delayedOnTime';
-                    } else if ($filtro == 1) {
+                    } elseif ($filtro == 1) {
                         return 'delayedandclosedtoexpiring';
-                    } else if ($filtro >= 2) {
+                    } elseif ($filtro >= 2) {
                         return 'late';
                     } else {
                         return '';
@@ -1634,11 +1626,11 @@ class juntasController extends Controller
                 } else {
                     if ($filtro < 0) {
                         return 'delayedOnTime';
-                    } else if ($filtro == 0) {
+                    } elseif ($filtro == 0) {
                         return 'delayed';
-                    } else if ($filtro == 1) {
+                    } elseif ($filtro == 1) {
                         return 'delayedandclosedtoexpiring';
-                    } else if ($filtro >= 2) {
+                    } elseif ($filtro >= 2) {
                         return 'late';
                     } else {
                         return '';
@@ -1657,17 +1649,17 @@ class juntasController extends Controller
                         $diasHabiles++;
                     }
                 }
+
                 return $diasHabiles;
             };
 
-            $filtro =  $DiasEntre($InitDays, $systemFinish);
+            $filtro = $DiasEntre($InitDays, $systemFinish);
             if ($filtro > $process) {
                 return 'late';
             } else {
                 return 'onTime';
             }
         }
-
 
         foreach ($tiempos as $rows) {
             $buscarDatos[$i][0] = $rows->cliente;
@@ -1730,15 +1722,13 @@ class juntasController extends Controller
                 $buscarDatos[$i][16] = '';
             }
 
-
-
             $i++;
         }
 
-
         return view('juntas/seguimiento', ['value' => session('user'), 'cat' => session('categoria'), 'buscarDatos' => $buscarDatos]);
     }
-    //Show seguimiento according ID
+
+    // Show seguimiento according ID
     public function seguimiento($id)
     {
         $cat = session('categoria');
@@ -1793,7 +1783,8 @@ class juntasController extends Controller
 
         return view('juntas/infoIdSeguimiento', ['commentsBefore' => $commentsBefore, 'value' => session('user'), 'cat' => session('categoria'), 'id' => $id, 'datosInforRegistro' => $datosInforRegistro]);
     }
-    //Save commets
+
+    // Save commets
     public function registroComment(Request $request)
     {
         $cat = session('categoria');
@@ -1803,19 +1794,21 @@ class juntasController extends Controller
         if ($cat == 'inge') {
             return redirect()->route('ing_junta');
         }
+
         return redirect()->route('seguimientos');
     }
+
     public function conSeguimientos(Request $request)
     {
 
         $value = session('user');
         $cat = session('categoria');
 
-        $issuesRegister = new issuesFloor();
+        $issuesRegister = new issuesFloor;
         $issuesRegister->id_tiempos = $request->input('id_issue');
         $issuesRegister->comment_issue = $request->input('comments');
         $issuesRegister->date = $request->input('date_issue');
-        $issuesRegister->responsable = $value . ' ' . $cat;
+        $issuesRegister->responsable = $value.' '.$cat;
         $issuesRegister->actionOfComment = $request->input('status_issue');
         $issuesRegister->inicioReg = Carbon::now()->format('Y-m-d H:i:s');
         $issuesRegister->save();
@@ -1826,12 +1819,10 @@ class juntasController extends Controller
         return redirect()->route('seguimientos');
     }
 
-
-    //RH Graphics
+    // RH Graphics
 
     public function vacations()
     {
-
 
         $currentYear = Carbon::now()->year;
         $lastYear = Carbon::now()->subYear()->year;
@@ -1844,12 +1835,10 @@ class juntasController extends Controller
         $cat = session('categoria');
         $lidername = personalBergsModel::select('employeeName', 'employeeLider', 'employeeArea')->where('user', '=', $value)->first();
 
-
         $busqueda = personalBergsModel::where('employeeName', '=', $lidername->employeeName)
-            ->orwhere('employeeLider', '=',  $lidername->employeeName)
+            ->orwhere('employeeLider', '=', $lidername->employeeName)
             ->where('status', '=', 'Activo')
             ->get();
-
 
         foreach ($busqueda as $rows) {
             $empleados[$rows->employeeName][0] = $rows->employeeName;
@@ -1876,19 +1865,19 @@ class juntasController extends Controller
             $InicioYear = Carbon::createFromDate($currentYear, 1, 1);
             $FinYear = Carbon::createFromDate($currentYear, 12, 31);
         }
-        if(strpos($lidername->employeeArea," ")){
-            $area1=explode(" ",$lidername->employeeArea)[0];
-            $area2=explode(" ",$lidername->employeeArea)[1];
-        }else{
-            $area1=$lidername->employeeArea;
-            $area2=$lidername->employeeArea;
+        if (strpos($lidername->employeeArea, ' ')) {
+            $area1 = explode(' ', $lidername->employeeArea)[0];
+            $area2 = explode(' ', $lidername->employeeArea)[1];
+        } else {
+            $area1 = $lidername->employeeArea;
+            $area2 = $lidername->employeeArea;
         }
         // Obtener vacaciones del año
         $vacaciones = registroVacacionesModel::wherebetween('fecha_de_solicitud', [$InicioYear->toDateString(), $FinYear->toDateString()])
             // ->where('fecha_de_solicitud', 'LIKE', $currentYear . '%')
             ->where('estatus', '=', 'Confirmado')
-            ->where('area', '=',$area1)
-            ->OrWhere('area', '=',$area2)
+            ->where('area', '=', $area1)
+            ->OrWhere('area', '=', $area2)
             ->orderBy('fecha_de_solicitud', 'asc')
             ->get();
         /*    if (count($vacaciones) == 0) {
@@ -1910,7 +1899,6 @@ class juntasController extends Controller
                 ->get();
         }*/
 
-
         // Crear array asociativo: 'Y-m-d' => [id_empleado, ...]
         $vacacions = [];
 
@@ -1919,9 +1907,8 @@ class juntasController extends Controller
             $fecha = $fechaInicial;
             for ($i = 0; $i < 1; $i++) {
 
-
                 if (array_key_exists($fecha, $vacacions)) {
-                    $vacacions[$fecha][0] .= "-" . $row->id_empleado;
+                    $vacacions[$fecha][0] .= '-'.$row->id_empleado;
                 } else {
                     $vacacions[$fecha][] = $row->id_empleado;
                 }
@@ -1935,30 +1922,28 @@ class juntasController extends Controller
             }
         }
 
-
         // Recorrer cada día hábil del año
         while ($InicioYear <= $FinYear) {
             if ($InicioYear->isWeekday()) {
                 $fechaActual = $InicioYear->toDateString(); // 'YYYY-MM-DD'
-                if (key_exists($fechaActual, $vacacions)) {
+                if (array_key_exists($fechaActual, $vacacions)) {
 
                     $empleadoVacacion = $vacacions[$InicioYear->toDateString()][0];
                 } else {
                     $empleadoVacacion = '';
                 }
 
-
-
                 $diasAviles[$InicioYear->month][] = [
                     'dia' => $InicioYear->format('d'),
                     'Dia' => $InicioYear->format('D'),
                     'fecha' => $fechaActual,
-                    'vacas' => $empleadoVacacion
+                    'vacas' => $empleadoVacacion,
                 ];
             }
 
             $InicioYear->addDay(1);
         }
+
         return view('juntas/hrDocs/vacations', ['vacacions' => $vacacions, 'anos' => $anos, 'empleados' => $empleados, 'diasAviles' => $diasAviles, 'value' => $value, 'cat' => $cat]);
     }
 
@@ -1970,8 +1955,7 @@ class juntasController extends Controller
             'endDate' => 'required|date',
             'diasT' => 'required|integer|min:1|max:20',
         ]);
-        $value=session('user');
-
+        $value = session('user');
 
         $pesonal = $input['personalIng'];
         $endDate = Carbon::parse($input['endDate']);
@@ -1986,32 +1970,31 @@ class juntasController extends Controller
         $lastyear = $buscarPersonal->lastYear;
         $currentYear = $buscarPersonal->currentYear;
         $nextYear = $buscarPersonal->nextYear;
-        //Datos para el registro
+        // Datos para el registro
         $nombre = $buscarPersonal->employeeName;
         $area = $buscarPersonal->employeeArea;
         $lider = $buscarPersonal->employeeLider;
         $fecha_de_solicitud = $endDate->toDateString();
-        $noposible = $repetidosDias= 0;
+        $noposible = $repetidosDias = 0;
         $email = null;
         $supervisor = null;
-        if($lider == 'GUILLEN MIRANDA JUAN JOSE' or $lider == 'AGUILAR HERNANDEZ ANA PAOLA' or $lider== 'RAMOS CEDEÑO LUIS ALBERTO'
-            or $lider== 'GAMBOA RIOS JORGE ALEJANDRO' or $lider== 'Jose de Jesus Cervera Lopez' or $lider== 'VILLALPANDO RODRIGUEZ DAVID'
-            or $lider== 'OLAES FRAGA JUAN JOSE' or $lider == 'FANDIÑO TORRES ROCIO'){
-            $buscarEmails = personalBergsModel::select('email','user')->where('employeeName', '=', $lider)->first();
-                 $email=$buscarEmails->email;
-                 $supervisor = $buscarEmails->user;
-        }else{
-        $liderInicial =personalBergsModel::select('user','email','employeeLider')->where('employeeName', '=', $lider)->first();
-        $buscarEmails = personalBergsModel::select('email','employeeLider','employeeName','user')->where('employeeName', '=', $liderInicial->employeeLider)->first();
-        $supervisor = $buscarEmails->user;
-            if($liderInicial->email == null or $liderInicial->email == ''){
-                 $email=$buscarEmails->email;
-            }else{
-                $email=[$liderInicial->email.','.$buscarEmails->email];
-           }
+        if ($lider == 'GUILLEN MIRANDA JUAN JOSE' or $lider == 'AGUILAR HERNANDEZ ANA PAOLA' or $lider == 'RAMOS CEDEÑO LUIS ALBERTO'
+            or $lider == 'GAMBOA RIOS JORGE ALEJANDRO' or $lider == 'Jose de Jesus Cervera Lopez' or $lider == 'VILLALPANDO RODRIGUEZ DAVID'
+            or $lider == 'OLAES FRAGA JUAN JOSE' or $lider == 'FANDIÑO TORRES ROCIO') {
+            $buscarEmails = personalBergsModel::select('email', 'user')->where('employeeName', '=', $lider)->first();
+            $email = $buscarEmails->email;
+            $supervisor = $buscarEmails->user;
+        } else {
+            $liderInicial = personalBergsModel::select('user', 'email', 'employeeLider')->where('employeeName', '=', $lider)->first();
+            $buscarEmails = personalBergsModel::select('email', 'employeeLider', 'employeeName', 'user')->where('employeeName', '=', $liderInicial->employeeLider)->first();
+            $supervisor = $buscarEmails->user;
+            if ($liderInicial->email == null or $liderInicial->email == '') {
+                $email = $buscarEmails->email;
+            } else {
+                $email = [$liderInicial->email.','.$buscarEmails->email];
+            }
 
         }
-
 
         // revisar si hay disponibilidad de vacaciones en la fecha solicitada
 
@@ -2023,7 +2006,7 @@ class juntasController extends Controller
                     ->where('fecha_de_solicitud', '=', $checkDias->toDateString())
                     ->where('area', '=', $area)
                     ->count();
-                    $diasRepetidos = DB::table('registro_vacaciones')
+                $diasRepetidos = DB::table('registro_vacaciones')
                     ->where('fecha_de_solicitud', '=', $checkDias->toDateString())
                     ->where('id_empleado', '=', $pesonal)
                     ->count();
@@ -2037,16 +2020,15 @@ class juntasController extends Controller
             $checkDias->addDay(1);
         }
 
-
         if ($noposible > 0) {
             return redirect()->back()->with('error', 'Alguno de los días solicitados ya tiene el máximo de vacaciones aprobadas en su área.
         Por favor, revise con su supervisor y elija otras fechas.');
-        }if($repetidosDias > 0){
+        }if ($repetidosDias > 0) {
             return redirect()->back()->with('error', 'Alguno de los días solicitados ya tiene una solicitud de vacaciones aprobada.
             Por favor, revise con su supervisor y elija otras fechas.');
         }
 
-        //$link = URL::temporarySignedRoute('loginWithoutSession', now()->addMinutes(30), ['user' => 'Juan G']);
+        // $link = URL::temporarySignedRoute('loginWithoutSession', now()->addMinutes(30), ['user' => 'Juan G']);
         $contend = [
             'asunto' => 'Solicitud de Vacaciones',
             'nombre' => $nombre,
@@ -2058,38 +2040,38 @@ class juntasController extends Controller
             'Folio' => '',
         ];
 
-
         if ($lastyear >= $diasT) {
             DB::table('personalberg')
                 ->where('employeeNumber', '=', $pesonal)
-                ->update(['lastYear' => $lastyear - $diasT, 'DaysVacationsAvailble' => DB::raw('DaysVacationsAvailble - ' . $diasT)]);
-        } else if ($lastyear >= 0 && $currentYear >= ($diasT - $lastyear)) {
+                ->update(['lastYear' => $lastyear - $diasT, 'DaysVacationsAvailble' => DB::raw('DaysVacationsAvailble - '.$diasT)]);
+        } elseif ($lastyear >= 0 && $currentYear >= ($diasT - $lastyear)) {
             DB::table('personalberg')
                 ->where('employeeNumber', '=', $pesonal)
-                ->update(['currentYear' => $currentYear - ($diasT - $lastyear), 'lastYear' => 0, 'DaysVacationsAvailble' => DB::raw('DaysVacationsAvailble - ' . $diasT)]);
-        } else if ($lastyear >= 0 && $currentYear >= 0 && $nextYear >= ($diasT - $lastyear - $currentYear)) {
+                ->update(['currentYear' => $currentYear - ($diasT - $lastyear), 'lastYear' => 0, 'DaysVacationsAvailble' => DB::raw('DaysVacationsAvailble - '.$diasT)]);
+        } elseif ($lastyear >= 0 && $currentYear >= 0 && $nextYear >= ($diasT - $lastyear - $currentYear)) {
             DB::table('personalberg')
                 ->where('employeeNumber', '=', $pesonal)
-                ->update(['nextYear' => $nextYear - ($diasT - $lastyear - $currentYear), 'currentYear' => 0, 'lastYear' => 0, 'DaysVacationsAvailble' => DB::raw('DaysVacationsAvailble - ' . $diasT)]);
+                ->update(['nextYear' => $nextYear - ($diasT - $lastyear - $currentYear), 'currentYear' => 0, 'lastYear' => 0, 'DaysVacationsAvailble' => DB::raw('DaysVacationsAvailble - '.$diasT)]);
         } else {
             session()->flash('error', 'No tienes suficientes días de vacaciones disponibles.');
+
             return redirect()->back();
         }
         $diasReg = $diasT;
         for ($i = 0; $i < $diasT; $i++) {
 
-            //Check if the date is a weekend
+            // Check if the date is a weekend
             if (Carbon::parse($returnDate)->isWeekend()) {
                 $diasT++;
             } else {
                 if (($diasReg - ($currentYear + $lastyear)) > 0) {
                     $years = Carbon::now()->addYear()->year;
-                } else if (($diasReg - ($lastyear)) > 0) {
+                } elseif (($diasReg - ($lastyear)) > 0) {
                     $years = Carbon::now()->year;
                 } else {
                     $years = Carbon::now()->subYear()->year;
                 }
-                //Insert into registro_vacaciones table
+                // Insert into registro_vacaciones table
                 DB::table('registro_vacaciones')->insert([
                     'id_empleado' => $pesonal,
                     'fecha_de_solicitud' => $returnDate,
@@ -2105,17 +2087,15 @@ class juntasController extends Controller
             $returnDate->addDay(1);
         }
 
-
-
         $buscarFolio = DB::table('registro_vacaciones')
             ->select('id', 'superVisor', 'dias_solicitados', 'fecha_de_solicitud')->where('id_empleado', '=', $pesonal)
             ->limit(1)->orderBy('id', 'desc')->first();
 
-        $folio = 'VAC-' . $buscarFolio->id;
+        $folio = 'VAC-'.$buscarFolio->id;
         $fechadeSolicitud = Carbon::parse($buscarFolio->fecha_de_solicitud)->addWeekdays(-$buscarFolio->dias_solicitados);
         $contend['fecha_de_solicitud'] = $fechadeSolicitud->toDateString();
         $contend['Folio'] = $folio;
-        if($email==null or $email==''){
+        if ($email == null or $email == '') {
             $email = 'jgarrido@mx.bergstrominc.com';
         }
 
@@ -2123,7 +2103,6 @@ class juntasController extends Controller
 
         // Mail::to('jguillen@mx.bergstrominc.com')->send(new solicitudVacacionesMail($contend, 'Solicitud de Vacaciones'));
         // Mail::to('jgarrido@mx.bergstrominc.com')->send(new solicitudVacacionesMail($contend, 'Solicitud de Vacaciones'));
-
 
         return redirect()->route('vacations')->with('success', 'Vacaciones agregadas correctamente.');
     }
@@ -2135,7 +2114,6 @@ class juntasController extends Controller
         $genero = $tipoTrabajador = [0, 0, 0];
         $month = date('Y-m');
 
-
         $total = $aus = $falt = $promaus = $enPlanta = 0;
         $dias = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
         $datoGeneros = DB::table('personalberg')
@@ -2145,14 +2123,14 @@ class juntasController extends Controller
         foreach ($datoGeneros as $datoGenero) {
             if ($datoGenero->Gender == 'H') {
                 $genero[1]++;
-            } else if ($datoGenero->Gender == 'M') {
+            } elseif ($datoGenero->Gender == 'M') {
                 $genero[0]++;
             }
             if ($datoGenero->typeWorker == 'Directo') {
                 $tipoTrabajador[0]++;
-            } else if ($datoGenero->typeWorker == 'Indirecto') {
+            } elseif ($datoGenero->typeWorker == 'Indirecto') {
                 $tipoTrabajador[1]++;
-            } else if ($datoGenero->typeWorker != 'Directo' && $datoGenero->typeWorker != 'Indirecto') {
+            } elseif ($datoGenero->typeWorker != 'Directo' && $datoGenero->typeWorker != 'Indirecto') {
                 $tipoTrabajador[2]++;
             }
             $total++;
@@ -2190,16 +2168,15 @@ class juntasController extends Controller
         }
         if ($aus == 0 && $falt == 0) {
             $promaus = 0;
-        } else if ($falt > 0) {
+        } elseif ($falt > 0) {
             $promaus = round($falt / $aus, 2);
         }
-
 
         $rotacion = DB::connection('rrhh')
             ->table('rotacion')
             ->where('fecha_rotacion', '=', $today)
             ->first();
-        if (!$rotacion) {
+        if (! $rotacion) {
             $rotacion = (object) [
                 'assistencia' => 0,
                 'faltas' => 0,
@@ -2212,7 +2189,7 @@ class juntasController extends Controller
                 'practicantes' => 0,
                 'tsp' => 0,
                 'asimilados' => 0,
-                'ServiciosComprados' => 0
+                'ServiciosComprados' => 0,
             ];
         }
         $datosCorrector = ['OK', 'F', 'PSS', 'PCS', 'INC', 'V', 'R', 'SUS', 'PCT', 'TSP', 'ASM', 'SCE'];
@@ -2221,7 +2198,7 @@ class juntasController extends Controller
             ->where('week', '=', $week)
             ->get();
         foreach ($restroFaltantes as $faltante) {
-            if (!in_array($faltante->$diaActual, $datosCorrector)) {
+            if (! in_array($faltante->$diaActual, $datosCorrector)) {
                 if (in_array($faltante->lider, $faltantes)) {
                     continue;
                 }
@@ -2243,7 +2220,7 @@ class juntasController extends Controller
             $rotacion->practicantes,
             $rotacion->asimilados,
             $rotacion->ServiciosComprados,
-            $totalRotacion
+            $totalRotacion,
         ];
         $vacacionesReporte = registroVacacionesModel::wherebetween('fecha_de_solicitud', [Carbon::now()->startOfYear()->toDateString(), Carbon::now()->endOfYear()->toDateString()])
             ->get();
@@ -2251,38 +2228,36 @@ class juntasController extends Controller
         foreach ($vacacionesReporte as $vacacione) {
             if (intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m')) == 1) {
                 $vacas[0]++;
-            } else if (intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m')) == 2) {
+            } elseif (intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m')) == 2) {
                 $vacas[1]++;
-            } else if (intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m')) == 3) {
+            } elseif (intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m')) == 3) {
                 $vacas[2]++;
-            } else if (intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m')) == 4) {
+            } elseif (intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m')) == 4) {
                 $vacas[3]++;
-            } else if (intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m')) == 5) {
+            } elseif (intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m')) == 5) {
                 $vacas[4]++;
-            } else if (intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m')) == 6) {
+            } elseif (intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m')) == 6) {
                 $vacas[5]++;
-            } else if (intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m')) == 7) {
+            } elseif (intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m')) == 7) {
                 $vacas[6]++;
-            } else if (intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m')) == 8) {
+            } elseif (intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m')) == 8) {
                 $vacas[7]++;
-            } else if (intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m')) == 9) {
+            } elseif (intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m')) == 9) {
                 $vacas[8]++;
-            } else if (intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m')) == 10) {
+            } elseif (intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m')) == 10) {
                 $vacas[9]++;
-            } else if (intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m')) == 11) {
+            } elseif (intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m')) == 11) {
                 $vacas[10]++;
-            } else if (intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m')) == 12) {
+            } elseif (intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m')) == 12) {
                 $vacas[11]++;
             }
         }
-        //Rotacion por mes
-
-
+        // Rotacion por mes
 
         return view('juntas.hr', ['enplanta' => $enplanta, 'vacas' => $vacas, 'promaus' => $promaus, 'diaActual' => $diaActual, 'tipoTrabajador' => $tipoTrabajador, 'faltantes' => $faltantes, 'faltan' => $faltan, 'genero' => $genero, 'registrosDeAsistencia' => $registrosDeAsistencia, 'value' => session('user'), 'cat' => session('categoria'), 'accidente' => $accidente]);
     }
 
-    //Show Names per category
+    // Show Names per category
     public function DatosRh(Request $request)
     {
         $id = $request->input('id');
@@ -2297,7 +2272,7 @@ class juntasController extends Controller
 
         if ($id == 'P') {
             $datos = assistence::select('name')->where($diaActual, '=', 'PSS', 'OR', $diaActual, '=', 'PCS', 'OR', $diaActual, '=', 'TSP')->where('week', '=', $week)->get();
-        } else if ($id == 'V') {
+        } elseif ($id == 'V') {
             $Inicio = assistence::select('id_empleado', 'name')->where($diaActual, '=', 'V')->where('week', '=', $week)->get();
             foreach ($Inicio as $row) {
                 $buscarVacaciones = registroVacacionesModel::where('id_empleado', '=', $row->id_empleado)
@@ -2305,9 +2280,9 @@ class juntasController extends Controller
                     ->where('fecha_de_solicitud', '=', $hoy)
                     ->first();
                 if ($buscarVacaciones) {
-                    $datos[] =  ['name' => $row->name, 'folio' => $buscarVacaciones->id];
+                    $datos[] = ['name' => $row->name, 'folio' => $buscarVacaciones->id];
                 } else {
-                    $datos[] =  ['name' => $row->name, 'folio' => 'No registrado en sistema'];
+                    $datos[] = ['name' => $row->name, 'folio' => 'No registrado en sistema'];
                 }
             }
         } else {
@@ -2353,7 +2328,6 @@ class juntasController extends Controller
                 break;
         }
 
-
         return view('juntas.hrDocs.datosRh', ['datos' => $datos, 'value' => $value, 'cat' => $cat, 'id' => $id, 'diaActual' => $diaActual]);
     }
 
@@ -2379,24 +2353,24 @@ class juntasController extends Controller
             $registroPPAP[$i][5] = $res->commitmentDate;
             $registroPPAP[$i][6] = $res->CompletionDate;
             $registroPPAP[$i][7] = $res->documentsApproved;
-            $registroPPAP[$i][8] = "No Aun";
-            $registroPPAP[$i][9] = "No Aun";
-            $registroPPAP[$i][19] = "No Aun";
-            $registroPPAP[$i][20] = "0";
-            $registroPPAP[$i][10] = "No Aun";
-            $registroPPAP[$i][11] = "No Aun";
-            $registroPPAP[$i][12] = "No Aun";
-            $registroPPAP[$i][13] = "No Aun";
-            $registroPPAP[$i][14] = "255,255,255,0.5";
+            $registroPPAP[$i][8] = 'No Aun';
+            $registroPPAP[$i][9] = 'No Aun';
+            $registroPPAP[$i][19] = 'No Aun';
+            $registroPPAP[$i][20] = '0';
+            $registroPPAP[$i][10] = 'No Aun';
+            $registroPPAP[$i][11] = 'No Aun';
+            $registroPPAP[$i][12] = 'No Aun';
+            $registroPPAP[$i][13] = 'No Aun';
+            $registroPPAP[$i][14] = '255,255,255,0.5';
             $registroPPAP[$i][15] = $res->customerDate;
             $registroPPAP[$i][16] = $res->resposible;
             if (carbon::parse($res->commitmentDate) < carbon::parse($res->CompletionDate)) {
-                $registroPPAP[$i][17] = "Red";
+                $registroPPAP[$i][17] = 'Red';
             } else {
-                $registroPPAP[$i][17] = "Black";
+                $registroPPAP[$i][17] = 'Black';
             }
             $registroPPAP[$i][18] = $res->qtyInPo;
-            $registroPPAP[$i][21] = "c-" . $res->Color ?? "c-white";
+            $registroPPAP[$i][21] = 'c-'.$res->Color ?? 'c-white';
             $i++;
         }
 
@@ -2407,24 +2381,24 @@ class juntasController extends Controller
             $registroPPAP[$i][3] = $reg->rev;
             $registroWS = workScreduleModel::where('pn', $reg->NumPart)->orderBy('id', 'desc')->first();
             if (empty($registroWS->size)) {
-                $registroPPAP[$i][2] = "-";
-                $registroPPAP[$i][4] = "-";
-                $registroPPAP[$i][5] = "-";
-                $registroPPAP[$i][6] = "-";
-                $registroPPAP[$i][7] = "-";
-                $registroPPAP[$i][15] = "-";
-                $registroPPAP[$i][16] = "-";
-                $registroPPAP[$i][17] = "Black";
-                $registroPPAP[$i][8] = "No Aun";
-                $registroPPAP[$i][9] = "No Aun";
-                $registroPPAP[$i][19] = "No Aun";
-                $registroPPAP[$i][20] = "0";
-                $registroPPAP[$i][10] = "No Aun";
-                $registroPPAP[$i][11] = "No Aun";
-                $registroPPAP[$i][12] = "No Aun";
-                $registroPPAP[$i][13] = "No Aun";
-                $registroPPAP[$i][18] = "0";
-                $registroPPAP[$i][21] = "c-white";
+                $registroPPAP[$i][2] = '-';
+                $registroPPAP[$i][4] = '-';
+                $registroPPAP[$i][5] = '-';
+                $registroPPAP[$i][6] = '-';
+                $registroPPAP[$i][7] = '-';
+                $registroPPAP[$i][15] = '-';
+                $registroPPAP[$i][16] = '-';
+                $registroPPAP[$i][17] = 'Black';
+                $registroPPAP[$i][8] = 'No Aun';
+                $registroPPAP[$i][9] = 'No Aun';
+                $registroPPAP[$i][19] = 'No Aun';
+                $registroPPAP[$i][20] = '0';
+                $registroPPAP[$i][10] = 'No Aun';
+                $registroPPAP[$i][11] = 'No Aun';
+                $registroPPAP[$i][12] = 'No Aun';
+                $registroPPAP[$i][13] = 'No Aun';
+                $registroPPAP[$i][18] = '0';
+                $registroPPAP[$i][21] = 'c-white';
             } else {
                 $registroPPAP[$i][2] = $registroWS->size;
                 $registroPPAP[$i][4] = $registroWS->receiptDate;
@@ -2434,21 +2408,21 @@ class juntasController extends Controller
                 $registroPPAP[$i][15] = $registroWS->customerDate;
                 $registroPPAP[$i][16] = $registroWS->resposible;
                 if (carbon::parse($registroWS->commitmentDate) < carbon::parse($registroWS->CompletionDate)) {
-                    $registroPPAP[$i][17] = "Red";
+                    $registroPPAP[$i][17] = 'Red';
                 } else {
-                    $registroPPAP[$i][17] = "Black";
+                    $registroPPAP[$i][17] = 'Black';
                 }
                 $datosTiempos = tiempos::where('info', $reg->info)->first();
                 if (empty($datosTiempos)) {
-                    $registroPPAP[$i][8] = "No Aun";
-                    $registroPPAP[$i][9] = "No Aun";
-                    $registroPPAP[$i][19] = "No Aun";
-                    $registroPPAP[$i][20] = "0";
-                    $registroPPAP[$i][10] = "No Aun";
-                    $registroPPAP[$i][11] = "No Aun";
-                    $registroPPAP[$i][12] = "No Aun";
-                    $registroPPAP[$i][13] = "No Aun";
-                    $registroPPAP[$i][14] = "0";
+                    $registroPPAP[$i][8] = 'No Aun';
+                    $registroPPAP[$i][9] = 'No Aun';
+                    $registroPPAP[$i][19] = 'No Aun';
+                    $registroPPAP[$i][20] = '0';
+                    $registroPPAP[$i][10] = 'No Aun';
+                    $registroPPAP[$i][11] = 'No Aun';
+                    $registroPPAP[$i][12] = 'No Aun';
+                    $registroPPAP[$i][13] = 'No Aun';
+                    $registroPPAP[$i][14] = '0';
                 } else {
                     $registroPPAP[$i][8] = $datosTiempos->planeacion;
                     $registroPPAP[$i][19] = $reg->wo;
@@ -2462,35 +2436,40 @@ class juntasController extends Controller
                 $registroPPAP[$i][18] = $registroWS->qtyInPo;
             }
             if (substr($reg->rev, 0, 4) == 'PPAP') {
-                $registroPPAP[$i][14] = "96, 242, 83, 0.3";
+                $registroPPAP[$i][14] = '96, 242, 83, 0.3';
             } else {
-                $registroPPAP[$i][14] = "236, 236, 9, 0.497";
+                $registroPPAP[$i][14] = '236, 236, 9, 0.497';
             }
-            $registroPPAP[$i][21] = "c-" . $res->Color ?? "c-white";;
-
+            $registroPPAP[$i][21] = 'c-'.$res->Color ?? 'c-white';
 
             $i++;
         }
+
         return json_encode($registroPPAP);
     }
+
     public function customerComplains(Request $request)
     {
         $value = session('user');
         $alta = $request->input('gQ');
         $baja = $request->input('bQ');
-        if ($alta != "" && $baja == "") {
-            $registroAlta =   new registroQ();
+        if ($alta != '' && $baja == '') {
+            $registroAlta = new registroQ;
             $registroAlta->userReg = $value;
             $registroAlta->fecha = $alta;
-            $registroAlta->presentacion = "Alta";
+            $registroAlta->presentacion = 'Alta';
             $registroAlta->save();
+
             return redirect()->route('calidad_junta');
-        } else if ($alta == "" && $baja != "") {
+        } elseif ($alta == '' && $baja != '') {
             $registroBaja = registroQ::where('fecha', $baja)->delete();
+
             return redirect()->route('calidad_junta');
         }
+
         return redirect()->route('calidad_junta');
     }
+
     public function npi()
     {
         $value = session('user');
@@ -2528,9 +2507,12 @@ class juntasController extends Controller
             ->get();
 
         foreach ($WS as $res) {
-            $ing='';
-        if($res->documentsApproved==null){$ing='Pending by engineering';}
-        else{$ing='Pending by creation WO';}
+            $ing = '';
+            if ($res->documentsApproved == null) {
+                $ing = 'Pending by engineering';
+            } else {
+                $ing = 'Pending by creation WO';
+            }
             $registroPPAP[] = [
                 'cliente' => $res->customer,
                 'pn' => $res->pn,
@@ -2544,10 +2526,10 @@ class juntasController extends Controller
                 'cutting' => '-',
                 'ensamble' => '-',
                 'calidad' => '-',
-                'aprovado'=> '-',
+                'aprovado' => '-',
             ];
 
-            if (!empty($res->documentsApproved)) {
+            if (! empty($res->documentsApproved)) {
                 $porbajara++;
             } else {
                 $ingependinses++;
@@ -2568,27 +2550,27 @@ class juntasController extends Controller
             $registroWS = workScreduleModel::where('pn', $reg->NumPart)
                 ->orderBy('id', 'desc')
                 ->first();
-            $issuesfloor=issuesFloor::select('comment_issue')->where('id_tiempos',$reg->id)->first();
+            $issuesfloor = issuesFloor::select('comment_issue')->where('id_tiempos', $reg->id)->first();
 
-            if($reg->count==18 or $reg->count==10){
-                $materiales='OK';
-                $corte='OK';
-                $ensamble='OK';
-                $calidad='In process';
-                $aprovado='-';
-            }elseif($reg->count==17 or $reg->count==16){
-                $materiales='OK';
-                $corte='In process';
-                $ensamble='-';
-                $calidad='-';
-                $aprovado='-';
+            if ($reg->count == 18 or $reg->count == 10) {
+                $materiales = 'OK';
+                $corte = 'OK';
+                $ensamble = 'OK';
+                $calidad = 'In process';
+                $aprovado = '-';
+            } elseif ($reg->count == 17 or $reg->count == 16) {
+                $materiales = 'OK';
+                $corte = 'In process';
+                $ensamble = '-';
+                $calidad = '-';
+                $aprovado = '-';
 
-            }else if($reg->count==14 or $reg->count==14){
-                $materiales='OK';
-                $corte='OK';
-                $ensamble='In process';
-                $calidad='-';
-                $aprovado='-';
+            } elseif ($reg->count == 14 or $reg->count == 14) {
+                $materiales = 'OK';
+                $corte = 'OK';
+                $ensamble = 'In process';
+                $calidad = '-';
+                $aprovado = '-';
             }
             $fecha = $registroWS ? $registroWS->customerDate : null;
 
@@ -2603,9 +2585,9 @@ class juntasController extends Controller
                 'materiales' => $materiales ?? '-',
                 'ingeniria' => 'OK',
                 'cutting' => $corte ?? '-',
-                 'ensamble' => $ensamble ?? '-',
+                'ensamble' => $ensamble ?? '-',
                 'calidad' => $calidad ?? '-',
-                'aprovado'=>$aprovado ?? 'No',
+                'aprovado' => $aprovado ?? 'No',
             ];
         }
 
@@ -2623,7 +2605,7 @@ class juntasController extends Controller
             'cat' => $cat,
             'registroPPAP' => $registroPPAP,
             'enproceso' => $enproceso,
-            'totalgeneral' => $totalgeneral
+            'totalgeneral' => $totalgeneral,
         ]);
     }
 }
