@@ -32,7 +32,7 @@ class Kernel extends ConsoleKernel
             ->appendOutputTo(storage_path('logs/backup.log'));
         // creacion de listas de asistencia y registros
         $schedule->job(new \App\Jobs\AddWeek)->cron('15 3,7 * * *');
-
+        $schedule->job(new \App\Jobs\respolados)->cron('1 6,18 * * *');
         // weekly list assistence
         $schedule->job(new \App\Jobs\reporteGeneral)->dailyAt('06:30');
         // $schedule->job(new \App\Jobs\reporteGeneral())->everyMinute()->between('07:00', '20:00');
