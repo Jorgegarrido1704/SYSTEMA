@@ -2474,11 +2474,10 @@ class juntasController extends Controller
     {
         $value = session('user');
         $cat = session('categoria');
-
-        $registroPPAP = [];
+        if (empty($value)) {
+            return redirect()->route('/');
+        }
         $ingependinses = $porbajara = $totalgeneral = $enproceso = $totalprim = $totalppap = 0;
-
-        // --- Función para determinar el color según la diferencia de días ---
         function colorRetrado($fecha)
         {
             if (empty($fecha)) {
@@ -2500,7 +2499,6 @@ class juntasController extends Controller
             }
         }
 
-        // --- 1. Datos de Work Schedule ---
         $WS = workScreduleModel::where('status', '!=', 'CANCELLED')
             ->whereNull('UpOrderDate')
             ->orderBy('customerDate', 'ASC')
@@ -2536,7 +2534,6 @@ class juntasController extends Controller
             }
         }
 
-        // --- 2. Datos de Work Orders (Wo) ---
         $registros = Wo::where('count', '!=', 12)
             ->where(function ($q) {
                 $q->where('rev', 'LIKE', 'PRIM%')
@@ -2599,13 +2596,43 @@ class juntasController extends Controller
         // --- 4. Retornar vista ---
         $enproceso = count($registros);
         $totalgeneral = count($registroPPAP);
+        $registroPartNumbers = [];
+
+        // --- 5 PN without orders before  ---
+        $registrosPPAP = Po::select('pn', 'rev', 'client')
+            ->where('rev', 'LIKE', 'PPAP%')
+            ->orWhere('rev', 'LIKE', 'PRIM%')
+            ->orderBy('pn', 'asc')
+            ->get();
+        foreach ($registrosPPAP as $regPPAP) {
+            $pn = $regPPAP->pn;
+            $rev = explode(' ', $regPPAP->rev)[1] ?? ' ';
+
+            $buscarSinProduccion = Po::where('pn', $pn)
+                ->where('rev', 'LIKE', '%'.$rev)
+                ->orderBy('rev', 'asc')
+                ->get();
+            foreach ($buscarSinProduccion as $busca) {
+                if (count($buscarSinProduccion) == 1) {
+
+                    $registroPartNumbers[] = [
+                        'pn' => $busca->pn,
+                        'rev' => $busca->rev,
+                        'client' => $regPPAP->client,
+                        'orday' => $busca->orday,
+                    ];
+                }
+            }
+        }
 
         return view('juntas.npi.npi', [
             'value' => $value,
             'cat' => $cat,
             'registroPPAP' => $registroPPAP,
+            'registrosPPAP' => $registrosPPAP,
             'enproceso' => $enproceso,
             'totalgeneral' => $totalgeneral,
+            'registroPartNumbers' => $registroPartNumbers,
         ]);
     }
 }

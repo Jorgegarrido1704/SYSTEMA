@@ -9,9 +9,12 @@
     }
 
 </style>
-
+<script>
+    const registros = @json($registroPartNumbers);
+    console.log(registros);
+    </script>
         <div class="row">
-            <div class="col-lg-12 col-lx-12">
+            <div class="col-lg-8 col-lx-8">
 
                 <div class="card shadow mb-5">
                     <div class="card-header py-3">
@@ -47,7 +50,7 @@
                                             <td><b>{{$cut['materiales']}}</td>
                                             <td><b>{{$cut['ingeniria']}}</td>
                                             <td><b>{{$cut['cutting']}}/{{$cut['ensamble']}}</td>
-                                       
+
                                             <td><b>{{$cut['calidad']}}</td>
                                             <td><b>{{$cut['aprovado']}}</td>
                                             <td><b>{{ $cut['comments'] }}</td>
@@ -60,7 +63,43 @@
                     </div>
                 </div>
             </div>
+<div class="col-lg-4 col-lx-4">
 
+                <div class="card shadow mb-5">
+                    <div class="card-header py-3">
+                        <h5 class="m-0 font-weight-bold text-primary">No orders after PPAP</h5>
+                    </div>
+                    <div class="card-body" style="overflow-y: auto;  height: 600px;" >
+                        <table class="table table-bordered"  width="100%" cellspacing="0">
+                            <thead style=" position: sticky; z-index: 1; top: 0; text-align: center; background-color: black; color: white; ">
+                                <tr>
+                                    <th>Part Number</th>
+                                    <th>Revision</th>
+                                    <th>Customer</th>
+                                    <th>PPAP Date</th>
+
+                                </tr>
+                            </thead>
+                            @if(!empty($registroPartNumbers))
+                                @foreach ($registroPartNumbers as $cut)
+
+                                    <tbody>
+                                        <tr >
+
+                                            <td><b>{{ $cut['pn'] }}</td>
+                                            <td><b>{{ $cut['rev'] }}</td>
+                                            <td><b>{{ $cut['client'] }}</td>
+                                            <td><b>{{ $cut['orday'] }}</td>
+
+                                        </tr>
+                                    </tbody>
+                                @endforeach
+                            @endif
+                        </table>
+
+                    </div>
+                </div>
+            </div>
         </div>
 
     @endsection
