@@ -37,7 +37,7 @@ class rrhhController extends Controller
         if ($diaNum == 5 or $diaNum == 6 or $diaNum == 7) {
             $diasRegistro[4] = '';
             $diasRegistros[4] = '';
-        } else {
+        } elseif (carbon::now()->format('H:i') < '08:16') {
             $diasRegistro[$diaNum - 1] = '';
             $diasRegistros[$diaNum - 1] = '';
         }
