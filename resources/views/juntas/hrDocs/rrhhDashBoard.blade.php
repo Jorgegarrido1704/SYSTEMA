@@ -1,6 +1,7 @@
 @extends(   'layouts.main')
 
 @section('contenido')
+<meta http-equiv="refresh" content="10">
 <div class="d-sm-flex align-items-center justify-content-between mb-4">  </div>
 <script>const Error = {{ json_encode(session('error')) }};
 if (Error) {
