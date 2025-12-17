@@ -153,6 +153,7 @@
                                         </div>
         </div>
         <div class=row >
+
              <div class="col-lg-6 mb-4">
                             <!-- Request Testing -->
                             <div class="card shadow mb-4">
@@ -162,6 +163,7 @@
                             </div>
 
                             <div class="card body" style="overflow-y: scroll; height: 360px">
+                                <!-- se hizo de manera automatica
                                 <form action="{{ route('RequestTesting') }}" method="POST">
                                     @csrf
                                     <div class="row">
@@ -204,8 +206,8 @@
                                         </div>
                                     </div>
 
-                                </form>
-
+                                </form> -->
+                                Se realizar de manera automatica cuando acceptes las ordenes
 
                             </div>
              </div>

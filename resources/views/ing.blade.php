@@ -2,6 +2,7 @@
 
 @section('contenido')
     <!-- Page Heading -->
+    <meta http-equiv="refresh" content="120">
     <script>
         var paola = @json($paola);
         var paoDesc = @json($paoDesc);
