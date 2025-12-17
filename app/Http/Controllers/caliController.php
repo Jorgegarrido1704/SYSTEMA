@@ -726,6 +726,15 @@ class caliController extends generalController
             $pn = $preorder->pn;
             $wo = $preorder->wo;
             $qtycal = $preorder->preCalidad;
+            // prueba de automatitazion calidad
+            $buscarWo = Wo::select('NumPart', 'cliente', 'rev')->where('wo', $wo)->first();
+            $registos = new electricalTesting;
+            $registos->pn = $buscarWo->NumPart;
+            $registos->client = $buscarWo->cliente;
+            $registos->wo = $wo;
+            $registos->requested_by = $value;
+            $registos->save();
+            // fin pruebas automatizacion
             $buscarCalida = DB::table('calidad')->where('info', '=', $barcode)->first();
             if ($buscarCalida) {
                 $qty = $buscarCalida->qty + $qtycal;
