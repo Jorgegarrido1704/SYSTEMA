@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Jobs\UpdateRotacionJob;
 use App\Models\assistence;
 use App\Models\personalBergsModel;
+use App\Models\relogChecadorModel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
@@ -450,5 +452,33 @@ class rrhhController extends Controller
 
         $writer->save('php://output');
         exit;
+    }
+
+    public function relogChecador()
+    {
+        $value = session('user');
+        $cat = session('categoria');
+        $datosRelog = [];
+        if (empty($value)) {
+            return redirect('/');
+        }
+        $dia = carbon::now()->format('Y-m-d');
+        $datosRelog = DB::table('relogchecador')->get();
+        // $datosRelog = relogChecadorModel::all();
+        // dd($datosRelog);
+
+        return view('juntas.hrDocs.relojChecador', ['cat' => $cat, 'value' => $value, 'datosRelog' => $datosRelog]);
+    }
+
+    public function datosPersonal()
+    {
+        $value = session('user');
+        $cat = session('categoria');
+        if (empty($value)) {
+            return redirect('/');
+        }
+
+        return view('juntas.hrDocs.controlPersonal', ['cat' => $cat, 'value' => $value]);
+
     }
 }

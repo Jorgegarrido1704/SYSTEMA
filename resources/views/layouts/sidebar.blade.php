@@ -92,6 +92,8 @@
                      <ul class="submenu" id="RRHH" style="display:none;">
                         @if($value=='Admin' || $cat=='RRHH')
                         <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('rrhhDashBoard') }}">Registros RRHH</a></li>
+                        <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('relogChecador') }}">Relog Checador</a></li>
+                        <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('datosPersonal') }}">Datos por empleado</a></li>
 
                         @endif
                     </ul>
