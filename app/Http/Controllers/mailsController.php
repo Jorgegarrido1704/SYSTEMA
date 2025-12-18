@@ -2,24 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\accionesCorrectivas;
-use App\Mail\accionesCorrectivasRecordatorio;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Facades\Validator;
-use Carbon\Carbon;
-use App\Models\PPAPandPRIM;
-use App\Mail\firmasCompletas;
-use App\Models\workScreduleModel;
-use App\Models\desviation;
 use App\Mail\desviacionesEmails;
-use App\Models\login;
-use App\Models\personalBergsModel;
-use App\Models\registroVacacionesModel;
+use App\Mail\firmasCompletas;
 use App\Mail\solicitudVacacionesMail;
+use App\Models\accionesCorrectivas;
+use App\Models\desviation;
+use App\Models\personalBergsModel;
+use App\Models\PPAPandPRIM;
+use App\Models\registroVacacionesModel;
+use App\Models\workScreduleModel;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class mailsController extends Controller
 {
@@ -27,11 +21,14 @@ class mailsController extends Controller
     {
         $accion = accionesCorrectivas::where('status', 'etapa 2 - Accion Correctiva')
             ->first();
+
         return view('emails.accionesCorrectivasMail', ['accion' => $accion]);
     }
+
     public function firmasNPI()
     {
         $accion = PPAPandPRIM::where('count', '=', 0)->orderby('id', 'desc')->first();
+
         return view('emails.firmasNPIMail', ['accion' => $accion]);
     }
 
@@ -41,41 +38,40 @@ class mailsController extends Controller
         $cat = session('categoria');
         if ($value == 'Rocio F' or $value == 'Fatima S') {
             $registroFirmas = PPAPandPRIM::where('count', '=', 1)->where('ime', '=', '')->orderby('id', 'desc')->get();
-        } else if ($value == 'Edward M' or $value == 'Luis R' or $value == 'Goretti Ro') {
+        } elseif ($value == 'Edward M' or $value == 'Luis R' or $value == 'Goretti Ro') {
             $registroFirmas = PPAPandPRIM::where('count', '=', 1)->where('quality', '=', '')->orderby('id', 'desc')->get();
-        } else if ($value == 'Jose Luis') {
+        } elseif ($value == 'Jose Luis') {
             $registroFirmas = PPAPandPRIM::where('count', '=', 1)->where('test', '=', '')->orderby('id', 'desc')->get();
-        } else if ($value == 'Valeria P' or $value == 'Julio R') {
+        } elseif ($value == 'Valeria P' or $value == 'Julio R') {
             $registroFirmas = PPAPandPRIM::where('count', '=', 1)->where('compras', '=', '')->orderby('id', 'desc')->get();
-        } else if ($value == 'Juan O' or $value == 'David V') {
+        } elseif ($value == 'Juan O' or $value == 'David V') {
             $registroFirmas = PPAPandPRIM::where('count', '=', 1)->where('production', '=', '')->orderby('id', 'desc')->get();
-        } else if ($value == 'Estela G' or $value == 'Gamboa J') {
+        } elseif ($value == 'Estela G' or $value == 'Gamboa J') {
             $registroFirmas = PPAPandPRIM::where('count', '=', 1)->where('gernete', '=', '')->orderby('id', 'desc')->get();
         } else {
             $registroFirmas = [];
         }
         if ($value == 'Jesus_C' or $value == 'Carlos R' or $value == 'Nancy A' or $value == 'Admin' or $value == 'Jorge G') {
             $desviations = desviation::Where('fing', '=', '')->where('count', '<', 4)->get();
-        } else if ($value == 'Edward M' or $value == 'Luis R' or $value == 'Goretti Ro') {
+        } elseif ($value == 'Edward M' or $value == 'Luis R' or $value == 'Goretti Ro') {
             $desviations = desviation::Where('fing', '!=', '')->where('fcal', '=', '')->where('count', '<', 4)->get();
         } else {
             $desviations = [];
         }
-        
 
-          $foliosV = registroVacacionesModel::select('id_empleado')->where('estatus', 'Pendiente RH')
+        $foliosV = registroVacacionesModel::select('id_empleado')->where('estatus', 'Pendiente RH')
             ->where('superVisor', $value)
             ->orderBy('id', 'desc')
             ->get();
-        if($foliosV == null){
+        if ($foliosV == null) {
             $foliosV = [];
-        }else{
-           //remove duplicates in array
+        } else {
+            // remove duplicates in array
             $foliosV = $foliosV->unique('id_empleado');
         }
 
         $foliosVacaciones = $vacaciones = [];
-         $i = 0;
+        $i = 0;
         foreach ($foliosV as $folioV) {
             $foliosVacaciones = registroVacacionesModel::where('id_empleado', '=', $folioV->id_empleado)
                 ->where('estatus', 'Pendiente RH')
@@ -92,12 +88,10 @@ class mailsController extends Controller
                 'id_empleado' => $foliosVacaciones->id_empleado,
                 'fecha_solicitud' => $foliosVacaciones->fecha_de_solicitud,
                 'dias_solicitados' => $foliosVacaciones->dias_solicitados,
-                'fehca_retorno' => $foliosVacaciones->fehca_retorno
+                'fehca_retorno' => $foliosVacaciones->fehca_retorno,
             ];
             $i++;
         }
-
-
 
         return view('firmas.npi.npi', ['vacaciones' => $vacaciones, 'desviations' => $desviations, 'registroFirmas' => $registroFirmas, 'value' => $value, 'cat' => $cat]);
     }
@@ -108,15 +102,15 @@ class mailsController extends Controller
         $value = session('user');
         if ($value == 'Rocio F' or $value == 'Fatima S') {
             PPAPandPRIM::where('id', '=', $id)->update(['ime' => carbon::now()->format('d-m-y H:i')]);
-        } else if ($value == 'Edward M' or $value == 'Luis R' or $value == 'Goretti Ro') {
+        } elseif ($value == 'Edward M' or $value == 'Luis R' or $value == 'Goretti Ro') {
             PPAPandPRIM::where('id', '=', $id)->update(['quality' => carbon::now()->format('d-m-y H:i')]);
-        } else if ($value == 'Jose Luis') {
+        } elseif ($value == 'Jose Luis') {
             PPAPandPRIM::where('id', '=', $id)->update(['test' => carbon::now()->format('d-m-y H:i')]);
-        } else if ($value == 'Valeria P' or $value == 'Julio R') {
+        } elseif ($value == 'Valeria P' or $value == 'Julio R') {
             PPAPandPRIM::where('id', '=', $id)->update(['compras' => carbon::now()->format('d-m-y H:i')]);
-        } else if ($value == 'Juan O' or $value == 'David V') {
+        } elseif ($value == 'Juan O' or $value == 'David V') {
             PPAPandPRIM::where('id', '=', $id)->update(['production' => carbon::now()->format('d-m-y H:i')]);
-        } else if ($value == 'Estela G' or $value == 'Gamboa J') {
+        } elseif ($value == 'Estela G' or $value == 'Gamboa J') {
             PPAPandPRIM::where('id', '=', $id)->update(['gernete' => carbon::now()->format('d-m-y H:i')]);
         }
         if (PPAPandPRIM::where('id', '=', $id)->where('ime', '!=', '')->where('quality', '!=', '')->where('test', '!=', '')->where('compras', '!=', '')->where('production', '!=', '')->where('gernete', '!=', '')->update(['count' => 2])) {
@@ -126,12 +120,13 @@ class mailsController extends Controller
                 'jamoreno@mx.bergstrominc.com',
                 'jgarrido@mx.bergstrominc.com',
                 'jcrodriguez@mx.bergstrominc.com',
-                'naldan@mx.bergstrominc.com'
+                'naldan@mx.bergstrominc.com',
             ];
             workScreduleModel::where('pn', '=', $accion->pn)->orderby('id', 'desc')->first()->update(['documentsApproved' => carbon::now()->format('Y-m-d')]);
 
             Mail::to($receivers)->send(new firmasCompletas($accion, 'Firmas Completas NPI'));
         }
+
         return redirect('/Pendigs');
     }
 
@@ -162,15 +157,16 @@ class mailsController extends Controller
                 'dflores@mx.bergstrominc.com',
                 'jrodriguez@mx.bergstrominc.com',
                 'jgamboa@mx.bergstrominc.com',
-                'jguillen@mx.bergstrominc.com'
+                'jguillen@mx.bergstrominc.com',
             ];
             Mail::to($receivers)->send(new desviacionesEmails($accion, 'Desviacion aprobada'));
-        } else  if ($who == 'Jesus_C' or $who == 'Carlos R' or $who == 'Nancy A' or $who == 'Admin' or $who == 'Jorge G') {
+        } elseif ($who == 'Jesus_C' or $who == 'Carlos R' or $who == 'Nancy A' or $who == 'Admin' or $who == 'Jorge G') {
             desviation::where('id', '=', $id)->update(['fing' => carbon::now()->format('d-m-y H:i')]);
         }
 
         return redirect('/Pendigs');
     }
+
     public function desviationDenied(Request $request)
     {
 
@@ -192,7 +188,7 @@ class mailsController extends Controller
             'dflores@mx.bergstrominc.com',
             'jrodriguez@mx.bergstrominc.com',
             'jgamboa@mx.bergstrominc.com',
-            'jguillen@mx.bergstrominc.com'
+            'jguillen@mx.bergstrominc.com',
         ];
         desviation::where('id', '=', $idq)->update(['fing' => carbon::now()->format('d-m-y H:i'), 'fcal' => carbon::now()->format('d-m-y H:i'), 'count' => 5, 'rechazo' => $rechaso]);
         $accion = desviation::where('id', '=', $idq)->first();
@@ -212,21 +208,22 @@ class mailsController extends Controller
         $fecha = $request->input('fecha');
         $returnDate = $request->input('return_date');
 
-
         $receivers = '';
-        $buscarlider=personalBergsModel::select('employeeLider','employeeNumber')->where('employeeName', '=', $nombre)->first();
-        registroVacacionesModel::where('id_empleado', '=', $buscarlider->employeeNumber)->limit($dias)->orderBy('id', 'DESC')->update(['estatus' => 'Confirmado']);
-        $buscaremailLeder=personalBergsModel::select('email')->where('employeeName', '=', $buscarlider->employeeLider)->first();
-        if($buscaremailLeder->email != null){
-            $receivers  = $buscaremailLeder->email;
-        }else{
-        $mail = personalBergsModel::select('email')->where('user', '=', $who)->first();
-        $receivers  = $mail->email;}
+        $buscarlider = personalBergsModel::select('employeeLider', 'employeeNumber')->where('employeeName', '=', $nombre)->first();
+        registroVacacionesModel::where('id_empleado', '=', $buscarlider->employeeNumber)->
+        where('estatus', '=', 'Pendinte RH')->limit($dias)->orderBy('id', 'DESC')->update(['estatus' => 'Confirmado']);
+        $buscaremailLeder = personalBergsModel::select('email')->where('employeeName', '=', $buscarlider->employeeLider)->first();
+        if ($buscaremailLeder->email != null) {
+            $receivers = $buscaremailLeder->email;
+        } else {
+            $mail = personalBergsModel::select('email')->where('user', '=', $who)->first();
+            $receivers = $mail->email;
+        }
 
         $structure = [
             'asunto' => 'Solicitud de Vacaciones Aprobada',
             'nombre' => $nombre,
-            'Folio' => 'VAC-' . $folio,
+            'Folio' => 'VAC-'.$folio,
             'fecha_de_solicitud' => $fecha,
             'fecha_retorno' => $returnDate,
             'departamento' => $area,
@@ -234,12 +231,8 @@ class mailsController extends Controller
             'supervisor' => $who,
         ];
 
-
-
-
-
-            $structure['link'] = 'No es necesario responder este correo, su solicitud de vacaciones ha sido aprobada y registrada en el sistema.';
-            Mail::to($receivers)->send(new solicitudVacacionesMail($structure, 'Solicitud de Vacaciones Aprobada'));
+        $structure['link'] = 'No es necesario responder este correo, su solicitud de vacaciones ha sido aprobada y registrada en el sistema.';
+        Mail::to($receivers)->send(new solicitudVacacionesMail($structure, 'Solicitud de Vacaciones Aprobada'));
 
         return redirect('/Pendigs');
     }
