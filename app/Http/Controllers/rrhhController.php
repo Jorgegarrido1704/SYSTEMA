@@ -454,20 +454,48 @@ class rrhhController extends Controller
         exit;
     }
 
-    public function relogChecador()
+    public function relogChecador(Request $request)
     {
         $value = session('user');
         $cat = session('categoria');
-        $datosRelog = [];
+        $dateRelog = $request->input('datepicker');
+        $datosRelog = $registroRelog = [];
+        $i = 0;
+
         if (empty($value)) {
             return redirect('/');
         }
         $dia = carbon::now()->format('Y-m-d');
-        $datosRelog = DB::table('relogchecador')->get();
-        // $datosRelog = relogChecadorModel::all();
+        // $datosRelog = DB::table('relogchecador')->get();if ($dateRelog != '') {
+        if ($dateRelog != '') {
+            $datosRelog = relogChecadorModel::where('fechaRegistro', '=', $dateRelog)->get();
+
+        } else {
+            $datosRelog = relogChecadorModel::where('fechaRegistro', '=', $dia)->get();
+        }
+        foreach ($datosRelog as $d) {
+            $registroRelog[$i]['empelado'] = $d->employeeNumber;
+            $registroRelog[$i]['entrada'] = $d->entrada;
+            $registroRelog[$i]['salida'] = $d->salida ?? 0;
+            $personal = personalBergsModel::select('typeWorker')->where('employeeNumber', $d->employeeNumber)->first();
+            if ($personal->typeWorker == 'Directo') {
+                $registroRelog[$i]['retardo'] = $d->entrada <= '07:30:59' ? 0 : carbon::parse($d->entrada)->diffInMinutes(carbon::parse('07:30:59'));
+            } else {
+                $registroRelog[$i]['retardo'] = $d->entrada <= '08:00:59' ? 0 : carbon::parse($d->entrada)->diffInMinutes(carbon::parse('08:00:00'));
+            }
+            $registroRelog[$i]['totalHoras'] = round(carbon::parse($d->entrada)->diffInMinutes(carbon::parse($d->salida ?? carbon::now())) / 60, 2) ?? 0;
+            $registroRelog[$i]['desayuno'] = carbon::parse($d->desayunoSalida)->diffInMinutes(carbon::parse($d->desayunoEntrada)) ?? 0;
+            $registroRelog[$i]['comida'] = carbon::parse($d->comidaSalida)->diffInMinutes(carbon::parse($d->comidaEntrada)) ?? 0;
+            $permisos = (carbon::parse($d->permisoSalida)->diffInMinutes(carbon::parse($d->permisoEntrada)) ?? 0);
+            $permisos += (carbon::parse($d->permiso2Salida)->diffInMinutes(carbon::parse($d->permiso2Entrada)) ?? 0);
+            $permisos += (carbon::parse($d->permiso3Salida)->diffInMinutes(carbon::parse($d->permiso3Entrada)) ?? 0);
+            $registroRelog[$i]['permisos'] = $permisos ?? 0;
+            $registroRelog[$i]['comentario'] = $d->comentario ?? 0;
+            $i++;
+        }
         // dd($datosRelog);
 
-        return view('juntas.hrDocs.relojChecador', ['cat' => $cat, 'value' => $value, 'datosRelog' => $datosRelog]);
+        return view('juntas.hrDocs.relojChecador', ['cat' => $cat, 'value' => $value, 'registroRelog' => $registroRelog, 'dateRelog' => $dateRelog]);
     }
 
     public function datosPersonal()
