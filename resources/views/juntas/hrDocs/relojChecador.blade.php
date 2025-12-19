@@ -5,7 +5,7 @@
 
 <div class="d-sm-flex align-items-center justify-content-between mb-4"></div>
 
-            <div class="card-body">
+
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card shadow mb-4">
@@ -57,22 +57,37 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-12">
+                    <div class="col-md-2">
                         <div class="card shadow mb-4">
                             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                <h5 class="m-0 font-weight-bold text-primary">Reportes por fechas</h5>
+                                <h5 class="m-0 font-weight-bold text-primary">Reportes Reloj por fechas</h5>
 
                             </div>
                             <div class="card-body">
-
-                            </div>
+                                <form class="row g-3" action="{{ route('excelRelogChecador') }}" method="POST">
+                                    @csrf
+                                    <div class="row">
+                                        <div class="form-group col-md-12">
+                                        <label for="semana" class="form-label">Reporte de Semana</label>
+                                        </div>
+                                        <div class="form-group col-md-12">
+                                        <select name="semana" id="semana" class="form-control" required>
+                                            <option value="" disabled selected> Seleccione Un Semana</option>
+                                            @for($weekNum; $weekNum>=1 ; $weekNum--)
+                                            <option value="{{$weekNum}}">Semana {{$weekNum}}</option>
+                                            @endfor
+                                        </select>
+                                        </div>
+                                    <div class="form-group col-md-12">
+                                        <button type="submit" class="btn btn-primary">Reporte</button>
+                                    </div>
+                                    </div>
+                                </form>
+                              </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
+
 
 
 

@@ -35,23 +35,26 @@ if (Error) {
                         <button class="btn btn-primary" data-toggle="modal" data-target="#addModal" id="addPersonal" onclick="addEmpleado();" >Agregar personal</button>
                         <button class="btn btn-success" data-toggle="modal" data-target="#addModal" id="modificarEmpleados" onclick="modificarEmpleado();">Modifiar empleado</button>
                        <!-- //reportes de RRHH -->
-                        <form class="row g-3" action="{{ route('reporteSemanlInicidencias') }}" method="POST">
-                            @csrf
-                            <div class="col-md-1">
-                                <label for="semana" class="form-label">Reporte de Semana</label>
-                                <select name="semana" id="semana" class="form-control" required>
-                                    <option value="" disabled selected> Seleccione Un Semana</option>
-                                    @for($weekNum; $weekNum>=1 ; $weekNum--)
-                                    <option value="{{$weekNum}}">Semana {{$weekNum}}</option>
-                                    @endfor
-                                </select>
-
-                            </div>
-                            <div class="col-md-1">
-                                <button type="submit" class="btn btn-primary">Reporte</button>
-                            </div>
-                        </form>
-
+                       
+                         <form class="row g-3" action="{{ route('reporteSemanlInicidencias') }}" method="POST">
+                                    @csrf
+                                    <div class="row">
+                                        <div class="form-group col-md-12">
+                                        <label for="semana" class="form-label">Reporte de Semana</label>
+                                        </div>
+                                        <div class="form-group col-md-12">
+                                        <select name="semana" id="semana" class="form-control" required>
+                                            <option value="" disabled selected> Seleccione Un Semana</option>
+                                            @for($weekNum; $weekNum>=1 ; $weekNum--)
+                                            <option value="{{$weekNum}}">Semana {{$weekNum}}</option>
+                                            @endfor
+                                        </select>
+                                        </div>
+                                    <div class="form-group col-md-12">
+                                        <button type="submit" class="btn btn-primary">Reporte</button>
+                                    </div>
+                                    </div>
+                                </form>
 
                        <!-- //ocultos de modal -->
                         <div id ="AddPersonal" >

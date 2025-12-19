@@ -461,6 +461,7 @@ class rrhhController extends Controller
         $dateRelog = $request->input('datepicker');
         $datosRelog = $registroRelog = [];
         $i = 0;
+        $weekNum = Carbon::now()->weekOfYear;
 
         if (empty($value)) {
             return redirect('/');
@@ -493,9 +494,9 @@ class rrhhController extends Controller
             $registroRelog[$i]['comentario'] = $d->comentario ?? 0;
             $i++;
         }
-        // dd($datosRelog);
 
-        return view('juntas.hrDocs.relojChecador', ['cat' => $cat, 'value' => $value, 'registroRelog' => $registroRelog, 'dateRelog' => $dateRelog]);
+        return view('juntas.hrDocs.relojChecador', ['weekNum' => $weekNum, 'cat' => $cat, 'value' => $value,
+            'registroRelog' => $registroRelog, 'dateRelog' => $dateRelog]);
     }
 
     public function datosPersonal()
@@ -508,5 +509,124 @@ class rrhhController extends Controller
 
         return view('juntas.hrDocs.controlPersonal', ['cat' => $cat, 'value' => $value]);
 
+    }
+
+    public function excelRelogChecador(Request $request)
+    {
+        $week = $request->input('semana');
+        $diaInicialSemana = Carbon::now()->setISODate(Carbon::now()->year, $week, 1);
+        $diaFinalSemana = Carbon::now()->setISODate(Carbon::now()->year, $week, 7);
+        $datosdelPersonalAcumulado = [];
+
+        $spreadsheet = new Spreadsheet;
+        $sheets = $spreadsheet->getActiveSheet();
+        foreach (range('A', 'Z') as $col) {
+            $sheets->getColumnDimension($col)->setAutoSize(true);
+        }
+        $sheets->setTitle('Reloj Checador Semanal ');
+        $sheets->setCellValue('A1', 'Numero de empleado');
+        $sheets->setCellValue('B1', 'Dias de la semana');
+        $sheets->setCellValue('C1', 'Hora de entrada');
+        $sheets->setCellValue('D1', 'Hora de salida');
+        $sheets->setCellValue('E1', 'Tiempo en planta (Horas)');
+        $sheets->setCellValue('F1', 'Tiempo de desayuno (minutos)');
+        $sheets->setCellValue('G1', 'Tiempo de comida (minutos)');
+        $sheets->setCellValue('H1', 'Tiempo de permiso (minutos)');
+        $sheets->setCellValue('I1', 'Tiempo de retardo (minutos)');
+        $sheets->setCellValue('J1', 'Horas extra (horas)');
+        $sheets->setCellValue('K1', 'Horas extra reales (horas)');
+        $sheets->setCellValue('L1', 'Comentarios');
+
+        $i = 2;        // Get data for times
+        $datosTotales = relogChecadorModel::whereBetween('fechaRegistro', [$diaInicialSemana, $diaFinalSemana])->orderBy('employeeNumber', 'asc')->get();
+        foreach ($datosTotales as $d) {
+            $tiempoPlanta = round(carbon::parse($d->entrada)->diffInMinutes(carbon::parse($d->salida ?? carbon::now())) / 60, 2) ?? 0;
+            $desayuno = carbon::parse($d->desayunoSalida)->diffInMinutes(carbon::parse($d->desayunoEntrada)) ?? 0;
+            $comida = carbon::parse($d->comidaSalida)->diffInMinutes(carbon::parse($d->comidaEntrada)) ?? 0;
+            $permisos = (carbon::parse($d->permisoSalida)->diffInMinutes(carbon::parse($d->permisoEntrada)) ?? 0);
+            $permisos += (carbon::parse($d->permiso2Salida)->diffInMinutes(carbon::parse($d->permiso2Entrada)) ?? 0);
+            $permisos += (carbon::parse($d->permiso3Salida)->diffInMinutes(carbon::parse($d->permiso3Entrada)) ?? 0);
+            $retardos = carbon::parse($d->retardoSalida)->diffInMinutes(carbon::parse($d->retardoEntrada)) ?? 0;
+            $personal = personalBergsModel::select('typeWorker')->where('employeeNumber', $d->employeeNumber)->first();
+            if ($personal->typeWorker == 'Directo') {
+                $retardos = $d->entrada <= '07:30:59' ? 0 : carbon::parse($d->entrada)->diffInMinutes(carbon::parse('07:30:59'));
+            } else {
+                $retardos = $d->entrada <= '08:00:59' ? 0 : carbon::parse($d->entrada)->diffInMinutes(carbon::parse('08:00:00'));
+            }
+            $horasExtras = $tiempoPlanta > 10 ? $tiempoPlanta - 10 : 0;
+            $horasExtrasReales = $tiempoPlanta > 10 ? $tiempoPlanta - (10 + round($permisos / 60, 2)) : 0;
+            if (array_key_exists($d->employeeNumber, $datosdelPersonalAcumulado)) {
+                $datosdelPersonalAcumulado[$d->employeeNumber]['tiempoPlanta'] += $tiempoPlanta;
+                $datosdelPersonalAcumulado[$d->employeeNumber]['desayuno'] += $desayuno;
+                $datosdelPersonalAcumulado[$d->employeeNumber]['comida'] += $comida;
+                $datosdelPersonalAcumulado[$d->employeeNumber]['permisos'] += $permisos;
+                $datosdelPersonalAcumulado[$d->employeeNumber]['retardos'] += $retardos;
+                $datosdelPersonalAcumulado[$d->employeeNumber]['horasExtras'] += $horasExtras;
+                $datosdelPersonalAcumulado[$d->employeeNumber]['horasExtrasReales'] += $horasExtrasReales;
+            } else {
+                $datosdelPersonalAcumulado[$d->employeeNumber]['tiempoPlanta'] = $tiempoPlanta;
+                $datosdelPersonalAcumulado[$d->employeeNumber]['desayuno'] = $desayuno;
+                $datosdelPersonalAcumulado[$d->employeeNumber]['comida'] = $comida;
+                $datosdelPersonalAcumulado[$d->employeeNumber]['permisos'] = $permisos;
+                $datosdelPersonalAcumulado[$d->employeeNumber]['retardos'] = $retardos;
+                $datosdelPersonalAcumulado[$d->employeeNumber]['horasExtras'] = $horasExtras;
+                $datosdelPersonalAcumulado[$d->employeeNumber]['horasExtrasReales'] = $horasExtrasReales;
+            }
+
+            $sheets->setCellValue('A'.$i, $d->employeeNumber);
+            $sheets->setCellValue('B'.$i, $d->fechaRegistro);
+            $sheets->setCellValue('C'.$i, $d->entrada);
+            $sheets->setCellValue('D'.$i, $d->salida);
+            $sheets->setCellValue('E'.$i, $tiempoPlanta);
+            $sheets->setCellValue('F'.$i, $desayuno);
+            $sheets->setCellValue('G'.$i, $comida);
+            $sheets->setCellValue('H'.$i, $permisos);
+            $sheets->setCellValue('I'.$i, $retardos);
+            $sheets->setCellValue('J'.$i, $horasExtras);
+            $sheets->setCellValue('K'.$i, $horasExtrasReales);
+            $sheets->setCellValue('L'.$i, $d->comentario);
+            $i++;
+        }
+
+        // Crear hoja para totales
+        $sheet = $spreadsheet->createSheet();
+        $sheet->setTitle('Totales por semana');
+        $sheet->setCellValue('A1', 'Numero de empleado');
+        $sheet->setCellValue('B1', 'Tiempo Total en planta (Horas)');
+        $sheet->setCellValue('C1', 'Tiempo Total de desayuno (minutos)');
+        $sheet->setCellValue('D1', 'Tiempo Total de comida (minutos)');
+        $sheet->setCellValue('E1', 'Tiempo Total de permiso (minutos)');
+        $sheet->setCellValue('F1', 'Tiempo Total de retardo (minutos)');
+        $sheet->setCellValue('G1', 'Horas extra (horas)');
+        $sheet->setCellValue('H1', 'Horas extra reales (horas)');
+
+        foreach (range('A', 'Z') as $col) {
+            $sheet->getColumnDimension($col)->setAutoSize(true);
+        }
+
+        // Agregar datos
+        $row = 2;
+        foreach ($datosdelPersonalAcumulado as $key => $value) {
+            $sheet->setCellValue('A'.$row, $key);
+            $sheet->setCellValue('B'.$row, $value['tiempoPlanta']);
+            $sheet->setCellValue('C'.$row, $value['desayuno']);
+            $sheet->setCellValue('D'.$row, $value['comida']);
+            $sheet->setCellValue('E'.$row, $value['permisos']);
+            $sheet->setCellValue('F'.$row, $value['retardos']);
+            $sheet->setCellValue('G'.$row, $value['horasExtras']);
+            $sheet->setCellValue('H'.$row, $value['horasExtrasReales']);
+            $row++;
+        }
+
+        // Enviar archivo
+        $writer = new Xlsx($spreadsheet);
+        $fileName = 'Reporte_incidencias_semana_'.$week.'.xlsx';
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment; filename="'.$fileName.'"');
+        header('Cache-Control: max-age=0');
+
+        $writer->save('php://output');
+        exit;
     }
 }
