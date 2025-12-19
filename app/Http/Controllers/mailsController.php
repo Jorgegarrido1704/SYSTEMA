@@ -211,7 +211,7 @@ class mailsController extends Controller
         $receivers = '';
         $buscarlider = personalBergsModel::select('employeeLider', 'employeeNumber')->where('employeeName', '=', $nombre)->first();
         registroVacacionesModel::where('id_empleado', '=', $id_emp)->
-        where('estatus', '=', 'Pendinte RH')->limit($dias)->orderBy('id', 'DESC')->update(['estatus' => 'Confirmado']);
+        where('estatus', '=', 'Pendiente RH')->limit($dias)->orderBy('id', 'DESC')->update(['estatus' => 'Confirmado']);
         $buscaremailLeder = personalBergsModel::select('email')->where('employeeName', '=', $buscarlider->employeeLider)->first();
         if ($buscaremailLeder->email != null) {
             $receivers = $buscaremailLeder->email;
