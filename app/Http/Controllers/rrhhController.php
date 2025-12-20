@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Jobs\UpdateRotacionJob;
 use App\Models\assistence;
 use App\Models\personalBergsModel;
+use App\Models\registroVacacionesModel;
 use App\Models\relogChecadorModel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -499,15 +500,23 @@ class rrhhController extends Controller
             'registroRelog' => $registroRelog, 'dateRelog' => $dateRelog]);
     }
 
-    public function datosPersonal()
+    public function datosPersonal(Request $request)
     {
         $value = session('user');
         $cat = session('categoria');
+        $numeroDeEmpleado = 'i'.$request->input('empleado');
         if (empty($value)) {
             return redirect('/');
         }
+        if (empty($numeroDeEmpleado)) {
+            return view('juntas.hrDocs.controlPersonal', ['cat' => $cat, 'value' => $value]);
+        } else {
+            $personalDatos = personalBergsModel::where('employeeNumber', '=', $numeroDeEmpleado)->first();
+            $vaciones = registroVacacionesModel::where('id_empleado', '=', $numeroDeEmpleado)->limit(20)->orderBy('id', 'desc')->get();
 
-        return view('juntas.hrDocs.controlPersonal', ['cat' => $cat, 'value' => $value]);
+            return view('juntas.hrDocs.controlPersonal', ['cat' => $cat, 'value' => $value, 'personalDatos' => $personalDatos,
+                'vaciones' => $vaciones]);
+        }
 
     }
 
