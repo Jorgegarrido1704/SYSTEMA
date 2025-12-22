@@ -542,7 +542,7 @@
             }
         }
 
-        document.forms["formula"].onsubmit = function() {
+       /* document.forms["formula"].onsubmit = function() {
             var peri = document.getElementById('time').value;
             var cantsus = document.getElementById('cant').value
             var text = document.getElementById('texthidden').value = document.getElementById('text').innerHTML;
@@ -623,7 +623,7 @@
             }
         }
         updateSecondSelect();
-
+*/
     </script>
 
 

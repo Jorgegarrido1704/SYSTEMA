@@ -17,9 +17,11 @@ function buscarcodigo1() {
             const defecto = data && data.defecto ? data.defecto : "";
             document.getElementById("1").value = 1;
             var Nok = parseInt(document.getElementById("nok").value);
-            document.getElementById("nok").value = Nok + 1;
+            document.getElementById("nok").value = suma();
             if (defecto != "") {
                 document.getElementById("rest_code1").value = defecto;
+                document.getElementById("responsable1").minlenth = 4;
+
             }
 
         })
@@ -51,9 +53,10 @@ function buscarcodigo2() {
 
             document.getElementById("2").value = 1;
             var Nok = parseInt(document.getElementById("nok").value);
-            document.getElementById("nok").value = Nok + 1;
+            document.getElementById("nok").value = suma();
             if (defecto != "") {
                 document.getElementById("rest_code2").value = defecto;
+                 document.getElementById("responsable2").minlenth = 4;
             } else {
                 document.getElementById("rest_code2").value = data;
             }
@@ -81,9 +84,10 @@ function buscarcodigo3() {
             const defecto = data && data.defecto ? data.defecto : "";
             document.getElementById("3").value = 1;
             var Nok = parseInt(document.getElementById("nok").value);
-            document.getElementById("nok").value = Nok + 1;
+            document.getElementById("nok").value = suma();
             if (defecto != "") {
                 document.getElementById("rest_code3").value = defecto;
+                 document.getElementById("responsable3").minlenth = 4;
             } else {
                 document.getElementById("rest_code3").value = data;
             }
@@ -111,9 +115,10 @@ function buscarcodigo4() {
             const defecto = data && data.defecto ? data.defecto : "";
             document.getElementById("4").value = 1;
             var Nok = parseInt(document.getElementById("nok").value);
-            document.getElementById("nok").value = Nok + 1;
+            document.getElementById("nok").value = suma();
             if (defecto != "") {
                 document.getElementById("rest_code4").value = defecto;
+                 document.getElementById("responsable4").minlenth = 4;
             } else {
                 document.getElementById("rest_code4").value = data;
             }
@@ -141,9 +146,10 @@ function buscarcodigo5() {
             const defecto = data && data.defecto ? data.defecto : "";
             document.getElementById("5").value = 1;
             var Nok = parseInt(document.getElementById("nok").value);
-            document.getElementById("nok").value = Nok + 1;
+            document.getElementById("nok").value = suma();
             if (defecto != "") {
                 document.getElementById("rest_code5").value = defecto;
+                 document.getElementById("responsable5").minlenth = 4;
             } else {
                 document.getElementById("rest_code5").value = data;
             }
@@ -152,6 +158,16 @@ function buscarcodigo5() {
             console.error("Error:", error);
         });
 }
+function suma() {
+    var checkNok = 0;
+
+    checkNok = document.getElementById("codigo1").value !== "" ? checkNok+1 : checkNok ;
+    checkNok = document.getElementById("codigo2").value !== "" ? checkNok + 1 : checkNok;
+    checkNok = document.getElementById("codigo3").value !== "" ? checkNok + 1 : checkNok;
+    checkNok = document.getElementById("codigo4").value !== "" ? checkNok + 1 : checkNok;
+    checkNok = document.getElementById("codigo5").value !== "" ? checkNok + 1 : checkNok;
+
+    return checkNok;}
 function checkCant() {
     var checkNok = document.getElementById("nok").value;
     var checkNok = parseInt(checkNok);
@@ -310,4 +326,5 @@ function empleado5() {
             console.error("Error:", error);
         });
 }
+
 

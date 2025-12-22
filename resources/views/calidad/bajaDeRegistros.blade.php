@@ -28,7 +28,7 @@
                                               </div>
 
                                                     <br>
-                                                    <form action="{{route('saveData')}}" method="POST">
+                                                    <form action="{{route('saveData')}}" method="POST" id="formCalidad">
                                                         @csrf
                                         <div> <h4>OK<input type="number" style="width:80px;margin-right:80px;" name="ok" id="ok" value="0"  max="{{ $cambioestados[0] }}" onchange="return checkOk()">
                                                NOK<input type="number" style="width: 80px;margin-right:80px" name="nok" id="nok" value="0"  max="5" onchange="return checkOk()"></h4></div>
@@ -50,7 +50,7 @@
                                             <div class=" col-md-6 mt-6">
                                                 <div class="d-flex justify-content-center">Code #1</div>
                                                 <div class="d-flex justify-content-center">
-                                                <input type="text" style="width:80px;" name="codigo1" id="codigo1" onchange="buscarcodigo1()">
+                                                <input type="text" style="width:80px;" name="codigo1" id="codigo1" value="" onchange="buscarcodigo1()">
                                                 <input type="text" style="width:280px;" name="rest_code1" id="rest_code1">
                                                 </div>
                                             </div>
@@ -61,7 +61,7 @@
                                                 </div>
                                                 <div class="d-flex justify-content-center">
                                                     <input type="text" style="width: 80px;margin-right:80px"
-                                                    name="responsable1" id="responsable1" value="000" minlength="4" maxlength="4" onchange="empleado1()">
+                                                    name="responsable1" id="responsable1" value="00" minlength="4" maxlength="4" onchange="empleado1()">
                                                         <input type="text" style="width: 380px;margin-right:80px" name="resp1" id="resp1" readonly>
                                                     High Rework<input type="checkbox" name="check1" id="check1" value="1">
                                             </div>
@@ -73,7 +73,7 @@
                                             <div class=" col-md-6 mt-6">
                                                 <div class="d-flex justify-content-center">Code #2</div>
                                                 <div class="d-flex justify-content-center">
-                                                <input type="text" style="width:80px;" name="codigo2" id="codigo2" onchange="buscarcodigo2()">
+                                                <input type="text" style="width:80px;" name="codigo2" id="codigo2" value="" onchange="buscarcodigo2()">
                                                 <input type="text" style="width:280px;" name="rest_code2" id="rest_code2">
                                                 </div>
                                             </div>
@@ -84,7 +84,7 @@
                                                 </div>
                                                 <div class="d-flex justify-content-center">
                                                     <input type="text" style="width: 80px;margin-right:80px"
-                                                    name="responsable2" id="responsable2" value="000" minlength="4" maxlength="4" onchange="empleado2()">
+                                                    name="responsable2" id="responsable2" value="00" minlength="4" maxlength="4" onchange="empleado2()">
                                                         <input type="text" style="width: 380px;margin-right:80px" name="resp2" id="resp2" readonly>
                                                     High Rework<input type="checkbox" name="check2" id="check2" value="1">
                                             </div>
@@ -107,7 +107,7 @@
                                                 </div>
                                                 <div class="d-flex justify-content-center">
                                                     <input type="text" style="width: 80px;margin-right:80px"
-                                                    name="responsable3" id="responsable3" value="000" minlength="4" maxlength="4" onchange="empleado3()">
+                                                    name="responsable3" id="responsable3" value="00" minlength="4" maxlength="4" onchange="empleado3()">
                                                         <input type="text" style="width: 380px;margin-right:80px" name="resp3" id="resp3" readonly>
                                                     High Rework<input type="checkbox" name="check3" id="check3" value="1">
                                             </div>
@@ -130,7 +130,7 @@
                                                 </div>
                                                 <div class="d-flex justify-content-center">
                                                     <input type="text" style="width: 80px;margin-right:80px"
-                                                    name="responsable4" id="responsable4" value="000" minlength="4" maxlength="4" onchange="empleado4()">
+                                                    name="responsable4" id="responsable4" value="00" minlength="4" maxlength="4" onchange="empleado4()">
                                                         <input type="text" style="width: 380px;margin-right:80px" name="resp4" id="resp4" readonly>
                                                     High Rework<input type="checkbox" name="check4" id="check4" value="1">
                                             </div>
@@ -154,7 +154,7 @@
                                                 </div>
                                                 <div class="d-flex justify-content-center">
                                                     <input type="text" style="width: 80px;margin-right:80px"
-                                                    name="responsable5" id="responsable5" value="000" minlength="4" maxlength="4" onchange="empleado5()">
+                                                    name="responsable5" id="responsable5" value="00" minlength="4" maxlength="4" onchange="empleado5()">
                                                         <input type="text" style="width: 380px;margin-right:80px" name="resp5" id="resp5" readonly>
                                                     High Rework<input type="checkbox" name="check5" id="check5" value="1">
                                                 </div>
@@ -193,7 +193,24 @@
                             </div>
                         </div>
             </div>
+<script>
+    //
+document.getElementById("formCalidad").addEventListener("submit", function (event) {
+    event.preventDefault();
 
+    for (let i = 1; i <= 5; i++) {
+        const codigo = document.getElementById(`codigo${i}`).value;
+        const responsable = document.getElementById(`responsable${i}`).value;
+
+        if (codigo !== "" && responsable.length < 4) {
+            return false;
+        }
+    }
+
+    this.submit();
+});
+
+</script>
 
 
 @endsection
