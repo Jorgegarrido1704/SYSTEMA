@@ -50,7 +50,10 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                    @endif
+                                    <script>
+                                        var datos= @json($tipos);
+                                        console.log(datos);
+                                    </script>
 
                                 <div class="col-md-12">
                                     <div class="row">
@@ -81,10 +84,46 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="col-md-8">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="card shadow mb-4">
+                                                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                                            <h5 class="m-0 font-weight-bold text-primary">Comportamientos ultimos 6 meses</h5>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <div class="col-md-12 overflow-auto">
+                                                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Faltas</th>
+                                                                            <th>Incapacidades</th>
+                                                                            <th>Asistencias</th>
+                                                                            <th>Permisos</th>
+                                                                            <th>Retardos</th>
+                                                                            <th>Suspenciones</th>
+                                                                            <th>Vacaciones</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+<tr>
+                                                                        @foreach ($tipos as $tipo=> $valores)
 
+                                                                            <td>{{ $valores}}</td>
+
+                                                                        @endforeach
+                                                                         </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-
+                                 @endif
                             </div>
                         </div>
                     </div>

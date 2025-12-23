@@ -505,6 +505,10 @@ class rrhhController extends Controller
         $value = session('user');
         $cat = session('categoria');
         $numeroDeEmpleado = 'i'.$request->input('empleado');
+        $weekless6months = Carbon::now()->subMonths(6)->weekOfYear;
+        $yearless6months = Carbon::now()->subMonths(6)->year;
+        $year = Carbon::now()->year;
+        $tipos = [];
         if (empty($value)) {
             return redirect('/');
         }
@@ -513,9 +517,48 @@ class rrhhController extends Controller
         } else {
             $personalDatos = personalBergsModel::where('employeeNumber', '=', $numeroDeEmpleado)->first();
             $vaciones = registroVacacionesModel::where('id_empleado', '=', $numeroDeEmpleado)->limit(20)->orderBy('id', 'desc')->get();
+            $comportatiento = assistence::select('lunes', 'martes', 'miercoles', 'jueves', 'viernes')
+                ->where('id_empleado', $numeroDeEmpleado)
+                ->where(function ($q) use ($yearless6months, $year, $weekless6months) {
+                    if ($yearless6months != $year) {
+                        $q->where([
+                            ['week', '>=', $weekless6months],
+                            ['yearOfAssistence', '=', $yearless6months],
+                        ])->orWhere('yearOfAssistence', '=', $year);
+                    } else {
+                        $q->where([
+                            ['week', '>=', $weekless6months],
+                            ['yearOfAssistence', '=', $year],
+                        ]);
+                    }
+                })
+                ->orderBy('week', 'asc')
+                ->get();
+            $tipos = [
+                'OK' => 0,
+                'R' => 0,
+                'PCS' => 0,
+                'V' => 0,
+                'F' => 0,
+                'INC' => 0,
+                'SUS' => 0,
+            ];
+
+            foreach ($comportatiento as $c) {
+                foreach (['lunes', 'martes', 'miercoles', 'jueves', 'viernes'] as $dia) {
+                    if (! empty($c->$dia) && $c->$dia != '-') {
+                        if ($c->$dia == 'PSS') {
+                            $tipos['PCS'] = ($tipos[$c->$dia] ?? 0) + 1;
+                        } else {
+                            $tipos[$c->$dia] = ($tipos[$c->$dia] ?? 0) + 1;
+                        }
+                    }
+                }
+            }
+            ksort($tipos);
 
             return view('juntas.hrDocs.controlPersonal', ['cat' => $cat, 'value' => $value, 'personalDatos' => $personalDatos,
-                'vaciones' => $vaciones]);
+                'vaciones' => $vaciones, 'tipos' => $tipos]);
         }
 
     }

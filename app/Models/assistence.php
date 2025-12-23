@@ -15,7 +15,7 @@ class assistence extends Model
             'week', 'lider', 'name', 'lunes', 'extLunes', 'martes', 'extMartes', 'miercoles', 'extMiercoles', 'jueves',
             'extJueves', 'viernes', 'extViernes', 'sabado', 'extSabado', 'domingo', 'extDomingo', 'bonoAsistencia', 'bonoPuntualidad',
             'extras', 'tiempoPorTiempo', 'id_empleado', 'tt_lunes', 'tt_martes', 'tt_miercoles', 'tt_jueves', 'tt_viernes', 'tt_sabado',
-            'tt_domingo',
+            'tt_domingo', 'yearOfAssistence',
         ];
 
     protected $primaryKey = 'id';
