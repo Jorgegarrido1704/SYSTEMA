@@ -18,10 +18,10 @@ class Kernel extends ConsoleKernel
     {
         // save rotation daily
         $schedule->job(new \App\Jobs\UpdateRotacionJob)
-            ->cron('10 6,8 * * *')
+            ->cron('3 3,7 * * *')
             ->timezone('America/Mexico_City');
 
-        $schedule->job(new \App\Jobs\VacacionesRegistrosJob)->cron('1 0,7 * * *');
+        $schedule->job(new \App\Jobs\VacacionesRegistrosJob)->cron('1 2,7 * * *');
 
         $schedule->job(new \App\Jobs\accionesCorrectivasJob)->dailyAt('07:00');
         // Data base backup
