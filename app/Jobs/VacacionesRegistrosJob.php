@@ -2,14 +2,14 @@
 
 namespace App\Jobs;
 
+use App\Models\personalBergsModel;
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-use App\Models\personalBergsModel;
 
 class VacacionesRegistrosJob implements ShouldQueue
 {
@@ -28,8 +28,7 @@ class VacacionesRegistrosJob implements ShouldQueue
      */
     public function handle(): void
     {
-         $empleados = personalBergsModel::where('status', 'Activo')->get();
-
+        $empleados = personalBergsModel::where('status', 'Activo')->get();
 
         $hoy = Carbon::now();
         $anio = $hoy->year;
@@ -43,7 +42,7 @@ class VacacionesRegistrosJob implements ShouldQueue
             $anosEnEmpleado = ($difference < 0) ? $anio - $empleadoIngreso->year : ($anio + 1) - $empleadoIngreso->year;
 
             // Determinar días de vacaciones según antigüedad
-            $diasVacaciones = match(true) {
+            $diasVacaciones = match (true) {
                 $anosEnEmpleado == 1 => 12,
                 $anosEnEmpleado == 2 => 14,
                 $anosEnEmpleado == 3 => 16,
@@ -63,12 +62,9 @@ class VacacionesRegistrosJob implements ShouldQueue
                 $diasVacacionesPendientes = intval(($diasVacaciones / 365) * (365 - $absDifference));
 
                 $menos = DB::table('registro_vacaciones')
-                    ->where(function($q) use ($emp) {
-                        $q->where('id_empleado', $emp->employeeNumber)
-                          ->orWhere('id_empleado', 'like', $emp->employeeLider.'-%')
-                          ->orWhere('id_empleado', 'like', '%-'.$emp->employeeLider);
+                    ->where(function ($q) use ($emp) {
+                        $q->where('id_empleado', $emp->employeeNumber);
                     })
-                    ->where('fecha_de_solicitud', 'like', "$anio%")
                     ->where('usedYear', $anio)
                     ->count();
 
@@ -79,18 +75,15 @@ class VacacionesRegistrosJob implements ShouldQueue
                     ->where('id', $emp->id)
                     ->update([
                         'currentYear' => $diasVacacionesPendientes,
-                        'DaysVacationsAvailble' => $total
+                        'DaysVacationsAvailble' => $total,
                     ]);
             } else {
                 $diasVacacionesPendientes = intval(($diasVacaciones / 365) * $difference);
 
                 $menos = DB::table('registro_vacaciones')
-                    ->where(function($q) use ($emp) {
-                        $q->where('id_empleado', $emp->employeeNumber)
-                          ->orWhere('id_empleado', 'like', $emp->employeeLider.'-%')
-                          ->orWhere('id_empleado', 'like', '%-'.$emp->employeeLider);
+                    ->where(function ($q) use ($emp) {
+                        $q->where('id_empleado', $emp->employeeNumber);
                     })
-                    ->where('fecha_de_solicitud', 'like', "$anio%")
                     ->where('usedYear', $nextYear)
                     ->count();
 
@@ -101,10 +94,10 @@ class VacacionesRegistrosJob implements ShouldQueue
                     ->where('id', $emp->id)
                     ->update([
                         'nextYear' => $diasVacacionesPendientes,
-                        'DaysVacationsAvailble' => $total
+                        'DaysVacationsAvailble' => $total,
                     ]);
             }
 
+        }
     }
-}
 }
