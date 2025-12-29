@@ -20,6 +20,7 @@ class rrhhController extends Controller
 {
     public function rrhhDashBoard()
     {
+
         $value = session('user');
         $cat = session('categoria');
         $leadername = personalBergsModel::select('employeeName')->where('user', '=', $value)->first();
@@ -51,8 +52,8 @@ class rrhhController extends Controller
 
     public function updateAsistencia(Request $request)
     {
-        $week = date('W');
-
+        $week = intval(date('W'));
+        $year = $week <= 1 ? Carbon::now()->year + 1 : Carbon::now()->year;
         $validated = $request->validate([
             'lun' => 'required|array',
             'extra_lun' => 'required|array',
@@ -106,7 +107,8 @@ class rrhhController extends Controller
             ];
 
             assistence::where('id_empleado', $id_empleado)
-                ->where('week', 1)
+                ->where('week', $week)
+                ->where('yearOfAssistence', '=', $year)
                 ->update($updateData);
         }
         // send a job to update rotacion

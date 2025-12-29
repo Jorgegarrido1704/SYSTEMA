@@ -68,16 +68,18 @@ class assistence extends Model
 
     public function scopeLeader($query, $leader)
     {
-        $week = date('W');
-        $dayNum = carbon::now()->dayOfWeek;
+        $week = Carbon::now()->weekOfYear;
+
+        $year = $week <= 1 ? Carbon::now()->year + 1 : Carbon::now()->year;
+        $dayNum = Carbon::now()->dayOfWeek;
 
         $dias = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
-        $diaActual = carbon::now()->dayOfWeek == '0' ? $dias[6] : $dias[$dayNum - 1];
+        $diaActual = Carbon::now()->dayOfWeek == '0' ? $dias[6] : $dias[$dayNum - 1];
 
         if ($leader == 'Admin' or $leader == 'Paola A' or $leader == 'Angy B') {
-            return $query->where('week', 1)->OrderBy($diaActual, 'ASC');
+            return $query->where('week', $week)->where('yearOfAssistence', $year)->OrderBy($diaActual, 'ASC')->OrderBy($diaActual, 'ASC');
         } else {
-            return $query->where('week', 1)->where('lider', 'LIKE', '%'.$leader.'%')->OrderBy($diaActual, 'ASC')->OrderBy($diaActual, 'ASC');
+            return $query->where('week', $week)->where('yearOfAssistence', $year)->where('lider', 'LIKE', '%'.$leader.'%')->OrderBy($diaActual, 'ASC')->OrderBy($diaActual, 'ASC');
         }
     }
 }

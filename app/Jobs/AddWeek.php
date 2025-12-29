@@ -3,16 +3,13 @@
 namespace App\Jobs;
 
 use App\Models\assistence;
+use App\Models\personalBergsModel;
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Carbon\Carbon;
-use App\Models\personalBergsModel;
-use Illuminate\Support\Facades\DB;
-
-
 
 class AddWeek implements ShouldQueue
 {
@@ -31,7 +28,9 @@ class AddWeek implements ShouldQueue
      */
     public function handle(): void
     {
-        $week = carbon::now()->weekOfYear;
+
+        $week = intval(date('W'));
+        $year = $week <= 1 ? Carbon::now()->year + 1 : Carbon::now()->year;
         $today = Carbon::now()->dayOfWeekIso;
         $days = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
         $day = $days[$today - 1];
@@ -41,7 +40,7 @@ class AddWeek implements ShouldQueue
             '2025-12-12',
             '2025-12-25',
             '2025-12-26',
-            '2026-01-02'
+            '2026-01-02',
         ];
 
         $registrosEmpleados = personalBergsModel::where('status', '!=', 'Baja')->get();
@@ -53,29 +52,30 @@ class AddWeek implements ShouldQueue
                     'week' => $week,
                     'lider' => $registroEmpleado->employeeLider,
                     'name' => $registroEmpleado->employeeName,
+                    'yearOfAssistence' => $year,
                 ]);
             }
-            if(in_array($dates,$hollyDays)){
+            if (in_array($dates, $hollyDays)) {
                 assistence::where('week', '=', $week)
-          ->where('id_empleado', '=', $registroEmpleado->employeeNumber)
-          ->update([$day => 'PCS']);
-            }else{
-            switch ($registroEmpleado->typeWorker) {
+                    ->where('id_empleado', '=', $registroEmpleado->employeeNumber)
+                    ->update([$day => 'PCS']);
+            } else {
+                switch ($registroEmpleado->typeWorker) {
 
-                case 'Indirecto':
-                    assistence::where('week', '=', $week)->where('id_empleado', '=', $registroEmpleado->employeeNumber)->update([$day => 'OK']);
-                    break;
-                case 'Practicante':
-                    assistence::where('week', '=', $week)->where('id_empleado', '=', $registroEmpleado->employeeNumber)->update([$day => 'PCT']);
-                    break;
-                case 'Asimilado':
-                    assistence::where('week', '=', $week)->where('id_empleado', '=', $registroEmpleado->employeeNumber)->update([$day => 'ASM']);
-                    break;
-                case 'Servicio comprado':
-                    assistence::where('week', '=', $week)->where('id_empleado', '=', $registroEmpleado->employeeNumber)->update([$day => 'SCE']);
-                    break;
+                    case 'Indirecto':
+                        assistence::where('week', '=', $week)->where('id_empleado', '=', $registroEmpleado->employeeNumber)->update([$day => 'OK']);
+                        break;
+                    case 'Practicante':
+                        assistence::where('week', '=', $week)->where('id_empleado', '=', $registroEmpleado->employeeNumber)->update([$day => 'PCT']);
+                        break;
+                    case 'Asimilado':
+                        assistence::where('week', '=', $week)->where('id_empleado', '=', $registroEmpleado->employeeNumber)->update([$day => 'ASM']);
+                        break;
+                    case 'Servicio comprado':
+                        assistence::where('week', '=', $week)->where('id_empleado', '=', $registroEmpleado->employeeNumber)->update([$day => 'SCE']);
+                        break;
+                }
             }
-        }
         }
     }
 }
