@@ -106,7 +106,7 @@ class rrhhController extends Controller
             ];
 
             assistence::where('id_empleado', $id_empleado)
-                ->where('week', $week)
+                ->where('week', 1)
                 ->update($updateData);
         }
         // send a job to update rotacion
