@@ -75,9 +75,9 @@ class assistence extends Model
         $diaActual = carbon::now()->dayOfWeek == '0' ? $dias[6] : $dias[$dayNum - 1];
 
         if ($leader == 'Admin' or $leader == 'Paola A' or $leader == 'Angy B') {
-            return $query->where('week', $week)->OrderBy($diaActual, 'ASC');
+            return $query->where('week', 1)->OrderBy($diaActual, 'ASC');
         } else {
-            return $query->where('week', $week)->where('lider', 'LIKE', '%'.$leader.'%')->OrderBy($diaActual, 'ASC')->OrderBy($diaActual, 'ASC');
+            return $query->where('week', 1)->where('lider', 'LIKE', '%'.$leader.'%')->OrderBy($diaActual, 'ASC')->OrderBy($diaActual, 'ASC');
         }
     }
 }
