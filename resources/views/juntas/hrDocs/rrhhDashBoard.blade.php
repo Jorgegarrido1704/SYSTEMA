@@ -316,12 +316,11 @@ if (Error) {
     function buscarempleado() {
       let  dato=document.getElementById("nombreEmpleado").value;
       console.log(dato);
-      const url = "{{ route('modificarEmpleado') }}";
-      const codigoValue = dato;
+      const url = "{{ route('modificarEmpleado') }}?dato="+dato;
       fetch(url, { method: 'GET',
                     headers: {   'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')  },
-                    body: JSON.stringify({ dato: codigoValue }),   })
+                      })
                 .then(response => response.json())
                 .then(data => {  console.log(data);
                        const registros = document.getElementById('datos');
