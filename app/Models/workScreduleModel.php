@@ -69,6 +69,7 @@ class workScreduleModel extends Model
                 $datos[$mes][1]++; // malos
             }
         }
+        dd($registros);
 
         return $datos;
     }

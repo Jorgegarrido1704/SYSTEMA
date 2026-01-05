@@ -1142,7 +1142,7 @@ class juntasController extends Controller
         $last12Months = $thisYearGoals = $registrosArray = $buenos = $malos = [];
         $registrosmes = $retasoPorPlan = [];
         $registrosArray = workScreduleModel::getWorkScheduleCompleted(date('Y'));
-        dd($registrosArray);
+
         foreach ($registrosArray as $registro => $valor) {
             if ($valor[0] == 0) {
                 $thisYearGoals[$registro] = 0;
