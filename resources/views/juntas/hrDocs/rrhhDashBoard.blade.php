@@ -414,7 +414,7 @@ if (Error) {
             }
 
         function altaEmpleado(valor){
-            const url = "{{ route('editarEmepleado') }}";
+
 
             const nameEmployee = document.getElementById("nameEmployee_"+valor).value;
             const id_employee = document.getElementById("id_employee_"+valor).value;
@@ -423,29 +423,15 @@ if (Error) {
             const genero = document.getElementById("genero_"+valor).value;
             const status = document.getElementById("status_"+valor).value;
             const typeWorker = document.getElementById("typeWorker_"+valor).value;
+    const url = "{{ route('editarEmepleado') }}?valor="+valor+"&id_employee="+id_employee+"&nameEmployee="+nameEmployee+
+    "&lider="+lider+"&area="+area+"&genero="+genero+"&status="+status+"&typeWorker="+typeWorker;
 
-            const codigoValue = {
-                valor: valor,
-                nameEmployee: nameEmployee,
-                id_employee: id_employee,
-                lider: lider,
-                area: area,
-                genero: genero,
-                status: status,
-                typeWorker: typeWorker
-            };
             console.log(codigoValue);
 
-            fetch(url, { method: 'POST',
+            fetch(url, { method: 'GET',
                 headers: {   'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')  },
-                body: JSON.stringify({ nameEmployee: nameEmployee,valor: valor,
-                id_employee: id_employee,
-                lider: lider,
-                area: area,
-                genero: genero,
-                status: status,
-                typeWorker: typeWorker }),   })
+                  })
                 .then(response => response.json())
                 .then(data => {  console.log(data);
                     alert(data);
