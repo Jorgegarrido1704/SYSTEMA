@@ -51,30 +51,21 @@ class workScreduleModel extends Model
     public static function getWorkScheduleCompleted($year)
     {
         $datos = [];
-        $last13Months = [];
-        for ($i = 1; $i < 13; $i++) {
-            $month = date('Y-m', strtotime('-'.$i.' month'));
-            $last13Months[] = $month;
-
+        for ($i = 1; $i <= 12; $i++) {
+            $datos[$i] = [0, 0]; // [buenos, malos]
         }
+        $last12MonthsfirstDay = Carbon::now()->subMonth()->subMonths(12)->startOfMonth()->format('Y-m-d');
+        $lastMonthlastDay = Carbon::now()->subMonth()->endOfMonth()->format('Y-m-d');
+        $registros = workScreduleModel::whereBetween('CompletionDate', [$last12MonthsfirstDay, $lastMonthlastDay])->where('CompletionDate', 'LIKE', $last12MonthsfirstDay.'-%')->where('status', 'Completed')
+            ->orderBy('CompletionDate', 'DESC')
+            ->get();
 
-        foreach ($last13Months as $meses) {
-            $mes = explode('-', $meses)[1];
-            $datos[$mes] = [0, 0]; // [buenos, malos]
-            if ($mes < 10) {
-                $mes = '0'.$mes;
-            }
-            $registros = workScreduleModel::where('CompletionDate', 'LIKE', $meses.'-%')->where('status', 'Completed')
-                ->orderBy('CompletionDate', 'DESC')
-                ->get();
-            $mes = intval($mes);
-            foreach ($registros as $registro) {
-
-                if ($registro->commitmentDate >= $registro->CompletionDate) {
-                    $datos[$mes][0]++; // buenos
-                } else {
-                    $datos[$mes][1]++; // malos
-                }
+        foreach ($registros as $registro) {
+            $mes = (int) date('m', strtotime($registro->CompletionDate));
+            if ($registro->commitmentDate >= $registro->CompletionDate) {
+                $datos[$mes][0]++; // buenos
+            } else {
+                $datos[$mes][1]++; // malos
             }
         }
 
