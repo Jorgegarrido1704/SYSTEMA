@@ -1299,6 +1299,7 @@ class juntasController extends Controller
         }
         $enproceso = count($registros);
         $totalgeneral += $i;
+        $registoPorFirmas = [];
         $tiemposDatosTiemposPlaning = workScreduleModel::select('pn', 'CompletionDate', 'UpOrderDate', 'documentsApproved')->where('status', '=', 'Completed')
             ->whereRaw('MONTH(STR_TO_DATE(CompletionDate, "%Y-%m-%d")) = ?', [date('m', strtotime('-1 month'))])
             ->WhereRaw('YEAR(STR_TO_DATE(CompletionDate, "%Y-%m-%d")) = ?', [date('Y')])
