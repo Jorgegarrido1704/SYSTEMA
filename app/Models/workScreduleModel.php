@@ -55,7 +55,7 @@ class workScreduleModel extends Model
         for ($i = 1; $i <= 12; $i++) {
             $datos[$i] = [0, 0]; // [buenos, malos]
         }
-        $last12MonthsfirstDay = Carbon::now()->subMonth()->subMonths(12)->startOfMonth()->format('Y-m-d');
+        $last12MonthsfirstDay = Carbon::now()->subMonths(12)->startOfMonth()->format('Y-m-d');
         $lastMonthlastDay = Carbon::now()->subMonth()->endOfMonth()->format('Y-m-d');
         $registros = workScreduleModel::whereBetween('CompletionDate', [$last12MonthsfirstDay, $lastMonthlastDay])->where('CompletionDate', 'LIKE', $last12MonthsfirstDay.'-%')->where('status', 'Completed')
             ->orderBy('CompletionDate', 'DESC')
