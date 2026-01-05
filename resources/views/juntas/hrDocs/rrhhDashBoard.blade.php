@@ -35,7 +35,7 @@ if (Error) {
                         <button class="btn btn-primary" data-toggle="modal" data-target="#addModal" id="addPersonal" onclick="addEmpleado();" >Agregar personal</button>
                         <button class="btn btn-success" data-toggle="modal" data-target="#addModal" id="modificarEmpleados" onclick="modificarEmpleado();">Modifiar empleado</button>
                        <!-- //reportes de RRHH -->
-                       
+
                          <form class="row g-3" action="{{ route('reporteSemanlInicidencias') }}" method="POST">
                                     @csrf
                                     <div class="row">
@@ -331,7 +331,7 @@ if (Error) {
             const emp = data[i];
 
             table += `
-            <form action="{{ route('modificarEmpleado') }}" method="POST">
+            <form action="{{ route('modificarEmpleado') }}" method="GET">
             <tr>
                 <td><input type="text" id="nameEmployee_${emp.employeeNumber}" maxlength="45" minlength="9" value="${emp.employeeName}"></td>
                 <td><input type="text" id="id_employee_${emp.employeeNumber}" maxlength="4" minlength="4" value="${emp.employeeNumber.substring(1, 5)}"></td>
