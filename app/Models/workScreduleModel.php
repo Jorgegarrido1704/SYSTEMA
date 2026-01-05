@@ -69,7 +69,7 @@ class workScreduleModel extends Model
                 $datos[$mes][1]++; // malos
             }
         }
-        dd($last12MonthsfirstDay, $lastMonthlastDay, $registros, $datos);
+        // dd($last12MonthsfirstDay, $lastMonthlastDay, $registros, $datos);
 
         return $datos;
     }
