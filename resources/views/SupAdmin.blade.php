@@ -5,6 +5,7 @@
 
  <script>const routeMostrarWo = @json(route('datosOrdenes'));
     const updateDatos = @json(route('altaDatos'));
+    const routeQualityIssues = @json(route('qualityIssues'));
  </script>
 <script src="{{ asset('/dash/js/mostrarWo.js')}}"></script>
 <style>
@@ -133,6 +134,7 @@
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                     <h5 class="m-0 font-weight-bold text-primary">Part Numbers</h5>
+
                                     <div class="dropdown no-arrow">
                                         <label for="buscarWo" class="form-label">Search</label>
                                         <input type="text" name="buscarWo" id="buscarWo" class="form-control " onchange="mostrarWo(this.value)">
@@ -254,11 +256,33 @@
                             <!-- AREAS -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h5 class="m-0 font-weight-bold text-primary">Registros</h5>
+                                     <div class="row">
+                                        <div class="col-md-5">
+                                    <h5 class="m-0 font-weight-bold text-primary">Quality issues</h5>
+                                        </div>
+                                        <div class="col-md-7">
+                                               <div class="row" id="fechasQuality">
+                                                    <div class="col-md-6">
+                                                        <label for="fechasQuality" class="form-label">Set date</label>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                    <input type="date" name="fechasQuality" id="fechasQuality" class="form-control "  onchange="cambiofecha()">
+                                                    </div>
+                                                </div>
+                                            <div class="row" id="searchQualityIssues" style="display:none;">
+                                                    <div class="col-md-8">
+                                                        <label for="PartNumQuality" class="form-label">Search by Part Number</label>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                    <input type="text" name="PartNumQuality" id="PartNumQuality" class="form-control " placeholder="Search by Part Number" onchange="mostrarQualityIssues(this.value)">
+                                                    </div>
+                                            </div>
+                                        </div>
                                 </div>
-                                <div class="card-body" style="overflow-y: auto; height: 360px;" id="tableChange">
+                            </div>
+                                <div class="card-body" style="overflow-y: auto; height: 360px;" >
                                     <div class="row" >
-
+                                        <div id="table-qualityIssues"></div>
 
                                     </div>
                                 </div>

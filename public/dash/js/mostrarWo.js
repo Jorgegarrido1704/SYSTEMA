@@ -82,3 +82,22 @@ function submitForm(formId) {
     });
 }
 
+function mostrarQualityIssues(QualityIssues) {
+    $.ajax({
+        url: routeQualityIssues,
+        method: 'GET',
+        data: { buscarQualityIssues: QualityIssues },
+        dataType: 'json',
+        success: function(response) {
+            $('#table-qualityIssues').html(response.tableQualityIssues);
+        },
+        error: function(xhr, status, error) {
+            console.error(error);
+        }
+    });
+}
+
+function cambiofecha(){
+    document.getElementById('fechasQuality').style.display='none';
+    document.getElementById('searchQualityIssues').style.display='block';
+}
