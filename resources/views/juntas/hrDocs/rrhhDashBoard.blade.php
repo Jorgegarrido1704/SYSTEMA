@@ -426,8 +426,6 @@ if (Error) {
     const url = "{{ route('editarEmepleado') }}?valor="+valor+"&id_employee="+id_employee+"&nameEmployee="+nameEmployee+
     "&lider="+lider+"&area="+area+"&genero="+genero+"&status="+status+"&typeWorker="+typeWorker;
 
-            console.log(codigoValue);
-
             fetch(url, { method: 'GET',
                 headers: {   'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')  },
