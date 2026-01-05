@@ -28,7 +28,7 @@ class workScreduleModel extends Model
         'comments',
         'UpOrderDate',
         'Color',
-        'qtyInPo'
+        'qtyInPo',
     ];
 
     public $timestamps = false;
@@ -38,27 +38,36 @@ class workScreduleModel extends Model
         return workScreduleModel::all();
     }
 
-
     public static function getDatesWorks($pn, $rev)
     {
         return workScreduleModel::where('pn', $pn)->where('WorkRev', $rev)->first();
     }
+
     public static function getWorkScheduleStatus()
     {
         return workScreduleModel::where('status', '!=', 'Completed')->get();
     }
+
     public static function getWorkScheduleCompleted($year)
     {
         $datos = [];
-        for ($mes = 1; $mes <= 12; $mes++) {
+        $last13Months = [];
+        for ($i = 1; $i < 13; $i++) {
+            $month = date('Y-m', strtotime('-'.$i.' month'));
+            $last13Months[] = $month;
+
+        }
+
+        foreach ($last13Months as $meses) {
+            $mes = explode('-', $meses)[1];
             $datos[$mes] = [0, 0]; // [buenos, malos]
             if ($mes < 10) {
-                $mes = '0' . $mes;
+                $mes = '0'.$mes;
             }
-            $registros = workScreduleModel::where('CompletionDate', 'LIKE', $year . '-' . $mes . '-%')->where('status', 'Completed')
+            $registros = workScreduleModel::where('CompletionDate', 'LIKE', $meses.'-%')->where('status', 'Completed')
                 ->orderBy('CompletionDate', 'DESC')
                 ->get();
-                $mes=intval($mes);
+            $mes = intval($mes);
             foreach ($registros as $registro) {
 
                 if ($registro->commitmentDate >= $registro->CompletionDate) {
@@ -69,6 +78,6 @@ class workScreduleModel extends Model
             }
         }
 
-        return ($datos);
+        return $datos;
     }
 }
