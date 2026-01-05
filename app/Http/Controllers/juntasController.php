@@ -1302,9 +1302,10 @@ class juntasController extends Controller
         $registoPorFirmas = [];
 
         $yearsignatires = carbon::now()->format('m') < 2 ? carbon::now()->subYear()->format('Y') : carbon::now()->format('Y');
+        $monthsignatires = carbon::now()->format('m') < 2 ? 12 : carbon::now()->subMonth()->format('m');
 
         $tiemposDatosTiemposPlaning = workScreduleModel::select('pn', 'CompletionDate', 'UpOrderDate', 'documentsApproved')->where('status', '=', 'Completed')
-            ->whereRaw('MONTH(STR_TO_DATE(CompletionDate, "%Y-%m-%d")) = ?', [date('m', strtotime('-1 month'))])
+            ->whereRaw('MONTH(STR_TO_DATE(CompletionDate, "%Y-%m-%d")) = ?', [$monthsignatires])
             ->WhereRaw('YEAR(STR_TO_DATE(CompletionDate, "%Y-%m-%d")) = ?', [$yearsignatires])
             ->orderBy('CompletionDate', 'desc')
             ->get();
