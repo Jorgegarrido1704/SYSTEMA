@@ -208,7 +208,7 @@ Route::controller(rrhhController::class)->group(function () {
     // Route::post('/rrhh/visita_enfermeria', [rrhhController::class, 'visita_enfermeria'])->name('visita_enfermeria');
     Route::post('/rrhh/addpersonal', [rrhhController::class, 'addperson'])->name('addperson');
     Route::GET('/rrhh/modificarEmpleado', [rrhhController::class, 'modificarEmpleado'])->name('modificarEmpleado');
-    Route::POST('/rrhh/editarEmepleado', [rrhhController::class, 'editarEmepleado'])->name('editarEmepleado');
+    Route::GET('/rrhh/editarEmepleado', [rrhhController::class, 'editarEmepleado'])->name('editarEmepleado');
     Route::POST('/rrhh/reporte', [rrhhController::class, 'reporteSemanlInicidencias'])->name('reporteSemanlInicidencias');
     Route::get('/rrhh/relogChecador', [rrhhcontroller::class, 'relogChecador'])->name('relogChecador');
     Route::get('/rrhh/datosPersonal', [rrhhcontroller::class, 'datosPersonal'])->name('datosPersonal');
