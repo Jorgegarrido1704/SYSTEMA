@@ -318,7 +318,7 @@ if (Error) {
       console.log(dato);
       const url = "{{ route('modificarEmpleado') }}";
       const codigoValue = dato;
-      fetch(url, { method: 'POST',
+      fetch(url, { method: 'GET',
                     headers: {   'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')  },
                     body: JSON.stringify({ dato: codigoValue }),   })
