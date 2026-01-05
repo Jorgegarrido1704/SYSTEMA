@@ -1305,8 +1305,8 @@ class juntasController extends Controller
         $monthsignatires = carbon::now()->format('m') < 2 ? 12 : carbon::now()->subMonth()->format('m');
 
         $tiemposDatosTiemposPlaning = workScreduleModel::select('pn', 'CompletionDate', 'UpOrderDate', 'documentsApproved')->where('status', '=', 'Completed')
-            ->whereRaw('MONTH(STR_TO_DATE(CompletionDate, "%Y-%m-%d")) = ?', [$monthsignatires])
-            ->WhereRaw('YEAR(STR_TO_DATE(CompletionDate, "%Y-%m-%d")) = ?', [$yearsignatires])
+            ->whereRaw('MONTH(STR_TO_DATE(CompletionDate, "%Y-%m-%d")) = ?', $monthsignatires)
+            ->WhereRaw('YEAR(STR_TO_DATE(CompletionDate, "%Y-%m-%d")) = ?', $yearsignatires)
             ->orderBy('CompletionDate', 'desc')
             ->get();
         foreach ($tiemposDatosTiemposPlaning as $tiemposRow) {
