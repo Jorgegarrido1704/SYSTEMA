@@ -179,7 +179,7 @@ class rrhhController extends Controller
             $registro = carbon::now();
             $semana = carbon::now()->week();
             personalBergsModel::where('employeeNumber', '=', $valued)->update([
-                'DateSalida' => $registro,
+                'DateSalida' => $registro, 'status' => $status,
             ]);
             assistence::where('id_empleado', '=', $valued, 'AND', 'Status', '=', 'Baja', 'AND', 'week', '=', $semana)->delete();
             UpdateRotacionJob::dispatch();
