@@ -46,7 +46,7 @@ class mailsController extends Controller
             $registroFirmas = PPAPandPRIM::where('count', '=', 1)->where('compras', '=', '')->orderby('id', 'desc')->get();
         } elseif ($value == 'Juan O' or $value == 'David V') {
             $registroFirmas = PPAPandPRIM::where('count', '=', 1)->where('production', '=', '')->orderby('id', 'desc')->get();
-        } elseif ($value == 'Estela G' or $value == 'Gamboa J') {
+        } elseif ($value == 'Estela G' or $value == 'Gamboa J' or $value == 'Grecia D') {
             $registroFirmas = PPAPandPRIM::where('count', '=', 1)->where('gernete', '=', '')->orderby('id', 'desc')->get();
         } else {
             $registroFirmas = [];
@@ -144,7 +144,7 @@ class mailsController extends Controller
             $receivers = [
                 'jcervera@mx.bergstrominc.com',
                 'jamoreno@mx.bergstrominc.com',
-                'jgarrido@mx.bergstrominc.com',
+                // 'jgarrido@mx.bergstrominc.com',
                 'apacheco@mx.bergstrominc.com',
                 'jcrodriguez@mx.bergstrominc.com',
                 'lramos@mx.bergstrominc.com',
@@ -158,6 +158,7 @@ class mailsController extends Controller
                 'jrodriguez@mx.bergstrominc.com',
                 'jgamboa@mx.bergstrominc.com',
                 'jguillen@mx.bergstrominc.com',
+                'divonne@mx.bergstrominc.com',
             ];
             Mail::to($receivers)->send(new desviacionesEmails($accion, 'Desviacion aprobada'));
         } elseif ($who == 'Jesus_C' or $who == 'Carlos R' or $who == 'Nancy A' or $who == 'Admin' or $who == 'Jorge G') {
@@ -175,7 +176,7 @@ class mailsController extends Controller
         $receivers = [
             'jcervera@mx.bergstrominc.com',
             'jamoreno@mx.bergstrominc.com',
-            'jgarrido@mx.bergstrominc.com',
+            // 'jgarrido@mx.bergstrominc.com',
             'apacheco@mx.bergstrominc.com',
             'jcrodriguez@mx.bergstrominc.com',
             'lramos@mx.bergstrominc.com',
@@ -189,6 +190,7 @@ class mailsController extends Controller
             'jrodriguez@mx.bergstrominc.com',
             'jgamboa@mx.bergstrominc.com',
             'jguillen@mx.bergstrominc.com',
+            'divonne@mx.bergstrominc.com',
         ];
         desviation::where('id', '=', $idq)->update(['fing' => carbon::now()->format('d-m-y H:i'), 'fcal' => carbon::now()->format('d-m-y H:i'), 'count' => 5, 'rechazo' => $rechaso]);
         $accion = desviation::where('id', '=', $idq)->first();

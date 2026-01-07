@@ -2,20 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\listaCalidad;
-use App\Models\po;
-use Illuminate\Http\Request;
-use App\Models\Wo;
-use Illuminate\Support\Facades\DB;
-use PhpParser\Node\Expr\AssignOp\Concat;
-use App\Models\tiempos;
 use App\Models\Corte;
-use Illuminate\Mail\Mailables;
+use App\Models\po;
+use App\Models\tiempos;
+use App\Models\Wo;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
 class PoController extends Controller
 {
-
     public function po()
     {
 
@@ -74,7 +70,7 @@ class PoController extends Controller
         $today = date('d-m-Y H:i');
 
         // Insert data into the Po table
-        $poData = new Po();
+        $poData = new Po;
         $poData->client = $client;
         $poData->pn = $np;
         $poData->fecha = $today;
@@ -91,7 +87,7 @@ class PoController extends Controller
 
         if ($poData->save()) {
 
-            $newWo = new Wo();
+            $newWo = new Wo;
             $newWo->fecha = $today;
             $newWo->NumPart = $np;
             $newWo->cliente = $client;
@@ -102,9 +98,9 @@ class PoController extends Controller
             $newWo->Barcode = '0';
 
             if (substr($rev, 0, 4) == 'PPAP' || substr($rev, 0, 4) == 'PRIM') {
-                $newWo->info =  (substr($np, 0, 2) . substr($client, 0, 2) . $qty . substr($wo, 2, 4) . substr($po, 2, 4) . 'R' . substr($rev, 5));
+                $newWo->info = (substr($np, 0, 2).substr($client, 0, 2).$qty.substr($wo, 2, 4).substr($po, 2, 4).'R'.substr($rev, 5));
             } else {
-                $newWo->info = (substr($np, 0, 2) . substr($client, 0, 2) . $qty . substr($wo, 2, 4) . substr($po, 2, 4) . 'R' . $rev);
+                $newWo->info = (substr($np, 0, 2).substr($client, 0, 2).$qty.substr($wo, 2, 4).substr($po, 2, 4).'R'.$rev);
             }
 
             $newWo->donde = 'En espera de proceso';
@@ -120,22 +116,22 @@ class PoController extends Controller
             if ($newWo->save()) {
                 $times = new tiempos;
                 if (substr($rev, 0, 4) == 'PPAP' || substr($rev, 0, 4) == 'PRIM') {
-                    $times->info =  (substr($np, 0, 2) . substr($client, 0, 2) . $qty . substr($wo, 2, 4) . substr($po, 2, 4) . 'R' . substr($rev, 5));
+                    $times->info = (substr($np, 0, 2).substr($client, 0, 2).$qty.substr($wo, 2, 4).substr($po, 2, 4).'R'.substr($rev, 5));
                 } else {
-                    $times->info = (substr($np, 0, 2) . substr($client, 0, 2) . $qty . substr($wo, 2, 4) . substr($po, 2, 4) . 'R' . $rev);
+                    $times->info = (substr($np, 0, 2).substr($client, 0, 2).$qty.substr($wo, 2, 4).substr($po, 2, 4).'R'.$rev);
                 }
-                $times->planeacion = "";
-                $times->corte = "";
-                $times->liberacion = "";
-                $times->ensamble = "";
-                $times->loom = "";
-                $times->calidad = "";
-                $times->embarque = "";
-                $times->kitsinicial = "";
-                $times->kitsfinal = "";
-                $times->retrabajoi = "";
-                $times->retrabajof = "";
-                $times->totalparos = "";
+                $times->planeacion = '';
+                $times->corte = '';
+                $times->liberacion = '';
+                $times->ensamble = '';
+                $times->loom = '';
+                $times->calidad = '';
+                $times->embarque = '';
+                $times->kitsinicial = '';
+                $times->kitsfinal = '';
+                $times->retrabajoi = '';
+                $times->retrabajof = '';
+                $times->totalparos = '';
                 $times->save();
 
                 $Buscarcorte = DB::table('listascorte')->where('pn', '=', $np)->get();
@@ -150,9 +146,9 @@ class PoController extends Controller
                         $ADDcorte->tipo = $corte->tipo;
                         $ADDcorte->aws = $corte->aws;
                         if (substr($corte->cons, 0, 5) == 'CORTE') {
-                            $ADDcorte->codigo = substr($wo, 2) . "C" . substr($corte->cons, 7);
+                            $ADDcorte->codigo = substr($wo, 2).'C'.substr($corte->cons, 7);
                         } else {
-                            $ADDcorte->codigo = $wo . $corte->cons;
+                            $ADDcorte->codigo = $wo.$corte->cons;
                         }
                         $ADDcorte->term1 = $corte->terminal1;
                         $ADDcorte->term2 = $corte->terminal2;
@@ -165,15 +161,14 @@ class PoController extends Controller
                 }
 
                 if (substr($rev, 0, 4) == 'PPAP' || substr($rev, 0, 4) == 'PRIM') {
-                    $subject = 'ALTA ' . substr($rev, 0, 4) . ' Numero de parte:' . $np . ' Rev: ' . substr($rev, 5);
+                    $subject = 'ALTA '.substr($rev, 0, 4).' Numero de parte:'.$np.' Rev: '.substr($rev, 5);
                     $date = date('d-m-Y');
                     $time = date('H:i');
-                    $content = 'Buen día,' . "\n\n" . 'Les comparto que hoy ' . $date . ' a las ' . $time . "\n\n" . "se libero a piso la" . substr($rev, 0, 4) . "\n\n";
-                    $content .= "\n\n" . " Del cliente: " . $client;
-                    $content .= "\n\n" . " con número de parte: " . $np;
-                    $content .= "\n\n" . " Con Work order: " . $wo;
-                    $content .= "\n\n" . " Esto para seguir con el proceso de producción y revision por parte de ingeniería y calidad.";
-
+                    $content = 'Buen día,'."\n\n".'Les comparto que hoy '.$date.' a las '.$time."\n\n".'se libero a piso la'.substr($rev, 0, 4)."\n\n";
+                    $content .= "\n\n".' Del cliente: '.$client;
+                    $content .= "\n\n".' con número de parte: '.$np;
+                    $content .= "\n\n".' Con Work order: '.$wo;
+                    $content .= "\n\n".' Esto para seguir con el proceso de producción y revision por parte de ingeniería y calidad.';
 
                     $recipients = [
                         'jcervera@mx.bergstrominc.com',
@@ -186,15 +181,12 @@ class PoController extends Controller
                         'lramos@mx.bergstrominc.com',
                         'emedina@mx.bergstrominc.com',
                         'jgarrido@mx.bergstrominc.com',
-                        'jlopez@mx.bergstrominc.com'
-
+                        'jlopez@mx.bergstrominc.com',
+                        'divonne@mx.bergstrominc.com',
 
                     ];
                     Mail::to($recipients)->send(new \App\Mail\PPAPING($subject, $content));
                 }
-
-
-
 
                 return redirect()->route('code');
             } else {
@@ -205,31 +197,34 @@ class PoController extends Controller
         }
     }
 
-
     public function code(Request $request)
     {
         $codigoant = $request->input('wo');
-        if ($codigoant != "") {
+        if ($codigoant != '') {
             $codigo = DB::select("SELECT * FROM registro  WHERE wo='$codigoant' ORDER BY id DESC LIMIT 1");
             $codes = $codigo[0]->info;
         } else {
-            $codigo = DB::select("SELECT * FROM registro  ORDER BY id DESC LIMIT 1");
+            $codigo = DB::select('SELECT * FROM registro  ORDER BY id DESC LIMIT 1');
             $codes = $codigo[0]->info;
         }
+
         return view('registro/code', ['codes' => $codes]);
     }
+
     public function label(Request $request)
     {
         $value = session('user');
         $cat = session('categoria');
         $lastlabel = $request->input('wola');
-        if ($lastlabel != "") {
+        if ($lastlabel != '') {
         } else {
-            $label = DB::select("SELECT * FROM registro  ORDER BY id DESC LIMIT 1");
+            $label = DB::select('SELECT * FROM registro  ORDER BY id DESC LIMIT 1');
             $labels = $label[0]->wo;
         }
+
         return view('registro/label', ['value' => $value, 'labels' => $labels, 'cat' => $cat]);
     }
+
     public function implabel(Request $request)
     {
         $labelwo = $request->input('wola');
@@ -256,6 +251,7 @@ class PoController extends Controller
                 $corte[$i][13] = $cort->tamano;
                 $i++;
             }
+
             return view('registro.implabel', ['corte' => $corte]);
         } else {
             $buscaWo = DB::select("SELECT * FROM registro WHERE wo='$labelwo'");
@@ -274,10 +270,11 @@ class PoController extends Controller
                     'qty' => $qty,
                     'labelwo' => $labelwo,
                     'labelbeg' => $labelbeg,
-                    'labelend' => $labelend
+                    'labelend' => $labelend,
                 ]);
             } else {
-                $resp = "La Wo no existe";
+                $resp = 'La Wo no existe';
+
                 return redirect()->back()->with(['resp' => $resp]);
             }
         }
