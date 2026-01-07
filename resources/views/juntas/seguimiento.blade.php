@@ -32,48 +32,51 @@
                     <div class="card-header py-3">
                         <h5 class="m-1 font-weight-bold text-primary">Status orders </h5>
                     </div>
-                    <div class="card-body" style="overflow-y: auto; " >
-                        <table class="table table-bordered"  width="100%" cellspacing="0">
-                            <thead>
-                                <tr>
-                                    <th>Customer</th>
-                                    <th>Part Number</th>
-                                    <th>Work Order</th>
-                                    <th>Initial Date</th>
-                                    <th>Qty</th>
-                                    <th>Cutting & Terminals</th>
-                                    <th>Assembly</th>
-                                    <th>Looming</th>
-                                    <th>Quality</th>
-                                    <th>Packing</th>
+                    <div class="card-body" style="overflow-y: auto; ">
+
+                        <div style="overflow-y: auto; height: 800px;" >
+                            <table class="table table-bordered"  width="100%" cellspacing="0">
+                                <thead style=" position: sticky; z-index: 0.1; top: 0; text-align: center; background-color: rgba(238, 136, 136, 0.95); color: white; ">
+                                    <tr>
+                                        <th>Customer</th>
+                                        <th>Part Number</th>
+                                        <th>Work Order</th>
+                                        <th>Initial Date</th>
+                                        <th>Qty</th>
+                                        <th>Cutting & Terminals</th>
+                                        <th>Assembly</th>
+                                        <th>Looming</th>
+                                        <th>Quality</th>
+                                        <th>Packing</th>
 
 
-                                </tr>
-                            </thead>
-                            @if(!empty($buscarDatos))
-                                @foreach ($buscarDatos as $cut)
+                                    </tr>
+                                </thead>
+                                @if(!empty($buscarDatos))
+                                    @foreach ($buscarDatos as $cut)
 
-                                    <tbody>
-                                        <tr  onclick ="location.href='{{ url('juntas/seguimiento/'.$cut[15]) }}'" style="cursor: pointer;">
-                                            <td id="{{$cut[16]}}"><b>{{ $cut[0]  }}
+                                        <tbody>
+                                            <tr  onclick ="location.href='{{ url('juntas/seguimiento/'.$cut[15]) }}'" style="cursor: pointer;">
+                                                <td id="{{$cut[16]}}"><b>{{ $cut[0]  }}
+                                                    </td>
+                                                <td id="{{$cut[16]}}"><b>{{ $cut[1]  }}
                                                 </td>
-                                            <td id="{{$cut[16]}}"><b>{{ $cut[1]  }}
-                                               </td>
-                                            </td>
-                                            <td id="{{$cut[16]}}"><b>{{ $cut[2] }}</td>
-                                            <td><b>{{ $cut[3] }}</td>
-                                            <td><b>{{ $cut[4] }}</td>
-                                            <td id="{{$cut[10]}}"><b>{{ $cut[5] }}</td>
-                                            <td id="{{$cut[11]}}"><b>{{ $cut[6] }}</td>
-                                            <td id="{{$cut[12]}}"><b>{{ $cut[7] }}</td>
-                                            <td id="{{$cut[13]}}"><b>{{ $cut[8] }}</td>
-                                            <td id="{{$cut[14]}}"><b>{{ $cut[9] }}</td>
-                                        </tr>
-                                    </tbody>
-                                @endforeach
-                            @endif
+                                                </td>
+                                                <td id="{{$cut[16]}}"><b>{{ $cut[2] }}</td>
+                                                <td><b>{{ $cut[3] }}</td>
+                                                <td><b>{{ $cut[4] }}</td>
+                                                <td id="{{$cut[10]}}"><b>{{ $cut[5] }}</td>
+                                                <td id="{{$cut[11]}}"><b>{{ $cut[6] }}</td>
+                                                <td id="{{$cut[12]}}"><b>{{ $cut[7] }}</td>
+                                                <td id="{{$cut[13]}}"><b>{{ $cut[8] }}</td>
+                                                <td id="{{$cut[14]}}"><b>{{ $cut[9] }}</td>
+                                            </tr>
+                                        </tbody>
+                                    @endforeach
+                                @endif
 
-                        </table>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
