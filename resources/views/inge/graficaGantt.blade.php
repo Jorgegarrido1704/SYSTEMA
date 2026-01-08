@@ -16,13 +16,11 @@
         window.location.href = "/ganttGraph?personal=" + personal;
     }
 </script>
-@if(!empty($data))
-<script> var datass = {{ $datas }};
+
+<script> var datass = @json($data);
     var maxDs = @json($lastDayoffMonth);
     var orgDatass = @json($origData);
     </script>
-
-@endif
 
 <canvas id="ganttChart" width="800" height="400"></canvas>
 <script src="{{ asset('dash/js/graficaGantt.js')}}"></script>
