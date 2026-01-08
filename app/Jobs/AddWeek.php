@@ -37,11 +37,13 @@ class AddWeek implements ShouldQueue
         $dates = Carbon::now()->format('Y-m-d');
         $hollyDays = [
             '2026-01-01',
-            '2025-12-12',
-            '2025-12-25',
-            '2025-12-26',
             '2026-01-02',
-        ];
+            '2026-02-02',
+            '2026-03-16',
+            '2026-05-01',
+            '2026-09-16',
+            '2026-11-16',
+            '2026-12-25', ];
 
         $registrosEmpleados = personalBergsModel::where('status', '!=', 'Baja')->get();
 
