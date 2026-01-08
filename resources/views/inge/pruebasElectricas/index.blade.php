@@ -14,9 +14,7 @@
 
                 <!-- tabla de trabajos -->
                 <div class="card-body" style="overflow-y: auto; height: 260px;">
-                    <div class="chart-area" id="chart-area">
-
-                        <table id="table-harness" class="table-harness">
+                        <table id="table-harness" class="table table-responsive table-harness table-striped table-bordered">
                             <thead
                                 style=" position: sticky; z-index: 1; top: 0; text-align: center; background-color: #bd0606; color: white; ">
                                 <th>Part Number</th>
@@ -49,7 +47,7 @@
 
                             </tbody>
                         </table>
-                    </div>
+
                 </div>
 
             </div>
