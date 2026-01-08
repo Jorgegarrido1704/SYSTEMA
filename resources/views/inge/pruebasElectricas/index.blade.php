@@ -14,9 +14,10 @@
 
                 <!-- tabla de trabajos -->
                 <div class="card-body" style="overflow-y: auto; height: 260px;">
-                        <table id="table-harness" class="table table-responsive table-harness table-striped table-bordered">
+                        <table id="table-harness" class="table ">
                             <thead
                                 style=" position: sticky; z-index: 1; top: 0; text-align: center; background-color: #bd0606; color: white; ">
+                                <tr>
                                 <th>Part Number</th>
                                 <th>Client</th>
                                 <th>WO</th>
@@ -67,8 +68,45 @@
                             <div class="card-header py-3">
                                 <h5 class="m-0 font-weight-bold text-primary">Prevencion de arneses</h5>
                             </div>
-                            <div class="card-body" style="overflow-y: auto; height: 360px;" >
+
+                            <div   class="card-body" style="overflow-y: auto; height: 360px;" >
+                                <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
+                                    <thead
+                                        style=" position: sticky; z-index: 0.1; top: 0; text-align: center; background-color: #bd0606; color: white; ">
+                                        <tr>
+                                        <th>Part Number</th>
+                                        <th>WO</th>
+                                        <th>Original Qty</th>
+                                        <th>Pending</th>
+                                        <th>Dispatched</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($arneses as $arnes)
+                                            @if($arnes->ensaPar>0)
+                                            <tr style="background-color: rgba(223, 134, 0, 0.25);">
+                                                @elseif($arnes->loomPar>0)
+                                                <tr style="background-color: rgba(255, 47, 47, 0.259);">
+                                                @elseif($arnes->specialWire>0)
+                                                <tr style="background-color: #87770c;">
+                                                @endif
+                                                <td>{{ $arnes->pn }}</td>
+                                                <td>{{ $arnes->wo }}</td>
+                                                <td>{{ $arnes->orgQty }}</td>
+                                                <td>{{ $arnes->cortPar + $arnes->libePar + $arnes->ensaPar + $arnes->loomPar+
+                                                    $arnes->preCalidad + $arnes->eng
+                                                    + $arnes->fallasCalidad+ $arnes->specialWire}}</td>
+                                                <td><form action="#" method="GET">
+                                                    <input type="hidden" name="id" id="id"
+                                                        value="{{ $arnes->id }}">
+                                                    <button type="submit">Dispatch</button>
+                                                </form></td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
                             </div>
+
                 </div>
             </div>
     </div>
