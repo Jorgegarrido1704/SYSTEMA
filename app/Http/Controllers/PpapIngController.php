@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\cronograma;
-use App\Models\electricalTesting;
 use App\Models\errores;
 use App\Models\ingAct;
 use App\Models\login;
@@ -201,9 +200,8 @@ class PpapIngController extends Controller
             // problems in the floor
             $problem = errores::where('mostrar_ing', '=', 0)->get();
             // electical testing
-            $electicalTesting = electricalTesting::where('status_of_order', '=', 'Pending')->get();
 
-            return view('/ing', ['electicalTesting' => $electicalTesting, 'ingenieros_en_piso' => $ingenieros_en_piso, 'problem' => $problem, 'paolaTdesc' => $paolaTdesc, 'alexTdesc' => $alexTdesc, 'paolaT' => $paolaT, 'alexT' => $alexT, 'alex' => $alex, 'alexDesc' => $alexDesc, 'paola' => $paola, 'paoDesc' => $paoDesc,  'fullreq' => $fullreq, 'graficasLate' => $graficasLate, 'graficOnTime' => $graficOnTime, 'cat' => $cat, 'inges' => $inges, 'value' => $value, 'enginners' => $enginners, 'answer' => $answer, 'dias_mes' => $dias_mes, 'cronoGram' => $cronoGram]);
+            return view('/ing', ['ingenieros_en_piso' => $ingenieros_en_piso, 'problem' => $problem, 'paolaTdesc' => $paolaTdesc, 'alexTdesc' => $alexTdesc, 'paolaT' => $paolaT, 'alexT' => $alexT, 'alex' => $alex, 'alexDesc' => $alexDesc, 'paola' => $paola, 'paoDesc' => $paoDesc,  'fullreq' => $fullreq, 'graficasLate' => $graficasLate, 'graficOnTime' => $graficOnTime, 'cat' => $cat, 'inges' => $inges, 'value' => $value, 'enginners' => $enginners, 'answer' => $answer, 'dias_mes' => $dias_mes, 'cronoGram' => $cronoGram]);
         }
     }
 
@@ -938,13 +936,5 @@ class PpapIngController extends Controller
         ];
 
         return response()->json($data);
-    }
-
-    public function dispatchElecticalTest(request $request)
-    {
-        $distch = electricaltesting::where('id', $request->input('id'))->update([
-            'status_of_order' => 'Completed']);
-
-        return redirect()->back()->with('message', 'Inventory added successfully.');
     }
 }

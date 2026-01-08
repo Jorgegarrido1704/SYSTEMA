@@ -837,82 +837,82 @@
                                                         <th>Fecha Fecha Compromiso Inicial</th>
                                                         <th>Fecha Compromiso con cambios</th>
                                                         @foreach ($dias_mes as $dias)
-    <th>{{ $dias }}</th>
-    @endforeach
-                                                        <th>Nueva Fecha</th>
-                                                        <th>Guardar cambio</th>
-                                                        <th>Finalizar</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
+                        <th>{{ $dias }}</th>
+                        @endforeach
+                                                                            <th>Nueva Fecha</th>
+                                                                            <th>Guardar cambio</th>
+                                                                            <th>Finalizar</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
 
-                                                    @foreach ($cronoGram as $cron)
-    <tr>
-                                                            <td>{{ $cron[1] }}</td>
-                                                            <td>{{ $cron[2] }}</td>
-                                                            <td>{{ $cron[3] }}</td>
-                                                            <td>{{ $cron[5] }}</td>
-                                                            @if ($cron[5] == $cron[6])
-    <td></td>
-@else
-    <td> {{ $cron[6] }}</td>
-    @endif
-                                                            @foreach ($dias_mes as $dias)
-    @if ($dias >= $cron[11] && $dias <= $cron[10] && $cron[5] == $cron[6])
-    <td><input type="box" name="check" id="check"
-                                                                            style="background-color:GREEN; width: 20px; height: 20px;">
-                                                                    </td>
-@elseif ($dias >= $cron[11] && $dias <= $cron[10] && $cron[5] != $cron[6])
-    @if ($dias >= $cron[11] && $dias <= $cron[10] - $cron[12])
-    <td><input type="box" name="check" id="check"
-                                                                                style="background-color:GREEN; width: 20px; height: 20px;">
-                                                                        </td>
-@else
-    <td><input type="box" name="check" id="check"
-                                                                                style="background-color:lightblue; width: 20px; height: 20px;">
-                                                                        </td>
-    @endif
-@else
-    <td><input type="box" name="check" id="check"
-                                                                            style=" width: 20px; height: 20px;"></td>
-    @endif
-    @endforeach
-                                                            <form action="{{ route('cronoReg') }}" method="GET">
-                                                                <td>
-                                                                    <input type="date" name="nuevaFecha" id="nuevaFecha">
-                                                                </td>
-                                                                <td>
-                                                                    <input type="hidden" name="id_cambio" id="id_cambio"
-                                                                        value="{{ $cron[0] }}">
-                                                                    <input type="submit" name="enviar" id="enviar"
-                                                                        value='Guardar'>
-                                                                </td>
-                                                            </form>
-                                                            <td>
-                                                                <form action="{{ route('cronoReg') }}" method="GET">
-                                                                    <input type="hidden" name="id_fin" id="id_fin"
-                                                                        value="{{ $cron[0] }}">
-                                                                    <input type="submit" name="enviar" id="enviar"
-                                                                        value='Finalizar'>
-                                                                </form>
-                                                            </td>
-                                                        </tr>
-    @endforeach
+                                                                        @foreach ($cronoGram as $cron)
+                        <tr>
+                                                                                <td>{{ $cron[1] }}</td>
+                                                                                <td>{{ $cron[2] }}</td>
+                                                                                <td>{{ $cron[3] }}</td>
+                                                                                <td>{{ $cron[5] }}</td>
+                                                                                @if ($cron[5] == $cron[6])
+                        <td></td>
+                    @else
+                        <td> {{ $cron[6] }}</td>
+                        @endif
+                                                                                @foreach ($dias_mes as $dias)
+                        @if ($dias >= $cron[11] && $dias <= $cron[10] && $cron[5] == $cron[6])
+                        <td><input type="box" name="check" id="check"
+                                                                                                style="background-color:GREEN; width: 20px; height: 20px;">
+                                                                                        </td>
+                    @elseif ($dias >= $cron[11] && $dias <= $cron[10] && $cron[5] != $cron[6])
+                        @if ($dias >= $cron[11] && $dias <= $cron[10] - $cron[12])
+                        <td><input type="box" name="check" id="check"
+                                                                                                    style="background-color:GREEN; width: 20px; height: 20px;">
+                                                                                            </td>
+                    @else
+                        <td><input type="box" name="check" id="check"
+                                                                                                    style="background-color:lightblue; width: 20px; height: 20px;">
+                                                                                            </td>
+                        @endif
+                    @else
+                        <td><input type="box" name="check" id="check"
+                                                                                                style=" width: 20px; height: 20px;"></td>
+                        @endif
+                        @endforeach
+                                                                                <form action="{{ route('cronoReg') }}" method="GET">
+                                                                                    <td>
+                                                                                        <input type="date" name="nuevaFecha" id="nuevaFecha">
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <input type="hidden" name="id_cambio" id="id_cambio"
+                                                                                            value="{{ $cron[0] }}">
+                                                                                        <input type="submit" name="enviar" id="enviar"
+                                                                                            value='Guardar'>
+                                                                                    </td>
+                                                                                </form>
+                                                                                <td>
+                                                                                    <form action="{{ route('cronoReg') }}" method="GET">
+                                                                                        <input type="hidden" name="id_fin" id="id_fin"
+                                                                                            value="{{ $cron[0] }}">
+                                                                                        <input type="submit" name="enviar" id="enviar"
+                                                                                            value='Finalizar'>
+                                                                                    </form>
+                                                                                </td>
+                                                                            </tr>
+                        @endforeach
 
 
-                                                </tbody>
-                                            </table>
-                                            <canvas id="regGraf"></canvas>
+                                                                    </tbody>
+                                                                </table>
+                                                                <canvas id="regGraf"></canvas>
 
-                                        </div>
+                                                            </div>
 
-                                    </div>
+                                                        </div>
 
-                                </div>
-                            </div>
-                        </div>-->
+                                                    </div>
+                                                </div>
+                                            </div>-->
 
-        <!--  </div>-->
+                            <!--  </div>-->
     </div>
 
 @endsection

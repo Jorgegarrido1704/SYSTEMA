@@ -19,9 +19,9 @@ use App\Http\Controllers\mantainenceController;
 use App\Http\Controllers\planingController;
 use App\Http\Controllers\PoController;
 use App\Http\Controllers\PpapIngController;
+use App\Http\Controllers\pruebasElectricasController;
 use App\Http\Controllers\RegistroController;
 use App\Http\Controllers\rrhhController;
-use App\Http\Controllers\SaludController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -75,6 +75,10 @@ Route::controller(generalController::class)->group(function () {
     Route::post('/regfull', [generalController::class, 'regfull'])->name('regfull');
     Route::post('/problemas_general', [generalController::class, 'problemas_general'])->name('problemas_general');
 });
+Route::controller(pruebasElectricasController::class)->group(function () {
+    Route::get('/pruebasElectricas', 'pruebasElecticas')->name('pruebasElecticas');
+    Route::get('/dispatchElecticalTest', [pruebasElectricasController::class, 'dispatchElecticalTest'])->name('dispatchElecticalTest');
+});
 
 Route::controller(PpapIngController::class)->group(function () {
     Route::get('/ing', PpapIngController::class);
@@ -93,7 +97,7 @@ Route::controller(PpapIngController::class)->group(function () {
     Route::get('/editDelite', [PpapIngController::class, 'editDelite'])->name('editDelite');
     Route::get('/ganttGraph', [PpapIngController::class, 'ganttGraph'])->name('ganttGraph');
     Route::post('/datosWO', [PpapIngController::class, 'datosWo'])->name('datosWO');
-    Route::get('/dispatchElecticalTest', [PpapIngController::class, 'dispatchElecticalTest'])->name('dispatchElecticalTest');
+
 });
 
 Route::controller(AlmacenController::class)->group(function () {
