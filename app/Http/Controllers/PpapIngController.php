@@ -873,7 +873,7 @@ class PpapIngController extends Controller
         $registroAntes1 = $registroAntes2 = $i = 0;
         $lastDayoffMonth = Carbon::now()->endOfMonth()->format('d');
         $registros = workScreduleModel::select('pn', 'customer', 'size', 'receiptDate', 'commitmentDate', 'completionDate')
-            ->where('receiptDate', 'LIKE', Carbon::now()->format('Y-m').'%')
+            ->whereNull('completionDate')
             ->orderBy('commitmentDate', 'asc')
             ->orderBy('size', 'asc')
             ->get();
