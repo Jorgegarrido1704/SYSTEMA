@@ -17,7 +17,7 @@
     }
 </script>
 @if(!empty($data))
-<script> var datass = @json($data);
+<script> var datass = {{ $datas }};
     var maxDs = @json($lastDayoffMonth);
     var orgDatass = @json($origData);
     </script>
