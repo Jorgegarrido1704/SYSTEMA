@@ -25,7 +25,7 @@
 @endif
 
 <canvas id="ganttChart" width="800" height="400"></canvas>
-<script src="{{ asset('/dash/js/graficaGantt.js')}}"></script>
+<script src="{{ asset('dash/js/graficaGantt.js')}}"></script>
 
 
 
