@@ -161,47 +161,12 @@
         <div class="col-xl-6 col-lg-6">
                 <div class="card shadow mb-4" id="card">
                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                        <h5 class="m-0 font-weight-bold text-primary">Electrical Test Requested</h5>
+                        <h5 class="m-0 font-weight-bold text-primary">Localization</h5>
                     </div>
 
                     <!-- tabla de trabajos -->
                     <div class="card-body" style="overflow-y: auto; height: 460px;">
-                            <table id="table-harness" class="table">
-                                <thead
-                                    style=" position: sticky; z-index: 1; top: 0; text-align: center; background-color: #bd0606; color: white; ">
-                                    <tr>
-                                    <th>Part Number</th>
-                                    <th>Client</th>
-                                    <th>WO</th>
-                                    <th>Requested By</th>
-                                    <th>Date Requested</th>
-                                    <th>Status</th>
-                                    <th>Dispatch</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($pruebas as $elec)
-                                        @if($elec->status_of_order=='Pending')
-                                        <tr>
-                                            <td>{{ $elec->pn }}</td>
-                                            <td>{{ $elec->client }}</td>
-                                            <td>{{ $elec->wo }}</td>
-                                            <td>{{ $elec->requested_by }}</td>
-                                            <td>{{ $elec->created_at }}</td>
-                                            <td>{{ $elec->status_of_order }}</td>
-                                            <td>
-                                                <form action="{{ route('dispatchElecticalTest') }}" method="GET">
-                                                    <input type="hidden" name="id" id="id"
-                                                        value="{{ $elec->id }}">
-                                                    <button type="submit">Dispatch</button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                        @endif
-                                    @endforeach
 
-                                </tbody>
-                            </table>
 
                     </div>
 
