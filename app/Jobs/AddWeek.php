@@ -62,21 +62,12 @@ class AddWeek implements ShouldQueue
                     ->where('id_empleado', '=', $registroEmpleado->employeeNumber)
                     ->update([$day => 'PCS']);
             } else {
-                switch ($registroEmpleado->typeWorker) {
+                assistence::where('week', '=', $week)
+                    ->where('id_empleado', '=', $registroEmpleado->employeeNumber)
+                    ->where($day, '=', '-')
+                    ->orWhere($day, '=', '')
+                    ->update([$day => 'F']);
 
-                    case 'Indirecto':
-                        assistence::where('week', '=', $week)->where('id_empleado', '=', $registroEmpleado->employeeNumber)->update([$day => 'OK']);
-                        break;
-                    case 'Practicante':
-                        assistence::where('week', '=', $week)->where('id_empleado', '=', $registroEmpleado->employeeNumber)->update([$day => 'PCT']);
-                        break;
-                    case 'Asimilado':
-                        assistence::where('week', '=', $week)->where('id_empleado', '=', $registroEmpleado->employeeNumber)->update([$day => 'ASM']);
-                        break;
-                    case 'Servicio comprado':
-                        assistence::where('week', '=', $week)->where('id_empleado', '=', $registroEmpleado->employeeNumber)->update([$day => 'SCE']);
-                        break;
-                }
             }
         }
     }
