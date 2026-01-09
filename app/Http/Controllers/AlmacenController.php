@@ -2,20 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Almacen;
-use App\Models\entSalAlamacen;
+use App\Mail\desviacionesEmails;
+use App\Models\controlAlmacen;
 use App\Models\desviation;
+use App\Models\entSalAlamacen;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\controlAlmacen;
+use Illuminate\Support\Facades\Mail;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\desviacionesEmails;
 
 class AlmacenController extends Controller
 {
-
     public function __invoke()
     {
         $value = session('user');
@@ -34,7 +32,7 @@ class AlmacenController extends Controller
                 $listas[$i][4] = $rowInfo->wo;
                 $i++;
             }
-            $buscardesv = DB::table("desvation")->select("*")->where('count', '!=', 4)->where('count', '!=', 5)->get();
+            $buscardesv = DB::table('desvation')->select('*')->where('count', '!=', 4)->where('count', '!=', 5)->get();
             $i = 0;
             $desviations = [];
             foreach ($buscardesv as $rowdes) {
@@ -43,30 +41,30 @@ class AlmacenController extends Controller
                 $desviations[$i][2] = $rowdes->porg;
                 $desviations[$i][3] = $rowdes->psus;
                 $desviations[$i][4] = $rowdes->cliente;
-                if ($rowdes->fcom == "") {
-                    $desviations[$i][5] = "Sin Firmar";
+                if ($rowdes->fcom == '') {
+                    $desviations[$i][5] = 'Sin Firmar';
                 } else {
-                    $desviations[$i][5] = "Firmada";
+                    $desviations[$i][5] = 'Firmada';
                 }
-                if ($rowdes->fing == "") {
-                    $desviations[$i][6] = "Sin Firmar";
+                if ($rowdes->fing == '') {
+                    $desviations[$i][6] = 'Sin Firmar';
                 } else {
-                    $desviations[$i][6] = "Firmada";
+                    $desviations[$i][6] = 'Firmada';
                 }
-                if ($rowdes->fcal == "") {
-                    $desviations[$i][7] = "Sin Firmar";
+                if ($rowdes->fcal == '') {
+                    $desviations[$i][7] = 'Sin Firmar';
                 } else {
-                    $desviations[$i][7] = "Firmada";
+                    $desviations[$i][7] = 'Firmada';
                 }
-                if ($rowdes->fpro == "") {
-                    $desviations[$i][8] = "Sin Firmar";
+                if ($rowdes->fpro == '') {
+                    $desviations[$i][8] = 'Sin Firmar';
                 } else {
-                    $desviations[$i][8] = "Firmada";
+                    $desviations[$i][8] = 'Firmada';
                 }
-                if ($rowdes->fimm == "") {
-                    $desviations[$i][9] = "Sin Firmar";
+                if ($rowdes->fimm == '') {
+                    $desviations[$i][9] = 'Sin Firmar';
                 } else {
-                    $desviations[$i][9] = "Firmada";
+                    $desviations[$i][9] = 'Firmada';
                 }
                 $desviations[$i][10] = $rowdes->fecha;
                 $desviations[$i][11] = $rowdes->wo;
@@ -96,23 +94,22 @@ class AlmacenController extends Controller
         $cat = session('categoria');
         $value = session('user');
         $i = 0;
-        $response = "";
+        $response = '';
         $date = date('d-m-Y H:i');
         $codeWo = $request->input('idkit');
         $listas = $diff = $kits = $infoPar = $datosPn = [];
 
-        if (!empty($codeWo)) {
+        if (! empty($codeWo)) {
             $i = 0;
             $buscarInfo = DB::table('kits')
                 ->where('kits.id', '=', $codeWo)->first();
-            if (!empty($buscarInfo)) {
+            if (! empty($buscarInfo)) {
                 $kitswo = $buscarInfo->wo;
                 $kitsqty = $buscarInfo->qty;
                 $kitsPn = $buscarInfo->numeroParte;
                 $buscarTotal = DB::table('datos')
                     ->where('part_num', $kitsPn)
                     ->get();
-
 
                 foreach ($buscarTotal as $rowTotal) {
                     $infoPar = 0;
@@ -131,10 +128,10 @@ class AlmacenController extends Controller
                 }
             }
 
-
             $datosPn[0] = $kitsPn;
             $datosPn[1] = $kitswo;
             $datosPn[2] = $kitsqty;
+
             return view('almacen.kits', ['value' => $value, 'cat' => $cat, 'kits' => $kits, 'datosPn' => $datosPn]);
         }
     }
@@ -157,7 +154,7 @@ class AlmacenController extends Controller
             $BomResp[$i][1] = $rowBom->qty * $qty;
             $i++;
         }
-        if (!empty($BomResp)) {
+        if (! empty($BomResp)) {
             return view('almacen', ['value' => $value, 'listas' => $listas, 'BomResp' => $BomResp, 'cat' => $cat]);
         } else {
             return redirect('almacen');
@@ -186,12 +183,12 @@ class AlmacenController extends Controller
                     $table[$i][4] = $bus->id;
                     $i++;
                 }
-                if (!empty($table)) {
+                if (! empty($table)) {
                     return view('almacen.retorno')->with(['value' => $value, 'cat' => $cat, 'table' => $table]);
                 } else {
                     return redirect('almacen');
                 }
-            } else if (count($cant) > 0) {
+            } elseif (count($cant) > 0) {
                 for ($i = 0; $i < count($cant); $i++) {
                     $buscarCant = DB::table('creacionkits')->where('id', '=', $id_ret[$i])->first();
                     $cantDiff = $buscarCant->qty - $cant[$i];
@@ -206,33 +203,33 @@ class AlmacenController extends Controller
                         $bodega = $buscarItems->Bodega;
                         if ($immex > 0 && $nacional == 0 && $bodega == 0 || $immex > 0 && $nacional == 0 && $bodega > 0 && $donde == 'IMMEX' || $immex > 0 && $nacional > 0 && $bodega == 0 && $donde == 'IMMEX' || $immex > 0 && $nacional > 0 && $bodega > 0 && $donde == 'IMMEX') {
                             $updateItemsCons = DB::table('itemsconsumidos')->where('NumPart', '=', $item)->increment('immex', $cant[$i]);
-                        } else if ($immex == 0 && $nacional > 0 && $bodega == 0 || $immex == 0 && $nacional > 0 && $bodega > 0 && $donde == 'NACIONAL' || $immex > 0 && $nacional > 0 && $bodega == 0 && $donde == 'NACIONAL' || $immex > 0 && $nacional > 0 && $bodega > 0 && $donde == 'NACIONAL') {
+                        } elseif ($immex == 0 && $nacional > 0 && $bodega == 0 || $immex == 0 && $nacional > 0 && $bodega > 0 && $donde == 'NACIONAL' || $immex > 0 && $nacional > 0 && $bodega == 0 && $donde == 'NACIONAL' || $immex > 0 && $nacional > 0 && $bodega > 0 && $donde == 'NACIONAL') {
                             $updateItemsCons = DB::table('itemsconsumidos')->where('NumPart', '=', $item)->increment('national', $cant[$i]);
-                        } else if ($immex == 0 && $nacional == 0 && $bodega > 0) {
+                        } elseif ($immex == 0 && $nacional == 0 && $bodega > 0) {
                             $updateItemsCons = DB::table('itemsconsumidos')->where('NumPart', '=', $item)->increment('Bodega', $cant[$i]);
                         }
                         if ($cantDiff > 0) {
                             $updatekits = DB::table('creacionkits')->where('id', '=', $id_ret[$i])->update(['qty' => $cantDiff]);
                             $updatekitsdenuevo = DB::table('kits')->where('wo', '=', $wo)->update(['status' => 'Parcial']);
                             $updenuevo = DB::table('kitenespera')->where('wo', '=', $wo)->update(['status' => 'Parcial']);
-                            $movi = new entSalAlamacen();
+                            $movi = new entSalAlamacen;
                             $movi->item = $item;
                             $movi->Qty = $cant[$i];
                             $movi->movimiento = 'Retorno de kit';
                             $movi->usuario = $value;
-                            $movi->fecha = date("d-m-Y H:i");
+                            $movi->fecha = date('d-m-Y H:i');
                             $movi->wo = $wo;
                             $movi->save();
                         }
                         if ($cantDiff == 0) {
                             $updatekitsdenuevo = DB::table('kits')->where('wo', '=', $wo)->update(['status' => 'Parcial']);
                             $updenuevo = DB::table('kitenespera')->where('wo', '=', $wo)->update(['status' => 'Parcial']);
-                            $movi = new entSalAlamacen();
+                            $movi = new entSalAlamacen;
                             $movi->item = $item;
                             $movi->Qty = $cant[$i];
                             $movi->movimiento = 'Retorno de kit';
                             $movi->usuario = $value;
-                            $movi->fecha = date("d-m-Y H:i");
+                            $movi->fecha = date('d-m-Y H:i');
                             $movi->wo = $wo;
                             if ($movi->save()) {
                                 $delete = DB::table('creacionkits')->where('id', '=', $id_ret[$i])->delete();
@@ -240,6 +237,7 @@ class AlmacenController extends Controller
                         }
                     }
                 }
+
                 return redirect('almacen');
             }
         }
@@ -249,15 +247,15 @@ class AlmacenController extends Controller
     {
         $works = $request->input('Works');
         $cant = $request->input('cant');
-        $work = explode(",", $works);
-        $cants = explode(",", $cant);
-        $spreadsheet = new Spreadsheet();
+        $work = explode(',', $works);
+        $cants = explode(',', $cant);
+        $spreadsheet = new Spreadsheet;
         $sheet = $spreadsheet->getActiveSheet();
         $t = 2;
         $headers = [
             'A1' => 'Numero de parte ',
             'B1' => 'Item',
-            'C1' => 'Cantidad'
+            'C1' => 'Cantidad',
 
         ];
         foreach ($headers as $cell => $header) {
@@ -267,9 +265,9 @@ class AlmacenController extends Controller
 
             $trabajo = DB::table('datos')->where('part_num', '=', $work[$i])->get();
             foreach ($trabajo as $trabajos) {
-                $sheet->setCellValue('A' . $t, $work[$i]);
-                $sheet->setCellValue('B' . $t, $trabajos->item);
-                $sheet->setCellValue('C' . $t, $trabajos->qty * $cants[$i]);
+                $sheet->setCellValue('A'.$t, $work[$i]);
+                $sheet->setCellValue('B'.$t, $trabajos->item);
+                $sheet->setCellValue('C'.$t, $trabajos->qty * $cants[$i]);
                 $t++;
             }
         }
@@ -281,9 +279,13 @@ class AlmacenController extends Controller
 
         $writer->save('php://output');
     }
+
     public function desviationAlm(Request $request)
     {
         $value = session('user');
+        if ($value == null) {
+            return redirect('/');
+        }
         $modelo = $request->input('modelo');
         $npo = $request->input('numPartOrg');
         $nps = $request->input('numPartSus');
@@ -299,7 +301,7 @@ class AlmacenController extends Controller
         }
         $user = session('user');
         $today = date('d-m-Y H:i');
-        $desv = new desviation();
+        $desv = new desviation;
         if (empty($cliente)) {
             $cliente = '';
         }
@@ -316,23 +318,24 @@ class AlmacenController extends Controller
             'Causa' => $text,
             'accion' => $acc,
             'evidencia' => $evi,
-            'fcal' => "",
-            'fcom' => "-",
-            'fpro' => "-",
-            'fing' => "",
-            'fimm' => "-",
-            'rechazo' => "",
+            'fcal' => '',
+            'fcom' => '-',
+            'fpro' => '-',
+            'fing' => '',
+            'fimm' => '-',
+            'rechazo' => '',
             'count' => 1,
         ]);
 
         if ($desv->save()) {
             $accion = desviation::orderby('id', 'desc')->first();
-             $receivers=['jcervera@mx.bergstrominc.com','jamoreno@mx.bergstrominc.com','jgarrido@mx.bergstrominc.com',
-            'apacheco@mx.bergstrominc.com','jcrodriguez@mx.bergstrominc.com','lramos@mx.bergstrominc.com','emedina@mx.bergstrominc.com',
-            'drocha@mx.bergstrominc.com','enunez@mx.bergstrominc.com','fsuarez@mx.bergstrominc.com','rfandino@mx.bergstrominc.com',
-            'vpichardo@mx.bergstrominc.com','dflores@mx.bergstrominc.com','jrodriguez@mx.bergstrominc.com','jgamboa@mx.bergstrominc.com',
-            'jguillen@mx.bergstrominc.com'];
-            Mail::to($receivers)->send(new desviacionesEmails($accion,'Alta de desviacion'));
+            $receivers = ['jcervera@mx.bergstrominc.com', 'jamoreno@mx.bergstrominc.com', 'jgarrido@mx.bergstrominc.com',
+                'apacheco@mx.bergstrominc.com', 'jcrodriguez@mx.bergstrominc.com', 'lramos@mx.bergstrominc.com', 'emedina@mx.bergstrominc.com',
+                'drocha@mx.bergstrominc.com', 'enunez@mx.bergstrominc.com', 'fsuarez@mx.bergstrominc.com', 'rfandino@mx.bergstrominc.com',
+                'vpichardo@mx.bergstrominc.com', 'dflores@mx.bergstrominc.com', 'jrodriguez@mx.bergstrominc.com', 'jgamboa@mx.bergstrominc.com',
+                'jguillen@mx.bergstrominc.com'];
+            Mail::to($receivers)->send(new desviacionesEmails($accion, 'Alta de desviacion'));
+
             return redirect('/almacen')->with('success', 'Data successfully saved.');
         } else {
             return redirect('/almacen')->with('error', 'Failed to save data.');
@@ -347,10 +350,10 @@ class AlmacenController extends Controller
         $wo = $request->input('wo');
 
         // Make sure 'codigo' is in the expected format
-        $items = explode("-", $codigo);
-        $registro = isset($items[1]) && isset($items[2]) ? $items[1] . "-" . $items[2] : null;
+        $items = explode('-', $codigo);
+        $registro = isset($items[1]) && isset($items[2]) ? $items[1].'-'.$items[2] : null;
 
-        if (!$registro) {
+        if (! $registro) {
             return response()->json(['status' => 400, 'message' => 'Invalid codigo format']);
         }
 
@@ -361,7 +364,7 @@ class AlmacenController extends Controller
             ->first();
 
         // If no item is found, return an error response
-        if (!$buscar) {
+        if (! $buscar) {
             return response()->json(['status' => 400, 'message' => 'Item not found']);
         }
 
@@ -369,7 +372,7 @@ class AlmacenController extends Controller
         $registroWo = DB::table('registro')->select('Qty')->where('wo', '=', $wo)->first();
 
         // If no matching 'registro' found, return an error
-        if (!$registroWo) {
+        if (! $registroWo) {
             return response()->json(['status' => 400, 'message' => 'Work order not found in registro table']);
         }
 
@@ -386,9 +389,10 @@ class AlmacenController extends Controller
         return response()->json([
             'status' => 200,
             'message' => 'Item found',
-            'data' => $datos
+            'data' => $datos,
         ]);
     }
+
     public function ChargeAlm(Request $request)
     {
         $value = session('user');
@@ -398,16 +402,17 @@ class AlmacenController extends Controller
         $item = $request->input('item');
         $buscarId = DB::table('controlalmacen')->select('id_importacion')->where('codUnic', '=', $codigo)->first();
         $ids = $buscarId->id_importacion;
-        $agregarcontrol = new controlAlmacen();
-        $agregarcontrol->fechaMov = date("Y-m-d");
+        $agregarcontrol = new controlAlmacen;
+        $agregarcontrol->fechaMov = date('Y-m-d');
         $agregarcontrol->itIdInt = $item;
         $agregarcontrol->Qty = -$registrado;
-        $agregarcontrol->MovType = 'salida/wo: ' . $wo;
+        $agregarcontrol->MovType = 'salida/wo: '.$wo;
         $agregarcontrol->UserReg = $value;
         $agregarcontrol->id_importacion = $ids;
         $agregarcontrol->codUnic = $codigo;
         $agregarcontrol->comentario = $wo;
         $agregarcontrol->save();
+
         return response()->json([
             'status' => 200,
         ]);

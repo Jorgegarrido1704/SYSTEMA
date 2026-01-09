@@ -986,7 +986,7 @@ class caliController extends generalController
                 $i++;
             }
 
-            return view('calidad/retrabajos', ['value' => $value, 'cat' => $cat, 'registrosFallas' => $registrosFallas]);
+            return view('calidad.retrabajos', ['value' => $value, 'cat' => $cat, 'registrosFallas' => $registrosFallas]);
         }
     }
 
@@ -1120,12 +1120,15 @@ class caliController extends generalController
 
         $status = 'Pending';
         $buscarWo = Wo::select('NumPart', 'cliente', 'rev')->where('wo', $numero)->first();
-        $registos = new electricalTesting;
-        $registos->pn = $buscarWo->NumPart;
-        $registos->client = $buscarWo->cliente;
-        $registos->wo = $request->input('workElectrical');
-        $registos->requested_by = $value;
-        $registos->save();
+        if (! electricalTesting::where('pn', $buscarWo->NumPart)->exists()) {
+
+            $registos = new electricalTesting;
+            $registos->pn = $buscarWo->NumPart;
+            $registos->client = $buscarWo->cliente;
+            $registos->wo = $request->input('workElectrical');
+            $registos->requested_by = $value;
+            $registos->save();
+        }
 
         return redirect()->route('calidad')->with('success', 'Se ha creado un nuevo registro de testing');
 

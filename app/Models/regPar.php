@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Models;
-use App\Models\Wo;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -9,7 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class regPar extends Model
 {
     use HasFactory;
-    protected $fillable=[
+
+    protected $fillable = [
         'pn',
         'wo',
         'orgQty',
@@ -23,14 +23,16 @@ class regPar extends Model
         'eng',
         'codeBar',
         'fallasCalidad',
-        'specialWire'
+        'specialWire',
 
     ];
+
     protected $table = 'registroparcial';
+
     public $timestamps = false;
 
     public function registos()
     {
-       return $this->hasMany(Wo::class)->whereColumn('codeBar','info');
+        return $this->hasMany(Wo::class)->whereColumn('codeBar', 'info');
     }
 }
