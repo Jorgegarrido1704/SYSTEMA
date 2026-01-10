@@ -128,7 +128,9 @@
                                     </thead>
                                     <tbody>
                                         @foreach($arneses as $arnes)
-                                            @if($arnes->ensaPar>0)
+                                            @if($arnes->testPar>0 or $arnes->preCalidad>0)
+                                            <tr style="background-color: rgba(255, 26, 26, 0.8); color: white;">
+                                            @elseif($arnes->ensaPar>0)
                                             <tr style="background-color: rgba(223, 134, 0, 0.25);">
                                                 @elseif($arnes->loomPar>0)
                                                 <tr style="background-color: rgba(255, 47, 47, 0.259);">
