@@ -32,6 +32,9 @@ class pruebasElectricasController extends Controller
         COALESCE(specialWire, 0)
     ) as total')
                 ->where('pn', '=', $rack->pn)
+                ->whereRaw(
+                    '(ensaPar != 0 OR testPar != 0 OR loomPar != 0 OR preCalidad != 0 OR eng != 0 OR fallasCalidad != 0 OR specialWire != 0)'
+                )
 
                 ->get();
             foreach ($woks as $wok) {
