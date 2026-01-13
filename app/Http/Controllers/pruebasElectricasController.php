@@ -41,10 +41,16 @@ class pruebasElectricasController extends Controller
         }
 
         // $arneses = regPar::where('ensaPar', '!=', 0)->orWhere('loomPar', '!=', 0)->orWhere('eng', '!=', 0)->orWhere('specialWire', '!=', 0)->orderBy('pn', 'asc')->get();
-        $arneseses = regPar::where('ensaPar', '!=', 0)->orWhere('testPar', '!=', 0)->orWhere('preCalidad', '!=', 0)->orWhere('loomPar', '!=', 0)->orWhere('eng', '!=', 0)->orWhere('specialWire', '!=', 0)->orderBy('pn', 'asc')->get();
+        $arneseses = regPar::whereRaw(
+            'COALESCE(ensaPar, 0) +
+        COALESCE(loomPar, 0) +
+        COALESCE(preCalidad, 0) +
+        COALESCE(eng, 0) +
+        COALESCE(fallasCalidad, 0) +
+        COALESCE(specialWire, 0) > 0'
+        )->orderBy('pn', 'asc')->get();
         foreach ($arneseses as $arnes) {
-            if (! electricalTesting::where('pn', $arnes->pn)->where('status_of_order', '=', 'In rack')->
-                orWhere('status_of_order', '=', 'Completed')->exists()) {
+            if (! electricalTesting::where('pn', $arnes->pn)->where('status_of_order', '=', 'In rack')->exists()) {
                 $arneses[] = $arnes;
             }
         }
