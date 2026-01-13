@@ -30,7 +30,7 @@ class pruebasElectricasController extends Controller
         COALESCE(eng, 0) +
         COALESCE(fallasCalidad, 0) +
         COALESCE(specialWire, 0)
-    ) as total')
+      ) as total')
                 ->where('pn', '=', $rack->pn)
                 ->get();
             foreach ($woks as $wok) {
