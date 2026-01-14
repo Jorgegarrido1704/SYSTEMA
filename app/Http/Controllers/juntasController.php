@@ -2606,10 +2606,10 @@ class juntasController extends Controller
         $registroPartNumbers = [];
 
         // --- 5 PN without orders before  ---
-        $registrosPPAP = Po::select('pn', 'rev', 'client')
+        $registrosPPAP = Po::select('pn')->distinct()
             ->where('rev', 'LIKE', 'PPAP%')
             ->orWhere('rev', 'LIKE', 'PRIM%')
-            ->orderBy('pn', 'asc')
+            ->orderBy('pn', 'desc')
             ->get();
         foreach ($registrosPPAP as $regPPAP) {
             $pn = $regPPAP->pn;
