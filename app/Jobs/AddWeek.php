@@ -62,13 +62,18 @@ class AddWeek implements ShouldQueue
                     ->where('id_empleado', '=', $registroEmpleado->employeeNumber)
                     ->update([$day => 'PCS']);
             } else {
+                if (registroVacacionesModel::where('id_empleado', '=', $registroEmpleado->employeeNumber)->where('fecha_de_solicitud', '=', $dates)->exists()) {
+                    $registro = 'V';
+                } else {
+                    $registro = 'F';
+                }
                 assistence::where('week', '=', $week)
                     ->where('id_empleado', '=', $registroEmpleado->employeeNumber)
                     ->where($day, '=', '-')
                     ->orWhere($day, '=', '')
-                    ->update([$day => 'F']);
-
+                    ->update([$day => $registro]);
             }
+
         }
     }
 }
