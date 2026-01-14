@@ -2605,14 +2605,33 @@ class juntasController extends Controller
         $totalgeneral = count($registroPPAP);
         $registroPartNumbers = $registrosprevios = [];
 
-        $ultimasRevisiones = Po::select('pn')
-            ->distinct()
-            ->get();
-        foreach ($ultimasRevisiones as $item) {
-            $ultrev = Po::select('pn', 'rev', 'orday', 'client')->where('pn', $item->pn)->limit(1)->orderBy('id', 'desc')->first();
+        $ultimasRevisiones = Po::select('pn', 'rev', 'orday', 'client')
+            ->where(function ($q) {
+                $q->where('rev', 'LIKE', 'PPAP%')
+                    ->orWhere('rev', 'LIKE', 'PRIM%');
+            })
+            ->orderBy('pn')
+            ->orderBy('id', 'desc')
+            ->get()
+            ->unique('pn');
+
+        $registroPartNumbers = [];
+
+        foreach ($ultimasRevisiones as $ultrev) {
+
+            // Extrae TODO después de PPAP o PRIM
+            preg_match('/^(PPAP|PRIM)\s*(.+)$/', $ultrev->rev, $match);
+            $sufijo = $match[2] ?? null;
+
+            if ($sufijo === null) {
+                continue;
+            }
+
             $conteo = Po::where('pn', $ultrev->pn)
-                ->where('rev', 'LIKE', '%'.$ultrev->rev)
-                ->orWhere('rev', $ultrev->rev)
+                ->where(function ($q) use ($sufijo) {
+                    $q->where('rev', 'PPAP '.$sufijo)
+                        ->orWhere('rev', 'PRIM '.$sufijo);
+                })
                 ->count();
 
             if ($conteo === 1) {
