@@ -2623,8 +2623,8 @@ class juntasController extends Controller
         }
         // dd($registrosprevios);
         foreach ($registrosprevios as $regPPAP) {
-            $pn = $regPPAP->pn;
-            $rev = explode(' ', $regPPAP->rev)[1] ?? ' ';
+            $pn = $regPPAP['pn'];
+            $rev = explode(' ', $regPPAP['rev'])[1] ?? ' ';
 
             $buscarSinProduccion = Po::where('pn', $pn)
                 ->where('rev', 'LIKE', '%'.$rev)
