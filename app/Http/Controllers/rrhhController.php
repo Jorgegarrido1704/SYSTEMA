@@ -175,6 +175,7 @@ class rrhhController extends Controller
         $Genero = $request->input('genero');
         $status = $request->input('status');
         $typeSalida = $request->input('typeSalida');
+        $datos = '';
 
         if ($status == 'Baja') {
             $registro = carbon::now();
