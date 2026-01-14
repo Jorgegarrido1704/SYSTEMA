@@ -2605,26 +2605,22 @@ class juntasController extends Controller
         $totalgeneral = count($registroPPAP);
         $registroPartNumbers = $registrosprevios = [];
 
-        $ultimasRevisiones = Po::select('pn', 'rev', 'client', 'orday')
-            ->orderBy('pn')
-            ->orderBy('id', 'desc')
-            ->get()
-            ->unique('pn');
-        $registroPartNumbers = [];
-
+        $ultimasRevisiones = Po::select('pn')
+            ->distinct()
+            ->get();
         foreach ($ultimasRevisiones as $item) {
-
-            $conteo = Po::where('pn', $item->pn)
-                ->where('rev', 'LIKE', '%'.$item->rev)
-                ->orWhere('rev', $item->rev)
+            $ultrev = Po::select('pn', 'rev', 'orday', 'client')->where('pn', $item->pn)->limit(1)->orderBy('id', 'desc')->first();
+            $conteo = Po::where('pn', $ultrev->pn)
+                ->where('rev', 'LIKE', '%'.$ultrev->rev)
+                ->orWhere('rev', $ultrev->rev)
                 ->count();
 
             if ($conteo === 1) {
                 $registroPartNumbers[] = [
-                    'pn' => $item->pn,
-                    'rev' => $item->rev,
-                    'client' => $item->client,
-                    'orday' => $item->orday,
+                    'pn' => $ultrev->pn,
+                    'rev' => $ultrev->rev,
+                    'client' => $ultrev->client,
+                    'orday' => $ultrev->orday,
                 ];
             }
         }
