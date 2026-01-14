@@ -2621,7 +2621,7 @@ class juntasController extends Controller
                 ];
             }
         }
-        dd($registrosprevios);
+        // dd($registrosprevios);
         foreach ($registrosprevios as $regPPAP) {
             $pn = $regPPAP->pn;
             $rev = explode(' ', $regPPAP->rev)[1] ?? ' ';
