@@ -2636,7 +2636,7 @@ class juntasController extends Controller
                     $registroPartNumbers[] = [
                         'pn' => $busca->pn,
                         'rev' => $busca->rev,
-                        'client' => $regPPAP->client,
+                        'client' => $busca->client,
                         'orday' => $busca->orday,
                     ];
                 }
