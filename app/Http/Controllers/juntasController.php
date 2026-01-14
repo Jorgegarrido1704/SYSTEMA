@@ -2617,7 +2617,7 @@ class juntasController extends Controller
         $registroPartNumbers = [];
 
         foreach ($ultimasRevisiones as $item) {
-            $revisions = explode('_', $item->rev)[1];
+            $revisions = explode(' ', $item->rev)[1];
             $conteo = Po::where('pn', $item->pn)
                 ->where('rev', $revisions)
                 ->count();
