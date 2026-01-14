@@ -2603,15 +2603,26 @@ class juntasController extends Controller
         // --- 4. Retornar vista ---
         $enproceso = count($registros);
         $totalgeneral = count($registroPPAP);
-        $registroPartNumbers = [];
+        $registroPartNumbers = $registrosprevios = [];
 
         // --- 5 PN without orders before  ---
-        $registrosPPAP = Po::select('pn', 'rev', 'client')->distinct('pn')
+
+        $registrosPPAP = Po::select('pn', 'rev')
             ->where('rev', 'LIKE', 'PPAP%')
             ->orWhere('rev', 'LIKE', 'PRIM%')
             ->orderBy('pn', 'desc')
             ->get();
         foreach ($registrosPPAP as $regPPAP) {
+            if (! in_array($regPPAP->pn, $registrosprevios)) {
+                $registrosprevios[] = [
+                    'pn' => $regPPAP->pn,
+                    'rev' => $regPPAP->rev,
+
+                ];
+            }
+        }
+        dd($registrosprevios);
+        foreach ($registrosprevios as $regPPAP) {
             $pn = $regPPAP->pn;
             $rev = explode(' ', $regPPAP->rev)[1] ?? ' ';
 
