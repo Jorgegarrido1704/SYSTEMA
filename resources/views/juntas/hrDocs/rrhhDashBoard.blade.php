@@ -390,6 +390,15 @@ if (Error) {
                     </select>
                 </td>
                 <td>
+                    <select id="typeSalida_${emp.employeeNumber}" required>
+                        <option value="" noselected>Choose an option</option>
+                        <option value="VOLUNTARIA">VOLUNTARIA</option>
+                          <option value="ROTACION">ROTACION</option>
+                          <option value="TERMINACION">TERMINACION</option>
+                          <option value="RETIRO">RETIRO</option>
+                    </select>
+                </td>
+                <td>
                     <select id="typeWorker_${emp.employeeNumber}">
                         <option value="${emp.typeWorker}"> Actual ${emp.typeWorker}</option>
                            <option value="Directo">Directo</option><option value="Indirecto">Indirecto</option>
@@ -423,8 +432,9 @@ if (Error) {
             const genero = document.getElementById("genero_"+valor).value;
             const status = document.getElementById("status_"+valor).value;
             const typeWorker = document.getElementById("typeWorker_"+valor).value;
+            const typeSalida = document.getElementById("typeSalida_"+valor).value;
     const url = "{{ route('editarEmepleado') }}?valor="+valor+"&id_employee="+id_employee+"&nameEmployee="+nameEmployee+
-    "&lider="+lider+"&area="+area+"&genero="+genero+"&status="+status+"&typeWorker="+typeWorker;
+    "&lider="+lider+"&area="+area+"&genero="+genero+"&status="+status+"&typeWorker="+typeWorker+"&typeSalida="+typeSalida;
 
             fetch(url, { method: 'GET',
                 headers: {   'Content-Type': 'application/json',

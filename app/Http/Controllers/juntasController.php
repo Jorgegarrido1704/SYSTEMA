@@ -2143,6 +2143,7 @@ class juntasController extends Controller
         }
         $registroRotacion = personalBergsModel::select('employeeNumber')
             ->where('status', '=', 'Baja')
+            ->where('typeSalida', '=', 'Rotacion')
             ->whereMonth('DateSalida', '=', Carbon::now()->month)
             ->get();
         $rotacionTotal = count($registroRotacion);
