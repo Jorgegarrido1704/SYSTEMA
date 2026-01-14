@@ -2605,41 +2605,30 @@ class juntasController extends Controller
         $totalgeneral = count($registroPPAP);
         $registroPartNumbers = $registrosprevios = [];
 
-        // --- 5 PN without orders before  ---
+        $ultimasRevisiones = Po::select('pn', 'rev', 'client', 'orday')
+            ->where(function ($q) {
+                $q->where('rev', 'LIKE', 'PPAP%')
+                    ->orWhere('rev', 'LIKE', 'PRIM%');
+            })
+            ->orderBy('pn')
+            ->orderBy('id', 'desc')
+            ->get()
+            ->unique('pn');
+        $registroPartNumbers = [];
 
-        $registrosPPAP = Po::select('pn', 'rev')
-            ->where('rev', 'LIKE', 'PPAP%')
-            ->orWhere('rev', 'LIKE', 'PRIM%')
-            ->orderBy('pn', 'desc')
-            ->get();
-        foreach ($registrosPPAP as $regPPAP) {
-            if (! in_array($regPPAP->pn, $registrosprevios)) {
-                $registrosprevios[] = [
-                    'pn' => $regPPAP->pn,
-                    'rev' => $regPPAP->rev,
+        foreach ($ultimasRevisiones as $item) {
+            $revisions = explode('_', $item->rev)[1];
+            $conteo = Po::where('pn', $item->pn)
+                ->where('rev', $revisions)
+                ->count();
 
+            if ($conteo === 1) {
+                $registroPartNumbers[] = [
+                    'pn' => $item->pn,
+                    'rev' => $item->rev,
+                    'client' => $item->client,
+                    'orday' => $item->orday,
                 ];
-            }
-        }
-        // dd($registrosprevios);
-        foreach ($registrosprevios as $regPPAP) {
-            $pn = $regPPAP['pn'];
-            $rev = explode(' ', $regPPAP['rev'])[1] ?? ' ';
-
-            $buscarSinProduccion = Po::where('pn', $pn)
-                ->where('rev', 'LIKE', '%'.$rev)
-                ->orderBy('rev', 'asc')
-                ->get();
-            foreach ($buscarSinProduccion as $busca) {
-                if (count($buscarSinProduccion) == 1) {
-
-                    $registroPartNumbers[] = [
-                        'pn' => $busca->pn,
-                        'rev' => $busca->rev,
-                        'client' => $busca->client,
-                        'orday' => $busca->orday,
-                    ];
-                }
             }
         }
 
