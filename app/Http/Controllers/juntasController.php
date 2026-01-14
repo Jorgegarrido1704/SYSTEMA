@@ -2620,7 +2620,7 @@ class juntasController extends Controller
             $registro = explode(' ', $item->rev)[0] ?? '';
             $conteo = Po::where('pn', $item->pn)
                 ->where('rev', 'LIKE', '%'.$registro)
-                ->orWhere('rev', $item->rev)
+                ->orWhere('rev', $registro)
                 ->count();
 
             if ($conteo === 1) {
