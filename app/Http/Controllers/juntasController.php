@@ -2606,10 +2606,6 @@ class juntasController extends Controller
         $registroPartNumbers = $registrosprevios = [];
 
         $ultimasRevisiones = Po::select('pn', 'rev', 'client', 'orday')
-            ->where(function ($q) {
-                $q->where('rev', 'LIKE', 'PPAP%')
-                    ->orWhere('rev', 'LIKE', 'PRIM%');
-            })
             ->orderBy('pn')
             ->orderBy('id', 'desc')
             ->get()
@@ -2617,10 +2613,10 @@ class juntasController extends Controller
         $registroPartNumbers = [];
 
         foreach ($ultimasRevisiones as $item) {
-            $registro = explode(' ', $item->rev)[1] ?? '';
+
             $conteo = Po::where('pn', $item->pn)
-                ->where('rev', 'LIKE', '%'.$registro)
-                ->orWhere('rev', $registro)
+                ->where('rev', 'LIKE', '%'.$item->rev)
+                ->orWhere('rev', $item->rev)
                 ->count();
 
             if ($conteo === 1) {
