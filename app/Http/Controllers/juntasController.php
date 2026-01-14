@@ -2636,7 +2636,6 @@ class juntasController extends Controller
             'value' => $value,
             'cat' => $cat,
             'registroPPAP' => $registroPPAP,
-            'registrosPPAP' => $registrosPPAP,
             'enproceso' => $enproceso,
             'totalgeneral' => $totalgeneral,
             'registroPartNumbers' => $registroPartNumbers,
