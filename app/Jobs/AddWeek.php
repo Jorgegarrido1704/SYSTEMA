@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Models\assistence;
 use App\Models\personalBergsModel;
+use App\Models\registroVacacionesModel;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -62,7 +63,7 @@ class AddWeek implements ShouldQueue
                     ->where('id_empleado', '=', $registroEmpleado->employeeNumber)
                     ->update([$day => 'PCS']);
             } else {
-                if (DB::table('registro_vacaciones')->where('id_empleado', '=', $registroEmpleado->employeeNumber)->where('fecha_de_solicitud', '=', $dates)->exists()) {
+                if (registroVacacionesModel::where('id_empleado', '=', $registroEmpleado->employeeNumber)->where('estatus', '=', 'Confirmado')->where('id_empleado', '=', $registroEmpleado->employeeNumber)->where('fecha_de_solicitud', '=', $dates)->exists()) {
                     $registro = 'V';
                 } else {
                     $registro = 'F';
