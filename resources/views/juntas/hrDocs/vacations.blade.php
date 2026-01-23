@@ -2,7 +2,7 @@
 
 @section('contenido')
 
-<script src="{{ asset('/dash/js/vacaciones.js') }}"></script>
+<script src="{{ asset('dash/js/vacaciones.js') }}"></script>
 
 @if (session('error'))
 <script>
