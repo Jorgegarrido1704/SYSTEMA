@@ -23,7 +23,7 @@ class Kernel extends ConsoleKernel
 
         $schedule->job(new \App\Jobs\VacacionesRegistrosJob)->cron('1 2,7 * * *');
 
-        $schedule->job(new \App\Jobs\accionesCorrectivasJob)->dailyAt('07:00');
+        // $schedule->job(new \App\Jobs\accionesCorrectivasJob)->dailyAt('07:00');
         // Data base backup
         $schedule->command('backup:database')
             ->hourly()
@@ -31,7 +31,8 @@ class Kernel extends ConsoleKernel
             ->days([1, 2, 3, 4, 5, 6])
             ->appendOutputTo(storage_path('logs/backup.log'));
         // creacion de listas de asistencia y registros
-        $schedule->job(new \App\Jobs\AddWeek)->dailyAt('08:15');
+        // $schedule->job(new \App\Jobs\AddWeek)->dailyAt('08:15');
+        $schedule->job(new \App\Jobs\AddWeek)->cron('15 6,8 * * *');
         $schedule->job(new \App\Jobs\respolados)->cron('1 6,18 * * *');
         // weekly list assistence
         $schedule->job(new \App\Jobs\reporteGeneral)->dailyAt('06:30');
