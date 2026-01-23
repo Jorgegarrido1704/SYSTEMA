@@ -1882,7 +1882,7 @@ class juntasController extends Controller
         $vacaciones = registroVacacionesModel::wherebetween('fecha_de_solicitud', [$InicioYear->toDateString(), $FinYear->toDateString()])
             // ->where('fecha_de_solicitud', 'LIKE', $currentYear . '%')
             ->where('estatus', '=', 'Confirmado')
-            ->where('superVisor', '=', $lidername->employeeName)
+            ->where('superVisor', '=', $value)
             ->OrWhere('area', '=', $area1)
             ->orderBy('fecha_de_solicitud', 'asc')
             ->get();
