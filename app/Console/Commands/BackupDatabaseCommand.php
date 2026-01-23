@@ -25,9 +25,9 @@ class BackupDatabaseCommand extends Command
         foreach ($registroTipos as $tipo) {
             $sqlDump = $this->generateSqlDump($tipo);
             $fileName = "{$tipo}.sql";
-
-            $zipName = $hours == '07' || $hours == '20' ? "{$fileName}_{$date}_{$hours}.zip" : "{$fileName}.zip";
-            // $zipName = "{$fileName}.zip";
+            // On Vacation active this
+            // $zipName = $hours == '07' || $hours == '20' ? "{$fileName}_{$date}_{$hours}.zip" : "{$fileName}.zip";
+            $zipName = "{$fileName}.zip";
             // Guarda el archivo SQL
             File::ensureDirectoryExists($outputPath);
             File::put($outputPath.$fileName, $sqlDump);

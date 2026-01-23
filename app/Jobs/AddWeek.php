@@ -58,21 +58,23 @@ class AddWeek implements ShouldQueue
                     'yearOfAssistence' => $year,
                 ]);
             }
-            if (in_array($dates, $hollyDays)) {
-                assistence::where('week', '=', $week)
-                    ->where('id_empleado', '=', $registroEmpleado->employeeNumber)
-                    ->update([$day => 'PCS']);
-            } else {
-                if (registroVacacionesModel::where('id_empleado', '=', $registroEmpleado->employeeNumber)->where('estatus', '=', 'Confirmado')->where('id_empleado', '=', $registroEmpleado->employeeNumber)->where('fecha_de_solicitud', '=', $dates)->exists()) {
-                    $registro = 'V';
+            if (carbon::now()->format('H') > 7) {
+                if (in_array($dates, $hollyDays)) {
+                    assistence::where('week', '=', $week)
+                        ->where('id_empleado', '=', $registroEmpleado->employeeNumber)
+                        ->update([$day => 'PCS']);
                 } else {
-                    $registro = 'F';
+                    if (registroVacacionesModel::where('id_empleado', '=', $registroEmpleado->employeeNumber)->where('estatus', '=', 'Confirmado')->where('id_empleado', '=', $registroEmpleado->employeeNumber)->where('fecha_de_solicitud', '=', $dates)->exists()) {
+                        $registro = 'V';
+                    } else {
+                        $registro = 'F';
+                    }
+                    assistence::where('week', '=', $week)
+                        ->where('id_empleado', '=', $registroEmpleado->employeeNumber)
+                        ->where($day, '=', '-')
+                        ->orWhere($day, '=', '')
+                        ->update([$day => $registro]);
                 }
-                assistence::where('week', '=', $week)
-                    ->where('id_empleado', '=', $registroEmpleado->employeeNumber)
-                    ->where($day, '=', '-')
-                    ->orWhere($day, '=', '')
-                    ->update([$day => $registro]);
             }
 
         }
