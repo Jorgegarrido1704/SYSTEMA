@@ -682,6 +682,7 @@ class juntasController extends Controller
             ->groupBy('pn')
             ->orderByDesc('pnCount')
             ->get();
+        dd($datosFamilias);
         foreach ($datosFamilias as $key => $valoresArnes) {
             $buscarCircuitos = DB::table('listascorte')->where('pn', $valoresArnes->pn)->count();
             if ($buscarCircuitos > 300) {
