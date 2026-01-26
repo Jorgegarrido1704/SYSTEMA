@@ -681,7 +681,6 @@ class juntasController extends Controller
             ->whereRaw("YEAR(STR_TO_DATE(fecha, '%d-%m-%Y')) = ? AND MONTH(STR_TO_DATE(fecha, '%d-%m-%Y')) = ?", [$YearParto, $month])
             ->groupBy('pn')
             ->orderByDesc('pnCount')
-            ->limit(5)
             ->get();
         foreach ($datosFamilias as $key => $valoresArnes) {
             $buscarCircuitos = DB::table('listascorte')->where('pn', $valoresArnes->pn)->count();

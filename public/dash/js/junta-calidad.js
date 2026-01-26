@@ -538,8 +538,8 @@ var GruposFamilias = new Chart(familiasGrupos, {
                 ticks: {
                     beginAtZero: true,
                     min: 1,
-                    max: 3000,
-                    stepSize: 100,
+                    max: 10000,
+                    stepSize: 500,
                 },
                 gridLines: {
                     color: '#e3e3e3',

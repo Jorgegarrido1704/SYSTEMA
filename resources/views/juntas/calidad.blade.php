@@ -270,47 +270,56 @@
                 <div class="card-header py-3">
                     <h5 class="m-0 font-weight-bold text-primary">Porcentaje of the harness per famalies</h5>
                 </div>
-                <div class="card-body" style="overflow-y: auto; height: 360px;" id="tableChange">
+                <div class="card-body" style="overflow-y: auto; height: 560px;" >
                     <div class="row">
-                        <div class="col-lg-3 col-lx-3">
-                             <table>
+                        <div class="col-lg-4 col-lx-4">
+                             <table class="table table-striped table-bordered">
                                 <thead>
                                     <th>Family</th>
                                     <th>Circuits numbers</th>
+                                    <th>Quantity</th>
 
                                 </thead>
                                 <tbody>
                                     <tr>
                                         <td>Harness A</td>
                                         <td>MORE THAN 300</td>
+                                        <td>{{$grupo['A']}}</td>
                                     </tr>
                                     <tr>
                                         <td>Harness B</td>
                                         <td>BETWEEN 200 AND 300</td>
+                                        <td>{{$grupo['B']}}</td>
                                     </tr>
                                     <tr>
                                         <td>Harness C</td>
                                         <td>BETWEEN 100 AND 199</td>
+                                        <td>{{$grupo['C']}}</td>
                                     </tr>
                                     <tr>
                                         <td>Harness D</td>
                                         <td>BETWEEN 50 AND 99</td>
+                                        <td>{{$grupo['D']}}</td>
                                     </tr>
                                      <tr>
                                         <td>Harness E</td>
                                         <td>BETWEEN 25 AND 49</td>
+                                        <td>{{$grupo['E']}}</td>
                                     </tr>
                                     <tr>
                                         <td>Harness F</td>
                                         <td>BETWEEN 10 AND 24</td>
+                                        <td>{{$grupo['F']}}</td>
                                     </tr>
                                     <tr>
                                         <td>Harness G</td>
                                         <td>BETWEEN 5 AND 9</td>
+                                        <td>{{$grupo['G']}}</td>
                                     </tr>
                                     <tr>
                                         <td>Harness H</td>
                                         <td>LESS THAN 5</td>
+                                        <td>{{$grupo['H']}}</td>
                                     </tr>
 
                                 </tbody>
