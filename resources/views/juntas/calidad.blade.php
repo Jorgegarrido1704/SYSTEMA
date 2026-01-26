@@ -280,35 +280,35 @@
                                 <tbody>
                                     <tr>
                                         <td>Harness A</td>
-                                        <td></td>
+                                        <td>MORE THAN 300</td>
                                     </tr>
                                     <tr>
                                         <td>Harness B</td>
-                                        <td></td>
+                                        <td>BETWEEN 200 AND 300</td>
                                     </tr>
                                     <tr>
                                         <td>Harness C</td>
-                                        <td></td>
+                                        <td>BETWEEN 100 AND 199</td>
                                     </tr>
                                     <tr>
                                         <td>Harness D</td>
-                                        <td></td>
+                                        <td>BETWEEN 50 AND 99</td>
                                     </tr>
                                      <tr>
                                         <td>Harness E</td>
-                                        <td></td>
+                                        <td>BETWEEN 25 AND 49</td>
                                     </tr>
                                     <tr>
                                         <td>Harness F</td>
-                                        <td></td>
+                                        <td>BETWEEN 10 AND 24</td>
                                     </tr>
                                     <tr>
                                         <td>Harness G</td>
-                                        <td></td>
+                                        <td>BETWEEN 5 AND 9</td>
                                     </tr>
                                     <tr>
                                         <td>Harness H</td>
-                                        <td></td>
+                                        <td>LESS THAN 5</td>
                                     </tr>
 
                                 </tbody>
