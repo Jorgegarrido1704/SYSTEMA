@@ -529,6 +529,7 @@ class juntasController extends Controller
                 $supRes = personalBergsModel::select('employeeLider')->where('employeeName', 'VERA VILLEGAS EFRAIN')->first();
             }
             $supRes->employeeLider = explode(' ', $supRes->employeeLider)[0].' '.explode(' ', $supRes->employeeLider)[2];
+            $rows->Responsable = explode(' ', $rows->Responsable)[0].' '.explode(' ', $rows->Responsable)[2];
             if (in_array($rows->codigo, $etiq)) {
                 $index = array_search($rows->codigo, $etiq);
                 $datos[$etiq[$index]] += $rows->resto;
