@@ -682,7 +682,7 @@ class juntasController extends Controller
             ->groupBy('pn')
             ->orderByDesc('pnCount')
             ->get();
-      //  dd($datosFamilias);
+        //  dd($datosFamilias);
         foreach ($datosFamilias as $key => $valoresArnes) {
             $buscarCircuitos = DB::table('listascorte')->where('pn', $valoresArnes->pn)->count();
             if ($buscarCircuitos > 300) {
@@ -697,7 +697,7 @@ class juntasController extends Controller
                 $grupo['E'] += $valoresArnes->pnCount;
             } elseif ($buscarCircuitos <= 25 and $buscarCircuitos > 10) {
                 $grupo['F'] += $valoresArnes->pnCount;
-            } elseif ($buscarCircuitos <= 10 and $buscarCircuitos > 0) {
+            } elseif ($buscarCircuitos <= 10 and $buscarCircuitos > 5) {
                 $grupo['G'] += $valoresArnes->pnCount;
 
             } else {
