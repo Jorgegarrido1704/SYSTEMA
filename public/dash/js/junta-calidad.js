@@ -5,7 +5,7 @@ var colorQ;
 var labelQ;
 var pyl=Object.keys(paretoYear);
 var pyv=Object.values(paretoYear);
-var employees =empleados.map(empleados => empleados.Responsable);
+var employees =empleados.map(empleados => empleados.Responsable.split(' ')[0] + ' ' + empleados.Responsable.split(' ')[1]);
 var empvalues = empleados.map(empleados => empleados.errores);
 
 
@@ -285,15 +285,15 @@ var incs = new Chart(inc, {
                 data: empvalues,
                 backgroundColor:[
   'rgba(200, 48, 28, 1)',
-  'rgba(200, 94, 28, 1)',
-  'rgba(200, 117, 28, 1)',
-  'rgba(200, 131, 28, 1)',
-  'rgba(210, 150, 28, 1)',
+  'rgb(234, 67, 67)',
+  'rgb(255, 127, 8)',
+  'rgb(236, 143, 3)',
+  'rgb(234, 160, 0)',
   'rgba(200, 154, 28, 1)',
-  'rgba(194, 200, 28, 1)',
-  'rgba(188, 200, 28, 1)',
-  'rgba(171, 200, 28, 1)',
-  'rgba(151, 200, 28, 1)'
+  'rgba(255, 250, 0,0.9)',
+  'rgba(255, 240, 0,0.8)',
+  'rgba(240, 230, 0,0.7)',
+  'rgba(225, 200, 0, 0.5)'
 ],
                 fill: false, // Evita rellenar el área debajo de la línea
                 borderWidth: 4

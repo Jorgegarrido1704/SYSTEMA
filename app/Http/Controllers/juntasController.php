@@ -655,6 +655,9 @@ class juntasController extends Controller
             ->orderByDesc('errores')
             ->limit(10)
             ->get();
+        foreach ($empleados as $empleado) {
+            $empleado->Resposable = explode(' ', $empleado->Responsable)[0].' '.explode(' ', $empleado->Responsable)[2];
+        }
 
         // arsort($monthAndYearPareto);
         // ksort($pareto);
