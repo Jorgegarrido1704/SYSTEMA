@@ -475,6 +475,31 @@ class juntasController extends Controller
         $totalb = $totalm = $j = 0;
         $monthAndYear = date('m-Y');
         $today = date('d-m-Y 00:00');
+        // Initialize
+        $pareto = [];
+        $totalGood = $totalBad = 0;
+
+        // Get current weekday (1 = Monday, 7 = Sunday)
+        $weekday = date('N');
+
+        // Map how many past days we want depending on weekday
+        $daysBackMap = [
+            1 => 3, // Monday → last 6 days (Tue-Sun)
+            2 => 1, // Tuesday → yesterday only
+            3 => 2, // Wednesday → last 2 days
+            4 => 3, // Thursday → last 3 days
+            5 => 4, // Friday → last 4 days
+            6 => 5, // Saturday → last 4 days
+            7 => 0, // Sunday → none (adjust if needed)
+        ];
+
+        $daysBack = $daysBackMap[$weekday] ?? 0;
+
+        // Generate the dates we want to check
+        $datesToCheck = [];
+        for ($i = 1; $i <= $daysBack; $i++) {
+            $datesToCheck[] = date('d-m-Y', strtotime("-$i days"));
+        }
         if (date('N') == 1) {
             $datecontrol = strtotime(date('d-m-Y 00:00', strtotime('-3 days')));
             $crtl = date('d-m-Y', strtotime('-3 days'));
@@ -483,9 +508,19 @@ class juntasController extends Controller
             $crtl = date('d-m-Y', strtotime('-1 days'));
         }
         $buscarValoresMes = calidadRegistro::where('codigo', '!=', 'TODO BIEN')
-            ->where('fecha', 'LIKE', $crtl.'%')
+            ->where(function ($query) use ($datesToCheck) {
+                foreach ($datesToCheck as $date) {
+                    $query->orWhere('fecha', 'LIKE', "$date%");
+                }
+            })
             ->get();
-        $totalb = calidadRegistro::where('fecha', 'LIKE', $crtl.'%')->where('codigo', 'TODO BIEN')->count();
+        $totalb = calidadRegistro::where('codigo', 'TODO BIEN')
+            ->where(function ($query) use ($datesToCheck) {
+                foreach ($datesToCheck as $date) {
+                    $query->orWhere('fecha', 'LIKE', "$date%");
+                }
+            })
+            ->count();
         $totalm = count($buscarValoresMes);
         foreach ($buscarValoresMes as $rows) {
             $supRes = personalBergsModel::select('employeeLider')->where('employeeName', $rows->Responsable)->first();
@@ -516,31 +551,6 @@ class juntasController extends Controller
             return $total > 0 ? round(($good / $total) * 100, 2) : 0;
         }
 
-        // Initialize
-        $pareto = [];
-        $totalGood = $totalBad = 0;
-
-        // Get current weekday (1 = Monday, 7 = Sunday)
-        $weekday = date('N');
-
-        // Map how many past days we want depending on weekday
-        $daysBackMap = [
-            1 => 3, // Monday → last 6 days (Tue-Sun)
-            2 => 1, // Tuesday → yesterday only
-            3 => 2, // Wednesday → last 2 days
-            4 => 3, // Thursday → last 3 days
-            5 => 4, // Friday → last 4 days
-            6 => 5, // Saturday → last 4 days
-            7 => 0, // Sunday → none (adjust if needed)
-        ];
-
-        $daysBack = $daysBackMap[$weekday] ?? 0;
-
-        // Generate the dates we want to check
-        $datesToCheck = [];
-        for ($i = 1; $i <= $daysBack; $i++) {
-            $datesToCheck[] = date('d-m-Y', strtotime("-$i days"));
-        }
         $days = count($datesToCheck);
         $buscarValores = DB::table('regsitrocalidad')->select('fecha', 'codigo')
             ->where(function ($query) use ($datesToCheck) {
@@ -651,7 +661,11 @@ class juntasController extends Controller
         $datosF = $pnrs = $datosT = $datosS = [];
         // Query the database to retrieve records where 'codigo' column matches the $firstKey
         $buscardatosClientes = DB::table('regsitrocalidad')->where('codigo', '=', $firstKey)
-            ->where('fecha', 'LIKE', $crtl.'%')->orderBy('pn')->get();
+            ->where(function ($query) use ($datesToCheck) {
+                foreach ($datesToCheck as $date) {
+                    $query->orWhere('fecha', 'LIKE', "$date%");
+                }
+            })->orderBy('pn')->get();
         foreach ($buscardatosClientes as $rowDatos) {
             if ((in_array($rowDatos->client, array_column($datosF, 0)) and (in_array($rowDatos->pn, array_column($datosF, 3))))) {
                 $datosF[$rowDatos->pn][2] += $rowDatos->resto;
@@ -665,7 +679,11 @@ class juntasController extends Controller
         next($datos);
         $secondKey = key($datos);
         $buscardatosClientes2 = DB::table('regsitrocalidad')->where('codigo', '=', $secondKey)
-            ->where('fecha', 'LIKE', $crtl.'%')->orderBy('pn')->get();
+            ->where(function ($query) use ($datesToCheck) {
+                foreach ($datesToCheck as $date) {
+                    $query->orWhere('fecha', 'LIKE', "$date%");
+                }
+            })->orderBy('pn')->get();
         foreach ($buscardatosClientes2 as $rowDatos2) {
             if ((in_array($rowDatos2->client, array_column($datosS, 0)) and (in_array($rowDatos2->pn, array_column($datosS, 3))))) {
                 $datosS[$rowDatos2->pn][2] += $rowDatos2->resto;
@@ -679,7 +697,11 @@ class juntasController extends Controller
         next($datos);
         $thirdKey = key($datos);
         $buscardatosClientes3 = DB::table('regsitrocalidad')->where('codigo', $thirdKey)
-            ->where('fecha', 'LIKE', $crtl.'%')->orderBy('codigo')->get();
+            ->where(function ($query) use ($datesToCheck) {
+                foreach ($datesToCheck as $date) {
+                    $query->orWhere('fecha', 'LIKE', "$date%");
+                }
+            })->orderBy('codigo')->get();
         foreach ($buscardatosClientes3 as $rowDatos3) {
 
             if (in_array($rowDatos3->client, array_column($datosT, 0)) and (in_array($rowDatos3->pn, array_column($datosT, 3)))) {
