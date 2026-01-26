@@ -468,7 +468,7 @@ class juntasController extends Controller
 
     public function calidad_junta()
     {
-        $value = session('user');
+        $value = session('user') ?? '';
         $cat = session('categoria');
         $datosCalidad = [];
         $empRes = $empleados = $datos = $etiq = $gultyY = [];
@@ -666,7 +666,44 @@ class juntasController extends Controller
             ->orderByDesc('codigoErrores')
             ->limit(5)
             ->get();
+        // familias por grupo
+        $grupo = ['A' => 0,
+            'B' => 0,
+            'C' => 0,
+            'D' => 0,
+            'E' => 0,
+            'F' => 0,
+            'G' => 0,
+            'H' => 0,
+        ];
+        $datosFamilias = DB::table('regsitrocalidad')
+            ->selectRaw('pn, COUNT(pn) as pnCount')
+            ->whereRaw("YEAR(STR_TO_DATE(fecha, '%d-%m-%Y')) = ? AND MONTH(STR_TO_DATE(fecha, '%d-%m-%Y')) = ?", [$YearParto, $month])
+            ->groupBy('pn')
+            ->orderByDesc('pnCount')
+            ->limit(5)
+            ->get();
+        foreach ($datosFamilias as $key => $valoresArnes) {
+            $buscarCircuitos = DB::table('listascorte')->where('pn', $valoresArnes->pn)->count();
+            if ($buscarCircuitos > 300) {
+                $grupo['A'] += $valoresArnes->pnCount;
+            } elseif ($buscarCircuitos <= 300 and $buscarCircuitos > 200) {
+                $grupo['B'] += $valoresArnes->pnCount;
+            } elseif ($buscarCircuitos <= 200 and $buscarCircuitos > 100) {
+                $grupo['C'] += $valoresArnes->pnCount;
+            } elseif ($buscarCircuitos <= 100 and $buscarCircuitos > 50) {
+                $grupo['D'] += $valoresArnes->pnCount;
+            } elseif ($buscarCircuitos <= 50 and $buscarCircuitos > 25) {
+                $grupo['E'] += $valoresArnes->pnCount;
+            } elseif ($buscarCircuitos <= 25 and $buscarCircuitos > 10) {
+                $grupo['F'] += $valoresArnes->pnCount;
+            } elseif ($buscarCircuitos <= 10 and $buscarCircuitos > 0) {
+                $grupo['G'] += $valoresArnes->pnCount;
 
+            } else {
+                $grupo['H'] += $valoresArnes->pnCount;
+            }
+        }
         // arsort($monthAndYearPareto);
         // ksort($pareto);
         arsort($datos);
@@ -840,7 +877,7 @@ class juntasController extends Controller
         $supIssue = array_filter($supIssue, fn ($count) => $count > 2);
         arsort($supIssue);
 
-        return view('juntas.calidad', ['codigoErrores' => $codigoErrores,
+        return view('juntas.calidad', ['codigoErrores' => $codigoErrores, 'grupo' => $grupo,
             'supIssue' => $supIssue, 'days' => $days, 'personalYear' => $personalYear, 'respemp' => $empRes, 'empleados' => $top5,  'hoyb' => $hoyb, 'hoymal' => $hoymal, 'parhoy' => $parhoy, 'gultyY' => $gultyY, 'gulty' => $gulty, 'datosHoy' => $datosHoy, 'totalm' => $totalm, 'totalb' => $totalb, 'monthAndYearPareto' => $monthAndYearPareto, 'datosT' => $datosT, 'datosS' => $datosS, 'datosF' => $datosF, 'labelQ' => $labelQ, 'colorQ' => $colorQ, 'value' => $value, 'cat' => $cat, 'datos' => $datos, 'pareto' => $pareto, 'Qdays' => $Qdays]);
     }
 

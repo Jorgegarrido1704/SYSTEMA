@@ -173,7 +173,11 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ $value ?? '' }}</span>
+                                @if(!empty($value))
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ $value }}</span>
+                                @else
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"></span>
+                                @endif
                                 <img class="img-profile rounded-circle">
                             </a>
                           <!--    Dropdown - User Information -->

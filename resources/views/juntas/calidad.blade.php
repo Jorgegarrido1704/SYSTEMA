@@ -53,6 +53,8 @@
         var respo = {!! json_encode($respemp) !!};
         var supIssue = {!! json_encode($supIssue) !!};
         var codigoErrores = {!! json_encode($codigoErrores) !!};
+        var grupos = {!! json_encode($grupo) !!};
+        console.log(grupos);
       //  console.log(supIssue);
     </script>
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
