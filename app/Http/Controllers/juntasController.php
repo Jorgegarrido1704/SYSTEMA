@@ -767,6 +767,8 @@ class juntasController extends Controller
                     $i++;
                 }
                 $gutlyleader = personalBergsModel::select('employeeLider')->where('employeeName', $issue->Responsable)->first();
+                $gutlyleader->employeeLider = explode(' ', $gutlyleader->employeeLider)[0].' '.explode(' ', $gutlyleader->employeeLider)[2];
+                $issue->Responsable = explode(' ', $issue->Responsable)[0].' '.explode(' ', $issue->Responsable)[2];
                 if (in_array($issue->Responsable.' Lider: '.$gutlyleader->employeeLider, array_column($gulty, 0))) {
                     $gulty[array_search($issue->Responsable.' Lider: '.$gutlyleader->employeeLider, array_column($gulty, 0))][1] += $issue->resto;
                 } else {
@@ -809,7 +811,7 @@ class juntasController extends Controller
             ->get();
         foreach ($empleados as $rowEmp) {
             $supRes = personalBergsModel::select('employeeLider')->where('employeeName', $rowEmp->Responsable)->first();
-
+            $supRes->employeeLider = explode(' ', $supRes->employeeLider)[0].' '.explode(' ', $supRes->employeeLider)[2];
             if (! isset($supRes->employeeLider)) {
                 continue;
             }
@@ -827,7 +829,7 @@ class juntasController extends Controller
         $supIssue = array_filter($supIssue, fn ($count) => $count > 2);
         arsort($supIssue);
 
-        return view('juntas/calidad', ['supIssue' => $supIssue, 'days' => $days, 'personalYear' => $personalYear, 'respemp' => $empRes, 'empleados' => $top5,  'hoyb' => $hoyb, 'hoymal' => $hoymal, 'parhoy' => $parhoy, 'gultyY' => $gultyY, 'gulty' => $gulty, 'datosHoy' => $datosHoy, 'totalm' => $totalm, 'totalb' => $totalb, 'monthAndYearPareto' => $monthAndYearPareto, 'datosT' => $datosT, 'datosS' => $datosS, 'datosF' => $datosF, 'labelQ' => $labelQ, 'colorQ' => $colorQ, 'value' => $value, 'cat' => $cat, 'datos' => $datos, 'pareto' => $pareto, 'Qdays' => $Qdays]);
+        return view('juntas.calidad', ['supIssue' => $supIssue, 'days' => $days, 'personalYear' => $personalYear, 'respemp' => $empRes, 'empleados' => $top5,  'hoyb' => $hoyb, 'hoymal' => $hoymal, 'parhoy' => $parhoy, 'gultyY' => $gultyY, 'gulty' => $gulty, 'datosHoy' => $datosHoy, 'totalm' => $totalm, 'totalb' => $totalb, 'monthAndYearPareto' => $monthAndYearPareto, 'datosT' => $datosT, 'datosS' => $datosS, 'datosF' => $datosF, 'labelQ' => $labelQ, 'colorQ' => $colorQ, 'value' => $value, 'cat' => $cat, 'datos' => $datos, 'pareto' => $pareto, 'Qdays' => $Qdays]);
     }
 
     public function litas_junta($id)
