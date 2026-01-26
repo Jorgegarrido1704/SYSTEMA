@@ -9,6 +9,8 @@ var employees =empleados.map(empleados => empleados.Responsable.split(' ')[0] + 
 var empvalues = empleados.map(empleados => empleados.errores);
 
 
+
+
    function guardarDateQ(){
     const date =document.getElementById("dateIncidence").value;
     //alert(date);
@@ -353,6 +355,78 @@ var supss = new Chart(sups, {
             {
                 label: 'Incidencias del mes',
                 data: supvalues,
+                backgroundColor:[
+  'rgba(200, 48, 28, 1)',
+  'rgba(200, 94, 28, 1)',
+  'rgba(200, 117, 28, 1)',
+  'rgba(200, 131, 28, 1)',
+  'rgba(210, 150, 28, 1)',
+  'rgba(200, 154, 28, 1)',
+  'rgba(194, 200, 28, 1)',
+  'rgba(188, 200, 28, 1)',
+  'rgba(171, 200, 28, 1)',
+  'rgba(151, 200, 28, 1)'
+],
+                fill: false, // Evita rellenar el área debajo de la línea
+                borderWidth: 4
+            },
+
+        ]
+    },
+    options: {
+        maintainAspectRatio: false,
+        tooltips: {
+            backgroundColor: "rgb(255,255,255)",
+            bodyFontColor: "#858796",
+            borderColor: '#dddfeb',
+            borderWidth: 1,
+            xPadding: 15,
+            yPadding: 15,
+            displayColors: false,
+
+        },
+        legend: {
+            display: true
+        },
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true,
+                    min: 1,
+                    max: 150,
+                    stepSize: 10,
+                },
+                gridLines: {
+                    color: '#e3e3e3',
+                    drawBorder: false,
+                },
+            }],
+            xAxes: [{
+                gridLines: {
+                    display: false,
+                },
+            }]
+        }
+    }
+    });
+}catch (error) {
+    console.log("No hay fecha guardada");
+}
+try {
+
+
+var incidencias = [];
+var coderrorName = codigoErrores.map(codigoErrores => codigoErrores.codigo);
+var coderrorValues = codigoErrores.map(codigoErrores => codigoErrores.codigoErrores);
+var errosComunes = document.getElementById("mostErrors");
+var errorsCommun = new Chart(errosComunes, {
+    type: 'bar',
+    data: {
+        labels: coderrorName,
+        datasets: [
+            {
+                label: 'Códigos de error más comunes',
+                data: coderrorValues,
                 backgroundColor:[
   'rgba(200, 48, 28, 1)',
   'rgba(200, 94, 28, 1)',

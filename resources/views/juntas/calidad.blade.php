@@ -52,7 +52,8 @@
         var empleados = {!! json_encode($empleados) !!};
         var respo = {!! json_encode($respemp) !!};
         var supIssue = {!! json_encode($supIssue) !!};
-        console.log(supIssue);
+        var codigoErrores = {!! json_encode($codigoErrores) !!};
+      //  console.log(supIssue);
     </script>
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
 
@@ -120,7 +121,7 @@
             </div>
         </div>
              <!-- FTQ Graph -->
-        <div class="col-xl-8 col-lg-8">
+        <div class="col-xl-6 col-lg-6">
             <div class="card shadow mb-4">
                 <!-- Card scaneer -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -139,7 +140,7 @@
 
                 </div>
 
-                <div class="card-body" style="overflow-y: auto; max-height: 400px;">
+                <div class="card-body" style="overflow-y: auto; max-height: 360px;">
                     <div style="display: flex; justify-content: space-between; align-items: center; height: 100%;">
                         <!-- Primera gráfica: 60% del espacio -->
                         <div class="chart-area" style="flex: 0 0 60%; margin-right: 10%;">
@@ -155,7 +156,7 @@
             </div>
         </div>
              <!-- Customer Complains -->
-        <div class="col-xl-4 col-lg-4">
+        <div class="col-xl-3 col-lg-3">
             <!-- AREAS -->
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
@@ -187,41 +188,14 @@
                             @endif
                         </div>
                 </div>
-                <div class="card-body" style="overflow-y: auto; height: 360px;">
+                <div class="card-body" style="overflow-y: auto; height: 300px;">
 
                     <canvas id="Q"></canvas>
 
                 </div>
             </div>
         </div>
-
-    </div>
-    <div class="row">
-         <!-- Top 10 employees monthly -->
-        <div class="col-lg-5 col-lx-5">
-            <!-- AREAS -->
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h5 class="m-0 font-weight-bold text-primary">Top 10 employees incidents Monthly</h5>
-                </div>
-                <div class="card-body" style="overflow-y: auto; height: 360px;" id="tableChange">
-                    <canvas id="MonthIncidences"></canvas>
-                </div>
-            </div>
-        </div>
-        <!-- Table Supervisors -->
-                <div class="col-lg-4 mb-4" >
-
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h5 class="m-0 font-weight-bold text-primary">Supervisor Issues in the month </h5>
-                        </div>
-                        <div class="card-body" style="overflow-y: auto; height: 360px;" >
-                            <canvas id="Supervisorissues"></canvas>
-                        </div>
-                    </div>
-                </div>
-         <!-- Reworks responsible yesterday -->
+              <!-- Reworks responsible yesterday -->
         <div class="col-lg-3 mb-3" style="max-width: 40%">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
@@ -247,6 +221,103 @@
                         </table>
 
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+         <!-- Top 10 employees monthly -->
+        <div class="col-lg-4 col-lx-4">
+            <!-- AREAS -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h5 class="m-0 font-weight-bold text-primary">Top 10 employees incidents Monthly</h5>
+                </div>
+                <div class="card-body" style="overflow-y: auto; height: 360px;" id="tableChange">
+                    <canvas id="MonthIncidences"></canvas>
+                </div>
+            </div>
+        </div>
+        <!-- Table Supervisors -->
+        <div class="col-lg-4 col-lx-4 mb-4" >
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h5 class="m-0 font-weight-bold text-primary">Supervisor Issues in the month </h5>
+                        </div>
+                        <div class="card-body" style="overflow-y: auto; height: 360px;" >
+                            <canvas id="Supervisorissues"></canvas>
+                        </div>
+                    </div>
+        </div>
+         <!-- Porcentaje of the bad incidences in the month -->
+        <div class="col-lg-4 col-lx-4">
+            <!-- AREAS -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h5 class="m-0 font-weight-bold text-primary">Top 5 defects in the month</h5>
+                </div>
+                <div class="card-body" style="overflow-y: auto; height: 360px;" id="tableChange">
+                    <canvas id="mostErrors"></canvas>
+                </div>
+            </div>
+        </div>
+         <!-- Tested harness Per Famaly in the mothe -->
+        <div class="col-lg-12 col-lx-12">
+            <!-- AREAS -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h5 class="m-0 font-weight-bold text-primary">Porcentaje of the harness per famalies</h5>
+                </div>
+                <div class="card-body" style="overflow-y: auto; height: 360px;" id="tableChange">
+                    <div class="row">
+                        <div class="col-lg-3 col-lx-3">
+                             <table>
+                                <thead>
+                                    <th>Family</th>
+                                    <th>Circuits numbers</th>
+
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Harness A</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Harness B</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Harness C</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Harness D</td>
+                                        <td></td>
+                                    </tr>
+                                     <tr>
+                                        <td>Harness E</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Harness F</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Harness G</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Harness H</td>
+                                        <td></td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-lg-8 col-lx-8">
+                             <canvas id="familiesTested"></canvas>
+                        </div>
+                     </div>
                 </div>
             </div>
         </div>

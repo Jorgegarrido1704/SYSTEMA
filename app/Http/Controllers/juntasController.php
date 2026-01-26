@@ -648,7 +648,7 @@ class juntasController extends Controller
         $monthAndYearPareto['Week '.$lastweek] = Paretos($weekGood, $weekBad);
 
         $empleados = DB::table('regsitrocalidad')
-            ->selectRaw('Responsable, COUNT(*) as errores')
+            ->selectRaw('Responsable, COUNT(Responsable) as errores')
             ->whereRaw("YEAR(STR_TO_DATE(fecha, '%d-%m-%Y')) = ? AND MONTH(STR_TO_DATE(fecha, '%d-%m-%Y')) = ?", [$YearParto, $month])
             ->where('codigo', '!=', 'TODO BIEN')
             ->groupBy('Responsable')
@@ -658,6 +658,14 @@ class juntasController extends Controller
         foreach ($empleados as $empleado) {
             $empleado->Resposable = explode(' ', $empleado->Responsable)[0].' '.explode(' ', $empleado->Responsable)[2];
         }
+        $codigoErrores = DB::table('regsitrocalidad')
+            ->selectRaw('codigo, COUNT(codigo) as codigoErrores')
+            ->whereRaw("YEAR(STR_TO_DATE(fecha, '%d-%m-%Y')) = ? AND MONTH(STR_TO_DATE(fecha, '%d-%m-%Y')) = ?", [$YearParto, $month])
+            ->where('codigo', '!=', 'TODO BIEN')
+            ->groupBy('codigo')
+            ->orderByDesc('codigoErrores')
+            ->limit(5)
+            ->get();
 
         // arsort($monthAndYearPareto);
         // ksort($pareto);
@@ -832,7 +840,8 @@ class juntasController extends Controller
         $supIssue = array_filter($supIssue, fn ($count) => $count > 2);
         arsort($supIssue);
 
-        return view('juntas.calidad', ['supIssue' => $supIssue, 'days' => $days, 'personalYear' => $personalYear, 'respemp' => $empRes, 'empleados' => $top5,  'hoyb' => $hoyb, 'hoymal' => $hoymal, 'parhoy' => $parhoy, 'gultyY' => $gultyY, 'gulty' => $gulty, 'datosHoy' => $datosHoy, 'totalm' => $totalm, 'totalb' => $totalb, 'monthAndYearPareto' => $monthAndYearPareto, 'datosT' => $datosT, 'datosS' => $datosS, 'datosF' => $datosF, 'labelQ' => $labelQ, 'colorQ' => $colorQ, 'value' => $value, 'cat' => $cat, 'datos' => $datos, 'pareto' => $pareto, 'Qdays' => $Qdays]);
+        return view('juntas.calidad', ['codigoErrores' => $codigoErrores,
+            'supIssue' => $supIssue, 'days' => $days, 'personalYear' => $personalYear, 'respemp' => $empRes, 'empleados' => $top5,  'hoyb' => $hoyb, 'hoymal' => $hoymal, 'parhoy' => $parhoy, 'gultyY' => $gultyY, 'gulty' => $gulty, 'datosHoy' => $datosHoy, 'totalm' => $totalm, 'totalb' => $totalb, 'monthAndYearPareto' => $monthAndYearPareto, 'datosT' => $datosT, 'datosS' => $datosS, 'datosF' => $datosF, 'labelQ' => $labelQ, 'colorQ' => $colorQ, 'value' => $value, 'cat' => $cat, 'datos' => $datos, 'pareto' => $pareto, 'Qdays' => $Qdays]);
     }
 
     public function litas_junta($id)
