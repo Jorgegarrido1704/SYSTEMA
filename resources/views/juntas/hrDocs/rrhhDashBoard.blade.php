@@ -37,12 +37,12 @@ if (Error) {
                        <!-- //reportes de RRHH -->
                         <div class="row">
                             <div class="col-md-6">
-                                <form class="row g-3" action="{{ route('reporteSemanlInicidencias') }}" method="POST">
+                                <form class="row g-3" action="{{ route('excelRelogChecador') }}" method="POST">
                                             @csrf
                                                <div class="row">
                                                   
                                                     <div class="form-group col-md-12">
-                                                    <label for="semana" class="form-label">Reporte de Semana</label>
+                                                    <label for="semana" class="form-label">Reporte relog Checador</label>
                                                     </div>
                                                      <div class="form-group col-md-12">
                                                     <select name="semana" id="semana" class="form-control" required>
@@ -69,11 +69,11 @@ if (Error) {
                                     @csrf
                                     <div class="row">
                                         <div class="form-group col-md-12">
-                                        <label for="semana" class="form-label">Reporte de Semana</label>
+                                        <label for="semana" class="form-label">Listas de asistencia</label>
                                         </div>
                                         <div class="form-group col-md-12">
                                         <select name="numeroSemanaIncidencias" id="numeroSemanaIncidencias" class="form-control" required>
-                                            <option value="" disabled selected> Seleccione Un Semana</option>
+                                            <option value="" disabled selected> Seleccione Un Semana de trabajo</option>
                                             @for($semanal2; $semanal2>=1 ; $semanal2--)
                                             <option value="{{$semanal2}}">Semana {{$semanal2}}</option>
                                             @endfor
