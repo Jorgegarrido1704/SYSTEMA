@@ -508,18 +508,20 @@ class juntasController extends Controller
             $crtl = date('d-m-Y', strtotime('-1 days'));
         }
         $buscarValoresMes = calidadRegistro::where('codigo', '!=', 'TODO BIEN')
-            ->where(function ($query) use ($datesToCheck) {
+            /*->where(function ($query) use ($datesToCheck) {
                 foreach ($datesToCheck as $date) {
                     $query->orWhere('fecha', 'LIKE', "$date%");
                 }
-            })
+            })*/
+            ->where('fecha', 'LIKE', "$crtl%")
             ->get();
         $totalb = calidadRegistro::where('codigo', 'TODO BIEN')
-            ->where(function ($query) use ($datesToCheck) {
+            ->where('fecha', 'LIKE', "$crtl%")
+             /*       /*->where(function ($query) use ($datesToCheck) {
                 foreach ($datesToCheck as $date) {
                     $query->orWhere('fecha', 'LIKE', "$date%");
                 }
-            })
+            })*/
             ->count();
         $totalm = count($buscarValoresMes);
         foreach ($buscarValoresMes as $rows) {
@@ -555,11 +557,12 @@ class juntasController extends Controller
 
         $days = count($datesToCheck);
         $buscarValores = DB::table('regsitrocalidad')->select('fecha', 'codigo')
-            ->where(function ($query) use ($datesToCheck) {
+            /*->where(function ($query) use ($datesToCheck) {
                 foreach ($datesToCheck as $date) {
                     $query->orWhere('fecha', 'LIKE', "$date%");
                 }
-            })
+            })*/
+
             ->get();
 
         foreach ($datesToCheck as $date) {
