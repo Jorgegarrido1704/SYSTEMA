@@ -2,28 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\timesHarn;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use App\Models\listaCalidad;
-use App\Models\po;
-use App\Models\Wo;
-use PhpParser\Node\Expr\AssignOp\Concat;
-use App\Models\tiempos;
 use App\Models\Corte;
 use App\Models\Kits;
-use Illuminate\Mail\Mailables;
-use Illuminate\Support\Facades\Mail;
+use App\Models\po;
 use App\Models\regPar;
+use App\Models\specialWireModel;
+use App\Models\tiempos;
+use App\Models\timesHarn;
+use App\Models\Wo;
 use App\Models\workScreduleModel;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use App\Models\specialWireModel;
+use Illuminate\Support\Facades\Mail;
 
 class planingController extends Controller
 {
-
-
     public function planning(Request $request)
     {
         $post = [];
@@ -44,26 +39,26 @@ class planingController extends Controller
         $j = 0;
         $value = session('user');
         $cat = session('categoria');
-        if ($value == "" or $cat == "") {
+        if ($value == '' or $cat == '') {
             return view('login');
         } else {
             $sono = $request->input('sono');
-            if (!empty($sono)) {
+            if (! empty($sono)) {
                 $buscarIguales = DB::table('registro')
-                    ->where('NumPart', "LIKE", '%' . $sono . '%')
-                    ->orWhere('NumPart', "LIKE", $sono . '%')
-                    ->orWhere('NumPart', "LIKE", "%" . $sono)
+                    ->where('NumPart', 'LIKE', '%'.$sono.'%')
+                    ->orWhere('NumPart', 'LIKE', $sono.'%')
+                    ->orWhere('NumPart', 'LIKE', '%'.$sono)
                     ->orderBy('NumPart', 'asc')->get();
                 $desiguales = DB::table('retiradad')
-                    ->where('np', "LIKE", '%' . $sono . '%')
-                    ->orwhere('np', "LIKE", $sono . '%')
-                    ->orwhere('np', "LIKE", '%' . $sono)
+                    ->where('np', 'LIKE', '%'.$sono.'%')
+                    ->orwhere('np', 'LIKE', $sono.'%')
+                    ->orwhere('np', 'LIKE', '%'.$sono)
                     ->orderBy('np', 'asc')->get();
-            } else if (empty($sono)) {
+            } elseif (empty($sono)) {
                 $buscarIguales = DB::table('registro')
-                    ->orderBy('NumPart', 'asc')->get();
+                    ->orderBy('NumPart', 'asc')->limit(100)->get();
                 $desiguales = DB::table('retiradad')
-                    ->orderBy('np', 'asc')->get();
+                    ->orderBy('np', 'asc')->limit(100)->get();
             }
             foreach ($buscarIguales as $pos) {
                 $post[$i][0] = $pos->NumPart;
@@ -78,30 +73,31 @@ class planingController extends Controller
             foreach ($desiguales as $rowdes) {
                 $des[$j][0] = $rowdes->np;
                 $rev = substr($rowdes->codigo, -4);
-                $pos = strpos($rev, "R");
+                $pos = strpos($rev, 'R');
                 if ($pos !== false) {
                     $rev = substr($rev, $pos + 1);
                 } else {
-                    $rev = "-";
+                    $rev = '-';
                 }
                 $des[$j][1] = $rev;
                 $des[$j][2] = $rowdes->sono;
                 $des[$j][3] = $rowdes->qty;
                 $des[$j][4] = $rowdes->fechaing;
-                if ($rowdes->wo != "") {
+                if ($rowdes->wo != '') {
                     $des[$j][5] = $rowdes->wo;
                 } else {
-                    $des[$j][5] = "Ya se fue";
+                    $des[$j][5] = 'Ya se fue';
                 }
                 $j++;
             }
 
             $codigoant = $request->input('wo');
-            if (!empty($codigoant)) {
+            if (! empty($codigoant)) {
 
                 $codigo = DB::select("SELECT * FROM registro  WHERE wo='$codigoant' ORDER BY id DESC LIMIT 1");
                 if (count($codigo) > 0) {
                     $codes = $codigo[0]->info;
+
                     return view('registro/code', ['codes' => $codes, 'cat' => $cat]);
                 } else {
                     return redirect()->back()->with('error', 'No se encontro el codigo');
@@ -157,7 +153,7 @@ class planingController extends Controller
                         'labelwo' => $labelwo,
                         'labelbeg' => $labelbeg,
                         'labelend' => $labelend,
-                        'cat' => $cat
+                        'cat' => $cat,
                     ]);
                 }
             }
@@ -165,7 +161,7 @@ class planingController extends Controller
             $labelswo = $request->input('wk');
             $labelswo = strtoupper($labelswo);
 
-            if (!empty($labelswo)) {
+            if (! empty($labelswo)) {
                 $corte = [];
                 $wor = [];
                 $i = 0;
@@ -176,7 +172,7 @@ class planingController extends Controller
                     $x++;
                 }
                 for ($a = 0; $a < count($wor); $a++) {
-                    $bucarCorteLabel = DB::table('corte')->where('wo', 'LIKE', '%' . $wor[$a])->orderBy('aws', 'ASC')  // Ordena por 'aws'
+                    $bucarCorteLabel = DB::table('corte')->where('wo', 'LIKE', '%'.$wor[$a])->orderBy('aws', 'ASC')  // Ordena por 'aws'
                         ->orderBy('color', 'ASC')  // Luego ordena por 'color'
                         ->orderBy('tipo', 'ASC')  // Finalmente ordena por 'tipo'
                         ->get();
@@ -212,6 +208,7 @@ class planingController extends Controller
                             return strcmp($a[5], $b[5]);
                         }
                     }
+
                     return $result;
                 });
 
@@ -220,7 +217,7 @@ class planingController extends Controller
         }
 
         $checkYear = date('Y');
-        $busquedaPo = DB::table('po')->where('fecha', 'like', '%' . $checkYear . '%')->get();
+        $busquedaPo = DB::table('po')->where('fecha', 'like', '%'.$checkYear.'%')->get();
         foreach ($busquedaPo as $posFecha) {
             $postF = $posFecha->fecha;
             $check = substr($postF, 3, 2);
@@ -284,16 +281,14 @@ class planingController extends Controller
             $i++;
         }
 
-
         return view('planing', ['answer' => $answer, 'des' => $des, 'value' => $value, 'cat' => $cat, 'post' => $post, 'datosP' => $datosP]);
     }
-
 
     public function pos(Request $request)
     {
         $cat = session('categoria');
         $value = session('user');
-        if ($value == "") {
+        if ($value == '') {
             return view('login');
         } else {
             // Validate the incoming request
@@ -335,7 +330,7 @@ class planingController extends Controller
             $today = date('d-m-Y H:i');
 
             // Insert data into the Po table
-            $poData = new Po();
+            $poData = new Po;
             $poData->client = $client;
             $poData->pn = $np;
             $poData->fecha = $today;
@@ -352,7 +347,7 @@ class planingController extends Controller
 
             if ($poData->save()) {
 
-                $newWo = new Wo();
+                $newWo = new Wo;
                 $newWo->fecha = $today;
                 $newWo->NumPart = $np;
                 $newWo->cliente = $client;
@@ -363,9 +358,9 @@ class planingController extends Controller
                 $newWo->Barcode = '0';
 
                 if (substr($rev, 0, 4) == 'PPAP' || substr($rev, 0, 4) == 'PRIM') {
-                    $newWo->info =  (substr($np, 0, 2) . substr($client, 0, 2) . $qty . substr($wo, 1, 5) . substr($po, 2, 4) . 'R' . substr($rev, 5));
+                    $newWo->info = (substr($np, 0, 2).substr($client, 0, 2).$qty.substr($wo, 1, 5).substr($po, 2, 4).'R'.substr($rev, 5));
                 } else {
-                    $newWo->info = (substr($np, 0, 2) . substr($client, 0, 2) . $qty . substr($wo, 1, 5) . substr($po, 2, 4) . 'R' . $rev);
+                    $newWo->info = (substr($np, 0, 2).substr($client, 0, 2).$qty.substr($wo, 1, 5).substr($po, 2, 4).'R'.$rev);
                 }
                 $newWo->donde = 'planeacion';
                 $newWo->count = 1;
@@ -381,22 +376,22 @@ class planingController extends Controller
                 if ($newWo->save()) {
                     $times = new tiempos;
                     if (substr($rev, 0, 4) == 'PPAP' || substr($rev, 0, 4) == 'PRIM') {
-                        $times->info =  (substr($np, 0, 2) . substr($client, 0, 2) . $qty . substr($wo, 1, 5) . substr($po, 2, 4) . 'R' . substr($rev, 5));
+                        $times->info = (substr($np, 0, 2).substr($client, 0, 2).$qty.substr($wo, 1, 5).substr($po, 2, 4).'R'.substr($rev, 5));
                     } else {
-                        $times->info = (substr($np, 0, 2) . substr($client, 0, 2) . $qty . substr($wo, 1, 5) . substr($po, 2, 4) . 'R' . $rev);
+                        $times->info = (substr($np, 0, 2).substr($client, 0, 2).$qty.substr($wo, 1, 5).substr($po, 2, 4).'R'.$rev);
                     }
-                    $times->planeacion = "";
-                    $times->corte = "";
-                    $times->liberacion = "";
-                    $times->ensamble = "";
-                    $times->loom = "";
-                    $times->calidad = "";
-                    $times->embarque = "";
-                    $times->kitsinicial = "";
-                    $times->kitsfinal = "";
-                    $times->retrabajoi = "";
-                    $times->retrabajof = "";
-                    $times->totalparos = "";
+                    $times->planeacion = '';
+                    $times->corte = '';
+                    $times->liberacion = '';
+                    $times->ensamble = '';
+                    $times->loom = '';
+                    $times->calidad = '';
+                    $times->embarque = '';
+                    $times->kitsinicial = '';
+                    $times->kitsfinal = '';
+                    $times->retrabajoi = '';
+                    $times->retrabajof = '';
+                    $times->totalparos = '';
                     $times->save();
                     $buscarDatos = DB::table('datos')->where('part_num', '=', $np)->get();
                     if ($buscarDatos->count() > 0) {
@@ -404,7 +399,7 @@ class planingController extends Controller
                         $savekits->numeroParte = $np;
                         $savekits->qty = $qty;
                         $savekits->wo = $wo;
-                        $savekits->status = "En espera";
+                        $savekits->status = 'En espera';
                         $savekits->usuario = $value;
                         $savekits->save();
                     }
@@ -429,9 +424,9 @@ class planingController extends Controller
                             $ADDcorte->tipo = $corte->tipo;
                             $ADDcorte->aws = $corte->aws;
                             if (substr($corte->cons, 0, 5) == 'CORTE') {
-                                $ADDcorte->codigo = substr($wo, 2) . "C" . substr($corte->cons, 7);
+                                $ADDcorte->codigo = substr($wo, 2).'C'.substr($corte->cons, 7);
                             } else {
-                                $ADDcorte->codigo = substr($wo, 2) . $corte->cons;
+                                $ADDcorte->codigo = substr($wo, 2).$corte->cons;
                             }
                             $ADDcorte->term1 = $corte->terminal1;
                             $ADDcorte->term2 = $corte->terminal2;
@@ -448,24 +443,22 @@ class planingController extends Controller
                     $agegartiempos->wo = $wo;
                     $agegartiempos->cut = $today;
                     if (substr($rev, 0, 4) == 'PPAP' || substr($rev, 0, 4) == 'PRIM') {
-                        $agegartiempos->bar =  (substr($np, 0, 2) . substr($client, 0, 2) . $qty . substr($wo, 1, 5) . substr($po, 2, 4) . 'R' . substr($rev, 5));
+                        $agegartiempos->bar = (substr($np, 0, 2).substr($client, 0, 2).$qty.substr($wo, 1, 5).substr($po, 2, 4).'R'.substr($rev, 5));
                     } else {
-                        $agegartiempos->bar = (substr($np, 0, 2) . substr($client, 0, 2) . $qty . substr($wo, 1, 5) . substr($po, 2, 4) . 'R' . $rev);
+                        $agegartiempos->bar = (substr($np, 0, 2).substr($client, 0, 2).$qty.substr($wo, 1, 5).substr($po, 2, 4).'R'.$rev);
                     }
                     $agegartiempos->fecha = $today;
                     $agegartiempos->save();
 
-
                     if (substr($rev, 0, 4) == 'PPAP' || substr($rev, 0, 4) == 'PRIM') {
-                        $subject = 'ALTA ' . substr($rev, 0, 4) . ' Numero de parte:' . $np . ' Rev: ' . substr($rev, 5);
+                        $subject = 'ALTA '.substr($rev, 0, 4).' Numero de parte:'.$np.' Rev: '.substr($rev, 5);
                         $date = date('d-m-Y');
                         $time = date('H:i');
-                        $content = 'Buen día,' . "\n\t\n" . 'Les comparto que hoy ' . $date . ' a las ' . $time . "\n\t\n" . " se libero a piso la " . substr($rev, 0, 4) . "\n\t\n";
-                        $content .= "\n\t\n" . " Del cliente: " . $client;
-                        $content .= "\n\t\n" . " con número de parte: " . $np;
-                        $content .= "\n\t\n" . " Con Work order: " . $wo;
-                        $content .= "\n\t\n" . " Esto para seguir con el proceso de producción y revision por parte de ingeniería y calidad.";
-
+                        $content = 'Buen día,'."\n\t\n".'Les comparto que hoy '.$date.' a las '.$time."\n\t\n".' se libero a piso la '.substr($rev, 0, 4)."\n\t\n";
+                        $content .= "\n\t\n".' Del cliente: '.$client;
+                        $content .= "\n\t\n".' con número de parte: '.$np;
+                        $content .= "\n\t\n".' Con Work order: '.$wo;
+                        $content .= "\n\t\n".' Esto para seguir con el proceso de producción y revision por parte de ingeniería y calidad.';
 
                         $recipients = [
                             'jguillen@mx.bergstrominc.com',
@@ -479,13 +472,14 @@ class planingController extends Controller
                             'jolaes@mx.bergstrominc.com',
                             'lramos@mx.bergstrominc.com',
                             'emedina@mx.bergstrominc.com',
-                            'jgarrido@mx.bergstrominc.com'
+                            'jgarrido@mx.bergstrominc.com',
 
                         ];
                         Mail::to($recipients)->send(new \App\Mail\PPAPING($subject, $content));
                     }
                     $codigo = DB::select("SELECT * FROM registro  WHERE wo='$wo' ORDER BY id DESC LIMIT 1");
                     $codes = $codigo[0]->info;
+
                     return view('registro/code', ['codes' => $codes, 'cat' => $cat]);
                 } else {
                     return redirect()->back()->with('error', 'Error al registrar Wo');
@@ -496,56 +490,56 @@ class planingController extends Controller
         }
     }
 
-    function codeBarPlan(request $request)
+    public function codeBarPlan(request $request)
     {
         $tiempos = date('d-m-Y H:i');
         $wo = $request->input('wo_scan');
-        if ($wo != "") {
+        if ($wo != '') {
             $bucar_wo = DB::table('registro')->where('wo', $wo)->first();
-            if (!empty($bucar_wo)) {
+            if (! empty($bucar_wo)) {
                 $np = $bucar_wo->NumPart;
                 $info = $bucar_wo->info;
                 $count = $bucar_wo->count;
                 $qty_reg = $bucar_wo->Qty;
                 $rev = $bucar_wo->rev;
                 if ($count < 2) {
-                    $noloom='';
-                    $registrosNoLoom = specialWireModel::where('partNumber','=', $np)->orderBy('id', 'desc')->first();
-                    if (!empty($registrosNoLoom)) {
+                    $noloom = '';
+                    $registrosNoLoom = specialWireModel::where('partNumber', '=', $np)->orderBy('id', 'desc')->first();
+                    if (! empty($registrosNoLoom)) {
                         $noloom = $registrosNoLoom->PartNumber;
                     }
-                    $panel = array('0031539-4', '0031539-100', '26013301', '0031539-104', '0032192-70', '0032192-175', '0032192-77');
-                    $regcorte = new regPar();
+                    $panel = ['0031539-4', '0031539-100', '26013301', '0031539-104', '0032192-70', '0032192-175', '0032192-77'];
+                    $regcorte = new regPar;
                     $regcorte->pn = $np;
                     $regcorte->wo = $wo;
                     $regcorte->orgQty = $qty_reg;
                     if (substr($rev, 0, 4) == 'PPAP' or substr($rev, 0, 4) == 'PRIM') {
-                        if ((($np==$noloom) or in_array($np, $panel))) {
-                        $update = DB::table('registro')->where('wo', $wo)->update(['donde' => 'En espera Ingenieria // cables especiales', 'count' => 13]);
-                        }else{
-                        $update = DB::table('registro')->where('wo', $wo)->update(['donde' => 'En espera de Ingenieria // Corte', 'count' => 17]);
+                        if ((($np == $noloom) or in_array($np, $panel))) {
+                            $update = DB::table('registro')->where('wo', $wo)->update(['donde' => 'En espera Ingenieria // cables especiales', 'count' => 13]);
+                        } else {
+                            $update = DB::table('registro')->where('wo', $wo)->update(['donde' => 'En espera de Ingenieria // Corte', 'count' => 17]);
                         }
-                          try {
-                        workScreduleModel::where('pn', $np)->orderby('id', 'desc')->first()->update(['UpOrderDate' => carbon::now()->format('Y-m-d')]);
+                        try {
+                            workScreduleModel::where('pn', $np)->orderby('id', 'desc')->first()->update(['UpOrderDate' => carbon::now()->format('Y-m-d')]);
                         } catch (\Exception $e) {
                             Log::info($e);
                         }
 
                         $regcorte->eng = $qty_reg;
                     } else {
-                         if ((($np==$noloom) or in_array($np, $panel)) ) {
-                        $update = DB::table('registro')->where('wo', $wo)->update(['donde' => 'En espera de cables especiales', 'count' => 15]);
-                        $regcorte->ensaPar = $qty_reg;
-                    }else{
-                        $update = DB::table('registro')->where('wo', $wo)->update(['donde' => 'En espera de corte', 'count' => 2]);
-                    $regcorte->cortPar = $qty_reg;
-                    }
+                        if ((($np == $noloom) or in_array($np, $panel))) {
+                            $update = DB::table('registro')->where('wo', $wo)->update(['donde' => 'En espera de cables especiales', 'count' => 15]);
+                            $regcorte->ensaPar = $qty_reg;
+                        } else {
+                            $update = DB::table('registro')->where('wo', $wo)->update(['donde' => 'En espera de corte', 'count' => 2]);
+                            $regcorte->cortPar = $qty_reg;
+                        }
                     }
                     $regcorte->codeBar = $info;
                     $regcorte->save();
 
-
                     $updateTime = DB::table('tiempos')->where('info', $info)->update(['planeacion' => $tiempos]);
+
                     return redirect('/planing');
                 } else {
                     return redirect('planing')->with('response', 'Record not found');
