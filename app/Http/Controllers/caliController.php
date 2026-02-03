@@ -1044,6 +1044,11 @@ class caliController extends generalController
             'D1' => 'Responsable',
             'E1' => 'Cuenta',
         ];
+
+        // auto size columns
+        foreach (range('A', 'E') as $columnID) {
+            $sheet->getColumnDimension($columnID)->setAutoSize(true);
+        }
         // Loop through the headers and add them to the spreadsheet
         foreach ($headers as $cell => $header) {
             $sheet->setCellValue($cell, $header);

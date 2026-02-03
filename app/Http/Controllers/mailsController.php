@@ -14,6 +14,8 @@ use App\Models\workScreduleModel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class mailsController extends Controller
 {
@@ -237,5 +239,70 @@ class mailsController extends Controller
         Mail::to($receivers)->send(new solicitudVacacionesMail($structure, 'Solicitud de Vacaciones Aprobada'));
 
         return redirect('/Pendigs');
+    }
+
+    public function desviationexcelDatos(Request $request)
+    {
+        $spreadsheet = new Spreadsheet;
+        $sheet = $spreadsheet->getActiveSheet();
+        $t = 2;
+
+        $desviations = desviation::all();
+
+        // Set the headers for the spreadsheet
+        $headers = [
+            'A1' => 'Fecha',
+            'B1' => 'Cliente',
+            'C1' => 'Quien Solicita',
+            'D1' => 'Modelo Afectado',
+            'E1' => 'Work Order',
+            'F1' => 'Parte Original',
+            'G1' => 'Parte Que Sustituye al Original',
+            'H1' => 'Cantidad limite de piezas a sustitir',
+            'I1' => 'Periodo de Desviacion',
+            'J1' => 'Causa de la Desviacion',
+            'K1' => 'Accion a tomar',
+            'L1' => 'evidencia',
+            'M1' => 'Estatus',
+            'N1' => 'Motivo de Rechazo'];
+
+        // Loop through the headers and add them to the spreadsheet
+        foreach ($headers as $cell => $header) {
+            $sheet->setCellValue($cell, $header)->getStyle($cell)->getFont()->setBold(true);
+        }
+        foreach (range('A', 'N') as $columnID) {
+            $sheet->getColumnDimension($columnID)->setAutoSize(true);
+        }
+        foreach ($desviations as $desviation) {
+            $sheet->setCellValue('A'.$t, $desviation->fecha);
+            $sheet->setCellValue('B'.$t, $desviation->cliente);
+            $sheet->setCellValue('C'.$t, $desviation->quien);
+            $sheet->setCellValue('D'.$t, $desviation->Mafec);
+            $sheet->setCellValue('E'.$t, $desviation->wo);
+            $sheet->setCellValue('F'.$t, $desviation->porg);
+            $sheet->setCellValue('G'.$t, $desviation->psus);
+            $sheet->setCellValue('H'.$t, $desviation->clsus);
+            $sheet->setCellValue('I'.$t, $desviation->peridoDesv);
+            $sheet->setCellValue('J'.$t, $desviation->Causa);
+            $sheet->setCellValue('K'.$t, $desviation->accion);
+            $sheet->setCellValue('L'.$t, $desviation->evidencia);
+            if ($desviation->count == 5) {
+                $sheet->setCellValue('M'.$t, 'Rechazada');
+            } elseif ($desviation->count == 4) {
+                $sheet->setCellValue('M'.$t, 'Aprobada');
+            } else {
+                $sheet->setCellValue('M'.$t, 'Pendiente');
+
+            }
+            $sheet->setCellValue('N'.$t, $desviation->rechazo ?? '');
+            $t++;
+        }
+
+        // Generate the Excel file and output it to the browser
+        $writer = new Xlsx($spreadsheet);
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="Reporte de desviaciones.xlsx"');
+        header('Cache-Control: max-age=0');
+        $writer->save('php://output');
     }
 }
