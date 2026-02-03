@@ -679,12 +679,12 @@ class juntasController extends Controller
             'G' => 0,
             'H' => 0,
         ];
-        //        $dataYear = '2025';
-        //      $dataMonth = '12';
+        $dataYear = '2026';
+        $dataMonth = '01';
         $datosFamilias = DB::table('regsitrocalidad')
             ->selectRaw('pn, COUNT(pn) as pnCount')
-            ->whereRaw("YEAR(STR_TO_DATE(fecha, '%d-%m-%Y')) = ? AND MONTH(STR_TO_DATE(fecha, '%d-%m-%Y')) = ?", [$YearParto, $month])
-    //        ->whereRaw("YEAR(STR_TO_DATE(fecha, '%d-%m-%Y')) = ? AND MONTH(STR_TO_DATE(fecha, '%d-%m-%Y')) = ?", [$dataYear, $dataMonth])
+    //        ->whereRaw("YEAR(STR_TO_DATE(fecha, '%d-%m-%Y')) = ? AND MONTH(STR_TO_DATE(fecha, '%d-%m-%Y')) = ?", [$YearParto, $month])
+            ->whereRaw("YEAR(STR_TO_DATE(fecha, '%d-%m-%Y')) = ? AND MONTH(STR_TO_DATE(fecha, '%d-%m-%Y')) = ?", [$dataYear, $dataMonth])
             ->groupBy('pn')
             ->orderByDesc('pnCount')
             ->get();
