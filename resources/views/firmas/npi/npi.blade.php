@@ -71,7 +71,7 @@
                                             <h6 class="m-0 font-weight-bold text-primary">Deviations</h6>
                                         <div class="row">
                                             <div class="col-md-12 text-right">
-                                                <a href="{{route('desviation.excelDatos')}}" class="btn btn-success btn-sm">New Deviation</a>
+                                                <a href="{{route('desviation.excelDatos')}}" class="btn btn-success btn-sm">Desviations Report</a>
                                             </div>
                                         </div>
 
