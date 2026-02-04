@@ -1000,38 +1000,34 @@ class caliController extends generalController
         // Initialize the spreadsheet
         $spreadsheet = new Spreadsheet;
         $sheet = $spreadsheet->getActiveSheet();
+        $min = $max = '';
         $t = 2; // Row counter for the data
-
-        $dates = (date('-m-Y'));
-        $regmin = DB::table('regsitrocalidad')
-            ->select('id')
-            ->where('fecha', 'LiKE', $di.'%')
-            ->orderBy('id', 'asc')
-            ->first();
-        if ($regmin) {
-            $min = $regmin->id;
-        } else {
+        while ($min == '') {
             $regmin = DB::table('regsitrocalidad')
                 ->select('id')
-                ->where('fecha', 'LiKE', '%'.$dates.'%')
+                ->where('fecha', 'LiKE', $di.'%')
                 ->orderBy('id', 'asc')
                 ->first();
-            $min = $regmin->id;
+
+            if ($regmin) {
+                $min = $regmin->id;
+            } else {
+                $di = date('d-m-Y', strtotime($di.' +1 day'));
+
+            }
         }
-        $regmax = DB::table('regsitrocalidad')
-            ->select('id')
-            ->where('fecha', 'LiKE', $df.'%')
-            ->orderBy('id', 'desc')
-            ->first();
-        if ($regmax) {
-            $max = $regmax->id;
-        } else {
+        while ($max == '') {
             $regmax = DB::table('regsitrocalidad')
                 ->select('id')
-
+                ->where('fecha', 'LiKE', $df.'%')
                 ->orderBy('id', 'desc')
                 ->first();
-            $max = $regmax->id;
+            if ($regmax) {
+                $max = $regmax->id;
+            } else {
+
+                $df = date('d-m-Y', strtotime($df.' -1 day'));
+            }
         }
 
         $registro = [];
