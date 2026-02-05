@@ -557,6 +557,8 @@ class juntasController extends Controller
 
         $days = count($datesToCheck);
         $buscarValores = DB::table('regsitrocalidad')->select('fecha', 'codigo')
+        // modificado
+            ->where('fecha', 'LIKE', "$crtl%")
             /*->where(function ($query) use ($datesToCheck) {
                 foreach ($datesToCheck as $date) {
                     $query->orWhere('fecha', 'LIKE', "$date%");
@@ -717,11 +719,13 @@ class juntasController extends Controller
         $datosF = $pnrs = $datosT = $datosS = [];
         // Query the database to retrieve records where 'codigo' column matches the $firstKey
         $buscardatosClientes = DB::table('regsitrocalidad')->where('codigo', '=', $firstKey)
-            ->where(function ($query) use ($datesToCheck) {
+           /* ->where(function ($query) use ($datesToCheck) {
                 foreach ($datesToCheck as $date) {
                     $query->orWhere('fecha', 'LIKE', "$date%");
                 }
-            })->orderBy('pn')->get();
+            })*/
+            ->where('fecha', 'LIKE', "$crtl%")
+            ->orderBy('pn')->get();
         foreach ($buscardatosClientes as $rowDatos) {
             if ((in_array($rowDatos->client, array_column($datosF, 0)) and (in_array($rowDatos->pn, array_column($datosF, 3))))) {
                 $datosF[$rowDatos->pn][2] += $rowDatos->resto;
@@ -735,11 +739,12 @@ class juntasController extends Controller
         next($datos);
         $secondKey = key($datos);
         $buscardatosClientes2 = DB::table('regsitrocalidad')->where('codigo', '=', $secondKey)
-            ->where(function ($query) use ($datesToCheck) {
+           /* ->where(function ($query) use ($datesToCheck) {
                 foreach ($datesToCheck as $date) {
                     $query->orWhere('fecha', 'LIKE', "$date%");
                 }
-            })->orderBy('pn')->get();
+            })*/
+            ->orderBy('pn')->get();
         foreach ($buscardatosClientes2 as $rowDatos2) {
             if ((in_array($rowDatos2->client, array_column($datosS, 0)) and (in_array($rowDatos2->pn, array_column($datosS, 3))))) {
                 $datosS[$rowDatos2->pn][2] += $rowDatos2->resto;
@@ -753,11 +758,12 @@ class juntasController extends Controller
         next($datos);
         $thirdKey = key($datos);
         $buscardatosClientes3 = DB::table('regsitrocalidad')->where('codigo', $thirdKey)
-            ->where(function ($query) use ($datesToCheck) {
+            /*->where(function ($query) use ($datesToCheck) {
                 foreach ($datesToCheck as $date) {
                     $query->orWhere('fecha', 'LIKE', "$date%");
                 }
-            })->orderBy('codigo')->get();
+            })*/
+            ->orderBy('codigo')->get();
         foreach ($buscardatosClientes3 as $rowDatos3) {
 
             if (in_array($rowDatos3->client, array_column($datosT, 0)) and (in_array($rowDatos3->pn, array_column($datosT, 3)))) {
