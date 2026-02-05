@@ -53,6 +53,9 @@ class mailsController extends Controller
         } else {
             $registroFirmas = [];
         }
+        $firmasPendients = [];
+        $firmasPendients = PPAPandPRIM::where('count', '=', 1)->orderby('id', 'desc')->get();
+
         if ($value == 'Jesus_C' or $value == 'Carlos R' or $value == 'Nancy A' or $value == 'Admin' or $value == 'Jorge G') {
             $desviations = desviation::Where('fing', '=', '')->where('count', '<', 4)->get();
         } elseif ($value == 'Edward M' or $value == 'Luis R' or $value == 'Goretti Ro') {
@@ -95,7 +98,9 @@ class mailsController extends Controller
             $i++;
         }
 
-        return view('firmas.npi.npi', ['vacaciones' => $vacaciones, 'desviations' => $desviations, 'registroFirmas' => $registroFirmas, 'value' => $value, 'cat' => $cat]);
+        return view('firmas.npi.npi', ['vacaciones' => $vacaciones, 'desviations' => $desviations,
+            'registroFirmas' => $registroFirmas, 'value' => $value, 'cat' => $cat, 'firmasPendients' => $firmasPendients]);
+
     }
 
     public function update(Request $request)

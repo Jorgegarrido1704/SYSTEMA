@@ -15,6 +15,51 @@
                                 </div>
                                 <!--Firmas -->
                                 <div class="card-body">
+                                    @if(!empty($firmasPendients))
+                                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                 <th>Moviment type</th>
+                                                <th>Client</th>
+                                                <th>Harness type</th>
+                                                <th>Part number</th>
+                                                <th>Rev</th>
+                                                <th>Changes description</th>
+                                                <th>publish date</th>
+                                                <th>Enginner </th>
+                                                <th>Sign by quality</th>
+                                                <th>Sign by imex</th>
+                                                <th>Sign by testing</th>
+                                                <th>Sign by production</th>
+                                                <th>Sign by purchase</th>
+                                                <th>Sign by planning</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($firmasPendients as $pendient)
+                                            <tr class="text-center text-black">
+                                                <td>{{$pendient->tp}}</td>
+                                                <td>{{$pendient->client}}</td>
+                                                <td>{{$pendient->tipo}}</td>
+                                                <td>{{$pendient->pn}}</td>
+                                                @if($pendient->REV2 =='N/A' )
+                                                <td>{{$pendient->REV1}}</td>
+                                                @else
+                                                <td>{{$pendient->REV1}} To {{$pendient->REV2}}</td>
+                                                @endif
+                                                <td>{{ $pendient->cambios}}</td>
+                                                <td> {{$pendient->fecha}}</td>
+                                                <td>{{$pendient->eng}}</td>
+                                                <td>{{$pendient->quality}}</td>
+                                                <td>{{$pendient->ime}}</td>
+                                                <td>{{$pendient->test}}</td>
+                                                <td>{{$pendient->production}}</td>
+                                                <td>{{$pendient->compras}}</td>
+                                                <td>{{$pendient->gernete}}</td>
+
+                                            </tr>
+                                                    @endforeach
+                                    @endif
                                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                         <thead>
                                             <tr>
