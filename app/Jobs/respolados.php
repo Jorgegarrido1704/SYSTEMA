@@ -54,8 +54,10 @@ class respolados implements ShouldQueue
                 'fecharetiro' => $date,
                 'codigo' => $codigo,
             ]);
+            regPar::where('codeBar', $codigo)->delete();
+            Wo::where('wo', $wo)->delete();
+
         }
-        $delte = Wo::where('count', '20')->delete();
 
     }
 }
