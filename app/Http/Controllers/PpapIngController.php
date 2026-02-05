@@ -37,6 +37,17 @@ class PpapIngController extends Controller
 
             $i = 0;
             $enginners = DB::table('ingactividades')->where('count', '<', '4')->orderby('Id_request')->get();
+            foreach ($enginners as $enginner) {
+                $now = Carbon::now();
+                $hours = \Carbon\Carbon::parse($enginner->fecha)->diffInHours(\Carbon\Carbon::now()) ?? 00;
+                if ($hours > 1) {
+                    $minutes = \Carbon\Carbon::parse($eng->fecha)->diffInMinutes(\Carbon\Carbon::now()) ?? 00;
+                    $timeMenosHours = ($minutes - ($hours * 60));
+                } else {
+                    $minutes = \Carbon\Carbon::parse($eng->fecha)->diffInMinutes(\Carbon\Carbon::now()) ?? 00;
+                }
+                $enginner->times = $hours.'h '.$timeMenosHours.'m';
+            }
 
             $i = 0;
             $busarResp = DB::table('ppapandprim')->where('count', '<', '2')->get();

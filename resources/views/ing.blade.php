@@ -2,7 +2,7 @@
 
 @section('contenido')
     <!-- Page Heading -->
-    <meta http-equiv="refresh" content="300">
+    <meta http-equiv="refresh" content="250">
     <script>
         var paola = @json($paola);
         var paoDesc = @json($paoDesc);
@@ -98,16 +98,14 @@
             background-color: rgb(88, 8, 247);
         }
     </style>
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-
-    </div>
+    <div class="d-sm-flex align-items-center justify-content-between mb-4"></div>
     <div class="row">
 
-        <!-- Table and Graph -->
+        <!-- PPAP In the Floor -->
         <div class="col-xl-6 col-lg-6">
             <div class="card shadow mb-4" id="card">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h5 class="m-0 font-weight-bold text-primary">Regist PPAP</h5>
+                    <h5 class="m-0 font-weight-bold text-primary">PPAP in the floor</h5>
                 </div>
 
                 <!-- tabla de trabajos -->
@@ -177,6 +175,7 @@
             </div>
 
         </div>
+        <!-- FULLS SIZE Requested -->
         <div class="col-xl-6 col-lg-6">
             <div class="card shadow mb-4" id="card">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -250,6 +249,7 @@
             </div>
 
         </div>
+        <!-- Floor Support -->
         <div class="col-xl-4 col-lg-4">
             <div class="card shadow mb-4" id="card">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -308,12 +308,12 @@
             </div>
 
         </div>
-      
+         <!-- Engineers Activities -->
         <div class="col-xl-4 col-lg-4">
             <div class="card shadow mb-4" id="card2">
                 <!-- Set Work -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h5 class="m-0 font-weight-bold text-primary">Activades de Ingenieros</h5>
+                    <h5 class="m-0 font-weight-bold text-primary">Engineers Activities</h5>
 
                 </div>
 
@@ -326,7 +326,7 @@
                             <div class="col-md-3 mb-4 mt-4 ">
                                 <div class="form-group text-center">
                                     <label for="Inge">
-                                        <h4>Ingenier@</h4>
+                                        <h4>Engineers</h4>
                                     </label>
                                 </div>
                                 <div class="form-group">
@@ -341,7 +341,7 @@
                             <div class="col-md-3">
                                 <div class="form-group text-center">
                                     <label for="act">
-                                        <h4>Actividad a realizar</h4>
+                                        <h4>Activities to do</h4>
                                     </label>
                                 </div>
                                 <div class="form-group">
@@ -364,7 +364,7 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group text-center">
-                                    <label for="info">Informacion adicional</label>
+                                    <label for="info">Additional Information</label>
                                 </div>
 
                                 <div class="form-group">
@@ -372,7 +372,7 @@
                                 </div>
                             </div>
                             <div class="col-md-1 mt-5 md-5">
-                                <input type="submit" name="sub" id="sub" value="Guardar">
+                                <input type="submit" name="sub" id="sub" value="Save Information">
                             </div>
                         </div>
                     </form>
@@ -383,11 +383,11 @@
 
         </div>
     </div>
-    </div>
-    </div>
 
-    <!-- Work in processe -->
+
+
     <div class="row">
+         <!-- Work in processe -->
         <div class="col-lg-5 col-lx-5 mb-4">
             <!-- AREAS -->
             <div class="card shadow mb-4">
@@ -420,12 +420,7 @@
                                             <td>{{ $eng->actividades }}</td>
                                             <td>{{ $eng->desciption }}
                                             <td><span id="{{ $eng->id }}">
-                                                @if(\Carbon\Carbon::parse($eng->fecha)->diffInMinutes(\Carbon\Carbon::now())>60)
-                                                {{ \Carbon\Carbon::parse($eng->fecha)->diffInHours(\Carbon\Carbon::now()) }} hr</span></td>
-
-                                                @else
-                                                {{ \Carbon\Carbon::parse($eng->fecha)->diffInMinutes(\Carbon\Carbon::now()) }} min</span></td>
-                                                @endif
+                                               {{ $eng->times }}
 
                                             <td>
                                                 <form action="{{ route('action') }}" method="GET">
@@ -453,12 +448,12 @@
                 </div>
             </div>
         </div>
-        <!--table of works -->
+        <!--Pendings to Sign -->
         <div class="col-lg-7 col-lx-7 mb-4">
             <!-- AREAS -->
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h5 class="m-0 font-weight-bold text-primary">Table of Works PPAP&PRIM </h5>
+                    <h5 class="m-0 font-weight-bold text-primary">Pendings to Sign</h5>
                 </div>
                 <div class="card-body" style="overflow-y: auto; height: 360px;" id="tableChange">
                     <div class="row">
