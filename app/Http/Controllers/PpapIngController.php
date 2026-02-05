@@ -41,10 +41,10 @@ class PpapIngController extends Controller
                 $now = Carbon::now();
                 $hours = \Carbon\Carbon::parse($enginner->fecha)->diffInHours(\Carbon\Carbon::now()) ?? 00;
                 if ($hours > 1) {
-                    $minutes = \Carbon\Carbon::parse($eng->fecha)->diffInMinutes(\Carbon\Carbon::now()) ?? 00;
+                    $minutes = \Carbon\Carbon::parse($enginner->fecha)->diffInMinutes(\Carbon\Carbon::now()) ?? 00;
                     $timeMenosHours = ($minutes - ($hours * 60));
                 } else {
-                    $minutes = \Carbon\Carbon::parse($eng->fecha)->diffInMinutes(\Carbon\Carbon::now()) ?? 00;
+                    $minutes = \Carbon\Carbon::parse($enginner->fecha)->diffInMinutes(\Carbon\Carbon::now()) ?? 00;
                 }
                 $enginner->times = $hours.'h '.$timeMenosHours.'m';
             }
