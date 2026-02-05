@@ -94,28 +94,19 @@
                             <th>Quantity</th>
                         </thead>
                         <tbody>
-                            @if (!empty($datosF))
-                                @foreach ($datosF as $datoF)
+                            @if (!empty($top3registrosCalidas))
+                                @foreach ($top3registrosCalidas as $datoF)
                                     <tr>
-                                        <td>{{ $datoF[0] }}<br>{{ $datoF[3] }}</td>
-                                        <td>{{ $datoF[1] }}</td>
-                                        <td>{{ $datoF[2] }}</td>
+                                        <td>{{ $datoF->client }}<br>{{ $datoF->pn }}</td>
+                                        <td>{{ $datoF->codigo }}</td>
+                                        <td>{{ $datoF->total_resto }}</td>
                                     </tr>
                                 @endforeach
-                                @foreach ($datosS as $datoS)
-                                    <tr>
-                                        <td>{{ $datoS[0] }}<br>{{ $datoS[3] }}</td>
-                                        <td>{{ $datoS[1] }}</td>
-                                        <td>{{ $datoS[2] }}</td>
-                                    </tr>
-                                @endforeach
-                                @foreach ($datosT as $datoT)
-                                    <tr>
-                                        <td>{{ $datoT[0] }}<br>{{ $datoT[3] }}</td>
-                                        <td>{{ $datoT[1] }}</td>
-                                        <td>{{ $datoT[2] }}</td>
-                                    </tr>
-                                @endforeach
+                            @else
+                                <tr>
+                                    <td colspan="3">No hay datos</td>
+                                </tr>
+
                             @endif
                         </tbody>
                     </table>

@@ -717,13 +717,23 @@ class juntasController extends Controller
         arsort($datos);
         $firstKey = key($datos);
         $datosF = $pnrs = $datosT = $datosS = [];
+        $top3registrosCalidas = calidadRegistro::selectRaw('codigo,client, pn, SUM(resto) as total_resto')
+            ->where('codigo', '!=', 'TODO BIEN')
+            ->groupBy('codigo', 'pn', 'client')
+            ->orderByDesc('total_resto')
+            ->where('fecha', 'LIKE', "$crtl%")
+            ->limit(3)
+            ->get();
+
+        // dd($top3registrosCalidas);
+        /*
         // Query the database to retrieve records where 'codigo' column matches the $firstKey
         $buscardatosClientes = DB::table('regsitrocalidad')->where('codigo', '=', $firstKey)
            /* ->where(function ($query) use ($datesToCheck) {
                 foreach ($datesToCheck as $date) {
                     $query->orWhere('fecha', 'LIKE', "$date%");
                 }
-            })*/
+            })
             ->where('fecha', 'LIKE', "$crtl%")
             ->orderBy('pn')->get();
         foreach ($buscardatosClientes as $rowDatos) {
@@ -743,7 +753,7 @@ class juntasController extends Controller
                 foreach ($datesToCheck as $date) {
                     $query->orWhere('fecha', 'LIKE', "$date%");
                 }
-            })*/
+            })
             ->orderBy('pn')->get();
         foreach ($buscardatosClientes2 as $rowDatos2) {
             if ((in_array($rowDatos2->client, array_column($datosS, 0)) and (in_array($rowDatos2->pn, array_column($datosS, 3))))) {
@@ -762,7 +772,7 @@ class juntasController extends Controller
                 foreach ($datesToCheck as $date) {
                     $query->orWhere('fecha', 'LIKE', "$date%");
                 }
-            })*/
+            })
             ->orderBy('codigo')->get();
         foreach ($buscardatosClientes3 as $rowDatos3) {
 
@@ -774,7 +784,8 @@ class juntasController extends Controller
                 $datosT[$rowDatos3->pn][2] = $rowDatos3->resto;
                 $datosT[$rowDatos3->pn][3] = $rowDatos3->pn;
             }
-        }
+        }*/
+
         // calidad Q
         $Qdays = $colorQ = $labelQ = [];
         $maxDays = cal_days_in_month(CAL_GREGORIAN, date('m'), date('Y'));
@@ -889,8 +900,12 @@ class juntasController extends Controller
         $supIssue = array_filter($supIssue, fn ($count) => $count > 2);
         arsort($supIssue);
 
-        return view('juntas.calidad', ['codigoErrores' => $codigoErrores, 'grupo' => $grupo,
-            'supIssue' => $supIssue, 'days' => $days, 'personalYear' => $personalYear, 'respemp' => $empRes, 'empleados' => $top5,  'hoyb' => $hoyb, 'hoymal' => $hoymal, 'parhoy' => $parhoy, 'gultyY' => $gultyY, 'gulty' => $gulty, 'datosHoy' => $datosHoy, 'totalm' => $totalm, 'totalb' => $totalb, 'monthAndYearPareto' => $monthAndYearPareto, 'datosT' => $datosT, 'datosS' => $datosS, 'datosF' => $datosF, 'labelQ' => $labelQ, 'colorQ' => $colorQ, 'value' => $value, 'cat' => $cat, 'datos' => $datos, 'pareto' => $pareto, 'Qdays' => $Qdays]);
+        return view('juntas.calidad', ['codigoErrores' => $codigoErrores, 'grupo' => $grupo, 'top3registrosCalidas' => $top3registrosCalidas,
+            'supIssue' => $supIssue, 'days' => $days, 'personalYear' => $personalYear, 'respemp' => $empRes,
+            'empleados' => $top5,  'hoyb' => $hoyb, 'hoymal' => $hoymal, 'parhoy' => $parhoy, 'gultyY' => $gultyY, 'gulty' => $gulty,
+            'datosHoy' => $datosHoy, 'totalm' => $totalm, 'totalb' => $totalb, 'monthAndYearPareto' => $monthAndYearPareto,
+            'datosT' => $datosT, 'datosS' => $datosS, 'datosF' => $datosF, 'labelQ' => $labelQ, 'colorQ' => $colorQ, 'value' => $value,
+            'cat' => $cat, 'datos' => $datos, 'pareto' => $pareto, 'Qdays' => $Qdays]);
     }
 
     public function litas_junta($id)
