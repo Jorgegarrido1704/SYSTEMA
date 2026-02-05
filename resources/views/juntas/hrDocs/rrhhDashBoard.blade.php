@@ -40,7 +40,7 @@ if (Error) {
                                 <form class="row g-3" action="{{ route('excelRelogChecador') }}" method="POST">
                                             @csrf
                                                <div class="row">
-                                                  
+
                                                     <div class="form-group col-md-12">
                                                     <label for="semana" class="form-label">Reporte relog Checador</label>
                                                     </div>
@@ -86,7 +86,7 @@ if (Error) {
                                 </form>
                             </div>
                         </div>
-                        
+
 
                        <!-- //ocultos de modal -->
                         <div id ="AddPersonal" >
@@ -239,26 +239,26 @@ if (Error) {
                                                     <form action="{{route('updateAsistencia')}}" method="GET">
                                                     <td id="empleado">{{$as['name']}}</td>
                                                     <td id="{{ $as['lunes'] }}"><input type="text" style="max-width: 45px" name="lun[]" id="lun"   minlength="1" maxlength="3" value="{{$as['lunes']}}" {{ $diasRegistro[0] }} ></td>
-                                                    <td >TE:<input type="number" style="max-width: 45px" name="extra_lun[]" id="extra_lun" value="{{$as['extLunes']}}"  min="0" max="30" step="0.5" {{ $diasRegistro[1] }}>
-                                                   <hr>TT:<input type="number" style="max-width: 45px" name="tt_lunes[]" id="tt_lunes" value="{{$as['tt_lunes']}}"  min="0" max="30" step="0.5" {{ $diasRegistro[1] }}></td>
+                                                    <td >TE:<input type="number" style="max-width: 45px" name="extra_lun[]" id="extra_lun" value="{{$as['extLunes']}}"  min="0" max="30" step="0.5" {{ $diasRegistro[1] }} required>
+                                                   <hr>TT:<input type="number" style="max-width: 45px" name="tt_lunes[]" id="tt_lunes" value="{{$as['tt_lunes']}}"  min="0" max="30" step="0.5" {{ $diasRegistro[1] }} required></td>
                                                     <td id="{{ $as['martes'] }}"><input type="text" style="max-width: 45px" name="mar[]" id="mar" value="{{$as['martes']}}" minlength="1" maxlength="3"   {{ $diasRegistro[1] }}></td>
-                                                    <td>TE:<input type="number" style="max-width: 45px" name="extra_mar[]" id="extra_mar" value="{{$as['extMartes']}}"  min="0" max="30" step="0.5" {{ $diasRegistro[2] }}>
-                                                    <hr>TT:<input type="number" style="max-width: 45px" name="tt_martes[]" id="tt_martes" value="{{$as['tt_martes']}}"  min="0" max="30" step="0.5" {{ $diasRegistro[2] }}></td>
+                                                    <td>TE:<input type="number" style="max-width: 45px" name="extra_mar[]" id="extra_mar" value="{{$as['extMartes']}}"  min="0" max="30" step="0.5" {{ $diasRegistro[2] }} required>
+                                                    <hr>TT:<input type="number" style="max-width: 45px" name="tt_martes[]" id="tt_martes" value="{{$as['tt_martes']}}"  min="0" max="30" step="0.5" {{ $diasRegistro[2] }} required></td>
                                                     <td id="{{ $as['miercoles'] }}"><input type="text" style="max-width: 45px" name="mie[]" id="mie" value="{{$as['miercoles']}}" minlength="1" maxlength="3"   {{ $diasRegistro[2] }}></td>
-                                                    <td>TE:<input type="number" style="max-width: 45px" name="extra_mie[]" id="extra_mie" value="{{$as['extMiercoles']}}" min="0" max="30" step="0.5"  {{ $diasRegistro[3] }}>
-                                                    <hr>TT:<input type="number" style="max-width: 45px" name="tt_miercoles[]" id="tt_miercoles" value="{{$as['tt_miercoles']}}"  min="0" max="30" step="0.5" {{ $diasRegistro[3] }}></td>
+                                                    <td>TE:<input type="number" style="max-width: 45px" name="extra_mie[]" id="extra_mie" value="{{$as['extMiercoles']}}" min="0" max="30" step="0.5"  {{ $diasRegistro[3] }} required>
+                                                    <hr>TT:<input type="number" style="max-width: 45px" name="tt_miercoles[]" id="tt_miercoles" value="{{$as['tt_miercoles']}}"  min="0" max="30" step="0.5" {{ $diasRegistro[3] }} required></td>
                                                     <td id="{{ $as['jueves'] }}"><input type="text" style="max-width: 45px" name="jue[]" id="jue" value="{{$as['jueves']}}" minlength="1" maxlength="3"  {{ $diasRegistro[3] }}></td>
-                                                    <td>TE:<input type="number" style="max-width: 45px" name="extra_jue[]" id="extra_jue" value="{{$as['extJueves']}}"  min="0" max="30" step="0.5" {{ $diasRegistro[4] }}>
-                                                    <hr>TT:<input type="number" style="max-width: 45px" name="tt_jueves[]" id="tt_jueves" value="{{$as['tt_jueves']}}"  min="0" max="30" step="0.5" {{ $diasRegistro[4] }}></td>
+                                                    <td>TE:<input type="number" style="max-width: 45px" name="extra_jue[]" id="extra_jue" value="{{$as['extJueves']}}"  min="0" max="30" step="0.5" {{ $diasRegistro[4] }} required>
+                                                    <hr>TT:<input type="number" style="max-width: 45px" name="tt_jueves[]" id="tt_jueves" value="{{$as['tt_jueves']}}"  min="0" max="30" step="0.5" {{ $diasRegistro[4] }} required></td>
                                                     <td id="{{ $as['viernes'] }}"><input type="text" style="max-width: 45px" name="vie[]" id="vie" value="{{$as['viernes']}}"minlength="1" maxlength="3"   {{ $diasRegistro[4] }}></td>
-                                                    <td>TE:<input type="number" style="max-width: 45px" name="extra_vie[]" id="extra_vie" value="{{$as['extViernes']}}"  min="0" max="30" step="0.5" {{ $diasRegistro[4] }}>
-                                                    <hr>TT:<input type="number" style="max-width: 45px" name="tt_viernes[]" id="tt_viernes" value="{{$as['tt_viernes']}}"  min="0" max="30" step="0.5" {{ $diasRegistro[4] }}></td>
+                                                    <td>TE:<input type="number" style="max-width: 45px" name="extra_vie[]" id="extra_vie" value="{{$as['extViernes']}}"  min="0" max="30" step="0.5" {{ $diasRegistro[4] }} required>
+                                                    <hr>TT:<input type="number" style="max-width: 45px" name="tt_viernes[]" id="tt_viernes" value="{{$as['tt_viernes']}}"  min="0" max="30" step="0.5" {{ $diasRegistro[4] }} required></td>
                                                     <td id="{{ $as['sabado'] }}"><input type="text" style="max-width: 45px" name="sab[]" id="sab" value="{{$as['sabado']}}" minlength="1" maxlength="3"  {{ $diasRegistro[4] }}></td>
-                                                    <td>TE:<input type="number" style="max-width: 45px" name="extra_sab[]" id="extra_sab" value="{{$as['extSabado']}}"  min="0" max="30" step="0.5" {{ $diasRegistro[4] }}>
-                                                    <hr>TT:<input type="number" style="max-width: 45px" name="tt_sabado[]" id="tt_sabado" value="{{$as['tt_sabado']}}"  min="0" max="30" step="0.5" {{ $diasRegistro[4] }}></td>
+                                                    <td>TE:<input type="number" style="max-width: 45px" name="extra_sab[]" id="extra_sab" value="{{$as['extSabado']}}"  min="0" max="30" step="0.5" {{ $diasRegistro[4] }} required>
+                                                    <hr>TT:<input type="number" style="max-width: 45px" name="tt_sabado[]" id="tt_sabado" value="{{$as['tt_sabado']}}"  min="0" max="30" step="0.5" {{ $diasRegistro[4] }} required></td>
                                                     <td id="{{ $as['domingo'] }}"><input type="text" style="max-width: 45px" name="dom[]" id="dom" value="{{$as['domingo']}}" minlength="1" maxlength="3"  {{ $diasRegistro[4] }}></td>
-                                                    <td>TE:<input type="number" style="max-width: 45px" name="extra_dom[]" id="extra_dom" value="{{$as['extDomingo']}}"  min="0" max="30" step="0.5" {{ $diasRegistro[4] }}>
-                                                    <hr>TT:<input type="number" style="max-width: 45px" name="tt_domingo[]" id="tt_domingo" value="{{$as['tt_domingo']}}"  min="0" max="30" step="0.5" {{ $diasRegistro[4] }}></td>
+                                                    <td>TE:<input type="number" style="max-width: 45px" name="extra_dom[]" id="extra_dom" value="{{$as['extDomingo']}}"  min="0" max="30" step="0.5" {{ $diasRegistro[4] }} required>
+                                                    <hr>TT:<input type="number" style="max-width: 45px" name="tt_domingo[]" id="tt_domingo" value="{{$as['tt_domingo']}}"  min="0" max="30" step="0.5" {{ $diasRegistro[4] }} required></td>
                                                     <td><input type="text" style="max-width: 45px" name="bono_asistencia[]" id="bono_asistencia" value="{{$as['bonoAsistencia']}}"   disabled></td>
                                                     <td><input type="text" style="max-width: 45px" name="bono_puntualidad[]" id="bono_puntualidad" value="{{$as['bonoPuntualidad']}}"  disabled ></td>
                                                     <td><input type="number" style="max-width: 45px" name="total_extras[]" id="total_extras" value="{{$as['extras']}}" step="0.5" disabled></td>
