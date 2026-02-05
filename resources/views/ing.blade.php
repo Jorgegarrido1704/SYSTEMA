@@ -402,8 +402,8 @@
 
                         <table>
                             <thead>
-                                <th>Enginner</th>
-                                <th>Activity</th>
+                                <th>Enginner / Activity</th>
+
                                 <th>Description</th>
                                 <th>Timer</th>
                                 <th>Stop/continue</th>
@@ -415,13 +415,10 @@
                                 @if (!empty($enginners))
                                     @foreach ($enginners as $eng)
                                         <tr>
-                                            <td>{{ $eng->Id_request }}</td>
-
-                                            <td>{{ $eng->actividades }}</td>
+                                            <td>{{ $eng->Id_request }}/{{ $eng->actividades }}</td>
                                             <td>{{ $eng->desciption }}
                                             <td><span id="{{ $eng->id }}">
                                                {{ $eng->times }}
-
                                             <td>
                                                 <form action="{{ route('action') }}" method="GET">
                                                     <input type="hidden" name="id" value="{{ $eng->id }}">
