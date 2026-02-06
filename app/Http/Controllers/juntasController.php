@@ -715,30 +715,15 @@ class juntasController extends Controller
         // ksort($pareto);
         arsort($datos);
         $firstKey = key($datos);
-        $top3registrosCalidas = [];
         $datosF = $pnrs = $datosT = $datosS = [];
-        $tomarDatos = calidadRegistro::selectRaw('codigo, SUM(resto) as total_resto')
+        $top3registrosCalidas = calidadRegistro::selectRaw('codigo,client, pn, SUM(resto) as total_resto')
             ->where('codigo', '!=', 'TODO BIEN')
             ->groupBy('codigo')
             ->orderByDesc('total_resto')
             ->where('fecha', 'LIKE', "$crtl%")
             ->limit(3)
             ->get();
-        foreach ($tomarDatos as $dato) {
-            $datos = calidadRegistro::selectRaw('client,pn,codigo, SUM(resto) as total_resto')
-                ->where('codigo', '=', $dato->codigo)
-                ->groupBy('pn','client','codigo')
-                ->orderByDesc('total_resto')
-                ->where('fecha', 'LIKE', "$crtl%")
-                ->get(); 
-            foreach ($datos as $d) {
-                $top3registrosCalidas['client'] = $d->client;
-                $top3registrosCalidas['pn'] = $d->pn;
-                $top3registrosCalidas['codigo'] = $d->codigo;
-                $top3registrosCalidas['total_resto'] = $d->total_resto;
 
-            }
-        }
         // dd($top3registrosCalidas);
         /*
         // Query the database to retrieve records where 'codigo' column matches the $firstKey
