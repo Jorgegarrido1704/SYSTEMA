@@ -103,7 +103,7 @@ options: {
 },
 });
 
-
+ // Issues in quality
 var ctx2 = document.getElementById("pareto");
 var calidadPareto = new Chart(ctx2, {
     type: 'line',

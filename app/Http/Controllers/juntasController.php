@@ -558,13 +558,12 @@ class juntasController extends Controller
         $days = count($datesToCheck);
         $buscarValores = DB::table('regsitrocalidad')->select('fecha', 'codigo')
         // modificado
-            ->where('fecha', 'LIKE', "$crtl%")
-            /*->where(function ($query) use ($datesToCheck) {
+           // ->where('fecha', 'LIKE', "$crtl%")
+            ->where(function ($query) use ($datesToCheck) {
                 foreach ($datesToCheck as $date) {
                     $query->orWhere('fecha', 'LIKE', "$date%");
                 }
-            })*/
-
+            })
             ->get();
 
         foreach ($datesToCheck as $date) {
