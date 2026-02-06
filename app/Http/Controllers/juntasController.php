@@ -728,7 +728,7 @@ class juntasController extends Controller
             $datos3valores[$identifiador] = $codeValue->codigo;
             $identifiador++;
         }
-        dd($datos3valores);
+        // dd($datos3valores);
         $top3registrosCalidas = calidadRegistro::selectRaw('codigo,client, pn, SUM(resto) as total_resto')
             ->where('codigo', '=', $datos3valores[0], 'or', 'codigo', '=', $datos3valores[1], 'or', 'codigo', '=', $datos3valores[2])
             ->groupBy('codigo', 'pn', 'client')
