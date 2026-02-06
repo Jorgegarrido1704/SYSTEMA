@@ -727,10 +727,10 @@ class juntasController extends Controller
         foreach ($tomarDatos as $dato) {
             $datos = calidadRegistro::selectRaw('client,pn,codigo, SUM(resto) as total_resto')
                 ->where('codigo', '=', $dato->codigo)
-                ->groupBy('pn', 'client,codigo')
+                ->groupBy('pn','client','codigo')
                 ->orderByDesc('total_resto')
                 ->where('fecha', 'LIKE', "$crtl%")
-                ->get();
+                ->get(); 
             foreach ($datos as $d) {
                 $top3registrosCalidas['client'] = $d->client;
                 $top3registrosCalidas['pn'] = $d->pn;
