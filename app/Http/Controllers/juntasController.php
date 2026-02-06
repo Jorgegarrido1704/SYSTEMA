@@ -721,7 +721,7 @@ class juntasController extends Controller
             ->groupBy('codigo', 'pn', 'client')
             ->orderByDesc('total_resto', 'codigo')
             ->where('fecha', 'LIKE', "$crtl%")
-            ->limit(5)
+            ->limit(10)
             ->get();
 
         // dd($top3registrosCalidas);
