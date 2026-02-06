@@ -729,7 +729,7 @@ class juntasController extends Controller
             $identifiador++;
         }
         $top3registrosCalidas = calidadRegistro::selectRaw('codigo,client, pn, SUM(resto) as total_resto')
-            ->where('codigo', '=', $datos3valores[0])
+            ->where('codigo', '=', $datos3valores[0], 'or', 'codigo', '=', $datos3valores[1], 'or', 'codigo', '=', $datos3valores[2])
             ->groupBy('codigo', 'pn', 'client')
             ->orderByDesc('total_resto', 'codigo')
             ->where('fecha', 'LIKE', "$crtl%")
