@@ -715,25 +715,13 @@ class juntasController extends Controller
         // ksort($pareto);
         arsort($datos);
         $firstKey = key($datos);
-        $datosF = $pnrs = $datosT = $datosS = $datos3valores = [];
-        $identifiador = 0;
-        $codigos3Errores = calidadRegistro::selectRaw('codigo, SUM(resto) as total_resto')
+        $datosF = $pnrs = $datosT = $datosS = [];
+        $top3registrosCalidas = calidadRegistro::selectRaw('codigo,client, pn, SUM(resto) as total_resto')
             ->where('codigo', '!=', 'TODO BIEN')
-            ->groupBy('codigo')
-            ->orderByDesc('total_resto', 'codigo')
+            ->groupBy('codigo', 'pn', 'client')
+            ->orderByDesc('total_resto')
             ->where('fecha', 'LIKE', "$crtl%")
             ->limit(3)
-            ->get();
-        foreach ($codigos3Errores as $key => $codeValue) {
-            $datos3valores[$identifiador] = $codeValue->codigo;
-            $identifiador++;
-        }
-        // dd($datos3valores);
-        $top3registrosCalidas = calidadRegistro::selectRaw('codigo,client, pn, SUM(resto) as total_resto')
-            ->where('codigo', '=', $datos3valores[0], 'or', 'codigo', '=', $datos3valores[1], 'or', 'codigo', '=', $datos3valores[2])
-            ->groupBy('pn', 'client')
-            ->orderByDesc('total_resto', 'codigo')
-            ->where('fecha', 'LIKE', "$crtl%")
             ->get();
 
         // dd($top3registrosCalidas);
