@@ -269,7 +269,7 @@ if (Error) {
                                                     <td id="empleado">{{$as['name']}}</td>
                                                     <td id="{{ $as['lunes'] }}"><input type="text" style="max-width: 45px" name="lun[]" id="lun"   minlength="1" maxlength="3" value="{{$as['lunes']}}" {{ $diasRegistro[0] }} ></td>
                                                     <td >TE:<input type="number" style="max-width: 45px" name="extra_lun[]" id="extra_lun" value="{{$as['extLunes']}}"  min="0" max="30" step="0.5" {{ $diasRegistro[1] }} required>
-                                                   <hr>TT:<input type="number" style="max-width: 45px" name="tt_lunes[]" id="tt_lunes" value="{{$as['tt_lunes']}}"  min="0" max="30" step="0.5" {{ $diasRegistro[1] }} required></td>
+                                                    <hr>TT:<input type="number" style="max-width: 45px" name="tt_lunes[]" id="tt_lunes" value="{{$as['tt_lunes']}}"  min="0" max="30" step="0.5" {{ $diasRegistro[1] }} required></td>
                                                     <td id="{{ $as['martes'] }}"><input type="text" style="max-width: 45px" name="mar[]" id="mar" value="{{$as['martes']}}" minlength="1" maxlength="3"   {{ $diasRegistro[1] }}></td>
                                                     <td>TE:<input type="number" style="max-width: 45px" name="extra_mar[]" id="extra_mar" value="{{$as['extMartes']}}"  min="0" max="30" step="0.5" {{ $diasRegistro[2] }} required>
                                                     <hr>TT:<input type="number" style="max-width: 45px" name="tt_martes[]" id="tt_martes" value="{{$as['tt_martes']}}"  min="0" max="30" step="0.5" {{ $diasRegistro[2] }} required></td>

@@ -888,19 +888,33 @@ class rrhhController extends Controller
             $sheet->getStyle('A10:P'.$t)->applyFromArray($headerStyle);
             $t = $t + 2;
             $sheet->mergeCells('A'.$t.':B'.$t);
-            $sheet->setCellValue('A'.$t, '__________________________________________________');
+            $sheet->setCellValue('A'.$t, '____________________________________________');
             $sheet->mergeCells('D'.$t.':F'.$t);
             $sheet->setCellValue('D'.$t, '____________________________________________');
-            $sheet->mergeCells('I'.$t.':N'.$t);
-            $sheet->setCellValue('I'.$t, '_____________________________________________________');
+            $sheet->mergeCells('H'.$t.':J'.$t);
+            $sheet->setCellValue('H'.$t, '____________________________________________');
+            $sheet->mergeCells('L'.$t.':O'.$t);
+            $sheet->setCellValue('L'.$t, '____________________________________________');
             $t = $t + 1;
 
             $sheet->mergeCells('A'.$t.':B'.$t);
             $sheet->setCellValue('A'.$t, 'Autorizacion LIDER');
             $sheet->mergeCells('D'.$t.':F'.$t);
             $sheet->setCellValue('D'.$t, 'Autorizacion SUPERVISOR');
+            $sheet->mergeCells('H'.$t.':J'.$t);
+            $sheet->setCellValue('H'.$t, 'Autorizacion GERENTE DE AREA');
+            $sheet->mergeCells('L'.$t.':O'.$t);
+            $sheet->setCellValue('L'.$t, 'Autorizacion RH');
+            $t = $t + 1;
+
+            $sheet->mergeCells('A'.$t.':B'.$t);
+            $sheet->setCellValue('A'.$t, $lider[0]->employeeName);
+            $sheet->mergeCells('D'.$t.':F'.$t);
+            $sheet->setCellValue('D'.$t, $lider[0]->employeeLider);
             $sheet->mergeCells('I'.$t.':N'.$t);
-            $sheet->setCellValue('I'.$t, 'Autorizacion GERENTE DE AREA');
+            $sheet->setCellValue('I'.$t, 'GUILLEN MIRANDA JUAN JOSE');
+            $sheet->mergeCells('L'.$t.':O'.$t);
+            $sheet->setCellValue('L'.$t, 'AGUILAR HERNANDEZ ANA PAOLA');
         }
 
         // Descargar
@@ -930,7 +944,7 @@ class rrhhController extends Controller
         for ($i = 0; $i < 7; $i++) {
             $dias[] = Carbon::now()->setISODate(Carbon::now()->year, $week, $i + 1)->format('d-m');
         }
-        $lider = personalBergsModel::select('employeeName', 'employeeArea')
+        $lider = personalBergsModel::select('employeeLider', 'employeeName', 'employeeArea')
             ->where('user', '=', $value)
             ->get();
         if (empty($lider)) {
@@ -971,24 +985,22 @@ class rrhhController extends Controller
             ->get();
 
         $t = 12;
+        $headerStyle = [
+            'font' => ['bold' => true],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+            ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => Border::BORDER_THIN,
+                ],
 
+            ],
+        ];
+        foreach (range('A', 'Z') as $col) {
+            $sheet->getColumnDimension($col)->setAutoSize(true);
+        }
         foreach ($asistencias as $row) {
-            $headerStyle = [
-                'font' => ['bold' => true],
-                'alignment' => [
-                    'horizontal' => Alignment::HORIZONTAL_CENTER,
-                ],
-                'borders' => [
-                    'allBorders' => [
-                        'borderStyle' => Border::BORDER_THIN,
-                    ],
-
-                ],
-            ];
-
-            foreach (range('A', 'Z') as $col) {
-                $sheet->getColumnDimension($col)->setAutoSize(true);
-            }
 
             $diasSemana = [
                 'lunes' => strtoupper(str_replace('-', '', $row->lunes)),
@@ -1090,20 +1102,33 @@ class rrhhController extends Controller
         $sheet->getStyle('A10:P'.$t)->applyFromArray($headerStyle);
         $t = $t + 2;
         $sheet->mergeCells('A'.$t.':B'.$t);
-        $sheet->setCellValue('A'.$t, '__________________________________________________');
+        $sheet->setCellValue('A'.$t, '____________________________________________');
         $sheet->mergeCells('D'.$t.':F'.$t);
         $sheet->setCellValue('D'.$t, '____________________________________________');
-        $sheet->mergeCells('I'.$t.':N'.$t);
-        $sheet->setCellValue('I'.$t, '_____________________________________________________');
+        $sheet->mergeCells('H'.$t.':J'.$t);
+        $sheet->setCellValue('H'.$t, '____________________________________________');
+        $sheet->mergeCells('L'.$t.':O'.$t);
+        $sheet->setCellValue('L'.$t, '____________________________________________');
         $t = $t + 1;
 
         $sheet->mergeCells('A'.$t.':B'.$t);
         $sheet->setCellValue('A'.$t, 'Autorizacion LIDER');
         $sheet->mergeCells('D'.$t.':F'.$t);
         $sheet->setCellValue('D'.$t, 'Autorizacion SUPERVISOR');
-        $sheet->mergeCells('I'.$t.':N'.$t);
-        $sheet->setCellValue('I'.$t, 'Autorizacion GERENTE DE AREA');
+        $sheet->mergeCells('H'.$t.':J'.$t);
+        $sheet->setCellValue('H'.$t, 'Autorizacion GERENTE DE AREA');
+        $sheet->mergeCells('L'.$t.':O'.$t);
+        $sheet->setCellValue('L'.$t, 'Autorizacion RH');
+        $t = $t + 1;
 
+        $sheet->mergeCells('A'.$t.':B'.$t);
+        $sheet->setCellValue('A'.$t, $lider[0]->employeeName);
+        $sheet->mergeCells('D'.$t.':F'.$t);
+        $sheet->setCellValue('D'.$t, $lider[0]->employeeLider);
+        $sheet->mergeCells('I'.$t.':N'.$t);
+        $sheet->setCellValue('I'.$t, 'GUILLEN MIRANDA JUAN JOSE');
+        $sheet->mergeCells('L'.$t.':O'.$t);
+        $sheet->setCellValue('L'.$t, 'AGUILAR HERNANDEZ ANA PAOLA');
         // Descargar
         $writer = new Xlsx($spreadsheet);
         $fileName = "Reporte de asistencias semana {$week}.xlsx";
