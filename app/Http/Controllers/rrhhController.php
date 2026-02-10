@@ -575,7 +575,10 @@ class rrhhController extends Controller
     {
         $week = $request->input('semana');
         $diaInicialSemana = Carbon::now()->setISODate(Carbon::now()->year, $week, 1);
+        $diaInicialSemana = Carbon::parse($diaInicialSemana)->format('Y-m-d 00:00:00');
         $diaFinalSemana = Carbon::now()->setISODate(Carbon::now()->year, $week, 7);
+        $diaFinalSemana = Carbon::parse($diaFinalSemana)->format('Y-m-d 23:59:59');
+        // dd($diaFinalSemana.' '.$diaInicialSemana);
         $datosdelPersonalAcumulado = [];
 
         $spreadsheet = new Spreadsheet;
