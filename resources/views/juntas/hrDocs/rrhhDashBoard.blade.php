@@ -37,7 +37,7 @@ if (Error) {
                                                             $semanal1=$weekNum;
                                                             $semanal2=$weekNum;
                                                         @endphp
-                            <div class="col-md-6">
+                            <div class="col-md-2">
                                  <form class="row g-3" action="{{ route('exportarListaAsistenciaIndividual') }}" method="POST">
                                     @csrf
                                     <div class="row">
