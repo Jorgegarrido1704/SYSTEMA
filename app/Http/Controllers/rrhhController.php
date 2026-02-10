@@ -1125,8 +1125,8 @@ class rrhhController extends Controller
         $sheet->setCellValue('A'.$t, $lider[0]->employeeName);
         $sheet->mergeCells('D'.$t.':F'.$t);
         $sheet->setCellValue('D'.$t, $lider[0]->employeeLider);
-        $sheet->mergeCells('I'.$t.':N'.$t);
-        $sheet->setCellValue('I'.$t, 'GUILLEN MIRANDA JUAN JOSE');
+        $sheet->mergeCells('H'.$t.':J'.$t);
+        $sheet->setCellValue('H'.$t, 'GUILLEN MIRANDA JUAN JOSE');
         $sheet->mergeCells('L'.$t.':O'.$t);
         $sheet->setCellValue('L'.$t, 'AGUILAR HERNANDEZ ANA PAOLA');
         // Descargar
