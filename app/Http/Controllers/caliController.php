@@ -1167,7 +1167,7 @@ class caliController extends generalController
 
         $writer = new Xlsx($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="Reporte de calidad del '.$di.' al '.$df.'.xlsx"');
+        header('Content-Disposition: attachment;filename="Reporte de existencias en el area de calidad.xlsx"');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
     }
