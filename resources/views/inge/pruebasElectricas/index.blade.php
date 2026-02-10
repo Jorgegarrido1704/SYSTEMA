@@ -4,7 +4,7 @@
  <!-- Page Heading -->
 
 <div class="d-sm-flex align-items-center justify-content-between mb-4 text-center"></div>
-
+ <meta http-equiv="refresh" content="120">
 <div class="row">
         <div class="col-xl-4 col-lg-4">
                 <div class="card shadow mb-4" id="card">
