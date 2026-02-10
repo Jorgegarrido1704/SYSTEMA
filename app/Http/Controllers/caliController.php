@@ -1093,6 +1093,7 @@ class caliController extends generalController
         // Initialize the spreadsheet
         $spreadsheet = new Spreadsheet;
         $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setTitle('Calidad pre-aceptacion');
 
         $t = 2; // Row counter for the data
 
@@ -1130,13 +1131,14 @@ class caliController extends generalController
             $t++;
         }
         $sheetcal = $spreadsheet->createSheet();
+        $sheetcal->setTitle('Area de calidad');
         $t = 2; // Row counter for the data
         // Set the headers for the spreadsheet
         $headers = [
             'A1' => 'Numero de parte',
             'B1' => 'Work order',
             'C1' => 'Candida Orginal',
-            'D1' => 'Cantidad en pre-aceptacion de calidad',
+            'D1' => 'Cantidad en el area de calidad',
 
         ];
 
