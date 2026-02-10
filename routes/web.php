@@ -134,6 +134,7 @@ Route::controller(caliController::class)->group(function () {
     Route::post('/personalFallas', [caliController::class, 'personalFallas'])->name('personalFallas');
     Route::post('/RequestTesting', [caliController::class, 'RequestTesting'])->name('RequestTesting');
     Route::post('/informationWo', [caliController::class, 'informationWo'])->name('informationWo');
+    Route::get('/excel_calidad_pendientes', [caliController::class, 'excel_calidad_pendientes'])->name('excel_calidad_pendientes');
 });
 Route::controller(BossCaliController::class)->group(function () {
     Route::get('/BossCali', BossCaliController::class);

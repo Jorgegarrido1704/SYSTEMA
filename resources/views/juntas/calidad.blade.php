@@ -422,13 +422,13 @@
     </div>
     <div class="row">
 
-        <div class="col-lg-12 mb-4">
+        <div class="col-lg-3 mb-4">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
                     <h5 class="m-0 font-weight-bold text-primary">Quality Data testing control</h5>
                 </div>
 
-                                                    <div class="card-body" style="overflow-y: auto; height: 360px;">
+                            <div class="card-body" style="overflow-y: auto; height: 360px;">
                                                                 <form action="{{ route('excel_calidad')}}" method="GET" >
 
                                                                     <div class="form-group">
@@ -489,11 +489,24 @@
                                                                         });
                                                                 </script>
 
-                                                    </div>
+                             </div>
 
             </div>
         </div>
+        <div class="col-lg-3 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h5 class="m-0 font-weight-bold text-primary">In the quality areas</h5>
+                </div>
+                <div class="card-body" style="overflow-y: auto; height: 360px;" id="tableChange">
+                    <div class="card-body" style="overflow-y: auto; height: 360px;">
+                        <form action="{{ route('excel_calidad_pendientes')}}" method="GET" >
+                            <input type="submit" class="btn btn-primary"   value="Descargar Reporte">
+                        </form>
+                    </div>
+                </div>
+            </div>
     </div>
-    
+
 
 @endsection

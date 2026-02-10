@@ -1088,6 +1088,90 @@ class caliController extends generalController
         $writer->save('php://output');
     }
 
+    public function excel_calidad_pendientes(Request $request)
+    {
+        // Initialize the spreadsheet
+        $spreadsheet = new Spreadsheet;
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $t = 2; // Row counter for the data
+
+        // Set the headers for the spreadsheet
+        $headers = [
+            'A1' => 'Numero de parte',
+            'B1' => 'Work order',
+            'C1' => 'Candida Orginal',
+            'D1' => 'Cantidad en pre-aceptacion de calidad',
+
+        ];
+
+        // auto size columns
+        foreach (range('A', 'D') as $columnID) {
+            $sheet->getColumnDimension($columnID)->setAutoSize(true);
+        }
+        // Loop through the headers and add them to the spreadsheet
+        foreach ($headers as $cell => $header) {
+            $sheet->setCellValue($cell, $header);
+        }
+        // Get the data within the id range
+        $buscarinfo = DB::table('registroparcial')
+            ->select('pn', 'wo', 'orgQty', 'preCalidad')
+            ->where('preCalidad', '>', 0)
+            ->orderBy('pn', 'desc')
+            ->orderBy('wo', 'ASC')
+            ->get();
+        // Loop through the records and add them to the spreadsheet
+
+        foreach ($buscarinfo as $infoPreCalidad) {
+            $sheet->setCellValue('A'.$t, $infoPreCalidad->pn);
+            $sheet->setCellValue('B'.$t, $infoPreCalidad->wo);
+            $sheet->setCellValue('C'.$t, $infoPreCalidad->orgQty);
+            $sheet->setCellValue('D'.$t, $infoPreCalidad->preCalidad);
+            $t++;
+        }
+        $sheetcal = $spreadsheet->createSheet();
+        $t = 2; // Row counter for the data
+        // Set the headers for the spreadsheet
+        $headers = [
+            'A1' => 'Numero de parte',
+            'B1' => 'Work order',
+            'C1' => 'Candida Orginal',
+            'D1' => 'Cantidad en pre-aceptacion de calidad',
+
+        ];
+
+        // auto size columns
+        foreach (range('A', 'D') as $columnID) {
+            $sheetcal->getColumnDimension($columnID)->setAutoSize(true);
+        }
+        // Loop through the headers and add them to the spreadsheetcal
+        foreach ($headers as $cell => $header) {
+            $sheetcal->setCellValue($cell, $header);
+        }
+        // Get the data within the id range
+        $buscarinfo = DB::table('registroparcial')
+            ->select('pn', 'wo', 'orgQty', 'testPar', 'fallasCalidad')
+            ->where('testPar', '>', 0)
+            ->orderBy('pn', 'desc')
+            ->orderBy('wo', 'ASC')
+            ->get();
+        // Loop through the records and add them to the spreadsheetcal
+
+        foreach ($buscarinfo as $infoPreCalidad) {
+            $sheetcal->setCellValue('A'.$t, $infoPreCalidad->pn);
+            $sheetcal->setCellValue('B'.$t, $infoPreCalidad->wo);
+            $sheetcal->setCellValue('C'.$t, $infoPreCalidad->orgQty);
+            $sheetcal->setCellValue('D'.$t, $infoPreCalidad->testPar + $infoPreCalidad->fallasCalidad);
+            $t++;
+        }
+
+        $writer = new Xlsx($spreadsheet);
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="Reporte de calidad del '.$di.' al '.$df.'.xlsx"');
+        header('Cache-Control: max-age=0');
+        $writer->save('php://output');
+    }
+
     public function personalFallas(Request $request)
     {
         $numero = $request->input('codigo1');
