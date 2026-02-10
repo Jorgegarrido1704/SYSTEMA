@@ -3,7 +3,7 @@
 @section('contenido')
  <!-- Page Heading -->
  <meta http-equiv="refresh" content="180">
- <script src="{{ asset('/dash/js/calidadReg.js')}}"></script>
+ <script src="{{ asset('/dashjs/calidadReg.js')}}"></script>
 
                     <!-- Content Row -->
         <div class="row">
