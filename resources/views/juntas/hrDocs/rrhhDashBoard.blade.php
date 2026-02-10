@@ -31,7 +31,36 @@ if (Error) {
                 <div class="card shadow mb-5 item-center">
                     <div class="card-header py-3 text-center">
                         <h5 class="m-0 font-weight-bold text-primary">Modificaciones de Registos  Y reportes</h5>
-                          @if($cat == "RRHH" or $cat == "SupAdmin")
+                        @if($cat != "RRHH" and $cat != "SupAdmin")
+                        <div class="row">
+                             @php
+                                                            $semanal1=$weekNum;
+                                                            $semanal2=$weekNum;
+                                                        @endphp
+                            <div class="col-md-6">
+                                 <form class="row g-3" action="{{ route('exportarListaAsistenciaIndividual') }}" method="POST">
+                                    @csrf
+                                    <div class="row">
+                                        <div class="form-group col-md-12">
+                                        <label for="semana" class="form-label">Listas de asistencia</label>
+                                        </div>
+                                        <div class="form-group col-md-12">
+                                        <select name="numeroSemanaIncidencias" id="numeroSemanaIncidencias" class="form-control" required>
+                                            <option value="" disabled selected> Seleccione Un Semana de trabajo</option>
+                                            @for($semanal2; $semanal2>=1 ; $semanal2--)
+                                            <option value="{{$semanal2}}">Semana {{$semanal2}}</option>
+                                            @endfor
+                                        </select>
+                                        </div>
+                                        <div class="form-group col-md-12">
+                                            <button type="submit" class="btn btn-primary">Listas de incidencias</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                          @elseif($cat == "RRHH" or $cat == "SupAdmin")
                         <button class="btn btn-primary" data-toggle="modal" data-target="#addModal" id="addPersonal" onclick="addEmpleado();" >Agregar personal</button>
                         <button class="btn btn-success" data-toggle="modal" data-target="#addModal" id="modificarEmpleados" onclick="modificarEmpleado();">Modifiar empleado</button>
                        <!-- //reportes de RRHH -->

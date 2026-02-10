@@ -219,6 +219,7 @@ Route::controller(rrhhController::class)->group(function () {
     Route::get('/rrhh/datosPersonal', [rrhhcontroller::class, 'datosPersonal'])->name('datosPersonal');
     Route::POST('/rrhh/excelRelogChecador', [rrhhcontroller::class, 'excelRelogChecador'])->name('excelRelogChecador');
     Route::post('/rrhh/exportar', [rrhhController::class, 'exportarListaAsistencia'])->name('exportarListaAsistencia');
+    Route::post('/rrhh/exportarindividual', [rrhhController::class, 'exportarListaAsistenciaIndividual'])->name('exportarListaAsistenciaIndividual');
 });
 Route::controller(AccionesCorrectivasController::class)->group(function () {
     Route::get('/acciones-correctivas', [AccionesCorrectivasController::class, 'index'])->name('accionesCorrectivas.index');
