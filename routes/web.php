@@ -9,6 +9,7 @@ use App\Http\Controllers\caliController;
 use App\Http\Controllers\generalController;
 use App\Http\Controllers\getPnDetailsController;
 use App\Http\Controllers\globalInventario;
+use App\Http\Controllers\herramentalesController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InventarioController;
 use App\Http\Controllers\InventariosController;
@@ -249,4 +250,8 @@ Route::controller(mantainenceController::class)->group(function () {
     Route::get('/mantainence/{id}', [mantainenceController::class, 'show'])->name('mantainence.show');
     Route::post('/mantainence/guardarMantencion', [mantainenceController::class, 'guardarMantencion'])->name('mantainence.guardarMantencion');
     Route::post('/mantainence/guardarSeguimiento', [mantainenceController::class, 'guardarSeguimiento'])->name('mantainence.guardarSeguimiento');
+});
+
+Route::controller(herramentalesController::class)->group(function () {
+    Route::get('/herramentales', [herramentalesController::class, 'index'])->name('herramentales.index');
 });

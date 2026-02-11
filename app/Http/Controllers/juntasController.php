@@ -2706,42 +2706,26 @@ class juntasController extends Controller
         $totalgeneral = count($registroPPAP);
         $registroPartNumbers = $registrosprevios = [];
 
-        $ultimasRevisiones = Po::select('pn', 'rev', 'orday', 'client')
-            ->where(function ($q) {
-                $q->where('rev', 'LIKE', 'PPAP%')
-                    ->orWhere('rev', 'LIKE', 'PRIM%');
-            })
-            ->orderBy('pn')
-            ->orderBy('id', 'desc')
-            ->get()
-            ->unique('pn');
-
-        $registroPartNumbers = [];
+        $ultimasRevisiones = Po::select('pn')
+            ->where('rev', 'LIKE', 'PRIM%')
+            ->orWhere('rev', 'LIKE', 'PPAP%')
+            ->groupBy('pn')
+            ->orderBy('pn', 'asc')
+            ->get();
+        $ultimasRevisiones->toArray();
 
         foreach ($ultimasRevisiones as $ultrev) {
 
-            // Extrae TODO después de PPAP o PRIM
-            preg_match('/^(PPAP|PRIM)\s*(.+)$/', $ultrev->rev, $match);
-            $sufijo = $match[2] ?? null;
+            $registroRevPartNumbers = Po::select('pn', 'rev', 'client', 'orday')->where('pn', $ultrev['pn'])->orderBy('id', 'desc')->get();
 
-            if ($sufijo === null) {
-                continue;
-            }
-
-            $conteo = Po::where('pn', $ultrev->pn)
-                ->where(function ($q) use ($sufijo) {
-                    $q->where('rev', 'PPAP '.$sufijo)
-                        ->orWhere('rev', 'PRIM '.$sufijo);
-                })
-                ->count();
-
-            if ($conteo === 1) {
+            if (count($registroRevPartNumbers) == 1) {
                 $registroPartNumbers[] = [
-                    'pn' => $ultrev->pn,
-                    'rev' => $ultrev->rev,
-                    'client' => $ultrev->client,
-                    'orday' => $ultrev->orday,
+                    $registroRevPartNumbers->pn,
+                    $registroRevPartNumbers->rev,
+                    $registroRevPartNumbers->client,
+                    $registroRevPartNumbers->orday,
                 ];
+                dd($registroPartNumbers);
             }
         }
 

@@ -115,7 +115,12 @@
                         <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('timeLine') }}">Time Study</a></li>
                     </ul>
                 </li>
-
+                 <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('herramentales.index') }}"
+                    onmouseover=showHerramentales();>Herramanetal</a>
+                    <ul class="submenu" id="herramentales" style="display:none;">
+                        <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('timeLine') }}">Time Study</a></li>
+                    </ul>
+                </li>
                 <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('accionesCorrectivas.index') }}">Corrective Actions</a></li>
                 @endif
                 <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('rrhhDashBoard') }}">Assistance</a></li>
@@ -150,6 +155,14 @@
     }
     function showSchedule() {
         var engMenu = document.getElementById("schedule");
+        if (engMenu.style.display === "none" || engMenu.style.display === "") {
+            engMenu.style.display = "block";
+        } else {
+            engMenu.style.display = "none";
+        }
+    }
+    function showHerramentales() {
+          var engMenu = document.getElementById("herramentales");
         if (engMenu.style.display === "none" || engMenu.style.display === "") {
             engMenu.style.display = "block";
         } else {
