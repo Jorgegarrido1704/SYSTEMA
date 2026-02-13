@@ -22,8 +22,10 @@ class herramentalesController extends Controller
             ->orWhere('finhora', '')
             ->orderBy('id', 'asc')
             ->get();
+        $herramntal = DB::table('herramental')->orderBy('comp', 'asc')->get();
 
-        return view('herramentales.index', ['crimpersRequested' => $crimpersRequested, 'cat' => $cat, 'value' => $value]);
+        return view('herramentales.index', ['crimpersRequested' => $crimpersRequested, 'cat' => $cat, 'value' => $value,
+            'herramntal' => $herramntal]);
     }
 
     public function update(Request $request, $id)
@@ -44,4 +46,6 @@ class herramentalesController extends Controller
         return redirect('/herramentales');
 
     }
+
+    public function sumCrimpers(Request $request, $id) {}
 }

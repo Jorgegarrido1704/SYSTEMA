@@ -5,8 +5,8 @@
  <div class="d-sm-flex align-items-center justify-content-between mb-4">  </div>
 
     <div class="row">
-        <div class="col-xl-6 col-md-6 mb-4">
-        <div class="card shadow mb-4">
+        <div class="col-xl-5 col-md-5 mb-4">
+            <div class="card shadow mb-4">
 
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" style="max-height: 25px">
                     <h6 class="m-0 font-weight-bold text-primary">Requieriment Crimpers </h6>
@@ -54,5 +54,34 @@
                 </div>
             </div>
         </div>
+        <div class="col-xl-2 col-md-2 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" style="max-height: 25px">
+                    <h6 class="m-0 font-weight-bold text-primary">Add count in crimpers </h6>
+                </div>
+                <!-- table Body -->
+                <div class="card-body"style="overflow-y: auto; max-height: 400px;">
+                    <form action="{{ route('herramientales.sumCrimpers') }}" method="post">
+                        @csrf
+                        <div class="form-group">
+                            <label for="tooling">Tooling</label>
+                            <select name="tooling" id="tooling" class="form-control" required>
+                                @foreach($herramntal as $tooling)
+                                    <option value="{{ $tooling->id }}">{{ $tooling->comp }} || {{ $tooling->herramental }} </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="work">Work</label>
+                            <input type="text" name="work" id="work" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="who">Whose order</label>
+                </div>
+
+                </div>
+            </div>
+        </div>
+
     </div>
 @endsection

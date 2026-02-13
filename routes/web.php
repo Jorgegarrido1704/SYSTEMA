@@ -255,4 +255,6 @@ Route::controller(mantainenceController::class)->group(function () {
 Route::controller(herramentalesController::class)->group(function () {
     Route::get('/herramentales', [herramentalesController::class, 'index'])->name('herramentales.index');
     Route::get('/herramentales/update/{id}', [herramentalesController::class, 'update'])->name('herramientales.update');
+    Route::post('/herramentales/sumCrimpers', [herramentalesController::class, 'sumCrimpers'])->name('herramientales.sumCrimpers');
+
 });
