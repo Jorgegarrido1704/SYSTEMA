@@ -1987,26 +1987,7 @@ class juntasController extends Controller
             ->OrWhere('area', '=', $area1)
             ->orderBy('fecha_de_solicitud', 'asc')
             ->get();
-        /*    if (count($vacaciones) == 0) {
-            if (session('categoria') == 'inge') {
-                $equipo = 'Ingenieria';
 
-                $busquedaRelacionadas = personalBergsModel::select('employeeLider')->where('employeeArea', '=', $equipo)
-                    ->limit(1)->first();
-                strpos($busquedaRelacionadas->employeeLider, ',')?$Leader=explode(',',$busquedaRelacionadas->employeeLider)[0]:$Leader = $busquedaRelacionadas->employeeLider;
-            } else {
-                $Leader = $value;
-            }
-
-            $vacaciones = registroVacacionesModel::wherebetween('fecha_de_solicitud', [$InicioYear->toDateString(), $FinYear->toDateString()])
-                // ->where('fecha_de_solicitud', 'LIKE', $currentYear . '%')
-                ->where('estatus', '=', 'Confirmado')
-                ->where('superVisor', '=', $Leader)
-                ->orderBy('fecha_de_solicitud', 'asc')
-                ->get();
-        }*/
-
-        // Crear array asociativo: 'Y-m-d' => [id_empleado, ...]
         $vacacions = [];
 
         foreach ($vacaciones as $row) {
@@ -2095,10 +2076,12 @@ class juntasController extends Controller
             $liderInicial = personalBergsModel::select('user', 'email', 'employeeLider')->where('employeeName', '=', $lider)->first();
             $buscarEmails = personalBergsModel::select('email', 'employeeLider', 'employeeName', 'user')->where('employeeName', '=', $liderInicial->employeeLider)->first();
             $supervisor = $buscarEmails->user;
-            if ($liderInicial->email == null or $liderInicial->email == '') {
+            if ($buscarEmails->email == null or $buscarEmails->email == '') {
                 $email = $buscarEmails->email;
+            } elseif ($liderInicial->email != null or $liderInicial->email != '') {
+                $email = $liderInicial->email;
             } else {
-                $email = [$liderInicial->email.','.$buscarEmails->email];
+                $email = 'jgarrido@mx.bergstrominc.com';
             }
 
         }
@@ -2202,9 +2185,6 @@ class juntasController extends Controller
         $fechadeSolicitud = Carbon::parse($buscarFolio->fecha_de_solicitud)->addWeekdays(-$buscarFolio->dias_solicitados);
         $contend['fecha_de_solicitud'] = $fechadeSolicitud->toDateString();
         $contend['Folio'] = $folio;
-        if ($email == null or $email == '') {
-            $email = 'jgarrido@mx.bergstrominc.com';
-        }
 
         Mail::to($email)->send(new solicitudVacacionesMail($contend, 'Solicitud de Vacaciones'));
 
