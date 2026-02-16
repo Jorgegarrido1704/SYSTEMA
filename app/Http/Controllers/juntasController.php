@@ -1941,8 +1941,8 @@ class juntasController extends Controller
         $value = session('user');
         $cat = session('categoria');
         $lidername = personalBergsModel::select('employeeName', 'employeeLider', 'employeeArea')->where('user', '=', $value)->first();
-        if(is_null($lidername)){
-            return redirect('/login');
+        if (is_null($lidername)) {
+            return redirect('/juntas/seguimientos');
         }
         $busqueda = personalBergsModel::where('employeeName', '=', $lidername->employeeName)
             ->orwhere('employeeLider', '=', $lidername->employeeName)
