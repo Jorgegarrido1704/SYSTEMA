@@ -2697,6 +2697,7 @@ class juntasController extends Controller
             $registroPartNumbers[] = [
                 'pn' => $ultimaRevision->pn,
                 'rev' => $ultimaRevision->revisiones,
+                'cliente' => $ultimaRevision->client,
             ];
         }
 
