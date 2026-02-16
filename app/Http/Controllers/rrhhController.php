@@ -37,8 +37,11 @@ class rrhhController extends Controller
             $diasRegistros = ['', '', '', '', ''];
         } else {
             $diasRegistro = ['readonly', 'readonly', 'readonly', 'readonly', 'readonly'];
-            $leadername->employeeName = $lidername[0]->employeeLider ?? '';
-            $datosRHWEEK = assistence::leader($leadername->employeeName, $cat)->OrderBy('lider', 'desc')->get();
+            if ($leadername->employeeName == null) {
+                $datosRHWEEK = assistence::leader($leadername->employeeName, $cat)->OrderBy('lider', 'desc')->get();
+            } else {
+                $datosRHWEEK = assistence::leader('', '')->OrderBy('lider', 'desc')->get();
+            }
             $diasRegistros = ['', '', '', '', ''];
         }
 
