@@ -2694,11 +2694,14 @@ class juntasController extends Controller
             ->get();
 
         foreach ($ultimasRevisiones as $ultimaRevision) {
-            $registroPartNumbers[] = [
-                'pn' => $ultimaRevision->pn,
-                'rev' => $ultimaRevision->revisiones,
-                'cliente' => $ultimaRevision->client,
-            ];
+            if ($ultimaRevision->revisiones > 1) {
+                $registrosprevios[] = [
+                    'pn' => $ultimaRevision->pn,
+                    'rev' => $ultimaRevision->revisiones,
+                    'cliente' => $ultimaRevision->client,
+                ];
+            }
+
         }
 
         return view('juntas.npi.npi', [
