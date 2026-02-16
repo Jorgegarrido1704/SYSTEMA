@@ -2,7 +2,6 @@
 
 namespace App\Jobs;
 
-use App\Models\regPar;
 use App\Models\Wo;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
@@ -55,7 +54,7 @@ class respolados implements ShouldQueue
                 'fecharetiro' => $date,
                 'codigo' => $codigo,
             ]);
-            regPar::where('codeBar', $codigo)->delete();
+            DB::table('registroparcial')->where('codeBar', $codigo)->delete();
             Wo::where('wo', $wo)->delete();
 
         }
