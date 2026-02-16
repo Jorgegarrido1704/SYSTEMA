@@ -37,7 +37,7 @@ class rrhhController extends Controller
             $diasRegistros = ['', '', '', '', ''];
         } else {
             $diasRegistro = ['readonly', 'readonly', 'readonly', 'readonly', 'readonly'];
-            if ($leadername->employeeName == null) {
+            if ($leadername->employeeName != null) {
                 $datosRHWEEK = assistence::leader($leadername->employeeName, $cat)->OrderBy('lider', 'desc')->get();
             } else {
                 $datosRHWEEK = assistence::leader('', '')->OrderBy('lider', 'desc')->get();
