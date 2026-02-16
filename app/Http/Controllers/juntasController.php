@@ -2686,27 +2686,18 @@ class juntasController extends Controller
         $totalgeneral = count($registroPPAP);
         $registroPartNumbers = $registrosprevios = [];
 
-        $ultimasRevisiones = Po::select('pn')
+        $ultimasRevisiones = Po::select('pn', 'client', 'COUNT(pn) as revisiones')
             ->where('rev', 'LIKE', 'PRIM%')
             ->orWhere('rev', 'LIKE', 'PPAP%')
-            ->groupBy('pn')
+            ->groupBy('pn', 'client')
             ->orderBy('pn', 'asc')
             ->get();
-        $ultimasRevisiones->toArray();
 
-        foreach ($ultimasRevisiones as $ultrev) {
-
-            $registroRevPartNumbers = Po::select('pn', 'rev', 'client', 'orday')->where('pn', $ultrev['pn'])->orderBy('id', 'desc')->get();
-
-            if (count($registroRevPartNumbers) == 1) {
-                $registroPartNumbers[] = [
-                    $registroRevPartNumbers->pn,
-                    $registroRevPartNumbers->rev,
-                    $registroRevPartNumbers->client,
-                    $registroRevPartNumbers->orday,
-                ];
-                dd($registroPartNumbers);
-            }
+        foreach ($ultimasRevisiones as $ultimaRevision) {
+            $registroPartNumbers[] = [
+                'pn' => $ultimaRevision->pn,
+                'rev' => $ultimaRevision->revisiones,
+            ];
         }
 
         return view('juntas.npi.npi', [

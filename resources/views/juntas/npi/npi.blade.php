@@ -76,7 +76,7 @@
                                     <th>Part Number</th>
                                     <th>Revision</th>
                                     <th>Customer</th>
-                                    <th>PPAP Date</th>
+                                 
 
                                 </tr>
                             </thead>
@@ -88,8 +88,8 @@
 
                                             <td><b>{{ $cut['pn'] }}</td>
                                             <td><b>{{ $cut['rev'] }}</td>
-                                            <td><b>{{ $cut['client'] }}</td>
-                                            <td><b>{{ $cut['orday'] }}</td>
+                                            <td><b>{{ $cut['cliente'] }}</td>
+
 
                                         </tr>
                                     </tbody>
