@@ -119,6 +119,14 @@
 
                                                             </form>
                                                 </div>
+                                                 <div class="col-lg-4 mb-4">
+                                                            <form action="{{ route('registrosGenerales')}}" method="GET" >
+                                                                <label for="setAddWeek">Reacondicionar Datos</label>
+                                                                <input type="hidden" name="setAddWeek" id="setAddWeek" value="4">
+                                                                <button type="submit" class="btn btn-primary">Make</button>
+
+                                                            </form>
+                                                </div>
                                             </div>
 
                                             </div>

@@ -249,6 +249,8 @@ class AdminSupControlloer extends Controller
                 \App\Jobs\reporteGeneral::dispatch();
             } elseif ($request->input('setAddWeek') == 3) {
                 \App\Jobs\VacacionesRegistrosJob::dispatch();
+            } elseif ($request->input('setAddWeek') == 4) {
+                \App\Jobs\respolados::dispatch();
             }
         }
 
