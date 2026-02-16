@@ -2686,7 +2686,7 @@ class juntasController extends Controller
         $totalgeneral = count($registroPPAP);
         $registroPartNumbers = $registrosprevios = [];
 
-        $ultimasRevisiones = Po::select('pn', 'client', 'COUNT(pn) as revisiones')
+        $ultimasRevisiones = Po::selectRaw('pn,client, COUNT(pn) as revisiones')
             ->where('rev', 'LIKE', 'PRIM%')
             ->orWhere('rev', 'LIKE', 'PPAP%')
             ->groupBy('pn', 'client')
