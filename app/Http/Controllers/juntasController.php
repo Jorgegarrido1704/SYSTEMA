@@ -1941,7 +1941,9 @@ class juntasController extends Controller
         $value = session('user');
         $cat = session('categoria');
         $lidername = personalBergsModel::select('employeeName', 'employeeLider', 'employeeArea')->where('user', '=', $value)->first();
-
+        if (count($lidername) == 0) {
+            return view('juntas/vacaciones', ['value' => session('user'), 'cat' => session('categoria')]);
+        }
         $busqueda = personalBergsModel::where('employeeName', '=', $lidername->employeeName)
             ->orwhere('employeeLider', '=', $lidername->employeeName)
             ->where('status', '=', 'Activo')
