@@ -19,7 +19,8 @@ class pruebasElectricasController extends Controller
         }
         $pruebas = $arneses = [];
         $pruebas = electricalTesting::where('status_of_order', '=', 'Pending')->get();
-        $racks = electricalTesting::where('status_of_order', '=', 'In rack')->get();
+        $racks = electricalTesting::where('status_of_order', '=', 'In rack')
+            ->groupBy('pn')->get();
         foreach ($racks as $rack) {
             $woks = regPar::select('orgQty')
                 ->selectRaw('(
