@@ -44,7 +44,7 @@ class rrhhController extends Controller
 
         $diaNum = carbon::now()->dayOfWeek; //
         $datosRHWEEKLastWeek = [];
-        if (($diaNum == 1 or $diaNum == 2) and carbon::now()->format('H:i') < '12:30') {
+        if (($diaNum == 1 or $diaNum == 2) and carbon::now()->format('H:i') < '13:30') {
             if ($value == 'Admin' or $cat == 'RRHH') {
                 $datosRHWEEKLastWeek = assistence::LeaderLastWeek($value)->OrderBy('lider', 'desc')->get();
             } else {
