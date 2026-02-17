@@ -240,7 +240,9 @@ if (Error) {
                             </div>
                         </div>
                         <br>
+                            <h2>Incidencias Semana pasada</h2>
                         <hr>
+                        <br>
                         <div class="row">
                             <div class="col-md-12">
                                         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
