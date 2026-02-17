@@ -43,6 +43,14 @@ class rrhhController extends Controller
         }
 
         $diaNum = carbon::now()->dayOfWeek; //
+        $datosRHWEEKLastWeek = [];
+        if (($diaNum == 1 or $diaNum == 2) and carbon::now()->format('H:i') < '12:30') {
+            if ($value == 'Admin' or $cat == 'RRHH') {
+                $datosRHWEEKLastWeek = assistence::LeaderLastWeek($value)->OrderBy('lider', 'desc')->get();
+            } else {
+                $datosRHWEEKLastWeek = assistence::LeaderLastWeek($laeder, $cat)->OrderBy('lider', 'desc')->get();
+            }
+        }
 
         if ($diaNum == 5 or $diaNum == 6 or $diaNum == 7) {
             $diasRegistro[4] = '';
@@ -54,7 +62,7 @@ class rrhhController extends Controller
 
         return view('juntas.hrDocs.rrhhDashBoard', ['lidername' => $lidername, 'weekNum' => $weekNum,
             'diasRegistros' => $diasRegistros, 'diasRegistro' => $diasRegistro, 'datosRHWEEK' => $datosRHWEEK, 'value' => $value,
-            'cat' => $cat]);
+            'cat' => $cat, 'datosRHWEEKLastWeek' => $datosRHWEEKLastWeek]);
 
     }
 
@@ -121,6 +129,71 @@ class rrhhController extends Controller
         }
         // send a job to update rotacion
         UpdateRotacionJob::dispatch();
+
+        return redirect()->route('rrhhDashBoard');
+    }
+
+    public function updateLastWeek(Request $request)
+    {
+        $week = intval(date('W')) - 1;
+        $year = $week <= 1 ? Carbon::now()->year + 1 : Carbon::now()->year;
+        $validated = $request->validate([
+            'lun' => 'required|array',
+            'extra_lun' => 'required|array',
+            'mar' => 'required|array',
+            'extra_mar' => 'required|array',
+            'mie' => 'required|array',
+            'extra_mie' => 'required|array',
+            'jue' => 'required|array',
+            'extra_jue' => 'required|array',
+            'vie' => 'required|array',
+            'extra_vie' => 'required|array',
+            'sab' => 'required|array',
+            'extra_sab' => 'required|array',
+            'dom' => 'required|array',
+            'extra_dom' => 'required|array',
+            'numero_empleado' => 'required|array',
+            'tt_lunes' => 'required|array',
+            'tt_martes' => 'required|array',
+            'tt_miercoles' => 'required|array',
+            'tt_jueves' => 'required|array',
+            'tt_viernes' => 'required|array',
+            'tt_sabado' => 'required|array',
+            'tt_domingo' => 'required|array',
+        ]);
+
+        foreach ($validated['numero_empleado'] as $index => $id_empleado) {
+            $updateData = [
+                'lunes' => $validated['lun'][$index] ? strtoupper(str_replace('-', '', $validated['lun'][$index])) : '-',
+                'extLunes' => $validated['extra_lun'][$index] ?? 0,
+                'martes' => $validated['mar'][$index] ? strtoupper(str_replace('-', '', $validated['mar'][$index])) : '-',
+                'extMartes' => $validated['extra_mar'][$index] ?? 0,
+                'miercoles' => $validated['mie'][$index] ? strtoupper(str_replace('-', '', $validated['mie'][$index])) : '-',
+                'extMiercoles' => $validated['extra_mie'][$index] ?? 0,
+                'jueves' => $validated['jue'][$index] ? strtoupper(str_replace('-', '', $validated['jue'][$index])) : '-',
+                'extJueves' => $validated['extra_jue'][$index] ?? 0,
+                'viernes' => $validated['vie'][$index] ? strtoupper(str_replace('-', '', $validated['vie'][$index])) : '-',
+                'extViernes' => $validated['extra_vie'][$index] ?? 0,
+                'sabado' => $validated['sab'][$index] ? strtoupper(str_replace('-', '', $validated['sab'][$index])) : '-',
+                'extSabado' => $validated['extra_sab'][$index] ?? 0,
+                'domingo' => $validated['dom'][$index] ? strtoupper(str_replace('-', '', $validated['dom'][$index])) : '-',
+                'extDomingo' => $validated['extra_dom'][$index] ?? 0,
+                'extras' => $validated['extra_lun'][$index] + $validated['extra_mar'][$index] + $validated['extra_mie'][$index] + $validated['extra_jue'][$index] + $validated['extra_vie'][$index] + $validated['extra_sab'][$index] + $validated['extra_dom'][$index] ?? 0,
+                'tt_lunes' => $validated['tt_lunes'][$index] ?? 0,
+                'tt_martes' => $validated['tt_martes'][$index] ?? 0,
+                'tt_miercoles' => $validated['tt_miercoles'][$index] ?? 0,
+                'tt_jueves' => $validated['tt_jueves'][$index] ?? 0,
+                'tt_viernes' => $validated['tt_viernes'][$index] ?? 0,
+                'tt_sabado' => $validated['tt_sabado'][$index] ?? 0,
+                'tt_domingo' => $validated['tt_domingo'][$index] ?? 0,
+                'tiempoPorTiempo' => $validated['tt_lunes'][$index] + $validated['tt_martes'][$index] + $validated['tt_miercoles'][$index] + $validated['tt_jueves'][$index] + $validated['tt_viernes'][$index] + $validated['tt_sabado'][$index] + $validated['tt_domingo'][$index] ?? 0,
+            ];
+
+            assistence::where('id_empleado', $id_empleado)
+                ->where('week', $week)
+                ->where('yearOfAssistence', '=', $year)
+                ->update($updateData);
+        }
 
         return redirect()->route('rrhhDashBoard');
     }
