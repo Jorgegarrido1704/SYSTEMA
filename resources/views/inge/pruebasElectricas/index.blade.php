@@ -68,8 +68,6 @@
                                     style=" position: sticky; z-index: 1; top: 0; text-align: center; background-color: #bd0606; color: white; ">
                                     <tr>
                                     <th>Part Number</th>
-                                    <th>Client</th>
-                                    <th>WO</th>
                                     <th>Order Qty</th>
                                     <th>Rest Qty</th>
                                     <th>Accion</th>
@@ -84,8 +82,7 @@
                                         <tr>
                                         @endif
                                             <td>{{ $elec->pn }}</td>
-                                            <td>{{ $elec->client }}</td>
-                                            <td>{{ $elec->wo }}</td>
+
                                             <td>{{ $elec->orgQty }}</td>
                                             <td>{{ $elec->total }}</td>
                                             @if($elec->total==0)
