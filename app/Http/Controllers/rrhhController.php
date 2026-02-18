@@ -66,7 +66,7 @@ class rrhhController extends Controller
 
         return view('juntas.hrDocs.rrhhDashBoard', ['lidername' => $lidername, 'weekNum' => $weekNum,
             'diasRegistros' => $diasRegistros, 'diasRegistro' => $diasRegistro, 'datosRHWEEK' => $datosRHWEEK, 'value' => $value,
-            'cat' => $cat, 'datosRHWEEKLastWeek' => $datosRHWEEKLastWeek, ]);
+            'cat' => $cat, 'datosRHWEEKLastWeek' => $datosRHWEEKLastWeek, 'tt' => $tt]);
     }
 
     public function updateAsistencia(Request $request)
