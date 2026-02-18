@@ -241,7 +241,7 @@ if (Error) {
                             </div>
                             <div class="col-md-12">
                                 <h6>* La asistencia debe registrarse antes de las 08:20 AM </h6>
-                                <h6>* Las Horas extras deben registrarse antes de las 12:00 AM </h6>
+                                <h6>* Las Horas extras y las horas de tiempo por tiempo deben registrarse antes de las 12:00 AM </h6>
                                 <h6>* Los dias lunes se deben registrar las horas extras del viernes, sabado y domingo antes de las 10:00 AM, la lista de asistencia de la semana anterior se encontrara en la parte inferior de esta página</h6>
                             </div>
                         </div>
