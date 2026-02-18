@@ -89,7 +89,7 @@
                                             <td>
                                                 <form action="{{ route('dispatchElecticalTest') }}" method="GET">
                                                     <input type="hidden" name="remove" id="remove"
-                                                        value="{{ $elec->id }}">
+                                                        value="{{ $elec->pn }}">
                                                     <button type="submit">remove it</button>
                                                 </form>
                                             </td>

@@ -65,7 +65,7 @@ class pruebasElectricasController extends Controller
             $distch = electricalTesting::where('id', $request->input('id'))->update([
                 'status_of_order' => 'In rack']);
         } elseif ($request->input('remove') != null) {
-            $distch = electricalTesting::where('id', $request->input('remove'))->update([
+            $distch = electricalTesting::where('pn', $request->input('remove'))->update([
                 'status_of_order' => 'Completed']);
         } elseif ($request->input('addRack') != null) {
             $searchDataByWo = Wo::where('wo', '=', $request->input('addRack'))->first();
