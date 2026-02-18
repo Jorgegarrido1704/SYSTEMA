@@ -31,13 +31,14 @@ class rrhhController extends Controller
         $lidername = personalBergsModel::select('employeeLider')->distinct()->get();
         $laeder = $leadername->employeeName ?? $value;
         $weekNum = Carbon::now()->weekOfYear;
-        $datosRHWEEK = [];
+        $datosRHWEEK = $tt = [];
         if ($value == 'Admin' or $cat == 'RRHH') {
             $datosRHWEEK = assistence::leader($value)->OrderBy('lider', 'desc')->get();
             $diasRegistro = ['', '', '', '', '', ''];
             $diasRegistros = ['', '', '', '', ''];
         } else {
             $diasRegistro = ['readonly', 'readonly', 'readonly', 'readonly', 'readonly'];
+            $tt = ['readonly', 'readonly', 'readonly', 'readonly', 'readonly'];
             $datosRHWEEK = assistence::leader($laeder, $cat)->OrderBy('lider', 'desc')->get();
             $diasRegistros = ['', '', '', '', ''];
         }
@@ -54,16 +55,18 @@ class rrhhController extends Controller
 
         if ($diaNum == 5 or $diaNum == 6 or $diaNum == 7) {
             $diasRegistro[4] = '';
+            $tt[4] = '';
 
         } elseif (carbon::now()->format('H:i') < '08:20') {
             $diasRegistro[$diaNum - 1] = '';
-
+        }
+        if (carbon::now()->format('H:i') < '12:00' and $diaNum >= 2) {
+            $tt[$diaNum - 1] = '';
         }
 
         return view('juntas.hrDocs.rrhhDashBoard', ['lidername' => $lidername, 'weekNum' => $weekNum,
             'diasRegistros' => $diasRegistros, 'diasRegistro' => $diasRegistro, 'datosRHWEEK' => $datosRHWEEK, 'value' => $value,
             'cat' => $cat, 'datosRHWEEKLastWeek' => $datosRHWEEKLastWeek]);
-
     }
 
     public function updateAsistencia(Request $request)
