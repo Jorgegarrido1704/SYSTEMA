@@ -79,7 +79,7 @@ class UpdateRotacionJob implements ShouldQueue
                 case 'SCE':
                     $sce++;
                 case 'HE':
-                    $he++;
+                    $he += 1;
                     break;
             }
 
