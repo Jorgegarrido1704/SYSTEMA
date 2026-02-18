@@ -2198,7 +2198,7 @@ class juntasController extends Controller
 
     public function rhDashBoard()
     {
-        // $accidente = '61928 REV B.pdf';
+        $accidente = '61928 REV B.pdf';
         $today = date('Y-m-d');
         $genero = $tipoTrabajador = [0, 0, 0];
         $month = date('Y-m');
