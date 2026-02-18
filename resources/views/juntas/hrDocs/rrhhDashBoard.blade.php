@@ -24,6 +24,7 @@ if (Error) {
             #empleado{background-color: rgba(255, 255, 255, 0.5); color: black; font-weight: bold; font-size: 16px;}
             #ASM{background-color: rgba(102, 33, 146, 0.5); color: black; font-weight: bold; font-size: 16px;}
             #SCE{background-color: rgba(239, 3, 164, 0.5); color: black; font-weight: bold; font-size: 16px;}
+            #HE{background-color: rgba(3, 239, 145, 0.5); color: black; font-weight: bold; font-size: 16px;}
             #AddPersonal,#modificarEmpleado{display: none; }
         </style>
 
@@ -231,7 +232,7 @@ if (Error) {
                                         <tr>
                                         <th id="ASM">ASM = Asimilado</th>
                                         <th id="SCE">SCE = Servicion Comprado</th>
-                                        <th id=""></th>
+                                        <th id="HE">HE = Horario Especial</th>
                                         <th id=""></th>
                                         <th id=""></th>
                                         </tr>
