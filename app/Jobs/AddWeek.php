@@ -69,6 +69,11 @@ class AddWeek implements ShouldQueue
 
                     } elseif ($today == 6 || $today == 7) {
                         $registro = 'N/A';
+                    } elseif ($registroEmpleado->employeeNumber == 'i2047' or $registroEmpleado->employeeNumber == 'i2116'
+                     or $registroEmpleado->employeeNumber == 'i2117' or $registroEmpleado->employeeNumber == 'i2214'
+                     or $registroEmpleado->employeeNumber == 'i2222' or $registroEmpleado->employeeNumber == 'i2158'
+                     or $registroEmpleado->employeeNumber == 'i2215') {
+                        $registro = 'HE';
                     } else {
                         $registro = 'F';
                     }

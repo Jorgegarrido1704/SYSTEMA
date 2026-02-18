@@ -10,7 +10,6 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use PHPUnit\Framework\Constraint\Count;
 
 class UpdateRotacionJob implements ShouldQueue
 {
@@ -35,9 +34,9 @@ class UpdateRotacionJob implements ShouldQueue
         $dayNumber = Carbon::now()->dayOfWeek;
         $today = Carbon::now()->format('Y-m-d');
         $vacaciones = $faltas = $permisosConGose = $permisosSinGose = $incapacidad = $assistencia = $retardos =
-         $suspension = $practicantes =$tsp = $assimilados = $sce = $total = 0;
+         $suspension = $practicantes = $tsp = $assimilados = $sce = $he = $total = 0;
 
-        $registroAssitenceDailyJob =  Db::table('assistence')
+        $registroAssitenceDailyJob = Db::table('assistence')
             ->select($days[$dayNumber])
             ->where('week', '=', $week)
             ->orderBy($days[$dayNumber], 'ASC')
@@ -79,6 +78,8 @@ class UpdateRotacionJob implements ShouldQueue
                     break;
                 case 'SCE':
                     $sce++;
+                case 'HE':
+                    $he++;
                     break;
             }
 
@@ -99,7 +100,8 @@ class UpdateRotacionJob implements ShouldQueue
                     'practicantes' => $practicantes,
                     'tsp' => $tsp,
                     'asimilados' => $assimilados,
-                    'ServiciosComprados' => $sce
+                    'ServiciosComprados' => $sce,
+                    'horarioEspecial' => $he,
                 ]);
         } else {
             // Crea un nuevo registro
@@ -116,11 +118,10 @@ class UpdateRotacionJob implements ShouldQueue
                 'practicantes' => $practicantes,
                 'tsp' => $tsp,
                 'asimilados' => $assimilados,
-                'ServiciosComprados' => $sce
+                'ServiciosComprados' => $sce,
+                'horarioEspecial' => $he,
             ]);
         }
-
-
 
         // Puedes agregar logs si deseas:
         Log::info('Tabla rotacion actualizada correctamente por UpdateRotacionJob.');

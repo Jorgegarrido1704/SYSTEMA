@@ -2280,9 +2280,11 @@ class juntasController extends Controller
                 'tsp' => 0,
                 'asimilados' => 0,
                 'ServiciosComprados' => 0,
+                'horarioEspecial' => 0,
+
             ];
         }
-        $datosCorrector = ['OK', 'F', 'PSS', 'PCS', 'INC', 'V', 'R', 'SUS', 'PCT', 'TSP', 'ASM', 'SCE'];
+        $datosCorrector = ['OK', 'F', 'PSS', 'PCS', 'INC', 'V', 'R', 'SUS', 'PCT', 'TSP', 'ASM', 'SCE', ''];
         $restroFaltantes = DB::table('assistence')
             ->select('lider', $diaActual)
             ->where('week', '=', $week)
@@ -2298,7 +2300,7 @@ class juntasController extends Controller
         $enplanta = ($rotacion->assistencia + $rotacion->retardos + $rotacion->practicantes + $rotacion->tsp + $rotacion->ServiciosComprados);
 
         $faltan = $total - ($rotacion->tsp + $rotacion->assistencia + $rotacion->faltas + $rotacion->incapacidad + $rotacion->permisos_gose +
-            $rotacion->permisos_sin_gose + $rotacion->vacaciones + $rotacion->retardos + $rotacion->suspension + $rotacion->practicantes + $rotacion->asimilados + $rotacion->ServiciosComprados);
+            $rotacion->permisos_sin_gose + $rotacion->vacaciones + $rotacion->retardos + $rotacion->suspension + $rotacion->practicantes + $rotacion->asimilados + $rotacion->ServiciosComprados + $rotacion->horarioEspecial);
         $registrosDeAsistencia = [
             $rotacion->assistencia,
             $rotacion->faltas,
@@ -2310,6 +2312,7 @@ class juntasController extends Controller
             $rotacion->practicantes,
             $rotacion->asimilados,
             $rotacion->ServiciosComprados,
+            $rotacion->horarioEspecial,
             $totalRotacion,
         ];
         $vacacionesReporte = registroVacacionesModel::wherebetween('fecha_de_solicitud', [Carbon::now()->startOfYear()->toDateString(), Carbon::now()->endOfYear()->toDateString()])

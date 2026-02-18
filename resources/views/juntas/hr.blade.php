@@ -29,6 +29,8 @@
         }
         .text-rosa{
             color: #ff70ea;
+        }.text-agua{
+            color:  rgba(3, 239, 145, 0.5);
         }
         a:hover {
             text-decoration: none;
@@ -95,6 +97,10 @@
                             <tr>
                             <td class="font-weight-bold text-gray font-size-24"><a class ="text-rosa" href="{{ route('DatosRh', ['id' => 'SCE']) }}">Servicio comprados</a></td>
                             <td class="font-weight-bold font-size-24">{{$registrosDeAsistencia[9]}}</td>
+                           </tr>
+                           <tr>
+                            <td class="font-weight-bold text-gray font-size-24"><a class ="text-agua" href="{{ route('DatosRh', ['id' => 'HE']) }}">Horario Especial</a></td>
+                            <td class="font-weight-bold font-size-24">{{$registrosDeAsistencia[10]}}</td>
                            </tr>
 
                         </table>

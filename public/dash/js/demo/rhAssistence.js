@@ -22,7 +22,8 @@ const rhAssistence = new Chart(assist, {
             "Suspensión",
             "Practicantes",
             "Asimilados",
-            "Servicios Comprados"
+            "Servicios Comprados",
+            "Horario Especial"
 
         ],
         datasets: [
@@ -39,6 +40,7 @@ const rhAssistence = new Chart(assist, {
                     "rgba(103, 95, 95, 0.35)",
                     "rgba(102, 33, 146, 0.5)",
                     "rgba(239, 3, 164, 0.5)",
+                    "rgba(3, 239, 145, 0.5)",
 
 
                 ],
@@ -53,7 +55,7 @@ const rhAssistence = new Chart(assist, {
                     "rgba(103, 95, 95, 1)",
                      "rgba(102, 33, 146, 1)",
                     "rgba(239, 3, 164, 1)",
-
+                    "rgba(3, 239, 145, 1)",
                 ],
                 borderWidth: 1,
                 borderSkipped: false,
