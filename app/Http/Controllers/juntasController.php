@@ -2198,7 +2198,7 @@ class juntasController extends Controller
 
     public function rhDashBoard()
     {
-        $accidente = '61928 REV B.pdf';
+        // $accidente = '61928 REV B.pdf';
         $today = date('Y-m-d');
         $genero = $tipoTrabajador = [0, 0, 0];
         $month = date('Y-m');
@@ -2284,7 +2284,7 @@ class juntasController extends Controller
 
             ];
         }
-        $datosCorrector = ['OK', 'F', 'PSS', 'PCS', 'INC', 'V', 'R', 'SUS', 'PCT', 'TSP', 'ASM', 'SCE', ''];
+        $datosCorrector = ['OK', 'F', 'PSS', 'PCS', 'INC', 'V', 'R', 'SUS', 'PCT', 'TSP', 'ASM', 'SCE', 'HE'];
         $restroFaltantes = DB::table('assistence')
             ->select('lider', $diaActual)
             ->where('week', '=', $week)
@@ -2300,7 +2300,8 @@ class juntasController extends Controller
         $enplanta = ($rotacion->assistencia + $rotacion->retardos + $rotacion->practicantes + $rotacion->tsp + $rotacion->ServiciosComprados);
 
         $faltan = $total - ($rotacion->tsp + $rotacion->assistencia + $rotacion->faltas + $rotacion->incapacidad + $rotacion->permisos_gose +
-            $rotacion->permisos_sin_gose + $rotacion->vacaciones + $rotacion->retardos + $rotacion->suspension + $rotacion->practicantes + $rotacion->asimilados + $rotacion->ServiciosComprados + $rotacion->horarioEspecial);
+            $rotacion->permisos_sin_gose + $rotacion->vacaciones + $rotacion->retardos + $rotacion->suspension + $rotacion->practicantes
+            + $rotacion->asimilados + $rotacion->ServiciosComprados + $rotacion->horarioEspecial);
         $registrosDeAsistencia = [
             $rotacion->assistencia,
             $rotacion->faltas,
