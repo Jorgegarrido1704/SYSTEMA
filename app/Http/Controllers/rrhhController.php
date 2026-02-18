@@ -226,7 +226,7 @@ class rrhhController extends Controller
                 'Gender' => $validated['Genero'],
             ]);
             assistence::create([
-                'week' => date('W'),
+                'week' => intval(date('W')),
                 'lider' => $validated['lider'],
                 'name' => $validated['nombre'],
                 'id_empleado' => 'i'.$validated['id_empleado'],
