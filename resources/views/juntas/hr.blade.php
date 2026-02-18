@@ -56,7 +56,7 @@
             </div>
             <div class="card-body" style=" max-height: 570px;">
                 <div class="row">
-                    <div class="col-lg-5 col-md-5">
+                    <div class="col-lg-4 col-md-4">
                         <table class="table table-borderless item-center text-center table-sm font-weight-bold table-responsive">
                            <tr>
                             <td class="font-weight-bold text-success font-size-24"><a class ="text-success" href="{{ route('DatosRh', ['id' => 'OK']) }}">Asistencia</a></td>
@@ -105,8 +105,8 @@
 
                         </table>
                     </div>
-                    <div class="col-lg-7 col-md-7">
-                        <canvas id="assistence" style=" height: 380px;"></canvas>
+                    <div class="col-lg-8 col-md-8">
+                        <canvas id="assistence" style=" height: 390px;"></canvas>
                     </div>
 
                 </div>
