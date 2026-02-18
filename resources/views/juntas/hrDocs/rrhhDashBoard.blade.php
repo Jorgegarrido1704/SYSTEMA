@@ -238,18 +238,13 @@ if (Error) {
                                     </thead>
                                 </table>
                             </div>
-                            <br>
-                            <hr>
-                            <br>
                             <div class="col-md-12">
                                 <h6>* La asistencia debe registrarse antes de las 08:20 AM </h6>
                                 <h6>* Las Horas extras deben registrarse antes de las 12:00 AM </h6>
-                                <h6>* Los dias lunes se deben registrar las horas extras del viernes, sabado y domingo antes de las 10:00 AM</h6>
+                                <h6>* Los dias lunes se deben registrar las horas extras del viernes, sabado y domingo antes de las 10:00 AM, la lista de asistencia de la semana anterior se encontrara en la parte inferior de esta página</h6>
                             </div>
                         </div>
-                        <br>
                         <hr>
-                        <br>
                         <div class="row">
                             <div class="col-md-12">
                                         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -363,13 +358,15 @@ if (Error) {
                                             </tbody>
                                         </table>
                             </div>
-                               <br><h2>Incidencias Semana pasada</h2><hr><br>
+                               <h2>Incidencias Semana pasada</h2><hr>
                             <div class="col-md-12">
+                                @if($datosRHWEEKLastWeek != null)
+                                       <h2>Incidencias Semana pasada</h2><hr>
                                         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                         <thead>
                                             <tr>
 
-                                                @if($datosRHWEEKLastWeek != null)
+
                                                     <th>Empleado</th>
                                                     <th>lunes</th><th>extras lunes</th> <th>martes</th><th>extras martes</th>
                                                     <th>miercoles</th><th>extras miercoles</th>
@@ -421,9 +418,10 @@ if (Error) {
                                                         </form>
                                                         </tr>
                                             @endforeach
-                                        @endif
+
                                     </tbody>
                                 </table>
+                            @endif
                            </div>
                         </div>
 
