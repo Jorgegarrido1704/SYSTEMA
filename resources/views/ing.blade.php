@@ -593,7 +593,7 @@
                                     <option value=""></option>
                                     @if(!empty($customers))
                                     @foreach ($customers as $customer)
-                                    <option value="{{ $customer[0] }}">{{ $customer[0] }}</option>
+                                    <option value="{{ $customer->customer }}">{{ $customer->customer }}</option>
                                     @endforeach
                                     @endif
                                 </select>
