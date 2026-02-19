@@ -591,32 +591,11 @@
                                 <label for="Client">Client</label>
                                 <select name="Client" id="Client" required>
                                     <option value=""></option>
-                                    <option value="READING TRUCK">READING TRUCK</option>
-                                    <option value="MORGAN OLSON">MORGAN OLSON</option>
-                                    <option value="JOHN DEERE">JOHN DEERE</option>
-                                    <option value="OP MOBILITY">OP MOBILITY</option>
-                                    <option value="BROWN">BROWN</option>
-                                    <option value="DUR-A-LIFT">DUR-A-LIFT</option>
-                                    <option value="BERSTROMG">BERGSTROM</option>
-                                    <option value="BLUE BIRD">BLUE BIRD</option>
-                                    <option value="ATLAS">ATLAS</option>
-                                    <option value="UTILIMASTER">UTILIMASTER</option>
-                                    <option value="CALIFORNIA">CALIFORNIA</option>
-                                    <option value="TICO MANUFACTURING">TICO MANUFACTURING</option>
-                                    <option value="SPARTAN">SPARTAN</option>
-                                    <option value="PHOENIX">PHOENIX</option>
-                                    <option value="FOREST RIVER">FOREST RIVER</option>
-                                    <option value="SHYFT">SHYFT</option>
-                                    <option value="KALMAR">KALMAR</option>
-                                    <option value="MODINE">MODINE</option>
-                                    <option value="NILFISK">NILFISK</option>
-                                    <option value="PLASTIC OMNIUM">PLASTIC OMNIUM</option>
-                                    <option value="ZOELLER">ZOELLER</option>
-                                    <option value="COLLINS">COLLINS</option>
-                                    <option value="Proterra Powered LLC">Proterra Powered LLC.</option>
-                                    <option value="PALFINGER">PALFINGER</option>
-                                    <option value="FLUENCE">FLUENCE</option>
-
+                                    @if(!empty($customers))
+                                    @foreach ($customers as $customer)
+                                    <option value="{{ $customer[0] }}">{{ $customer[0] }}</option>
+                                    @endforeach
+                                    @endif
                                 </select>
                                 <label for="tipoArnes">Harness Type</label>
                                 <select name="tipoArnes" id="tipoArnes" required>

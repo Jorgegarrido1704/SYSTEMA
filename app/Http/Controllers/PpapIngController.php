@@ -212,7 +212,9 @@ class PpapIngController extends Controller
             $problem = errores::where('mostrar_ing', '=', 0)->get();
             // electical testing
 
-            return view('/ing', ['ingenieros_en_piso' => $ingenieros_en_piso, 'problem' => $problem, 'paolaTdesc' => $paolaTdesc, 'alexTdesc' => $alexTdesc, 'paolaT' => $paolaT, 'alexT' => $alexT, 'alex' => $alex, 'alexDesc' => $alexDesc, 'paola' => $paola, 'paoDesc' => $paoDesc,  'fullreq' => $fullreq, 'graficasLate' => $graficasLate, 'graficOnTime' => $graficOnTime, 'cat' => $cat, 'inges' => $inges, 'value' => $value, 'enginners' => $enginners, 'answer' => $answer, 'dias_mes' => $dias_mes, 'cronoGram' => $cronoGram]);
+            $customers = DB::table('workschedule')->select('customer')->groupBy('customer')->get();
+
+            return view('/ing', ['customers' => $customers, 'ingenieros_en_piso' => $ingenieros_en_piso, 'problem' => $problem, 'paolaTdesc' => $paolaTdesc, 'alexTdesc' => $alexTdesc, 'paolaT' => $paolaT, 'alexT' => $alexT, 'alex' => $alex, 'alexDesc' => $alexDesc, 'paola' => $paola, 'paoDesc' => $paoDesc,  'fullreq' => $fullreq, 'graficasLate' => $graficasLate, 'graficOnTime' => $graficOnTime, 'cat' => $cat, 'inges' => $inges, 'value' => $value, 'enginners' => $enginners, 'answer' => $answer, 'dias_mes' => $dias_mes, 'cronoGram' => $cronoGram]);
         }
     }
 
