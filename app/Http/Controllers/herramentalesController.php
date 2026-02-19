@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\herramentales\golesDiarios;
+use App\Models\herramentales\herramentalInfo;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -22,7 +24,7 @@ class herramentalesController extends Controller
             ->orWhere('finhora', '')
             ->orderBy('id', 'asc')
             ->get();
-        $herramntal = DB::table('herramental')->orderBy('comp', 'asc')->get();
+        $herramntal = herramentalInfo::select('herramental', 'terminal')->orderBy('terminal', 'asc')->get();
 
         return view('herramentales.index', ['crimpersRequested' => $crimpersRequested, 'cat' => $cat, 'value' => $value,
             'herramntal' => $herramntal]);
@@ -47,5 +49,22 @@ class herramentalesController extends Controller
 
     }
 
-    public function sumCrimpers(Request $request, $id) {}
+    public function sumCrimpers(Request $request)
+    {
+        $request->validate([
+            'tooling' => ['required', 'string'],
+            'qtyHits' => ['required', 'numeric'],
+        ]);
+        $date = Carbon::now()->format('d-m-Y');
+        $tooling = explode('||', $request->input('tooling'))[0];
+        $termina = explode('||', $request->input('tooling'))[1];
+        golesDiarios::create([
+            'herramental' => $tooling,
+            'terminal' => $termina,
+            'fecha_reg' => $date,
+            'golpesDiarios' => $request->input('qtyHits'),
+        ]);
+
+        return back()->with('message', 'Inventory added successfully.');
+    }
 }

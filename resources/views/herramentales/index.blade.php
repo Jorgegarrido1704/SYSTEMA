@@ -12,7 +12,7 @@
                     <h6 class="m-0 font-weight-bold text-primary">Requieriment Crimpers </h6>
                 </div>
                 <!-- table Body -->
-                <div class="card-body"style="overflow-y: auto; max-height: 400px;">
+                <div class="card-body"style="overflow-y: auto; height: 350px; max-height: 400px;">
                     @if(!empty($crimpersRequested))
                     <table  class="table table-bordered table-sm table-striped">
                         <thead>
@@ -60,24 +60,25 @@
                     <h6 class="m-0 font-weight-bold text-primary">Add count in crimpers </h6>
                 </div>
                 <!-- table Body -->
-                <div class="card-body"style="overflow-y: auto; max-height: 400px;">
+                <div class="card-body"style="overflow-y: auto; height: 350px;">
                     <form action="{{ route('herramientales.sumCrimpers') }}" method="post">
                         @csrf
                         <div class="form-group">
                             <label for="tooling">Tooling</label>
                             <select name="tooling" id="tooling" class="form-control" required>
+                                <option value="" selected disabled>Select tooling</option>
                                 @foreach($herramntal as $tooling)
-                                    <option value="{{ $tooling->id }}">{{ $tooling->comp }} || {{ $tooling->herramental }} </option>
+                                    <option value="{{ $tooling->terminal }} || {{ $tooling->herramental }}">{{ $tooling->terminal }} || {{ $tooling->herramental }} </option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="work">Work</label>
-                            <input type="text" name="work" id="work" class="form-control" required>
+                            <label for="qtyHits">Quantity of hits</label>
+                            <input type="text" name="qtyHits" id="qtyHits" class="form-control" required>
                         </div>
                         <div class="form-group">
-                            <label for="who">Whose order</label>
-                </div>
+                           <button type="submit" class="btn btn-primary">Add</button>
+                        </div>
 
                 </div>
             </div>
