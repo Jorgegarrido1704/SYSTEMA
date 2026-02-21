@@ -5,7 +5,8 @@
  <div class="d-sm-flex align-items-center justify-content-between mb-4">  </div>
 
     <div class="row">
-        <div class="col-xl-5 col-md-5 mb-4">
+        <!-- Requieriment Crimpers -->
+        <div class="col-xl-6 col-md-6 mb-4">
             <div class="card shadow mb-4">
 
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" style="max-height: 25px">
@@ -54,7 +55,9 @@
                 </div>
             </div>
         </div>
-        <div class="col-xl-2 col-md-2 mb-4">
+        <!--end Requieriment Crimpers -->
+        <!-- Add count in crimpers -->
+        <div class="col-xl-3 col-md-3 mb-4">
             <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" style="max-height: 25px">
                     <h6 class="m-0 font-weight-bold text-primary">Add count in crimpers </h6>
@@ -79,7 +82,28 @@
                         <div class="form-group">
                            <button type="submit" class="btn btn-primary">Add</button>
                         </div>
-
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!--end Add count in crimpers -->
+        <div class="col-xl-3 col-md-3 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" style="max-height: 25px">
+                    <h6 class="m-0 font-weight-bold text-primary">Add New crimp tooling </h6>
+                </div>
+                <!-- table Body -->
+                <div class="card-body"style="overflow-y: auto; height: 350px;">
+                    <form action="{{ route('herramientales.addHerramental') }}" method="post">
+                        @csrf
+                        <div class="form-group">
+                            <label for="newTooling">New Tooling</label>
+                            <input type="text" name="newTooling" id="newTooling" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                           <button type="submit" class="btn btn-primary">Add</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

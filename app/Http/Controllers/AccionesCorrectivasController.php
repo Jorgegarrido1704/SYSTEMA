@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\accionesCorrectivas;
-use Illuminate\Http\Request;
-use Carbon\Carbon;
-use App\Models\accionesCorrectivas\acciones;
 use App\Models\accionesCorrectivas\monitoreosAcciones;
+use App\Models\personalBergsModel;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class AccionesCorrectivasController extends Controller
 {
@@ -16,25 +16,34 @@ class AccionesCorrectivasController extends Controller
         $cat = session('categoria');
         $value = session('user');
         $diasRestantes = [];
-        if($value=='Admin' or $value=='Martin A'){
-             $accionesActivas = accionesCorrectivas::where('status', '!=', 'finalizada')->orderBy('id_acciones_correctivas', 'ASC')->get();
+        if ($value == 'Admin' or $value == 'Martin A') {
+            $accionesActivas = accionesCorrectivas::where('status', '!=', 'finalizada')->orderBy('id_acciones_correctivas', 'ASC')->get();
 
-        }
-        else{
+        } else {
             $accionesActivas = accionesCorrectivas::where('status', '!=', 'finalizada')->where('resposableAccion', $value)->orderBy('id_acciones_correctivas', 'ASC')->get();
         }
         foreach ($accionesActivas as $accion) {
-            $diasRestantes[$accion->id_acciones_correctivas] = $accion->fechaAccion->addWeekDays(2)->format('Y-m-d');
+           if($accion->status == 'Activa - Etapa 1'){
+                $diaFinal=Carbon::parse($accion->fechaFinAccion)->addWeekDays(2);
+               $accion->faltanDias=Carbon::parse($diaFinal)->diffInDays($accion->fechaAccion);
+           }
+            $accion->resposableAccion = explode('/', $accion->resposableAccion)[1]??$accion->resposableAccion;
         }
+        $personal = personalBergsModel::select('employeeLider')->groupBy('employeeLider')->get();
+        foreach ($personal as $p) {
+            $user= personalBergsModel::select('user')->where('employeeName', $p->employeeLider)->first();
+            $p->user = $user->user;
+        }
+
         return view('accionesCorrectiva.index', [
             'cat' => $cat,
             'value' => $value,
             'accionesActivas' => $accionesActivas,
             'diasRestantes' => $diasRestantes,
-
-
+            'personal' => $personal,
         ]);
     }
+
     public function create(Request $request)
     {
         $request->validate([
@@ -45,15 +54,22 @@ class AccionesCorrectivasController extends Controller
             'descripcionAccion' => 'required|string|max:500',
 
         ]);
-        if($request->input('origenAccion')=='otro'){
-             $origenAccion= $request->input('origenAccion')."-".$request->input('origenAccionotro');
-        }else{
-           $origenAccion= $request->input('origenAccion');
+        if ($request->input('origenAccion') == 'otro') {
+            $origenAccion = $request->input('origenAccion').'-'.$request->input('origenAccionotro');
+        } else {
+            $origenAccion = $request->input('origenAccion');
         }
-        $cantidadAccionesHoy= accionesCorrectivas::whereDate('fechaAccion', $request->input('fechaAccion'))->count();
-
-        $accion = new accionesCorrectivas();
-        $accion->folioAccion = "C-" . carbon::parse($request->input('fechaAccion'))->format('dmY') . ($cantidadAccionesHoy + 1);
+        $cantidadAccionesHoy = accionesCorrectivas::whereYear('fechaAccion', $request->input('fechaAccion'))->count();
+        $cantidadAccionesHoy = $cantidadAccionesHoy + 1;
+        if ($cantidadAccionesHoy == 0) {
+            $cantidadAccionesHoy = '001';
+        } elseif ($cantidadAccionesHoy < 10) {
+            $cantidadAccionesHoy = '00'.$cantidadAccionesHoy;
+        } elseif ($cantidadAccionesHoy < 100) {
+            $cantidadAccionesHoy = '0'.$cantidadAccionesHoy;
+        } // dd($cantidadAccionesHoy);
+        $accion = new accionesCorrectivas;
+        $accion->folioAccion = 'AC-'.carbon::parse($request->input('fechaAccion'))->format('Y').'-'.$cantidadAccionesHoy;
         $accion->fechaAccion = $request->input('fechaAccion');
         $accion->Afecta = $request->input('Afecta');
         $accion->origenAccion = $origenAccion;
@@ -63,39 +79,38 @@ class AccionesCorrectivasController extends Controller
 
         return redirect()->route('accionesCorrectivas.index')->with('success', 'Acción correctiva creada exitosamente.');
     }
+
     public function show($id)
     {
         $cat = session('categoria');
         $value = session('user');
-        $problema = "Alta rotación de empleados";
+        $problema = 'Alta rotación de empleados';
         $categorias = [];
         $registroPorquest = accionesCorrectivas::findOrFail($id);
-      if (!empty($registroPorquest->porques)) {
-        $categorias = json_decode($registroPorquest->porques, true);
-        } else if ($registroPorquest->Ishikawa != null) {
+        if (! empty($registroPorquest->porques)) {
+            $categorias = explode(' | ', $registroPorquest->porques);
+        } elseif ($registroPorquest->Ishikawa != null) {
             $categorias = json_decode($registroPorquest->Ishikawa, true);
 
         }
 
-
-        $acciones = acciones::where('folioAccion', $registroPorquest->folioAccion)->get();
+        $acciones = accionesCorrectivas::where('folioAccion', $registroPorquest->folioAccion)->get();
 
         $diasRestantes = [];
         foreach ($acciones as $accion) {
-            $diasRestantes[$accion->id] = $accion->fechaFinAccion->diffInDays($accion->fechaInicioAccion);
-            $seguimientos = monitoreosAcciones::where('folioAccion', $accion->id)->orderBy('folioAccion', 'DESC')->get();
+            $diasRestantes[$accion->folioAccion] = $accion->fechaFinAccion ?? 0;
+            $seguimientos = monitoreosAcciones::where('folioAccion', $accion->folioAccion)->orderBy('folioAccion', 'DESC')->get();
 
             foreach ($seguimientos as $seguimiento) {
-                $registrosSeguimientos[$accion->id][$seguimiento->id] = [
+                $registrosSeguimientos[$accion->folioAccion][$seguimiento->id] = [
                     'fecha' => $seguimiento->created_at,
                     'seguimiento' => $seguimiento->descripcionSeguimiento,
                     'aprobador' => $seguimiento->AprobadorSeguimiento,
-                    'comentario' => $seguimiento->comentariosSeguimiento
+                    'comentario' => $seguimiento->comentariosSeguimiento,
 
-            ];
+                ];
             }
         }
-
 
         return view('accionesCorrectiva.show', [
             'acciones' => $acciones,
@@ -105,53 +120,55 @@ class AccionesCorrectivasController extends Controller
             'categorias' => $categorias,
             'diasRestantes' => $diasRestantes,
             'registroPorquest' => $registroPorquest,
-            'registrosSeguimientos' => $registrosSeguimientos??[],
+            'registrosSeguimientos' => $registrosSeguimientos ?? [],
 
         ]);
     }
+
     public function guardarPorques(Request $request)
     {
         $request->validate([
             'porque1' => 'required|string|max:500',
             'conclusion' => 'required|string|max:500',
-            'accion_id' => 'required|integer'
+            'accion_id' => 'required|integer',
         ]);
-        $registroPorquest = [
-            'porque1' => $request->input('porque1')
-        ];
+        $registroPorquest = $request->input('porque1');
 
         for ($i = 2; $i <= 5; $i++) {
-            $key = 'porque' . $i;
+            $key = 'porque'.$i;
             if ($request->filled($key)) {
-                $registroPorquest[$key] = $request->input($key);
+                $registroPorquest .= ' | '.$request->input($key);
             }
         }
         if ($request->input('sistemic') != 'NO') {
             $sistemic = true;
-        }else{
+        } else {
             $sistemic = false;
         }
+        // dd($sistemic.' '.$registroPorquest.' '.$request->input('conclusion').' '.$request->input('accion_id'));
         $accion = accionesCorrectivas::findOrFail($request->input('accion_id'));
         $accion->porques = $registroPorquest;
         $accion->conclusiones = $request->input('conclusion');
         $accion->IsSistemicProblem = $sistemic;
         $accion->status = 'etapa 2 - Causa Raiz';
         $accion->save();
+
         return redirect()->route('accionesCorrectivas.index')->with('success', 'Acción correctiva actualizada exitosamente.');
     }
+
     public function guardarIshikawa(Request $request)
     {
-         $request->validate([
+        $request->validate([
             'problema1' => 'required|string|max:500',
             'motivo1' => 'required|string|max:500',
             'conclusion' => 'required|string|max:500',
-            'accion_id' => 'required|integer'
+            'accion_id' => 'required|integer',
         ]);
         $registroPorquest = [
-            'porque1' => $request->input('porque1')
+            'porque1' => $request->input('porque1'),
         ];
         $datosIshikawa = [
-            $request->input('problema1') => $request->input('motivo1')
+            $request->input('problema1') => $request->input('motivo1'),
         ];
 
         for ($i = 2; $i <= 5; $i++) {
@@ -163,7 +180,7 @@ class AccionesCorrectivasController extends Controller
 
         if ($request->input('sistemic') != 'NO') {
             $sistemic = true;
-        }else{
+        } else {
             $sistemic = false;
         }
         $accion = accionesCorrectivas::findOrFail($request->input('accion_id'));
@@ -172,48 +189,55 @@ class AccionesCorrectivasController extends Controller
         $accion->IsSistemicProblem = $sistemic;
         $accion->status = 'etapa 2 - Causa Raiz';
         $accion->save();
+
         return redirect()->route('accionesCorrectivas.index')->with('success', 'Acción correctiva actualizada exitosamente.');
     }
 
     public function guardarAccion(Request $request)
     {
         $request->validate([
-            'id'=>'required|string|max:15',
+            'id' => 'required|string|max:15',
             'accion' => 'required|string|max:500',
             'reponsableAccion' => 'required|string|max:500',
             'fechaInicioAccion' => 'required|date',
             'fechaFinAccion' => 'required|date',
             'verificadorAccion' => 'required|string|max:500',
         ]);
-         acciones::create([
-            'folioAccion' =>$request->input('id'),
-       'accion' => $request->input('accion'),
-       'reponsableAccion' => $request->input('reponsableAccion'),
-       'fechaInicioAccion' => $request->input('fechaInicioAccion'),
-       'fechaFinAccion' => $request->input('fechaFinAccion'),
-       'verificadorAccion' => $request->input('verificadorAccion'),
+        accionesCorrectivas::create([
+            'folioAccion' => $request->input('id'),
+            'accion' => $request->input('accion'),
+            'reponsableAccion' => $request->input('reponsableAccion'),
+            'fechaInicioAccion' => $request->input('fechaInicioAccion'),
+            'fechaFinAccion' => $request->input('fechaFinAccion'),
+            'verificadorAccion' => $request->input('verificadorAccion'),
 
         ]);
+
         return redirect()->route('accionesCorrectivas.index')->with('success', 'Acción correctiva actualizada exitosamente.');
     }
+
     public function destroy($id)
     {
         $accion = accionesCorrectivas::findOrFail($id);
         $accion->delete();
+
         return redirect()->route('accionesCorrectivas.index')->with('success', 'Acción correctiva eliminada exitosamente.');
     }
-    public function guardarSeguimiento (Request $request,){
-        $request->validate([
-            'accion_id' => 'required|integer',
-            'seguimiento' => 'required|string|max:500',
-            'validador' => 'required|string|max:500',
-        ]);
 
+    public function guardarSeguimiento(Request $request)
+    {
+        /* $request->validate([
+             'accion_id' => 'required|integer',
+             'seguimiento' => 'required|string|max:500',
+             'validador' => 'required|string|max:500',
+         ]);*/
+        dd($request->all());
         monitoreosAcciones::create([
-            'folioAccion' =>$request->input('accion_id'),
+            'folioAccion' => $request->input('accion_id'),
             'descripcionSeguimiento' => $request->input('seguimiento'),
             'AprobadorSeguimiento' => $request->input('validador'),
         ]);
+
         return redirect()->route('accionesCorrectivas.index')->with('success', 'Acción correctiva actualizada exitosamente.');
 
     }

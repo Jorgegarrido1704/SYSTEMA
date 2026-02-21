@@ -9,6 +9,7 @@
     <script src="{{ asset('dash/js/accionesCorrectivas.js') }}"></script>
 
     <div class="row">
+        <!-- Detalles de la Accion Correctiva -->
         <div class="col-lg-6 mb-4">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
@@ -16,7 +17,7 @@
                 </div>
                 <div class="card-body" style="overflow-y: auto; height: 460px;">
                     <p><strong>Folio:</strong> {{ $registroPorquest->folioAccion }}</p>
-                    <p><strong>Fecha de Detección:</strong> {{ $registroPorquest->fechaAccion->format('Y-m-d') }}</p>
+                    <p><strong>Fecha de Detección:</strong> {{ $registroPorquest->fechaAccion }}</p>
                     <p><strong>Proceso Afectado:</strong> {{ $registroPorquest->Afecta }}</p>
                     <p><strong>Origen de la Acción:</strong> {{ $registroPorquest->origenAccion }}</p>
                     <p><strong>Responsable de la Acción:</strong> {{ $registroPorquest->resposableAccion }}</p>
@@ -25,7 +26,8 @@
                 </div>
             </div>
         </div>
-
+        <!-- END Detalles de la Accion Correctiva -->
+        <!-- Analisis de causa raiz -->
         <div class="col-lg-6 mb-4">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
@@ -90,7 +92,7 @@
                                                        <option value="SI">SI</option>
                                                        <option value="NO">NO</option>
                                                    </select>
-                                                   <input type="hidden" name="accion_id" value="{{ $accion->id_acciones_correctivas?? '' }}">
+                                                   <input type="hidden" name="accion_id" value="{{ $registroPorquest->id_acciones_correctivas?? '' }}">
                                             </div><div class="col-12 mb-3">
                                                 <button type="submit" class="btn btn-primary">Guardar</button>
                                             </div>
@@ -157,10 +159,12 @@
                 </div>
             </div>
         </div>
+        <!-- End Analisis de causa raiz -->
+        <!-- Plan de accion -->
          <div class="col-lg-12 mb-4">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Registro de accion Correctiva </h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Plan de accion</h6>
                 </div>
                 <div class="card-body" style="overflow-y: auto; height: 150px;">
                      <form action="{{ route('accionesCorrectivas.guardarAccion') }}" method="POST">
@@ -204,13 +208,14 @@
                 </div>
             </div>
         </div>
+        <!-- End Plan de accion -->
           @if(!empty($acciones))
        @foreach ($acciones as $accion )
     <div class="col-lg-6 mb-4">
         <div class="card shadow mb-4">
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">
-                    Registro de accion Correctiva {{$diasRestantes[$accion->id]}}
+                    Registro de accion Correctiva {{$diasRestantes[$accion->folioAccion]}}
                 </h6>
             </div>
             <div class="card-body" style="overflow-y: auto; height: 460px;">
@@ -235,31 +240,31 @@
                 <h6 class="m-0 font-weight-bold text-primary">Seguimiento y monitoreo de la ejecución</h6>
             </div>
             <div class="card-body" style="overflow-y: auto; height: 460px;">
-                <form action="{{ route('accionesCorrectivas.guardarSeguimiento') }}" method="POST" id="form-{{$accion->id}}" name="form-{{$accion->id}}">
+                <form action="{{ route('accionesCorrectivas.guardarSeguimiento') }}" method="POST" id="form-{{$accion->id_acciones_correctivas}}" name="form-{{$accion->id_acciones_correctivas}}">
                     @csrf
                     <div class="row">
                         <div class="col-4 mb-3">
-                            <label for="seguimiento_{{$accion->id}}" class="form-label font-weight-bold">
+                            <label for="seguimiento_{{$accion->id_acciones_correctivas}}" class="form-label font-weight-bold">
                                 Descripcion de Seguimiento:
                             </label>
-                            <textarea class="form-control" name="seguimiento" id="seguimiento_{{$accion->id}}" cols="45" rows="2"></textarea>
+                            <textarea class="form-control" name="seguimiento" id="seguimiento_{{$accion->id_acciones_correctivas}}" cols="45" rows="2"></textarea>
                         </div>
                         <div class="col-3 mb-3">
-                            <label for="ValidadorSeguimiento_{{$accion->id}}" class="form-label font-weight-bold">
+                            <label for="ValidadorSeguimiento_{{$accion->id_acciones_correctivas}}" class="form-label font-weight-bold">
                                 Responsable de la validación
                             </label>
-                            <input type="text" class="form-control" name="validador" id="ValidadorSeguimiento_{{$accion->id}}" placeholder="Martin Aleman">
+                            <input type="text" class="form-control" name="validador" id="ValidadorSeguimiento_{{$accion->id_acciones_correctivas}}" placeholder="Martin Aleman">
                         </div>
                         <div class="col-1 mb-3">
-                            <input type="hidden" name="accion_id" value="{{$accion->id}}">
+                            <input type="hidden" name="accion_id" value="{{$accion->id_acciones_correctivas}}">
                             <button type="submit" class="btn btn-primary mt-4">Guardar</button>
                         </div>
                     </div>
                 </form>
 <div class="row">
 
-                    @if(!empty($registrosSeguimientos[$accion->id]))
-                    @foreach ($registrosSeguimientos[$accion->id] as $key => $seguimiento)
+                    @if(!empty($registrosSeguimientos[$accion->id_acciones_correctivas]))
+                    @foreach ($registrosSeguimientos[$accion->id_acciones_correctivas] as $key => $seguimiento)
 
 
                     <div class="col-12 mb-3">

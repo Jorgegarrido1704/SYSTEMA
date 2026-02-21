@@ -56,14 +56,35 @@ class herramentalesController extends Controller
             'qtyHits' => ['required', 'numeric'],
         ]);
         $date = Carbon::now()->format('d-m-Y');
-        $tooling = explode('||', $request->input('tooling'))[0];
-        $termina = explode('||', $request->input('tooling'))[1];
+        $tooling = explode('||', $request->input('tooling'))[1];
+        $termina = explode('||', $request->input('tooling'))[0];
         golesDiarios::create([
             'herramental' => $tooling,
             'terminal' => $termina,
             'fecha_reg' => $date,
             'golpesDiarios' => $request->input('qtyHits'),
         ]);
+        if (herramentalInfo::where('herramental', '=', $tooling)->where('terminal', '=', $termina)->where('fecha_reg', '=', $date)->exists()) {
+            herramentalInfo::update([
+                'golpesDiarios' => 'golpesDiarios +'.$request->input('qtyHits'),
+                'golpesTotales' => 'golpesTotales +'.$request->input('qtyHits'),
+
+            ]);
+
+            return back()->with('message', 'Inventory added successfully.');
+        }
+    }
+
+    public function addHerramental(Request $request)
+    {
+        $request->validate([
+            'tooling' => ['required', 'string'],
+            'qtyHits' => ['required', 'numeric'],
+        ]);
+        $herramental = new herramentalInfo;
+        $herramental->herramental = $request->input('tooling');
+        $herramental->terminal = $request->input('qtyHits');
+        $herramental->save();
 
         return back()->with('message', 'Inventory added successfully.');
     }

@@ -58,7 +58,13 @@
 
                         <div class="col-md-6" >
                             <label for="resposableAccion">Responsable de la accion</label>
-                            <input type="text" class="form-control" name="resposableAccion" id="resposableAccion" required>
+                            <select class="form-control" name="resposableAccion" id="resposableAccion" required>
+                                <option></option>
+                                @foreach($personal as $p)
+                                <option value="{{ $p->user."/". $p->employeeLider }}">{{ $p->employeeLider }}</option>    
+                                @endforeach
+                                 </select>
+                           
                         </div>
                 </div>
                 <div class="row mt-3">
@@ -105,15 +111,14 @@
                         @if($accionesActivas->count() > 0)
                             @foreach($accionesActivas as $accion)
                                 <tr>
-                                    <td><a href="{{ route('accionesCorrectivas.show', $accion->id_acciones_correctivas) }}">{{ $accion->folioAccion  }}</a></td>
-                                    <td>{{ $accion->fechaAccion->format('Y-m-d') }}</td>
+                                    <td><a href="{{ route('accionesCorrectivas.show', $accion->folioAccion) }}">{{ $accion->folioAccion  }}</a></td>
+                                    <td>{{ $accion->fechaAccion}}</td>
                                     <td>{{ $accion->Afecta }}</td>
                                     <td>{{ $accion->origenAccion }}</td>
                                     <td>{{ $accion->resposableAccion }}</td>
                                     <td>{{ $accion->descripcionAccion }}</td>
-
                                     <td>{{ $accion->status }}</td>
-                                    <td>{{ $diasRestantes[$accion->id_acciones_correctivas] ?? 0 }}</td>
+                                    <td>{{ $accion->faltanDias }}</td>
                                 </tr>
                             @endforeach
                         @endif
