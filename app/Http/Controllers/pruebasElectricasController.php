@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\electricalTesting;
+use App\Models\materialPruebasElectricas;
 use App\Models\regPar;
 use App\Models\Wo;
 use Illuminate\Http\Request;
@@ -81,4 +82,51 @@ class pruebasElectricasController extends Controller
 
         return redirect()->back()->with('message', 'Inventory added successfully.');
     }
+    public function testingMaterialRequeriment(){
+        $cat = session('categoria');
+        $value=session('user');
+        if($value==''){
+            return redirect('/');
+        }
+        return view('inge.pruebasElectricas.testingMaterialRequeriment',['value'=>$value,'cat'=>$cat]);
+    }
+    public function searchMaterialPruebas(Request $request){
+        $data=materialPruebasElectricas::all();
+       // dd($data);
+        return response()->json($data);
+
+    }
+    public function addMaterial(Request $request){
+        
+       $validated = $request->validate([
+            'pn' => ['required','string'],
+            'rev' => ['required','string'],
+            'customer' => ['required','string'],
+            'priority' => ['required','string'],
+            'connector' => ['required','string'],
+            'connqty' => ['required','numeric','min:0'],
+            'terminal' => ['required','string'],
+            'termqty' => ['required','numeric','min:0'],
+            'observ' => ['required','string'],
+        ]);
+
+        $material = new materialPruebasElectricas();
+
+        $material->pn = $validated['pn'];
+        $material->rev = $validated['rev'];
+        $material->customer = $validated['customer'];
+        $material->priority = $validated['priority'];
+        $material->connector = $validated['connector'];
+        $material->connectorQty = $validated['connqty'];
+        $material->terminal = $validated['terminal'];
+        $material->terminalQty = $validated['termqty'];
+        $material->observaciones = $validated['observ'];
+
+        $material->save();
+
+        return redirect()->back()->with('message', 'Material added successfully.');
+
+       
+    }
+
 }

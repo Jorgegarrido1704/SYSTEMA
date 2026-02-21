@@ -79,6 +79,9 @@ Route::controller(generalController::class)->group(function () {
 Route::controller(pruebasElectricasController::class)->group(function () {
     Route::get('/pruebasElectricas', 'pruebasElecticas')->name('pruebasElecticas');
     Route::get('/dispatchElecticalTest', [pruebasElectricasController::class, 'dispatchElecticalTest'])->name('dispatchElecticalTest');
+    Route::get('/testingMaterialRequeriment', [pruebasElectricasController::class, 'testingMaterialRequeriment'])->name('testingMaterialRequeriment');
+    Route::get('/searchMaterial', [pruebasElectricasController::class, 'searchMaterialPruebas'])->name('searchMaterialPruebas');
+    Route::post('/addMaterial', [pruebasElectricasController::class, 'addMaterial'])->name('testingMaterialRequeriment.addMaterial');
 });
 
 Route::controller(PpapIngController::class)->group(function () {
