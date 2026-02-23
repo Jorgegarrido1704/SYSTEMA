@@ -2465,11 +2465,7 @@ class juntasController extends Controller
                 $registroPPAP[$i][11] = $datosTiempos->ensamble ?? 'No Aun';
                 $registroPPAP[$i][12] = $datosTiempos->loom ?? 'No Aun';
                 $registroPPAP[$i][13] = $datosTiempos->calidad ?? 'No Aun';
-                if (substr($reg->rev, 0, 4) == 'PPAP') {
-                    $registroPPAP[$i][14] = '96, 242, 83, 0.3';
-                } else {
-                    $registroPPAP[$i][14] = '236, 236, 9, 0.497';
-                }
+                $registroPPAP[$i][14] = '96, 242, 83, 0.3';
                 $registroPPAP[$i][15] = $registroWS->customerDate ?? '-';
                 $registroPPAP[$i][16] = $registroWS->resposible ?? '-';
                 $registroPPAP[$i][17] = 'Black';
