@@ -2419,14 +2419,14 @@ class juntasController extends Controller
                 ->where('UpOrderDate', '=', null)
                 ->orderBy('id', 'desc')->get();
             foreach ($WS as $res) {
-                $registroPPAP[$i][0] = $res->customer;
-                $registroPPAP[$i][1] = $res->pn;
-                $registroPPAP[$i][2] = $res->size;
-                $registroPPAP[$i][3] = $res->WorkRev;
-                $registroPPAP[$i][4] = $res->receiptDate;
-                $registroPPAP[$i][5] = $res->commitmentDate;
-                $registroPPAP[$i][6] = $res->CompletionDate;
-                $registroPPAP[$i][7] = $res->documentsApproved;
+                $registroPPAP[$i][0] = $res->customer ?? '';
+                $registroPPAP[$i][1] = $res->pn ?? '';
+                $registroPPAP[$i][2] = $res->size ?? '';
+                $registroPPAP[$i][3] = $res->WorkRev ?? '';
+                $registroPPAP[$i][4] = $res->receiptDate ?? '';
+                $registroPPAP[$i][5] = $res->commitmentDate ?? '';
+                $registroPPAP[$i][6] = $res->CompletionDate ?? '';
+                $registroPPAP[$i][7] = $res->documentsApproved ?? '';
                 $registroPPAP[$i][8] = 'No Aun';
                 $registroPPAP[$i][9] = 'No Aun';
                 $registroPPAP[$i][19] = 'No Aun';
@@ -2436,18 +2436,16 @@ class juntasController extends Controller
                 $registroPPAP[$i][12] = 'No Aun';
                 $registroPPAP[$i][13] = 'No Aun';
                 $registroPPAP[$i][14] = '255,255,255,0.5';
-                $registroPPAP[$i][15] = $res->customerDate;
-                $registroPPAP[$i][16] = $res->resposible;
+                $registroPPAP[$i][15] = $res->customerDate ?? '';
+                $registroPPAP[$i][16] = $res->resposible ?? '';
                 $registroPPAP[$i][17] = 'Black';
-                $registroPPAP[$i][18] = $res->qtyInPo;
+                $registroPPAP[$i][18] = $res->qtyInPo ?? 0;
                 $registroPPAP[$i][21] = 'c-'.$res->Color ?? 'c-white';
                 $i++;
             }
         } else {
             $tipo = '';
-            $id == 'green' ? $tipo = 'PPAP' : $tipo = 'PRIM';
-            dd($tipo);
-            $registros = Wo::where('rev', 'LIKE', $tipo.'%')->orderBY('count', 'asc')->orderBy('cliente', 'asc')->get();
+            $registros = Wo::where('rev', 'LIKE', 'PPAP%')->orderBY('count', 'asc')->orderBy('cliente', 'asc')->get();
 
             foreach ($registros as $reg) {
                 $registroPPAP[$i][0] = $reg->cliente;
