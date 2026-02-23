@@ -1321,7 +1321,7 @@ class juntasController extends Controller
             }
         }
         $registros = Wo::where('count', '!=', 12)
-            ->orWhere('count', '!=', 20)
+            ->where('count', '!=', 20)
             ->where(function ($q) {
                 $q->where('rev', 'LIKE', 'PRIM%')
                     ->orWhere('rev', 'LIKE', 'PPAP%');
