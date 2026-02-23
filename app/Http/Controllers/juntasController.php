@@ -1341,7 +1341,8 @@ class juntasController extends Controller
             $registroPPAP[$i][7] = $registroWS->documentsApproved ?? '';
             $registroPPAP[$i][15] = $registroWS->customerDate ?? '';
             $registroPPAP[$i][16] = $registroWS->resposible ?? '';
-            if (carbon::parse($registroWS->commitmentDate) < carbon::parse($registroWS->CompletionDate)) {
+
+            if ($registroWS->commitmentDate != null && $registroWS->CompletionDate != null && (carbon::parse($registroWS->commitmentDate) < carbon::parse($registroWS->CompletionDate))) {
                 $registroPPAP[$i][17] = 'Red';
             } else {
                 $registroPPAP[$i][17] = 'Black';
