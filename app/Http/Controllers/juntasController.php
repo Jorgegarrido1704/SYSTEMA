@@ -1378,6 +1378,8 @@ class juntasController extends Controller
             $registroPPAP[$i][22] = $reg->id;
             $i++;
         }
+        // order array by colo with the $registroPPAP[i][21] variable
+        $registroPPAP = collect($registroPPAP)->sortBy($registroPPAP[0][21])->toArray();
         $enproceso = count($registros);
         $totalgeneral += $i;
         $registoPorFirmas = [];
