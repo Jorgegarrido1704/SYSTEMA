@@ -2417,7 +2417,6 @@ class juntasController extends Controller
         if ($id == 'white') {
             $WS = workScreduleModel::where('status', '!=', 'CANCELLED')
                 ->where('UpOrderDate', '=', null)
-                ->where('Color', '=', $id)
                 ->orderBy('id', 'desc')->get();
             foreach ($WS as $res) {
                 $registroPPAP[$i][0] = $res->customer;
@@ -2447,6 +2446,7 @@ class juntasController extends Controller
         } else {
             $tipo = '';
             $id == 'green' ? $tipo = 'PPAP' : $tipo = 'PRIM';
+            dd($tipo);
             $registros = Wo::where('rev', 'LIKE', $tipo.'%')->orderBY('count', 'asc')->orderBy('cliente', 'asc')->get();
 
             foreach ($registros as $reg) {
