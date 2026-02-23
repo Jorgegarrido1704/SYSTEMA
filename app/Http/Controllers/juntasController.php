@@ -1264,6 +1264,7 @@ class juntasController extends Controller
             ->get();
 
         // work Schedule dounut final
+
         // ppap table
         $registroPPAP = [];
         $ingependinses = $porbajara = $totalgeneral = $enproceso = $totalprim = $totalppap = 0;
@@ -1320,6 +1321,7 @@ class juntasController extends Controller
             }
         }
         $registros = Wo::where('count', '!=', 12)
+            ->orWhere('count', '!=', 20)
             ->where(function ($q) {
                 $q->where('rev', 'LIKE', 'PRIM%')
                     ->orWhere('rev', 'LIKE', 'PPAP%');
@@ -1332,7 +1334,7 @@ class juntasController extends Controller
             $registroPPAP[$i][1] = $reg->NumPart;
             $registroPPAP[$i][3] = $reg->rev;
             $registroWS = workScreduleModel::where('pn', $reg->NumPart)->orderBy('id', 'desc')->first();
-            if (empty($registroWS->size)) {
+            if (empty($registroWS->size) and count($registroWS) > 0) {
                 $registroPPAP[$i][2] = '-';
                 $registroPPAP[$i][4] = '-';
                 $registroPPAP[$i][5] = '-';
