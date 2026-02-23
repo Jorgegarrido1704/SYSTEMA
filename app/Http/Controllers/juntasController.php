@@ -1334,15 +1334,20 @@ class juntasController extends Controller
             $registroPPAP[$i][1] = $reg->NumPart;
             $registroPPAP[$i][3] = $reg->rev;
             $registroWS = workScreduleModel::where('pn', $reg->NumPart)->orderBy('id', 'desc')->first();
-            if (empty($registroWS->size) and count($registroWS) > 0) {
-                $registroPPAP[$i][2] = '-';
-                $registroPPAP[$i][4] = '-';
-                $registroPPAP[$i][5] = '-';
-                $registroPPAP[$i][6] = '-';
-                $registroPPAP[$i][7] = '-';
-                $registroPPAP[$i][15] = '-';
-                $registroPPAP[$i][16] = '-';
+            $registroPPAP[$i][2] = $registroWS->size ?? '';
+            $registroPPAP[$i][4] = $registroWS->receiptDate ?? '';
+            $registroPPAP[$i][5] = $registroWS->commitmentDate ?? '';
+            $registroPPAP[$i][6] = $registroWS->CompletionDate ?? '';
+            $registroPPAP[$i][7] = $registroWS->documentsApproved ?? '';
+            $registroPPAP[$i][15] = $registroWS->customerDate ?? '';
+            $registroPPAP[$i][16] = $registroWS->resposible ?? '';
+            if (carbon::parse($registroWS->commitmentDate) < carbon::parse($registroWS->CompletionDate)) {
+                $registroPPAP[$i][17] = 'Red';
+            } else {
                 $registroPPAP[$i][17] = 'Black';
+            }
+            $datosTiempos = tiempos::where('info', $reg->info)->first();
+            if (empty($datosTiempos)) {
                 $registroPPAP[$i][8] = 'No Aun';
                 $registroPPAP[$i][9] = 'No Aun';
                 $registroPPAP[$i][19] = 'No Aun';
@@ -1351,45 +1356,20 @@ class juntasController extends Controller
                 $registroPPAP[$i][11] = 'No Aun';
                 $registroPPAP[$i][12] = 'No Aun';
                 $registroPPAP[$i][13] = 'No Aun';
-                $registroPPAP[$i][18] = '0';
-                $registroPPAP[$i][21] = 'c-white';
+                $registroPPAP[$i][14] = '0';
             } else {
-                $registroPPAP[$i][2] = $registroWS->size;
-                $registroPPAP[$i][4] = $registroWS->receiptDate;
-                $registroPPAP[$i][5] = $registroWS->commitmentDate;
-                $registroPPAP[$i][6] = $registroWS->CompletionDate;
-                $registroPPAP[$i][7] = $registroWS->documentsApproved;
-                $registroPPAP[$i][15] = $registroWS->customerDate;
-                $registroPPAP[$i][16] = $registroWS->resposible;
-                if (carbon::parse($registroWS->commitmentDate) < carbon::parse($registroWS->CompletionDate)) {
-                    $registroPPAP[$i][17] = 'Red';
-                } else {
-                    $registroPPAP[$i][17] = 'Black';
-                }
-                $datosTiempos = tiempos::where('info', $reg->info)->first();
-                if (empty($datosTiempos)) {
-                    $registroPPAP[$i][8] = 'No Aun';
-                    $registroPPAP[$i][9] = 'No Aun';
-                    $registroPPAP[$i][19] = 'No Aun';
-                    $registroPPAP[$i][20] = '0';
-                    $registroPPAP[$i][10] = 'No Aun';
-                    $registroPPAP[$i][11] = 'No Aun';
-                    $registroPPAP[$i][12] = 'No Aun';
-                    $registroPPAP[$i][13] = 'No Aun';
-                    $registroPPAP[$i][14] = '0';
-                } else {
-                    $registroPPAP[$i][8] = formatoFecha($datosTiempos->planeacion);
-                    $registroPPAP[$i][9] = formatoFecha($datosTiempos->corte);
-                    $registroPPAP[$i][10] = formatoFecha($datosTiempos->liberacion);
-                    $registroPPAP[$i][11] = formatoFecha($datosTiempos->ensamble);
-                    $registroPPAP[$i][12] = formatoFecha($datosTiempos->loom);
-                    $registroPPAP[$i][13] = formatoFecha($datosTiempos->calidad);
+                $registroPPAP[$i][8] = formatoFecha($datosTiempos->planeacion);
+                $registroPPAP[$i][9] = formatoFecha($datosTiempos->corte);
+                $registroPPAP[$i][10] = formatoFecha($datosTiempos->liberacion);
+                $registroPPAP[$i][11] = formatoFecha($datosTiempos->ensamble);
+                $registroPPAP[$i][12] = formatoFecha($datosTiempos->loom);
+                $registroPPAP[$i][13] = formatoFecha($datosTiempos->calidad);
 
-                    $registroPPAP[$i][19] = $reg->wo;
-                    $registroPPAP[$i][20] = $reg->Qty;
-                }
-                $registroPPAP[$i][18] = $registroWS->qtyInPo;
+                $registroPPAP[$i][19] = $reg->wo;
+                $registroPPAP[$i][20] = $reg->Qty;
             }
+            $registroPPAP[$i][18] = $registroWS->qtyInPo;
+
             if (substr($reg->rev, 0, 4) == 'PPAP') {
                 $registroPPAP[$i][14] = '96, 242, 83, 0.3';
                 $totalppap++;
