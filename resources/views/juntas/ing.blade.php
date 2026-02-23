@@ -138,7 +138,7 @@
                 <div class="card shadow mb-4">
                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                         <h5 class="m-0 font-weight-bold text-primary">Open NPI</h5>
-                        <span class="text-dark font-weight-bold text-align-top">Open by engineer: {{ $totalgeneral??0 }}</span>
+                        <span class="text-dark font-weight-bold text-align-top">Total: {{ $totalgeneral??0 }}</span>
                         <span class="text-primary font-weight-bold text-align-top">Open by engineer: {{ $ingependinses??0 }}</span>
                         <span class="text-danger font-weight-bold text-align-top">Pending planing: {{ $porbajara??0 }}</span>
                         <span class="text-dark font-weight-bold text-align-top">Total in progress: {{ $enproceso??0 }}</span>
