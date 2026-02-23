@@ -1365,7 +1365,7 @@ class juntasController extends Controller
                 $registroPPAP[$i][19] = $reg->wo;
                 $registroPPAP[$i][20] = $reg->Qty;
             }
-            $registroPPAP[$i][18] = $registroWS->qtyInPo;
+            $registroPPAP[$i][18] = $registroWS->qtyInPo ?? 0;
 
             if (substr($reg->rev, 0, 4) == 'PPAP') {
                 $registroPPAP[$i][14] = '96, 242, 83, 0.3';
@@ -1397,7 +1397,7 @@ class juntasController extends Controller
                 carbon::parse($tiemposRow->CompletionDate)->diffInDays(carbon::parse(date('Y-m-d')))));
         }
 
-        return view('juntas/ing', [
+        return view('juntas.ing', [
             'registoPorFirmas' => $registoPorFirmas,
             'retasoPorPlan' => $retasoPorPlan,
             'ingependinses' => $ingependinses,
