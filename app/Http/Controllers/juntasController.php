@@ -2443,39 +2443,39 @@ class juntasController extends Controller
                 $registroPPAP[$i][21] = 'c-'.$res->Color ?? 'c-white';
                 $i++;
             }
-        } else {
-            $tipo = '';
+        } elseif ($id == 'green') {
+
             $registros = Wo::where('rev', 'LIKE', 'PPAP%')->orderBy('cliente', 'asc')->get();
             dd($registros);
 
             foreach ($registros as $reg) {
                 $registroPPAP[$i][0] = $reg->cliente ?? '';
                 $registroPPAP[$i][1] = $reg->NumPart ?? '';
-                $registroPPAP[$i][3] = $reg->rev ?? '';
                 $registroWS = workScreduleModel::where('pn', $reg->NumPart)->orderBy('id', 'desc')->first();
+                $datosTiempos = tiempos::where('info', $reg->info)->first();
                 $registroPPAP[$i][2] = $registroWS->size ?? '-';
+                $registroPPAP[$i][3] = $reg->rev ?? '';
                 $registroPPAP[$i][4] = $registroWS->receiptDate ?? '-';
                 $registroPPAP[$i][5] = $registroWS->commitmentDate ?? '-';
                 $registroPPAP[$i][6] = $registroWS->CompletionDate ?? '-';
                 $registroPPAP[$i][7] = $registroWS->documentsApproved ?? '-';
-                $registroPPAP[$i][15] = $registroWS->customerDate ?? '-';
-                $registroPPAP[$i][16] = $registroWS->resposible ?? '-';
-                $registroPPAP[$i][17] = 'Black';
-                $datosTiempos = tiempos::where('info', $reg->info)->first();
                 $registroPPAP[$i][8] = $datosTiempos->planeacion ?? 'No Aun';
-                $registroPPAP[$i][19] = $reg->wo ?? 'No Aun';
-                $registroPPAP[$i][20] = $reg->Qty ?? 0;
                 $registroPPAP[$i][9] = $datosTiempos->corte ?? 'No Aun';
                 $registroPPAP[$i][10] = $datosTiempos->liberacion ?? 'No Aun';
                 $registroPPAP[$i][11] = $datosTiempos->ensamble ?? 'No Aun';
                 $registroPPAP[$i][12] = $datosTiempos->loom ?? 'No Aun';
                 $registroPPAP[$i][13] = $datosTiempos->calidad ?? 'No Aun';
-                $registroPPAP[$i][18] = $registroWS->qtyInPo ?? 0;
                 if (substr($reg->rev, 0, 4) == 'PPAP') {
                     $registroPPAP[$i][14] = '96, 242, 83, 0.3';
                 } else {
                     $registroPPAP[$i][14] = '236, 236, 9, 0.497';
                 }
+                $registroPPAP[$i][15] = $registroWS->customerDate ?? '-';
+                $registroPPAP[$i][16] = $registroWS->resposible ?? '-';
+                $registroPPAP[$i][17] = 'Black';
+                $registroPPAP[$i][18] = $registroWS->qtyInPo ?? 0;
+                $registroPPAP[$i][19] = $reg->wo ?? 'No Aun';
+                $registroPPAP[$i][20] = $reg->Qty ?? 0;
                 $registroPPAP[$i][21] = 'c-'.$res->Color ?? 'c-white';
 
                 $i++;
