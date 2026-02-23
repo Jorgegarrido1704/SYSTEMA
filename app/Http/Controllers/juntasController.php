@@ -2446,12 +2446,12 @@ class juntasController extends Controller
         } elseif ($id == 'green') {
 
             $registros = Wo::where('rev', 'LIKE', 'PPAP%')->orderBy('cliente', 'asc')->get();
-            dd($registros);
+            // dd($registros);
 
             foreach ($registros as $reg) {
                 $registroPPAP[$i][0] = $reg->cliente ?? '';
                 $registroPPAP[$i][1] = $reg->NumPart ?? '';
-              
+
                 $datosTiempos = tiempos::where('info', $reg->info)->first();
                 $registroPPAP[$i][2] = '-';
                 $registroPPAP[$i][3] = $reg->rev ?? '';
