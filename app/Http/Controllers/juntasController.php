@@ -2445,12 +2445,13 @@ class juntasController extends Controller
             }
         } else {
             $tipo = '';
-            $registros = Wo::where('rev', 'LIKE', 'PPAP%')->orderBY('count', 'asc')->orderBy('cliente', 'asc')->get();
+            $registros = Wo::where('rev', 'LIKE', 'PPAP%')->orderBy('cliente', 'asc')->get();
+            dd($registros);
 
             foreach ($registros as $reg) {
-                $registroPPAP[$i][0] = $reg->cliente;
-                $registroPPAP[$i][1] = $reg->NumPart;
-                $registroPPAP[$i][3] = $reg->rev;
+                $registroPPAP[$i][0] = $reg->cliente ?? '';
+                $registroPPAP[$i][1] = $reg->NumPart ?? '';
+                $registroPPAP[$i][3] = $reg->rev ?? '';
                 $registroWS = workScreduleModel::where('pn', $reg->NumPart)->orderBy('id', 'desc')->first();
                 $registroPPAP[$i][2] = $registroWS->size ?? '-';
                 $registroPPAP[$i][4] = $registroWS->receiptDate ?? '-';
