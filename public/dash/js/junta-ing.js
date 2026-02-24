@@ -265,19 +265,20 @@ try{
                         <td>${item[3] || item.col4}</td>
                         <td>${item[4] || item.col5}</td>
                         <td>${item[5] || item.col6}</td>
-                        <td>${item[6] || item.col7}</td>
-                        <td>${item[7] || item.col8}</td>
-                        <td>${item[8] || item.col9}</td>
-                        <td>${item[9] || item.col10}</td>
-                        <td>${item[10] || item.col11}</td>
-                        <td>${item[11] || item.col12}</td>
-                        <td>${item[12] || item.col13}</td>
-                        <td>${item[13] || item.col14}</td>
-                        <td>${item[15] || item.col16}</td>
-                        <td>${item[16] || item.col17}</td>
-                        <td>${item[18] || item.col19}</td>
-                        <td>${item[19] || item.col20}</td>
-                        <td>${item[20] || item.col21}</td>
+                           <td>${item[6] || item.col7}</td>
+                        <td>${item[15] || item.col8}</td>
+                        <td>${item[18] || item.col9}</td>
+                        <td>${item[16] || item.col10}</td>
+                        <td>${item[7] || item.col11}</td>
+                        <td>${item[8] || item.col12}</td>
+                        <td>${item[19] || item.col13}</td>
+                        <td>${item[20] || item.col14}</td>
+                        <td>${item[9] || item.col15}</td>
+                        <td>${item[10] || item.col16}</td>
+                        <td>${item[11] || item.col17}</td>
+                        <td>${item[12] || item.col18}</td>
+                        <td>${item[13] || item.col19}</td>
+
 
                     </tr>`;
             });
