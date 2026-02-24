@@ -2421,7 +2421,7 @@ class juntasController extends Controller
         $i = 0;
         if ($id == 'white') {
             $WS = workScreduleModel::where('status', '!=', 'CANCELLED')
-                ->where('completionDate', '=', null)
+                ->where('documentsApproved', '=', null)
                 ->where('UpOrderDate', '=', null)
                 ->orderBy('id', 'desc')->get();
             foreach ($WS as $res) {
@@ -2452,6 +2452,7 @@ class juntasController extends Controller
         } elseif ($id == 'pending') {
             $WS = workScreduleModel::where('status', '!=', 'CANCELLED')
                 ->where('UpOrderDate', '=', null)
+                ->where('documentsApproved', '!=', null)
                 ->orderBy('id', 'desc')->get();
             foreach ($WS as $res) {
                 $registroPPAP[$i][0] = $res->customer ?? '';

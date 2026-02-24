@@ -140,7 +140,7 @@
                         <h5 class="m-0 font-weight-bold text-primary">Open NPI</h5>
                         <span class="text-dark font-weight-bold text-align-top">Total: {{ $totalgeneral??0 }}</span>
                         <span class="text-primary font-weight-bold text-align-top"><a onclick="tipoNpiChange('white')">Open by engineer: {{ $ingependinses??0 }}</a></span>
-                        <span class="text-danger font-weight-bold text-align-top">Pending planing: {{ $porbajara??0 }}</span>
+                        <span class="text-danger font-weight-bold text-align-top"><a onclick="tipoNpiChange('pending')">Pending planing: {{ $porbajara??0 }}</a></span>
                         <span class="text-dark font-weight-bold text-align-top">Total in progress: {{ $enproceso??0 }}</span>
                         <span class="text-success font-weight-bold text-align-top"><a onclick="tipoNpiChange('green')">Open by PPAP: {{ $totalppap??0 }}</a></span>
                         <span class="text-warning font-weight-bold text-align-top"><a onclick="tipoNpiChange('yellow')">Open by PRIM: {{ $totalprim??0 }}</a></span>
