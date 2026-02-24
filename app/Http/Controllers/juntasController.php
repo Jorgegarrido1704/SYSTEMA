@@ -2463,7 +2463,7 @@ class juntasController extends Controller
                 $registroPPAP[$i][4] = '-';
                 $registroPPAP[$i][5] = '-';
                 $registroPPAP[$i][6] = '-';
-                $registroPPAP[$i][7] = '-';
+                $registroPPAP[$i][7] = $reg->reqday ?? '-';
                 $registroPPAP[$i][8] = $datosTiempos->planeacion ?? 'No Aun';
                 $registroPPAP[$i][9] = $datosTiempos->corte ?? 'No Aun';
                 $registroPPAP[$i][10] = $datosTiempos->liberacion ?? 'No Aun';
@@ -2474,7 +2474,7 @@ class juntasController extends Controller
                 $registroPPAP[$i][15] = '-';
                 $registroPPAP[$i][16] = '-';
                 $registroPPAP[$i][17] = 'Black';
-                $registroPPAP[$i][18] = 0;
+                $registroPPAP[$i][18] = $reg->Qty ?? 0;
                 $registroPPAP[$i][19] = $reg->wo ?? 'No Aun';
                 $registroPPAP[$i][20] = $reg->Qty ?? 0;
                 $registroPPAP[$i][21] = 'c-white';
@@ -2496,7 +2496,7 @@ class juntasController extends Controller
                 $registroPPAP[$i][4] = '-';
                 $registroPPAP[$i][5] = '-';
                 $registroPPAP[$i][6] = '-';
-                $registroPPAP[$i][7] = '-';
+                $registroPPAP[$i][7] = $reg->reqday ?? '-';
                 $registroPPAP[$i][8] = $datosTiempos->planeacion ?? 'No Aun';
                 $registroPPAP[$i][9] = $datosTiempos->corte ?? 'No Aun';
                 $registroPPAP[$i][10] = $datosTiempos->liberacion ?? 'No Aun';
@@ -2507,7 +2507,7 @@ class juntasController extends Controller
                 $registroPPAP[$i][15] = '-';
                 $registroPPAP[$i][16] = '-';
                 $registroPPAP[$i][17] = 'Black';
-                $registroPPAP[$i][18] = 0;
+                $registroPPAP[$i][18] = $reg->Qty ?? 0;
                 $registroPPAP[$i][19] = $reg->wo ?? 'No Aun';
                 $registroPPAP[$i][20] = $reg->Qty ?? 0;
                 $registroPPAP[$i][21] = 'c-white';
