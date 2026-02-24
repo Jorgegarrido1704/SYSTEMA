@@ -258,7 +258,7 @@ try{
             let rows = '';
             response.forEach(item => {
                 rows += `
-                    <tr >
+                    <tr   id=${item[21] || item.col21} style="text-align: center; background-color:rgba(${item[14] || item.col14}) ; text-align: center; color : black;">
                         <td>${item[0] || item.col1}</td>
                         <td>${item[1] || item.col2}</td>
                         <td>${item[2] || item.col3}</td>

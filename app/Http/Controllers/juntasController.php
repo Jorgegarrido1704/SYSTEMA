@@ -2481,6 +2481,39 @@ class juntasController extends Controller
 
                 $i++;
             }
+        } elseif ($id == 'yellow') {
+
+            $registros = Wo::where('rev', 'LIKE', 'PRIM%')->orderBy('cliente', 'asc')->get();
+            // dd($registros);
+
+            foreach ($registros as $reg) {
+                $registroPPAP[$i][0] = $reg->cliente ?? '';
+                $registroPPAP[$i][1] = $reg->NumPart ?? '';
+
+                $datosTiempos = tiempos::where('info', $reg->info)->first();
+                $registroPPAP[$i][2] = '-';
+                $registroPPAP[$i][3] = $reg->rev ?? '';
+                $registroPPAP[$i][4] = '-';
+                $registroPPAP[$i][5] = '-';
+                $registroPPAP[$i][6] = '-';
+                $registroPPAP[$i][7] = '-';
+                $registroPPAP[$i][8] = $datosTiempos->planeacion ?? 'No Aun';
+                $registroPPAP[$i][9] = $datosTiempos->corte ?? 'No Aun';
+                $registroPPAP[$i][10] = $datosTiempos->liberacion ?? 'No Aun';
+                $registroPPAP[$i][11] = $datosTiempos->ensamble ?? 'No Aun';
+                $registroPPAP[$i][12] = $datosTiempos->loom ?? 'No Aun';
+                $registroPPAP[$i][13] = $datosTiempos->calidad ?? 'No Aun';
+                $registroPPAP[$i][14] = '236, 236, 9, 0.497';
+                $registroPPAP[$i][15] = '-';
+                $registroPPAP[$i][16] = '-';
+                $registroPPAP[$i][17] = 'Black';
+                $registroPPAP[$i][18] = 0;
+                $registroPPAP[$i][19] = $reg->wo ?? 'No Aun';
+                $registroPPAP[$i][20] = $reg->Qty ?? 0;
+                $registroPPAP[$i][21] = 'c-white';
+
+                $i++;
+            }
         }
 
         return json_encode($registroPPAP);
