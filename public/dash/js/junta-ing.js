@@ -266,10 +266,10 @@ try{
                         <td>${item[4] || item.col5}</td>
                         <td>${item[5] || item.col6}</td>
                            <td>${item[6] || item.col7}</td>
-                        <td>${item[15] || item.col8}</td>
+                        <td>${item[7] || item.col8}</td>
                         <td>${item[18] || item.col9}</td>
-                        <td>${item[16] || item.col10}</td>
-                        <td>${item[7] || item.col11}</td>
+                        <td>${item[15] || item.col10}</td>
+                        <td>${item[16] || item.col11}</td>
                         <td>${item[8] || item.col12}</td>
                         <td>${item[19] || item.col13}</td>
                         <td>${item[20] || item.col14}</td>
