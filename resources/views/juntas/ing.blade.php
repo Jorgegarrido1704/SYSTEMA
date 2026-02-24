@@ -139,13 +139,13 @@
                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                         <h5 class="m-0 font-weight-bold text-primary">Open NPI</h5>
                         <span class="text-dark font-weight-bold text-align-top">Total: {{ $totalgeneral??0 }}</span>
-                        <span class="text-primary font-weight-bold text-align-top">Open by engineer: {{ $ingependinses??0 }}</span>
+                        <span class="text-primary font-weight-bold text-align-top"><a onclick="changeGraph('white')">Open by engineer: {{ $ingependinses??0 }}</a></span>
                         <span class="text-danger font-weight-bold text-align-top">Pending planing: {{ $porbajara??0 }}</span>
                         <span class="text-dark font-weight-bold text-align-top">Total in progress: {{ $enproceso??0 }}</span>
-                        <span class="text-success font-weight-bold text-align-top">Open by PPAP: {{ $totalppap??0 }}</span>
-                        <span class="text-warning font-weight-bold text-align-top">Open by PRIM: {{ $totalprim??0 }}</span>
+                        <span class="text-success font-weight-bold text-align-top"><a onclick="changeGraph('green')">Open by PPAP: {{ $totalppap??0 }}</a></span>
+                        <span class="text-warning font-weight-bold text-align-top"><a onclick="changeGraph('yellow')">Open by PRIM: {{ $totalprim??0 }}</a></span>
 
-                      
+
                             <div class="row">
                                 <div class="col-lg-4 mb-4">
                                     <label for="tipoNpi">Type of NPI</label>
