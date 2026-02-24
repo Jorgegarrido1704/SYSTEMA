@@ -157,10 +157,7 @@
                                     </select>
                                 </div>
 
-                                <div class="col-lg-4 mb-4">
-                                    <label for="filtrar">Filter</label>
-                                    <button type="button" id="filtrar" class="btn btn-primary form-control">Apply</button>
-                                </div>
+                               
                             </div>
                         </form>
 
