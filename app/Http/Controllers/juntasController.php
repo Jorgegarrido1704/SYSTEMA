@@ -2346,7 +2346,12 @@ class juntasController extends Controller
         $datos = [];
 
         if ($id == 'P') {
-            $datos = assistence::select('name')->where($diaActual, '=', 'PSS', 'OR', $diaActual, '=', 'PCS', 'OR', $diaActual, '=', 'TSP')->where('week', '=', $week)->get();
+            $datos = assistence::select('name')->where('week', '=', $week)
+                ->where(function ($query) use ($diaActual) {
+                    $query->where($diaActual, '=', 'PSS')
+                        ->orWhere($diaActual, '=', 'PCS')
+                        ->orWhere($diaActual, '=', 'TSP');
+                })->get();
         } elseif ($id == 'V') {
             $Inicio = assistence::select('id_empleado', 'name')->where($diaActual, '=', 'V')->where('week', '=', $week)->get();
             foreach ($Inicio as $row) {
