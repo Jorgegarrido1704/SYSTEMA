@@ -2477,7 +2477,7 @@ class juntasController extends Controller
                 $registroPPAP[$i][18] = 0;
                 $registroPPAP[$i][19] = $reg->wo ?? 'No Aun';
                 $registroPPAP[$i][20] = $reg->Qty ?? 0;
-                $registroPPAP[$i][21] = 'c-'.$res->Color ?? 'c-white';
+                $registroPPAP[$i][21] = 'c-white';
 
                 $i++;
             }
