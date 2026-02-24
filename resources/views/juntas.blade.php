@@ -43,7 +43,7 @@
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                                 Backlock</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><span id="backlock"></span></div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{$backlock}}</span></div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -141,7 +141,7 @@
                                 <!-- Card Header - Dropdown -->
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Pass view WO</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">Pass Due WO</h6>
                                   <div class="dropdown no-arrow">
                                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -192,190 +192,17 @@
                                 </div>
                                 <!--percent section -->
                                 <div class="card-body">
-
-
-                                    @if($client[0] != 0)
-                                    <h4 class="small font-weight-bold"><a href="#" class="text-danger">Bergstrom</a> <span
-                                            class="float-right" >{{$client[0]}}%</span></h4>
+                                    @foreach ($datos_por_cliente as $client)
+                                     <h4 class="small font-weight-bold"><a href="#" class="{{$client->colorNombre}}">{{$client->cliente}}</a> <span
+                                            class="float-right" >{{$client->porcentaje}}%</span></h4>
                                     <div class="progress mb-4">
-                                        <div class="progress-bar bg-danger" role="progressbar" style="width: {{$client[0]}}%;"
+                                        <div class="{{$client->colorBarra}}" role="progressbar" style="width: {{$client->porcentaje}}%;"
                                             aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
-                                    @endif
-                                    @if($client[1] != 0)
-                                    <h4 class="small font-weight-bold"><a href="#" class="text-warning">Atlas</a> <span
-                                            class="float-right">{{$client[1]}}%</span></h4>
-                                    <div class="progress mb-4">
-                                        <div class="progress-bar bg-warning" role="progressbar" style="width: {{$client[1]}}%;"
-                                            aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    @endif
-                                    @if($client[2] != 0)
-                                    <h4 class="small font-weight-bold"><a href="#" class="text-bar">Blue Bird</a> <span
-                                            class="float-right">{{$client[2]}}%</span></h4>
-                                    <div class="progress mb-4">
-                                        <div class="progress-bar" role="progressbar" style="width: {{$client[2]}}%;"
-                                            aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    @endif
-                                    @if($client[3] != 0)
-                                    <h4 class="small font-weight-bold"><a href="#" class="text-info">Collins</a><span
-                                            class="float-right">{{$client[3]}}%</span></h4>
-                                    <div class="progress mb-4">
-                                        <div class="progress-bar bg-info" role="progressbar" style="width: {{$client[3]}}%;"
-                                            aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    @endif
-                                    @if($client[4] != 0)
-                                    <h4 class="small font-weight-bold"><a href="#" class="text-success">El Dorado California</a><span
-                                            class="float-right">{{$client[4]}}%</span></h4>
-                                    <div class="progress mb-4">
-                                        <div class="progress-bar bg-success" role="progressbar" style="width: {{$client[4]}}%;"
-                                            aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    @endif
-                                    @if($client[5] != 0)
-                                    <h4 class="small font-weight-bold"><a href="#" class="text-danger">Forest</a> <span
-                                            class="float-right">{{$client[5]}}%</span></h4>
-                                    <div class="progress mb-4">
-                                        <div class="progress-bar bg-danger" role="progressbar" style="width: {{$client[5]}}%;"
-                                            aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    @endif
-                                    @if($client[6] != 0)
-                                    <h4 class="small font-weight-bold"><a href="#" class="text-warning">Kalmar</a> <span
-                                            class="float-right">{{$client[6]}}%</span></h4>
-                                    <div class="progress mb-4">
-                                        <div class="progress-bar bg-warning" role="progressbar" style="width: {{$client[6]}}%;"
-                                            aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    @endif
-                                    @if($client[7] != 0)
-                                    <h4 class="small font-weight-bold"><a href="#" class="text-bar">Modine</a><span
-                                            class="float-right">{{$client[7]}}%</span></h4>
-                                    <div class="progress mb-4">
-                                        <div class="progress-bar" role="progressbar" style="width: {{$client[7]}}%;"
-                                            aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    @endif
-                                    @if($client[8] != 0)
-                                    <h4 class="small font-weight-bold"><a href="#" class="text-info">Phoenix Motor Cars</a><span
-                                            class="float-right">{{$client[8]}}%</span></h4>
-                                    <div class="progress mb-4">
-                                        <div class="progress-bar bg-info" role="progressbar" style="width:{{$client[8]}}%;"
-                                            aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    @endif
-                                    @if($client[9] != 0)
-                                    <h4 class="small font-weight-bold"><a href="#" class="text-success">Spartan</a><span
-                                            class="float-right">{{$client[9]}}%</span></h4>
-                                    <div class="progress mb-4">
-                                        <div class="progress-bar bg-success" role="progressbar" style="width: {{$client[9]}}%;"
-                                            aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    @endif
-                                    @if($client[10] != 0)
-                                    <h4 class="small font-weight-bold"><a href="#" class="text-danger">Tico Manufacturing</a><span
-                                        class="float-right">{{$client[10]}}%</span></h4>
-                                <div class="progress mb-4">
-                                    <div class="progress-bar bg-danger" role="progressbar" style="width: {{$client[10]}}%;"
-                                        aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                @endif
-                                    @if($client[11] != 0)
-                                <h4 class="small font-weight-bold"><a href="#" class="text-warning">Utilimaster</a><span
-                                        class="float-right">{{$client[11]}}%</span></h4>
-                                <div class="progress mb-4">
-                                    <div class="progress-bar bg-warning" role="progressbar" style="width: {{$client[11]}}%;"
-                                        aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                @endif
-                                    @if($client[12] != 0)
-                                <h4 class="small font-weight-bold"><a href="#" class="text-bar">Zoeller</a> <span
-                                        class="float-right">{{$client[12]}}%</span></h4>
-                                <div class="progress mb-4">
-                                    <div class="progress-bar" role="progressbar" style="width: {{$client[12]}}%;"
-                                        aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                @endif
-                            <!--    <h4 class="small font-weight-bold">Forest River <span
-                                        class="float-right">%</span></h4>
-                                <div class="progress mb-4">
-                                    <div class="progress-bar bg-info" role="progressbar" style="width: }%"
-                                        aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>-->
+                                    @endforeach
+
 
                                 </div>
-                            </div>
-
-                            <!-- Color System-->
-
-                            <div class="row">
-
-                              <!--  <div class="col-lg-6 mb-4">
-                                    <div class="card bg-primary text-white shadow">
-                                        <div class="card-body">
-                                            Primary
-                                            <div class="text-white-50 small">#4e73df</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 mb-4">
-                                    <div class="card bg-success text-white shadow">
-                                        <div class="card-body">
-                                            Success
-                                            <div class="text-white-50 small">#1cc88a</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 mb-4">
-                                    <div class="card bg-info text-white shadow">
-                                        <div class="card-body">
-                                            Info
-                                            <div class="text-white-50 small">#36b9cc</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 mb-4">
-                                    <div class="card bg-warning text-white shadow">
-                                        <div class="card-body">
-                                            Warning
-                                            <div class="text-white-50 small">#f6c23e</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 mb-4">
-                                    <div class="card bg-danger text-white shadow">
-                                        <div class="card-body">
-                                            Danger
-                                            <div class="text-white-50 small">#e74a3b</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 mb-4">
-                                    <div class="card bg-secondary text-white shadow">
-                                        <div class="card-body">
-                                            Secondary
-                                            <div class="text-white-50 small">#858796</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 mb-4">
-                                    <div class="card bg-light text-black shadow">
-                                        <div class="card-body">
-                                            Light
-                                            <div class="text-black-50 small">#f8f9fc</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 mb-4">
-                                    <div class="card bg-dark text-white shadow">
-                                        <div class="card-body">
-                                            Dark
-                                            <div class="text-white-50 small">#5a5c69</div>
-                                        </div>
-                                    </div>
-                                </div>-->
                             </div>
 
                         </div>
@@ -498,6 +325,6 @@
                     </div>
 
                     </div>
-           
+
 
 @endsection

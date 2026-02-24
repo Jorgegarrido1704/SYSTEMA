@@ -33,46 +33,27 @@ class juntasController extends Controller
         } else {
             $dia = $request->input('dia');
 
-            $backlock = $cal = 0;
-            for ($i = 0; $i < 13; $i++) {
-                $client[$i] = 0;
+            $backlock = $cal = $i = 0;
+            $colores = [['text-danger', 'progress-bar bg-danger'], ['text-warning', 'progress-bar bg-warning'], ['text-success', 'progress-bar bg-success'],
+                ['text-primary', 'progress-bar bg-primary'], ['text-info', 'progress-bar bg-info'], ['text-secondary', 'progress-bar bg-secondary'],
+                ['text-dark', 'progress-bar bg-dark']];
+
+            $datos_por_cliente = Wo::select('cliente', DB::raw('SUM(Qty * price) as total'))->groupBy('cliente')->get();
+            foreach ($datos_por_cliente as $dato) {
+                $backlock += $dato->total;
             }
-            $buscarregistros = DB::select("SELECT * FROM registro WHERE Qty>'0'");
-            foreach ($buscarregistros as $reg) {
-                $price = $reg->price;
-                $cant = $reg->Qty;
-                if ($reg->cliente == 'BERGSTROM') {
-                    $client[0] = $client[0] + ($price * $cant);
-                } elseif ($reg->cliente == 'ATLAS COPCO') {
-                    $client[1] += ($price * $cant);
-                } elseif ($reg->cliente == 'BLUE BIRD') {
-                    $client[2] += ($price * $cant);
-                } elseif ($reg->cliente == 'COLLINS') {
-                    $client[3] += ($price * $cant);
-                } elseif ($reg->cliente == 'EL DORADO CALIFORNIA') {
-                    $client[4] += ($price * $cant);
-                } elseif ($reg->cliente == 'FOREST' or $reg->cliente == 'FOREST RIVER') {
-                    $client[5] += ($price * $cant);
-                } elseif ($reg->cliente == 'KALMAR') {
-                    $client[6] += ($price * $cant);
-                } elseif ($reg->cliente == 'MODINE') {
-                    $client[7] += ($price * $cant);
-                } elseif ($reg->cliente == 'PHOENIX MOTOR CARS' or $reg->cliente == 'PROTERRA') {
-                    $client[8] += ($price * $cant);
-                } elseif ($reg->cliente == 'SPARTAN') {
-                    $client[9] += ($price * $cant);
-                } elseif ($reg->cliente == 'TICO MANUFACTURING') {
-                    $client[10] += ($price * $cant);
-                } elseif ($reg->cliente == 'UTILIMASTER') {
-                    $client[11] += ($price * $cant);
-                } elseif ($reg->cliente == 'ZOELLER') {
-                    $client[12] += ($price * $cant);
+            $backlock = round($backlock, 2);
+            foreach ($datos_por_cliente as $dato) {
+                $dato->porcentaje = round($dato->total / $backlock * 100, 2);
+                $dato->colorNombre = $colores[$i][0];
+                $dato->colorBarra = $colores[$i][1];
+                $i++;
+                if ($i == 7) {
+                    $i = 0;
                 }
-                $backlock += ($price * $cant);
             }
-            for ($i = 0; $i < 13; $i++) {
-                $client[$i] = round((($client[$i] * 100) / $backlock), 3);
-            }
+            // ordenar datos
+            $datos_por_cliente = $datos_por_cliente->sortByDesc('total')->values()->all();
             // Stations
             $ventasStation = [];
             for ($i = 0; $i < 13; $i++) {
@@ -452,7 +433,7 @@ class juntasController extends Controller
                 'value' => $value,
                 'countReq' => $countReq,
                 'cat' => $cat,
-                'client' => $client,
+                //  'client' => $client,
                 'tableContent' => $tableContent,
                 'saldos' => $saldos,
                 'backlock' => $backlock,
@@ -462,6 +443,7 @@ class juntasController extends Controller
                 'dato' => $dato,
                 'tiemposPas' => $tiemposPas,
                 'lieaVenta' => $lieaVenta,
+                'datos_por_cliente' => $datos_por_cliente,
             ]);
         }
     }
@@ -2481,7 +2463,10 @@ class juntasController extends Controller
             }
         } elseif ($id == 'green') {
 
-            $registros = Wo::where('rev', 'LIKE', 'PPAP%')->orderBy('cliente', 'asc')->get();
+            $registros = Wo::where('rev', 'LIKE', 'PPAP%')
+                ->where('count', '!=', 12)
+                ->where('count', '!=', 20)
+                ->orderBy('cliente', 'asc')->get();
             // dd($registros);
 
             foreach ($registros as $reg) {
@@ -2514,7 +2499,10 @@ class juntasController extends Controller
             }
         } elseif ($id == 'yellow') {
 
-            $registros = Wo::where('rev', 'LIKE', 'PRIM%')->orderBy('cliente', 'asc')->get();
+            $registros = Wo::where('rev', 'LIKE', 'PRIM%')
+                ->where('count', '!=', 12)
+                ->where('count', '!=', 20)
+                ->orderBy('cliente', 'asc')->get();
             // dd($registros);
 
             foreach ($registros as $reg) {
