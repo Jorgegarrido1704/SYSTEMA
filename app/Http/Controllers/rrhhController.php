@@ -877,13 +877,13 @@ class rrhhController extends Controller
 
                 $sheet->setCellValue('A'.$t, $row->name);
                 $sheet->setCellValue('B'.$t, substr($row->id_empleado, 1));
-                $sheet->setCellValue('C'.$t, $diasSemana['lunes']);
-                $sheet->setCellValue('D'.$t, $diasSemana['martes']);
-                $sheet->setCellValue('E'.$t, $diasSemana['miercoles']);
-                $sheet->setCellValue('F'.$t, $diasSemana['jueves']);
-                $sheet->setCellValue('G'.$t, $diasSemana['viernes']);
-                $sheet->setCellValue('H'.$t, $diasSemana['sabado']);
-                $sheet->setCellValue('I'.$t, $diasSemana['domingo']);
+                $sheet->setCellValue('C'.$t, $diasSemana['lunes'].' TE:'.$row->extLunes.' TT:'.$row->tt_lunes);
+                $sheet->setCellValue('D'.$t, $diasSemana['martes'].' TE:'.$row->extMartes.' TT:'.$row->tt_martes);
+                $sheet->setCellValue('E'.$t, $diasSemana['miercoles'].' TE:'.$row->extMiercoles.' TT:'.$row->tt_miercoles);
+                $sheet->setCellValue('F'.$t, $diasSemana['jueves'].' TE:'.$row->extJueves.' TT:'.$row->tt_jueves);
+                $sheet->setCellValue('G'.$t, $diasSemana['viernes'].' TE:'.$row->extViernes.' TT:'.$row->tt_viernes);
+                $sheet->setCellValue('H'.$t, $diasSemana['sabado'].' TE:'.$row->extSabado.' TT:'.$row->tt_sabado);
+                $sheet->setCellValue('I'.$t, $diasSemana['domingo'].' TE:'.$row->extDomingo.' TT:'.$row->tt_domingo);
                 $sheet->setCellValue('J'.$t, $row->extras);
                 $sheet->setCellValue('K'.$t, $row->tiempoPorTiempo);
 
