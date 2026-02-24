@@ -1308,8 +1308,7 @@ class juntasController extends Controller
                 $q->where('rev', 'LIKE', 'PRIM%')
                     ->orWhere('rev', 'LIKE', 'PPAP%');
             })
-            ->orderBy('id', 'asc')
-            ->orderBy('cliente', 'asc')
+            ->orderByRaw('STR_TO_DATE(reqday, "%d-%m-%Y") ASC')
             ->get();
         foreach ($registros as $reg) {
             $registroPPAP[$i][0] = $reg->cliente;
@@ -2466,7 +2465,7 @@ class juntasController extends Controller
             $registros = Wo::where('rev', 'LIKE', 'PPAP%')
                 ->where('count', '!=', 12)
                 ->where('count', '!=', 20)
-                ->orderBy('cliente', 'asc')->get();
+                ->orderByRaw('STR_TO_DATE(reqday, "%d-%m-%Y") ASC')->get();
             // dd($registros);
 
             foreach ($registros as $reg) {
@@ -2502,7 +2501,8 @@ class juntasController extends Controller
             $registros = Wo::where('rev', 'LIKE', 'PRIM%')
                 ->where('count', '!=', 12)
                 ->where('count', '!=', 20)
-                ->orderBy('cliente', 'asc')->get();
+                // order by reqday asc but my date is a string format is dd-mm-yyyy so i need to convert it to yyyy-mm-dd to order by date
+                ->orderByRaw('STR_TO_DATE(reqday, "%d-%m-%Y") ASC')->get();
             // dd($registros);
 
             foreach ($registros as $reg) {
