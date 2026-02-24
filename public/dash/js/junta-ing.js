@@ -243,7 +243,7 @@ try{
 
 
 try{
-    function tipoNpiChange() {
+    function tipoNpiChange(tipoNpi) {
     const tipoNpi = document.getElementById('registrosNPI');
     const selectTipoNpi = document.getElementById('tipoNpi').value;
     alert('Selected: ' + selectTipoNpi);
