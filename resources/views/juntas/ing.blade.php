@@ -145,7 +145,7 @@
                         <span class="text-success font-weight-bold text-align-top">Open by PPAP: {{ $totalppap??0 }}</span>
                         <span class="text-warning font-weight-bold text-align-top">Open by PRIM: {{ $totalprim??0 }}</span>
 
-                        <form action="#" id="formNpi">
+                      
                             <div class="row">
                                 <div class="col-lg-4 mb-4">
                                     <label for="tipoNpi">Type of NPI</label>
@@ -157,9 +157,9 @@
                                     </select>
                                 </div>
 
-                               
+
                             </div>
-                        </form>
+
 
 
                     </div>
