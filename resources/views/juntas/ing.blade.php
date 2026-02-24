@@ -139,30 +139,11 @@
                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                         <h5 class="m-0 font-weight-bold text-primary">Open NPI</h5>
                         <span class="text-dark font-weight-bold text-align-top">Total: {{ $totalgeneral??0 }}</span>
-                        <button class="btn btn-primary" onclick="tipoNpiChange('white')">Open by engineer: {{ $ingependinses??0 }}</button>
-                        <a class="text-primary font-weight-bold text-align-top"  onclick="tipoNpiChange('white')">Open by engineer: {{ $ingependinses??0 }}</a>
+                        <span class="text-primary font-weight-bold text-align-top"><a onclick="tipoNpiChange('white')">Open by engineer: {{ $ingependinses??0 }}</a></span>
                         <span class="text-danger font-weight-bold text-align-top">Pending planing: {{ $porbajara??0 }}</span>
                         <span class="text-dark font-weight-bold text-align-top">Total in progress: {{ $enproceso??0 }}</span>
                         <span class="text-success font-weight-bold text-align-top"><a onclick="tipoNpiChange('green')">Open by PPAP: {{ $totalppap??0 }}</a></span>
                         <span class="text-warning font-weight-bold text-align-top"><a onclick="tipoNpiChange('yellow')">Open by PRIM: {{ $totalprim??0 }}</a></span>
-
-
-                            <div class="row">
-                                <div class="col-lg-4 mb-4">
-                                    <label for="tipoNpi">Type of NPI</label>
-                                    <select id="tipoNpi" name="tipoNpi" class="form-control" onchange="tipoNpiChange()">
-                                        <option value="" selected disabled>Select one</option>
-                                        <option value="white">Pending</option>
-                                        <option value="green">PPAP</option>
-                                        <option value="yellow">PRIM</option>
-                                    </select>
-                                </div>
-
-
-                            </div>
-
-
-
                     </div>
                     <!-- table Body -->
                     <div  style="overflow-y: auto; height: 800px;">
