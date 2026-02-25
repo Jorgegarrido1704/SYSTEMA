@@ -75,7 +75,7 @@ class AccionesCorrectivasController extends Controller
         $accion->descripcionAccion = $request->input('descripcionAccion');
         $accion->save();
 
-        return redirect()->route('accionesCorrectivas.index')->with('success', 'Acción correctiva creada exitosamente.');
+        return redirect()->route('accionesCorrectivas.show', $accion->folioAccion)->with('success', 'Acción correctiva creada exitosamente.');
     }
 
     public function show($id)
@@ -140,7 +140,7 @@ class AccionesCorrectivasController extends Controller
         $accion->status = 'etapa 2 - Causa Raiz';
         $accion->save();
 
-        return redirect()->route('accionesCorrectivas.index')->with('success', 'Acción correctiva actualizada exitosamente.');
+        return redirect()->route('accionesCorrectivas.show', $accion->folioAccion)->with('success', 'Acción correctiva actualizada exitosamente.');
     }
 
     public function guardarIshikawa(Request $request)
@@ -177,7 +177,7 @@ class AccionesCorrectivasController extends Controller
         $accion->status = 'etapa 2 - Causa Raiz';
         $accion->save();
 
-        return redirect()->route('accionesCorrectivas.index')->with('success', 'Acción correctiva actualizada exitosamente.');
+        return redirect()->route('accionesCorrectivas.show', $accion->folioAccion)->with('success', 'Acción correctiva actualizada exitosamente.');
     }
 
     public function guardarAccion(Request $request)
@@ -200,7 +200,7 @@ class AccionesCorrectivasController extends Controller
 
         ]);
 
-        return redirect()->route('accionesCorrectivas.index')->with('success', 'Acción correctiva actualizada exitosamente.');
+        return redirect()->route('accionesCorrectivas.show', $accion->folioAccion)->with('success', 'Acción correctiva actualizada exitosamente.');
     }
 
     public function destroy($id)
@@ -226,7 +226,7 @@ class AccionesCorrectivasController extends Controller
             'AprobadorSeguimiento' => $request->input('validador'),
         ]);
 
-        return redirect()->route('accionesCorrectivas.index')->with('success', 'Acción correctiva actualizada exitosamente.');
+        return redirect()->route('accionesCorrectivas.show', $folio)->with('success', 'Acción correctiva actualizada exitosamente.');
 
     }
 }

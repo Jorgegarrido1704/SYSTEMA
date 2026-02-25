@@ -107,7 +107,7 @@
                                                        <option value="SI">SI</option>
                                                        <option value="NO">NO</option>
                                                    </select>
-                                                   <input type="hidden" name="accion_id" value="{{ $registroPorquest->id_acciones_correctivas?? '' }}">
+                                                   <input type="hidden" name="accion_id" value="{{ $registroPorquest->folioAccion?? '' }}">
                                             </div><div class="col-12 mb-3">
                                                 <button type="submit" class="btn btn-primary">Guardar</button>
                                             </div>
@@ -159,7 +159,7 @@
                                                        <option value="SI">SI</option>
                                                        <option value="NO">NO</option>
                                                    </select>
-                                                   <input type="hidden" name="accion_id" value="{{ $accion->id_acciones_correctivas??'' }}">
+                                                   <input type="hidden" name="accion_id" value="{{ $accion->folioAccion??'' }}">
                                             </div><div class="col-12 mb-3">
                                                 <button type="submit" class="btn btn-primary">Guardar</button>
                                             </div>

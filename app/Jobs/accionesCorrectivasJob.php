@@ -3,20 +3,12 @@
 namespace App\Jobs;
 
 use App\Mail\accionesCorrectivasRecordatorio;
-use App\Http\Controllers\mailsController;
 use App\Models\accionesCorrectivas;
-use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use PHPUnit\Framework\Constraint\Count;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-
 use Illuminate\Support\Facades\Mail;
 
 class accionesCorrectivasJob implements ShouldQueue
@@ -27,9 +19,17 @@ class accionesCorrectivasJob implements ShouldQueue
 
     public function handle(): void
     {
-        $acciones = accionesCorrectivas::where('status', 'etapa 2 - Accion Correctiva')
+        $acciones = accionesCorrectivas::where('status', 'Activa - Etapa 1')
             ->first();
-            Mail::to('jgarrido@mx.bergstrominc.com')->send(new accionesCorrectivasRecordatorio($acciones, 'Acciones Correctivas Recordatorio'));
+        $mailto = personalBergsModel::where('employeeName', $acciones->resposableAccion)->first();
+        if ($mailto) {
+            $mailaddress = $mailto->email;
+        } else {
+            $mailaddress = 'jgarrido@mx.bergstrominc.com';
+        }
+        $mailaddress = 'jgarrido@mx.bergstrominc.com';
+
+        Mail::to($mailaddress)->send(new accionesCorrectivasRecordatorio($acciones, 'Acciones Correctivas Recordatorio'));
 
     }
 }
