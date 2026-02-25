@@ -21,7 +21,7 @@ class AdminSupControlloer extends Controller
                 if (DB::table('personalberg')->where('employeeNumber', '=', $asist->id_empleado)->where('status', '!=', 'Baja')->exists()) {
                     continue;
                 } else {
-                    $datos[] = $asist->name;
+                    $datos[$asist->id_empleado] = $asist->name;
                 }
 
             }
