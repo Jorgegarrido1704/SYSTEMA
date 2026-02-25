@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\personalBergsModel;
 use App\Models\routingModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
