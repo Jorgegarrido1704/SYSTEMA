@@ -280,8 +280,10 @@ class rrhhController extends Controller
                 'Gender' => $Genero,
                 'status' => $status,
                 'DateSalida' => null,
-
             ]);
+            assistence::where('name', '=', $name)->update([
+                'id_empleado' => 'i'.$id_empleado,
+            ])->orderBy('id', 'desc')->first();
 
             if ($datosAdd) {
                 $datos = 'realizado';
