@@ -14,16 +14,6 @@ class AdminSupControlloer extends Controller
         if (session('categoria') != 'SupAdmin') {
             return redirect('/login');
         } else {
-            // buscar existencia de empleados en lista de asistencia
-            $asistencia = DB::table('assistence')->where('week', '=', date('W'))->get();
-            $datos = [];
-            foreach ($asistencia as $asist) {
-                if (DB::table('personalberg')->where('employeeNumber', '=', $asist->id_empleado)->where('status', '!=', 'Baja')->notExists()) {
-                    $datos[$asist->id_empleado] = $asist->name;
-                }
-
-            }
-            dd($datos);
 
             return view('SupAdmin', ['value' => session('user'), 'cat' => session('categoria')]);
         }
