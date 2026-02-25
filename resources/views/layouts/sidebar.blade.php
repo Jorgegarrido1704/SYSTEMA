@@ -121,13 +121,12 @@
                         <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('timeLine') }}">Time Study</a></li>
                     </ul>
                 </li>
-                @elseif($value=='Martin A' || $value=='Jesus_C')
-                <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('accionesCorrectivas.index') }}">Corrective Actions</a></li>
                 @endif
                 <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('rrhhDashBoard') }}">Assistance</a></li>
                 <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('Pendings.index') }}">Pendigs</a></li>
                  <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('vacations') }}">Vacations</a></li>
                  <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('juntas.npi') }}">NPI</a></li>
+                  <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('accionesCorrectivas.index') }}">Corrective Actions</a></li>
                 @if($cat=='compras' || $value=='Admin')
                 <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('testingMaterialRequeriment') }}">Requeriment Materials Testing</a></li>
                 @endif
