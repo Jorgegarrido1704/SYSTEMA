@@ -14,6 +14,12 @@ class AdminSupControlloer extends Controller
         if (session('categoria') != 'SupAdmin') {
             return redirect('/login');
         } else {
+            // buscar existencia de empleados en lista de asistencia
+
+            $datos = personalBergsModel::join('assistence', 'personalberg.employeeNumber', '!=', 'assistence.id_empleado')
+                ->select('personalberg.*', 'assistence.*')
+                ->get();
+            dd($datos);
 
             return view('SupAdmin', ['value' => session('user'), 'cat' => session('categoria')]);
         }
