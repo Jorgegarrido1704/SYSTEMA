@@ -19,7 +19,7 @@ class accionesCorrectivasJob implements ShouldQueue
 
     public function handle(): void
     {
-        $acciones = accionesCorrectivas::where('status', 'Activa - Etapa 1')
+        $acciones = accionesCorrectivas::where('status', 'etapa 1 - inicio')
             ->first();
         $mailto = personalBergsModel::where('employeeName', $acciones->resposableAccion)->first();
         if ($mailto) {

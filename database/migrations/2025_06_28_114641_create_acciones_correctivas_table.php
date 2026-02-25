@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('resposableAccion')->nullable();
             $table->text('descripcionAccion')->nullable();
             $table->date('fechaCompromiso')->nullable();
-            $table->string('status')->default('Activa - Etapa 1')->nullable();
+            $table->string('status')->default('etapa 1 - inicio')->nullable();
             $table->string('asistenciaCausaRaiz')->nullable();
             $table->string('descripcionContencion')->nullable();
             $table->string('porques')->nullable();
@@ -28,12 +28,12 @@ return new class extends Migration
             $table->date('fechaRegistroAcciones')->nullable();
             $table->string('conclusiones')->nullable();
             $table->boolean('IsSistemicProblem')->default(false);
-           
-
-
-
-
-
+            $table->string('accion')->nullable();
+            $table->string('reponsableAccion')->nullable();
+            $table->date('fechaInicioAccion')->nullable();
+            $table->date('fechaFinAccion')->nullable();
+            $table->string('verificadorAccion')->nullable();
+            $table->date('ultimoEmail')->nullable();
 
         });
     }

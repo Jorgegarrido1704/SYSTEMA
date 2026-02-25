@@ -112,13 +112,14 @@ class AccionesCorrectivasController extends Controller
         ]);
     }
 
-    public function guardarPorques(Request $request)
+    public function guardarPorques(Request $request, $id)
     {
         $request->validate([
             'porque1' => 'required|string|max:500',
             'conclusion' => 'required|string|max:500',
-            'accion_id' => 'required|integer',
+
         ]);
+
         $registroPorquest = $request->input('porque1');
 
         for ($i = 2; $i <= 5; $i++) {
@@ -132,15 +133,15 @@ class AccionesCorrectivasController extends Controller
         } else {
             $sistemic = false;
         }
-        // dd($sistemic.' '.$registroPorquest.' '.$request->input('conclusion').' '.$request->input('accion_id'));
-        $accion = accionesCorrectivas::findOrFail($request->input('accion_id'));
-        $accion->porques = $registroPorquest;
-        $accion->conclusiones = $request->input('conclusion');
-        $accion->IsSistemicProblem = $sistemic;
-        $accion->status = 'etapa 2 - Causa Raiz';
-        $accion->save();
 
-        return redirect()->route('accionesCorrectivas.show', $accion->folioAccion)->with('success', 'Acción correctiva actualizada exitosamente.');
+        $accion = accionesCorrectivas::where('folioAccion', $id)->update([
+            'porques' => $registroPorquest,
+            'conclusiones' => $request->input('conclusion'),
+            'IsSistemicProblem' => $sistemic,
+            'status' => 'etapa 2 - Causa Raiz',
+        ]);
+
+        return redirect()->route('accionesCorrectivas.show', $id)->with('success', 'Acción correctiva actualizada exitosamente.');
     }
 
     public function guardarIshikawa(Request $request)
@@ -228,5 +229,22 @@ class AccionesCorrectivasController extends Controller
 
         return redirect()->route('accionesCorrectivas.show', $folio)->with('success', 'Acción correctiva actualizada exitosamente.');
 
+    }
+
+    public function guardarContencion(Request $request, $id)
+    {
+        $request->validate([
+
+            'descripcionContencion' => 'required|string|max:500',
+            'fechaCompromiso' => 'required|date',
+        ]);
+
+        $accion = accionesCorrectivas::where('folioAccion', $id)->update([
+            'descripcionContencion' => $request->input('descripcionContencion'),
+            'fechaCompromiso' => $request->input('fechaCompromiso'),
+            'status' => 'etapa 1 - Contención',
+        ]);
+
+        return redirect()->route('accionesCorrectivas.show', $id)->with('success', 'Acción correctiva actualizada exitosamente.');
     }
 }

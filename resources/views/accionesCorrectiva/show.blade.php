@@ -29,11 +29,12 @@
                          <div class="col-md-3" >
                            <span class="font-weight-bold">Origen de la Acción: <br>{{ $registroPorquest->origenAccion }}</span>
                         </div>
-                        <div class="col-md-4" >
+                        
+                        <div class="col-md-4 mt-3" >
                            <span class="font-weight-bold">Responsable de la Acción: <br>{{ $registroPorquest->resposableAccion }}</span>
                         </div>
-                         <div class="col-md-8" >
-                           <span class="font-weight-bold">Descripción de la Acción: {{ $registroPorquest->descripcionAccion }}</span>
+                         <div class="col-md-8 mt-3" >
+                           <span class="font-weight-bold">Descripción de la Acción:<br> {{ $registroPorquest->descripcionAccion }}</span>
                         </div>
                     </div>
 
@@ -41,8 +42,28 @@
             </div>
         </div>
         <!-- END Detalles de la Accion Correctiva -->
+        @if(!empty($registroPorquest->descripcionContencion))
+         <!-- contencion-->
+         <div class="col-lg-6 mb-4">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Descripcion de la contencion</h6>
+                            </div>
+                            <div class="card-body" style="overflow-y: auto; max-height: 460px;">
+                                     <div class="row">
+                                        <div class="col-6 mb-3">
+                                           <span class="font-weight-bold">Descripcion de la contencion:<br> {{ $registroPorquest->descripcionContencion }}</span>
+                                        </div>
+                                        <div class="col-6 mb-3">
+                                            <span class="font-weight-bold">Fecha compromiso para cierre de accion:<br> {{ $registroPorquest->fechaCompromiso }}</span>
+                                        </div>    
+                                </div>
+                            </div>
+                        </div>
+        </div>
+          <!-- fin contencion-->
         <!-- Analisis de causa raiz -->
-        <div class="col-lg-6 mb-4">
+        <div class="col-lg-4 mb-4">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary">Analisis de causa raiz</h6>
@@ -74,8 +95,8 @@
                             <br>
                             <div  id="5porque" style="display: none;">
                                 <div class=row>
-                                    <form action="{{ route('accionesCorrectivas.guardarPorques') }}" method="POST" id="form5porque">
-                                        @csrf
+                                    <form action="{{ route('accionesCorrectivas.guardarPorques', $registroPorquest->folioAccion) }}" method="GET" id="form5porque">
+                                     
                                             <div class="col-12 mb-3">
                                                 <label for="porque1">Porque?</label>
                                                 <textarea class="form-control" name="porque1" id="porque1"  cols="55" row="3" required></textarea>
@@ -107,7 +128,7 @@
                                                        <option value="SI">SI</option>
                                                        <option value="NO">NO</option>
                                                    </select>
-                                                   <input type="hidden" name="accion_id" value="{{ $registroPorquest->folioAccion?? '' }}">
+                                                  
                                             </div><div class="col-12 mb-3">
                                                 <button type="submit" class="btn btn-primary">Guardar</button>
                                             </div>
@@ -176,7 +197,7 @@
         </div>
         <!-- End Analisis de causa raiz -->
         <!-- Plan de accion -->
-         <div class="col-lg-12 mb-4">
+         <div class="col-lg-8 mb-4">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary">Plan de accion</h6>
@@ -185,11 +206,11 @@
                      <form action="{{ route('accionesCorrectivas.guardarAccion') }}" method="POST">
                         @csrf
                         <div class="row">
-                            <div class="col-4 mb-3">
+                            <div class="col-3 mb-3">
                                 <label for="accion" class="form-label font-weight-bold"><a>Descripcion de la accion:</a></label>
                                 <textarea class="form-control" name="accion" id="accion" cols="45" rows="2" required></textarea>
                             </div>
-                            <div class="col-3 mb-3">
+                            <div class="col-2 mb-3">
                                 <label for="reponsableAccion" class="form-label font-weight-bold">Reponsable de la accion</label>
                                 <select name="reponsableAccion" id="reponsableAccion" class="form-control"  required>
                                     <option value="" selected disabled>...</option>
@@ -199,11 +220,11 @@
                                 </select>
                             </div>
 
-                             <div class="col-1 mb-3">
+                             <div class="col-2 mb-3">
                                 <label for="fechaInicioAccion">Fecha de inicio</label>
                                 <input type="date" name="fechaInicioAccion" id="fechaInicioAccion" required>
                             </div>
-                            <div class="col-1 mb-3">
+                            <div class="col-2 mb-3">
                                 <label for="fechaFinAccion">Fecha de fin</label>
                                 <input type="date" name="fechaFinAccion" id="fechaFinAccion" required>
                             </div>
@@ -225,110 +246,137 @@
             </div>
         </div>
         <!-- End Plan de accion -->
-          @if(!empty($acciones))
-       @foreach ($acciones as $accion )
-    <div class="col-lg-6 mb-4">
-        <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">
-                    Registro de accion Correctiva {{$accion->id}}
-                </h6>
-            </div>
-            <div class="card-body" style="overflow-y: auto; height: 260px;">
-                <div class="row">
-                    <div class="col-md-4" >
-                        <span class="font-weight-bold">Reponsable de la accion:<br> {{$accion->resposableSubAccion}}</span>
-                    </div>
-                    <div class="col-md-2" >
-                        <span class="font-weight-bold">Fecha de inicio:<br> {{$accion->fechaInicioSubAccion}}</span>
-                    </div>
-                    <div class="col-md-2" >
-                        <span class="font-weight-bold">Fecha de inicio:<br> {{$accion->fechaInicioSubAccion}}</span>
-                    </div>
-                    <div class="col-md-4" >
-                        <span class="font-weight-bold">Quien aprobara la accion:<br> {{$accion->auditorSubAccion}}</span>
-                    </div>
-                    <div class="col-md-12" >
-                        <span class="font-weight-bold">Descripcion de la accion:<br> {{$accion->descripcionSubAccion}}</span>
-                    </div>
-                </div>
-               
-            </div>
-        </div>
-    </div>
-
-    {{-- FORMULARIO INDEPENDIENTE POR CADA ID --}}
-    <div class="col-lg-6 mb-4">
-        <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Seguimiento y monitoreo de la ejecución</h6>
-            </div>
-            <div class="card-body" style="overflow-y: auto; height: 260px;">
-                <form action="{{ route('accionesCorrectivas.guardarSeguimiento', ['id' => $accion->id, 'folio' => $accion->folioAccion]) }}" method="GET" id="form-{{$accion->id_acciones_correctivas}}" name="form-{{$accion->id_acciones_correctivas}}">
-
-                    <div class="row">
-                        <div class="col-4 mb-3">
-                            <label for="seguimiento_{{$accion->folioAccion}}" class="form-label font-weight-bold">
-                                Descripcion de Seguimiento:
-                            </label>
-                            <textarea class="form-control" name="seguimiento" id="seguimiento_{{$accion->folioAccion}}" cols="45" rows="2"></textarea>
-                        </div>
-                        <div class="col-3 mb-3">
-                            <label for="ValidadorSeguimiento_{{$accion->folioAccion}}" class="form-label font-weight-bold">
-                                Responsable de la validación
-                            </label>
-                            <input type="text" class="form-control" name="validador" id="ValidadorSeguimiento_{{$accion->folioAccion}}" placeholder="Martin Aleman">
-                        </div>
-                        <div class="col-1 mb-3">
-                            <button type="submit" class="btn btn-primary mt-4">Guardar</button>
+                        @if(!empty($acciones))
+                    @foreach ($acciones as $accion )
+                    <div class="col-lg-6 mb-4">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">
+                                    Registro de accion Correctiva {{$accion->id}}
+                                </h6>
+                            </div>
+                            <div class="card-body" style="overflow-y: auto; height: 260px;">
+                                <div class="row">
+                                    <div class="col-md-4" >
+                                        <span class="font-weight-bold">Reponsable de la accion:<br> {{$accion->resposableSubAccion}}</span>
+                                    </div>
+                                    <div class="col-md-2" >
+                                        <span class="font-weight-bold">Fecha de inicio:<br> {{$accion->fechaInicioSubAccion}}</span>
+                                    </div>
+                                    <div class="col-md-2" >
+                                        <span class="font-weight-bold">Fecha de inicio:<br> {{$accion->fechaInicioSubAccion}}</span>
+                                    </div>
+                                    <div class="col-md-4" >
+                                        <span class="font-weight-bold">Quien aprobara la accion:<br> {{$accion->auditorSubAccion}}</span>
+                                    </div>
+                                    <div class="col-md-12" >
+                                        <span class="font-weight-bold">Descripcion de la accion:<br> {{$accion->descripcionSubAccion}}</span>
+                                    </div>
+                                </div>
+                            
+                            </div>
                         </div>
                     </div>
-                </form>
 
-                </div>
-            </div>
+                    {{-- FORMULARIO INDEPENDIENTE POR CADA ID --}}
+                    <div class="col-lg-6 mb-4">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Seguimiento y monitoreo de la ejecución</h6>
+                            </div>
+                            <div class="card-body" style="overflow-y: auto; height: 260px;">
+                                <form action="{{ route('accionesCorrectivas.guardarSeguimiento', ['id' => $accion->id, 'folio' => $accion->folioAccion]) }}" method="GET" id="form-{{$accion->id_acciones_correctivas}}" name="form-{{$accion->id_acciones_correctivas}}">
 
-    </div>
-@endforeach
+                                    <div class="row">
+                                        <div class="col-4 mb-3">
+                                            <label for="seguimiento_{{$accion->folioAccion}}" class="form-label font-weight-bold">
+                                                Descripcion de Seguimiento:
+                                            </label>
+                                            <textarea class="form-control" name="seguimiento" id="seguimiento_{{$accion->folioAccion}}" cols="45" rows="2"></textarea>
+                                        </div>
+                                        <div class="col-3 mb-3">
+                                            <label for="ValidadorSeguimiento_{{$accion->folioAccion}}" class="form-label font-weight-bold">
+                                                Responsable de la validación
+                                            </label>
+                                            <input type="text" class="form-control" name="validador" id="ValidadorSeguimiento_{{$accion->folioAccion}}" placeholder="Martin Aleman">
+                                        </div>
+                                        <div class="col-1 mb-3">
+                                            <button type="submit" class="btn btn-primary mt-4">Guardar</button>
+                                        </div>
+                                    </div>
+                                </form>
 
-          @endif
-           <div class="col-lg-12 mb-4">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Registros de monitoreos por accion</h6>
-                </div>
-                <div class="card-body" style="overflow-y: auto; max-height: 460px;">
-                    <table class="table table-bordered" id="seguimientosTable" width="100%" cellspacing="0">
-                        <thead>
-                            <tr>
-                                <th>Folio de accion</th>
-                                <th>Id de sub accion</th>
-                                <th>Descripcion del seguimiento</th>
-                                <th>Aprobador del seguimiento</th>
-                                <th>Fecha del seguimiento</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if($seguimientosSubAcciones->count() > 0)
-                                @foreach($seguimientosSubAcciones as $seguimiento)
-                                    <tr>
-                                        <td>{{ $seguimiento->folioAccion }}</td>
-                                        <td>{{ $seguimiento->idSubAccion }}</td>
-                                        <td>{{ $seguimiento->descripcionSeguimiento }}</td>
-                                        <td>{{ $seguimiento->AprobadorSeguimiento }}</td>
-                                        <td>{{ $seguimiento->created_at }}</td>
-                                    </tr>
-                                @endforeach
-                            @else
-                                <tr>
-                                    <td colspan="5">No hay seguimientos registrados para esta acción.</td>
-                                </tr>
-                            @endif
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-           </div>
+                                </div>
+                            </div>
 
+                        </div>
+                    @endforeach
+                        @endif
+                    <div class="col-lg-12 mb-4">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Registros de monitoreos por accion</h6>
+                            </div>
+                            <div class="card-body" style="overflow-y: auto; max-height: 460px;">
+                                <table class="table table-bordered" id="seguimientosTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Folio de accion</th>
+                                            <th>Id de sub accion</th>
+                                            <th>Descripcion del seguimiento</th>
+                                            <th>Aprobador del seguimiento</th>
+                                            <th>Fecha del seguimiento</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if($seguimientosSubAcciones->count() > 0)
+                                            @foreach($seguimientosSubAcciones as $seguimiento)
+                                                <tr>
+                                                    <td>{{ $seguimiento->folioAccion }}</td>
+                                                    <td>{{ $seguimiento->idSubAccion }}</td>
+                                                    <td>{{ $seguimiento->descripcionSeguimiento }}</td>
+                                                    <td>{{ $seguimiento->AprobadorSeguimiento }}</td>
+                                                    <td>{{ $seguimiento->created_at }}</td>
+                                                </tr>
+                                            @endforeach
+                                        @else
+                                            <tr>
+                                                <td colspan="5">No hay seguimientos registrados para esta acción.</td>
+                                            </tr>
+                                        @endif
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+    @else 
+                    <div class="col-lg-6 mb-4">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Descripcion de la contencion</h6>
+                            </div>
+                            <div class="card-body" style="overflow-y: auto; max-height: 460px;">
+                                <form action="{{ route('accionesCorrectivas.guardarContencion', ['id' => $registroPorquest->folioAccion]) }}" method="GET">
+                                    
+                                    <div class="row">
+                                        <div class="col-12 mb-3">
+                                            <label for="descripcionContencion" class="form-label font-weight-bold">Descripcion de la contencion</label>
+                                            <textarea class="form-control" name="descripcionContencion" id="descripcionContencion" cols="45" rows="4" required></textarea>
+                                        </div>
+                                        <div class="col-12 mb-3">
+                                            <label for="fechaCompromiso" class="form-label font-weight-bold">Fecha compromiso para cierre de accion</label>
+                                            <input type="date" class="form-control" name="fechaCompromiso" id="fechaCompromiso" required>
+                                        </div>
+                                        
+                                        <div class="col-1 mb-3">
+                                            <button type="submit" class="btn btn-primary">Guardar</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+    @endif
     </div>
 @endsection
