@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\personalBergsModel;
 use App\Models\routingModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -16,10 +15,16 @@ class AdminSupControlloer extends Controller
             return redirect('/login');
         } else {
             // buscar existencia de empleados en lista de asistencia
+            $asistencia = DB::table('assistence')->where('week', '=', date('W'))->get();
+            $datos = [];
+            foreach ($asistencia as $asist) {
+                if (DB::table('personalberg')->where('employeeNumber', '=', $asist->id_empleado)->where('status', '!=', 'Baja')->exists()) {
+                    continue;
+                } else {
+                    $datos[] = $asist->name;
+                }
 
-            $datos = personalBergsModel::join('assistence', 'personalberg.employeeNumber', '!=', 'assistence.id_empleado')
-                ->select('personalberg.*', 'assistence.*')
-                ->get();
+            }
             dd($datos);
 
             return view('SupAdmin', ['value' => session('user'), 'cat' => session('categoria')]);
