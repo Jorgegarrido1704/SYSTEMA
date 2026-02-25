@@ -61,10 +61,10 @@
                             <select class="form-control" name="resposableAccion" id="resposableAccion" required>
                                 <option></option>
                                 @foreach($personal as $p)
-                                <option value="{{ $p->user."/". $p->employeeLider }}">{{ $p->employeeLider }}</option>    
+                                <option value="{{ $p->employeeLider }}">{{ $p->employeeLider }}</option>
                                 @endforeach
                                  </select>
-                           
+
                         </div>
                 </div>
                 <div class="row mt-3">

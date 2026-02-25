@@ -8,23 +8,23 @@ use Illuminate\Database\Eloquent\Model;
 class monitoreosAcciones extends Model
 {
     use HasFactory;
+
     protected $table = 'monitoreos_acciones';
+
     protected $primaryKey = 'idAccion';
+
     public $timestamps = true;
+
     protected $fillable = [
         'folioAccion',
+        'idSubAccion',
         'descripcionSeguimiento',
         'AprobadorSeguimiento',
-    ];
-    protected $hidden = [
-        'created_at',
-        'updated_at',
+        'comentariosSeguimiento',
     ];
 
-   function getBunchAcciones($idAccion){
-       return acciones::where('folioAccion', $idAccion)->get();
-   }
-
-
-
+    public function getBunchAcciones($idAccion)
+    {
+        return acciones::where('folioAccion', $idAccion)->get();
+    }
 }

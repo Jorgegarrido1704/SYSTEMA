@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\accionesCorrectivas;
 use App\Models\accionesCorrectivas\monitoreosAcciones;
 use App\Models\personalBergsModel;
+use App\Models\sub_acciones_model;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -23,17 +24,13 @@ class AccionesCorrectivasController extends Controller
             $accionesActivas = accionesCorrectivas::where('status', '!=', 'finalizada')->where('resposableAccion', $value)->orderBy('id_acciones_correctivas', 'ASC')->get();
         }
         foreach ($accionesActivas as $accion) {
-           if($accion->status == 'Activa - Etapa 1'){
-                $diaFinal=Carbon::parse($accion->fechaFinAccion)->addWeekDays(2);
-               $accion->faltanDias=Carbon::parse($diaFinal)->diffInDays($accion->fechaAccion);
-           }
-            $accion->resposableAccion = explode('/', $accion->resposableAccion)[1]??$accion->resposableAccion;
+            if ($accion->status == 'Activa - Etapa 1') {
+                $diaFinal = Carbon::parse($accion->fechaFinAccion)->addWeekDays(2);
+                $accion->faltanDias = Carbon::parse($diaFinal)->diffInDays($accion->fechaAccion);
+            }
+            $accion->resposableAccion = explode('/', $accion->resposableAccion)[1] ?? $accion->resposableAccion;
         }
         $personal = personalBergsModel::select('employeeLider')->groupBy('employeeLider')->get();
-        foreach ($personal as $p) {
-            $user= personalBergsModel::select('user')->where('employeeName', $p->employeeLider)->first();
-            $p->user = $user->user;
-        }
 
         return view('accionesCorrectiva.index', [
             'cat' => $cat,
@@ -41,6 +38,7 @@ class AccionesCorrectivasController extends Controller
             'accionesActivas' => $accionesActivas,
             'diasRestantes' => $diasRestantes,
             'personal' => $personal,
+
         ]);
     }
 
@@ -86,31 +84,20 @@ class AccionesCorrectivasController extends Controller
         $value = session('user');
         $problema = 'Alta rotación de empleados';
         $categorias = [];
-        $registroPorquest = accionesCorrectivas::findOrFail($id);
+        $registroPorquest = accionesCorrectivas::where('folioAccion', $id)->first();
         if (! empty($registroPorquest->porques)) {
             $categorias = explode(' | ', $registroPorquest->porques);
-        } elseif ($registroPorquest->Ishikawa != null) {
+        } elseif (! empty($registroPorquest->Ishikawa)) {
             $categorias = json_decode($registroPorquest->Ishikawa, true);
 
         }
 
-        $acciones = accionesCorrectivas::where('folioAccion', $registroPorquest->folioAccion)->get();
+        $acciones = sub_acciones_model::where('folioAccion', $id)->get();
 
-        $diasRestantes = [];
-        foreach ($acciones as $accion) {
-            $diasRestantes[$accion->folioAccion] = $accion->fechaFinAccion ?? 0;
-            $seguimientos = monitoreosAcciones::where('folioAccion', $accion->folioAccion)->orderBy('folioAccion', 'DESC')->get();
-
-            foreach ($seguimientos as $seguimiento) {
-                $registrosSeguimientos[$accion->folioAccion][$seguimiento->id] = [
-                    'fecha' => $seguimiento->created_at,
-                    'seguimiento' => $seguimiento->descripcionSeguimiento,
-                    'aprobador' => $seguimiento->AprobadorSeguimiento,
-                    'comentario' => $seguimiento->comentariosSeguimiento,
-
-                ];
-            }
-        }
+        $personal = personalBergsModel::select('employeeLider')->groupBy('employeeLider')->get();
+        $seguimientosSubAcciones = monitoreosAcciones::where('folioAccion', $registroPorquest->folioAccion)
+            ->orderBy('idSubAccion', 'ASC')
+            ->orderBy('id', 'ASC')->get();
 
         return view('accionesCorrectiva.show', [
             'acciones' => $acciones,
@@ -118,9 +105,9 @@ class AccionesCorrectivasController extends Controller
             'value' => $value,
             'problema' => $problema,
             'categorias' => $categorias,
-            'diasRestantes' => $diasRestantes,
             'registroPorquest' => $registroPorquest,
-            'registrosSeguimientos' => $registrosSeguimientos ?? [],
+            'seguimientosSubAcciones' => $seguimientosSubAcciones,
+            'personal' => $personal,
 
         ]);
     }
@@ -203,13 +190,13 @@ class AccionesCorrectivasController extends Controller
             'fechaFinAccion' => 'required|date',
             'verificadorAccion' => 'required|string|max:500',
         ]);
-        accionesCorrectivas::create([
+        sub_acciones_model::create([
             'folioAccion' => $request->input('id'),
-            'accion' => $request->input('accion'),
-            'reponsableAccion' => $request->input('reponsableAccion'),
-            'fechaInicioAccion' => $request->input('fechaInicioAccion'),
-            'fechaFinAccion' => $request->input('fechaFinAccion'),
-            'verificadorAccion' => $request->input('verificadorAccion'),
+            'descripcionSubAccion' => $request->input('accion'),
+            'resposableSubAccion' => $request->input('reponsableAccion'),
+            'fechaInicioSubAccion' => $request->input('fechaInicioAccion'),
+            'fechaFinSubAccion' => $request->input('fechaFinAccion'),
+            'auditorSubAccion' => $request->input('verificadorAccion'),
 
         ]);
 
@@ -224,16 +211,17 @@ class AccionesCorrectivasController extends Controller
         return redirect()->route('accionesCorrectivas.index')->with('success', 'Acción correctiva eliminada exitosamente.');
     }
 
-    public function guardarSeguimiento(Request $request)
+    public function guardarSeguimiento(Request $request, $id, $folio)
     {
         /* $request->validate([
              'accion_id' => 'required|integer',
              'seguimiento' => 'required|string|max:500',
              'validador' => 'required|string|max:500',
          ]);*/
-        dd($request->all());
+
         monitoreosAcciones::create([
-            'folioAccion' => $request->input('accion_id'),
+            'folioAccion' => $folio,
+            'idSubAccion' => $id,
             'descripcionSeguimiento' => $request->input('seguimiento'),
             'AprobadorSeguimiento' => $request->input('validador'),
         ]);

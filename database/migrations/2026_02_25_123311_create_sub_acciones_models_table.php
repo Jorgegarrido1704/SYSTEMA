@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('monitoreos_acciones', function (Blueprint $table) {
-            $table->id();
+        Schema::create('sub_acciones_models', function (Blueprint $table) {
+            $table->id()->autoIncrement()->unique();
             $table->string('folioAccion');
-            $table->string('idSubAccion')->nullable();
-            $table->string('descripcionSeguimiento')->nullable();
-            $table->string('AprobadorSeguimiento')->nullable();
-            $table->string('comentariosSeguimiento')->nullable();
+            $table->string('descripcionSubAccion');
+            $table->string('resposableSubAccion');
+            $table->date('fechaInicioSubAccion');
+            $table->date('fechaFinSubAccion');
+            $table->string('auditorSubAccion')->nullable();
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('monitoreos_acciones');
+        Schema::dropIfExists('sub_acciones_models');
     }
 };
