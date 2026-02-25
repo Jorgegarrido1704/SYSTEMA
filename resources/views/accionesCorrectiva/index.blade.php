@@ -23,7 +23,9 @@
                             <label for="Afecta">Proceso al que afecta</label>
                             <select class="form-control" id="Afecta" name="Afecta" required>
                                 <option value="" disabled selected>Seleccione un proceso</option>
-                                <option value="Prduccion">Prduccion</option>
+                                <option value="Logistica">Logistica</option>
+                                <option value="Operaciones">Operaciones</option>
+                                <option value="Produccion">Produccion</option>
                                 <option value="Calidad">Calidad</option>
                                 <option value="Atencion a clientes">Atencion a clientes</option>
                                 <option value="Planeacion">Planeacion</option>
@@ -45,6 +47,7 @@
                             <select class="form-control" id="origenAccion" name="origenAccion" onchange="mostrarOtroOrigen()"  required>
                                 <option value="" disabled selected>Seleccione un origen</option>
                                 <option value="Auditoria Interna">Auditoria Interna</option>
+                                 <option value="Auditoria Externa">Auditoria Externa</option>
                                 <option value="Revision de la Direccion">Revision de la Direccion</option>
                                 <option value="Proceso">Proceso</option>
                                 <option value="Proveedor">Proveedor</option>

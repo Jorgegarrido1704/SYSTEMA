@@ -17,16 +17,17 @@ class AccionesCorrectivasController extends Controller
         $cat = session('categoria');
         $value = session('user');
         $diasRestantes = [];
+        $responsable = personalBergsModel::select('employeeName')->where('user', $value)->first();
         if ($value == 'Admin' or $value == 'Martin A') {
             $accionesActivas = accionesCorrectivas::where('status', '!=', 'finalizada')->orderBy('id_acciones_correctivas', 'ASC')->get();
 
         } else {
-            $accionesActivas = accionesCorrectivas::where('status', '!=', 'finalizada')->where('resposableAccion', $value)->orderBy('id_acciones_correctivas', 'ASC')->get();
+            $accionesActivas = accionesCorrectivas::where('status', '!=', 'finalizada')->where('resposableAccion', $responsable->employeeName)->orderBy('id_acciones_correctivas', 'ASC')->get();
         }
         foreach ($accionesActivas as $accion) {
-            if ($accion->status == 'Activa - Etapa 1') {
-                $diaFinal = Carbon::parse($accion->fechaFinAccion)->addWeekDays(2);
-                $accion->faltanDias = Carbon::parse($diaFinal)->diffInDays($accion->fechaAccion);
+            if (strpos($accion->status, 'etapa 1') !== false) {
+                $diaFinal = Carbon::parse($accion->fechaAccion)->addWeekDays(3);
+                $accion->faltanDias = $diaFinal->diffInDays(Carbon::now());
             }
             $accion->resposableAccion = explode('/', $accion->resposableAccion)[1] ?? $accion->resposableAccion;
         }
