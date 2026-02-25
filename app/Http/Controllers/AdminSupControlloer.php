@@ -18,9 +18,7 @@ class AdminSupControlloer extends Controller
             $asistencia = DB::table('assistence')->where('week', '=', date('W'))->get();
             $datos = [];
             foreach ($asistencia as $asist) {
-                if (DB::table('personalberg')->where('employeeNumber', '=', $asist->id_empleado)->where('status', '!=', 'Baja')->exists()) {
-                    continue;
-                } else {
+                if (DB::table('personalberg')->where('employeeNumber', '=', $asist->id_empleado)->where('status', '!=', 'Baja')->notExists()) {
                     $datos[$asist->id_empleado] = $asist->name;
                 }
 
