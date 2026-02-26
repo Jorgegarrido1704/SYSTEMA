@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\accionesCorrectivasRecordatorio;
 use App\Models\accionesCorrectivas;
 use App\Models\accionesCorrectivas\monitoreosAcciones;
 use App\Models\personalBergsModel;
 use App\Models\sub_acciones_model;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class AccionesCorrectivasController extends Controller
 {
