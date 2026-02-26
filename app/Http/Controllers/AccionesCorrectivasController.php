@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\accionesCorrectivas\contencion;
 use App\Mail\accionesCorrectivasRecordatorio;
 use App\Models\accionesCorrectivas;
 use App\Models\accionesCorrectivas\monitoreosAcciones;
@@ -55,6 +56,7 @@ class AccionesCorrectivasController extends Controller
             'descripcionAccion' => 'required|string|max:500',
 
         ]);
+
         if ($request->input('origenAccion') == 'otro') {
             $origenAccion = $request->input('origenAccion').'-'.$request->input('origenAccionotro');
         } else {
@@ -76,14 +78,13 @@ class AccionesCorrectivasController extends Controller
         $accion->origenAccion = $origenAccion;
         $accion->resposableAccion = $request->input('resposableAccion');
         $accion->descripcionAccion = $request->input('descripcionAccion');
+        $accion->ultimoEmail = Carbon::now()->format('Y-m-d');
         $accion->save();
         $email = personalBergsModel::select('email')->where('employeeName', $request->input('resposableAccion'))->first();
         if ($email) {
-            $mailaddress = $email->email;
-        } else {
-            $mailaddress = 'jgarrido@mx.bergstrominc.com';
+            $mailaddress .= ','.$email->email;
         }
-        $mailaddress = 'jgarrido@mx.bergstrominc.com';
+
         Mail::to($mailaddress)->send(new accionesCorrectivasRecordatorio($accion, 'Acciones Correctivas Recordatorio'));
 
         return redirect()->route('accionesCorrectivas.index')->with('success', 'Acción correctiva creada exitosamente.');
@@ -254,7 +255,16 @@ class AccionesCorrectivasController extends Controller
             'descripcionContencion' => $request->input('descripcionContencion'),
             'fechaCompromiso' => $request->input('fechaCompromiso'),
             'status' => 'etapa 1 - Contención',
+            'ultimoEmail' => Carbon::now()->format('Y-m-d'),
         ]);
+        $acciones = accionesCorrectivas::where('folioAccion', $id)->first();
+        $mailaddress = 'jgarrido@mx.bergstrominc.com,maleman@mx.bergstrominc.com';
+        $mailto = personalBergsModel::where('employeeName', $acciones->resposableAccion)->first();
+        if ($mailto) {
+            $mailaddress .= ','.$mailto->email;
+        }
+
+        $mail = Mail::to($mailaddress)->send(new contencion('Acciones Correctivas Contencion', $acciones));
 
         return redirect()->route('accionesCorrectivas.show', $id)->with('success', 'Acción correctiva actualizada exitosamente.');
     }

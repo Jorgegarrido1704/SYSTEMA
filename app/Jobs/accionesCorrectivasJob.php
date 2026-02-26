@@ -2,8 +2,10 @@
 
 namespace App\Jobs;
 
+use App\Mail\accionesCorrectivas\contencion;
 use App\Mail\accionesCorrectivasRecordatorio;
 use App\Models\accionesCorrectivas;
+use App\Models\personalBergsModel;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -19,17 +21,21 @@ class accionesCorrectivasJob implements ShouldQueue
 
     public function handle(): void
     {
-        $acciones = accionesCorrectivas::where('status', 'etapa 1 - inicio')
-            ->first();
-        $mailto = personalBergsModel::where('employeeName', $acciones->resposableAccion)->first();
-        if ($mailto) {
-            $mailaddress = $mailto->email;
-        } else {
-            $mailaddress = 'jgarrido@mx.bergstrominc.com';
-        }
-        $mailaddress = 'jgarrido@mx.bergstrominc.com';
+        $accioness = accionesCorrectivas::where('status', '!=', 'finalizada')
+            ->get();
 
-        Mail::to($mailaddress)->send(new accionesCorrectivasRecordatorio($acciones, 'Acciones Correctivas Recordatorio'));
+        foreach ($accioness as $acciones) {
+            $mailaddress = 'jgarrido@mx.bergstrominc.com,maleman@mx.bergstrominc.com';
+            $mailto = personalBergsModel::where('employeeName', $acciones->resposableAccion)->first();
+            if ($mailto) {
+                $mailaddress .= ','.$mailto->email;
+            }
+            if ($acciones->status == 'etapa 1 - inicio') {
+                Mail::to($mailaddress)->send(new accionesCorrectivasRecordatorio($acciones, 'Acciones Correctivas Recordatorio'));
+            } elseif ($acciones->status == 'etapa 1 - Contención') {
+                Mail::to($mailaddress)->send(new contencion('Acciones Correctivas Contencion', $acciones));
+            }
+        }
 
     }
 }
