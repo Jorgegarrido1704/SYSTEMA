@@ -86,7 +86,7 @@ class AccionesCorrectivasController extends Controller
         $mailaddress = 'jgarrido@mx.bergstrominc.com';
         Mail::to($mailaddress)->send(new accionesCorrectivasRecordatorio($accion, 'Acciones Correctivas Recordatorio'));
 
-        return redirect()->route('accionesCorrectivas.show', $accion->folioAccion)->with('success', 'Acción correctiva creada exitosamente.');
+        return redirect()->route('accionesCorrectivas.index')->with('success', 'Acción correctiva creada exitosamente.');
     }
 
     public function show($id)

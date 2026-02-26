@@ -4,7 +4,7 @@
     <title>Acción Correctiva</title>
 </head>
 <body>
-    <h2>Recordatorio de Acción Correctiva</h2>
+    <h2>Levantamiento de Acción Correctiva</h2>
 
     <p><strong>Folio:</strong> {{ $acciones->folioAccion ?? 'N/A' }}</p>
     <p><strong>Descripción de la accion:</strong> {{ $acciones->descripcionAccion ?? 'N/A' }}</p>
