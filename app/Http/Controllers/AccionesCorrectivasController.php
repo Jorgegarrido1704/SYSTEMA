@@ -75,6 +75,14 @@ class AccionesCorrectivasController extends Controller
         $accion->resposableAccion = $request->input('resposableAccion');
         $accion->descripcionAccion = $request->input('descripcionAccion');
         $accion->save();
+        $email = personalBergsModel::select('email')->where('employeeName', $request->input('resposableAccion'))->first();
+        if ($email) {
+            $mailaddress = $email->email;
+        } else {
+            $mailaddress = 'jgarrido@mx.bergstrominc.com';
+        }
+        $mailaddress = 'jgarrido@mx.bergstrominc.com';
+        Mail::to($mailaddress)->send(new accionesCorrectivasRecordatorio($accion, 'Acciones Correctivas Recordatorio'));
 
         return redirect()->route('accionesCorrectivas.show', $accion->folioAccion)->with('success', 'Acción correctiva creada exitosamente.');
     }
