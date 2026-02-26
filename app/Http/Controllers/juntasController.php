@@ -1966,8 +1966,8 @@ class juntasController extends Controller
                 }
 
                 $carbonFecha = Carbon::parse($fecha);
-                if ($carbonFecha->dayOfWeek == 5) {
-                    $fecha = $carbonFecha->addDays(3)->toDateString(); // convertir a string
+                if ($carbonFecha->dayOfWeek == 6) {
+                    $fecha = $carbonFecha->addDays(2)->toDateString(); // convertir a string
                 } else {
                     $fecha = $carbonFecha->addDays(1)->toDateString(); // convertir a string
                 }
@@ -1976,7 +1976,8 @@ class juntasController extends Controller
 
         // Recorrer cada día hábil del año
         while ($InicioYear <= $FinYear) {
-            if ($InicioYear->isWeekday()) {
+            // domingo
+            if ($InicioYear->dayOfWeek != 0) {
                 $fechaActual = $InicioYear->toDateString(); // 'YYYY-MM-DD'
                 if (array_key_exists($fechaActual, $vacacions)) {
 
@@ -2053,7 +2054,8 @@ class juntasController extends Controller
         // revisar si hay disponibilidad de vacaciones en la fecha solicitada
 
         for ($i = 0; $i < $revDias; $i++) {
-            if (Carbon::parse($checkDias)->isWeekend()) {
+            // si es domingo
+            if (Carbon::parse($checkDias)->dayOfWeek == 0) {
                 $revDias++;
             } else {
                 $datosVacaciones = DB::table('registro_vacaciones')
@@ -2064,7 +2066,7 @@ class juntasController extends Controller
                     ->where('fecha_de_solicitud', '=', $checkDias->toDateString())
                     ->where('id_empleado', '=', $pesonal)
                     ->count();
-                if ($datosVacaciones > 1) {
+                if ($datosVacaciones > 2) {
                     $noposible += 1;
                 }
                 if ($diasRepetidos > 0) {
@@ -2115,7 +2117,7 @@ class juntasController extends Controller
         for ($i = 0; $i < $diasT; $i++) {
 
             // Check if the date is a weekend
-            if (Carbon::parse($returnDate)->isWeekend()) {
+            if (Carbon::parse($returnDate)->dayOfWeek == 0) {
                 $diasT++;
             } else {
                 if (($diasReg - ($currentYear + $lastyear)) > 0) {

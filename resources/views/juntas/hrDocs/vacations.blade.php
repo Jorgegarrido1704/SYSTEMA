@@ -119,18 +119,18 @@ Swal.fire({
                 <table class="table table-bordered" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            @foreach (collect($dias)->take(5) as $dia)
+                            @foreach (collect($dias)->take(6) as $dia)
                                 <td>{{ $dia['Dia'] }}</td>
                             @endforeach
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($dias as $index => $dia)
-                            @if ($index % 5 === 0)
+                            @if ($index % 6 === 0)
                                 <tr>
                             @endif
                             <td class="vacation-cell" id="{{ $dia['vacas'] }}">{{ $dia['dia'] }}</td>
-                            @if (($index + 1) % 5 === 0 || $index + 1 === count($dias))
+                            @if (($index + 1) % 6 === 0 || $index + 1 === count($dias))
                                 </tr>
                             @endif
                         @endforeach
