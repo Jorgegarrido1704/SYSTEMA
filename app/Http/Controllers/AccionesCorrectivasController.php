@@ -56,7 +56,7 @@ class AccionesCorrectivasController extends Controller
             'descripcionAccion' => 'required|string|max:500',
 
         ]);
-
+        $mailaddress = 'jgarrido@mx.bergstrominc.com,maleman@mx.bergstrominc.com';
         if ($request->input('origenAccion') == 'otro') {
             $origenAccion = $request->input('origenAccion').'-'.$request->input('origenAccionotro');
         } else {
