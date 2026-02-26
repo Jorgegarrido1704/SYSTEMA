@@ -10,7 +10,7 @@
     <p><strong>Descripción de la accion:</strong> {{ $acciones->descripcionAccion ?? 'N/A' }}</p>
     <p><strong>Responsable:</strong> {{ $acciones->resposableAccion ?? 'N/A' }}</p>
     <p><strong>Esta accion fue creada el:</strong> {{ $acciones->fechaAccion ?? 'N/A' }} <strong>y se tiene un plazo de 48 horas para realizar la descripcion de la contencion de la accion</strong></p>
-   <p><strong>Fecha limite para la descripcion de la contencion:</strong> {{ \Carbon\Carbon::parse($acciones->fechaAccion)->addHours(48)->format('Y-m-d H:i:s') }}</p>
+   <p><strong>Fecha limite para la descripcion de la contencion:</strong> {{ \Carbon\Carbon::parse($acciones->fechaAccion)->addWeekDays(2)->format('Y-m-d') }}</p>
     <p><strong>Proceso Afectado:</strong> {{ $acciones->Afecta ?? 'N/A' }}</p>
     <p><strong>Origen de la accion fue detectada en el proceso de: </strong> {{ $acciones->origenAccion ?? 'N/A' }}</p>
 
