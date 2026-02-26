@@ -212,7 +212,7 @@ class AccionesCorrectivasController extends Controller
 
         ]);
 
-        return redirect()->route('accionesCorrectivas.show', $accion->folioAccion)->with('success', 'Acción correctiva actualizada exitosamente.');
+        return redirect()->route('accionesCorrectivas.show', $request->input('id'))->with('success', 'Acción correctiva actualizada exitosamente.');
     }
 
     public function destroy($id)

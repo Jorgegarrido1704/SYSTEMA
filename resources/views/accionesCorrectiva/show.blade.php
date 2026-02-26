@@ -29,7 +29,7 @@
                          <div class="col-md-3" >
                            <span class="font-weight-bold">Origen de la Acción: <br>{{ $registroPorquest->origenAccion }}</span>
                         </div>
-                        
+
                         <div class="col-md-4 mt-3" >
                            <span class="font-weight-bold">Responsable de la Acción: <br>{{ $registroPorquest->resposableAccion }}</span>
                         </div>
@@ -56,7 +56,7 @@
                                         </div>
                                         <div class="col-6 mb-3">
                                             <span class="font-weight-bold">Fecha compromiso para cierre de accion:<br> {{ $registroPorquest->fechaCompromiso }}</span>
-                                        </div>    
+                                        </div>
                                 </div>
                             </div>
                         </div>
@@ -71,7 +71,7 @@
                 <div class="card-body"  style="overflow-y: auto; max-height: 460px;">
                      @if(!empty($categorias))
                      <div class="row">
-                       
+
                         @foreach ($categorias as  $ctas => $causas)
                          <div class="col-md-6" >
                            <span class="font-weight-bold">Porque {{$ctas + 1}} :<br> {{$causas}}</span>
@@ -83,7 +83,7 @@
                         <div class="col-md-12" >
                            <span class="font-weight-bold">Conclusiones:<br> {{$registroPorquest->conclusiones}}</span>
                         </div>
-                     
+
                      </div>
                     @else
                         <p>Como desea registrar su causa raiz</p>
@@ -96,7 +96,7 @@
                             <div  id="5porque" style="display: none;">
                                 <div class=row>
                                     <form action="{{ route('accionesCorrectivas.guardarPorques', $registroPorquest->folioAccion) }}" method="GET" id="form5porque">
-                                     
+
                                             <div class="col-12 mb-3">
                                                 <label for="porque1">Porque?</label>
                                                 <textarea class="form-control" name="porque1" id="porque1"  cols="55" row="3" required></textarea>
@@ -128,7 +128,7 @@
                                                        <option value="SI">SI</option>
                                                        <option value="NO">NO</option>
                                                    </select>
-                                                  
+
                                             </div><div class="col-12 mb-3">
                                                 <button type="submit" class="btn btn-primary">Guardar</button>
                                             </div>
@@ -197,6 +197,7 @@
         </div>
         <!-- End Analisis de causa raiz -->
         <!-- Plan de accion -->
+            @if(!empty($registroPorquest->conclusiones))
          <div class="col-lg-8 mb-4">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
@@ -273,7 +274,7 @@
                                         <span class="font-weight-bold">Descripcion de la accion:<br> {{$accion->descripcionSubAccion}}</span>
                                     </div>
                                 </div>
-                            
+
                             </div>
                         </div>
                     </div>
@@ -288,17 +289,17 @@
                                 <form action="{{ route('accionesCorrectivas.guardarSeguimiento', ['id' => $accion->id, 'folio' => $accion->folioAccion]) }}" method="GET" id="form-{{$accion->id_acciones_correctivas}}" name="form-{{$accion->id_acciones_correctivas}}">
 
                                     <div class="row">
-                                        <div class="col-4 mb-3">
+                                        <div class="col-5 mb-3">
                                             <label for="seguimiento_{{$accion->folioAccion}}" class="form-label font-weight-bold">
                                                 Descripcion de Seguimiento:
                                             </label>
-                                            <textarea class="form-control" name="seguimiento" id="seguimiento_{{$accion->folioAccion}}" cols="45" rows="2"></textarea>
+                                            <textarea class="form-control" name="seguimiento" id="seguimiento_{{$accion->folioAccion}}" cols="45" rows="4"></textarea>
                                         </div>
-                                        <div class="col-3 mb-3">
+                                        <div class="col-4 mb-3">
                                             <label for="ValidadorSeguimiento_{{$accion->folioAccion}}" class="form-label font-weight-bold">
                                                 Responsable de la validación
                                             </label>
-                                            <input type="text" class="form-control" name="validador" id="ValidadorSeguimiento_{{$accion->folioAccion}}" placeholder="Martin Aleman">
+                                            <input type="text" class="form-control" name="validador" id="ValidadorSeguimiento_{{$accion->folioAccion}}" value="{{  $registroPorquest->resposableAccion }}"  readonly>
                                         </div>
                                         <div class="col-1 mb-3">
                                             <button type="submit" class="btn btn-primary mt-4">Guardar</button>
@@ -349,7 +350,8 @@
                             </div>
                         </div>
                     </div>
-    @else 
+                    @endif
+    @else
                     <div class="col-lg-6 mb-4">
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
@@ -357,7 +359,7 @@
                             </div>
                             <div class="card-body" style="overflow-y: auto; max-height: 460px;">
                                 <form action="{{ route('accionesCorrectivas.guardarContencion', ['id' => $registroPorquest->folioAccion]) }}" method="GET">
-                                    
+
                                     <div class="row">
                                         <div class="col-12 mb-3">
                                             <label for="descripcionContencion" class="form-label font-weight-bold">Descripcion de la contencion</label>
@@ -367,7 +369,7 @@
                                             <label for="fechaCompromiso" class="form-label font-weight-bold">Fecha compromiso para cierre de accion</label>
                                             <input type="date" class="form-control" name="fechaCompromiso" id="fechaCompromiso" required>
                                         </div>
-                                        
+
                                         <div class="col-1 mb-3">
                                             <button type="submit" class="btn btn-primary">Guardar</button>
                                         </div>
