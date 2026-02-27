@@ -56,7 +56,7 @@ class AccionesCorrectivasController extends Controller
             'descripcionAccion' => 'required|string|max:500',
 
         ]);
-        $mailaddress = 'jgarrido@mx.bergstrominc.com,maleman@mx.bergstrominc.com';
+
         if ($request->input('origenAccion') == 'otro') {
             $origenAccion = $request->input('origenAccion').'-'.$request->input('origenAccionotro');
         } else {
@@ -81,8 +81,13 @@ class AccionesCorrectivasController extends Controller
         $accion->ultimoEmail = Carbon::now()->format('Y-m-d');
         $accion->save();
         $email = personalBergsModel::select('email')->where('employeeName', $request->input('resposableAccion'))->first();
-        if ($email) {
-            $mailaddress .= ','.$email->email;
+        $mailaddresses = [
+            'jgarrido@mx.bergstrominc.com',
+            'maleman@mx.bergstrominc.com',
+        ];
+
+        if ($email && $email->email) {
+            $mailaddresses[] = $email->email;
         }
 
         Mail::to($mailaddress)->send(new accionesCorrectivasRecordatorio($accion, 'Acciones Correctivas Recordatorio'));
@@ -258,13 +263,17 @@ class AccionesCorrectivasController extends Controller
             'ultimoEmail' => Carbon::now()->format('Y-m-d'),
         ]);
         $acciones = accionesCorrectivas::where('folioAccion', $id)->first();
-        $mailaddress = 'jgarrido@mx.bergstrominc.com,maleman@mx.bergstrominc.com';
         $mailto = personalBergsModel::where('employeeName', $acciones->resposableAccion)->first();
-        if ($mailto) {
-            $mailaddress .= ','.$mailto->email;
+        $mailaddresses = [
+            'jgarrido@mx.bergstrominc.com',
+            'maleman@mx.bergstrominc.com',
+        ];
+
+        if ($mailto && $mailto->email) {
+            $mailaddresses[] = $mailto->email;
         }
 
-        $mail = Mail::to($mailaddress)->send(new contencion('Acciones Correctivas Contencion', $acciones));
+        $mail = Mail::to($mailaddresses)->send(new contencion('Acciones Correctivas Contencion', $acciones));
 
         return redirect()->route('accionesCorrectivas.show', $id)->with('success', 'Acción correctiva actualizada exitosamente.');
     }
