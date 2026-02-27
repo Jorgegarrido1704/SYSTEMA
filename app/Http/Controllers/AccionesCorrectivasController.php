@@ -164,10 +164,10 @@ class AccionesCorrectivasController extends Controller
             'jgarrido@mx.bergstrominc.com',
             'maleman@mx.bergstrominc.com',
         ];
-        /*
-                if ($email && $email->email) {
-                    $mailaddresses[] = $email->email;
-                }*/
+
+        if ($email && $email->email) {
+            $mailaddresses[] = $email->email;
+        }
 
         Mail::to($mailaddresses)->send(new cincoPorques($accion, 'Registro de 5 porques para la accion correctiva'));
 
@@ -281,10 +281,10 @@ class AccionesCorrectivasController extends Controller
             'jgarrido@mx.bergstrominc.com',
             'maleman@mx.bergstrominc.com',
         ];
-        /*
-                if ($mailto && $mailto->email) {
-                    $mailaddresses[] = $mailto->email;
-                }*/
+
+        if ($mailto && $mailto->email) {
+            $mailaddresses[] = $mailto->email;
+        }
 
         $mail = Mail::to($mailaddresses)->send(new contencion('Acciones Correctivas Contencion', $acciones));
 
