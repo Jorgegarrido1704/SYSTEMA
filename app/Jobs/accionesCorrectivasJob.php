@@ -2,8 +2,6 @@
 
 namespace App\Jobs;
 
-use App\Mail\accionesCorrectivas\contencion;
-use App\Mail\accionesCorrectivasRecordatorio;
 use App\Models\accionesCorrectivas;
 use App\Models\personalBergsModel;
 use Illuminate\Bus\Queueable;
@@ -25,15 +23,18 @@ class accionesCorrectivasJob implements ShouldQueue
             ->get();
 
         foreach ($accioness as $acciones) {
-            $mailaddress = 'jgarrido@mx.bergstrominc.com,maleman@mx.bergstrominc.com';
             $mailto = personalBergsModel::where('employeeName', $acciones->resposableAccion)->first();
+            $mailaddress = [
+                'jgarrido@mx.bergstrominc.com',
+                'maleman@mx.bergstrominc.com',
+            ];
             if ($mailto) {
-                $mailaddress .= ','.$mailto->email;
+                $mailaddress[] = $mailto->email;
             }
-            if ($acciones->status == 'etapa 1 - inicio') {
-                Mail::to($mailaddress)->send(new accionesCorrectivasRecordatorio($acciones, 'Acciones Correctivas Recordatorio'));
-            } elseif ($acciones->status == 'etapa 1 - Contención') {
-                Mail::to($mailaddress)->send(new contencion('Acciones Correctivas Contencion', $acciones));
+            if (Carbon) {
+                if (strpos($acciones->status, 'etapa 1') !== false) {
+                    Mail::to($mailaddress)->send(new recordatorio($acciones, ' Recordatorio "Acciones Correctivas"'));
+                }
             }
         }
 
