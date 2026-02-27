@@ -85,11 +85,11 @@ class AccionesCorrectivasController extends Controller
             'jgarrido@mx.bergstrominc.com',
             'maleman@mx.bergstrominc.com',
         ];
-
-        if ($email && $email->email) {
-            $mailaddresses[] = $email->email;
-        }
-
+        /*
+                if ($email && $email->email) {
+                    $mailaddresses[] = $email->email;
+                }
+        */
         Mail::to($mailaddresses)->send(new accionesCorrectivasRecordatorio($accion, 'Acciones Correctivas Recordatorio'));
 
         return redirect()->route('accionesCorrectivas.index')->with('success', 'Acción correctiva creada exitosamente.');
