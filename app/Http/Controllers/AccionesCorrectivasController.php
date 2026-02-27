@@ -20,7 +20,7 @@ class AccionesCorrectivasController extends Controller
         $cat = session('categoria');
         $value = session('user');
         $diasRestantes = [];
-        $responsable = personalBergsModel::select('employeeName')->where('email', '!=', null)->first();
+        $responsable = personalBergsModel::select('employeeName')->where('user', $value)->first();
         if ($value == 'Admin' or $value == 'Martin A') {
             $accionesActivas = accionesCorrectivas::where('status', '!=', 'finalizada')->orderBy('id_acciones_correctivas', 'ASC')->get();
 
@@ -34,7 +34,7 @@ class AccionesCorrectivasController extends Controller
             }
             $accion->resposableAccion = explode('/', $accion->resposableAccion)[1] ?? $accion->resposableAccion;
         }
-        $personal = personalBergsModel::select('employeeLider')->groupBy('employeeLider')->get();
+        $personal = personalBergsModel::select('employeeName')->where('email', '!=', null)->get();
 
         return view('accionesCorrectiva.index', [
             'cat' => $cat,
