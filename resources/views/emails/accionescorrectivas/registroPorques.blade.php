@@ -10,7 +10,7 @@
     <p><strong>Descripción de la accion:</strong> {{ $acciones->descripcionAccion ?? 'N/A' }}</p>
     <p><strong>Responsable:</strong> {{ $acciones->resposableAccion ?? 'N/A' }}</p>
     <p><strong>El responsable agrego la contencion de la accion correctiva el dia de hoy, con la descripcion de la contencion de la accion:</strong>{{ $acciones->descripcionContencion ?? 'N/A' }}</p>
-    <p><strong>Se registraron los 5 porques:</strong> {{ $acciones->porques ?? 'N/A' }}</p>
+    <p><strong>Se registraron los 5 porques:</strong> </p>
     <table>
         <thead>
             <tr>
@@ -30,7 +30,8 @@
                 <td>{{ $acciones->porque5 ?? 'N/A' }}</td>
             </tr>
         </tbody>
-    <p><strong>Tambien se asigno la fecha compromiso para el cierre de la accion correctiva:</strong> {{ $acciones->fechaCompromiso ?? 'N/A' }}</p>
+    </table>
+    <p><strong>Con la conclucion: </strong> {{ $acciones->conclusiones ?? 'N/A' }}</p>
 
     <br><br>
 

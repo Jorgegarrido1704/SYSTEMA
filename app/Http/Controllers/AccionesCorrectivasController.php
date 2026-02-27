@@ -138,11 +138,14 @@ class AccionesCorrectivasController extends Controller
         ]);
 
         $registroPorquest = $request->input('porque1');
+        $acciones = accionesCorrectivas::where('folioAccion', $id)->first();
+        $acciones->porques1 = $registroPorquest;
 
         for ($i = 2; $i <= 5; $i++) {
             $key = 'porque'.$i;
             if ($request->filled($key)) {
                 $registroPorquest .= ' | '.$request->input($key);
+                $acciones->{'porque'.$i} = $request->input($key);
             }
         }
         if ($request->input('sistemic') != 'NO') {
@@ -155,8 +158,18 @@ class AccionesCorrectivasController extends Controller
             'porques' => $registroPorquest,
             'conclusiones' => $request->input('conclusion'),
             'IsSistemicProblem' => $sistemic,
-            'status' => 'etapa 2 - Causa Raiz',
+            'status' => 'etapa 1 - Causa Raiz',
         ]);
+        $mailaddresses = [
+            'jgarrido@mx.bergstrominc.com',
+            'maleman@mx.bergstrominc.com',
+        ];
+        /*
+                if ($email && $email->email) {
+                    $mailaddresses[] = $email->email;
+                }*/
+
+        Mail::to($mailaddresses)->send(new cincoPorques($accion, 'Registro de 5 porques para la accion correctiva'));
 
         return redirect()->route('accionesCorrectivas.show', $id)->with('success', 'Acción correctiva actualizada exitosamente.');
     }
@@ -268,10 +281,10 @@ class AccionesCorrectivasController extends Controller
             'jgarrido@mx.bergstrominc.com',
             'maleman@mx.bergstrominc.com',
         ];
-
-        if ($mailto && $mailto->email) {
-            $mailaddresses[] = $mailto->email;
-        }
+        /*
+                if ($mailto && $mailto->email) {
+                    $mailaddresses[] = $mailto->email;
+                }*/
 
         $mail = Mail::to($mailaddresses)->send(new contencion('Acciones Correctivas Contencion', $acciones));
 
