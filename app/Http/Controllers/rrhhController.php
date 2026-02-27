@@ -1097,13 +1097,13 @@ class rrhhController extends Controller
                 'sabado' => strtoupper(str_replace('-', '', $row->sabado)),
                 'domingo' => strtoupper(str_replace('-', '', $row->domingo)),
             ];
-            $lunes = $diasSemana['lunes'].'<br> TE:'.$row->extLunes.' TT:'.$row->tt_lunes;
-            $martes = $diasSemana['martes'].'<br> TE:'.$row->extMartes.' TT:'.$row->tt_martes;
-            $miercoles = $diasSemana['miercoles'].'<br> TE:'.$row->extMiercoles.' TT:'.$row->tt_miercoles;
-            $jueves = $diasSemana['jueves'].'<br> TE:'.$row->extJueves.' TT:'.$row->tt_jueves;
-            $viernes = $diasSemana['viernes'].'<br> TE:'.$row->extViernes.' TT:'.$row->tt_viernes;
-            $sabado = $diasSemana['sabado'].'<br> TE:'.$row->extSabado.' TT:'.$row->tt_sabado;
-            $domingo = $diasSemana['domingo'].'<br> TE:'.$row->extDomingo.' TT:'.$row->tt_domingo;
+            $lunes = $diasSemana['lunes'].' TE:'.$row->extLunes.' TT:'.$row->tt_lunes;
+            $martes = $diasSemana['martes'].' TE:'.$row->extMartes.' TT:'.$row->tt_martes;
+            $miercoles = $diasSemana['miercoles'].' TE:'.$row->extMiercoles.' TT:'.$row->tt_miercoles;
+            $jueves = $diasSemana['jueves'].' TE:'.$row->extJueves.' TT:'.$row->tt_jueves;
+            $viernes = $diasSemana['viernes'].' TE:'.$row->extViernes.' TT:'.$row->tt_viernes;
+            $sabado = $diasSemana['sabado'].' TE:'.$row->extSabado.' TT:'.$row->tt_sabado;
+            $domingo = $diasSemana['domingo'].' TE:'.$row->extDomingo.' TT:'.$row->tt_domingo;
 
             $sheet->setCellValue('A'.$t, $row->name);
             $sheet->setCellValue('B'.$t, substr($row->id_empleado, 1));
