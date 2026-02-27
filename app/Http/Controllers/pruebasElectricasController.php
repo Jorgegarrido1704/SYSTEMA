@@ -82,35 +82,43 @@ class pruebasElectricasController extends Controller
 
         return redirect()->back()->with('message', 'Inventory added successfully.');
     }
-    public function testingMaterialRequeriment(){
+
+    public function testingMaterialRequeriment()
+    {
         $cat = session('categoria');
-        $value=session('user');
-        if($value==''){
+        $value = session('user');
+        if ($value == '') {
             return redirect('/');
         }
-        return view('inge.pruebasElectricas.testingMaterialRequeriment',['value'=>$value,'cat'=>$cat]);
+
+        return view('inge.pruebasElectricas.testingMaterialRequeriment', ['value' => $value, 'cat' => $cat]);
     }
-    public function searchMaterialPruebas(Request $request){
-        $data=materialPruebasElectricas::all();
-       // dd($data);
+
+    public function searchMaterialPruebas(Request $request)
+    {
+        $data = materialPruebasElectricas::all();
+
+        // dd($data);
         return response()->json($data);
 
     }
-    public function addMaterial(Request $request){
-        
-       $validated = $request->validate([
-            'pn' => ['required','string'],
-            'rev' => ['required','string'],
-            'customer' => ['required','string'],
-            'priority' => ['required','string'],
-            'connector' => ['required','string'],
-            'connqty' => ['required','numeric','min:0'],
-            'terminal' => ['required','string'],
-            'termqty' => ['required','numeric','min:0'],
-            'observ' => ['required','string'],
+
+    public function addMaterial(Request $request)
+    {
+
+        $validated = $request->validate([
+            'pn' => ['required', 'string'],
+            'rev' => ['required', 'string'],
+            'customer' => ['required', 'string'],
+            'priority' => ['required', 'string'],
+            'connector' => ['required', 'string'],
+            'connqty' => ['required', 'numeric', 'min:0'],
+            'terminal' => ['required', 'string'],
+            'termqty' => ['required', 'numeric', 'min:0'],
+            'observ' => ['required', 'string'],
         ]);
 
-        $material = new materialPruebasElectricas();
+        $material = new materialPruebasElectricas;
 
         $material->pn = $validated['pn'];
         $material->rev = $validated['rev'];
@@ -123,10 +131,13 @@ class pruebasElectricasController extends Controller
         $material->observaciones = $validated['observ'];
 
         $material->save();
+        $userPurchase = [
+            'jgarrido@mx.bergstrominc.com',
+        ];
+
+        Mail::to($userPurchase)->send(new \App\Mail\pruebasElectricas\addMaterial($material, 'New Material Added for Electrical Testing'));
 
         return redirect()->back()->with('message', 'Material added successfully.');
 
-       
     }
-
 }
