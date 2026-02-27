@@ -37,6 +37,7 @@
                                 <option value="Seguridad e higiene">Seguridad e higiene</option>
                                 <option value="Comercio internacional">Comercio internacional</option>
                                 <option value="Ingenieria">Ingenieria</option>
+                                <option value="Nuevos productos">Nuevos productos (NPI)</option>
 
                             </select>
                         </div>
@@ -64,7 +65,7 @@
                             <select class="form-control" name="resposableAccion" id="resposableAccion" required>
                                 <option></option>
                                 @foreach($personal as $p)
-                                <option value="{{ $p->employeeLider }}">{{ $p->employeeLider }}</option>
+                                <option value="{{ $p->employeeName }}">{{ $p->employeeName }}</option>
                                 @endforeach
                                  </select>
 
