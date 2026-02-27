@@ -90,7 +90,7 @@ class AccionesCorrectivasController extends Controller
             $mailaddresses[] = $email->email;
         }
 
-        Mail::to($mailaddress)->send(new accionesCorrectivasRecordatorio($accion, 'Acciones Correctivas Recordatorio'));
+        Mail::to($mailaddresses)->send(new accionesCorrectivasRecordatorio($accion, 'Acciones Correctivas Recordatorio'));
 
         return redirect()->route('accionesCorrectivas.index')->with('success', 'Acción correctiva creada exitosamente.');
     }
