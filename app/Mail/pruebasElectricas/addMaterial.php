@@ -41,7 +41,7 @@ class addMaterial extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.pruebasElecticas.addMaterial',
+            view: 'emails.pruebasElecticas.addMaterial',
         );
     }
 

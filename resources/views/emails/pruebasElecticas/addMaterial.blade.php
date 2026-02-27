@@ -9,10 +9,10 @@
     <p><strong>Folio de solicitud:</strong> {{ $material->id  }}</p>
     <p><strong>Este material es para el numero de parte </strong> {{ $material->pn }} REV {{ $material->rev }}
     para el cliente {{ $material->customer }}</p>
-    <p><strong>Prioridad:</strong> {{ $material->priority ?? }}</p>
+    <p><strong>Prioridad:</strong> {{ $material->priority }}</p>
 
     <p><strong>Material solicidado:</strong> 
-        @if($materital->connector =='N/A')  
+        @if($material->connector =='N/A')  
         <p><strong>Terminal:</strong> {{ $material->terminal}} <strong> por la cantidad de:</strong> {{ $material->terminalQty }} </p>
         @else
         <p><strong>Conector:</strong> {{ $material->connector}} <strong> por la cantidad de:</strong> {{ $material->connectorQty }} </p>

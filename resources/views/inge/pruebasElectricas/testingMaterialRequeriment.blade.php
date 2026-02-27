@@ -45,11 +45,21 @@
                             </div>
                             <div class="form-group">
                                 <label for="customer">Customer</label>
-                                <input type="text" class="form-control" id="customer" name="customer" required>
+                               <select class="form-control" id="customer" name="customer" required>
+                                    <option value="" disabled selected>Select Customer</option>
+                                    @foreach($customers as $customer)
+                                        <option value="{{ $customer->customer }}">{{ $customer->customer }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                             <div class="form-group">
                                 <label for="priority">Priority</label>
-                                <input type="text" class="form-control" id="priority" name="priority" required>
+                               <select class="form-control" id="priority" name="priority" required>
+                                    <option value="" disabled selected>Select Priority</option>
+                                    <option value="Baja">Baja</option>
+                                    <option value="Media">Media</option>
+                                    <option value="Alta">Alta</option>
+                                </select>
                             </div>
                             <div class="form-group">
                                 <label for="connector">Connector</label>

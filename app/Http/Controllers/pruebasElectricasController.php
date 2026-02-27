@@ -6,7 +6,9 @@ use App\Models\electricalTesting;
 use App\Models\materialPruebasElectricas;
 use App\Models\regPar;
 use App\Models\Wo;
+use App\Models\workScreduleModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class pruebasElectricasController extends Controller
 {
@@ -90,8 +92,9 @@ class pruebasElectricasController extends Controller
         if ($value == '') {
             return redirect('/');
         }
+        $customers = workScreduleModel::select('customer')->groupby('customer')->get();
 
-        return view('inge.pruebasElectricas.testingMaterialRequeriment', ['value' => $value, 'cat' => $cat]);
+        return view('inge.pruebasElectricas.testingMaterialRequeriment', ['value' => $value, 'cat' => $cat, 'customers' => $customers]);
     }
 
     public function searchMaterialPruebas(Request $request)
