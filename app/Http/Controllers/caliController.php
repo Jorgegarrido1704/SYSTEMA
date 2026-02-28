@@ -9,9 +9,10 @@ use App\Models\fallasCalidadModel;
 use App\Models\listaCalidad;
 use App\Models\Maintanance;
 use App\Models\material;
-use App\Models\Paros;
 use App\Models\personalBergsModel;
+use App\Models\regPar;
 use App\Models\regParTime;
+use App\Models\specialWireModel;
 use App\Models\timeDead;
 use App\Models\Wo;
 use Illuminate\Http\Request;
@@ -28,60 +29,10 @@ class caliController extends generalController
         if (empty($value)) {
             return redirect('/');
         } else {
-            $buscarcalidad = DB::table('calidad')->get();
-            $i = 0;
-            $calidad = [];
-            $fallas = [];
-            foreach ($buscarcalidad as $rowcalidad) {
-                $calidad[$i][0] = $rowcalidad->np;
-                $calidad[$i][1] = $rowcalidad->client;
-                $calidad[$i][2] = $rowcalidad->wo;
-                $calidad[$i][3] = $rowcalidad->po;
-                $calidad[$i][4] = $rowcalidad->qty;
-                $calidad[$i][5] = $rowcalidad->parcial;
-                $calidad[$i][6] = $rowcalidad->id;
-                $calidad[$i][7] = $rowcalidad->info;
-                $i++;
-            }
+            $calidad = calidad_registro_baja::orderBy('id', 'DESC')->get();
+            $preorder = regPar::where('preCalidad', '>', 0)->get();
 
-            $timesReg = strtotime(date('d-m-Y 00:00')) - 86400;
-
-            /*$registros=[];
-                $i=0;
-                $buscReg=DB::table('regsitrocalidad')->orderBy('id','DESC')->limit(250)->get();
-                foreach($buscReg as $rowReg){
-                    $registros[$i][0]=$rowReg->fecha;
-                        $registros[$i][1]=$rowReg->client;
-                        $registros[$i][2]=$rowReg->pn;
-                        $registros[$i][3]=$rowReg->resto;
-                        $registros[$i][4]=$rowReg->codigo;
-                        $registros[$i][5]=$rowReg->prueba;
-                        $registros[$i][6]=$rowReg->Responsable;
-                        $i++;
-                }
-                $i=0;
-                $buscFallas=DB::table('timedead')->where('area','Calidad')->where('timeFin','=','No Aun')->orderBy('id','DESC')->get();
-                foreach($buscFallas as $Fa){
-                    $fallas[$i][0]=$Fa->id;
-                    $fallas[$i][1]=$Fa->fecha;
-                    $fallas[$i][2]=$Fa->cliente;
-                    $fallas[$i][3]=$Fa->np;
-                    $fallas[$i][4]=$Fa->codigo;
-                    $fallas[$i][5]=$Fa->defecto;
-                    $fallas[$i][6]=$Fa->respArea;
-                    $i++;
-                }
-
-                $Generalcontroller=new generalController;
-                $generalresult=$Generalcontroller->__invoke();
-                $week=$generalresult->getData()['week'];
-                $assit=$generalresult->getData()['assit'];
-                $paros=$generalresult->getData()['paros'];
-                $desviations=$generalresult->getData()['desviations'];
-                $materials=$generalresult->getData()['materials'];*/
-            // se quitaron
-            // 'fallas'=>$fallas,'registros'=>$registros,'week'=>$week,'assit'=>$assit,'paros'=>$paros,'desviations'=>$desviations,'materials'=>$materials
-            return view('cali', ['cat' => $cat, 'value' => $value, 'calidad' => $calidad]);
+            return view('cali', ['cat' => $cat, 'value' => $value, 'calidad' => $calidad, 'preorder' => $preorder]);
         }
     }
 
@@ -716,12 +667,8 @@ class caliController extends generalController
         $denied = $request->input('denied');
         $cat = session('categoria');
         $value = session('user');
-        if (empty($acpt) && empty($denied)) {
-            $preorder = DB::table('registroparcial')->where('preCalidad', '>', 0)->get();
-
-            return view('preorder', ['value' => $value, 'cat' => $cat, 'preorder' => $preorder]);
-        } elseif (! empty($acpt)) {
-            $preorder = DB::table('registroparcial')->where('id', '=', $acpt)->first();
+        if (! empty($acpt)) {
+            $preorder = regPar::where('id', '=', $acpt)->first();
             $barcode = $preorder->codeBar;
             $pn = $preorder->pn;
             $wo = $preorder->wo;
@@ -741,7 +688,7 @@ class caliController extends generalController
                 $update = DB::table('calidad')->where('info', '=', $barcode)->update(['qty' => $qty]);
                 $updateParcia = DB::table('registroparcial')->where('codeBar', '=', $barcode)->update(['preCalidad' => 0, 'testPar' => $qty]);
 
-                return redirect('/accepted');
+                return back()->with('response', 'Registro actualizado correctamente');
             } else {
                 $buscarIfno = DB::table('registro')->where('info', '=', $barcode)->first();
                 $newCalidad = new listaCalidad;
@@ -755,7 +702,7 @@ class caliController extends generalController
                 $newCalidad->save();
                 $updateParcia = DB::table('registroparcial')->where('codeBar', '=', $barcode)->update(['preCalidad' => 0, 'testPar' => $qtycal]);
 
-                return redirect('/accepted');
+                return back()->with('response', 'Registro actualizado correctamente');
             }
         } elseif (! empty($denied)) {
             $buscarParcial = DB::table('registroparcial')->where('id', '=', $denied)->first();
@@ -951,7 +898,7 @@ class caliController extends generalController
                 $upCount = DB::table('registro')->where('info', '=', $barcode)->update(['count' => '8', 'donde' => 'Denid by Quality']);
             }
 
-            return redirect('/accepted');
+            return back()->with('response', 'Registro actualizado correctamente');
         }
     }
 
@@ -1233,5 +1180,34 @@ class caliController extends generalController
         $buscarWo = Wo::select('NumPart', 'cliente', 'rev')->where('wo', $numero)->first();
 
         return response()->json($buscarWo);
+    }
+
+    public function calidad_producto_no_conforme(Request $request)
+    {
+        $value = session('user');
+        $cat = session('categoria');
+        $denied = $request->input('id');
+        $forma = $request->input('porque');
+        $buscarParcial = regPar::where('wo', '=', $denied)->first();
+        $preCalidad = $buscarParcial->testPar;
+        $loomPar = $buscarParcial->loomPar;
+        $sum = $loomPar + $preCalidad;
+        $barcode = $buscarParcial->codeBar;
+        $pn = $buscarParcial->pn;
+        $ensamble = $buscarParcial->ensaPar;
+        $noloomqy = $preCalidad + $ensamble;
+        $noloom = specialWireModel::where('partNumber', $pn)->first();
+
+        if ($noloom && $noloom->partNumber == $pn) {
+            $updateParcia = regPar::where('wo', '=', $denied)->update(['testPar' => 0, 'ensaPar' => $noloomqy]);
+            $upCount = DB::table('registro')->where('info', '=', $barcode)->update(['count' => '7', 'donde' => 'Denid by Quality']);
+        } else {
+            $updateParcia = regPar::where('wo', '=', $denied)->update(['testPar' => 0, 'loomPar' => $sum]);
+            $upCount = DB::table('registro')->where('info', '=', $barcode)->update(['count' => '8', 'donde' => 'Denid by Quality']);
+        }
+        listaCalidad::where('wo', $denied)->delete();
+
+        return back()->with('response', 'forma de manejo: '.$forma);
+
     }
 }

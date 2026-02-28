@@ -16,7 +16,7 @@
 
                                 </div>
                                 <!-- Percent section -->
-                                <div class="card-body" style="overflow-y: auto; height: 760px;">
+                                <div class="card-body" style="overflow-y: auto; height: 500px;">
                                     @if(empty($id))
 
 
@@ -26,24 +26,29 @@
                                                 <th>Número de parte</th>
                                                 <th>Cliente</th>
                                                 <th>WO</th>
-
                                                 <th>Cantidad</th>
-
                                                 <th>Iniciar test</th>
+                                                <th>Rechazar</th>
                                             </thead>
-                                            <tbody align="center">
+                                            <tbody class="table-group-divider">
+                                               
                                                 @foreach ($calidad as $cal)
                                                 <tr>
-                                                    <form action="{{route('baja')}}" method="GET" id="forma">
-
-                                    <td id="np">{{$cal[0]}}</td>
-                                    <td id="client">{{$cal[1]}}</td>
-                                    <td id="wo">{{$cal[2]}}</td>
-                                        <td id="cant">{{$cal[4]}}</td>
-                                    <td align="center">
-                                            <input type="hidden" name="id" id="id" value="{{$cal[6]}}">
-                                            <button type="submit" id="enviar">Calidad</button></td>
-                                </form>
+                                                    <td class="text-center">{{$cal->np}}</td>
+                                                    <td class="text-center">{{$cal->client}}</td>
+                                                    <td class="text-center">{{$cal->wo}}</td>
+                                                    <td class="text-center">{{$cal->qty}}</td>
+                                                    <td class="text-center">
+                                                        <form action="{{route('baja')}}" method="GET" id="forma">
+                                                            <input type="hidden" name="id" id="id" value="{{$cal->id}}">
+                                                            <button class="btn btn-primary" type="submit" id="enviar">Empezar</button></td>
+                                                        </form>
+                                                        <td class="text-center">
+                                                        <form action="{{route('calidad.calidad_producto_no_conforme')}}"  method="GET" id="forma">
+                                                            <input type="hidden" name="id" id="id" value="{{$cal->wo}}">
+                                                            <input type="hidden" name="porque" id="porque" >
+                                                            <button class="btn btn-danger" type="submit" id="enviar" >Rechazar</button></td>
+                                                        </form>
                                                     </tr>
                                                     @endforeach
                                             </tbody>
@@ -51,12 +56,56 @@
                                         </div>
                                         @endif
 
-                              </div>
-                            </div>
+                                </div>
+                                </div>
                            </div>
+                            <div class="col-md-6">
+                                <div class="card shadow mb-4">
+                                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                        <h4 class="m-0 font-weight-bold text-primary">Pre-accepted data</h4>
+                                    </div>
+                                    <div class="card-body" style="overflow-y: auto; height: 500px;">
+                                        <table class="table table-bordered" id="preorder">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Part number</th>
+                                                    <th scope="col">Work Order</th>
+                                                    <th scope="col">Quantity</th>
+                                                    <th scope="col">Acepted</th>
+                                                    <th scope="col">Rejected</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if(!empty($preorder))
+                                                @foreach ($preorder as $item)
+                                                    <tr>
+                                                        <td>{{ $item->pn }}</td>
+                                                        <td>{{ $item->wo}}</td>
+                                                        <td>{{ $item->preCalidad}}</td>
+                                                        <td>
+                                                            <form action="{{ route('accepted') }}" method="GET">
+                                                                @csrf
+                                                                <input type="hidden" name="acpt" value="{{ $item->id }}" id="acpt">
+                                                                <button type="submit" class="btn btn-success">Acepted</button>
+                                                            </form>
+                                                        </td>
+                                                        <td> <form action="{{ route('accepted') }}" method="GET">
+                                                            @csrf
+                                                            <input type="hidden" name="denied" value="{{ $item->id }}" id="denied">
+                                                            <button type="submit" class="btn btn-danger">Rejected  </button>
+                                                        </form>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                                @endif
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
 
                         <!-- Second Column for WO by Area and Shipping Area -->
-                        <div class="col-lg-6 mb-4">
+                        <div class="col-lg-3 mb-4">
                             <!-- WO by Area -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
@@ -81,7 +130,8 @@
                                     </div>
                                 </div>
                             </div>
-
+                        </div>
+                           <div class="col-lg-3 mb-4">
                             <!-- Shipping Area -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
@@ -151,8 +201,7 @@
                                                     </div>
                                                 </div>
                                         </div>
-        </div>
-        <div class=row >
+       
 
              <div class="col-lg-6 mb-4">
                             <!-- Request Testing -->
@@ -160,7 +209,7 @@
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                     <h4 class="m-0 font-weight-bold text-primary">Request Testing</h4>
                                 </div>
-                            </div>
+                            
 
                             <div class="card body" style="overflow-y: scroll; height: 360px">
                                 <!-- se hizo de manera automatica
@@ -209,6 +258,7 @@
                                 </form> -->
                                 Se realizar de manera automatica cuando acceptes las ordenes
 
+                            </div>
                             </div>
              </div>
 
