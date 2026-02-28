@@ -2,8 +2,10 @@
 
 namespace App\Jobs;
 
+use App\Mail\pruebasElectricas\recordatorio;
 use App\Models\accionesCorrectivas;
 use App\Models\personalBergsModel;
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -19,11 +21,11 @@ class accionesCorrectivasJob implements ShouldQueue
 
     public function handle(): void
     {
-        $accioness = accionesCorrectivas::where('status', '!=', 'finalizada')
+        $accioness = accionesCorrectivas::where('status', 'LIKE', 'etapa 1%')
             ->get();
 
         foreach ($accioness as $acciones) {
-            $mailto = personalBergsModel::where('employeeName', $acciones->resposableAccion)->first();
+            $mailto = personalBergsModel::select('email', 'employeeLider')->where('employeeName', $acciones->resposableAccion)->first();
             $mailaddress = [
                 'jgarrido@mx.bergstrominc.com',
                 'maleman@mx.bergstrominc.com',
@@ -31,12 +33,16 @@ class accionesCorrectivasJob implements ShouldQueue
             if ($mailto) {
                 $mailaddress[] = $mailto->email;
             }
-            if (Carbon) {
-                if (strpos($acciones->status, 'etapa 1') !== false) {
-                    Mail::to($mailaddress)->send(new recordatorio($acciones, ' Recordatorio "Acciones Correctivas"'));
-                }
-            }
-        }
 
+            if (Carbon::parse($acciones->fechaAccion)->addWeekDays(2)->isPast()) {
+                $leaderMailto = personalBergsModel::select('email')->where('employeeName', $mailto->employeeLider)->first();
+                if ($leaderMailto) {
+                    $mailaddress[] = $leaderMailto->email;
+                }
+
+            }
+
+            Mail::to($mailaddress)->send(new recordatorio($acciones, ' Recordatorio "Acciones Correctivas"'));
+        }
     }
 }
