@@ -104,11 +104,18 @@ if (data.length === 0) {
                 </td>
                 <td>
                     <input type="date" class="form-control form-control-sm update-field" 
-                    data-field="dateEntrega" 
-                    value="${formatDate(element.dateEntrega)}">
+                    data-field="deliveryDate" 
+                    value="${formatDate(element.deliveryDate)}">
                 </td>
                 <td>
-                <input type="text" class="form-control form-control-sm update-field" data-field="status" value="${escapeHtml(element.status)}">
+                <select
+                        class="form-control form-control-sm update-field" 
+                        data-field="status"
+                        value="${escapeHtml(element.status)}">
+                        <option value="Pendiente" ${element.status === 'Pendiente' ? 'selected' : ''}>Pendiente</option>
+                        <option value="En Proceso" ${element.status === 'En Proceso' ? 'selected' : ''}>En Proceso</option>
+                        <option value="Completado" ${element.status === 'Completado' ? 'selected' : ''}>Completado</option>
+                    </select>
                 </td>
                 <td> <input type="text" class="form-control form-control-sm update-field" data-field="po" value="${escapeHtml(element.po)}"></td>
                 <td>

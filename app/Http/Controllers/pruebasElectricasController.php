@@ -99,7 +99,7 @@ class pruebasElectricasController extends Controller
 
     public function searchMaterialPruebas(Request $request)
     {
-        $data = materialPruebasElectricas::all();
+        $data = materialPruebasElectricas::where('status', '!=', 'Completado')->get();
 
         // dd($data);
         return response()->json($data);
