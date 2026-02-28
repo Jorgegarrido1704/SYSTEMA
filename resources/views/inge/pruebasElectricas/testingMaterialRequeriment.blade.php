@@ -82,7 +82,7 @@
                                 <label for="observ">Observaciones</label>
                                 <input type="text" class="form-control" id="observ" name="observ" value="N/A" required>
                             </div>
-                           <button type="submit" class="btn btn-primary">Submit</button>   
+                           <button type="submit" class="btn btn-primary">Add Material</button>   
                         </div>
 
                     </form>
