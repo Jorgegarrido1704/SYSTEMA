@@ -50,23 +50,76 @@ if (data.length === 0) {
     data.forEach(element => {
 
         html += `
-        <tr>
-            <td>${escapeHtml(element.pn)}</td>
-            <td>${escapeHtml(element.rev)}</td>
-            <td>${escapeHtml(element.customer)}</td>
-            <td>${escapeHtml(element.priority)}</td>
-            <td>${escapeHtml(element.connector)}</td>
-            <td class="text-end">${element.connectorQty ?? 0}</td>
-            <td>${escapeHtml(element.terminal)}</td>
-            <td class="text-end">${element.terminalQty ?? 0}</td>
-            <td>${formatDate(element.dateRecepcion)}</td>
-            <td>${formatDate(element.deliveryDate)}</td>
-            <td>${escapeHtml(element.status)}</td>
-            <td>${escapeHtml(element.po)}</td>
-            <td>${escapeHtml(element.observaciones)}</td>
-            <td>${escapeHtml(element.materialAtLaredo)}</td>
-            <td>${formatDate(element.eta_bea)}</td>
-        </tr>
+            <tr data-id="${element.id}">
+                <td>
+                    <input type="text" class="form-control form-control-sm update-field" 
+                        data-field="pn" 
+                        value="${escapeHtml(element.pn)}">
+               </td>
+                <td>
+                <input type="text" class="form-control form-control-sm update-field" 
+                        data-field="rev" 
+                        value="${escapeHtml(element.rev)}">
+                </td>
+                <td>
+                <input type="text" class="form-control form-control-sm update-field" 
+                        data-field="customer" 
+                        value="${escapeHtml(element.customer)}">
+                </td>
+                <td>
+                    <select
+                        class="form-control form-control-sm update-field" 
+                        data-field="priority"
+                        value="${escapeHtml(element.priority)}">
+                        <option value="Baja" ${element.priority === 'Baja' ? 'selected' : ''}>Baja</option>
+                        <option value="Media" ${element.priority === 'Media' ? 'selected' : ''}>Media</option>
+                        <option value="Alta" ${element.priority === 'Alta' ? 'selected' : ''}>Alta</option>
+                    </select>
+                </td>
+                <td> 
+                    <input type="text" class="form-control form-control-sm update-field" 
+                        data-field="connector" 
+                        value="${escapeHtml(element.connector)}">
+                </td>
+                <td class="text-end"> 
+                    <input type="number" class="form-control form-control-sm update-field" 
+                        data-field="connectorQty" 
+                        value="${element.connectorQty ?? 0}">
+                </td>
+                <td>
+                    <input type="text" class="form-control form-control-sm update-field" 
+                        data-field="terminal" 
+                        value="${escapeHtml(element.terminal)}">
+                </td>
+                <td class="text-end">
+                    <input type="number" class="form-control form-control-sm update-field" 
+                        data-field="terminalQty" 
+                        value="${element.terminalQty ?? 0}">
+                </td>
+                <td>
+                    <input type="date" 
+                    class="form-control form-control-sm update-field" 
+                    data-field="dateRecepcion" 
+                    value="${formatDate(element.dateRecepcion)}">
+                </td>
+                <td>
+                    <input type="date" class="form-control form-control-sm update-field" 
+                    data-field="dateEntrega" 
+                    value="${formatDate(element.dateEntrega)}">
+                </td>
+                <td>
+                <input type="text" class="form-control form-control-sm update-field" data-field="status" value="${escapeHtml(element.status)}">
+                </td>
+                <td> <input type="text" class="form-control form-control-sm update-field" data-field="po" value="${escapeHtml(element.po)}"></td>
+                <td>
+                <input type="text" class="form-control form-control-sm update-field" data-field="observaciones" value="${escapeHtml(element.observaciones)}">
+                </td>
+
+                <td>
+                <input type="text" class="form-control form-control-sm update-field" data-field="materialAtLaredo" value="${escapeHtml(element.materialAtLaredo)}"></td>
+                <td>
+                <input type="date" class="form-control form-control-sm update-field" data-field="eta_bea" value="${formatDate(element.eta_bea)}"></td>
+            </tr>
         `;
     });
 }
@@ -119,4 +172,39 @@ window.onload = function() {
 
 setInterval(function() {
     lista();
-}, 5000);
+}, 60000);
+
+document.addEventListener('change', function(e) {
+    if (e.target.classList.contains('update-field')) {
+
+        const input = e.target;
+        const newValue = input.value;
+        const field = input.dataset.field;
+        const row = input.closest('tr');
+        const id = row.dataset.id;
+
+        updateField(id, field, newValue);
+    }
+});
+function updateField(id, field, value) {
+    const url = updatematerial;
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify({
+            id: id,
+            field: field,
+            value: value
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (!data.success) {
+            alert('Error updating');
+        }
+    })
+    .catch(error => console.error(error));
+}

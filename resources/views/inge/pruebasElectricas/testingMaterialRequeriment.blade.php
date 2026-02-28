@@ -6,6 +6,7 @@
 <script> 
     
    const searchMaterialPruebas = @json(route('searchMaterialPruebas'));
+   const updatematerial = @json(route('updatematerialPruebasELectricas'));
     </script>
 
 <div class="d-sm-flex align-items-center justify-content-between mb-4 text-center"></div>
@@ -67,7 +68,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="connqty">Connector Quantity</label>
-                                <input type="number" class="form-control" id="connqty" name="connqty" min="0" step="1" required>
+                                <input type="number" class="form-control" id="connqty" name="connqty" value="0" min="0" step="1" required>
                             </div>
                             <div class="form-group">
                                 <label for="terminal">Terminal</label>
@@ -75,7 +76,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="termqty">Terminal Quantity</label>
-                                <input type="number" class="form-control" id="termqty" name="termqty" min="0" step="1" required>
+                                <input type="number" class="form-control" id="termqty" name="termqty" value="0" min="0" step="1" required>
                             </div>
                             <div class="form-group">
                                 <label for="observ">Observaciones</label>

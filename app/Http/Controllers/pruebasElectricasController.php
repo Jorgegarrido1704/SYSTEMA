@@ -143,4 +143,33 @@ class pruebasElectricasController extends Controller
         return redirect()->back()->with('message', 'Material added successfully.');
 
     }
+
+    public function updatematerial(Request $request)
+    {
+        $id = $request->input('id');
+        $field = $request->input('field');
+        $value = $request->input('value');
+
+        if (in_array($field, ['pn',
+            'rev',
+            'customer',
+            'priority',
+            'connector',
+            'connectorQty',
+            'terminal',
+            'terminalQty',
+            'dateRecepcion',
+            'deliveryDate',
+            'status',
+            'po',
+            'observaciones',
+            'materialAtLaredo',
+            'eta_bea', ])) {
+            materialPruebasElectricas::where('id', $id)->update([$field => $value]);
+
+            return response()->json(['success' => true]);
+        }
+
+        return response()->json(['success' => false, 'message' => 'Invalid field']);
+    }
 }
