@@ -289,7 +289,7 @@ class AccionesCorrectivasController extends Controller
             $mailaddresses[] = $mailto->email;
         }
 
-        $mail = Mail::to($mailaddresses)->send(new contencion('Acciones Correctivas Contencion', $acciones));
+        $mail = Mail::to($mailaddresses)->send(new contencion($acciones, 'Acciones Correctivas Contencion'));
 
         return redirect()->route('accionesCorrectivas.show', $id)->with('success', 'Acción correctiva actualizada exitosamente.');
     }
