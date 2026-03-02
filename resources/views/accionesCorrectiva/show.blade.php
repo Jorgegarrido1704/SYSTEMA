@@ -271,6 +271,14 @@
                                 <h6 class="m-0 font-weight-bold text-primary">
                                     Registro de accion Correctiva {{$accion->id}}
                                 </h6>
+                                  @if($value =="Admin" or $value=="Martin A")
+                    <form id="eliminarAccionForm" method="POST" action="{{ route('accionesCorrectivas.eliminarPlandeAccion', $accion->id, $accion->folioAccion) }}" style="display: inline;">
+                        @csrf
+                    <input type="hidden" name="donde" value="planAccion">
+                            <input type="hidden" name="porqueCausaRaiz" id="porqueCausaRaiz" >
+                        <button type="button" class="btn btn-danger float-right" onclick="eliminarPlandeAccion()">Eliminar Plan de Accion</button>
+                    </form>
+                    @endif
                             </div>
                             <div class="card-body" style="overflow-y: auto; height: 260px;">
                                 <div class="row">

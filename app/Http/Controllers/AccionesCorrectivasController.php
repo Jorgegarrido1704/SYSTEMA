@@ -340,4 +340,36 @@ class AccionesCorrectivasController extends Controller
 
         return redirect()->route('accionesCorrectivas.show', $id)->with('success', 'Causa raiz eliminada exitosamente.');
     }
+
+    public function eliminarPlandeAccion(Request $request, $id, $folio)
+    {
+        $request->validate([
+            'porqueCausaRaiz' => 'required|string|max:500',
+        ]);
+        sub_acciones_model::where('id', $id)->delete();
+        monitoreosAcciones::where('idSubAccion', $id)->delete();
+
+        eliminacionAccionCorrectiva::create([
+            'folioAccion' => $folio,
+            'campoEliminado' => 'plan de accion',
+            'motivoEliminacion' => $request->input('porqueCausaRaiz'),
+        ]);
+        // Mail eliminacion
+        $acciones = accionesCorrectivas::where('folioAccion', $folio)->first();
+        $mailto = personalBergsModel::where('employeeName', $acciones->resposableAccion)->first();
+        $acciones->campoEliminado = 'plan de accion';
+        $acciones->motivoEliminacion = $request->input('porqueCausaRaiz');
+        $mailaddresses = [
+            'jgarrido@mx.bergstrominc.com',
+            'maleman@mx.bergstrominc.com',
+        ];
+
+        if ($mailto && $mailto->email) {
+            $mailaddresses[] = $mailto->email;
+        }
+
+        $mail = Mail::to($mailaddresses)->send(new eliminacionPlandeAccion($acciones));
+
+        return redirect()->route('accionesCorrectivas.show', $folio)->with('success', 'Plan de acción eliminado exitosamente.');
+    }
 }
