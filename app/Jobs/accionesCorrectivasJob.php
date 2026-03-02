@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Mail\pruebasElectricas\recordatorio;
+use App\Mail\accionesCorrectivas\recordatorio;
 use App\Models\accionesCorrectivas;
 use App\Models\personalBergsModel;
 use Carbon\Carbon;
