@@ -172,7 +172,7 @@ class AccionesCorrectivasController extends Controller
             $mailaddresses[] = $email->email;
         }
 
-        Mail::to($mailaddresses)->send(new cincoPorques($accion, 'Registro de 5 porques para la accion correctiva'));
+        Mail::to($mailaddresses)->send(new cincoPorques($acciones, 'Registro de 5 porques para la accion correctiva'));
 
         return redirect()->route('accionesCorrectivas.show', $id)->with('success', 'Acción correctiva actualizada exitosamente.');
     }
