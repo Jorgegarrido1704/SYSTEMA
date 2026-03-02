@@ -40,7 +40,7 @@ class Kernel extends ConsoleKernel
         // $schedule->job(new \App\Jobs\reporteGeneral())->everyMinute()->between('07:00', '20:00');
 
         // acciones correctivas recordatorio de lunes a sabado a las 5:00 am
-        $schedule->job(new \App\Jobs\accionesCorrectivasJob)->dailyAt('05:59')->days([1, 2, 3, 4, 5]);
+        $schedule->job(new \App\Jobs\accionesCorrectivasJob)->dailyAt('08:10')->days([1, 2, 3, 4, 5]);
     }
 
     /**

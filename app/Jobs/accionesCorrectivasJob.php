@@ -30,17 +30,17 @@ class accionesCorrectivasJob implements ShouldQueue
                 'jgarrido@mx.bergstrominc.com',
                 'maleman@mx.bergstrominc.com',
             ];
-            if ($mailto) {
-                $mailaddress[] = $mailto->email;
-            }
+            /* if ($mailto) {
+                 $mailaddress[] = $mailto->email;
+             }
 
-            if (Carbon::parse($acciones->fechaAccion)->addWeekDays(2)->isPast()) {
-                $leaderMailto = personalBergsModel::select('email')->where('employeeName', $mailto->employeeLider)->first();
-                if ($leaderMailto) {
-                    $mailaddress[] = $leaderMailto->email;
-                }
+             if (Carbon::parse($acciones->fechaAccion)->addWeekDays(2)->isPast()) {
+                 $leaderMailto = personalBergsModel::select('email')->where('employeeName', $mailto->employeeLider)->first();
+                 if ($leaderMailto) {
+                     $mailaddress[] = $leaderMailto->email;
+                 }
 
-            }
+             }*/
 
             Mail::to($mailaddress)->send(new recordatorio($acciones, ' Recordatorio "Acciones Correctivas"'));
         }
