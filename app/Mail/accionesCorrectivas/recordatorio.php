@@ -35,10 +35,15 @@ class recordatorio extends Mailable
     /**
      * Get the message content definition.
      */
-    public function content(): Content
+    public function build()
     {
         return $this->view('emails.accionescorrectivas.recordatorio')
             ->subject($this->subject);
+    }
+
+    public function content(): Content
+    {
+        return new Content('');
     }
 
     /**
