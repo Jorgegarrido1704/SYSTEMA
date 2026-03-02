@@ -29,19 +29,19 @@ class accionesCorrectivasRecordatorio extends Mailable
         );
     }
 
-    public function build()
-    {
-        return $this->view('emails.accionesCorrectivasMail')
-            ->subject($this->subject);
-    }
+        public function build()
+        {
+            return $this->view('emails.accionesCorrectivasMail')
+                ->subject($this->subject);
+        }
 
-    public function content(): Content
-    {
-        return new Content('');
-    }
+        public function content(): Content
+        {
+            return new Content('');
+        }
 
-    public function attachments(): array
-    {
-        return [];
+        public function attachments(): array
+        {
+            return [];
+        }
     }
-}

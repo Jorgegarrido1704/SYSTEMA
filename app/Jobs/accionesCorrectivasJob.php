@@ -30,7 +30,7 @@ class accionesCorrectivasJob implements ShouldQueue
                 'jgarrido@mx.bergstrominc.com',
                 'maleman@mx.bergstrominc.com',
             ];
-            /* if ($mailto) {
+             if ($mailto) {
                  $mailaddress[] = $mailto->email;
              }
 
@@ -40,7 +40,6 @@ class accionesCorrectivasJob implements ShouldQueue
                      $mailaddress[] = $leaderMailto->email;
                  }
 
-             }*/
 
             Mail::to($mailaddress)->send(new recordatorio($acciones, ' Recordatorio "Acciones Correctivas"'));
         }
