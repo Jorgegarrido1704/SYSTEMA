@@ -8,10 +8,13 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class contencion extends Mailable
+class eliminacionCausas extends Mailable
 {
     use Queueable, SerializesModels;
 
+    /**
+     * Create a new message instance.
+     */
     public $subject;
 
     public $acciones;
@@ -20,16 +23,12 @@ class contencion extends Mailable
     {
         $this->acciones = $acciones;
         $this->subject = $subject;
-
     }
 
-    /**
-     * Get the message envelope.
-     */
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Descripción de contencion para la accion correctiva',
+            subject: 'Eliminación de causa raíz o contención para la acción correctiva',
         );
     }
 

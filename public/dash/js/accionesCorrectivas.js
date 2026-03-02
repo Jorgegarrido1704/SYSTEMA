@@ -30,5 +30,14 @@ function mostrarOtroOrigen() {
 
     }
 }
-
+function eliminarCausaRaiz() {
+    datos = prompt("Ingrese el motivo por el cual se eliminará la causa raíz:");
+    document.getElementById('porqueCausaRaiz').value = datos;
+        document.getElementById('eliminarCausaRaizForm').submit();
+}
+function eliminarContencion() {
+    datos = prompt("Ingrese el motivo por el cual se eliminará la contención:");
+    document.getElementById('porqueCausaRaiz').value = datos;
+        document.getElementById('eliminarContencionForm').submit();
+}
 document.querySelector('#origenAccion').addEventListener('onsubmit', datos);

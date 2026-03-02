@@ -48,6 +48,14 @@
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
                                 <h6 class="m-0 font-weight-bold text-primary">Descripcion de la contencion</h6>
+                                 @if($value =="Admin" or $value=="Martin A")
+                    <form id="eliminarContencionForm" method="POST" action="{{ route('accionesCorrectivas.eliminarCausaRaiz', $registroPorquest->folioAccion) }}" style="display: inline;">
+                        @csrf
+                        <input type="hidden" name="donde" value="contencion">
+                            <input type="hidden" name="porqueCausaRaiz" id="porqueCausaRaiz" >
+                        <button type="button" class="btn btn-danger float-right" onclick="eliminarContencion()">Eliminar Contencion</button>
+                    </form>
+                    @endif
                             </div>
                             <div class="card-body" style="overflow-y: auto; max-height: 460px;">
                                      <div class="row">
@@ -67,6 +75,14 @@
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary">Analisis de causa raiz</h6>
+                    @if($value =="Admin" or $value=="Martin A")
+                    <form id="eliminarCausaRaizForm" method="POST" action="{{ route('accionesCorrectivas.eliminarCausaRaiz', $registroPorquest->folioAccion) }}" style="display: inline;">
+                        @csrf
+                        <input type="hidden" name="donde" value="causaRaiz">
+                            <input type="hidden" name="porqueCausaRaiz" id="porqueCausaRaiz" >
+                        <button type="button" class="btn btn-danger float-right" onclick="eliminarCausaRaiz()">Eliminar Causa raiz</button>
+                    </form>
+                    @endif
                 </div>
                 <div class="card-body"  style="overflow-y: auto; max-height: 460px;">
                      @if(!empty($categorias))

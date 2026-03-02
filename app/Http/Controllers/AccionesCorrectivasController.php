@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\accionesCorrectivas\cincoPorques;
 use App\Mail\accionesCorrectivas\contencion;
+use App\Mail\accionesCorrectivas\eliminacionCausas;
 use App\Mail\accionesCorrectivasRecordatorio;
 use App\Models\accionesCorrectivas;
 use App\Models\accionesCorrectivas\monitoreosAcciones;
+use App\Models\eliminacionAccionCorrectiva;
 use App\Models\personalBergsModel;
 use App\Models\sub_acciones_model;
 use Carbon\Carbon;
@@ -289,5 +292,52 @@ class AccionesCorrectivasController extends Controller
         $mail = Mail::to($mailaddresses)->send(new contencion('Acciones Correctivas Contencion', $acciones));
 
         return redirect()->route('accionesCorrectivas.show', $id)->with('success', 'Acción correctiva actualizada exitosamente.');
+    }
+
+    public function eliminarCausaRaiz(Request $request, $id)
+    {
+        $request->validate([
+            'donde' => 'required|string|max:20',
+            'porqueCausaRaiz' => 'required|string|max:500',
+        ]);
+
+        if ($request->input('donde') == 'causaRaiz') {
+            $modificar = [
+                'porques' => null,
+                'Ishikawa' => null,
+                'status' => 'etapa 1 - causa raiz',
+            ];
+
+        } elseif ($request->input('donde') == 'contencion') {
+            $modificar = [
+                'descripcionContencion' => null,
+                'fechaCompromiso' => null,
+                'status' => 'etapa 1 - inicio',
+            ];
+        }
+        $accion = accionesCorrectivas::where('folioAccion', $id)->update($modificar);
+        eliminacionAccionCorrectiva::create([
+            'folioAccion' => $id,
+            'campoEliminado' => $request->input('donde'),
+            'motivoEliminacion' => $request->input('porqueCausaRaiz'),
+        ]);
+
+        // Mail eliminacion
+        $acciones = accionesCorrectivas::where('folioAccion', $id)->first();
+        $mailto = personalBergsModel::where('employeeName', $acciones->resposableAccion)->first();
+        $acciones->campoEliminado = $request->input('donde');
+        $acciones->motivoEliminacion = $request->input('porqueCausaRaiz');
+        $mailaddresses = [
+            'jgarrido@mx.bergstrominc.com',
+            'maleman@mx.bergstrominc.com',
+        ];
+
+        if ($mailto && $mailto->email) {
+            $mailaddresses[] = $mailto->email;
+        }
+
+        $mail = Mail::to($mailaddresses)->send(new eliminacionCausas($acciones, 'Eliminacion de causa raiz'));
+
+        return redirect()->route('accionesCorrectivas.show', $id)->with('success', 'Causa raiz eliminada exitosamente.');
     }
 }

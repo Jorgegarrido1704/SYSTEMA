@@ -43,5 +43,6 @@ class accionesCorrectivasJob implements ShouldQueue
                 Mail::to($mailaddress)->send(new recordatorio($acciones, ' Recordatorio "Acciones Correctivas"'));
             }
         }
+
     }
 }
