@@ -16,10 +16,11 @@ class recordatorio extends Mailable
 
     public $acciones;
 
-    public function __construct($subject, $acciones)
+    public function __construct($acciones, $subject)
     {
-        $this->subject = $subject;
         $this->acciones = $acciones;
+        $this->subject = $subject;
+
     }
 
     /**
@@ -28,13 +29,10 @@ class recordatorio extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: $this->subject,
+            subject: 'Recordatorio para la accion correctiva: ',
         );
     }
 
-    /**
-     * Get the message content definition.
-     */
     public function build()
     {
         return $this->view('emails.accionescorrectivas.recordatorio')
@@ -46,11 +44,6 @@ class recordatorio extends Mailable
         return new Content('');
     }
 
-    /**
-     * Get the attachments for the message.
-     *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
-     */
     public function attachments(): array
     {
         return [];

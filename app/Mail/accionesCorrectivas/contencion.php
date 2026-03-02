@@ -16,10 +16,11 @@ class contencion extends Mailable
 
     public $acciones;
 
-    public function __construct($subject, $acciones)
+    public function __construct($acciones, $subject)
     {
-        $this->subject = $subject;
         $this->acciones = $acciones;
+        $this->subject = $subject;
+
     }
 
     /**
