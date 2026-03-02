@@ -40,9 +40,9 @@ function eliminarContencion() {
     document.getElementById('porqueCausaRaiz').value = datos;
         document.getElementById('eliminarContencionForm').submit();
 }
-function eliminarPlandeAccion() {
+function eliminarPlandeAccion(id) {
     datos = prompt("Ingrese el motivo por el cual se eliminará el plan de acción:");
-    document.getElementById('porqueCausaRaiz').value = datos;
-        document.getElementById('eliminarAccionForm').submit();
+    document.getElementById('motivoeliminacion_' + id).value = datos;
+        document.getElementById('eliminarAccionForm_' + id).submit();
 }
 document.querySelector('#origenAccion').addEventListener('onsubmit', datos);

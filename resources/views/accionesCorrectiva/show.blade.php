@@ -272,11 +272,10 @@
                                     Registro de accion Correctiva {{$accion->id}}
                                 </h6>
                                   @if($value =="Admin" or $value=="Martin A")
-                    <form id="eliminarAccionForm" method="POST" action="{{ route('accionesCorrectivas.eliminarPlandeAccion', ['id' => $accion->id, 'folio' => $accion->folioAccion]) }}" style="display: inline;">
-                        @csrf
+                    <form id="eliminarAccionForm_{{$accion->id}}" method="GET" action="{{ route('accionesCorrectivas.eliminarPlandeAccion', ['id' => $accion->id, 'folio' => $accion->folioAccion]) }}" style="display: inline;">
                     <input type="hidden" name="donde" value="planAccion">
-                            <input type="hidden" name="porqueCausaRaiz" id="porqueCausaRaiz" >
-                        <button type="button" class="btn btn-danger float-right" onclick="eliminarPlandeAccion()">Eliminar Plan de Accion</button>
+                            <input type="hidden" name="motivoeliminacion" id="motivoeliminacion_{{$accion->id}}" >
+                        <button type="button" class="btn btn-danger float-right" onclick="eliminarPlandeAccion({{$accion->id}})">Eliminar Plan de Accion</button>
                     </form>
                     @endif
                             </div>

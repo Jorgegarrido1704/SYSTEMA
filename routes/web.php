@@ -238,7 +238,7 @@ Route::controller(AccionesCorrectivasController::class)->group(function () {
     Route::GET('/acciones-correctivas/guardarSeguimiento/{id}/{folio}', [AccionesCorrectivasController::class, 'guardarSeguimiento'])->name('accionesCorrectivas.guardarSeguimiento');
     Route::GET('/acciones-correctivas/guardarContencion/{id}', [AccionesCorrectivasController::class, 'guardarContencion'])->name('accionesCorrectivas.guardarContencion');
     Route::POST('/acciones-correctivas/eliminarCausaRaiz/{id}', [AccionesCorrectivasController::class, 'eliminarCausaRaiz'])->name('accionesCorrectivas.eliminarCausaRaiz');
-    Route::POST('/acciones-correctivas/eliminarPlandeAccion/{id}/{folio}', [AccionesCorrectivasController::class, 'eliminarPlandeAccion'])->name('accionesCorrectivas.eliminarPlandeAccion');
+    Route::GET('/acciones-correctivas/eliminarPlandeAccion/{id}/{folio}', [AccionesCorrectivasController::class, 'eliminarPlandeAccion'])->name('accionesCorrectivas.eliminarPlandeAccion');
 });
 
 Route::controller(mailsController::class)->group(function () {
