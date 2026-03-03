@@ -38,7 +38,7 @@ class contencion extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.accionescorrectivas.registroContencion')
+        return $this->view('emails.accionescorrectivas.registroPorques')
             ->subject($this->subject);
     }
 

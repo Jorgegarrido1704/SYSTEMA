@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\accionesCorrectivas\aceptacionAcciones;
 use App\Mail\accionesCorrectivas\cincoPorques;
 use App\Mail\accionesCorrectivas\contencion;
 use App\Mail\accionesCorrectivas\eliminacionCausas;
@@ -389,10 +390,10 @@ class AccionesCorrectivasController extends Controller
             'jgarrido@mx.bergstrominc.com',
             'maleman@mx.bergstrominc.com',
         ];
-        /*
-                if ($mailto && $mailto->email) {
-                    $mailaddresses[] = $mailto->email;
-                }*/
+
+        if ($mailto && $mailto->email) {
+            $mailaddresses[] = $mailto->email;
+        }
 
         $mail = Mail::to($mailaddresses)->send(new aceptacionAcciones($acciones, 'Aceptación de acciones correctivas'));
 

@@ -21,7 +21,7 @@
                            <span class="font-weight-bold">Folio:<br> {{ $registroPorquest->folioAccion }}</span>
                         </div>
                          <div class="col-md-3" >
-                           <span class="font-weight-bold">Fecha de Detección: <br> {{ $registroPorquest->fechaAccion }}</span>
+                           <span class="font-weight-bold">Fecha de Detección: <br> {{ \Carbon\Carbon::parse($registroPorquest->fechaAccion)->format('d-m-Y') }}</span>
                         </div>
                          <div class="col-md-3" >
                            <span class="font-weight-bold">Proceso Afectado:<br> {{ $registroPorquest->Afecta }}</span>
@@ -63,7 +63,7 @@
                                                     <span class="font-weight-bold">Descripcion de la contencion:<br> {{ $registroPorquest->descripcionContencion }}</span>
                                                     </div>
                                                     <div class="col-6 mb-3">
-                                                        <span class="font-weight-bold">Fecha compromiso para cierre de accion:<br> {{ $registroPorquest->fechaCompromiso }}</span>
+                                                        <span class="font-weight-bold">Fecha compromiso para cierre de accion:<br> {{ \Carbon\Carbon::parse($registroPorquest->fechaCompromiso)->format('d-m-Y') }}</span>
                                                     </div>
                                             </div>
                                         </div>
@@ -403,5 +403,50 @@
 
             @endif
     </div>
-   
+    <div class="row">
+        <div class="col-lg-12 mb-4 d-flex justify-content-center">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                     @if($value =="Admin" or $value=="Martin A")
+                   <form action="{{ route('accionesCorrectivas.aceptarAcciones', ['folio' => $registroPorquest->folioAccion, 'validador' => 'Martin Aleman SGC']) }}" method="GET">
+                    <button type="submit" class="btn btn-success float-center">Aceptar Acciones</button>
+                    @endif
+
+                </div>
+
+            </div>
+        </div>
+        @if(!empty($registroPorquest->verificadorAccion))
+        <div class="col-lg-12 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Medicion de la eficacia de la accion correctiva</h6>
+                </div>
+                <div class="card-body" style="overflow-y: auto; height: 450px;">
+                    <form action="{{ route('accionesCorrectivas.guardarAccion') }}" method="POST">
+                        @csrf
+                        <div class="row">
+                            <div class="col-md-6" >
+                                <label for="accion">Descripcion de la accion</label>
+
+                                <textarea class="form-control" name="accion" id="accion" cols="45" rows="2" required></textarea>
+                            </div>
+                            <div class="col-md-6" >
+                                <label for="reponsableAccion">Reponsable de la accion</label>
+                                <select name="reponsableAccion" id="reponsableAccion" class="form-control"  required>
+                                    <option value="" selected disabled>...</option>
+                                @foreach($personal as $p)
+                                <option value="{{ $p->employeeLider }}">{{ $p->employeeLider }}</option>
+                                @endforeach
+                                </select>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <button type="submit" class="btn btn-primary mt-4">Guardar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            @endif
+    </div>
 @endsection
