@@ -416,16 +416,7 @@
             </div>
         </div>
         @endif
-        @if(!empty($registroPorquest->verificadorAccion))
-        <div class="col-lg-12 mb-4 text-center mt-4 center">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <form action="{{ route('accionesCorrectivas.aceptarAcciones', ['Validador' => $registroPorquest->verificadorAccion, 'folioAccion' => $registroPorquest->folioAccion]) }}" method="GET">
-                    <button class="btn btn-success" >Aceptar acciones</button>
-                    </form>
-                </div>
+        
 
-            </div>
-            @endif
     </div>
 @endsection
