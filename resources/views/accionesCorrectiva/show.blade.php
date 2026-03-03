@@ -408,7 +408,7 @@
         <div class="col-lg-12 mb-4 text-center mt-4 center">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <button class="btn btn-success" >Regresar</button>
+                    <button class="btn btn-success" >Aceptar acciones</button>
                 </div>
 
             </div>

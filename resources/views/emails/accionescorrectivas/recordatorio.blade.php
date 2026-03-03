@@ -4,7 +4,7 @@
     <title>Acción Correctiva</title>
 </head>
 <body>
-    <h2>Recordatorio "Constacion de Acción Correctiva"</h2>
+    <h2>Recordatorio "Contestacion de Acción Correctiva"</h2>
 
 
     <p><strong>Folio:</strong> {{ $acciones->folioAccion ?? 'N/A' }}</p>
