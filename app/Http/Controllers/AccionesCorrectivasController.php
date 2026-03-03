@@ -284,11 +284,11 @@ class AccionesCorrectivasController extends Controller
             'jgarrido@mx.bergstrominc.com',
             'maleman@mx.bergstrominc.com',
         ];
-        /*
+
                 if ($mailto && $mailto->email) {
                     $mailaddresses[] = $mailto->email;
                 }
-                    */
+
 
         $mail = Mail::to($mailaddresses)->send(new contencion($acciones, 'Acciones Correctivas Contencion'));
 
@@ -332,11 +332,11 @@ class AccionesCorrectivasController extends Controller
             'jgarrido@mx.bergstrominc.com',
             'maleman@mx.bergstrominc.com',
         ];
-        /*
+
         if ($mailto && $mailto->email) {
             $mailaddresses[] = $mailto->email;
         }
-    */
+    
         $mail = Mail::to($mailaddresses)->send(new eliminacionCausas($acciones, 'Eliminacion de causa raiz'));
 
         return redirect()->route('accionesCorrectivas.show', $id)->with('success', 'Causa raiz eliminada exitosamente.');
