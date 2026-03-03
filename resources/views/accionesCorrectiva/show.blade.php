@@ -79,7 +79,7 @@
                                 <form id="eliminarCausaRaizForm" method="POST" action="{{ route('accionesCorrectivas.eliminarCausaRaiz', $registroPorquest->folioAccion) }}" style="display: inline;">
                                     @csrf
                                     <input type="hidden" name="donde" value="causaRaiz">
-                                        <input type="hidden" name="porqueCausaRaiz" id="porqueCausaRaiz" >
+                                        <input type="hidden" name="porques" id="porques" >
                                     <button type="button" class="btn btn-danger float-right" onclick="eliminarCausaRaiz()">Eliminar Causa raiz</button>
                                 </form>
                                 @endif

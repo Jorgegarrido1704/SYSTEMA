@@ -299,9 +299,8 @@ class AccionesCorrectivasController extends Controller
     {
         $request->validate([
             'donde' => 'required|string|max:20',
-            'porqueCausaRaiz' => 'required|string|max:500',
         ]);
-
+        $motivo = $request->input('porqueCausaRaiz') ?: $request->input('porques');
         if ($request->input('donde') == 'causaRaiz') {
             $modificar = [
                 'porques' => null,
@@ -320,14 +319,14 @@ class AccionesCorrectivasController extends Controller
         eliminacionAccionCorrectiva::create([
             'folioAccion' => $id,
             'campoEliminado' => $request->input('donde'),
-            'motivoEliminacion' => $request->input('porqueCausaRaiz'),
+            'motivoEliminacion' => $motivo,
         ]);
 
         // Mail eliminacion
         $acciones = accionesCorrectivas::where('folioAccion', $id)->first();
         $mailto = personalBergsModel::where('employeeName', $acciones->resposableAccion)->first();
         $acciones->campoEliminado = $request->input('donde');
-        $acciones->motivoEliminacion = $request->input('porqueCausaRaiz');
+        $acciones->motivoEliminacion = $motivo;
         $mailaddresses = [
             'jgarrido@mx.bergstrominc.com',
             'maleman@mx.bergstrominc.com',
