@@ -37,7 +37,7 @@ class eliminacionCausas extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.accionescorrectivas.registroContencion')
+        return $this->view('emails.accionescorrectivas.eliminacionCausaRaiz')
             ->subject($this->subject);
     }
 
