@@ -468,7 +468,7 @@ class planingController extends Controller
                             'jcrodriguez@mx.bergstrominc.com',
                             'dvillalpando@mx.bergstrominc.com',
                             'egaona@mx.bergstrominc.com',
-                            'mvaladez@mx.bergstrominc.com',
+                            'rramirez@mx.bergstrominc.com',
                             'jolaes@mx.bergstrominc.com',
                             'lramos@mx.bergstrominc.com',
                             'emedina@mx.bergstrominc.com',
