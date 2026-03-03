@@ -125,7 +125,7 @@
                  <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('vacations') }}">Vacations</a></li>
                  <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('juntas.npi') }}">NPI</a></li>
                   <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('accionesCorrectivas.index') }}">Corrective Actions</a></li>
-                @if($cat=='compras' || $value=='Admin')
+                @if($value=='Valeria P' || $value=='Admin' || $value=='Jose Luis' || $value=='Jesus_C' )
                 <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('testingMaterialRequeriment') }}">Requeriment Materials Testing</a></li>
                 @endif
             </ul>

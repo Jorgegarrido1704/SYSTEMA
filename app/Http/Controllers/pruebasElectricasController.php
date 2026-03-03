@@ -136,6 +136,9 @@ class pruebasElectricasController extends Controller
         $material->save();
         $userPurchase = [
             'jgarrido@mx.bergstrominc.com',
+            'JRuiz@mx.bergstrominc.com',
+            'vpichardo@mx.bergstrominc.com',
+
         ];
 
         Mail::to($userPurchase)->send(new \App\Mail\pruebasElectricas\addMaterial($material, 'New Material Added for Electrical Testing'));
