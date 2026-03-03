@@ -34,7 +34,7 @@ class accionesCorrectivasJob implements ShouldQueue
                 $mailaddress[] = $mailto->email;
             }
 
-            if (Carbon::parse($acciones->fechaAccion)->addWeekDays(2)->isPast()) {
+            if (Carbon::parse($acciones->fechaAccion)->addWeekDays(3)->isPast()) {
                 $leaderMailto = personalBergsModel::select('email')->where('employeeName', $mailto->employeeLider)->first();
                 if ($leaderMailto) {
                     $mailaddress[] = $leaderMailto->email;

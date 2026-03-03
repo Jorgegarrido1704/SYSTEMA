@@ -161,7 +161,7 @@ class AccionesCorrectivasController extends Controller
             'porques' => $registroPorquest,
             'conclusiones' => $request->input('conclusion'),
             'IsSistemicProblem' => $sistemic,
-            'status' => 'etapa 1 - Causa Raiz',
+            'status' => 'etapa 1 - 5porques',
         ]);
         $mailto = personalBergsModel::where('employeeName', $acciones->resposableAccion)->first();
         $mailaddresses = [
