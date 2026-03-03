@@ -29,7 +29,7 @@ class cincoPorques extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Descripción de contencion para la accion correctiva',
+            subject: 'Descripción de cinco porques ',
         );
     }
 
