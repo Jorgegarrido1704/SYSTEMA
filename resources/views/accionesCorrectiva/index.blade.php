@@ -105,8 +105,6 @@
                             <th>Proceso Afectado</th>
                             <th>Origen de la Accion</th>
                             <th>Responsable</th>
-                            <th>Descripcion</th>
-
                             <th>Status</th>
                             <th>Dias Restantes</th>
                         </tr>
@@ -120,7 +118,6 @@
                                     <td>{{ $accion->Afecta }}</td>
                                     <td>{{ $accion->origenAccion }}</td>
                                     <td>{{ $accion->resposableAccion }}</td>
-                                    <td>{{ $accion->descripcionAccion }}</td>
                                     <td>{{ $accion->status }}</td>
                                     <td>{{ $accion->faltanDias }}</td>
                                 </tr>
