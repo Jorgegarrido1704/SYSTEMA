@@ -377,15 +377,14 @@ class AccionesCorrectivasController extends Controller
     {
 
         $acciones = accionesCorrectivas::where('folioAccion', $folio)->update([
-            'status' => 'etapa 3 - Verficacion de eficiencia aplicada',
+            'status' => 'etapa 2 - Verficacion de eficiencia aplicada',
             'verificadorAccion' => $validador,
         ]);
 
         // Mail eliminacion
         $acciones = accionesCorrectivas::where('folioAccion', $folio)->first();
         $mailto = personalBergsModel::where('employeeName', $acciones->resposableAccion)->first();
-        $acciones->campoEliminado = 'plan de accion con ID '.$id;
-        $acciones->motivoEliminacion = $request->input('motivoeliminacion');
+
         $mailaddresses = [
             'jgarrido@mx.bergstrominc.com',
             'maleman@mx.bergstrominc.com',
@@ -395,7 +394,7 @@ class AccionesCorrectivasController extends Controller
                     $mailaddresses[] = $mailto->email;
                 }*/
 
-        $mail = Mail::to($mailaddresses)->send(new aceptacionAcciones($acciones));
+        $mail = Mail::to($mailaddresses)->send(new aceptacionAcciones($acciones, 'Aceptación de acciones correctivas'));
 
         return redirect()->route('accionesCorrectivas.show', $folio)->with('success', 'Acción aceptada exitosamente.');
     }
