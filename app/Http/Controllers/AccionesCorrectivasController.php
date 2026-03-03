@@ -163,15 +163,15 @@ class AccionesCorrectivasController extends Controller
             'IsSistemicProblem' => $sistemic,
             'status' => 'etapa 1 - Causa Raiz',
         ]);
+        $mailto = personalBergsModel::where('employeeName', $acciones->resposableAccion)->first();
         $mailaddresses = [
             'jgarrido@mx.bergstrominc.com',
             'maleman@mx.bergstrominc.com',
         ];
 
-        if ($email && $email->email) {
-            $mailaddresses[] = $email->email;
+        if ($mailto && $mailto->email) {
+            $mailaddresses[] = $mailto->email;
         }
-
         Mail::to($mailaddresses)->send(new cincoPorques($acciones, 'Registro de 5 porques para la accion correctiva'));
 
         return redirect()->route('accionesCorrectivas.show', $id)->with('success', 'Acción correctiva actualizada exitosamente.');
@@ -371,5 +371,32 @@ class AccionesCorrectivasController extends Controller
         $mail = Mail::to($mailaddresses)->send(new eliminacionCausas($acciones));
 
         return redirect()->route('accionesCorrectivas.show', $folio)->with('success', 'Plan de acción eliminado exitosamente.');
+    }
+
+    public function aceptarAcciones(Request $request, $validador, $folio)
+    {
+
+        $acciones = accionesCorrectivas::where('folioAccion', $folio)->update([
+            'status' => 'etapa 3 - Verficacion de eficiencia aplicada',
+            'verificadorAccion' => $validador,
+        ]);
+
+        // Mail eliminacion
+        $acciones = accionesCorrectivas::where('folioAccion', $folio)->first();
+        $mailto = personalBergsModel::where('employeeName', $acciones->resposableAccion)->first();
+        $acciones->campoEliminado = 'plan de accion con ID '.$id;
+        $acciones->motivoEliminacion = $request->input('motivoeliminacion');
+        $mailaddresses = [
+            'jgarrido@mx.bergstrominc.com',
+            'maleman@mx.bergstrominc.com',
+        ];
+        /*
+                if ($mailto && $mailto->email) {
+                    $mailaddresses[] = $mailto->email;
+                }*/
+
+        $mail = Mail::to($mailaddresses)->send(new aceptacionAcciones($acciones));
+
+        return redirect()->route('accionesCorrectivas.show', $folio)->with('success', 'Acción aceptada exitosamente.');
     }
 }
