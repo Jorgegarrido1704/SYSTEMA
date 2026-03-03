@@ -403,20 +403,5 @@
 
             @endif
     </div>
-    <div class="row">
-        @if($value =="Admin" or $value=="Martin A")
-        <div class="col-lg-12 mb-4 text-center mt-4 center">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <form action="{{ route('accionesCorrectivas.aceptarAcciones', ['Validador' => 'Martin Aleman SGC', 'folioAccion' => $registroPorquest->folioAccion]) }}" method="GET">
-                    <button class="btn btn-success" >Aceptar acciones</button>
-                    </form>
-                </div>
-
-            </div>
-        </div>
-        @endif
-        
-
-    </div>
+   
 @endsection
