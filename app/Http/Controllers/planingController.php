@@ -463,7 +463,7 @@ class planingController extends Controller
                         $recipients = [
                             'jguillen@mx.bergstrominc.com',
                             'jlopez@mx.bergstrominc.com',
-
+                            'drocha@mx.bergstrominc.com',
                             'jcervera@mx.bergstrominc.com',
                             'jcrodriguez@mx.bergstrominc.com',
                             'dvillalpando@mx.bergstrominc.com',

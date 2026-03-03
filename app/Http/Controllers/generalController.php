@@ -423,6 +423,7 @@ class generalController extends Controller
                                 'jlopez@mx.bergstrominc.com',
                                 'scastillo@mx.bergstrominc.com',
                                 'rramirez@mx.bergstrominc.com',
+                                'drocha@mx.bergstrominc.com',
                             ];
                             Mail::to($recipients)->send(new \App\Mail\PPAPING($subject, $content));
                         }
