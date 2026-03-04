@@ -418,7 +418,7 @@
 
             </div>
         </div>
-        @if(empty($registroPorquest->accion) and !empty($registroPorquest->verificadorAccion))
+        @if(empty($registroPorquest->accion) )
         <div class="col-lg-12 mb-4">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
@@ -444,7 +444,7 @@
                 </div>
             </div>
         </div>
-            @else
+            @elseif( !empty($registroPorquest->verificadorAccion))
             <div class="col-lg-12 mb-4">
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
