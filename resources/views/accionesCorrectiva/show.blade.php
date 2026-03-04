@@ -269,7 +269,7 @@
                                 <div class="card shadow mb-4">
                                     <div class="card-header py-3">
                                         <h6 class="m-0 font-weight-bold text-primary">
-                                            Registro de accion Correctiva {{$accion->id}}
+                                            Registro de plan de accion {{$accion->id}}
                                         </h6>
                                         @if($value =="Admin" or $value=="Martin A")
                             <form id="eliminarAccionForm_{{$accion->id}}" method="GET" action="{{ route('accionesCorrectivas.eliminarPlandeAccion', ['id' => $accion->id, 'folio' => $accion->folioAccion]) }}" style="display: inline;">
@@ -404,46 +404,64 @@
             @endif
     </div>
     <div class="row">
+
         <div class="col-lg-12 mb-4 d-flex justify-content-center">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
                      @if($value =="Admin" or $value=="Martin A")
                    <form action="{{ route('accionesCorrectivas.aceptarAcciones', ['folio' => $registroPorquest->folioAccion, 'validador' => 'Martin Aleman SGC']) }}" method="GET">
                     <button type="submit" class="btn btn-success float-center">Aceptar Acciones</button>
+                   </form>
                     @endif
 
                 </div>
 
             </div>
         </div>
-        @if(!empty($registroPorquest->verificadorAccion))
+        @if(empty($registroPorquest->accion))
         <div class="col-lg-12 mb-4">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary">Medicion de la eficacia de la accion correctiva</h6>
                 </div>
                 <div class="card-body" style="overflow-y: auto; height: 450px;">
-                    <form action="{{ route('accionesCorrectivas.guardarAccion') }}" method="POST">
-                        @csrf
+                    <form action="{{ route('accionesCorrectivas.medicionesAcciones', ['folioEficacia' => $registroPorquest->folioAccion]) }}" method="GET">
+
                         <div class="row">
                             <div class="col-md-6" >
-                                <label for="accion">Como se medira la eficacia</label>
+                                <label for="accion">Como se medira la eficacia?</label>
                                 <textarea class="form-control" name="accion" id="accion" cols="45" rows="7" maxlength="1500" required></textarea>
                             </div>
                             <div class="col-md-6" >
-                                <label for="reponsableAccion">Como se medira la eficacia</label>
-                                <select name="reponsableAccion" id="reponsableAccion" class="form-control"  required>
-                                    <option value="" selected disabled>...</option>
-                                @foreach($personal as $p)
-                                <option value="{{ $p->employeeLider }}">{{ $p->employeeLider }}</option>
-                                @endforeach
-                                </select>
+                                <label for="reponsableAccion">Fecha en que se medira la eficacio</label>
+                                <input type="date" name="fechaInicioAccion" id="fechaInicioAccion" class="form-control" required>
                             </div>
                             <div class="col-12 mb-3">
                                 <button type="submit" class="btn btn-primary mt-4">Guardar</button>
                             </div>
                         </div>
                     </form>
+                </div>
+            </div>
+        </div>
+            @else
+            <div class="col-lg-12 mb-4">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Medicion de la eficacia de la accion correctiva</h6>
+                         @if($value =="Admin" or $value=="Martin A")
+                                <form id="denegarEficacia" method="POST" action="{{ route('accionesCorrectivas.eliminarCausaRaiz', $registroPorquest->folioAccion) }}" style="display: inline;">
+                                    @csrf
+                                    <input type="hidden" name="donde" value="eficacia">
+                                        <input type="hidden" name="porqueEficacia" id="porqueEficacia" >
+                                    <button type="button" class="btn btn-danger float-right" onclick="denegarEficacia()">Eliminar Medición de Eficacia</button>
+                                </form>
+                                @endif
+                    </div>
+                    <div class="card-body" style="overflow-y: auto; height: 450px;">
+                        <p>{{ $registroPorquest->accion }}</p>
+                        <p><strong>Fecha de medicion de eficacia:</strong> {{ \Carbon\Carbon::parse($registroPorquest->fechaInicioAccion)->format('d-m-Y') }}</p>
+                    </div>
                 </div>
             </div>
             @endif

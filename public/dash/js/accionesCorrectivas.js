@@ -45,4 +45,9 @@ function eliminarPlandeAccion(id) {
     document.getElementById('motivoeliminacion_' + id).value = datos;
         document.getElementById('eliminarAccionForm_' + id).submit();
 }
+function denegarEficacia() {
+    datos = prompt("Ingrese el motivo por el cual se eliminará la medición de eficacia:");
+    document.getElementById('porqueEficacia').value = datos;
+        document.getElementById('denegarEficacia').submit();
+}
 document.querySelector('#origenAccion').addEventListener('onsubmit', datos);

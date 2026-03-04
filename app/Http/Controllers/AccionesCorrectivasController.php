@@ -6,6 +6,7 @@ use App\Mail\accionesCorrectivas\aceptacionAcciones;
 use App\Mail\accionesCorrectivas\cincoPorques;
 use App\Mail\accionesCorrectivas\contencion;
 use App\Mail\accionesCorrectivas\eliminacionCausas;
+use App\Mail\accionesCorrectivas\medicionEficacia;
 use App\Mail\accionesCorrectivasRecordatorio;
 use App\Models\accionesCorrectivas;
 use App\Models\accionesCorrectivas\monitoreosAcciones;
@@ -301,13 +302,14 @@ class AccionesCorrectivasController extends Controller
         $request->validate([
             'donde' => 'required|string|max:20',
         ]);
-        $motivo = $request->input('porqueCausaRaiz') ?: $request->input('porques');
+        $motivo = '';
         if ($request->input('donde') == 'causaRaiz') {
             $modificar = [
                 'porques' => null,
                 'Ishikawa' => null,
                 'status' => 'etapa 1 - causa raiz',
             ];
+            $motivo = $request->input('porqueCausaRaiz');
 
         } elseif ($request->input('donde') == 'contencion') {
             $modificar = [
@@ -315,6 +317,14 @@ class AccionesCorrectivasController extends Controller
                 'fechaCompromiso' => null,
                 'status' => 'etapa 1 - inicio',
             ];
+            $motivo = $request->input('porques');
+        } elseif ($request->input('donde') == 'eficacia') {
+            $modificar = [
+                'status' => 'etapa 2 - Verficacion de eficiencia aplicada',
+                'accion' => null,
+                'fechaInicioAccion' => null,
+            ];
+            $motivo = $request->input('porqueEficacia');
         }
         $accion = accionesCorrectivas::where('folioAccion', $id)->update($modificar);
         eliminacionAccionCorrectiva::create([
@@ -398,5 +408,35 @@ class AccionesCorrectivasController extends Controller
         $mail = Mail::to($mailaddresses)->send(new aceptacionAcciones($acciones, 'Aceptación de acciones correctivas'));
 
         return redirect()->route('accionesCorrectivas.show', $folio)->with('success', 'Acción aceptada exitosamente.');
+    }
+
+    public function medicionesAcciones(Request $request, $folioEficacia)
+    {
+        $request->validate([
+            'accion' => 'required|string|max:1500',
+            'fechaInicioAccion' => 'required|date',
+        ]);
+
+        $accion = accionesCorrectivas::where('folioAccion', $folioEficacia)->update([
+            'accion' => $request->input('accion'),
+            'fechaInicioAccion' => $request->input('fechaInicioAccion'),
+            'status' => 'etapa 3 - Aceptación de eficacia',
+        ]);
+        // Mail eliminacion
+        $acciones = accionesCorrectivas::where('folioAccion', $folioEficacia)->first();
+        $mailto = personalBergsModel::where('employeeName', $acciones->resposableAccion)->first();
+
+        $mailaddresses = [
+            'jgarrido@mx.bergstrominc.com',
+            'maleman@mx.bergstrominc.com',
+        ];
+
+        if ($mailto && $mailto->email) {
+            $mailaddresses[] = $mailto->email;
+        }
+
+        $mail = Mail::to($mailaddresses)->send(new medicionEficacia($acciones, 'Registro de medición de eficacia para acción correctiva'));
+
+        return redirect()->route('accionesCorrectivas.show', $folioEficacia)->with('success', 'Registro de medición de eficacia exitoso.');
     }
 }

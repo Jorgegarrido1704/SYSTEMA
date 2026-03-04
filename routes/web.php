@@ -240,6 +240,8 @@ Route::controller(AccionesCorrectivasController::class)->group(function () {
     Route::POST('/acciones-correctivas/eliminarCausaRaiz/{id}', [AccionesCorrectivasController::class, 'eliminarCausaRaiz'])->name('accionesCorrectivas.eliminarCausaRaiz');
     Route::GET('/acciones-correctivas/eliminarPlandeAccion/{id}/{folio}', [AccionesCorrectivasController::class, 'eliminarPlandeAccion'])->name('accionesCorrectivas.eliminarPlandeAccion');
     Route::GET('/acciones-correctivas/aceptarAcciones/{validador}/{folio}', [AccionesCorrectivasController::class, 'aceptarAcciones'])->name('accionesCorrectivas.aceptarAcciones');
+    Route::GET('/acciones-correctivas/medicionesAcciones/{folioEficacia}', [AccionesCorrectivasController::class, 'medicionesAcciones'])->name('accionesCorrectivas.medicionesAcciones');
+    Route::POST('/acciones-correctivas/denegarEficacia/{id}', [AccionesCorrectivasController::class, 'denegarEficacia'])->name('accionesCorrectivas.denegarEficacia');
 });
 
 Route::controller(mailsController::class)->group(function () {
