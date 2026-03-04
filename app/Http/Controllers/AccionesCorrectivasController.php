@@ -136,8 +136,8 @@ class AccionesCorrectivasController extends Controller
     public function guardarPorques(Request $request, $id)
     {
         $request->validate([
-            'porque1' => 'required|string|max:500',
-            'conclusion' => 'required|string|max:500',
+            'porque1' => 'required|string|max:1000',
+            'conclusion' => 'required|string|max:1000',
 
         ]);
 
@@ -269,7 +269,7 @@ class AccionesCorrectivasController extends Controller
     {
         $request->validate([
 
-            'descripcionContencion' => 'required|string|max:500',
+            'descripcionContencion' => 'required|string|max:1500',
             'fechaCompromiso' => 'required|date',
         ]);
 
