@@ -427,12 +427,11 @@
                         @csrf
                         <div class="row">
                             <div class="col-md-6" >
-                                <label for="accion">Descripcion de la accion</label>
-
-                                <textarea class="form-control" name="accion" id="accion" cols="45" rows="2" required></textarea>
+                                <label for="accion">Como se medira la eficacia</label>
+                                <textarea class="form-control" name="accion" id="accion" cols="45" rows="7" maxlength="1500" required></textarea>
                             </div>
                             <div class="col-md-6" >
-                                <label for="reponsableAccion">Reponsable de la accion</label>
+                                <label for="reponsableAccion">Como se medira la eficacia</label>
                                 <select name="reponsableAccion" id="reponsableAccion" class="form-control"  required>
                                     <option value="" selected disabled>...</option>
                                 @foreach($personal as $p)

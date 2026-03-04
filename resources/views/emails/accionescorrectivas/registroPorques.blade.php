@@ -31,7 +31,7 @@
             </tr>
         </tbody>
     </table>
-    <p><strong>Con la conclucion: </strong> {{ $acciones->conclusiones ?? 'N/A' }}</p>
+    <p><strong>Con la conclucion: </strong> {{ $acciones->conclusion ?? 'N/A' }}</p>
 
     <br><br>
 

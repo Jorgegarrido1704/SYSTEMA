@@ -143,7 +143,8 @@ class AccionesCorrectivasController extends Controller
 
         $registroPorquest = $request->input('porque1');
         $acciones = accionesCorrectivas::where('folioAccion', $id)->first();
-        $acciones->porques1 = $registroPorquest;
+        $acciones->porque1 = $registroPorquest;
+        $acciones->conclusion = $request->input('conclusion');
 
         for ($i = 2; $i <= 5; $i++) {
             $key = 'porque'.$i;
