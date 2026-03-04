@@ -345,7 +345,7 @@ class AccionesCorrectivasController extends Controller
     public function eliminarPlandeAccion(Request $request, $id, $folio)
     {
         $request->validate([
-            'motivoeliminacion' => 'required|string|max:500',
+            'motivoeliminacion' => 'required|string|max:1500',
         ]);
         sub_acciones_model::where('id', $id)->delete();
         monitoreosAcciones::where('idSubAccion', $id)->delete();

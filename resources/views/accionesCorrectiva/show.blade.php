@@ -97,7 +97,7 @@
                                     <span class="font-weight-bold">Es Sistemico:<br> @if($registroPorquest->IsSistemicProblem ==1) Si @else No @endif</span>
                                     </div>
                                     <div class="col-md-12" >
-                                    <span class="font-weight-bold">Conclusiones:<br> {{$registroPorquest->conclusiones}}</span>
+                                    <span class="font-weight-bold">Conclusion (Causea raiz) :<br> {{$registroPorquest->conclusiones}}</span>
                                     </div>
 
                                 </div>
