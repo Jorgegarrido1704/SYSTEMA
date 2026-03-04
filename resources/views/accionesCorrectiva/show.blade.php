@@ -134,7 +134,7 @@
                                                             <textarea class="form-control" name="porque5" id="porque5"  cols="55" row="3"></textarea>
                                                         </div>
                                                         <div class="col-9 mb-3">
-                                                                <label for="conclusion">Conclusiones</label>
+                                                                <label for="conclusion">Conclusiones (Causa raiz)</label>
                                                                 <textarea class="form-control" name="conclusion" id="conclusion"  cols="55" row="4" required></textarea>
                                                         </div>
                                                             <div class="col-3 mb-3">
