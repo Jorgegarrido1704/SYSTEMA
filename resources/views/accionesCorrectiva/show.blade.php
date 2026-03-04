@@ -418,7 +418,7 @@
 
             </div>
         </div>
-        @if(empty($registroPorquest->accion))
+        @if(empty($registroPorquest->accion) and !empty($registroPorquest->conclusiones))
         <div class="col-lg-12 mb-4">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
