@@ -212,18 +212,23 @@ class rrhhController extends Controller
             'tipoDeTrabajador' => 'required|string',
             'Genero' => 'required|string',
         ]);
-
-        if (personalBergsModel::where('employeeNumber', '=', 'i'.$validated['id_empleado'])->exists()) {
+        $idEmpleado = preg_replace('/[^A-Za-z0-9- ()._]/', ' ', $validated['id_empleado']);
+        $nombre = preg_replace('/[^A-Za-z0-9- ()._]/', ' ', $validated['nombre']);
+        $area = preg_replace('/[^A-Za-z0-9- ()._]/', ' ', $validated['area']);
+        $lider = preg_replace('/[^A-Za-z0-9- ()._]/', ' ', $validated['lider']);
+        $tipoTrabajador = preg_replace('/[^A-Za-z0-9- ()._]/', ' ', $validated['tipoDeTrabajador']);
+        $genero = preg_replace('/[^A-Za-z0-9-]/', ' ', $validated['Genero']);
+        if (personalBergsModel::where('employeeNumber', '=', 'i'.$idEmpleado)->exists()) {
             return redirect()->route('rrhhDashBoard')->with('error', 'El empleado ya existe en la base de datos.');
         } else {
             personalBergsModel::create([
-                'employeeName' => $validated['nombre'],
-                'employeeNumber' => 'i'.$validated['id_empleado'],
+                'employeeName' => $nombre,
+                'employeeNumber' => 'i'.$idEmpleado,
                 'DateIngreso' => $validated['ingreso'],
-                'employeeArea' => $validated['area'],
-                'employeeLider' => $validated['lider'],
-                'typeWorker' => $validated['tipoDeTrabajador'],
-                'Gender' => $validated['Genero'],
+                'employeeArea' => $area,
+                'employeeLider' => $lider,
+                'typeWorker' => $tipoTrabajador,
+                'Gender' => $genero,
             ]);
             assistence::create([
                 'week' => intval(date('W')),
@@ -595,6 +600,7 @@ class rrhhController extends Controller
         $value = session('user');
         $cat = session('categoria');
         $numeroDeEmpleado = 'i'.$request->input('empleado');
+        $numeroDeEmpleado = preg_replace('/[^A-Za-z0-9]/', '', $numeroDeEmpleado);
         $weekless6months = Carbon::now()->subMonths(6)->weekOfYear;
         $yearless6months = Carbon::now()->subMonths(6)->year;
         $year = Carbon::now()->year;
@@ -656,6 +662,7 @@ class rrhhController extends Controller
     public function excelRelogChecador(Request $request)
     {
         $week = $request->input('semana');
+        $week = preg_replace('/[^0-9]/', '', $week);
         $diaInicialSemana = Carbon::now()->setISODate(Carbon::now()->year, $week, 1);
         $diaInicialSemana = Carbon::parse($diaInicialSemana)->format('Y-m-d 00:00:00');
         $diaFinalSemana = Carbon::now()->setISODate(Carbon::now()->year, $week, 7);
@@ -781,6 +788,7 @@ class rrhhController extends Controller
         date_default_timezone_set('America/Mexico_City');
         // semana pedida
         $week = $request->input('numeroSemanaIncidencias');
+        $week = preg_replace('/[^0-9]/', '', $week);
         // Fechas de la semana
         $datestart = Carbon::now()->setISODate(Carbon::now()->year, $week, 1)->format('Y-m-d');
         $datefin = Carbon::now()->setISODate(Carbon::now()->year, $week, 7)->format('Y-m-d');
@@ -1022,6 +1030,7 @@ class rrhhController extends Controller
         date_default_timezone_set('America/Mexico_City');
         // semana pedida
         $week = $request->input('numeroSemanaIncidencias');
+        $week = preg_replace('/[^0-9]/', '', $week);
         $fecha = Carbon::now()->format('d-m-Y');
         // Fechas de la semana
         $datestart = Carbon::now()->setISODate(Carbon::now()->year, $week, 1)->format('Y-m-d');
