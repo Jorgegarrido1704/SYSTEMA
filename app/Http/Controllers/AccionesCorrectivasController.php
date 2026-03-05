@@ -58,14 +58,17 @@ class AccionesCorrectivasController extends Controller
             'Afecta' => 'required|string|max:50',
             'origenAccion' => 'required|string|max:50',
             'resposableAccion' => 'required|string|max:80',
-            'descripcionAccion' => 'required|string|max:500',
+            'descripcionAccion' => 'required|string|max:1500',
 
         ]);
-
-        if ($request->input('origenAccion') == 'otro') {
-            $origenAccion = $request->input('origenAccion').'-'.$request->input('origenAccionotro');
+        $afecta = preg_replace('/[^A-Za-z0-9-]/', '', $request->input('Afecta'));
+        $origenAcciones = preg_replace('/[^A-Za-z0-9-]/', '', $request->input('origenAccion'));
+        $resposableAccion = preg_replace('/[^A-Za-z0-9-]/', '', $request->input('resposableAccion'));
+        $descripcionAccion = preg_replace('/[^A-Za-z0-9-]/', '', $request->input('descripcionAccion'));
+        if ($origenAcciones == 'otro') {
+            $origenAccion = $origenAcciones.'-'.$request->input('origenAccionotro');
         } else {
-            $origenAccion = $request->input('origenAccion');
+            $origenAccion = $origenAcciones;
         }
         $cantidadAccionesHoy = accionesCorrectivas::whereYear('fechaAccion', $request->input('fechaAccion'))->count();
         $cantidadAccionesHoy = $cantidadAccionesHoy + 1;
@@ -79,13 +82,13 @@ class AccionesCorrectivasController extends Controller
         $accion = new accionesCorrectivas;
         $accion->folioAccion = 'AC-'.carbon::parse($request->input('fechaAccion'))->format('Y').'-'.$cantidadAccionesHoy;
         $accion->fechaAccion = $request->input('fechaAccion');
-        $accion->Afecta = $request->input('Afecta');
+        $accion->Afecta = $afecta;
         $accion->origenAccion = $origenAccion;
-        $accion->resposableAccion = $request->input('resposableAccion');
-        $accion->descripcionAccion = $request->input('descripcionAccion');
+        $accion->resposableAccion = $resposableAccion;
+        $accion->descripcionAccion = $descripcionAccion;
         $accion->ultimoEmail = Carbon::now()->format('Y-m-d');
         $accion->save();
-        $email = personalBergsModel::select('email')->where('employeeName', $request->input('resposableAccion'))->first();
+        $email = personalBergsModel::select('email')->where('employeeName', $resposableAccion)->first();
         $mailaddresses = [
             'jgarrido@mx.bergstrominc.com',
             'maleman@mx.bergstrominc.com',
@@ -106,6 +109,7 @@ class AccionesCorrectivasController extends Controller
         $value = session('user');
         $problema = 'Alta rotación de empleados';
         $categorias = [];
+        $id = preg_replace('/[^A-Za-z0-9-]/', '', $id);
         $registroPorquest = accionesCorrectivas::where('folioAccion', $id)->first();
         if (! empty($registroPorquest->porques)) {
             $categorias = explode(' | ', $registroPorquest->porques);
@@ -116,7 +120,7 @@ class AccionesCorrectivasController extends Controller
 
         $acciones = sub_acciones_model::where('folioAccion', $id)->get();
 
-        $personal = personalBergsModel::select('employeeLider')->groupBy('employeeLider')->get();
+        $personal = personalBergsModel::select('employeeName')->where('email', '!=', null)->get();
         $seguimientosSubAcciones = monitoreosAcciones::where('folioAccion', $registroPorquest->folioAccion)
             ->orderBy('idSubAccion', 'ASC')
             ->orderBy('id', 'ASC')->get();
@@ -141,17 +145,19 @@ class AccionesCorrectivasController extends Controller
             'conclusion' => 'required|string|max:1000',
 
         ]);
-
-        $registroPorquest = $request->input('porque1');
+        $porque1 = preg_replace('/[^A-Za-z0-9-]/', '', $request->input('porque1'));
+        $conclusion = preg_replace('/[^A-Za-z0-9-]/', '', $request->input('conclusion'));
+        $id = preg_replace('/[^A-Za-z0-9-]/', '', $id);
+        $registroPorquest = $porque1;
         $acciones = accionesCorrectivas::where('folioAccion', $id)->first();
         $acciones->porque1 = $registroPorquest;
-        $acciones->conclusion = $request->input('conclusion');
+        $acciones->conclusion = $conclusion;
 
         for ($i = 2; $i <= 5; $i++) {
             $key = 'porque'.$i;
             if ($request->filled($key)) {
-                $registroPorquest .= ' | '.$request->input($key);
-                $acciones->{'porque'.$i} = $request->input($key);
+                $registroPorquest .= ' | '.preg_replace('/[^A-Za-z0-9-]/', '', $request->input($key));
+                $acciones->{'porque'.$i} = preg_replace('/[^A-Za-z0-9-]/', '', $request->input($key));
             }
         }
         if ($request->input('sistemic') != 'NO') {
@@ -162,7 +168,7 @@ class AccionesCorrectivasController extends Controller
 
         $accion = accionesCorrectivas::where('folioAccion', $id)->update([
             'porques' => $registroPorquest,
-            'conclusiones' => $request->input('conclusion'),
+            'conclusiones' => $conclusion,
             'IsSistemicProblem' => $sistemic,
             'status' => 'etapa 1 - 5porques',
         ]);
@@ -207,12 +213,12 @@ class AccionesCorrectivasController extends Controller
         } else {
             $sistemic = false;
         }
-        $accion = accionesCorrectivas::findOrFail($request->input('accion_id'));
-        $accion->Ishikawa = $datosIshikawa;
-        $accion->conclusiones = $request->input('conclusion');
-        $accion->IsSistemicProblem = $sistemic;
-        $accion->status = 'etapa 2 - Causa Raiz';
-        $accion->save();
+        $accion = accionesCorrectivas::where($request->input('accion_id'))->update([
+            'Ishikawa' => $datosIshikawa,
+            'conclusiones' => $request->input('conclusion'),
+            'IsSistemicProblem' => $sistemic,
+            'status' => 'etapa 2 - Causa Raiz',
+        ]);
 
         return redirect()->route('accionesCorrectivas.show', $accion->folioAccion)->with('success', 'Acción correctiva actualizada exitosamente.');
     }
@@ -227,13 +233,17 @@ class AccionesCorrectivasController extends Controller
             'fechaFinAccion' => 'required|date',
             'verificadorAccion' => 'required|string|max:500',
         ]);
+        $id = preg_replace('/[^A-Za-z0-9-]/', '', $request->input('id'));
+        $accionIngesada = preg_replace('/[^A-Za-z0-9-]/', '', $request->input('accion'));
+        $responsableAccion = preg_replace('/[^A-Za-z0-9-]/', '', $request->input('reponsableAccion'));
+        $verificadorAccion = preg_replace('/[^A-Za-z0-9-]/', '', $request->input('verificadorAccion'));
         sub_acciones_model::create([
-            'folioAccion' => $request->input('id'),
-            'descripcionSubAccion' => $request->input('accion'),
-            'resposableSubAccion' => $request->input('reponsableAccion'),
+            'folioAccion' => $id,
+            'descripcionSubAccion' => $accionIngesada,
+            'resposableSubAccion' => $responsableAccion,
             'fechaInicioSubAccion' => $request->input('fechaInicioAccion'),
             'fechaFinSubAccion' => $request->input('fechaFinAccion'),
-            'auditorSubAccion' => $request->input('verificadorAccion'),
+            'auditorSubAccion' => $verificadorAccion,
 
         ]);
 
@@ -250,17 +260,20 @@ class AccionesCorrectivasController extends Controller
 
     public function guardarSeguimiento(Request $request, $id, $folio)
     {
-        /* $request->validate([
-             'accion_id' => 'required|integer',
-             'seguimiento' => 'required|string|max:500',
-             'validador' => 'required|string|max:500',
-         ]);*/
+        $request->validate([
+            'seguimiento' => 'required|string|max:500',
+            'validador' => 'required|string|max:500',
+        ]);
 
+        $id = preg_replace('/[^A-Za-z0-9-]/', '', $id);
+        $folio = preg_replace('/[^A-Za-z0-9-]/', '', $folio);
+        $segimiento = preg_replace('/[^A-Za-z0-9-]/', '', $request->input('seguimiento'));
+        $validador = preg_replace('/[^A-Za-z0-9-]/', '', $request->input('validador'));
         monitoreosAcciones::create([
             'folioAccion' => $folio,
             'idSubAccion' => $id,
-            'descripcionSeguimiento' => $request->input('seguimiento'),
-            'AprobadorSeguimiento' => $request->input('validador'),
+            'descripcionSeguimiento' => $segimiento,
+            'AprobadorSeguimiento' => $validador,
         ]);
 
         return redirect()->route('accionesCorrectivas.show', $folio)->with('success', 'Acción correctiva actualizada exitosamente.');
@@ -269,14 +282,15 @@ class AccionesCorrectivasController extends Controller
 
     public function guardarContencion(Request $request, $id)
     {
+        $id = preg_replace('/[^A-Za-z0-9-]/', '', $id);
         $request->validate([
-
             'descripcionContencion' => 'required|string|max:1500',
             'fechaCompromiso' => 'required|date',
         ]);
+        $descripcionContencion = preg_replace('/[^A-Za-z0-9-]/', '', $request->input('descripcionContencion'));
 
         $accion = accionesCorrectivas::where('folioAccion', $id)->update([
-            'descripcionContencion' => $request->input('descripcionContencion'),
+            'descripcionContencion' => $descripcionContencion,
             'fechaCompromiso' => $request->input('fechaCompromiso'),
             'status' => 'etapa 1 - Contención',
             'ultimoEmail' => Carbon::now()->format('Y-m-d'),
@@ -299,11 +313,13 @@ class AccionesCorrectivasController extends Controller
 
     public function eliminarCausaRaiz(Request $request, $id)
     {
+        $id = preg_replace('/[^A-Za-z0-9-]/', '', $id);
         $request->validate([
             'donde' => 'required|string|max:20',
         ]);
+        $donde = preg_replace('/[^A-Za-z0-9-]/', '', $request->input('donde'));
         $motivo = '';
-        if ($request->input('donde') == 'causaRaiz') {
+        if ($donde == 'causaRaiz') {
             $modificar = [
                 'porques' => null,
                 'Ishikawa' => null,
@@ -311,32 +327,34 @@ class AccionesCorrectivasController extends Controller
             ];
             $motivo = $request->input('porqueCausaRaiz');
 
-        } elseif ($request->input('donde') == 'contencion') {
+        } elseif ($donde == 'contencion') {
             $modificar = [
                 'descripcionContencion' => null,
                 'fechaCompromiso' => null,
                 'status' => 'etapa 1 - inicio',
             ];
             $motivo = $request->input('porques');
-        } elseif ($request->input('donde') == 'eficacia') {
+        } elseif ($donde == 'eficacia') {
             $modificar = [
                 'status' => 'etapa 2 - Verficacion de eficiencia aplicada',
                 'accion' => null,
                 'fechaInicioAccion' => null,
+
             ];
             $motivo = $request->input('porqueEficacia');
         }
+        $motivo = preg_replace('/[^A-Za-z0-9-]/', '', $motivo);
         $accion = accionesCorrectivas::where('folioAccion', $id)->update($modificar);
         eliminacionAccionCorrectiva::create([
             'folioAccion' => $id,
-            'campoEliminado' => $request->input('donde'),
+            'campoEliminado' => $donde,
             'motivoEliminacion' => $motivo,
         ]);
 
         // Mail eliminacion
         $acciones = accionesCorrectivas::where('folioAccion', $id)->first();
         $mailto = personalBergsModel::where('employeeName', $acciones->resposableAccion)->first();
-        $acciones->campoEliminado = $request->input('donde');
+        $acciones->campoEliminado = $donde;
         $acciones->motivoEliminacion = $motivo;
         $mailaddresses = [
             'jgarrido@mx.bergstrominc.com',
@@ -354,22 +372,26 @@ class AccionesCorrectivasController extends Controller
 
     public function eliminarPlandeAccion(Request $request, $id, $folio)
     {
+        $id = preg_replace('/[^A-Za-z0-9-]/', '', $id);
+        $folio = preg_replace('/[^A-Za-z0-9-]/', '', $folio);
+
         $request->validate([
             'motivoeliminacion' => 'required|string|max:1500',
         ]);
+        $motivoEliminacion = preg_replace('/[^A-Za-z0-9-]/', '', $request->input('motivoeliminacion'));
         sub_acciones_model::where('id', $id)->delete();
         monitoreosAcciones::where('idSubAccion', $id)->delete();
 
         eliminacionAccionCorrectiva::create([
             'folioAccion' => $folio,
             'campoEliminado' => 'plan de accion',
-            'motivoEliminacion' => $request->input('motivoeliminacion'),
+            'motivoEliminacion' => $motivoEliminacion,
         ]);
         // Mail eliminacion
         $acciones = accionesCorrectivas::where('folioAccion', $folio)->first();
         $mailto = personalBergsModel::where('employeeName', $acciones->resposableAccion)->first();
         $acciones->campoEliminado = 'plan de accion con ID '.$id;
-        $acciones->motivoEliminacion = $request->input('motivoeliminacion');
+        $acciones->motivoEliminacion = $motivoEliminacion;
         $mailaddresses = [
             'jgarrido@mx.bergstrominc.com',
             'maleman@mx.bergstrominc.com',
@@ -379,13 +401,15 @@ class AccionesCorrectivasController extends Controller
             $mailaddresses[] = $mailto->email;
         }
 
-        $mail = Mail::to($mailaddresses)->send(new eliminacionCausas($acciones));
+        $mail = Mail::to($mailaddresses)->send(new eliminacionCausas($acciones, 'Eliminacion de plan de accion'));
 
         return redirect()->route('accionesCorrectivas.show', $folio)->with('success', 'Plan de acción eliminado exitosamente.');
     }
 
     public function aceptarAcciones(Request $request, $validador, $folio)
     {
+        $folio = preg_replace('/[^A-Za-z0-9-]/', '', $folio);
+        $validador = preg_replace('/[^A-Za-z0-9-]/', '', $validador);
 
         $acciones = accionesCorrectivas::where('folioAccion', $folio)->update([
             'status' => 'etapa 2 - Verficacion de eficiencia aplicada',
@@ -416,9 +440,10 @@ class AccionesCorrectivasController extends Controller
             'accion' => 'required|string|max:1500',
             'fechaInicioAccion' => 'required|date',
         ]);
-
+        $folioEficacia = preg_replace('/[^A-Za-z0-9-]/', '', $folioEficacia);
+        $accionIngesada = preg_replace('/[^A-Za-z0-9-]/', '', $request->input('accion'));
         $accion = accionesCorrectivas::where('folioAccion', $folioEficacia)->update([
-            'accion' => $request->input('accion'),
+            'accion' => $accionIngesada,
             'fechaInicioAccion' => $request->input('fechaInicioAccion'),
             'status' => 'etapa 3 - Aceptación de eficacia',
         ]);

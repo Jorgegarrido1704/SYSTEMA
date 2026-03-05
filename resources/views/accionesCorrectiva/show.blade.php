@@ -232,7 +232,7 @@
                                             <select name="reponsableAccion" id="reponsableAccion" class="form-control"  required>
                                                 <option value="" selected disabled>...</option>
                                             @foreach($personal as $p)
-                                            <option value="{{ $p->employeeLider }}">{{ $p->employeeLider }}</option>
+                                            <option value="{{ $p->employeeName }}">{{ $p->employeeName }}</option>
                                             @endforeach
                                             </select>
                                         </div>
