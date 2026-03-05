@@ -63,7 +63,7 @@
                         <div class="col-md-6" >
                             <label for="resposableAccion">Responsable de la accion</label>
                             <select class="form-control" name="resposableAccion" id="resposableAccion" required>
-                                <option></option>
+                                <option value="" disabled selected></option>
                                 @foreach($personal as $p)
                                 <option value="{{ $p->employeeName }}">{{ $p->employeeName }}</option>
                                 @endforeach
