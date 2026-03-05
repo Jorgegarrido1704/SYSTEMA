@@ -2037,6 +2037,12 @@ class juntasController extends Controller
             $buscarEmails = personalBergsModel::select('email', 'user')->where('employeeName', '=', $lider)->first();
             $email = $buscarEmails->email;
             $supervisor = $buscarEmails->user;
+        } elseif ($lider == 'Hector Cano') {
+            $email = [
+                'jgarrido@mx.bergstrominc.com',
+                'paguilar@mx.bergstrominc.com',
+                'hcano@bergstrominc.com',
+            ];
         } else {
             $liderInicial = personalBergsModel::select('user', 'email', 'employeeLider')->where('employeeName', '=', $lider)->first();
             $buscarEmails = personalBergsModel::select('email', 'employeeLider', 'employeeName', 'user')->where('employeeName', '=', $liderInicial->employeeLider)->first();
@@ -2172,6 +2178,7 @@ class juntasController extends Controller
         $datoGeneros = DB::table('personalberg')
             ->select('Gender', 'typeWorker')
             ->where('status', '!=', 'Baja')
+            ->where('typeWorker', '!=', 'Corporativo')
             ->get();
         foreach ($datoGeneros as $datoGenero) {
             if ($datoGenero->Gender == 'H') {
