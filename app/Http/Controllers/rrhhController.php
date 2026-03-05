@@ -71,6 +71,8 @@ class rrhhController extends Controller
 
     public function updateAsistencia(Request $request)
     {
+        $value = session('user');
+        $cat = session('categoria');
         $week = intval(date('W'));
         $year = $week <= 1 ? Carbon::now()->year + 1 : Carbon::now()->year;
         $validated = $request->validate([
@@ -98,7 +100,7 @@ class rrhhController extends Controller
             'tt_domingo' => 'required|array',
         ]);
 
-        foreach ($validated['numero_empleado'] as $index => $id_empleado) {
+        foreach ($i['numero_empleado'] as $index => $id_empleado) {
             $updateData = [
                 'lunes' => $validated['lun'][$index] ? strtoupper(str_replace('-', '', $validated['lun'][$index])) : '-',
                 'extLunes' => $validated['extra_lun'][$index] ?? 0,
@@ -125,10 +127,17 @@ class rrhhController extends Controller
                 'tiempoPorTiempo' => $validated['tt_lunes'][$index] + $validated['tt_martes'][$index] + $validated['tt_miercoles'][$index] + $validated['tt_jueves'][$index] + $validated['tt_viernes'][$index] + $validated['tt_sabado'][$index] + $validated['tt_domingo'][$index] ?? 0,
             ];
 
-            assistence::where('id_empleado', $id_empleado)
-                ->where('week', $week)
-                ->where('yearOfAssistence', '=', $year)
-                ->update($updateData);
+            $permitido =
+                    (Carbon::now()->lte(Carbon::parse('08:25')) && $cat != 'RRHH' && $value != 'Admin') ||
+                    $cat == 'RRHH' ||
+                    $value == 'Admin';
+
+            if ($permitido) {
+                assistence::where('id_empleado', $id_empleado)
+                    ->where('week', $week)
+                    ->where('yearOfAssistence', $year)
+                    ->update($updateData);
+            }
         }
         // send a job to update rotacion
         UpdateRotacionJob::dispatch();
