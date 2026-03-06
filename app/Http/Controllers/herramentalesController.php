@@ -32,7 +32,7 @@ class herramentalesController extends Controller
 
     public function update(Request $request, $id)
     {
-        $nombrePersonalHerrmanetal = preg_replace('/[^A-Za-z0-9- ()._]+/', ' ', $request->input('nombrePersonal')) ?? '';
+        $nombrePersonalHerrmanetal = preg_replace('/[^\p{L}0-9()._\- ]/u', ' ', $request->input('nombrePersonal')) ?? '';
         $fechaRegistros = Carbon::now()->format('d-m-Y H:i');
         if ($nombrePersonalHerrmanetal != '') {
             DB::table('registro_paro')
