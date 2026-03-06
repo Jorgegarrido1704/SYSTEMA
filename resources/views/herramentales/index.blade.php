@@ -97,8 +97,12 @@
                     <form action="{{ route('herramientales.addHerramental') }}" method="post">
                         @csrf
                         <div class="form-group">
-                            <label for="newTooling">New Tooling</label>
-                            <input type="text" name="newTooling" id="newTooling" class="form-control" required>
+                            <label for="newTooling">New Tooling Numbre code</label>
+                            <input type="text" name="newTooling" id="newTooling"  pattern="\w{4,8}" class="form-control pattern" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="newTooling">Terminal Applied to</label>
+                            <input type="text" name="newTooling" id="newTooling" pattern="[A-Za-z0-9-]{4,12}" class="form-control" required>
                         </div>
                         <div class="form-group">
                            <button type="submit" class="btn btn-primary">Add</button>

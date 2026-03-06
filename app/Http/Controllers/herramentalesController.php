@@ -32,7 +32,7 @@ class herramentalesController extends Controller
 
     public function update(Request $request, $id)
     {
-        $nombrePersonalHerrmanetal = $request->input('nombrePersonal') ?? '';
+        $nombrePersonalHerrmanetal = preg_replace('/[^A-Za-z0-9- ()._]+/', ' ', $request->input('nombrePersonal')) ?? '';
         $fechaRegistros = Carbon::now()->format('d-m-Y H:i');
         if ($nombrePersonalHerrmanetal != '') {
             DB::table('registro_paro')
@@ -55,9 +55,11 @@ class herramentalesController extends Controller
             'tooling' => ['required', 'string'],
             'qtyHits' => ['required', 'numeric'],
         ]);
+
         $date = Carbon::now()->format('d-m-Y');
         $tooling = explode('||', $request->input('tooling'))[1];
         $termina = explode('||', $request->input('tooling'))[0];
+        $golpesDiarios = preg_replace('/[^0-9]+/', '', $request->input('qtyHits')) ?? 0;
         golesDiarios::create([
             'herramental' => $tooling,
             'terminal' => $termina,

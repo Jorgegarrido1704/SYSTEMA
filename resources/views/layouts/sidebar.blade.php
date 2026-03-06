@@ -100,6 +100,7 @@
                 <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('seguimientos') }}"
                     onmouseover=showProduction();>Production States</a>
                     <ul class="submenu" id="production" style="display:none;">
+                        <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('litas_reg') }}">Search Info</a></li>
                         @if($value=='Admin')
                         <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('cutAndTerm') }}">Cut & Terminals</a></li>
                         <li class="submenu" id="submenu"><a style="color:white;" href="#">Assembly & Looming</a></li>
@@ -121,7 +122,7 @@
                 </li>
                 @endif
                 <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('rrhhDashBoard') }}">Assistance</a></li>
-                <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('Pendings.index') }}">Pendigs</a></li>
+                <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('Pendings.index') }}">Pendings</a></li>
                  <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('vacations') }}">Vacations</a></li>
                  <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('juntas.npi') }}">NPI</a></li>
                   <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('accionesCorrectivas.index') }}">Corrective Actions</a></li>

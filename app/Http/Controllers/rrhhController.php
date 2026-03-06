@@ -100,7 +100,7 @@ class rrhhController extends Controller
             'tt_domingo' => 'required|array',
         ]);
 
-        foreach ($i['numero_empleado'] as $index => $id_empleado) {
+        foreach ($validated['numero_empleado'] as $index => $id_empleado) {
             $updateData = [
                 'lunes' => $validated['lun'][$index] ? strtoupper(str_replace('-', '', $validated['lun'][$index])) : '-',
                 'extLunes' => $validated['extra_lun'][$index] ?? 0,
