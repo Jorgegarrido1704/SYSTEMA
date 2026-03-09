@@ -7,7 +7,7 @@
 </head>
 <body>
     <div align="center" id="title">
-        <h1>CVST By <span style="color:red;">Jorge Garrido</span></h1>
+        <h1>CVTS By <span style="color:red;">Jorge Garrido</span></h1>
         <div id="frm">
             <form name="f1" action="{{ route('store') }}" onsubmit="return validation()" method="POST">
                 @csrf
