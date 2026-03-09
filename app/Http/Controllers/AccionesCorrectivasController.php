@@ -323,6 +323,7 @@ class AccionesCorrectivasController extends Controller
             $modificar = [
                 'porques' => null,
                 'Ishikawa' => null,
+                'conclusiones' => null,
                 'status' => 'etapa 1 - causa raiz',
             ];
             $motivo = $request->input('porqueCausaRaiz');
