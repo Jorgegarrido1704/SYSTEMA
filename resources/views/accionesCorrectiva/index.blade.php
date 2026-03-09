@@ -106,7 +106,7 @@
                             <th>Origen de la Accion</th>
                             <th>Responsable</th>
                             <th>Status</th>
-                            <th>Dias Restantes</th>
+                          <!--  <th>Dias Restantes</th> -->
                         </tr>
                     </thead>
                     <tbody>
@@ -119,7 +119,7 @@
                                     <td>{{ $accion->origenAccion }}</td>
                                     <td>{{ $accion->resposableAccion }}</td>
                                     <td>{{ $accion->status }}</td>
-                                    <td>{{ $accion->faltanDias }}</td>
+                                  <!--  <td>{{ $accion->faltanDias }}</td> -->
                                 </tr>
                             @endforeach
                         @endif
