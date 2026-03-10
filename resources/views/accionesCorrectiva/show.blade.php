@@ -238,15 +238,15 @@
                             <div class="card-header py-3">
                                 <h6 class="m-0 font-weight-bold text-primary">Plan de accion</h6>
                             </div>
-                            <div class="card-body" style="overflow-y: auto; height: 150px;">
+                            <div class="card-body" style="overflow-y: auto; height: 300px;">
                                 <form action="{{ route('accionesCorrectivas.guardarAccion') }}" method="POST">
                                     @csrf
                                     <div class="row">
-                                        <div class="col-3 mb-3">
+                                        <div class="col-6 mb-3">
                                             <label for="accion" class="form-label font-weight-bold"><a>Descripcion de la accion:</a></label>
-                                            <textarea class="form-control" name="accion" id="accion" cols="45" rows="2"  pattern="[A-Za-z0-9\- ()]+" required></textarea>
+                                            <textarea class="form-control" name="accion" id="accion" cols="45" rows="3"  pattern="[A-Za-z0-9\- ()]+" required></textarea>
                                         </div>
-                                        <div class="col-2 mb-3">
+                                        <div class="col-3 mb-3">
                                             <label for="reponsableAccion" class="form-label font-weight-bold">Reponsable de la accion</label>
                                             <select name="reponsableAccion" id="reponsableAccion" class="form-control" pattern="[A-Za-z0-9\- ()]+"  required>
                                                 <option value="" selected disabled>...</option>
@@ -256,22 +256,23 @@
                                             </select>
                                         </div>
 
-                                        <div class="col-2 mb-3">
+                                        <div class="col-3 mb-3">
                                             <label for="fechaInicioAccion">Fecha de inicio</label>
                                             <input type="date" name="fechaInicioAccion" id="fechaInicioAccion" required>
                                         </div>
-                                        <div class="col-2 mb-3">
+                                        <div class="col-3 mb-3">
                                             <label for="fechaFinAccion">Fecha de fin</label>
                                             <input type="date" name="fechaFinAccion" id="fechaFinAccion" required>
                                         </div>
 
 
-                                    <div class="col-2 mb-3">
+                                    <div class="col-6 mb-3">
                                         <label for="verificadorAccion">Quien aprobara la accion</label>
                                         <input type="text" name="verificadorAccion" id="verificadorAccion" value="Martin Aleman" pattern="[A-Za-z0-9\- ()]+" readonly>
 
                                     </div>
-                                    <div class="col-1 mb-3" >
+                                    <div class="col-3 mb-3" >
+                                         <label for=""></label>
                                         <input type="hidden" name="id" value="{{$registroPorquest->folioAccion}}" id="id">
                                         <button type="submit" class="btn btn-primary">Guardar</button>
                                     </div>

@@ -344,7 +344,7 @@ class AccionesCorrectivasController extends Controller
             ];
             $motivo = $request->input('porqueEficacia');
         }
-        $motivo = preg_replace('/[^\p{L}0-9()._\- ]/u', ' ', $motivo);
+
         $accion = accionesCorrectivas::where('folioAccion', $id)->update($modificar);
         eliminacionAccionCorrectiva::create([
             'folioAccion' => $id,
