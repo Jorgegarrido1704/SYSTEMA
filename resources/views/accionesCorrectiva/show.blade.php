@@ -64,7 +64,7 @@
                                                         <div class="row">
                                                             <div class="col-6 mb-3">
                                                                 <label for="descripcionContencion">Descripcion de la contencion:</label>
-                                                                <textarea name="descripcionContencion" id="descripcionContencion"  cols="45" rows="4"> {{ $registroPorquest->descripcionContencion }}</textarea>
+                                                                <textarea name="descripcionContencion" id="descripcionContencion"  cols="30" rows="4"> {{ $registroPorquest->descripcionContencion }}</textarea>
                                                             </div>
                                                             <div class="col-4 mb-3">
                                                                 <label for="fechaCompromiso">Fecha compromiso para cierre de accion:</label>
