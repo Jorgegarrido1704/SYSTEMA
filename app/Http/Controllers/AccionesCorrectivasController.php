@@ -326,7 +326,7 @@ class AccionesCorrectivasController extends Controller
                 'conclusiones' => null,
                 'status' => 'etapa 1 - causa raiz',
             ];
-            $motivo = $request->input('porqueCausaRaiz');
+            $motivo = $request->input('porques');
 
         } elseif ($donde == 'contencion') {
             $modificar = [
@@ -334,7 +334,7 @@ class AccionesCorrectivasController extends Controller
                 'fechaCompromiso' => null,
                 'status' => 'etapa 1 - inicio',
             ];
-            $motivo = $request->input('porques');
+            $motivo = $request->input('porqueCausaRaiz');
         } elseif ($donde == 'eficacia') {
             $modificar = [
                 'status' => 'etapa 2 - Verficacion de eficiencia aplicada',
