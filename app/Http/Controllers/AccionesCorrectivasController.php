@@ -317,7 +317,7 @@ class AccionesCorrectivasController extends Controller
         $request->validate([
             'donde' => 'required|string|max:20',
         ]);
-        $donde = preg_replace('/[^\p{L}0-9()._\- ]/u', '', $request->input('donde'));
+        $donde = $request->input('donde');
         $motivo = '';
         if ($donde == 'causaRaiz') {
             $modificar = [
@@ -362,9 +362,9 @@ class AccionesCorrectivasController extends Controller
             'maleman@mx.bergstrominc.com',
         ];
 
-        if ($mailto && $mailto->email) {
-            $mailaddresses[] = $mailto->email;
-        }
+        /* if ($mailto && $mailto->email) {
+             $mailaddresses[] = $mailto->email;
+         }*/
 
         $mail = Mail::to($mailaddresses)->send(new eliminacionCausas($acciones, 'Eliminacion de causa raiz'));
 
