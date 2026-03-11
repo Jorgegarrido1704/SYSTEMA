@@ -21,7 +21,7 @@ class Kernel extends ConsoleKernel
             ->cron('3 3,7 * * *')
             ->timezone('America/Mexico_City');
 
-        $schedule->job(new \App\Jobs\VacacionesRegistrosJob)->cron('25 4,7 * * *');
+        $schedule->job(new \App\Jobs\VacacionesRegistrosJob)->cron('1 2,7 * * *');
 
         // $schedule->job(new \App\Jobs\accionesCorrectivasJob)->dailyAt('07:00');
         // Data base backup
@@ -40,7 +40,7 @@ class Kernel extends ConsoleKernel
         // $schedule->job(new \App\Jobs\reporteGeneral())->everyMinute()->between('07:00', '20:00');
 
         // acciones correctivas recordatorio de lunes a sabado a las 5:00 am
-        $schedule->job(new \App\Jobs\accionesCorrectivasJob)->cron('12 4,7 * * *');
+        $schedule->job(new \App\Jobs\accionesCorrectivasJob)->cron('21 4,7 * * *');
     }
 
     /**
