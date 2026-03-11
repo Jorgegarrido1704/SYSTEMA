@@ -362,9 +362,9 @@ class AccionesCorrectivasController extends Controller
             'maleman@mx.bergstrominc.com',
         ];
 
-        /* if ($mailto && $mailto->email) {
+         if ($mailto && $mailto->email) {
              $mailaddresses[] = $mailto->email;
-         }*/
+         }
 
         $mail = Mail::to($mailaddresses)->send(new eliminacionCausas($acciones, 'Eliminacion de causa raiz'));
 
