@@ -21,7 +21,7 @@ class accionesCorrectivasJob implements ShouldQueue
 
     public function handle(): void
     {
-        $accioness = accionesCorrectivas::where('status', 'LIKE', 'etapa 1%')
+        $accioness = accionesCorrectivas::where('status', 'LIKE', 'etapa 1%')->where('ultimoEmail', '<=', Carbon::now()->format('Y-m-d'))
             ->get();
 
         foreach ($accioness as $acciones) {
@@ -39,9 +39,12 @@ class accionesCorrectivasJob implements ShouldQueue
                 if ($leaderMailto) {
                     $mailaddress[] = $leaderMailto->email;
                 }
-
-                Mail::to($mailaddress)->send(new recordatorio($acciones, ' Recordatorio "Acciones Correctivas"'));
             }
+            Mail::to($mailaddress)->send(new recordatorio($acciones, ' Recordatorio "Acciones Correctivas"'));
+
+            accionesCorrectivas::where('folioAccion', $acciones->folioAccion)->update([
+                'ultimoEmail' => Carbon::now()->format('Y-m-d'),
+            ]);
         }
 
     }

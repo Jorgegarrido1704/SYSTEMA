@@ -251,6 +251,8 @@ class AdminSupControlloer extends Controller
                 \App\Jobs\VacacionesRegistrosJob::dispatch();
             } elseif ($request->input('setAddWeek') == 4) {
                 \App\Jobs\respolados::dispatch();
+            } elseif ($request->input('setAddWeek') == 5) {
+                \App\Jobs\accionesCorrectivasJob::dispatch();
             }
         }
 
