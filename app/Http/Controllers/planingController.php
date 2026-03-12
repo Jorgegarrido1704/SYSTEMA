@@ -475,7 +475,10 @@ class planingController extends Controller
                             'lramos@mx.bergstrominc.com',
                             'emedina@mx.bergstrominc.com',
                             'jgarrido@mx.bergstrominc.com',
-
+                            'ediaz@mx.bergstrominc.com',
+                            'dmartinez@mx.bergstrominc.com',
+                            'jgamboa@mx.bergstrominc.com',
+                            'apreciado@mx.bergstrominc.com',
                         ];
                         Mail::to($recipients)->send(new \App\Mail\PPAPING($subject, $content));
                     }
