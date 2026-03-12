@@ -21,7 +21,7 @@ class accionesCorrectivasJob implements ShouldQueue
 
     public function handle(): void
     {
-        $accioness = accionesCorrectivas::where('status', 'LIKE', 'etapa 1%')->where('ultimoEmail', '<=', Carbon::now()->format('Y-m-d'))
+        $accioness = accionesCorrectivas::where('status', 'LIKE', 'etapa 1%')->where('ultimoEmail', '<', Carbon::now()->format('Y-m-d'))
             ->get();
 
         foreach ($accioness as $acciones) {
