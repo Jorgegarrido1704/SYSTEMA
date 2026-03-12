@@ -451,18 +451,20 @@ class planingController extends Controller
                     $agegartiempos->save();
 
                     if (substr($rev, 0, 4) == 'PPAP' || substr($rev, 0, 4) == 'PRIM') {
+                        $content = [];
                         $subject = 'ALTA '.substr($rev, 0, 4).' Numero de parte:'.$np.' Rev: '.substr($rev, 5);
-                        $date = date('d-m-Y');
-                        $time = date('H:i');
-                        $content = 'Buen día,'."\n\t\n".'Les comparto que hoy '.$date.' a las '.$time."\n\t\n".' se libero a piso la '.substr($rev, 0, 4)."\n\t\n";
-                        $content .= "\n\t\n".' Del cliente: '.$client;
-                        $content .= "\n\t\n".' con número de parte: '.$np;
-                        $content .= "\n\t\n".' Con Work order: '.$wo;
-                        $content .= "\n\t\n".' Esto para seguir con el proceso de producción y revision por parte de ingeniería y calidad.';
+                        $content['dia'] = date('d-m-Y');
+                        $content['hora'] = date('H:i');
+                        $content['np'] = $np;
+                        $content['tipo'] = substr($rev, 0, 4);
+                        $content['rev'] = substr($rev, 5);
+                        $content['wo'] = $wo;
+                        $content['qty'] = $qty;
+                        $content['client'] = $client;
+                        $content['reqDay'] = $request->input('Reqday');
 
                         $recipients = [
                             'jguillen@mx.bergstrominc.com',
-                            'jlopez@mx.bergstrominc.com',
                             'drocha@mx.bergstrominc.com',
                             'jcervera@mx.bergstrominc.com',
                             'jcrodriguez@mx.bergstrominc.com',
