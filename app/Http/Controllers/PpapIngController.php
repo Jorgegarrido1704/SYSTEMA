@@ -263,6 +263,7 @@ class PpapIngController extends Controller
             $emailwo = $buscarinfo->wo;
             $emailpo = $buscarinfo->po;
             $emailQty = $buscarinfo->Qty;
+            $emailreqday = $buscarinfo->reqday;
             $messageData = [
                 'revin' => $revin,
                 'emailcliente' => $emailcliente,
@@ -273,23 +274,16 @@ class PpapIngController extends Controller
                 'emailQty' => $emailQty,
 
             ];
+            $content = [];
             $subject = $revin.' PRUEBA ELECTRICA  '.$emailcliente.' NP '.$emailpn.' en REV '.$revf;
-            $date = date('d-m-Y');
-            $time = date('H:i');
-
-            $content = $revin.' liberada y en embarque'."\n\n";
-            $content .= 'Buen día,'."\n\n".'Les comparto que el día '.$date.' a las '.$time."\n\n".'Salió de prueba la siguiente PPAP:'."\n\n";
-            $content .= "\n\n".' Cliente: '.$emailcliente;
-            $content .= "\n\n".' Número de parte: '.$emailpn;
-            $content .= "\n\n".' PPAP en revisión: '.$revf;
-            $content .= "\n\n".' Con Work order: '.$emailwo;
-            $content .= "\n\n".' Con Sono order: '.$emailpo;
-            $content .= "\n\n".' Por la cantidad de: '.$emailQty;
-            $content .= "\n\n".' Con las siguientes anotaciones:';
-            $calidad = DB::table('regsitrocalidad')->where('info', $info)->get();
-            foreach ($calidad as $regcal) {
-                $content .= '<br>'.$regcal->codigo;
-            }
+            $content['dia'] = date('d-m-Y');
+            $content['hora'] = date('H:i');
+            $content['client'] = $emailcliente;
+            $content['np'] = $emailpn;
+            $content['rev'] = $revf;
+            $content['wo'] = $emailwo;
+            $content['qty'] = $emailQty;
+            $content['reqDay'] = $emailreqday;
             $recipients = [
                 'jguillen@mx.bergstrominc.com',
                 'jcervera@mx.bergstrominc.com',
@@ -299,12 +293,15 @@ class PpapIngController extends Controller
                 'jolaes@mx.bergstrominc.com',
                 'lramos@mx.bergstrominc.com',
                 'emedina@mx.bergstrominc.com',
-                'vpichardo@mx.bergstrominc.com',
                 'jgamboa@mx.bergstrominc.com',
                 'apreciado@mx.bergstrominc.com',
+                'rramirez@mx.bergstrominc.com',
+                'ediaz@mx.bergstrominc.com',
+                'dmartinez@mx.bergstrominc.com',
+                'jgarrido@mx.bergstrominc.com',
 
             ];
-            Mail::to($recipients)->send(new \App\Mail\PPAPING($subject, $content));
+            Mail::to($recipients)->send(new \App\Mail\ppapcontrol\salidanpi($subject, $content));
         }
 
         return redirect('/ing');
