@@ -58,7 +58,7 @@ class AddWeek implements ShouldQueue
                     'yearOfAssistence' => $year,
                 ]);
             }
-            if (carbon::now()->format('H') > 7) {
+            if (carbon::now()->format('H') > 6) {
                 if (in_array($dates, $hollyDays)) {
                     assistence::where('week', '=', $week)
                         ->where('id_empleado', '=', $registroEmpleado->employeeNumber)
