@@ -128,7 +128,9 @@ class mailsController extends Controller
                 'jgarrido@mx.bergstrominc.com',
                 'jcrodriguez@mx.bergstrominc.com',
                 'naldan@mx.bergstrominc.com',
-            ];
+                'jruiz@mx.bergstrominc.com',
+                'ediaz@mx.bergstrominc.com',
+                'dmartinez@mx.bergstrominc.com'];
             workScreduleModel::where('pn', '=', $accion->pn)->orderby('id', 'desc')->first()->update(['documentsApproved' => carbon::now()->format('Y-m-d')]);
 
             Mail::to($receivers)->send(new firmasCompletas($accion, 'Firmas Completas NPI'));
@@ -165,7 +167,9 @@ class mailsController extends Controller
                 'jrodriguez@mx.bergstrominc.com',
                 'jgamboa@mx.bergstrominc.com',
                 'jguillen@mx.bergstrominc.com',
-                'divonne@mx.bergstrominc.com',
+                'ediaz@mx.bergstrominc.com',
+                'dmartinez@mx.bergstrominc.com',
+
             ];
             Mail::to($receivers)->send(new desviacionesEmails($accion, 'Desviacion aprobada'));
         } elseif ($who == 'Jesus_C' or $who == 'Carlos R' or $who == 'Nancy A' or $who == 'Admin' or $who == 'Jorge G') {
@@ -197,7 +201,8 @@ class mailsController extends Controller
             'jrodriguez@mx.bergstrominc.com',
             'jgamboa@mx.bergstrominc.com',
             'jguillen@mx.bergstrominc.com',
-            'divonne@mx.bergstrominc.com',
+            'ediaz@mx.bergstrominc.com',
+            'dmartinez@mx.bergstrominc.com',
         ];
         desviation::where('id', '=', $idq)->update(['fing' => carbon::now()->format('d-m-y H:i'), 'fcal' => carbon::now()->format('d-m-y H:i'), 'count' => 5, 'rechazo' => $rechaso]);
         $accion = desviation::where('id', '=', $idq)->first();
