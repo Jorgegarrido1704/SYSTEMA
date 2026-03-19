@@ -376,7 +376,6 @@ class AlmacenController extends Controller
             return response()->json(['status' => 400, 'message' => 'Work order not found in registro table']);
         }
 
-        // Sum all the 'qty' values from 'controlalmacen' table where 'codUnic' equals $codigo
         $sumaMov = DB::table('controlalmacen')->where('codUnic', '=', $codigo)->sum('qty');
 
         // Prepare the data to be returned

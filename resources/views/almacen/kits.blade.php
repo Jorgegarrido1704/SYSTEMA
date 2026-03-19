@@ -2,7 +2,7 @@
 @section('contenido')
 <script>const urlitem = @json(route('qtyItem'));</script>
 <script>const altaReg = @json(route('ChargeAlm'));</script>
-<script src="{{ asset('/dash/js/almacen.js')}}"> </script>
+<script src="{{ asset('dash/js/almacen.js')}}"> </script>
 
 <style>
     body{
