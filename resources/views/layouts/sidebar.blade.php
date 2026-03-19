@@ -104,6 +104,7 @@
                         @if($value=='Admin')
                         <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('cutAndTerm') }}">Cut & Terminals</a></li>
                         <li class="submenu" id="submenu"><a style="color:white;" href="#">Assembly & Looming</a></li>
+                        <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('corte.indexCorte') }}">Terminales</a></li>
                         @endif
                     </ul>
                 </li>

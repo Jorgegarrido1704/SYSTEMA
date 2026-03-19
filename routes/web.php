@@ -6,6 +6,7 @@ use App\Http\Controllers\AlmacenController;
 use App\Http\Controllers\BossCaliController;
 use App\Http\Controllers\bossController;
 use App\Http\Controllers\caliController;
+use App\Http\Controllers\corteController;
 use App\Http\Controllers\generalController;
 use App\Http\Controllers\getPnDetailsController;
 use App\Http\Controllers\globalInventario;
@@ -269,4 +270,7 @@ Route::controller(herramentalesController::class)->group(function () {
     Route::get('/herramentales/update/{id}', [herramentalesController::class, 'update'])->name('herramientales.update');
     Route::post('/herramentales/sumCrimpers', [herramentalesController::class, 'sumCrimpers'])->name('herramientales.sumCrimpers');
     Route::post('/herramentales/addHerramental', [herramentalesController::class, 'addHerramental'])->name('herramientales.addHerramental');
+});
+Route::controller(corteController::class)->group(function () {
+    Route::get('/corte', [corteController::class, 'indexCorte'])->name('corte.indexCorte');
 });
