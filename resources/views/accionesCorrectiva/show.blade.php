@@ -308,7 +308,7 @@
                                                 <span class="font-weight-bold">Fecha de inicio:<br> {{$accion->fechaInicioSubAccion}}</span>
                                             </div>
                                             <div class="col-md-2" >
-                                                <span class="font-weight-bold">Fecha de inicio:<br> {{$accion->fechaFinSubAccion}}</span>
+                                                <span class="font-weight-bold">Fecha de fin:<br> {{$accion->fechaFinSubAccion}}</span>
                                             </div>
                                             <div class="col-md-4" >
                                                 <span class="font-weight-bold">Quien aprobara la accion:<br> {{$accion->auditorSubAccion}}</span>
