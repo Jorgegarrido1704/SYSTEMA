@@ -453,10 +453,8 @@ class planingController extends Controller
                     if (substr($rev, 0, 4) == 'PPAP' || substr($rev, 0, 4) == 'PRIM') {
                         $content = [];
                         $subject = 'ALTA '.substr($rev, 0, 4).' Numero de parte:'.$np.' Rev: '.substr($rev, 5);
-                        $content['dia'] = date('d-m-Y');
-                        $content['hora'] = date('H:i');
+                        $content['info'] = 'Les comparto que hoy'.date('d-m-Y').' , a las'.date('H:i').' se libero a piso la siguiente '.substr($rev, 0, 4).':';
                         $content['np'] = $np;
-                        $content['tipo'] = substr($rev, 0, 4);
                         $content['rev'] = substr($rev, 5);
                         $content['wo'] = $wo;
                         $content['qty'] = $qty;

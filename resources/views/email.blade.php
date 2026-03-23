@@ -8,8 +8,7 @@
 <body>
     <div>
         <p>Buen día,</p>
-
-        <p>Les comparto que hoy {{$content['dia'] }}, a las {{ $content['hora'] }} se libero a piso la siguiente {{$content['tipo']}}: </p>
+        <p> {{$content['info']}} </p>
         <p>Cliente: {{ $content['client'] }}</p>
         <p>Numero de parte: {{ $content['np'] }} REV {{ $content['rev'] }}</p>
         <p>Work Order: {{ $content['wo'] }}</p>

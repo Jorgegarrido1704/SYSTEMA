@@ -276,12 +276,10 @@ class PpapIngController extends Controller
             ];
             $content = [];
             $subject = $revin.' PRUEBA ELECTRICA  '.$emailcliente.' NP '.$emailpn.' en REV '.$revf;
-            $content['dia'] = date('d-m-Y');
-            $content['hora'] = date('H:i');
+            $content['info'] = 'Les comparto que el dia de hoy '.date('d-m-Y').' a las '.date('H:i').' se realizo la PRUEBA ELECTRICA al siguiente '.$revin.' :';
             $content['client'] = $emailcliente;
             $content['np'] = $emailpn;
             $content['rev'] = $revf;
-            $content['tipo'] = $revin;
             $content['wo'] = $emailwo;
             $content['qty'] = $emailQty;
             $content['reqDay'] = $emailreqday;
