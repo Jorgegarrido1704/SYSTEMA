@@ -281,6 +281,7 @@ class PpapIngController extends Controller
             $content['client'] = $emailcliente;
             $content['np'] = $emailpn;
             $content['rev'] = $revf;
+            $content['tipo'] = $revin;
             $content['wo'] = $emailwo;
             $content['qty'] = $emailQty;
             $content['reqDay'] = $emailreqday;
