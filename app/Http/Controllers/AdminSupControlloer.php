@@ -2,9 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\calidadRegistro;
+use App\Models\personalBergsModel;
 use App\Models\routingModel;
+use App\Mail\solicitudVacacionesMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
+use carbon\Carbon;
+
+
 
 class AdminSupControlloer extends Controller
 {
@@ -14,8 +21,9 @@ class AdminSupControlloer extends Controller
         if (session('categoria') != 'SupAdmin') {
             return redirect('/login');
         } else {
+            $empleados = personalBergsModel::select('employeeNumber', 'employeeName')->where('status', 'Activo')->where('DaysVacationsAvailble', '>', 0)->get();
 
-            return view('SupAdmin', ['value' => session('user'), 'cat' => session('categoria')]);
+            return view('SupAdmin', ['value' => session('user'), 'cat' => session('categoria'), 'empleados' => $empleados]);
         }
     }
 
@@ -277,5 +285,149 @@ class AdminSupControlloer extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
+    }
+
+    public function addVacationAdmin(Request $request)
+    {
+        $input = $request->all();
+        $request->validate([
+            'personalIng' => 'required',
+            'endDate' => 'required|date',
+            'diasT' => 'required|integer|min:1|max:20',
+        ]);
+        $value = session('user');
+
+        $pesonal = $input['personalIng'];
+        $endDate = Carbon::parse($input['endDate']);
+        $diasT = $input['diasT'];
+        $dias_solicitados = $revDias = $diasT;
+        $returnDate = Carbon::parse($input['endDate']);
+        $checkDias = Carbon::parse($input['endDate']);
+
+        $buscarPersonal = DB::table('personalberg')
+            ->where('employeeNumber', '=', $pesonal)
+            ->first();
+        $lastyear = $buscarPersonal->lastYear;
+        $currentYear = $buscarPersonal->currentYear;
+        $nextYear = $buscarPersonal->nextYear;
+        // Datos para el registro
+        $nombre = $buscarPersonal->employeeName;
+        $area = $buscarPersonal->employeeArea;
+        $lider = $buscarPersonal->employeeLider;
+        $fecha_de_solicitud = $endDate->toDateString();
+        $noposible = $repetidosDias = 0;
+        $email = null;
+         $daotsSup=DB::table('personalberg')->select('user')
+            ->where('employeeName', '=', $lider)
+            ->first();
+        $supervisor = $daotsSup->user??"";
+        
+
+        $email = 'jgarrido@mx.bergstrominc.com';
+
+        // revisar si hay disponibilidad de vacaciones en la fecha solicitada
+
+        for ($i = 0; $i < $revDias; $i++) {
+            // si es domingo
+            if (Carbon::parse($checkDias)->dayOfWeek == 0) {
+                $revDias++;
+            } else {
+                $datosVacaciones = DB::table('registro_vacaciones')
+                    ->where('fecha_de_solicitud', '=', $checkDias->toDateString())
+                    ->where('area', '=', $area)
+                    ->count();
+                $diasRepetidos = DB::table('registro_vacaciones')
+                    ->where('fecha_de_solicitud', '=', $checkDias->toDateString())
+                    ->where('id_empleado', '=', $pesonal)
+                    ->count();
+                if ($datosVacaciones > 150) {
+                    $noposible += 1;
+                }
+                if ($diasRepetidos > 0) {
+                    $repetidosDias += 1;
+                }
+            }
+            $checkDias->addDay(1);
+        }
+
+        if ($noposible > 0) {
+            return redirect()->back()->with('error', 'Alguno de los días solicitados ya tiene el máximo de vacaciones aprobadas en su área.
+        Por favor, revise con su supervisor y elija otras fechas.');
+        }if ($repetidosDias > 0) {
+            return redirect()->back()->with('error', 'Alguno de los días solicitados ya tiene una solicitud de vacaciones aprobada.
+            Por favor, revise con su supervisor y elija otras fechas.');
+        }
+
+        // $link = URL::temporarySignedRoute('loginWithoutSession', now()->addMinutes(30), ['user' => 'Juan G']);
+        $contend = [
+            'asunto' => 'Solicitud de Vacaciones',
+            'nombre' => $nombre,
+            'departamento' => $area,
+            'supervisor' => $supervisor,
+            'fecha_de_solicitud' => '',
+            'fecha_retorno' => '',
+            'dias_solicitados' => $dias_solicitados ?? 1,
+            'Folio' => '',
+        ];
+
+        if ($lastyear >= $diasT) {
+            DB::table('personalberg')
+                ->where('employeeNumber', '=', $pesonal)
+                ->update(['lastYear' => $lastyear - $diasT, 'DaysVacationsAvailble' => DB::raw('DaysVacationsAvailble - '.$diasT)]);
+        } elseif ($lastyear >= 0 && $currentYear >= ($diasT - $lastyear)) {
+            DB::table('personalberg')
+                ->where('employeeNumber', '=', $pesonal)
+                ->update(['currentYear' => $currentYear - ($diasT - $lastyear), 'lastYear' => 0, 'DaysVacationsAvailble' => DB::raw('DaysVacationsAvailble - '.$diasT)]);
+        } elseif ($lastyear >= 0 && $currentYear >= 0 && $nextYear >= ($diasT - $lastyear - $currentYear)) {
+            DB::table('personalberg')
+                ->where('employeeNumber', '=', $pesonal)
+                ->update(['nextYear' => $nextYear - ($diasT - $lastyear - $currentYear), 'currentYear' => 0, 'lastYear' => 0, 'DaysVacationsAvailble' => DB::raw('DaysVacationsAvailble - '.$diasT)]);
+        } else {
+            session()->flash('error', 'No tienes suficientes días de vacaciones disponibles.');
+
+            return redirect()->back();
+        }
+        $diasReg = $diasT;
+        for ($i = 0; $i < $diasT; $i++) {
+
+            // Check if the date is a weekend
+            if (Carbon::parse($returnDate)->dayOfWeek == 0) {
+                $diasT++;
+            } else {
+                if (($diasReg - ($currentYear + $lastyear)) > 0) {
+                    $years = Carbon::now()->addYear()->year;
+                } elseif (($diasReg - ($lastyear)) > 0) {
+                    $years = Carbon::now()->year;
+                } else {
+                    $years = Carbon::now()->subYear()->year;
+                }
+                // Insert into registro_vacaciones table
+                DB::table('registro_vacaciones')->insert([
+                    'id_empleado' => $pesonal,
+                    'fecha_de_solicitud' => $returnDate,
+                    'fehca_retorno' => $returnDate,
+                    'estatus' => 'Pendiente RH',
+                    'dias_solicitados' => $diasReg,
+                    'usedYear' => $years,
+                    'superVisor' => $supervisor,
+                    'area' => $area,
+
+                ]);
+            }
+            $returnDate->addDay(1);
+        }
+
+        $buscarFolio = DB::table('registro_vacaciones')
+            ->select('id', 'superVisor', 'dias_solicitados', 'fecha_de_solicitud')->where('id_empleado', '=', $pesonal)
+            ->limit(1)->orderBy('id', 'desc')->first();
+
+        $folio = 'VAC-'.$buscarFolio->id;
+        $fechadeSolicitud = Carbon::parse($buscarFolio->fecha_de_solicitud)->addWeekdays(-$buscarFolio->dias_solicitados);
+        $contend['fecha_de_solicitud'] = $fechadeSolicitud->toDateString();
+        $contend['Folio'] = $folio;
+
+     //   Mail::to($email)->send(new solicitudVacacionesMail($contend, 'Solicitud de Vacaciones'));
+
+        return redirect()->route('SupAdmin')->with('success', 'Vacaciones agregadas correctamente.');
     }
 }

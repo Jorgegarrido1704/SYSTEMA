@@ -12,6 +12,7 @@
     <p><strong>Responsable:</strong> {{ $acciones->resposableAccion ?? 'N/A' }}</p>
     <p><strong>Proceso Afectado:</strong> {{ $acciones->Afecta ?? 'N/A' }}</p>
     <p><strong>Origen de la accion fue detectada en el proceso de: </strong> {{ $acciones->origenAccion ?? 'N/A' }}</p>
+    <p><strong>Tu accion se encuentra en el estatus:  {{$acciones->status}} </strong></p>
 
     <br><br>
 
