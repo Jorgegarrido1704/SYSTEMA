@@ -22,7 +22,9 @@ class AdminSupControlloer extends Controller
         if (session('categoria') != 'SupAdmin') {
             return redirect('/login');
         } else {
-            $empleados = personalBergsModel::select('employeeNumber', 'employeeName')->where('status', 'Activo')->where('DaysVacationsAvailble', '>', 0)->get();
+            $empleados = personalBergsModel::select('employeeNumber', 'employeeName')
+            ->where('status', 'Activo')->where('DaysVacationsAvailble', '>', 0)
+            ->orderBy('employeeName', 'desc')->get();
 
             return view('SupAdmin', ['value' => session('user'), 'cat' => session('categoria'), 'empleados' => $empleados]);
         }
