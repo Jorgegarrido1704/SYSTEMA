@@ -527,9 +527,8 @@ if (Error) {
                     <select id="typeSalida_${emp.employeeNumber}" required>
                         <option value="" noselected>Choose an option</option>
                         <option value="VOLUNTARIA">VOLUNTARIA</option>
-                          <option value="ROTACION">ROTACION</option>
-                          <option value="TERMINACION">TERMINACION</option>
-                          <option value="RETIRO">RETIRO</option>
+                          <option value="Terminación de contrato ">Terminación de contrato </option>
+                          <option value="Involuntaria">Involuntaria</option>
                     </select>
                 </td>
                 <td>

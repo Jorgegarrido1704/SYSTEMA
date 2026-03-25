@@ -39,7 +39,7 @@
 </style>
 <script>
     const registros = @json($registrosDeAsistencia);
-   // console.log(registros);
+  
     const genero = @json($genero);
     const tipoTrabajador = @json($tipoTrabajador);
     const promaus = @json($promaus);

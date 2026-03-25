@@ -24,7 +24,7 @@ class herramentalesController extends Controller
             ->orWhere('finhora', '')
             ->orderBy('id', 'asc')
             ->get();
-        $herramntal = herramentalInfo::select('herramental', 'terminal')->orderBy('terminal', 'asc')->get();
+        $herramntal = herramentalInfo::orderBy('golpesTotales', 'DESC')->orderBy('terminal', 'asc')->get();
 
         return view('herramentales.index', ['crimpersRequested' => $crimpersRequested, 'cat' => $cat, 'value' => $value,
             'herramntal' => $herramntal]);
@@ -73,19 +73,23 @@ class herramentalesController extends Controller
 
             ]);
 
-            return back()->with('message', 'Inventory added successfully.');
+            
         }
+        return back()->with('message', 'Count of hits added successfully.');
     }
 
     public function addHerramental(Request $request)
     {
         $request->validate([
-            'tooling' => ['required', 'string'],
-            'qtyHits' => ['required', 'numeric'],
+            'newTooling' => ['required', 'string'],
+            'terminalNewTooling' => ['required', 'string'],
         ]);
+        $newTooling=strtoupper($request->input('newTooling'));
+        $terminalNewTooling=strtoupper($request->input('terminalNewTooling'));
         $herramental = new herramentalInfo;
-        $herramental->herramental = $request->input('tooling');
-        $herramental->terminal = $request->input('qtyHits');
+        $herramental->herramental = $newTooling;
+        $herramental->terminal = $terminalNewTooling;
+        $herramental->fecha_reg = Carbon::now()->format('d-m-Y');
         $herramental->save();
 
         return back()->with('message', 'Inventory added successfully.');
