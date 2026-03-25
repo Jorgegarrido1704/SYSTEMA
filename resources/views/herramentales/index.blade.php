@@ -88,7 +88,7 @@
                             <input type="number" name="qtyHits" id="qtyHits" class="form-control" min="1" step="1" required>
                         </div>
                         <div class="form-group">
-                           <button type="submit" class="btn btn-primary">Add</button>
+                           <button type="submit" class="btn btn-primary">Add Hits</button>
                         </div>
                     </form>
                 </div>
@@ -113,7 +113,7 @@
                             <input type="text" name="terminalNewTooling" id="terminalNewTooling" pattern="[A-Za-z0-9-]{4,12}" class="form-control" required>
                         </div>
                         <div class="form-group">
-                           <button type="submit" class="btn btn-primary">Add</button>
+                           <button type="submit" class="btn btn-primary">Add Crimper</button>
                         </div>
                     </form>
                 </div>
