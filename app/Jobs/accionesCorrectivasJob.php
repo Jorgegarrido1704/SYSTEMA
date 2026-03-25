@@ -26,7 +26,7 @@ class accionesCorrectivasJob implements ShouldQueue
             $verificaciones = accionesCorrectivas::where('status', 'LIKE', 'etapa 2%')->where('ultimoEmail', '<', Carbon::now()->format('Y-m-d'))
             ->get();   
             foreach ($verificaciones as $verificacion) {
-                 $mailto = personalBergsModel::select('email', 'employeeLider')->where('employeeName', $acciones->resposableAccion)->first();
+                 $mailto = personalBergsModel::select('email', 'employeeLider')->where('employeeName', $verificacion->resposableAccion)->first();
             $mailaddress = [
                 'jgarrido@mx.bergstrominc.com',
                 'maleman@mx.bergstrominc.com',
@@ -41,9 +41,9 @@ class accionesCorrectivasJob implements ShouldQueue
                     $mailaddress[] = $leaderMailto->email;
                 }
             }
-            Mail::to($mailaddress)->send(new recordatorio($acciones, ' Recordatorio "Acciones Correctivas"'));
+            Mail::to($mailaddress)->send(new recordatorio($verificacion, ' Recordatorio "Acciones Correctivas"'));
 
-            accionesCorrectivas::where('folioAccion', $acciones->folioAccion)->update([
+            accionesCorrectivas::where('folioAccion', $verificacion->folioAccion)->update([
                 'ultimoEmail' => Carbon::now()->format('Y-m-d'),
             ]);
             }
