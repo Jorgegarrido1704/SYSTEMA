@@ -9,6 +9,7 @@ use App\Mail\solicitudVacacionesMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Mail;
 use carbon\Carbon;
 
 
@@ -426,7 +427,7 @@ class AdminSupControlloer extends Controller
         $contend['fecha_de_solicitud'] = $fechadeSolicitud->toDateString();
         $contend['Folio'] = $folio;
 
-     //   Mail::to($email)->send(new solicitudVacacionesMail($contend, 'Solicitud de Vacaciones'));
+        Mail::to($email)->send(new solicitudVacacionesMail($contend, 'Solicitud de Vacaciones'));
 
         return redirect()->route('SupAdmin')->with('success', 'Vacaciones agregadas correctamente.');
     }
