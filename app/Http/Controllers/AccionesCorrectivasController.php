@@ -441,12 +441,11 @@ class AccionesCorrectivasController extends Controller
             'accion' => 'required|string|max:1500',
             'fechaInicioAccion' => 'required|date',
         ]);
-        $folioEficacia = preg_replace('/[^\p{L}0-9()._\- ]/u', ' ', $folioEficacia);
         $accionIngesada = preg_replace('/[^\p{L}0-9()._\- ]/u', ' ', $request->input('accion'));
         $accion = accionesCorrectivas::where('folioAccion', $folioEficacia)->update([
             'accion' => $accionIngesada,
             'fechaInicioAccion' => $request->input('fechaInicioAccion'),
-            'status' => 'etapa 3 - Aceptación de eficacia',
+            'status' => 'etapa 3 - Aceptación de eficacia'
         ]);
         // Mail eliminacion
         $acciones = accionesCorrectivas::where('folioAccion', $folioEficacia)->first();
