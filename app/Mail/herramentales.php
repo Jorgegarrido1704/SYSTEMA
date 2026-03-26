@@ -23,12 +23,7 @@ class herramentales extends Mailable
         $this->subject = $subject;
     }
 
-    public function envelope(): Envelope
-    {
-        return new Envelope(
-            subject: $this->subject,
-        );
-    }
+   
 
         public function build()
         {
