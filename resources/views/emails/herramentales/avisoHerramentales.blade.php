@@ -8,8 +8,8 @@
     <p><strong> Buen dia, </strong></p>
     <p><strong> {{ $acciones['inicio'] ?? 'N/A' }}</strong></p>
     <p><strong> {{ $acciones['quepaso'] ?? 'N/A' }} </strong></p>
-    <p>{{ $acciones['final'] ?? 'N/A' }}</p>
+    <p><strong>{{ $acciones['final'] ?? 'N/A' }} </strong></p>
         <br><br>
-    <p>Gracias por su colaboracion.</p>
+    <p><strong>Gracias por su colaboracion. </strong></p>
 </body>
 </html>

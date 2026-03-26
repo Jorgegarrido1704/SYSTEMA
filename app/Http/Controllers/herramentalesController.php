@@ -78,16 +78,16 @@ class herramentalesController extends Controller
             //email de alerta
              $acciones['inicio']= 'Se les informaque el dia de hoy se acumularon mas de 5000 golpes en el siguiente herramiental';
             $acciones['quepaso'] = 'Herramental: '.$tooling.' Terminal: '.$termina.' Total de golpes: '.$lastMantainence->golpesTotales;
-            $acciones['final'] = 'Este herramental cuenta con de '.$lastMantainence->totalmant.' mantenimientos correctivos';
+            $acciones['final'] = 'Este herramental cuenta con de '.$lastMantainence->totalmant.' mantenimientos correctivos actualmente';
           $recipients = [
-                              /*  'jolaes@mx.bergstrominc.com',
+                                'jolaes@mx.bergstrominc.com',
                                 'lramos@mx.bergstrominc.com',
                                 'emedina@mx.bergstrominc.com',
                                 'ediaz@mx.bergstrominc.com',
                                 'AnGonzalez@mx.bergstrominc.com',
                                 'scastillo@mx.bergstrominc.com',
                                 'rramirez@mx.bergstrominc.com',
-                                'drocha@mx.bergstrominc.com',*/
+                                'drocha@mx.bergstrominc.com',
                                  'jgarrido@mx.bergstrominc.com',
                             ];
                             Mail::to($recipients)->send(new \App\Mail\herramentales("Nueva requisición de mantenimiento", $acciones));
@@ -177,14 +177,14 @@ class herramentalesController extends Controller
     $acciones['quepaso'] = 'Herramental: '.$tooling.' Terminal: '.$terminal.' Minutos de trabajp: '.$minutes;
     $acciones['final'] = 'Quien realizo el mantenimiento fue : '.$personal.' y redacto las siguientes observaciones: '.$observaciones;
           $recipients = [
-                                /*'jolaes@mx.bergstrominc.com',
+                                'jolaes@mx.bergstrominc.com',
                                 'lramos@mx.bergstrominc.com',
                                 'emedina@mx.bergstrominc.com',
                                 'ediaz@mx.bergstrominc.com',
                                 'AnGonzalez@mx.bergstrominc.com',
                                 'scastillo@mx.bergstrominc.com',
                                 'rramirez@mx.bergstrominc.com',
-                                'drocha@mx.bergstrominc.com',*/
+                                'drocha@mx.bergstrominc.com',
                                  'jgarrido@mx.bergstrominc.com',
                             ];
                             Mail::to($recipients)->send(new \App\Mail\herramentales("Realizacion de mantenimiento", $acciones));
