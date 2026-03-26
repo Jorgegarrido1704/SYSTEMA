@@ -7,6 +7,7 @@ use App\Models\herramentales\herramentalInfo;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\Maintanance;
 
 class herramentalesController extends Controller
 {
@@ -144,8 +145,16 @@ class herramentalesController extends Controller
         if ($value != 'Admin' or $cat == 'herramentales') {
             return redirect('/login');
         }
+        $promedioespera=Maintanance::selectRaw('AVG(TIMESTAMPDIFF(MINUTE,STR_TO_DATE(fecha, "%d-%m-%Y %H:%i"), STR_TO_DATE(inimant, "%d-%m-%Y %H:%i"))) as promedio')->where('inimant', '!=', '')->where('area', '=', 'maquina')->groupBy('area')->orderBy('id', 'desc')->get();
+        $promedio=$promedioespera[0]->promedio;
+         $times=Maintanance::selectRaw('AVG(TIMESTAMPDIFF(MINUTE,STR_TO_DATE(inimant, "%d-%m-%Y %H:%i"), STR_TO_DATE(finhora, "%d-%m-%Y %H:%i"))) as promedio')->where('inimant', '!=', '')->where('area', '=', 'maquina')->groupBy('area')->orderBy('id', 'desc')->get();
+        $timeWorking=$times[0]->promedio;
+         $ttimes=Maintanance::selectRaw('AVG(TIMESTAMPDIFF(MINUTE,STR_TO_DATE(fecha, "%d-%m-%Y %H:%i"), STR_TO_DATE(finhora, "%d-%m-%Y %H:%i"))) as promedio')->where('inimant', '!=', '')->where('area', '=', 'maquina')->groupBy('area')->orderBy('id', 'desc')->get();
+        $totalTimesAVG=$ttimes[0]->promedio;
+        $tooling=Maintanance::selectRaw('nombreEquipo,COUNT(nombreEquipo) as tiemposVal')->where('area', '=', 'maquina')->groupBy('nombreEquipo')->orderBy('tiemposVal', 'desc')->limit(5)->get();
         
-        return view('herramentales.analysis', [ 'cat' => $cat, 'value' => $value,
+        return view('herramentales.analysis', [ 'cat' => $cat, 'value' => $value,'promedioespera' => $promedio,'timeWorking' => $timeWorking,
+            'totalTimesAVG' => $totalTimesAVG,'tooling' => $tooling
             ]);
 
     }
