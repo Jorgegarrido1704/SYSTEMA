@@ -103,8 +103,9 @@ class herramentalesController extends Controller
         
         $preventivo = herramentalInfo::where('mantenimiento', '=', 'ok')->orderBy('golpesTotales', 'DESC')->orderBy('terminal', 'asc')->get();
         $correctivo =  herramentalInfo::where('mantenimiento', '!=', 'ok')->orderBy('golpesTotales', 'DESC')->orderBy('terminal', 'asc')->get();
+        $maintenanceRecord= DB::table('mant_herramental')->orderBy('id', 'desc')->limit(25)->get();
         return view('herramentales.maintenenceTooling', [ 'cat' => $cat, 'value' => $value,
-            'preventivo' => $preventivo, 'correctivo' => $correctivo,]);
+            'preventivo' => $preventivo, 'correctivo' => $correctivo,'maintenanceRecord' => $maintenanceRecord]);
 
     }
     public function saveMantTooling(Request $request ){

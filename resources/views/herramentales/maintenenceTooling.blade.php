@@ -49,7 +49,7 @@
                             <textarea class="form-control" name="observaciones" id="observaciones"  cols="55" row="3"></textarea>
                         </div>
                         <div class="form-group col-md-12">
-                            <input type="submit" class="btn btn-primary" value="Guardar">
+                            <input type="submit" class="btn btn-primary" value="Save Maintenance">
                         </div>
                     </div>        
 
@@ -94,7 +94,7 @@
                             <textarea class="form-control" name="observaciones" id="observaciones"  cols="55" row="3"></textarea>
                         </div>
                         <div class="form-group col-md-12">
-                            <input type="submit" class="btn btn-primary" value="Guardar">
+                            <input type="submit" class="btn btn-success" value="Save Maintenance">
                         </div>
                     </div>        
 
@@ -103,6 +103,43 @@
              </div>
          </div>
      </div>
+     
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Last 25  Tooling Maintenance Records</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Datetime</th>
+                                <th>Tooling</th>
+                                <th>Terminal</th>
+                                <th>Work Time</th>
+                                <th>Personal whose responsible</th>
+                                <th>Observations</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($maintenanceRecord as $mantenimiento)
+                            <tr>
+                                <td>{{ $mantenimiento->fecha_reg }} {{ $mantenimiento->tiempos }}</td>
+                                <td>{{ $mantenimiento->herramental }}</td>
+                                <td>{{ $mantenimiento->terminal }}</td>
+                                <td>{{ $mantenimiento->Minutos }}</td>
+                                <td>{{ $mantenimiento->quien }}</td>
+                                <td>{{ $mantenimiento->docMant }}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+            </div>
+        </div>
+    </div>
 </div>
                     
 
