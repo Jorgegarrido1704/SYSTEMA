@@ -408,10 +408,9 @@ class generalController extends Controller
                             $subject = 'Urgente se necesita pull test para  NP: '.$pnReg.' con Work Order:'.$wo;
                             $date = date('d-m-Y');
                             $time = date('H:i');
-                            $content = 'Buen día,'."\n\n".'Les comparto que el día '.$date.' a las '.$time."\n\n".'Salió de liberacion el'."\n\n";
-                            $content .= "\n\n".' número de parte: '.$pnReg;
-                            $content .= "\n\n".' Con Work order: '.$wo;
-                            $content .= "\n\n".' Se solicita de su apoyo para revisar el motivo por el cual no se realizo la prueba de pull';
+                            $content['inicio'] = 'Buen día, Les comparto que el día '.$date.' a las '.$time;
+                            $content ['cuerpo']= 'Salió de liberacion el número de parte: '.$pnReg.' Con Work order: '.$wo;
+                            $content ['final']= ' Se solicita de su apoyo para revisar el motivo por el cual no se realizo la prueba de pull';
                             $recipients = [
                                 'jcervera@mx.bergstrominc.com',
                                 'jcrodriguez@mx.bergstrominc.com',
@@ -426,7 +425,7 @@ class generalController extends Controller
                                 'rramirez@mx.bergstrominc.com',
                                 'drocha@mx.bergstrominc.com',
                             ];
-                            Mail::to($recipients)->send(new \App\Mail\PPAPING($subject, $content));
+                            Mail::to($recipients)->send(new \App\Mail\pull\pullError($subject, $content));
                         }
                     }
                 } elseif ((($donde === 'cort') and $cortPar > 0 and $count !== 2)) {

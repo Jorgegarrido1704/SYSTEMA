@@ -7,7 +7,10 @@ use App\Models\herramentales\herramentalInfo;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\URL;
 use App\Models\Maintanance;
+
 
 class herramentalesController extends Controller
 {
@@ -60,27 +63,56 @@ class herramentalesController extends Controller
         $date = Carbon::now()->format('d-m-Y');
         $tooling = explode('||', $request->input('tooling'))[1];
         $termina = explode('||', $request->input('tooling'))[0];
+        $termina= str_replace(' ', '', $termina);
+        $tooling=str_replace(' ', '', $tooling);
         $golpesDiarios = preg_replace('/[^0-9]+/', '', $request->input('qtyHits')) ?? 0;
         golesDiarios::create([
             'herramental' => $tooling,
             'terminal' => $termina,
             'fecha_reg' => $date,
-            'golpesDiarios' => $request->input('qtyHits'),
-        ]);
+            'golpesDiarios' => $golpesDiarios,
+        ]); 
+        $lastMantainence=herramentalInfo::select('golpesTotales','totalmant')->where('herramental', '=', $tooling)->where('terminal', '=', $termina)->orderBy('id', 'desc')->first();
+        $totalMant = round(intval($lastMantainence->golpesTotales+$golpesDiarios)/5000);
+        if($totalMant>$lastMantainence->totalmant){$respuesta = "falta";
+            //email de alerta
+             $acciones['inicio']= 'Se les informaque el dia de hoy se acumularon mas de 5000 golpes en el siguiente herramiental';
+            $acciones['quepaso'] = 'Herramental: '.$tooling.' Terminal: '.$termina.' Total de golpes: '.$lastMantainence->golpesTotales;
+            $acciones['final'] = 'Este herramental cuenta con de '.$lastMantainence->totalmant.' mantenimientos correctivos';
+          $recipients = [
+                              /*  'jolaes@mx.bergstrominc.com',
+                                'lramos@mx.bergstrominc.com',
+                                'emedina@mx.bergstrominc.com',
+                                'ediaz@mx.bergstrominc.com',
+                                'AnGonzalez@mx.bergstrominc.com',
+                                'scastillo@mx.bergstrominc.com',
+                                'rramirez@mx.bergstrominc.com',
+                                'drocha@mx.bergstrominc.com',*/
+                                 'jgarrido@mx.bergstrominc.com',
+                            ];
+                            Mail::to($recipients)->send(new \App\Mail\herramentales("Nueva requisición de mantenimiento", $acciones));
+        }else{$respuesta = "ok";}
+
         if (herramentalInfo::where('herramental', '=', $tooling)->where('terminal', '=', $termina)->where('fecha_reg', '=', $date)->exists()) {
             herramentalInfo::where('herramental', '=', $tooling)->where('terminal', '=', $termina)->update([
-                'golpesDiarios' => 'golpesDiarios +'.$request->input('qtyHits'),
-                'golpesTotales' => 'golpesTotales +'.$request->input('qtyHits'),
+                'golpesDiarios' => DB::raw("golpesDiarios + $golpesDiarios"),
+                'golpesTotales' => DB::raw('golpesTotales +'.$golpesDiarios),
+                'totalmant' => $totalMant,
+                'mantenimiento' => $respuesta
 
             ]);
         }else{
             herramentalInfo::where('herramental', '=', $tooling)->where('terminal', '=', $termina)->update([
-                'fecha_reg'=>carbon::now()->format('d-m-Y'),
-                'golpesDiarios' => $request->input('qtyHits'),
-                'golpesTotales' => 'golpesTotales +'.$request->input('qtyHits'),
+                'fecha_reg'=> $date,
+                'golpesDiarios' => $golpesDiarios,
+                'golpesTotales' =>  DB::raw('golpesTotales +'.$golpesDiarios),
+                'totalmant' => $totalMant,
+                'mantenimiento' => $respuesta
 
             ]);
         }
+
+
         return back()->with('message', 'Count of hits added successfully.');
     }
 
@@ -140,6 +172,23 @@ class herramentalesController extends Controller
         herramentalInfo::where('herramental', '=', $tooling)->where('terminal', '=', $terminal)->update([
             'mantenimiento' => 'ok',
         ]);
+        //email alerta
+    $acciones['inicio']= 'Se les informaque el dia de hoy se realizo el mantenimiento en el siguiente herramiental';
+    $acciones['quepaso'] = 'Herramental: '.$tooling.' Terminal: '.$terminal.' Minutos de trabajp: '.$minutes;
+    $acciones['final'] = 'Quien realizo el mantenimiento fue : '.$personal.' y redacto las siguientes observaciones: '.$observaciones;
+          $recipients = [
+                                /*'jolaes@mx.bergstrominc.com',
+                                'lramos@mx.bergstrominc.com',
+                                'emedina@mx.bergstrominc.com',
+                                'ediaz@mx.bergstrominc.com',
+                                'AnGonzalez@mx.bergstrominc.com',
+                                'scastillo@mx.bergstrominc.com',
+                                'rramirez@mx.bergstrominc.com',
+                                'drocha@mx.bergstrominc.com',*/
+                                 'jgarrido@mx.bergstrominc.com',
+                            ];
+                            Mail::to($recipients)->send(new \App\Mail\herramentales("Realizacion de mantenimiento", $acciones));
+                        
         return back()->with('message', 'Maintenence added successfully.');
         
     }
