@@ -16,6 +16,7 @@ use App\Models\specialWireModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use App\Models\Wo;
 
 class generalController extends Controller
 {

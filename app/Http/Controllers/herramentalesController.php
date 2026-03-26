@@ -68,13 +68,18 @@ class herramentalesController extends Controller
             'golpesDiarios' => $request->input('qtyHits'),
         ]);
         if (herramentalInfo::where('herramental', '=', $tooling)->where('terminal', '=', $termina)->where('fecha_reg', '=', $date)->exists()) {
-            herramentalInfo::update([
+            herramentalInfo::where('herramental', '=', $tooling)->where('terminal', '=', $termina)->update([
                 'golpesDiarios' => 'golpesDiarios +'.$request->input('qtyHits'),
                 'golpesTotales' => 'golpesTotales +'.$request->input('qtyHits'),
 
             ]);
+        }else{
+            herramentalInfo::where('herramental', '=', $tooling)->where('terminal', '=', $termina)->update([
+                'fecha_reg'=>carbon::now()->format('d-m-Y'),
+                'golpesDiarios' => $request->input('qtyHits'),
+                'golpesTotales' => 'golpesTotales +'.$request->input('qtyHits'),
 
-            
+            ]);
         }
         return back()->with('message', 'Count of hits added successfully.');
     }
