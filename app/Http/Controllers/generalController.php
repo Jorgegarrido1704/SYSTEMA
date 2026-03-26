@@ -913,8 +913,8 @@ class generalController extends Controller
         $cant = $request->input('cant');
         $buscarDatos = Wo::where('wo', '=', $wo)->first();
         $pn = $buscarDatos->NumPart;
-        $rev = $buscarDatos->Rev;
-        $client = $buscarDatos->Cliente;            
+        $rev = $buscarDatos->rev;
+        $client = $buscarDatos->cliente;            
 
         $tablero = 1;
         $time = date('d-m-Y H:i');
