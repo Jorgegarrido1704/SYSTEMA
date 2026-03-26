@@ -438,7 +438,7 @@ class generalController extends Controller
                         $restoAnt = 0;
                         $nuevo = $libePar + $cortPar;
                         $update = DB::table('registroparcial')->where('codeBar', '=', $codigo)->update(['cortPar' => $restoAnt, 'libePar' => $nuevo]);
-                        upRegistros(4, $codigo, 'Assembly Process', $todays, 'cutF', $cortPar, $donde, $sesion, 'si');
+                        upRegistros(4, $codigo, 'Terminals Process', $todays, 'cutF', $cortPar, $donde, $sesion, 'si');
                         $tiempoUp = DB::table('tiempos')->where('info', $codigo)->update(['corte' => $todays]);
                     }
                 } elseif ($donde === 'emba' and $embPar > 0) {
