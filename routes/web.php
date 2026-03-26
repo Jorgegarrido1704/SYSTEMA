@@ -271,6 +271,9 @@ Route::controller(herramentalesController::class)->group(function () {
     Route::get('/herramentales/update/{id}', [herramentalesController::class, 'update'])->name('herramientales.update');
     Route::post('/herramentales/sumCrimpers', [herramentalesController::class, 'sumCrimpers'])->name('herramientales.sumCrimpers');
     Route::post('/herramentales/addHerramental', [herramentalesController::class, 'addHerramental'])->name('herramientales.addHerramental');
+    Route::get('/toolingMaintenance', [herramentalesController::class, 'toolingMaintenance'])->name('toolingMaintenance');
+    Route::get('/toolingAnalysis', [herramentalesController::class, 'toolingAnalysis'])->name('toolingAnalysis');
+    Route::post('/saveMantTooling', [herramentalesController::class, 'saveMantTooling'])->name('saveMantTooling');
 });
 Route::controller(corteController::class)->group(function () {
     Route::get('/corte', [corteController::class, 'indexCorte'])->name('corte.indexCorte');

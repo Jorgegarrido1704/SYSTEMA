@@ -118,7 +118,9 @@
                  <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('herramentales.index') }}"
                     onmouseover=showHerramentales();>Toolings</a>
                     <ul class="submenu" id="herramentales" style="display:none;">
-                        <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('timeLine') }}">Data tooling fill</a></li>
+                        <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('toolingMaintenance') }}">Toolings Maintenance</a></li>
+                        <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('toolingAnalysis') }}">Toolings Analysis</a></li>
+                    
                     </ul>
                 </li>
                 @endif

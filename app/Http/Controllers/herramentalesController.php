@@ -94,4 +94,59 @@ class herramentalesController extends Controller
 
         return back()->with('message', 'Inventory added successfully.');
     }
+    public function toolingMaintenance(){
+          $value = session('user');
+        $cat = session('categoria');
+        if ($value != 'Admin' or $cat == 'herramentales') {
+            return redirect('/login');
+        }
+        
+        $preventivo = herramentalInfo::where('mantenimiento', '=', 'ok')->orderBy('golpesTotales', 'DESC')->orderBy('terminal', 'asc')->get();
+        $correctivo =  herramentalInfo::where('mantenimiento', '!=', 'ok')->orderBy('golpesTotales', 'DESC')->orderBy('terminal', 'asc')->get();
+        return view('herramentales.maintenenceTooling', [ 'cat' => $cat, 'value' => $value,
+            'preventivo' => $preventivo, 'correctivo' => $correctivo,]);
+
+    }
+    public function saveMantTooling(Request $request ){
+        $request->validate([
+            'tooling' => ['required', 'string'],
+            'cantidad' => ['required', 'integer'],
+            'personalRegistro' => ['required', 'string'],
+            'observaciones' => ['required', 'string'],
+        ]);
+        $observaciones = preg_replace('/[^\p{L}0-9()._\- ]/u', ' ', $request->input('observaciones')) ?? '';
+        $tooling = explode('//', $request->input('tooling'))[0];
+        $terminal = explode('//', $request->input('tooling'))[1];
+        $minutes = preg_replace('/[^0-9]+/', '', $request->input('cantidad')) ?? 0;
+        $personal= preg_replace('/[^\p{L} ]/u', ' ', $request->input('personalRegistro')) ?? '';
+
+        DB::table('mant_herramental')->insert([
+            'fecha_reg' => Carbon::now()->format('d-m-Y'),
+            'tiempos' => Carbon::now()->format('H:i'),
+            'herramental' => $tooling,
+            'terminal' => $terminal,
+            'Minutos' => $minutes,
+            'quien' => $personal,
+            'docMant' => $observaciones
+        ]);
+
+        herramentalInfo::where('herramental', '=', $tooling)->where('terminal', '=', $terminal)->update([
+            'mantenimiento' => 'ok',
+        ]);
+        return back()->with('message', 'Maintenence added successfully.');
+        
+    }
+
+    public function toolingAnalysis(){
+         $value = session('user');
+        $cat = session('categoria');
+        if ($value != 'Admin' or $cat == 'herramentales') {
+            return redirect('/login');
+        }
+        
+        return view('herramentales.analysis', [ 'cat' => $cat, 'value' => $value,
+            ]);
+
+    }
+
 }

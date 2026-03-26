@@ -908,14 +908,16 @@ class generalController extends Controller
     public function regfull(Request $request)
     {
         $value = session('user');
-        $client = $request->input('cliente');
-        $pn = $request->input('parte');
-        $rev = $request->input('rev');
+        $wo = $request->input('parte');
         $cant = $request->input('cant');
-        $tablero = $request->input('tablero');
+        $buscarDatos = Wo::where('wo', '=', $wo)->first();
+        $pn = $buscarDatos->NumPart;
+        $rev = $buscarDatos->Rev;
+        $client = $buscarDatos->Cliente;            
+
+        $tablero = 1;
         $time = date('d-m-Y H:i');
-        $pn = strtoupper($pn);
-        $rev = strtoupper($rev);
+        
         $tablero = strtoupper($tablero);
         $addfull = new regfull;
         $addfull->SolicitadoPor = $value;
