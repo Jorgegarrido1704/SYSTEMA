@@ -24,6 +24,7 @@ use App\Http\Controllers\PpapIngController;
 use App\Http\Controllers\pruebasElectricasController;
 use App\Http\Controllers\RegistroController;
 use App\Http\Controllers\rrhhController;
+use App\Http\Controllers\SaludController;
 use Illuminate\Support\Facades\Route;
 
 /*

@@ -1850,7 +1850,7 @@ class juntasController extends Controller
             $i++;
         }
 
-        return view('juntas/infoIdSeguimiento', ['commentsBefore' => $commentsBefore, 'value' => session('user'), 'cat' => session('categoria'), 'id' => $id, 'datosInforRegistro' => $datosInforRegistro]);
+        return view('juntas.infoIdSeguimiento', ['commentsBefore' => $commentsBefore, 'value' => session('user'), 'cat' => session('categoria'), 'id' => $id, 'datosInforRegistro' => $datosInforRegistro]);
     }
 
     // Save commets

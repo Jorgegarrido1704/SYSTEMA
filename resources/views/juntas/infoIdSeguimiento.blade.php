@@ -80,7 +80,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            @if($value == 'Gamboa J' or $value == 'Juan G' or $value == 'Andrea P' or $value == 'Jesus_C' or
+                            @if($value=='Rafael R' or$value == 'Gamboa J' or $value == 'Juan G' or $value == 'Andrea P' or $value == 'Jesus_C' or
                             $value=='Luis R' or $value=='Edward M' or $value=='Carlos R' or $value=='Juan O' or $value=='David V'
                             or $value=='Estela G' or $value=='Mario V' or $value=='Admin' or $value=='Jesus_C' or $value=='Alex M' or $cat == 'inge' )
                             <form action="{{ route('conSeguimientos') }}" method="get">
@@ -126,7 +126,7 @@
                             <td>{{ $item[3] }}</td>
                             @if($item[3] == 'On Hold' or $item[3] == 'No stop')
                             <td>
-                                @if($value =='Admin' or $value == 'Gamboa J' or $value == 'Juan G' or $value == 'Andrea P' or $value == 'Jesus_C' or
+                                @if($value=='Rafael R' or $value =='Admin' or $value == 'Gamboa J' or $value == 'Juan G' or $value == 'Andrea P' or $value == 'Jesus_C' or
                             $value=='Luis R' or $value=='Edward M' or $value=='Carlos R' or $value=='Juan O' or $value=='David V' or $value=='Andrea P'
                             or $value=='Estala G' or $cat == 'inge' or $value=='Alex M')
                                 <form action="{{ route('registroComment') }}" method="get">
