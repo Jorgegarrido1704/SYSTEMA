@@ -1627,7 +1627,7 @@ class juntasController extends Controller
             }
         }
 
-        return view('juntas/cutAndTerm', ['value' => $value, 'cat' => $cat, 'cutData' => $cutData, 'loomData' => $loomData]);
+        return view('juntas.cutAndTerm', ['value' => $value, 'cat' => $cat, 'cutData' => $cutData, 'loomData' => $loomData]);
     }
 
     public function seguimientos()
@@ -1638,7 +1638,7 @@ class juntasController extends Controller
         $buscarDatos = [];
         $tiempos = DB::table('registro')
             ->join('tiempos', 'registro.info', '=', 'tiempos.info')
-            ->where('count', '<', '20')
+            ->where('donde', 'not like', '%embarque')
             ->select('registro.*', 'tiempos.*', 'registro.id as ids')
             ->orderBy('registro.wo', 'ASC')
             ->get();
