@@ -1638,7 +1638,7 @@ class juntasController extends Controller
         $buscarDatos = [];
         $tiempos = DB::table('registro')
             ->join('tiempos', 'registro.info', '=', 'tiempos.info')
-            ->where('donde', 'not like', '%embarque')
+            ->whereNotIn('count', ['12', '20'])
             ->select('registro.*', 'tiempos.*', 'registro.id as ids')
             ->orderBy('registro.wo', 'ASC')
             ->get();
