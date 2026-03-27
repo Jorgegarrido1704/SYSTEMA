@@ -39,7 +39,7 @@
 </style>
 <script>
     const registros = @json($registrosDeAsistencia);
-  
+
     const genero = @json($genero);
     const tipoTrabajador = @json($tipoTrabajador);
     const promaus = @json($promaus);
@@ -47,11 +47,10 @@
 </script>
 <div class="row">
     <!-- Asistencia -->
-    <div class="col-lg-5 col-md-5 mb-4">
+    <div class="col-lg-6 col-md-6 mb-4">
         <div class="card shadow mb-5">
             <div class="card-header py-3">
-                <h5 class="m-1 font-weight-bold text-primary">Today assistence {{ date('Y-m-d') }}
-                    <br> Personal en planta: {{ $enplanta??0 }}
+                <h5 class="m-1 font-weight-bold text-primary">Today assistenc:  {{ date('d-M') }}
                     <br> Faltan por registro: {{ $faltan??0 }}</h5>
             </div>
             <div class="card-body" style=" max-height: 570px;">
@@ -116,20 +115,87 @@
 
 
     <!-- Vacaciones -->
-    <div class="col-lg-7 lg-7 mb-4 ">
+    <div class="col-lg-6 col-md-6 mb-4">
         <div class="card shadow mb-5">
             <div class="card-header py-3">
-                <h5 class="m-1 font-weight-bold text-primary">Vacaciones en 2025</h5>
+                <h5 class="m-1 font-weight-bold text-primary">Facility Data</h5>
             </div>
             <div class="card-body" style=" max-height: 550px;" >
-                <canvas id="vacations" style=" height: 400px;"></canvas>
+             <div class="row">
+                                <div class="col-xl-4 col-md-6 mb-4">
+                                    <div class="card border-left-danger shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-s font-weight-bold text-primary text-uppercase mb-1">
+                                                        People in the facility</div>
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $enplanta??0 }} Coworkers
+                                                     @if($porcentajaAusentismo<3)
+                                                        <i class="fas fa-thumbs-up fa-2x text-success"></i>
+                                                    @else
+                                                        <i class="fas fa-thumbs-down fa-2x text-danger"></i>
+                                                    @endif
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-md-6 mb-4">
+                                    <div class="card border-left-warning shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+
+                                                        <div class="text-x font-weight-bold text-primary text-uppercase mb-1">
+                                                            Absentism Rate</div>
+                                                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                            {{ $porcentajaAusentismo }}%
+
+                                                         @if($porcentajaAusentismo<3)
+                                                            <i class="fas fa-thumbs-up fa-2x text-success"></i>
+                                                        @else
+                                                            <i class="fas fa-thumbs-down fa-2x text-danger"></i>
+                                                        @endif
+                                                         </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-4 col-md-6 mb-4">
+                                    <div class="card border-left-primary shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-x font-weight-bold text-primary text-uppercase mb-1">
+                                                        Vacations Porcentage</div>
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                        {{ $porcentajaVacaciones }}%
+
+                                                         @if($promedioCorrectoVacciones<$porcentajaVacaciones)
+                                                            <i class="fas fa-thumbs-up fa-2x text-success"></i>
+                                                        @else
+                                                            <i class="fas fa-thumbs-down fa-2x text-danger"></i>
+                                                        @endif
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
             </div>
         </div>
     </div>
 </div>
 
 <div class="row">
-    <div class="col-lg-8 col-md-8 mb-8">
+    <div class="col-lg-6 col-md-6 mb-8">
         <div class="card shadow mb-5">
             <div class="card-header py-3">
                 <h5 class="m-1 font-weight-bold text-primary">Graficas</h5>
@@ -156,7 +222,7 @@
                     </div>
                     <div class="col-lg-6 col-md-6 mb-4">
                          <div class="text-center font-weight-bold text-dark">
-                            <p >Ausentismo</p>
+                            <p >Monthly Absentism</p>
                         </div>
                         <div >
                             <canvas id="rotation2"></canvas>
@@ -174,6 +240,16 @@
             </div>
         </div>
 
+    </div>
+     <div class="col-lg-6 col-md-6 mb-4">
+        <div class="card shadow mb-5">
+            <div class="card-header py-3">
+                <h5 class="m-1 font-weight-bold text-primary">Vacations in {{ date('Y') }}</h5>
+            </div>
+            <div class="card-body" style=" max-height: 550px;" >
+                <canvas id="vacations" style=" height: 400px;"></canvas>
+            </div>
+        </div>
     </div>
      <div class="col-lg-4 col-md-4 mb-8">
         <div class="card shadow mb-5">

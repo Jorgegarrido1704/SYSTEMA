@@ -1519,7 +1519,7 @@ class juntasController extends Controller
             }
         }
 
-        return view('juntas/cutAndTerm', ['value' => $value, 'cat' => $cat, 'cutData' => $cutData, 'libeData' => $libeData]);
+        return view('juntas.cutAndTerm', ['value' => $value, 'cat' => $cat, 'cutData' => $cutData, 'libeData' => $libeData]);
     }
 
     public function assemblyLoom()
@@ -2255,6 +2255,7 @@ class juntasController extends Controller
 
             ];
         }
+
         $datosCorrector = ['OK', 'F', 'PSS', 'PCS', 'INC', 'V', 'R', 'SUS', 'PCT', 'TSP', 'ASM', 'SCE', 'HE'];
         $restroFaltantes = DB::table('assistence')
             ->select('lider', $diaActual)
@@ -2268,7 +2269,13 @@ class juntasController extends Controller
                 $faltantes[] = $faltante->lider;
             }
         }
+        // personal en planta
         $enplanta = ($rotacion->assistencia + $rotacion->retardos + $rotacion->practicantes + $rotacion->tsp + $rotacion->ServiciosComprados);
+        // porcentaje ausentismo
+        $porcentajaAusentismo = $enplanta > 0 ? $rotacion->faltas > 0 ? round($rotacion->faltas / $enplanta, 2) : 0 : 0;
+        // porcentaje Vacaciones
+        $promedioCorrectoVacciones = round((1200) / $total, 2);
+        $porcentajaVacaciones = $total > 0 ? $rotacion->vacaciones > 0 ? round(($rotacion->vacaciones * 100) / $total, 2) : 0 : 0;
 
         $faltan = $total - ($rotacion->tsp + $rotacion->assistencia + $rotacion->faltas + $rotacion->incapacidad + $rotacion->permisos_gose +
             $rotacion->permisos_sin_gose + $rotacion->vacaciones + $rotacion->retardos + $rotacion->suspension + $rotacion->practicantes
@@ -2319,7 +2326,11 @@ class juntasController extends Controller
         }
         // Rotacion por mes
 
-        return view('juntas.hr', ['enplanta' => $enplanta, 'vacas' => $vacas, 'promaus' => $promaus, 'diaActual' => $diaActual, 'tipoTrabajador' => $tipoTrabajador, 'faltantes' => $faltantes, 'faltan' => $faltan, 'genero' => $genero, 'registrosDeAsistencia' => $registrosDeAsistencia, 'value' => session('user'), 'cat' => session('categoria'), 'accidente' => $accidente]);
+        return view('juntas.hr', ['enplanta' => $enplanta, 'vacas' => $vacas, 'promaus' => $promaus, 'diaActual' => $diaActual,
+            'tipoTrabajador' => $tipoTrabajador, 'faltantes' => $faltantes, 'faltan' => $faltan, 'genero' => $genero,
+            'registrosDeAsistencia' => $registrosDeAsistencia, 'value' => session('user'), 'cat' => session('categoria'),
+            'accidente' => $accidente, 'porcentajaAusentismo' => $porcentajaAusentismo, 'promedioCorrectoVacciones' => $promedioCorrectoVacciones,
+            'porcentajaVacaciones' => $porcentajaVacaciones]);
     }
 
     // Show Names per category
