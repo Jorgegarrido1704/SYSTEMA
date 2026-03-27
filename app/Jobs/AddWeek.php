@@ -74,6 +74,12 @@ class AddWeek implements ShouldQueue
                      or $registroEmpleado->employeeNumber == 'i2222' or $registroEmpleado->employeeNumber == 'i2158'
                      or $registroEmpleado->employeeNumber == 'i2215') {
                         $registro = 'HE';
+                    } elseif ($registroEmpleado->tyoeWorker == 'Practicante') {
+                        $registro = 'PCT';
+                    } elseif ($registroEmpleado->tyoeWorker == 'Asimilado') {
+                        $registro = 'ASM';
+                    } elseif ($registroEmpleado->tyoeWorker == 'Servicio comprado') {
+                        $registro = 'SCE';
                     } else {
                         $registro = 'F';
                     }
