@@ -64,73 +64,73 @@
                                             <a class="nav-link" href="/general">
             @endif
             <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Home</span></a>
+            <span>{{__('Home')}}</span></a>
             <ul class="submenu" id="submenu">
-                <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('index_junta') }}">Sales</a>
+                <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('index_junta') }}">{{ __('Sales') }}</a>
                 </li>
                 <li class="submenu" id="submenu"><a style="color:white;"
-                        href="{{ route('calidad_junta') }}">Quality</a></li>
+                        href="{{ route('calidad_junta') }}">{{ __('Quality') }}</a></li>
                 <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('ing_junta') }}"
-                        onmouseover=showEng();>engineering</a>
+                        onmouseover=showEng();>{{ __('engineering') }}</a>
                         @if($cat=='inge' || $value=='Admin')
                     <ul class="submenu" id="engsub" style="display:none;">
-                        <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('workState') }}">Work Scheduled</a></li>
-                        <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('ganttGraph') }}">Gantt</a></li>
-                        <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('pruebasElecticas') }}">Pruebas Electricas</a></li>
-                        <li class="submenu" id="engsub"><a style="color:white;" href="#">CutList</a>
+                        <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('workState') }}">{{ __('Work Scheduled') }}</a></li>
+                        <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('ganttGraph') }}">{{ __('Gantt Work Graph') }}</a></li>
+                        <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('pruebasElecticas') }}">{{ __('Electrical Tests') }}</a></li>
+                        <li class="submenu" id="engsub"><a style="color:white;" href="#">{{ __('Cut List') }}</a>
                         </li>
                     </ul>
                         @endif
                 </li>
                 @if ($cat == 'cali')
                     <li class="submenu" id="submenu"><a style="color:white;"
-                            href="{{ route('fallasCalidad') }}">Rework</a></li>
+                            href="{{ route('fallasCalidad') }}">{{ __('Rework') }}</a></li>
                 @endif
                 <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('rhDashBoard') }}"
-                    onmouseover=showRRHH();>HR</a></li>
+                    onmouseover=showRRHH();>{{ __('HR') }}</a></li>
                      <ul class="submenu" id="RRHH" style="display:none;">
                         @if($value=='Admin' || $cat=='RRHH')
-                        <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('rrhhDashBoard') }}">Registros RRHH</a></li>
-                        <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('relogChecador') }}">Reloj Checador</a></li>
-                        <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('datosPersonal') }}">Datos por empleado</a></li>
+                        <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('rrhhDashBoard') }}">{{ __('Assistance') }}</a></li>
+                        <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('relogChecador') }}">{{ __('Log check') }}</a></li>
+                        <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('datosPersonal') }}">{{ __('Personal Data') }}</a></li>
 
                         @endif
                     </ul>
 
                 <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('seguimientos') }}"
-                    onmouseover=showProduction();>Production States</a>
+                    onmouseover=showProduction();>{{ __('Production States') }}</a>
                     <ul class="submenu" id="production" style="display:none;">
-                        <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('litas_reg') }}">Search Info</a></li>
+                        <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('litas_reg') }}">{{ __('Search Info') }}</a></li>
                         @if($value=='Admin')
-                        <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('cutAndTerm') }}">Cut & Terminals</a></li>
-                        <li class="submenu" id="submenu"><a style="color:white;" href="#">Assembly & Looming</a></li>
-                        <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('corte.indexCorte') }}">Terminales</a></li>
+                        <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('cutAndTerm') }}">{{ __('Cut & Terminals') }}</a></li>
+                        <li class="submenu" id="submenu"><a style="color:white;" href="#">{{ __('Assembly & Looming') }}</a></li>
+                        <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('corte.indexCorte') }}">{{ __('Terminals Info') }}</a></li>
                         @endif
                     </ul>
                 </li>
                 @if($value=='Admin')
                  <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('vsm_schedule') }}"
-                    onmouseover=showSchedule();>Schedule Orders</a>
+                    onmouseover=showSchedule();>{{ __('Value Stream Mapping') }}</a>
                     <ul class="submenu" id="schedule" style="display:none;">
-                        <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('timeLine') }}">Time Study</a></li>
+                        <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('timeLine') }}">{{ __('Time Study') }}</a></li>
                     </ul>
                 </li>
                  <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('herramentales.index') }}"
-                    onmouseover=showHerramentales();>Toolings</a>
+                    onmouseover=showHerramentales();>{{ __('Toolings') }}</a>
                     <ul class="submenu" id="herramentales" style="display:none;">
-                        <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('toolingMaintenance') }}">Toolings Maintenance</a></li>
-                        <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('toolingAnalysis') }}">Toolings Analysis</a></li>
-                    
+                        <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('toolingMaintenance') }}">{{ __('Toolings Maintenance') }}</a></li>
+                        <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('toolingAnalysis') }}">{{ __('Toolings Analysis') }}</a></li>
+
                     </ul>
                 </li>
                 @endif
-                <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('rrhhDashBoard') }}">Assistance</a></li>
-                <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('Pendings.index') }}">Pendings</a></li>
-                 <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('vacations') }}">Vacations</a></li>
-                 <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('juntas.npi') }}">NPI</a></li>
-                  <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('accionesCorrectivas.index') }}">Corrective Actions</a></li>
+                <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('rrhhDashBoard') }}">{{ __('Assistance') }}</a></li>
+                <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('Pendings.index') }}">{{ __('Pendings') }}</a></li>
+                 <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('vacations') }}">{{ __('Vacations') }}</a></li>
+                 <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('juntas.npi') }}">{{ __('NPI') }}</a></li>
+                  <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('accionesCorrectivas.index') }}">{{ __('Corrective Actions') }}</a></li>
                 @if($value=='Valeria P' || $value=='Admin' || $value=='Jose Luis' || $value=='Jesus_C' )
-                <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('testingMaterialRequeriment') }}">Requeriment Materials Testing</a></li>
+                <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('testingMaterialRequeriment') }}">{{ __('Requeriment Materials Testing') }}</a></li>
                 @endif
             </ul>
         </li>

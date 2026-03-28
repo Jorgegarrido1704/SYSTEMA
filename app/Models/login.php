@@ -8,16 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class login extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'user',
         'clave',
         'category',
         'user_email',
-        
-
-
 
     ];
+
     protected $table = 'login';
 
     public $timestamps = false;

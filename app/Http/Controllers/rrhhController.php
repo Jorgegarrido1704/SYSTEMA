@@ -647,13 +647,17 @@ class rrhhController extends Controller
                 'F' => 0,
                 'INC' => 0,
                 'SUS' => 0,
+                'V' => 0,
+
             ];
 
             foreach ($comportatiento as $c) {
                 foreach (['lunes', 'martes', 'miercoles', 'jueves', 'viernes'] as $dia) {
                     if (! empty($c->$dia) && $c->$dia != '-') {
-                        if ($c->$dia == 'PSS') {
+                        if ($c->$dia == 'PSS' || $c->$dia == 'PCT' || $c->$dia == 'TSP') {
                             $tipos['PCS'] = ($tipos[$c->$dia] ?? 0) + 1;
+                        } elseif ($c->$dia == 'SCE' || $c->$dia == 'ASM' || $c->$dia == 'HE') {
+                            $tipos['OK'] = ($tipos[$c->$dia] ?? 0) + 1;
                         } else {
                             $tipos[$c->$dia] = ($tipos[$c->$dia] ?? 0) + 1;
                         }

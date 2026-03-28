@@ -279,3 +279,11 @@ Route::controller(herramentalesController::class)->group(function () {
 Route::controller(corteController::class)->group(function () {
     Route::get('/corte', [corteController::class, 'indexCorte'])->name('corte.indexCorte');
 });
+
+// Cambiar Idioma
+Route::get('/lang/{lang}', function ($lang) {
+    session(['lang' => $lang]);
+    app()->setLocale($lang);
+
+    return back();
+});

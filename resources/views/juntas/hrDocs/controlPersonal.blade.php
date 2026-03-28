@@ -13,7 +13,7 @@
                                 <h5 class="m-0 font-weight-bold text-primary">Registros de personal </h5>
                                 <form action="{{route('datosPersonal')}}"method='GET' class="form-inline">
                                     <div class="form-group">
-                                        <label  class ="form-label"for="empleado">numero de empleado:</label>
+                                        <label  class ="form-label"for="empleado">Numero de empleado:</label>
                                     </div>
                                     <div class="form-group">
                                     <input type="text" class="form-control" name="empleado" id="empleado" onchange="return form.submit()">
@@ -50,10 +50,7 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                    <script>
-                                        var datos= @json($tipos);
-                                        console.log(datos);
-                                    </script>
+
 
                                 <div class="col-md-12">
                                     <div class="row">
@@ -68,7 +65,7 @@
                                                             <thead>
                                                                 <tr>
                                                                     <th>Fecha de vacacion</th>
-                                                                    <th>anio de vacaciones</th>
+                                                                    <th>Año de vacaciones</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
