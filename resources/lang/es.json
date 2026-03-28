@@ -65,9 +65,11 @@
     "Harnesses Moved to Shipping": "Arneses en embarque",
     "Planning": "Planeación",
     "Part Number": "Número de parte",
+    "Part Numbers": "Números de parte",
     "Description": "Descripción",
     "Customer": "Cliente",
     "Qty": "Cantidad",
+    "Incidence": "Incidencia",
     "WO": "Órden de trabajo",
     "Start Date": "Fecha de inicio",
     "End Date": "Fecha de fin",
@@ -76,7 +78,47 @@
     "Pending": "Pendiente",
     "In Progress": "En progreso",
     "Completed": "Completado",
-    "Delayed": "Retrasado"
+    "Delayed": "Retrasado",
+    "Incidences": "Incidencias",
+    "Top 3 incidences Yesterday": "Top 3 incidencias de ayer",
+    "First Time Quality": "Bien en la primera revisión de calidad",
+    "Tested": "Probados",
+    "Passed": "Aprobados",
+    "Oportunities": "Oportunidades",
+    "Porcentage": "Porcentaje",
+    "Customer Complains": "Quejas de clientes",
+    "Responsable Rework Yesterday": "Responsable de retrabajo de ayer",
+    "Responsable Rework Today": "Responsable de retrabajo de hoy",
+    "Quality Testing Control Data": "Datos de control de pruebas de calidad",
+    "Harnesses in Quality Area": "Arneses en calidad",
+    "Goods": "Buenos",
+    "Defects": "Defectos",
+    "Employees without incidents in Quality Area": "Empleados sin incidencias en calidad",
+    "Incidence Date": "Fecha de incidencia",
+    "Top 10 employees incidents Monthly": "Top 10 empleados con incidencias mensuales",
+    "Supervisor Issues in the month":  "Supervisores con incidencias en el mes",
+    "Top 5 defects in the month": "Top 5 defectos en el mes",
+    "Porcentaje of the harness per famalies": "Porcentaje de arneses por familia",
+    "Family": "Familia",
+    "Percentage": "Porcentaje",
+    "Ciruit Numbers": "Número de circuitos",
+    "MORE THAN": "Más de ",
+    "LESS THAN": "Menos de ",
+    "BETWEEN": "Entre ",
+    "AND": "y",
+    "Harnesses": "Arneses",
+    "Harness": "Arnés",
+    "Employees": "Empleados",
+    "Responsable": "Responsable",
+    "Now": "Ahora",
+    "Bad": "Malos",
+    "Download Excel File": "Descargar archivo Excel",
+    "Download Report File": "Descargar archivo de reporte"
+  
+   
+   
+    
+
 
 
 }

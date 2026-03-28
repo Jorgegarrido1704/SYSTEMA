@@ -67,7 +67,7 @@
             <div class="card shadow mb-4">
 
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h5 class="m-0 font-weight-bold text-primary"> Incidences</h5>
+                    <h5 class="m-0 font-weight-bold text-primary"> {{ __('Incidences') }}</h5>
 
                 </div>
 
@@ -84,14 +84,14 @@
             <!-- AREAS -->
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h5 class="m-0 font-weight-bold text-primary">Top 3 incidence daily</h5>
+                    <h5 class="m-0 font-weight-bold text-primary">{{ __('Top 3 incidences Yesterday') }}</h5>
                 </div>
                 <div class="card-body" style="overflow-y: auto; height: 360px;">
                     <table>
                         <thead>
-                            <th>Client</th>
-                            <th>Issue</th>
-                            <th>Quantity</th>
+                            <th>{{ __('Customer') }}</th>
+                            <th>{{ __('Incidence') }}</th>
+                            <th>{{ __('Qty') }}</th>
                         </thead>
                         <tbody>
                             @if (!empty($top3registrosCalidas))
@@ -118,11 +118,12 @@
             <div class="card shadow mb-4">
                 <!-- Card scaneer -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h5 class="m-0 font-weight-bold text-primary">FTQ (First Time Quality)
+                    <h5 class="m-0 font-weight-bold text-primary">FTQ ({{ __('First Time Quality') }})
                         @if($totalb + $totalm >0)
-                        Tested:{{ $totalb + $totalm }} <span class="text-success">OK: </span> <span class="text-dark">{{ $totalb }}</span>
-                        <span class="text-danger">Oportunities:</span> <span class="text-dark">{{ $totalm }}</span>
-                        Porcentage:
+                        <span class="text-primary ml-2 mr-2">{{ __('Tested') }}: </span>{{ $totalb + $totalm }}
+                        <span class="text-success ml-2 mr-2"><strong>{{ __('Goods') }}:</strong> </span> <span class="text-dark">{{ $totalb }}</span>
+                        <span class="text-danger"><strong>{{ __('Oportunities') }}:</strong> </span> <span class="text-dark">{{ $totalm }}</span>
+                       <span class="text-primary ml-2 mr-2"><strong>{{ __('Porcentage') }}:</strong> </span>
                         @if( (($totalb/($totalb + $totalm)) * 100) >97 )
                         <span class="text-success">{{ round($totalb / ($totalb + $totalm) * 100,2) }}</span>
                         @else
@@ -153,12 +154,12 @@
             <!-- AREAS -->
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h5 class="m-0 font-weight-bold text-primary">Customer complains  </h5><br>
+                    <h5 class="m-0 font-weight-bold text-primary">{{ __('Customer Complains') }}</h5><br>
                      <div class="row">
                             @if($value=='Admin' or $value=='Edward M' or $value=='Goretti Ro' or $value=='Luis R')
 
                             <div class="col-md-3">
-                                <label for="dateIncidence" class="form-label">Incidence Date</label>
+                                <label for="dateIncidence" class="form-label">{{ __('Incidence Date') }}</label>
                             </div>
                             <div class="col-md-5">
                                 <input type="date" class="form-control" id="dateIncidence" name="dateIncidence" required>
@@ -168,13 +169,13 @@
                             <div class="col-md-2">
                             <form id="guardasDateQ" action="{{ route('customerComplains') }}"  method="GET"  >
                                 <input type="hidden" name="gQ" id="gQ">
-                                <button type="submit" class="btn btn-success" onclick="guardarDateQ()">Guardar</button>
+                                <button type="submit" class="btn btn-success" onclick="guardarDateQ()">{{ __('Save') }}</button>
                             </form>
                             </div>
                             <div class="col-md-2">
                              <form id="borrarDateQ" action="{{ route('customerComplains') }}" method="GET">
                                 <input type="hidden" name="bQ" id="bQ">
-                                <button type="submit" class="btn btn-danger" onclick="borrarDateQ()">Borrar</button>
+                                <button type="submit" class="btn btn-danger" onclick="borrarDateQ()">{{ __('Delete') }}</button>
                             </form>
                             </div>
 
@@ -192,14 +193,14 @@
         <div class="col-lg-3 mb-3" style="max-width: 40%">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h5 class="m-0 font-weight-bold text-primary">Reworks Responsible Yesterday </h5>
+                    <h5 class="m-0 font-weight-bold text-primary">{{ __('Responsable Rework Yesterday') }} </h5>
                 </div>
                 <div class="card-body" style="overflow-y: auto; height: 360px;" id="tableChange">
                     <div class="row">
                         <table>
                             <thead>
-                                <th>Responsable</th>
-                                <th>Quantity</th>
+                                <th>{{ __('Responsable') }}</th>
+                                <th>{{ __('Qty') }}</th>
                             </thead>
                             <tbody>
                                 @if (!empty($gultyY))
@@ -224,7 +225,7 @@
             <!-- AREAS -->
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h5 class="m-0 font-weight-bold text-primary">Top 10 employees incidents Monthly</h5>
+                    <h5 class="m-0 font-weight-bold text-primary">{{ __('Top 10 employees incidents Monthly') }}</h5>
                 </div>
                 <div class="card-body" style="overflow-y: auto; height: 360px;" id="tableChange">
                     <canvas id="MonthIncidences"></canvas>
@@ -235,7 +236,7 @@
         <div class="col-lg-4 col-lx-4 mb-4" >
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h5 class="m-0 font-weight-bold text-primary">Supervisor Issues in the month </h5>
+                            <h5 class="m-0 font-weight-bold text-primary">{{ __('Supervisor Issues in the month') }} </h5>
                         </div>
                         <div class="card-body" style="overflow-y: auto; height: 360px;" >
                             <canvas id="Supervisorissues"></canvas>
@@ -247,7 +248,7 @@
             <!-- AREAS -->
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h5 class="m-0 font-weight-bold text-primary">Top 5 defects in the month</h5>
+                    <h5 class="m-0 font-weight-bold text-primary">{{ __('Top 5 defects in the month') }}</h5>
                 </div>
                 <div class="card-body" style="overflow-y: auto; height: 360px;" id="tableChange">
                     <canvas id="mostErrors"></canvas>
@@ -259,57 +260,57 @@
             <!-- AREAS -->
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h5 class="m-0 font-weight-bold text-primary">Porcentaje of the harness per famalies</h5>
+                    <h5 class="m-0 font-weight-bold text-primary">{{ __('Porcentaje of the harness per famalies') }}</h5>
                 </div>
                 <div class="card-body" style="overflow-y: auto; height: 560px;" >
                     <div class="row">
                         <div class="col-lg-4 col-lx-4">
                              <table class="table table-striped table-bordered">
                                 <thead>
-                                    <th>Family</th>
-                                    <th>Circuits numbers</th>
-                                    <th>Quantity</th>
+                                    <th>{{ __('Family') }}</th>
+                                    <th>{{ __('Circuit Numbers') }}</th>
+                                    <th>{{ __('Qty') }}</th>
 
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>Harness A</td>
-                                        <td>MORE THAN 300</td>
+                                        <td>{{ __('Harness') }} A</td>
+                                        <td>{{ __('MORE THAN') }} 300</td>
                                         <td>{{$grupo['A']}}</td>
                                     </tr>
                                     <tr>
-                                        <td>Harness B</td>
-                                        <td>BETWEEN 200 AND 300</td>
+                                        <td>{{ __('Harness') }} B</td>
+                                        <td>{{ __('BETWEEN') }} 200 {{ __('AND') }} 300</td>
                                         <td>{{$grupo['B']}}</td>
                                     </tr>
                                     <tr>
-                                        <td>Harness C</td>
-                                        <td>BETWEEN 100 AND 199</td>
+                                        <td>{{ __('Harness') }} C</td>
+                                        <td>{{ __('BETWEEN') }} 100 {{ __('AND') }} 199</td>
                                         <td>{{$grupo['C']}}</td>
                                     </tr>
                                     <tr>
-                                        <td>Harness D</td>
-                                        <td>BETWEEN 50 AND 99</td>
+                                        <td>{{ __('Harness') }} D</td>
+                                        <td>{{ __('BETWEEN') }} 50 {{ __('AND') }} 99</td>
                                         <td>{{$grupo['D']}}</td>
                                     </tr>
                                      <tr>
-                                        <td>Harness E</td>
-                                        <td>BETWEEN 25 AND 49</td>
+                                        <td>{{ __('Harness') }} E</td>
+                                        <td>{{ __('BETWEEN') }} 25 {{ __('AND') }} 49</td>
                                         <td>{{$grupo['E']}}</td>
                                     </tr>
                                     <tr>
-                                        <td>Harness F</td>
-                                        <td>BETWEEN 10 AND 24</td>
+                                        <td>{{ __('Harness') }} F</td>
+                                        <td>{{ __('BETWEEN') }} 10 {{ __('AND') }} 24</td>
                                         <td>{{$grupo['F']}}</td>
                                     </tr>
                                     <tr>
-                                        <td>Harness G</td>
-                                        <td>BETWEEN 5 AND 9</td>
+                                        <td>{{ __('Harness') }} G</td>
+                                        <td>{{ __('BETWEEN') }} 5 {{ __('AND') }} 9</td>
                                         <td>{{$grupo['G']}}</td>
                                     </tr>
                                     <tr>
-                                        <td>Harness H</td>
-                                        <td>LESS THAN 5</td>
+                                        <td>{{ __('Harness') }} H</td>
+                                        <td>{{ __('LESS THAN') }} 5</td>
                                         <td>{{$grupo['H']}}</td>
                                     </tr>
 
@@ -331,16 +332,16 @@
         <div class="col-lg-4 mb-3">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h5 class="m-0 font-weight-bold text-primary">FTQ Now (Good: {{ $hoyb }} Bad:
+                    <h5 class="m-0 font-weight-bold text-primary">FTQ {{ __('Now') }} ({{ __('Goods') }}: {{ $hoyb }} {{ __('Bad') }}:
                         {{ $hoymal }} FTQ: {{ $parhoy }}) </h5>
                 </div>
                 <div class="card-body" style="overflow-y: auto; height: 360px;" id="tableChange">
                     <div class="row">
                         <table>
                             <thead>
-                                <th>Client</th>
-                                <th>Issue</th>
-                                <th>Quantity</th>
+                                <th>{{ __('Customer') }}</th>
+                                <th>{{ __('Incidence') }}</th>
+                                <th>{{ __('Qty') }}</th>
                             </thead>
                             <tbody>
                                 @if (!empty($datosHoy))
@@ -366,14 +367,14 @@
 
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h5 class="m-0 font-weight-bold text-primary">Reworks Responsible Now </h5>
+                    <h5 class="m-0 font-weight-bold text-primary">{{ __('Responsable Rework Today') }} </h5>
                 </div>
                 <div class="card-body" style="overflow-y: auto; height: 360px;" id="tableChange">
                     <div class="row">
                         <table>
                             <thead>
-                                <th>Responsable</th>
-                                <th>Quantity</th>
+                                <th>{{ __('Responsable') }}</th>
+                                <th>{{ __('Qty') }}</th>
                             </thead>
                             <tbody>
                                 @if (!empty($gulty))
@@ -397,12 +398,12 @@
             <!-- AREAS -->
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h5 class="m-0 font-weight-bold text-primary">Employees without incidents in 2025</h5>
+                    <h5 class="m-0 font-weight-bold text-primary">{{ __('Employees without incidents in Quality Area') }} {{date('Y')}}</h5>
                 </div>
                 <div class="card-body" style="overflow-y: auto; height: 360px;" id="tableChange">
                     <table id="table-harness" class="table-harness">
                         <thead>
-                            <th>Employees</th>
+                            <th>{{ __('Employees') }}</th>
                         </thead>
                         <tbody >
                             @if(!@empty($personalYear))
@@ -425,26 +426,26 @@
         <div class="col-lg-3 mb-4">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h5 class="m-0 font-weight-bold text-primary">Quality Data testing control</h5>
+                    <h5 class="m-0 font-weight-bold text-primary">{{ __('Quality Testing Control Data') }}</h5>
                 </div>
 
                             <div class="card-body" style="overflow-y: auto; height: 360px;">
                                                                 <form action="{{ route('excel_calidad')}}" method="GET" >
 
                                                                     <div class="form-group">
-                                                                        <label for="text">De fecha:</label>
+                                                                        <label for="text">{{ __('Start Date') }}:</label>
                                                                         <input type="date" class="form-control" name="de" id="de" required >
                                                                         <span id="errorMessage" style="color: red; display: none;">Weekends are not allowed!</span>
                                                                         <input type="hidden" name="di" id="di">
 
                                                                     </div>
                                                                     <div class="form-group">
-                                                                        <label for="text">A fecha:</label>
+                                                                        <label for="text">{{ __('End Date') }}:</label>
                                                                         <input type="date" class="form-control" name="a" id="a" required>
                                                                         <span id="errorMessage1" style="color: red; display: none;">Weekends are not allowed!</span>
                                                                         <input type="hidden" name="df" id="df">
                                                                     </div>
-                                                                    <input type="submit" class="btn btn-primary"   value="Descargar Excel">
+                                                                    <input type="submit" class="btn btn-primary"   value="{{ __('Download Excel File') }}">
                                                                 </form>
                                                                 <script>
                                                                     document.getElementById('de').addEventListener('change', function() {
@@ -496,12 +497,12 @@
         <div class="col-lg-3 mb-4">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h5 class="m-0 font-weight-bold text-primary">In the quality areas</h5>
+                    <h5 class="m-0 font-weight-bold text-primary">{{ __('Harnesses in Quality Area') }}</h5>
                 </div>
                 <div class="card-body" style="overflow-y: auto; height: 360px;" id="tableChange">
                     <div class="card-body" style="overflow-y: auto; height: 360px;">
                         <form action="{{ route('excel_calidad_pendientes')}}" method="GET" >
-                            <input type="submit" class="btn btn-primary"   value="Descargar Reporte">
+                            <input type="submit" class="btn btn-primary"   value="{{ __('Download Report File') }}">
                         </form>
                     </div>
                 </div>
