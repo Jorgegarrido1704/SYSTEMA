@@ -23,7 +23,7 @@
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                Sales Today</div>
+                                                {{ __('Sales Yesterday') }}</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800"><span id="saldos">{{$saldos}}</span></div>
                                         </div>
                                         <div class="col-auto">
@@ -42,7 +42,7 @@
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                                Backlock</div>
+                                                {{ __('Backlog') }}</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{$backlock}}</span></div>
                                         </div>
                                         <div class="col-auto">
@@ -59,7 +59,8 @@
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Productivity
+                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                                {{ __('Productivity') }}
                                             </div>
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col-auto">
@@ -112,7 +113,7 @@
                                 <!-- Card Header - Dropdown -->
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Hourly Sales</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">{{ __('Hourly Sales') }}</h6>
                                     <div class="dropdown no-arrow">
                                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -120,8 +121,8 @@
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                                             aria-labelledby="dropdownMenuLink">
-                                           <a class="dropdown-item" href="#" onclick="changeArea('lines')">Graph lines</a>
-                                            <a class="dropdown-item" href="#" onclick="changeArea('table')">table</a>
+                                          <!-- <a class="dropdown-item" href="#" onclick="changeArea('lines')">{{ __('Graph lines') }}</a>
+                                          -->   <a class="dropdown-item" href="#" onclick="changeArea('table')">{{ __('Table info') }}</a>
                                         </div>
                                     </div>
                                 </div>
@@ -141,7 +142,7 @@
                                 <!-- Card Header - Dropdown -->
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Pass Due WO</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">{{ __('Pass Due WO') }}</h6>
                                   <div class="dropdown no-arrow">
                                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -164,13 +165,13 @@
                                     </div>
                                     <div class="mt-4 text-center small">
                                         <span class="mr-2">
-                                            <i class="fas fa-circle text-danger" ></i> <a href="#" class="text-danger">Delay.</a>
+                                            <i class="fas fa-circle text-danger" ></i> <a href="#" class="text-danger">{{ __('Delay') }}</a>
                                         </span>
                                         <span class="mr-2">
-                                            <i class="fas fa-circle text-warning"></i> <a href="#" class="text-warning">On Time.</a>
+                                            <i class="fas fa-circle text-warning"></i> <a href="#" class="text-warning">{{ __('On Time') }}</a>
                                         </span>
                                         <span class="mr-2">
-                                            <i class="fas fa-circle text-success"></i> <a href="#" class="text-success">Great Time.</a>
+                                            <i class="fas fa-circle text-success"></i> <a href="#" class="text-success">{{ __('Great Time') }}</a>
                                         </span>
                                     </div>
                                 </div>
@@ -187,7 +188,7 @@
                             <!-- Project Card Example -->
                             <div class="card shadow mb-4">
                                 <div  class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Monthly Percentage by Customer</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">{{ __('Monthly Percentage by Customer') }}</h6>
 
                                 </div>
                                 <!--percent section -->
@@ -211,7 +212,7 @@
                             <!-- Project Card Example -->
                             <div class="card shadow mb-4">
                                 <div  class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary"><a href="{{route('litas_reg')}}">Money by Station</a></h6>
+                                    <h6 class="m-0 font-weight-bold text-primary"><a href="{{route('litas_reg')}}">{{ __('Money by Station') }}</a></h6>
 
                                 </div>
                                 <!--percent section -->
@@ -219,7 +220,7 @@
 
 
                                     @if($ventasStation[0] != 0)
-                                    <h4 class="small font-weight-bold"><a href="{{route('litas_junta','planeacion')}}" class="text-danger">Planeacion</a>
+                                    <h4 class="small font-weight-bold"><a href="{{route('litas_junta','planeacion')}}" class="text-danger">{{ __('Planning') }}</a>
                                         <span class="float-right">{{$ventasStation[0]}}</span>
                                         <span class="float-right">{{$ventasStation[6]*100}}% // $</span></h4>
                                     <div class="progress mb-4">
@@ -228,7 +229,7 @@
                                     </div>
                                     @endif
                                     @if($ventasStation[1] != 0)
-                                    <h4 class="small font-weight-bold"><a href="{{route('litas_junta','corte')}}" class="text-warning">Corte</a>
+                                    <h4 class="small font-weight-bold"><a href="{{route('litas_junta','corte')}}" class="text-warning">{{ __('Cut') }}</a>
                                         <span class="float-right">{{$ventasStation[1]}}</span>
                                         <span class="float-right">{{$ventasStation[7]*100}}% // $</span></h4>
                                     <div class="progress mb-4">
@@ -237,7 +238,7 @@
                                     </div>
                                     @endif
                                     @if($ventasStation[2] != 0)
-                                    <h4 class="small font-weight-bold"><a href="{{route('litas_junta','liberacion')}}" class="text-bar">Liberacion</a>
+                                    <h4 class="small font-weight-bold"><a href="{{route('litas_junta','liberacion')}}" class="text-bar">{{ __('Terminals') }}</a>
                                         <span class="float-right">{{$ventasStation[2]}}</span>
                                         <span class="float-right">{{$ventasStation[8]*100}}% // $</span></h4>
                                     <div class="progress mb-4">
@@ -246,7 +247,7 @@
                                     </div>
                                     @endif
                                     @if($ventasStation[3] != 0)
-                                    <h4 class="small font-weight-bold"><a href="{{route('litas_junta','ensamble')}}" class="text-info">Ensamble</a>
+                                    <h4 class="small font-weight-bold"><a href="{{route('litas_junta','ensamble')}}" class="text-info">{{ __('Assembly') }}</a>
                                         <span class="float-right">{{$ventasStation[3]}}</span>
                                         <span class="float-right">{{$ventasStation[9]*100}}% // $</span></h4>
                                     <div class="progress mb-4">
@@ -255,7 +256,7 @@
                                     </div>
                                     @endif
                                     @if($ventasStation[4] != 0)
-                                    <h4 class="small font-weight-bold"><a href="{{route('litas_junta','loom')}}" class="text-success">Loom</a>
+                                    <h4 class="small font-weight-bold"><a href="{{route('litas_junta','loom')}}" class="text-success">{{ __('Loom') }}</a>
                                         <span class="float-right">{{$ventasStation[4]}}</span>
                                         <span class="float-right">{{$ventasStation[10]*100}}% // $</span></h4>
                                     <div class="progress mb-4">
@@ -264,7 +265,7 @@
                                     </div>
                                     @endif
                                     @if($ventasStation[5] != 0)
-                                    <h4 class="small font-weight-bold"><a href="{{route('litas_junta','prueba')}}" class="text-info">Calidad</a>
+                                    <h4 class="small font-weight-bold"><a href="{{route('litas_junta','prueba')}}" class="text-info">{{ __('Quality') }}</a>
                                         <span class="float-right"> {{$ventasStation[5]}}</span>
                                         <span class="float-right">{{$ventasStation[11]*100}}% // $</span></h4>
                                     <div class="progress mb-4">
@@ -273,7 +274,7 @@
                                     </div>
                                     @endif
                                     @if($ventasStation[12] != 0)
-                                    <h4 class="small font-weight-bold"><a href="{{route('litas_junta','embarque')}}" class="text-dark">Embarque</a>
+                                    <h4 class="small font-weight-bold"><a href="{{route('litas_junta','embarque')}}" class="text-dark">{{ __('Shipping') }}</a>
                                         <span class="float-right"> {{$ventasStation[12]}}</span>
                                         <span class="float-right">{{$ventasStation[13]*100}}% // $</span></h4>
                                     <div class="progress mb-4">
@@ -294,7 +295,7 @@
                                  <!-- AREAS -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Tested list</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">{{ __('Tested List') }}</h6>
                                 </div>
                                         <div class="card-body" style="overflow-y: auto; height: 400px;">
 
@@ -305,15 +306,15 @@
                                 <!-- AREAS -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">WO by Area</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">{{ __('Harnesses Moved to Shipping') }}</h6>
                                 </div>
                                         <div class="card-body" style="overflow-y: auto; height: 400px;">
                                             <table class="table-info"  id="PPAP Pendings" style="width:100%">
                                                 <thead>
                                                     <tr>
-                                                        <th scope="col">Part number</th>
-                                                        <th scope="col">date In</th>
-                                                        <th scope="col">date Out</th>
+                                                        <th scope="col">{{ __('Part Number') }}</th>
+                                                        <th scope="col">{{ __('Start Date') }}</th>
+                                                        <th scope="col">{{ __('End Date') }}</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
