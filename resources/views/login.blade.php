@@ -10,7 +10,7 @@
     <!-- Estilos rápidos -->
     <style>
         body {
-            background: linear-gradient(135deg, #1e293b, #0f172a);
+            background: linear-gradient(135deg, #88a0c3, #970101e0);
             font-family: Arial, sans-serif;
             color: white;
         }
