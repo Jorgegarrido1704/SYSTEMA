@@ -215,8 +215,8 @@
                                                 <div class="col mr-2">
                                                     <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                                       Production Capacity with Direct Workers</div>
-                                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $enplanta??0 }} 
-                                                     @if($porcentajaAusentismo<3)
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $porcentajeMAximodeProduccionHoy??0 }}%
+                                                     @if($porcentajaAusentismo>85)
                                                         <i class="fas fa-thumbs-up fa-2x text-success ml-4"></i>
                                                     @else
                                                         <i class="fas fa-thumbs-down fa-2x text-danger ml-4"></i>
