@@ -2276,6 +2276,36 @@ class juntasController extends Controller
         // porcentaje Vacaciones
         $promedioCorrectoVacciones = round((1200) / $total, 2);
         $porcentajaVacaciones = $total > 0 ? $rotacion->vacaciones > 0 ? round(($rotacion->vacaciones * 100) / $total, 2) : 0 : 0;
+        // end porcentaje Vacaciones
+        // Total headCount
+        $headcount = DB::table('personalberg')
+            ->select('typeWorker')
+            ->where('status', '!=', 'Baja')
+            ->whereNotIn('typeWorker', ['Corporativo', 'Practicante', 'Asimilado', 'Servicios Comprados'])
+            ->count();
+        // end Total headCount
+        // Maximum capacity direct workers
+        $personalDirectoMaximo = DB::table('personalberg')->where('status', '!=', 'Baja')->whereNotIn('typeWorker', ['Corporativo', 'Practicante', 'Asimilado', 'Servicios Comprados', 'Indirecto'])->count();
+        $maximoporcentajedeDatos = DB::table('assistence')
+            ->select('lider', $diaActual)
+            ->where('week', '=', $week)
+            ->whereIn($diaActual, ['R',  'TSP', 'OK'])
+            ->whereIn(DB::raw('id_empleado COLLATE utf8mb4_unicode_ci'), function ($query) {
+                $query->select(DB::raw('employeeNumber COLLATE utf8mb4_unicode_ci'))
+                    ->from('personalberg')
+                    ->where('status', '!=', 'Baja')
+                    ->whereNotIn('typeWorker', [
+                        'Corporativo',
+                        'Practicante',
+                        'Asimilado',
+                        'Servicios Comprados',
+                        'Indirecto',
+                    ]);
+            })
+            ->count();
+        $porcentajeMAximodeProduccionHoy = $personalDirectoMaximo > 0 ? $maximoporcentajedeDatos > 0 ? round(($maximoporcentajedeDatos * 100) / $personalDirectoMaximo, 2) : 0 : 0;
+
+        // End Maximum capacity direct workers
 
         $faltan = $total - ($rotacion->tsp + $rotacion->assistencia + $rotacion->faltas + $rotacion->incapacidad + $rotacion->permisos_gose +
             $rotacion->permisos_sin_gose + $rotacion->vacaciones + $rotacion->retardos + $rotacion->suspension + $rotacion->practicantes
@@ -2330,7 +2360,7 @@ class juntasController extends Controller
             'tipoTrabajador' => $tipoTrabajador, 'faltantes' => $faltantes, 'faltan' => $faltan, 'genero' => $genero,
             'registrosDeAsistencia' => $registrosDeAsistencia, 'value' => session('user'), 'cat' => session('categoria'),
             'accidente' => $accidente, 'porcentajaAusentismo' => $porcentajaAusentismo, 'promedioCorrectoVacciones' => $promedioCorrectoVacciones,
-            'porcentajaVacaciones' => $porcentajaVacaciones]);
+            'porcentajaVacaciones' => $porcentajaVacaciones, 'headcount' => $headcount, 'porcentajeMAximodeProduccionHoy' => $porcentajeMAximodeProduccionHoy]);
     }
 
     // Show Names per category
