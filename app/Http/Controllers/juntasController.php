@@ -2354,13 +2354,16 @@ class juntasController extends Controller
                 $vacas[11]++;
             }
         }
-        // Rotacion por mes
+        // Accidentes
+        $ultimoAccidente = carbon::parse('2026-01-05');
+        $withoutAccidents = carbon::now()->diffInDays($ultimoAccidente);
 
         return view('juntas.hr', ['enplanta' => $enplanta, 'vacas' => $vacas, 'promaus' => $promaus, 'diaActual' => $diaActual,
             'tipoTrabajador' => $tipoTrabajador, 'faltantes' => $faltantes, 'faltan' => $faltan, 'genero' => $genero,
             'registrosDeAsistencia' => $registrosDeAsistencia, 'value' => session('user'), 'cat' => session('categoria'),
             'accidente' => $accidente, 'porcentajaAusentismo' => $porcentajaAusentismo, 'promedioCorrectoVacciones' => $promedioCorrectoVacciones,
-            'porcentajaVacaciones' => $porcentajaVacaciones, 'headcount' => $headcount, 'porcentajeMAximodeProduccionHoy' => $porcentajeMAximodeProduccionHoy]);
+            'porcentajaVacaciones' => $porcentajaVacaciones, 'headcount' => $headcount, 'porcentajeMAximodeProduccionHoy' => $porcentajeMAximodeProduccionHoy,
+            'withoutAccidents' => $withoutAccidents]);
     }
 
     // Show Names per category

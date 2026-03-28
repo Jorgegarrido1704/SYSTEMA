@@ -235,9 +235,12 @@
 
                                                 <div class="col mr-2">
 
-                                                        <div class="text-x font-weight-bold text-primary text-uppercase mb-1">
-                                                           </div>
-                                                        <div class="h5 mb-0 font-weight-bold text-gray-800">Days without Accidents: {{ $accidente??0 }}j
+                                                        <div class="text-x font-weight-bold text-primary text-uppercase mb-2">
+                                                            Days without Accidents</div>
+
+                                                        <div class="h5 mb-0 font-weight-bold text-gray-800"> <strong>{{ $withoutAccidents??0 }}</strong>
+
+                                                            <i class="fas fa-user-nurse fa-2x  text-gray-250 text-success ml-4"></i>
 
                                                          </div>
 
@@ -247,22 +250,6 @@
                                     </div>
                                 </div>
 
-                                <div class="col-xl-4 col-md-6 mb-4">
-                                    <div class="card border-left-primary shadow h-100 py-2">
-                                        <div class="card-body">
-                                            <div class="row no-gutters align-items-center">
-                                                <div class="col mr-2">
-                                                    <div class="text-x font-weight-bold text-primary text-uppercase mb-1">
-                                                        </div>
-                                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
-
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
             </div>
         </div>
