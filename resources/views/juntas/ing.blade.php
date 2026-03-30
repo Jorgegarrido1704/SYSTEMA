@@ -34,7 +34,7 @@
         <div class="col-xl-6 col-lg-6 mb-4">
             <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h5 class="m-0 font-weight-bold text-primary"> KPI WORK TIMES </h5>
+                    <h5 class="m-0 font-weight-bold text-primary"> KPI {{ __('ENGINEER WORK TIMES') }} </h5>
                 </div>
                 <!-- table Body -->
                 <div class="card-body" style="overflow-y: auto; height: 400px;">
@@ -45,7 +45,7 @@
         <div class="col-xl-6 col-lg-6 mb-4">
             <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h5 class="m-0 font-weight-bold text-primary">KPI NPI </h5>
+                    <h5 class="m-0 font-weight-bold text-primary">KPI {{ __('NPI') }} </h5>
                 </div>
                 <!-- table Body -->
                 <div class="card-body" style="overflow-y: auto; height: 400px;">
@@ -58,7 +58,7 @@
         <div class="col-xl-6 col-lg-6 mb-4">
             <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h5 class="m-0 font-weight-bold text-primary">KPI DOCUMENTATION DEVELOPMENT</h5>
+                <h5 class="m-0 font-weight-bold text-primary">KPI {{ __('DOCUMENTATION DEVELOPMENT') }}</h5>
                       <div class="dropdown no-arrow">
                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -66,8 +66,8 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                             aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="#" onclick="changeGraph('donaMes')">Graph lines</a>
-                            <a class="dropdown-item" href="#" onclick="changeGraph('barraYear')">table</a>
+                            <a class="dropdown-item" href="#" onclick="changeGraph('donaMes')">{{ __('Graph lines') }}</a>
+                            <a class="dropdown-item" href="#" onclick="changeGraph('barraYear')">{{ __('Table') }}</a>
                         </div>
                     </div>
                 </div>
@@ -75,7 +75,7 @@
                  <div class="card-body" style="overflow-y: auto; height: 480px;">
                 <div style="display: flex; gap: 20px;">
                     <div id="donaMes">
-                        <label for="paretoTime">Record for the last month: {{$porcentaje}} %</label>
+                        <label for="paretoTime">{{ __('Record for the last month') }}: {{$porcentaje}} %</label>
                         <canvas id="cakes" width="320" height="200" ></canvas>
                     </div>
                  <div id="barraYear" >
@@ -88,10 +88,10 @@
                         <table class="table table-striped table-bordered"  cellspacing="0" width="100%">
                              <thead style=" position: sticky; z-index: 1; top: 0; text-align: center; background-color: black; color: white; ">
                                 <tr>
-                                    <th>Customer</th>
-                                    <th>Part Number</th>
-                                    <th>Commitment Date</th>
-                                    <th>Completion Date</th>
+                                    <th>{{ __('Customer') }}</th>
+                                    <th>{{ __('Part Number') }}</th>
+                                    <th>{{ __('Commitment Date') }}</th>
+                                    <th>{{ __('Completion Date') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -120,7 +120,7 @@
          <div class="col-xl-6 col-lg-6 mb-4">
             <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h5 class="m-0 font-weight-bold text-primary">KPI PPAP TIMES</h5>
+                <h5 class="m-0 font-weight-bold text-primary">KPI {{ __('PPAP TIMES') }}</h5>
 
                 </div>
                 <!-- table Body -->
@@ -137,38 +137,38 @@
             <div class="col-xl-12 col-lg-12 mb-4">
                 <div class="card shadow mb-4">
                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                        <h5 class="m-0 font-weight-bold text-primary">Open NPI</h5>
+                        <h5 class="m-0 font-weight-bold text-primary">{{ __('Open NPI Projects') }}</h5>
                         <span class="text-dark font-weight-bold text-align-top">Total: {{ $totalgeneral??0 }}</span>
-                        <span class="text-primary font-weight-bold text-align-top"><a onclick="tipoNpiChange('white')">Open by engineer: {{ $ingependinses??0 }}</a></span>
-                        <span class="text-danger font-weight-bold text-align-top"><a onclick="tipoNpiChange('pending')">Pending planing: {{ $porbajara??0 }}</a></span>
-                        <span class="text-dark font-weight-bold text-align-top">Total in progress: {{ $enproceso??0 }}</span>
-                        <span class="text-success font-weight-bold text-align-top"><a onclick="tipoNpiChange('green')">Open by PPAP: {{ $totalppap??0 }}</a></span>
-                        <span class="text-warning font-weight-bold text-align-top"><a onclick="tipoNpiChange('yellow')">Open by PRIM: {{ $totalprim??0 }}</a></span>
+                        <span class="text-primary font-weight-bold text-align-top"><a onclick="tipoNpiChange('white')">{{ __('Open by engineer') }}: {{ $ingependinses??0 }}</a></span>
+                        <span class="text-danger font-weight-bold text-align-top"><a onclick="tipoNpiChange('pending')">{{ __('Pending by planing') }}: {{ $porbajara??0 }}</a></span>
+                        <span class="text-dark font-weight-bold text-align-top">{{ __('Total in progress') }}: {{ $enproceso??0 }}</span>
+                        <span class="text-success font-weight-bold text-align-top"><a onclick="tipoNpiChange('green')">{{ __('Open PPAP') }}: {{ $totalppap??0 }}</a></span>
+                        <span class="text-warning font-weight-bold text-align-top"><a onclick="tipoNpiChange('yellow')">{{ __('Open PRIM') }}: {{ $totalprim??0 }}</a></span>
                     </div>
                     <!-- table Body -->
                     <div  style="overflow-y: auto; height: 800px;">
                         <table class="table table-striped table-bordered"  cellspacing="0" width="100%">
                             <thead style=" position: sticky; z-index: 1; top: 0; text-align: center; background-color: black; color: white; ">
                                 <tr>
-                                    <th>Customers</th>
-                                    <th>Part Numbers</th>
-                                    <th>size</th>
-                                    <th>Revision</th>
-                                    <th>Reception Date</th>
-                                    <th>Commitment Date</th>
-                                    <th>Completion Date</th>
-                                    <th>Requiriment Date</th>
-                                    <th>Po Qty</th>
-                                    <th>Responsable</th>
-                                    <th>Last Sign Date</th>
-                                    <th>Plannig Date</th>
-                                    <th>Work Order</th>
-                                    <th>Produciton Qty</th>
-                                    <th>Cutting</th>
-                                    <th>Terminals</th>
-                                    <th>Assembly //<br>Special Assembly</th>
-                                    <th>Loom</th>
-                                    <th>Quality</th>
+                                    <th>{{ __('Customers') }}</th>
+                                    <th>{{ __('Part Numbers') }}</th>
+                                    <th>{{ __('Size') }}</th>
+                                    <th>{{ __('Revision') }}</th>
+                                    <th>{{ __('Reception Date') }}</th>
+                                    <th>{{ __('Commitment Date') }}</th>
+                                    <th>{{ __('Completion Date') }}</th>
+                                    <th>{{ __('Requirement Date') }}</th>
+                                    <th>{{ __('Po Qty') }}</th>
+                                    <th>{{ __('Responsable') }}</th>
+                                    <th>{{ __('Last Sign') }}</th>
+                                    <th>{{ __('Planning') }}</th>
+                                    <th>{{ __('WO') }}</th>
+                                    <th>{{ __('Produciton Qty') }}</th>
+                                    <th>{{ __('Cut') }}</th>
+                                    <th>{{ __('Terminals') }}</th>
+                                    <th>{{ __('Assembly') }} //<br>{{ __('Special Assembly') }}</th>
+                                    <th>{{ __('Loom') }}</th>
+                                    <th>{{ __('Quality') }}</th>
                                 </tr>
 
                             </thead>

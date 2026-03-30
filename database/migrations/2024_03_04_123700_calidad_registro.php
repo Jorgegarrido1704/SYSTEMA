@@ -12,15 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         //
-        Schema::create('regsitrocalidad', function(Blueprint $table){
-            $table->id();
-            $table->integer('fecha');
-            $table->string('client');
-            $table->string('pn');
-            $table->string('info');
-            $table->integer('resto');
-            $table->string('codigo');
-            $table->string('prueba')->nullable();
+        Schema::table('regsitrocalidad', function (Blueprint $table) {
+            $table->id()->unique()->autoIncrement();
+            $table->string('fecha', 20);
+            $table->string('client', 50);
+            $table->string('pn', 40);
+            $table->string('info', 30);
+            $table->integer('resto')->default(1);
+            $table->string('codigo', 80);
+            $table->string('prueba', 80)->nullable();
         });
     }
 

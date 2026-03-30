@@ -9,9 +9,6 @@ use Illuminate\Support\Facades\DB;
 
 class loginController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function __invoke()
     {
         //
@@ -23,37 +20,25 @@ class loginController extends Controller
         return view('login');
     }
 
-    public function create()
-    {
-        //
-
-    }
+    public function create() {}
 
     public function store(Request $request)
     {
-        // Get current date and time
         $today = date('d-m-Y H:i');
-
-        // Get user input
         $user = $request->input('user');
         $pass = $request->input('password');
-
-        // Check if user exists with the provided credentials
         $userExists = login::where('user', $user)
             ->where('clave', $pass)
             ->exists();
 
         if ($userExists) {
             session(['user' => $user]);
-
-            // If user exists, create a new login record
             $newLog = new registoLogin;
             $newLog->fecha = $today;
             $newLog->userName = $user;
             $newLog->action = 'login';
 
             if ($newLog->save()) {
-                // If login record is saved successfully, redirect to the admin page
                 $buscauser = DB::select("SELECT category,user_email FROM login WHERE user='$user'");
                 foreach ($buscauser as $rowuser) {
                     $categoria = $rowuser->category;
@@ -132,16 +117,12 @@ class loginController extends Controller
                 } elseif ($categoria == 'herramentales') {
                     return redirect('/herramentales');
                 } else {
-
-                    // If unable to save login record, redirect back with an error message
                     return redirect()->back()->with('error', 'Failed to save login information');
                 }
             } else {
-                // If user does not exist with provided credentials, redirect back with an error message
                 return redirect()->back()->with('error', 'Invalid username or password');
             }
         } else {
-            // If user does not exist with provided credentials, redirect back with an error message
             return redirect()->back()->with('error', 'Invalid username or password');
         }
     }
