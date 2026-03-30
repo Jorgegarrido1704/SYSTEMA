@@ -6,10 +6,10 @@
 <div class="d-sm-flex align-items-center justify-content-between mb-4 text-center"></div>
  <meta http-equiv="refresh" content="120">
 <div class="row">
-        <div class="col-xl-4 col-lg-4">
+        <div class="col-xl-6 col-lg-6">
                 <div class="card shadow mb-4" id="card">
                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                        <h5 class="m-0 font-weight-bold text-primary">Electrical Test Requested</h5>
+                        <h5 class="m-0 font-weight-bold text-primary">{{ __('Electrical Test Requested') }}</h5>
                     </div>
 
                     <!-- tabla de trabajos -->
@@ -18,13 +18,13 @@
                                 <thead
                                     style=" position: sticky; z-index: 1; top: 0; text-align: center; background-color: #bd0606; color: white; ">
                                     <tr>
-                                    <th>Part Number</th>
-                                    <th>Client</th>
-                                    <th>WO</th>
-                                    <th>Requested By</th>
-                                    <th>Date Requested</th>
-                                    <th>Status</th>
-                                    <th>Dispatch</th>
+                                    <th>{{ __('Part Number') }}</th>
+                                    <th>{{ __('Customer') }}</th>
+                                    <th>{{ __('WO') }}</th>
+                                    <th>{{ __('Requested By') }}</th>
+                                    <th>{{ __('Requested Date') }}</th>
+                                    <th>{{ __('Status') }}</th>
+                                    <th>{{ __('Dispatch') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -41,7 +41,7 @@
                                                 <form action="{{ route('dispatchElecticalTest') }}" method="GET">
                                                     <input type="hidden" name="id" id="id"
                                                         value="{{ $elec->id }}">
-                                                    <button type="submit">Add Rack</button>
+                                                    <button type="submit">{{ __('Add Rack') }}</button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -56,10 +56,10 @@
                 </div>
 
         </div>
-        <div class="col-xl-4 col-lg-4">
+        <div class="col-xl-6 col-lg-6">
             <div class="card shadow mb-5">
                         <div class="card-header py-3">
-                            <h5 class="m-0 font-weight-bold text-primary">Harness in rack</h5>
+                            <h5 class="m-0 font-weight-bold text-primary">{{ __('Harness in rack') }}</h5>
                         </div>
                         <div class="card-body" style="overflow-y: auto; height: 360px;" >
 
@@ -67,10 +67,10 @@
                                 <thead
                                     style=" position: sticky; z-index: 1; top: 0; text-align: center; background-color: #bd0606; color: white; ">
                                     <tr>
-                                    <th>Part Number</th>
-                                    <th>Order Qty</th>
-                                    <th>Rest Qty</th>
-                                    <th>Accion</th>
+                                    <th>{{ __('Part Number') }}</th>
+                                    <th>{{ __('Order Qty') }}</th>
+                                    <th>{{ __('Rest Qty') }}</th>
+                                    <th>{{ __('Actions') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -90,7 +90,7 @@
                                                 <form action="{{ route('dispatchElecticalTest') }}" method="GET">
                                                     <input type="hidden" name="remove" id="remove"
                                                         value="{{ $elec->pn }}">
-                                                    <button type="submit">remove it</button>
+                                                    <button type="submit">{{ __('Remove') }}</button>
                                                 </form>
                                             </td>
                                             @else
@@ -105,10 +105,10 @@
                         </div>
             </div>
         </div>
-        <div class="col-xl-4 col-lg-4">
+        <div class="col-xl-6 col-lg-6">
                 <div class="card shadow mb-5">
                             <div class="card-header py-3">
-                                <h5 class="m-0 font-weight-bold text-primary">Prevention of harnesses</h5>
+                                <h5 class="m-0 font-weight-bold text-primary">{{ __('Prevention of harnesses') }}</h5>
                             </div>
 
                             <div   class="card-body" style="overflow-y: auto; height: 360px;" >
@@ -116,11 +116,11 @@
                                     <thead
                                         style=" position: sticky; z-index: 0.1; top: 0; text-align: center; background-color: #bd0606; color: white; ">
                                         <tr>
-                                        <th>Part Number</th>
-                                        <th>WO</th>
-                                        <th>Original Qty</th>
-                                        <th>Pending</th>
-                                        <th>Dispatched</th>
+                                        <th>{{ __('Part Number') }}</th>
+                                        <th>{{ __('WO') }}</th>
+                                        <th>{{ __('Original Qty') }}</th>
+                                        <th>{{ __('Pending') }}</th>
+                                        <th>{{ __('Actions') }}
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -145,7 +145,7 @@
                                                 <td><form action="{{ route('dispatchElecticalTest') }}" method="GET">
                                                     <input type="hidden" name="addRack" id="addRack"
                                                         value="{{ $arnes->wo }}">
-                                                    <button type="submit">Dispatch</button>
+                                                    <button type="submit">{{ __('Dispatch') }}</button>
                                                 </form></td>
                                             </tr>
                                         @endforeach
@@ -155,16 +155,14 @@
 
                 </div>
         </div>
-</div>
-<div class="row">
-        <div class="col-xl-6 col-lg-6">
+         <div class="col-xl-6 col-lg-6">
                 <div class="card shadow mb-4" id="card">
                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                        <h5 class="m-0 font-weight-bold text-primary">Localization</h5>
+                        <h5 class="m-0 font-weight-bold text-primary">{{ __('Localization') }}</h5>
                     </div>
 
                     <!-- tabla de trabajos -->
-                    <div class="card-body" style="overflow-y: auto; height: 460px;">
+                    <div class="card-body" style="overflow-y: auto; height: 360px;">
 
 
                     </div>
@@ -172,6 +170,9 @@
                 </div>
 
         </div>
+</div>
+<div class="row">
+        <!--
         <div class="col-xl-6 col-lg-6">
             <div class="card shadow mb-5">
                         <div class="card-header py-3">
@@ -181,6 +182,7 @@
                         </div>
             </div>
         </div>
+    -->
 
 </div>
 

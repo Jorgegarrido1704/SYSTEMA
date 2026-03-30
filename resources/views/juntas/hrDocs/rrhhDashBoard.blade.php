@@ -31,7 +31,7 @@ if (Error) {
 
                 <div class="card shadow mb-5 item-center">
                     <div class="card-header py-3 text-center">
-                        <h5 class="m-0 font-weight-bold text-primary">Modificaciones de Registos  Y reportes</h5>
+                        <h5 class="m-0 font-weight-bold text-primary">{{__('Employee Data Modification') }}</h5>
                         @if($cat != "RRHH" and $cat != "SupAdmin")
                         <div class="row">
                              @php
@@ -43,18 +43,18 @@ if (Error) {
                                     @csrf
                                     <div class="row">
                                         <div class="form-group col-md-12">
-                                        <label for="semana" class="form-label">Listas de asistencia</label>
+                                        <label for="semana" class="form-label">{{__('Assistance List') }}</label>
                                         </div>
                                         <div class="form-group col-md-12">
                                         <select name="numeroSemanaIncidencias" id="numeroSemanaIncidencias" class="form-control" required>
-                                            <option value="" disabled selected> Seleccione Un Semana de trabajo</option>
+                                            <option value="" disabled selected> {{ __('Select a Work Week') }}</option>
                                             @for($semanal2; $semanal2>=1 ; $semanal2--)
-                                            <option value="{{$semanal2}}">Semana {{$semanal2}}</option>
+                                            <option value="{{$semanal2}}">{{ __('Week') }} {{$semanal2}}</option>
                                             @endfor
                                         </select>
                                         </div>
                                         <div class="form-group col-md-12">
-                                            <button type="submit" class="btn btn-primary">Listas de incidencias</button>
+                                            <button type="submit" class="btn btn-primary">{{ __('Incidence List') }}</button>
                                         </div>
                                     </div>
                                 </form>
@@ -62,8 +62,8 @@ if (Error) {
                         </div>
 
                           @elseif($cat == "RRHH" or $cat == "SupAdmin")
-                        <button class="btn btn-primary" data-toggle="modal" data-target="#addModal" id="addPersonal" onclick="addEmpleado();" >Agregar personal</button>
-                        <button class="btn btn-success" data-toggle="modal" data-target="#addModal" id="modificarEmpleados" onclick="modificarEmpleado();">Modifiar empleado</button>
+                        <button class="btn btn-primary" data-toggle="modal" data-target="#addModal" id="addPersonal" onclick="addEmpleado();" >{{ __('Add') }} {{ __('Employee') }}</button>
+                        <button class="btn btn-success" data-toggle="modal" data-target="#addModal" id="modificarEmpleados" onclick="modificarEmpleado();">{{ __('Modify') }} {{ __('Employee') }}</button>
                        <!-- //reportes de RRHH -->
                         <div class="row">
                             <div class="col-md-6">
@@ -72,22 +72,22 @@ if (Error) {
                                                <div class="row">
 
                                                     <div class="form-group col-md-12">
-                                                    <label for="semana" class="form-label">Reporte relog Checador</label>
+                                                    <label for="semana" class="form-label">{{ __('log Checker Report') }}</label>
                                                     </div>
                                                      <div class="form-group col-md-12">
                                                     <select name="semana" id="semana" class="form-control" required>
-                                                        <option value="" disabled selected> Seleccione Un Semana</option>
+                                                        <option value="" disabled selected> {{ __('Select a Work Week') }}</option>
                                                         @php
                                                             $semanal1=$weekNum;
                                                             $semanal2=$weekNum;
                                                         @endphp
                                                         @for($semanal1; $semanal1>=1 ; $semanal1--)
-                                                        <option value="{{$semanal1}}">Semana {{$semanal1}}</option>
+                                                        <option value="{{$semanal1}}">{{ __('Week') }} {{$semanal1}}</option>
                                                         @endfor
                                                     </select>
                                                      </div>
                                                     <div class="form-group col-md-12">
-                                                        <button type="submit" class="btn btn-primary">Reporte</button>
+                                                        <button type="submit" class="btn btn-primary">{{ __('Report') }}</button>
                                                     </div>
                                                 </div>
 
@@ -99,18 +99,18 @@ if (Error) {
                                     @csrf
                                     <div class="row">
                                         <div class="form-group col-md-12">
-                                        <label for="semana" class="form-label">Listas de asistencia</label>
+                                        <label for="semana" class="form-label">{{__('Assistance List') }}</label>
                                         </div>
                                         <div class="form-group col-md-12">
                                         <select name="numeroSemanaIncidencias" id="numeroSemanaIncidencias" class="form-control" required>
-                                            <option value="" disabled selected> Seleccione Un Semana de trabajo</option>
+                                            <option value="" disabled selected> {{__('Select a Work Week') }}</option>
                                             @for($semanal2; $semanal2>=1 ; $semanal2--)
-                                            <option value="{{$semanal2}}">Semana {{$semanal2}}</option>
+                                            <option value="{{$semanal2}}">{{ __('Week') }} {{$semanal2}}</option>
                                             @endfor
                                         </select>
                                         </div>
                                         <div class="form-group col-md-12">
-                                            <button type="submit" class="btn btn-primary">Listas de incidencias</button>
+                                            <button type="submit" class="btn btn-primary">{{ __('Incidence List') }}</button>
                                         </div>
                                     </div>
                                 </form>
@@ -123,77 +123,77 @@ if (Error) {
                            <form class="row g-3" action="{{ route('addperson') }}" method="POST">
                             @csrf
                                 <div class="col-md-2">
-                                    <label for="nombre" class="form-label">Nombre de empleado: </label>
+                                    <label for="nombre" class="form-label">{{ ('Employee Name') }}: </label>
                                     <input type="text" class="form-control" id="nombre" name="nombre" required>
                                 </div>
                                 <div class="col-md-2">
-                                    <label for="id_empleado" class="form-label">Numero de empleado</label>
+                                    <label for="id_empleado" class="form-label">{{ ('Employee ID') }}</label>
                                     <input type="text" class="form-control" id="id_empleado" name="id_empleado" minlength="4" maxlength="4" required>
                                 </div>
                                 <div class="col-md-1">
-                                    <label for="ingreso" class="form-label">Fecha de ingreso</label>
+                                    <label for="ingreso" class="form-label">{{__('Joining Date') }}</label>
                                     <input type="date" class="form-control" id="ingreso" name="ingreso" required>
                                 </div>
                                  <div class="col-md-1">
-                                    <label for="Genero" class="form-label">Genero del trabajador</label>
+                                    <label for="Genero" class="form-label">{{__('Gender') }}</label>
                                    <select id="Genero" name="Genero" class="form-select">
-                                    <option selected>Choose...</option>
-                                    <option value="H">Hombre</option>
-                                    <option value="M">Mujer</option>
+                                    <option selected disabled>{{ __('Choose') }}...</option>
+                                    <option value="H">{{__('Man') }}</option>
+                                    <option value="M">{{__('Woman') }}</option>
                                     </select>
                                 </div>
                                 <div class="col-md-2">
-                                    <label for="area" class="form-label">Area de trabajo</label>
+                                    <label for="area" class="form-label">{{__('Work Area') }}</label>
                                    <select id="area" name="area" class="form-select">
-                                    <option selected>Choose...</option>
-                                    <option value="Ingenieria">Ingenieria</option>
-                                    <option value="Corte">Corte</option>
-                                    <option value="Ensamble">Ensamble</option>
-                                    <option value="Servicio al cliente">Servicio al cliente</option>
-                                    <option value="Liberacion">Liberacion</option>
-                                    <option value="Almacen">Almacen</option>
-                                    <option value="Calidad">Calidad</option>
-                                    <option value="Comercio Internacional">Comercio Internacional</option>
-                                    <option value="Embarques">Embarques</option>
-                                    <option value="Limpieza">Limpieza</option>
-                                    <option value="Mantenimiento">Mantenimiento</option>
-                                    <option value="Materiales">Materiales</option>
-                                    <option value="Vigilancia">Vigilancia</option>
-                                    <option value="EMBARQUE">EMBARQUE</option>
-                                    <option value="PRODUCCION">PRODUCCION</option>
-                                    <option value="Finanzas">Finanzas</option>
-                                    <option value="Compras">Compras</option>
-                                    <option value="Enfermeria">Enfermeria</option>
-                                    <option value="Planeacion">Planeacion</option>
-                                    <option value="RECURSOS HUMANOS">RECURSOS HUMANOS</option>
-                                    <option value="Nomina">Nomina</option>
-                                    <option value="Operaciones">Operaciones</option>
-                                    <option value="PPAP">PPAP</option>
+                                    <option selected disabled>{{ __('Choose') }}...</option>
+                                    <option value="Ingenieria">{{__('Engineering') }}</option>
+                                    <option value="Corte">{{__('Cut') }}</option>
+                                    <option value="Ensamble">{{__('Assembly') }}</option>
+                                    <option value="Servicio al cliente">{{__('Customer Service') }}</option>
+                                    <option value="Liberacion">{{__('Release') }}</option>
+                                    <option value="Almacen">{{__('Warehouse') }}</option>
+                                    <option value="Calidad">{{__('Quality') }}</option>
+                                    <option value="Comercio Internacional">{{__('International Trade') }}</option>
+                                    <option value="Embarques">{{__('Shipping') }}</option>
+                                    <option value="Limpieza">{{__('Cleaning') }}</option>
+                                    <option value="Mantenimiento">{{__('Maintenance') }}</option>
+                                    <option value="Materiales">{{__('Materials') }}</option>
+                                    <option value="Vigilancia">{{__('Security') }}</option>
+                                    <option value="EMBARQUE">{{__('Shipping') }}</option>
+                                    <option value="PRODUCCION">{{__('Production') }}</option>
+                                    <option value="Finanzas">{{__('Finance') }}</option>
+                                    <option value="Compras">{{__('Purchases') }}</option>
+                                    <option value="Enfermeria">{{__('Nursing') }}</option>
+                                    <option value="Planeacion">{{__('Planning') }}</option>
+                                    <option value="RECURSOS HUMANOS">{{__('Human Resources') }}</option>
+                                    <option value="Nomina">{{__('Payroll') }}</option>
+                                    <option value="Operaciones">{{__('Operations') }}</option>
+                                    <option value="PPAP">{{__('PPAP') }}</option>
                                     </select>
                                 </div>
                                 <div class="col-md-1">
-                                    <label for="lider" class="form-label">Lider de empleado</label>
+                                    <label for="lider" class="form-label">{{__('Employee List') }}</label>
                                    <select id="lider" name="lider" class="form-select">
-                                    <option selected >Choose...</option>
+                                    <option selected >{{ __('Choose') }}...</option>
                                        @foreach ($lidername as $lider)
                                         <option value="{{ $lider->employeeLider }}">{{ $lider->employeeLider }}</option>
                                        @endforeach
                                     </select>
                                 </div>
                                   <div class="col-md-1">
-                                    <label for="tipoDeTrabajador" class="form-label">Tipo de empleado</label>
+                                    <label for="tipoDeTrabajador" class="form-label">{{__('Employee Type') }}</label>
                                    <select id="tipoDeTrabajador" name="tipoDeTrabajador" class="form-select">
-                                        <option selected >Choose...</option>
-                                        <option value="Directo">Directo</option>
-                                        <option value="Indirecto">Indirecto</option>
-                                        <option value="Practicante">Practicante</option>
-                                        <option value="Asimilado">Asimilado </option>
-                                        <option value="Servicio comprado">Servicio comprado</option>
+                                        <option selected >{{ __('Choose') }}...</option>
+                                        <option value="Directo">{{__('Direct') }}</option>
+                                        <option value="Indirecto">{{__('Indirect') }}</option>
+                                        <option value="Practicante">{{__('Intern') }}</option>
+                                        <option value="Asimilado">{{__('Assimilated') }}</option>
+                                        <option value="Servicio comprado">{{__('Purchased Service') }}</option>
                                     </select>
                                 </div>
 
                                 <div class="col-1">
-                                    <button type="submit" class="btn btn-primary">Agregar empleado</button>
+                                    <button type="submit" class="btn btn-primary">{{__('Add Employee') }}</button>
                                 </div>
                             </form>
                         </div>
@@ -201,7 +201,7 @@ if (Error) {
                                 <hr>
                                     <div class= "row g-3">
                                     <div class="col-md-2">
-                                    <label for="nombreEmpleado" class="form-label">Buscar empleado: </label><input type="text" name="nombreEmpleado" id="nombreEmpleado" onchange="buscarempleado()"></div>
+                                    <label for="nombreEmpleado" class="form-label">{{__('Search Employee') }}: </label><input type="text" name="nombreEmpleado" id="nombreEmpleado" onchange="buscarempleado()"></div>
                                 <hr>
                                  <div id="datos"></div>
                                 </div>
@@ -216,23 +216,23 @@ if (Error) {
                                     <thead>
                                         <tr>
 
-                                        <th id="OK">OK = Asistencia</th>
-                                        <th id="F">F = Falta</th>
-                                        <th id="PSS">PSS = Permiso sin gose</th>
-                                        <th id="PCS">PCS = Permiso con gose</th>
-                                        <th id="INC">INC = Incapacidad</th>
+                                        <th id="OK">OK = {{ __('Assistence') }}</th>
+                                        <th id="F">F = {{ __('Absents') }}</th>
+                                        <th id="PSS">PSS = {{ __('Permission Without Salary') }}</th>
+                                        <th id="PCS">PCS = {{ __('Permission With Salary') }}</th>
+                                        <th id="INC">INC = {{ __('Disability') }}</th>
                                         </tr>
                                         <tr>
-                                        <th id="V">V = Vacaciones</th>
-                                        <th id="R">R = Retardo</th>
-                                        <th id="SUS">SUS = Suspension</th>
-                                        <th id="PCT">PCT = Practicante</th>
-                                        <th id="TSP">TSP = Tiempo Permiso Salida</th>
+                                        <th id="V">V = {{ __('Holidays') }}</th>
+                                        <th id="R">R = {{ __('Late') }}</th>
+                                        <th id="SUS">SUS = {{ __('Suspension') }}</th>
+                                        <th id="PCT">PCT = {{ __('Intern') }}</th>
+                                        <th id="TSP">TSP = {{ __('Time Off') }}</th>
                                         </tr>
                                         <tr>
-                                        <th id="ASM">ASM = Asimilado</th>
-                                        <th id="SCE">SCE = Servicion Comprado</th>
-                                        <th id="HE">HE = Horario Especial</th>
+                                        <th id="ASM">ASM = {{ __('Assimilated') }}</th>
+                                        <th id="SCE">SCE = {{ __('Purchased Service') }}</th>
+                                        <th id="HE">HE = {{ __('Special Schedule') }}</th>
                                         <th id=""></th>
                                         <th id=""></th>
                                         </tr>
@@ -240,9 +240,9 @@ if (Error) {
                                 </table>
                             </div>
                             <div class="col-md-12">
-                                <h6>* La asistencia debe registrarse antes de las 08:20 AM </h6>
-                                <h6>* Las Horas extras y las horas de tiempo por tiempo deben registrarse antes de las 12:00 AM </h6>
-                                <h6>* Los dias lunes se deben registrar las horas extras del viernes, sabado y domingo antes de las 10:00 AM, la lista de asistencia de la semana anterior se encontrara en la parte inferior de esta página</h6>
+                                <h6>* {{ __('Attendance must be registered before 8:20 a.m.') }} </h6>
+                                <h6>* {{ __('Overtime and time-for-time hours must be logged before 12:00 AM') }} </h6>
+                                <h6>* {{ __('Overtime hours worked on Friday, Saturday, and Sunday must be recorded on Mondays before 10:00 AM. The attendance list for the previous week can be found at the bottom of this page.') }} </h6>
                             </div>
                         </div>
                         <hr>
@@ -253,15 +253,15 @@ if (Error) {
                                                 <tr>
 
                                                     @if($cat == "RRHH" or $cat == "SupAdmin")
-                                                        <th>Empleado</th>
-                                                        <th>lunes</th><th>extras lunes</th> <th>martes</th><th>extras martes</th>
-                                                        <th>miercoles</th><th>extras miercoles</th>
-                                                        <th>jueves</th>  <th>extras jueves</th>  <th>viernes</th>
-                                                        <th>extras viernes</th>  <th>sabado</th>  <th>extras sabado</th>
-                                                        <th>domingo</th> <th>extras domingo</th> <th> bono asistencia</th>
-                                                        <th>bono puntualidad</th>  <th>total extras</th> <th> tiempo por tiempo</th>
-                                                        <th>numero de empleado</th>
-                                                        <th>Modificar</th>
+                                                        <th>{{ __('Employee') }}</th>
+                                                        <th>{{ __('Monday') }}</th><th>{{ __('OverTime') }}</th> <th>{{ __('Tuesday') }}</th><th>{{ __('OverTime') }}</th>
+                                                        <th>{{ __('Wednesday') }}</th><th>{{ __('OverTime') }}</th>
+                                                        <th>{{ __('Thursday') }}</th>  <th>{{ __('OverTime') }}</th>  <th>{{ __('Friday') }}</th>
+                                                        <th>{{ __('OverTime') }}</th>  <th>{{ __('Saturday') }}</th>  <th>{{ __('OverTime') }}</th>
+                                                        <th>{{ __('Sunday') }}</th> <th>{{ __('OverTime') }}</th> <th> {{ __('Attendance Bonus') }}</th>
+                                                        <th>{{ __('Punctuality Bonus') }}</th>  <th>{{ __('Total Extras') }}</th> <th> {{ __('Time-for-Time') }} </th>
+                                                        <th>{{ __('Employee ID') }}</th>
+                                                        <th>{{ __('Modify') }}</th>
 
                                                 </tr>
                                             </thead>
@@ -305,15 +305,16 @@ if (Error) {
                                                             </tr>
                                                 @endforeach
                                                 @else
-                                                <th>Empleado</th>
-                                                        <th style="display: {{ $diasRegistros[0] }};">lunes</th><th style="display: {{ $diasRegistros[1] }};">extras lunes</th>
-                                                        <th style="display: {{ $diasRegistros[1] }};">martes</th><th style="display: {{ $diasRegistros[2] }};">extras martes</th>
-                                                        <th style="display: {{ $diasRegistros[2] }};">miercoles</th><th style="display: {{ $diasRegistros[3] }};">extras miercoles</th>
-                                                        <th style="display: {{ $diasRegistros[3] }};">jueves</th>  <th style="display: {{ $diasRegistros[4] }};">extras jueves</th>  <th style="display: {{ $diasRegistros[4] }};">viernes</th>
-                                                        <th style="display: {{ $diasRegistros[4] }};">extras viernes</th>  <th style="display: {{ $diasRegistros[4] }};">sabado</th>  <th style="display: {{ $diasRegistros[4] }};">extras sabado</th>
-                                                        <th style="display: {{ $diasRegistros[4] }};">domingo</th> <th style="display: {{ $diasRegistros[4] }};">extras domingo</th> <th> bono asistencia</th>
-                                                        <th>bono puntualidad</th>  <th>total extras</th> <th> tiempo por tiempo</th>
-                                                        <th>numero de empleado</th>
+                                                <th>{{ __('Employee') }}</th>
+                                                        <th style="display: {{ $diasRegistros[0] }};">{{__('Monday')}}</th><th style="display: {{ $diasRegistros[1] }};">{{__('OverTime')}}</th>
+                                                        <th style="display: {{ $diasRegistros[1] }};">{{__('Tuesday')}}</th><th style="display: {{ $diasRegistros[2] }};">{{__('OverTime')}}</th>
+                                                        <th style="display: {{ $diasRegistros[2] }};">{{__('Wednesday')}}</th><th style="display: {{ $diasRegistros[3] }};">{{__('OverTime')}}</th>
+                                                        <th style="display: {{ $diasRegistros[3] }};">{{__('Thursday')}}</th>  <th style="display: {{ $diasRegistros[4] }};">{{__('OverTime')}}</th>  <th style="display: {{ $diasRegistros[4] }};">{{__('Friday')}}</th>
+                                                        <th style="display: {{ $diasRegistros[4] }};">{{__('OverTime')}}</th>  <th style="display: {{ $diasRegistros[4] }};">{{__('Saturday')}}</th>  <th style="display: {{ $diasRegistros[4] }};">{{__('OverTime')}}</th>
+                                                        <th style="display: {{ $diasRegistros[4] }};">{{__('Sunday')}}</th> <th style="display: {{ $diasRegistros[4] }};">{{__('OverTime')}}</th> <th> {{ __('Attendance Bonus') }}</th>
+                                                        <th>{{ __('Punctuality Bonus') }}</th>  <th>{{ __('Total Extras') }}</th> <th> {{ __('Time by Time') }}</th>
+                                                        <th> {{ __('Employee Number') }}</th>
+                                                        
                                                         </tr>
                                                         </thead>
                                             <tbody>
@@ -351,7 +352,7 @@ if (Error) {
                                                             <td> <input type="hidden" name="numero_empleado[]" id="numero_empleado[]" value="{{$as['id_empleado']}}">     </tr>
                                                 @endforeach
                                                 <div>
-                                                <button type="submit" name="enviar" id="enviar" class=" btn btn-primary" >Modificar</button>
+                                                <button type="submit" name="enviar" id="enviar" class=" btn btn-primary" >{{ __('Modify') }}</button>
                                                 </div>
                                                             </form>
                                                 @endif
@@ -359,24 +360,24 @@ if (Error) {
                                             </tbody>
                                         </table>
                             </div>
-                               <h2>Incidencias Semana pasada</h2><hr>
+                              <hr>
                             <div class="col-md-12">
                                 @if($datosRHWEEKLastWeek != null)
-                                       <h2>Incidencias Semana pasada</h2><hr>
+                                       <h2>{{ __('Last Week Insidences') }}</h2><hr>
                                         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                         <thead>
                                             <tr>
 
 
-                                                    <th>Empleado</th>
-                                                    <th>lunes</th><th>extras lunes</th> <th>martes</th><th>extras martes</th>
-                                                    <th>miercoles</th><th>extras miercoles</th>
-                                                    <th>jueves</th>  <th>extras jueves</th>  <th>viernes</th>
-                                                    <th>extras viernes</th>  <th>sabado</th>  <th>extras sabado</th>
-                                                    <th>domingo</th> <th>extras domingo</th> <th> bono asistencia</th>
-                                                    <th>bono puntualidad</th>  <th>total extras</th> <th> tiempo por tiempo</th>
-                                                    <th>numero de empleado</th>
-                                                    <th>Modificar</th>
+                                                    <th>{{ __('Employee') }}</th>
+                                                    <th>{{ __('Monday') }}</th><th>{{ __('OverTime') }} {{ __('Monday') }}</th> <th>{{ __('Tuesday') }}</th><th>{{ __('OverTime') }} {{ __('Tuesday') }}</th>
+                                                    <th>{{ __('Wednesday') }}</th><th>{{ __('OverTime') }} {{ __('Wednesday') }}</th>
+                                                    <th>{{ __('Thursday') }}</th>  <th>{{ __('OverTime') }} {{ __('Thursday') }}</th>  <th>{{ __('Friday') }}</th>
+                                                    <th>{{ __('OverTime') }} {{ __('Friday') }}</th>  <th>{{ __('Saturday') }}</th>  <th>{{ __('OverTime') }} {{ __('Saturday') }}</th>
+                                                    <th>{{ __('Sunday') }}</th> <th>{{ __('OverTime') }} {{ __('Sunday') }}</th> <th> {{ __('Attendance Bonus') }}</th>
+                                                    <th>{{ __('Punctuality Bonus') }}</th>  <th>{{ __('Total OverTime') }}</th> <th> {{ __('Time by Time') }} </th>
+                                                    <th>{{ __('Employee ID') }}</th>
+                                                    
 
                                             </tr>
                                         </thead>
@@ -415,7 +416,7 @@ if (Error) {
                                                             <td><input type="number" style="max-width: 45px" name="tiempo_por_tiempo[]" id="tiempo_por_tiempo" value="{{$as['tiempoPorTiempo']}}"disabled  step="0.5"></td>
                                                             <td><input type="text" style="max-width: 60px" name="numero_emplead[]" id="numero_emplead" value="{{$as['id_empleado']}}" disabled></td>
                                                         <td> <input type="hidden" name="numero_empleado[]" id="numero_empleado[]" value="{{$as['id_empleado']}}">
-                                                        <button type="submit" name="enviar" id="enviar" class=" btn btn-primary" >Modificar</button></td>
+                                                        <button type="submit" name="enviar" id="enviar" class=" btn btn-primary" >{{ __('Modify') }}</button></td>
                                                         </form>
                                                         </tr>
                                             @endforeach
