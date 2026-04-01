@@ -2030,19 +2030,13 @@ class juntasController extends Controller
         $fecha_de_solicitud = $endDate->toDateString();
         $noposible = $repetidosDias = 0;
         $email = null;
-        $supervisor = null;
+        $supervisor = '';
         if ($lider == 'GUILLEN MIRANDA JUAN JOSE' or $lider == 'AGUILAR HERNANDEZ ANA PAOLA' or $lider == 'RAMOS CEDEÑO LUIS ALBERTO'
             or $lider == 'GAMBOA RIOS JORGE ALEJANDRO' or $lider == 'Jose de Jesus Cervera Lopez' or $lider == 'VILLALPANDO RODRIGUEZ DAVID'
-            or $lider == 'OLAES FRAGA JUAN JOSE' or $lider == 'FANDIÑO TORRES ROCIO') {
+            or $lider == 'OLAES FRAGA JUAN JOSE' or $lider == 'FANDIÑO TORRES ROCIO' or $lider == 'Hector Cano') {
             $buscarEmails = personalBergsModel::select('email', 'user')->where('employeeName', '=', $lider)->first();
             $email = $buscarEmails->email;
             $supervisor = $buscarEmails->user;
-        } elseif ($lider == 'Hector Cano') {
-            $email = [
-                'jgarrido@mx.bergstrominc.com',
-                'paguilar@mx.bergstrominc.com',
-                'hcano@bergstrominc.com',
-            ];
         } else {
             $liderInicial = personalBergsModel::select('user', 'email', 'employeeLider')->where('employeeName', '=', $lider)->first();
             $buscarEmails = personalBergsModel::select('email', 'employeeLider', 'employeeName', 'user')->where('employeeName', '=', $liderInicial->employeeLider)->first();
