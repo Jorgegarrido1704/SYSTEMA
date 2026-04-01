@@ -196,12 +196,10 @@
                                                     <div class="h5 mb-0 font-weight-bold text-gray-800">
                                                         {{ $porcentajaVacaciones }}%
 
-                                                         @if($promedioCorrectoVacciones<$porcentajaVacaciones && $porcentajaVacaciones>8 )
+                                                         @if($promedioCorrectoVacciones<$porcentajaVacaciones && $porcentajaVacaciones>7 )
                                                             <i class="fas fa-thumbs-up fa-2x text-success ml-4"></i>
-                                                        @elseif($promedioCorrectoVacciones<$porcentajaVacaciones && $porcentajaVacaciones>2 && $porcentajaVacaciones<=8)
-                                                            <i class="fas fa-thumbs-up fa-2x text-warning ml-4"></i>
                                                         @else
-                                                            <i class="fas fa-thumbs-down fa-2x text-danger ml-4"></i>
+                                                          <i class="fas fa-thumbs-up fa-2x text-warning ml-4"></i>
                                                         @endif
                                                     </div>
 
