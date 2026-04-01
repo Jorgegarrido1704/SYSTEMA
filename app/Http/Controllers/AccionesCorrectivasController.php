@@ -7,6 +7,7 @@ use App\Mail\accionesCorrectivas\cincoPorques;
 use App\Mail\accionesCorrectivas\contencion;
 use App\Mail\accionesCorrectivas\eliminacionCausas;
 use App\Mail\accionesCorrectivas\medicionEficacia;
+use App\Mail\accionesCorrectivas\planAccion;
 use App\Mail\accionesCorrectivasRecordatorio;
 use App\Models\accionesCorrectivas;
 use App\Models\accionesCorrectivas\monitoreosAcciones;
@@ -445,7 +446,7 @@ class AccionesCorrectivasController extends Controller
         $accion = accionesCorrectivas::where('folioAccion', $folioEficacia)->update([
             'accion' => $accionIngesada,
             'fechaInicioAccion' => $request->input('fechaInicioAccion'),
-            'status' => 'etapa 3 - Aceptación de eficacia'
+            'status' => 'etapa 3 - Aceptación de eficacia',
         ]);
         // Mail eliminacion
         $acciones = accionesCorrectivas::where('folioAccion', $folioEficacia)->first();
@@ -463,5 +464,35 @@ class AccionesCorrectivasController extends Controller
         $mail = Mail::to($mailaddresses)->send(new medicionEficacia($acciones, 'Registro de medición de eficacia para acción correctiva'));
 
         return redirect()->route('accionesCorrectivas.show', $folioEficacia)->with('success', 'Registro de medición de eficacia exitoso.');
+    }
+
+    public function statusSubAccion(Request $request, $id, $folio)
+    {
+        $id = preg_replace('/[^\p{L}0-9()._\- ]/u', ' ', $id);
+        $folio = preg_replace('/[^\p{L}0-9()._\- ]/u', ' ', $folio);
+        $request->validate([
+            'statusSubAccion' => 'required|string|max:6',
+        ]);
+        $statusSubAccion = preg_replace('/[^\p{L}0-9()._\- ]/u', ' ', $request->input('statusSubAccion'));
+        sub_acciones_model::where('id', $id)->update([
+            'statusSubAccion' => $statusSubAccion,
+        ]);
+        if ($statusSubAccion == 'Closed') {
+            $subAcciones = sub_acciones_model::where('id', $id)->first();
+            $acciones = accionesCorrectivas::where('folioAccion', $folio)->first();
+            $mailto = personalBergsModel::where('employeeName', $acciones->resposableAccion)->first();
+
+            $mailaddresses = [
+                'jgarrido@mx.bergstrominc.com',
+                'maleman@mx.bergstrominc.com',
+            ];
+
+            if ($mailto && $mailto->email) {
+                $mailaddresses[] = $mailto->email;
+            }
+            Mail::to($mailaddresses)->send(new planAccion($subAcciones, 'Aceptación de planes de accion'));
+        }
+
+        return redirect()->route('accionesCorrectivas.show', $folio)->with('success', 'Estatus de sub acción actualizado exitosamente.');
     }
 }

@@ -292,11 +292,25 @@
                                             Registro de plan de accion {{$accion->id}}
                                         </h6>
                                         @if($value =="Admin" or $value=="Martin A")
-                            <form id="eliminarAccionForm_{{$accion->id}}" method="GET" action="{{ route('accionesCorrectivas.eliminarPlandeAccion', ['id' => $accion->id, 'folio' => $accion->folioAccion]) }}" style="display: inline;">
-                            <input type="hidden" name="donde" value="planAccion">
-                                    <input type="hidden" name="motivoeliminacion" id="motivoeliminacion_{{$accion->id}}" >
-                                <button type="button" class="btn btn-danger float-right" onclick="eliminarPlandeAccion({{$accion->id}})">Eliminar Plan de Accion</button>
-                            </form>
+                                        <div class="row">
+                                            <div class ="col-6">
+                                                <form id="statusSubAccion_{{$accion->id}}" method="GET" action="{{ route('accionesCorrectivas.statusSubAccion', ['id' => $accion->id, 'folio' => $accion->folioAccion]) }}" style="display: inline;" >
+                                                    <select name="statusSubAccion" id="statusSubAccion_{{ $accion->id }}" class="form-control" required >
+                                                        <option value="{{ $accion->statusSubAccion }}" selected disabled>{{ $accion->statusSubAccion }}</option>
+                                                        <option value="Open">{{ __('Open') }}</option>
+                                                        <option value="Closed">{{ __('Closed') }}</option>
+                                                    </select>
+                                                    <button type="submit" class="btn btn-primary">{{__('Save') }}</button>
+                                                </form>
+                                            </div>
+                                            <div class ="col-6">   
+                                                <form id="eliminarAccionForm_{{$accion->id}}" method="GET" action="{{ route('accionesCorrectivas.eliminarPlandeAccion', ['id' => $accion->id, 'folio' => $accion->folioAccion]) }}" style="display: inline;">
+                                                <input type="hidden" name="donde" value="planAccion">
+                                                        <input type="hidden" name="motivoeliminacion" id="motivoeliminacion_{{$accion->id}}" >
+                                                    <button type="button" class="btn btn-danger float-right" onclick="eliminarPlandeAccion({{$accion->id}})">Eliminar Plan de Accion</button>
+                                                </form>
+                                            </div>
+                                        </div>
                             @endif
                                     </div>
                                     <div class="card-body" style="overflow-y: auto; height: 260px;">

@@ -245,6 +245,7 @@ Route::controller(AccionesCorrectivasController::class)->group(function () {
     Route::GET('/acciones-correctivas/aceptarAcciones/{validador}/{folio}', [AccionesCorrectivasController::class, 'aceptarAcciones'])->name('accionesCorrectivas.aceptarAcciones');
     Route::GET('/acciones-correctivas/medicionesAcciones/{folioEficacia}', [AccionesCorrectivasController::class, 'medicionesAcciones'])->name('accionesCorrectivas.medicionesAcciones');
     Route::POST('/acciones-correctivas/denegarEficacia/{id}', [AccionesCorrectivasController::class, 'denegarEficacia'])->name('accionesCorrectivas.denegarEficacia');
+    Route::GET('/acciones-correctivas/statusSubAccion/{id}/{folio}', [AccionesCorrectivasController::class, 'statusSubAccion'])->name('accionesCorrectivas.statusSubAccion');
 });
 
 Route::controller(mailsController::class)->group(function () {

@@ -20,6 +20,7 @@ class sub_acciones_model extends Model
     public $timestamps = true;
 
     protected $fillable = [
-        'folioAccion', 'descripcionSubAccion', 'resposableSubAccion', 'fechaInicioSubAccion', 'fechaFinSubAccion', 'auditorSubAccion',
+        'folioAccion', 'descripcionSubAccion', 'resposableSubAccion', 'fechaInicioSubAccion', 'fechaFinSubAccion',
+        'auditorSubAccion', 'statusSubAccion', 'commentSubAccion',
     ];
 }
