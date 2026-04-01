@@ -2518,14 +2518,18 @@ class juntasController extends Controller
             foreach ($registros as $reg) {
                 $registroPPAP[$i][0] = $reg->cliente ?? '';
                 $registroPPAP[$i][1] = $reg->NumPart ?? '';
+                $rev = substr($reg->rev, 5);
+                // Datos para tamano, por que en el excel no se muestra el rev completo
+                $workschedule = workScreduleModel::where('pn', $reg->NumPart)->where('WorkRev', 'LIKE', '%'.$rev.'%')->orderBy('id', 'desc')->first();
+                // if $werkschedule is null then size is empty
 
+                $registroPPAP[$i][2] = $workschedule ? $workschedule->size : '';
+                $registroPPAP[$i][3] = $rev ?? '';
+                $registroPPAP[$i][4] = $workschedule ? $workschedule->receiptDate : '';
+                $registroPPAP[$i][5] = $workschedule ? $workschedule->commitmentDate : '';
+                $registroPPAP[$i][6] = $workschedule ? $workschedule->CompletionDate : '';
+                $registroPPAP[$i][7] = $workschedule ? $workschedule->customerDate : '-';
                 $datosTiempos = tiempos::where('info', $reg->info)->first();
-                $registroPPAP[$i][2] = '-';
-                $registroPPAP[$i][3] = $reg->rev ?? '';
-                $registroPPAP[$i][4] = '-';
-                $registroPPAP[$i][5] = '-';
-                $registroPPAP[$i][6] = '-';
-                $registroPPAP[$i][7] = $reg->reqday ?? '-';
                 $registroPPAP[$i][8] = $datosTiempos->planeacion ?? 'No Aun';
                 $registroPPAP[$i][9] = $datosTiempos->corte ?? 'No Aun';
                 $registroPPAP[$i][10] = $datosTiempos->liberacion ?? 'No Aun';
@@ -2533,8 +2537,8 @@ class juntasController extends Controller
                 $registroPPAP[$i][12] = $datosTiempos->loom ?? 'No Aun';
                 $registroPPAP[$i][13] = $datosTiempos->calidad ?? 'No Aun';
                 $registroPPAP[$i][14] = '96, 242, 83, 0.3';
-                $registroPPAP[$i][15] = '-';
-                $registroPPAP[$i][16] = '-';
+                $registroPPAP[$i][15] = $workschedule ? $workschedule->resposible : '';
+                $registroPPAP[$i][16] = $workschedule ? $workschedule->documentsApproved : '-';
                 $registroPPAP[$i][17] = 'Black';
                 $registroPPAP[$i][18] = $reg->Qty ?? 0;
                 $registroPPAP[$i][19] = $reg->wo ?? 'No Aun';
@@ -2555,14 +2559,16 @@ class juntasController extends Controller
             foreach ($registros as $reg) {
                 $registroPPAP[$i][0] = $reg->cliente ?? '';
                 $registroPPAP[$i][1] = $reg->NumPart ?? '';
+                $rev = substr($reg->rev, 5);
+                $workschedule = workScreduleModel::where('pn', $reg->NumPart)->where('WorkRev', 'LIKE', '%'.$rev.'%')->orderBy('id', 'desc')->first();
 
+                $registroPPAP[$i][2] = $workschedule ? $workschedule->size : '';
+                $registroPPAP[$i][3] = $rev ?? '';
+                $registroPPAP[$i][4] = $workschedule ? $workschedule->receiptDate : '';
+                $registroPPAP[$i][5] = $workschedule ? $workschedule->commitmentDate : '';
+                $registroPPAP[$i][6] = $workschedule ? $workschedule->CompletionDate : '';
+                $registroPPAP[$i][7] = $workschedule ? $workschedule->customerDate : '-';
                 $datosTiempos = tiempos::where('info', $reg->info)->first();
-                $registroPPAP[$i][2] = '-';
-                $registroPPAP[$i][3] = $reg->rev ?? '';
-                $registroPPAP[$i][4] = '-';
-                $registroPPAP[$i][5] = '-';
-                $registroPPAP[$i][6] = '-';
-                $registroPPAP[$i][7] = $reg->reqday ?? '-';
                 $registroPPAP[$i][8] = $datosTiempos->planeacion ?? 'No Aun';
                 $registroPPAP[$i][9] = $datosTiempos->corte ?? 'No Aun';
                 $registroPPAP[$i][10] = $datosTiempos->liberacion ?? 'No Aun';
@@ -2570,8 +2576,8 @@ class juntasController extends Controller
                 $registroPPAP[$i][12] = $datosTiempos->loom ?? 'No Aun';
                 $registroPPAP[$i][13] = $datosTiempos->calidad ?? 'No Aun';
                 $registroPPAP[$i][14] = '236, 236, 9, 0.497';
-                $registroPPAP[$i][15] = '-';
-                $registroPPAP[$i][16] = '-';
+                $registroPPAP[$i][15] = $workschedule ? $workschedule->resposible : '';
+                $registroPPAP[$i][16] = $workschedule ? $workschedule->documentsApproved : '-';
                 $registroPPAP[$i][17] = 'Black';
                 $registroPPAP[$i][18] = $reg->Qty ?? 0;
                 $registroPPAP[$i][19] = $reg->wo ?? 'No Aun';
