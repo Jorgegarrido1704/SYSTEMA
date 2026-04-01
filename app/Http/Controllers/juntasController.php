@@ -2272,7 +2272,7 @@ class juntasController extends Controller
         // personal en planta
         $enplanta = ($rotacion->assistencia + $rotacion->retardos + $rotacion->practicantes + $rotacion->tsp + $rotacion->ServiciosComprados);
         // porcentaje ausentismo
-        $porcentajaAusentismo = $total > 0 ? $rotacion->faltas > 0 ? round(($rotacion->faltas * 100) / $enplanta, 2) : 0 : 0;
+        $porcentajaAusentismo = $total > 0 ? $rotacion->faltas > 0 ? round(($rotacion->faltas * 100) / $total, 2) : 0 : 0;
         // porcentaje Vacaciones
         $promedioCorrectoVacciones = round((1200) / $total, 2);
         $porcentajaVacaciones = $total > 0 ? $rotacion->vacaciones > 0 ? round(($rotacion->vacaciones * 100) / $total, 2) : 0 : 0;
