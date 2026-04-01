@@ -3,7 +3,6 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -17,6 +16,7 @@ class solicitudVacacionesMail extends Mailable
      * Create a new message instance.
      */
     public $contend;
+
     public $subject;
 
     public function __construct($contend, $subject)
@@ -32,7 +32,7 @@ class solicitudVacacionesMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Solicitud Vacaciones Mail',
+            subject: $this->subject,
         );
     }
 
@@ -42,7 +42,7 @@ class solicitudVacacionesMail extends Mailable
     public function content(): Content
     {
         return new Content(
-             view: 'emails.vacacionesEmail',
+            view: 'emails.vacacionesEmail',
             with: ['contend' => $this->contend],
         );
     }

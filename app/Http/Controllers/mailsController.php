@@ -235,7 +235,7 @@ class mailsController extends Controller
         }
 
         $structure = [
-            'asunto' => 'Solicitud de Vacaciones Aprobada',
+            'asunto' => 'Aprobacion de Vacaciones',
             'nombre' => $nombre,
             'Folio' => 'VAC-'.$folio,
             'fecha_de_solicitud' => $fecha,
@@ -246,7 +246,7 @@ class mailsController extends Controller
         ];
 
         $structure['link'] = 'No es necesario responder este correo, su solicitud de vacaciones ha sido aprobada y registrada en el sistema.';
-        Mail::to($receivers)->send(new solicitudVacacionesMail($structure, 'Solicitud de Vacaciones Aprobada'));
+        Mail::to($receivers)->send(new solicitudVacacionesMail($structure, 'Aprobacion de Vacaciones'));
 
         return redirect('/Pendigs');
     }
