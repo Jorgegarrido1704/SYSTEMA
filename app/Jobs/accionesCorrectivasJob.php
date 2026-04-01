@@ -85,7 +85,7 @@ class accionesCorrectivasJob implements ShouldQueue
                  $mailaddress[] = $mailto->email;
              }*/
 
-            if (Carbon::parse($acciones->fechaAccion)->addWeekDays(3)->isPast()) {
+            if (Carbon::parse($subaccion->fechaAccion)->addWeekDays(3)->isPast()) {
                 $subject = 'recoleccion de evidencia planes de accion';
                 Mail::to($mailaddress)->send(new recordatorioSubacciones($subaccion, $subject));
             }
