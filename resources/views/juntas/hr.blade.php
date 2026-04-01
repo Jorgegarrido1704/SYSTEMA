@@ -216,9 +216,9 @@
                                                     <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                                       {{ __('Production Capacity with Direct Workers') }}</div>
                                                     <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $porcentajeMAximodeProduccionHoy??0 }}%
-                                                     @if($porcentajaAusentismo>=90)
+                                                     @if($porcentajeMAximodeProduccionHoy>=90)
                                                         <i class="fas fa-thumbs-up fa-2x text-success ml-4"></i>
-                                                        @elseif($porcentajaAusentismo>75 && $porcentajaAusentismo<90)
+                                                        @elseif($porcentajeMAximodeProduccionHoy>75 && $porcentajeMAximodeProduccionHoy<90)
                                                          <i class="fas fa-thumbs-up fa-2x text-warning ml-4"></i>
                                                     @else
                                                         <i class="fas fa-thumbs-down fa-2x text-danger ml-4"></i>
@@ -278,7 +278,7 @@
 
                     <div class="col-lg-6 col-md-6 mb-4">
                         <div class="text-center font-weight-bold text-dark">
-                            <p >Diversidad</p>
+                            <p >{{ __('Genders') }}</p>
                         </div>
                         <div >
                             <canvas id="rotation1"></canvas>
@@ -286,7 +286,7 @@
                     </div>
                     <div class="col-lg-6 col-md-6 mb-4">
                          <div class="text-center font-weight-bold text-dark">
-                            <p >Monthly Absentism</p>
+                            <p >{{ __('Monthly Absentism') }}</p>
                         </div>
                         <div >
                             <canvas id="rotation2"></canvas>
@@ -294,7 +294,7 @@
                     </div>
                     <div class="col-lg-6 col-md-6 mb-4">
                             <div class="text-center font-weight-bold text-dark">
-                            <p >Rotacion</p>
+                            <p >{{ __('Rotation') }}</p>
                         </div>
                         <div >
                             <canvas id="rotation0"></canvas>
@@ -308,7 +308,7 @@
      <div class="col-lg-6 col-md-6 mb-4">
         <div class="card shadow mb-5">
             <div class="card-header py-3">
-                <h5 class="m-1 font-weight-bold text-primary">Vacations in {{ date('Y') }}</h5>
+                <h5 class="m-1 font-weight-bold text-primary">{{ __('Vacations') }} {{ __('in') }} {{ date('Y') }}</h5>
             </div>
             <div class="card-body" style=" max-height: 550px;" >
                 <canvas id="vacations" style=" height: 400px;"></canvas>
@@ -318,7 +318,7 @@
      <div class="col-lg-4 col-md-4 mb-8">
         <div class="card shadow mb-5">
             <div class="card-header py-3">
-                <h5 class="m-1 font-weight-bold text-primary">Faltantes de registros de asistencia: {{ $diaActual}}</h5>
+                <h5 class="m-1 font-weight-bold text-primary">{{ __('Missing Assitence Records') }}: {{ $diaActual}}</h5>
             </div>
 
             <div class="card-body " style="overflow-y: auto;  max-height: 450px;">
