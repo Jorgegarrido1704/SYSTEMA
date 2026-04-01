@@ -50,8 +50,8 @@
     <div class="col-lg-6 col-md-6 mb-4">
         <div class="card shadow mb-5">
             <div class="card-header py-3">
-                <h5 class="m-1 font-weight-bold text-primary">Today assistenc:  {{ date('d-M') }}
-                    <br> Faltan por registro: {{ $faltan??0 }}</h5>
+                <h5 class="m-1 font-weight-bold text-primary">{{ __('Today assistence') }}:  {{ date('d-M') }}
+                    <br> {{ __('Missing Assitence Records') }}: {{ $faltan??0 }}</h5>
             </div>
             <div class="card-body" style=" max-height: 570px;">
                 <div class="row">
@@ -118,7 +118,7 @@
     <div class="col-lg-6 col-md-6 mb-4">
         <div class="card shadow mb-5">
             <div class="card-header py-3">
-                <h5 class="m-1 font-weight-bold text-primary">Facility Data</h5>
+                <h5 class="m-1 font-weight-bold text-primary">{{ __('Facility Data') }}</h5>
             </div>
             <div class="card-body" style=" max-height: 550px;" >
                             <div class="row">
@@ -128,7 +128,7 @@
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
                                                     <div class="text-s font-weight-bold text-primary text-uppercase mb-1">
-                                                        Head Count</div>
+                                                       {{__('Head Count')}}</div>
                                                     <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $headcount??0 }}
 
                                                        <i class="fas fa-users fa-2x text-success ml-4"></i>
@@ -145,8 +145,8 @@
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
                                                     <div class="text-s font-weight-bold text-primary text-uppercase mb-1">
-                                                        People in the facility</div>
-                                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $enplanta??0 }} Coworkers
+                                                        {{__('Employees in the facility')}}</div>
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $enplanta??0 }} {{ __('Workers') }}
                                                      @if($porcentajaAusentismo<3)
                                                         <i class="fas fa-thumbs-up fa-2x text-success ml-4"></i>
                                                     @else
@@ -166,7 +166,7 @@
                                                 <div class="col mr-2">
 
                                                         <div class="text-x font-weight-bold text-primary text-uppercase mb-1">
-                                                            Absentism Rate</div>
+                                                            {{ __('Absentism Rate') }}</div>
                                                         <div class="h5 mb-0 font-weight-bold text-gray-800">
                                                             {{ $porcentajaAusentismo }}%
 
@@ -192,12 +192,14 @@
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
                                                     <div class="text-x font-weight-bold text-primary text-uppercase mb-1">
-                                                        Vacations Porcentage</div>
+                                                        {{ __('Vacation Rate') }}</div>
                                                     <div class="h5 mb-0 font-weight-bold text-gray-800">
                                                         {{ $porcentajaVacaciones }}%
 
                                                          @if($promedioCorrectoVacciones<$porcentajaVacaciones && $porcentajaVacaciones>8 )
                                                             <i class="fas fa-thumbs-up fa-2x text-success ml-4"></i>
+                                                        @elseif($promedioCorrectoVacciones<$porcentajaVacaciones && $porcentajaVacaciones>2 && $porcentajaVacaciones<=8)
+                                                            <i class="fas fa-thumbs-up fa-2x text-warning ml-4"></i>
                                                         @else
                                                             <i class="fas fa-thumbs-down fa-2x text-danger ml-4"></i>
                                                         @endif
@@ -214,10 +216,12 @@
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
                                                     <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                      Production Capacity with Direct Workers</div>
+                                                      {{ __('Production Capacity with Direct Workers') }}</div>
                                                     <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $porcentajeMAximodeProduccionHoy??0 }}%
-                                                     @if($porcentajaAusentismo>85)
+                                                     @if($porcentajaAusentismo>=90)
                                                         <i class="fas fa-thumbs-up fa-2x text-success ml-4"></i>
+                                                        @elseif($porcentajaAusentismo>75 && $porcentajaAusentismo<90)
+                                                         <i class="fas fa-thumbs-up fa-2x text-warning ml-4"></i>
                                                     @else
                                                         <i class="fas fa-thumbs-down fa-2x text-danger ml-4"></i>
                                                     @endif
@@ -236,7 +240,7 @@
                                                 <div class="col mr-2">
 
                                                         <div class="text-x font-weight-bold text-primary text-uppercase mb-2">
-                                                            Days without Accidents</div>
+                                                            {{ __('Days without Accidents') }}</div>
 
                                                         <div class="h5 mb-0 font-weight-bold text-gray-800"> <strong>{{ $withoutAccidents??0 }}</strong>
 
@@ -260,7 +264,7 @@
     <div class="col-lg-6 col-md-6 mb-8">
         <div class="card shadow mb-5">
             <div class="card-header py-3">
-                <h5 class="m-1 font-weight-bold text-primary">Graficas</h5>
+                <h5 class="m-1 font-weight-bold text-primary">{{ __('Graphics') }}</h5>
             </div>
 
             <div class="card-body "  style="overflow-y: auto; max-height: 450px;">

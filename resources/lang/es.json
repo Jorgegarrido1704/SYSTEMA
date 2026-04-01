@@ -197,7 +197,7 @@
     "Search Employee": "Buscar empleado",
     "Attendance must be registered before 8:20 a.m.":"La asistencia debe registrarse antes de las 08:20 a.m.",
     "Overtime and time-for-time hours must be logged before 12:00 AM":"Las Horas extras y las horas de tiempo por tiempo deben registrarse antes de las 12:00 AM",
-    "Overtime hours worked on Friday, Saturday, and Sunday must be recorded on Mondays before 10:00 AM. The attendance list for the previous week can be found at the bottom of this page.":"Los dias lunes se deben registrar las horas extras del viernes, sabado y domingo antes de las 10:00 AM, la lista de asistencia de la semana anterior se encontrara en la parte inferior de esta página",    
+    "Overtime hours worked on Friday, Saturday, and Sunday must be recorded on Mondays before 10:00 AM. The attendance list for the previous week can be found at the bottom of this page.":"Los dias lunes se deben registrar las horas extras del viernes, sabado y domingo antes de las 10:00 AM, la lista de asistencia de la semana anterior se encontrara en la parte inferior de esta página",
     "Monday": "Lunes",
     "Tuesday": "Martes",
     "Wednesday": "Miércoles",
@@ -211,14 +211,25 @@
     "Time-for-Time": "Tiempo por tiempo",
     "Modify Employee Data": "Modificar datos de empleado",
     "OverTime": "Horas extras",
-    "Last Week Incidences": "Incidencias Semana pasada"
-   
+    "Last Week Incidences": "Incidencias Semana pasada",
+    "Today assistence": "Asistencia de hoy",
+    "Assistence Report": "Reporte de asistencia",
+    "Missing Assitence Records": "Registros de asistencia faltantes",
+    "Facility Data": "Datos de la planta",
+    "Head Count": "Número de empleados",
+    "Employees in the facility": "Empleados en la planta",
+    "Absentism Rate": "Tasa de ausentismo",
+    "Vacation Rate": "Tasa de vacaciones",
+    "Production Capacity with Direct Workers": "Capacidad de producción con trabajadores directos",
+    "Days without Accidents": "Días sin accidentes",
+    "Workers": "Trabajadores",
+    "Graphics": "Gráficas"
 
 
-  
-   
-   
-    
+
+
+
+
 
 
 
