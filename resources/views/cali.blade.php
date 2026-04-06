@@ -31,7 +31,7 @@
                                                 <th>Rechazar</th>
                                             </thead>
                                             <tbody class="table-group-divider">
-                                               
+
                                                 @foreach ($calidad as $cal)
                                                 <tr>
                                                     <td class="text-center">{{$cal->np}}</td>
@@ -44,11 +44,13 @@
                                                             <button class="btn btn-primary" type="submit" id="enviar">Empezar</button></td>
                                                         </form>
                                                         <td class="text-center">
+                                                            @if(substr($cal->wo, 0, 4) != 'PPAP' and $cal->rev != 'PPAP')
                                                         <form action="{{route('calidad.calidad_producto_no_conforme')}}"  method="GET" id="forma">
                                                             <input type="hidden" name="id" id="id" value="{{$cal->wo}}">
                                                             <input type="hidden" name="porque" id="porque" >
                                                             <button class="btn btn-danger" type="submit" id="enviar" >Rechazar</button></td>
                                                         </form>
+                                                        @endif
                                                     </tr>
                                                     @endforeach
                                             </tbody>
@@ -201,7 +203,7 @@
                                                     </div>
                                                 </div>
                                         </div>
-       
+
 
              <div class="col-lg-6 mb-4">
                             <!-- Request Testing -->
@@ -209,7 +211,7 @@
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                     <h4 class="m-0 font-weight-bold text-primary">Request Testing</h4>
                                 </div>
-                            
+
 
                             <div class="card body" style="overflow-y: scroll; height: 360px">
                                 <!-- se hizo de manera automatica

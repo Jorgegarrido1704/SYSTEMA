@@ -30,6 +30,10 @@ class caliController extends generalController
             return redirect('/');
         } else {
             $calidad = calidad_registro_baja::orderBy('id', 'DESC')->get();
+            foreach ($calidad as $cal) {
+                $reg = Wo::where('wo', $cal->wo)->first();
+                $cal->rev = $reg->rev;
+            }
             $preorder = regPar::where('preCalidad', '>', 0)->get();
 
             return view('cali', ['cat' => $cat, 'value' => $value, 'calidad' => $calidad, 'preorder' => $preorder]);

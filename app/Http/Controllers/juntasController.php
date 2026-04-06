@@ -483,7 +483,7 @@ class juntasController extends Controller
             $datesToCheck[] = date('d-m-Y', strtotime("-$i days"));
         }
         if (date('N') == 1) {
-            $datecontrol = strtotime(date('d-m-Y 00:00', strtotime('-3 days')));
+            $datecontrol = strtotime(date('d-m-Y 00:00', strtotime('-2 days')));
             $crtl = date('d-m-Y', strtotime('-3 days'));
         } else {
             $datecontrol = strtotime(date('d-m-Y 00:00', strtotime('-1 days')));
