@@ -495,15 +495,15 @@ class juntasController extends Controller
                     $query->orWhere('fecha', 'LIKE', "$date%");
                 }
             })
-            //->where('fecha', 'LIKE', "$crtl%")
+            // ->where('fecha', 'LIKE', "$crtl%")
             ->get();
         $totalb = calidadRegistro::where('codigo', 'TODO BIEN')
-            ->where('fecha', 'LIKE', "$crtl%")
-             /*       /*->where(function ($query) use ($datesToCheck) {
+           // ->where('fecha', 'LIKE', "$crtl%")
+            ->where(function ($query) use ($datesToCheck) {
                 foreach ($datesToCheck as $date) {
                     $query->orWhere('fecha', 'LIKE', "$date%");
                 }
-            })*/
+            })
             ->count();
         $totalm = count($buscarValoresMes);
         foreach ($buscarValoresMes as $rows) {
