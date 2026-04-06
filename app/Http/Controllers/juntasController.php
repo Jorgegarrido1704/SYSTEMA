@@ -702,7 +702,7 @@ class juntasController extends Controller
             ->where('codigo', '!=', 'TODO BIEN')
             ->groupBy('codigo', 'pn', 'client')
             ->orderByDesc('total_resto', 'codigo')
-            ->where('fecha', 'LIKE', "$crtl%")
+            // ->where('fecha', 'LIKE', "$crtl%")
             ->limit(10)
             ->get();
 
