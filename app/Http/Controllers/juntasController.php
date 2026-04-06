@@ -703,6 +703,11 @@ class juntasController extends Controller
             ->groupBy('codigo', 'pn', 'client')
             ->orderByDesc('total_resto', 'codigo')
             // ->where('fecha', 'LIKE', "$crtl%")
+            ->where(function ($query) use ($datesToCheck) {
+                foreach ($datesToCheck as $date) {
+                    $query->orWhere('fecha', 'LIKE', "$date%");
+                }
+            })
             ->limit(10)
             ->get();
 
