@@ -45,6 +45,7 @@
                                                         </form>
                                                         <td class="text-center">
                                                             @if(substr($cal->rev, 0, 4) != 'PPAP' and $cal->rev != 'PRIM')
+                                                            {{dd($cal->rev) }}
                                                         <form action="{{route('calidad.calidad_producto_no_conforme')}}"  method="GET" id="forma">
                                                             <input type="hidden" name="id" id="id" value="{{$cal->wo}}">
                                                             <input type="hidden" name="porque" id="porque" >
