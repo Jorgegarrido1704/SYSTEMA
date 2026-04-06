@@ -44,7 +44,7 @@
                                                             <button class="btn btn-primary" type="submit" id="enviar">Empezar</button></td>
                                                         </form>
                                                         <td class="text-center">
-                                                            @if(substr($cal->wo, 0, 4) != 'PPAP' and $cal->rev != 'PPAP')
+                                                            @if(substr($cal->rev, 0, 4) != 'PPAP' and $cal->rev != 'PPAP')
                                                         <form action="{{route('calidad.calidad_producto_no_conforme')}}"  method="GET" id="forma">
                                                             <input type="hidden" name="id" id="id" value="{{$cal->wo}}">
                                                             <input type="hidden" name="porque" id="porque" >

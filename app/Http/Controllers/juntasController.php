@@ -701,7 +701,7 @@ class juntasController extends Controller
         $top3registrosCalidas = calidadRegistro::selectRaw('codigo,client, pn, SUM(resto) as total_resto')
             ->where('codigo', '!=', 'TODO BIEN')
             ->groupBy('codigo', 'pn', 'client')
-            ->orderByDesc( 'codigo', 'total_resto')
+            ->orderByDesc('codigo', 'total_resto')
             // ->where('fecha', 'LIKE', "$crtl%")
             ->where(function ($query) use ($datesToCheck) {
                 foreach ($datesToCheck as $date) {
