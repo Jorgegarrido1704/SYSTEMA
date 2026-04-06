@@ -1219,13 +1219,35 @@ class caliController extends generalController
 
     }
 
-    public function cerrarFalla(Request $request, $id)
+    public function cerrarFalla(Request $request, $id, $accion)
     {
-        $id = $request->input('id');
-        $falla = fallasCalidadModel::where('id', '=', $id)->first();
-        $falla->estado = 'Closed';
-        $falla->save();
+        if ($accion == '0') {
+            $falla = fallasCalidadModel::where('id', '=', $id)->first();
+            $falla->porqueProduccion = null;
+            $falla->accionCorrectiva = null;
+            $falla->save();
 
-        return back()->with('response', 'Falla cerrada correctamente');
+            return back()->with('response', 'Falla Reabierta correctamente');
+        } elseif ($accion == '1') {
+
+            $falla = fallasCalidadModel::where('id', '=', $id)->first();
+
+            $registos = Wo::where('wo', '=', $falla->wo)->first();
+            $parciales = regPar::where('wo', '=', $falla->wo)->first();
+            $totales = $parciales->testPar + $parciales->fallasCalidad;
+            $calidad = new calidad_registro_baja;
+            $calidad->np = $registos->NumPart;
+            $calidad->wo = $registos->wo;
+            $calidad->client = $registos->cliente;
+            $calidad->po = $registos->po;
+            $calidad->info = $registos->info;
+            $calidad->qty = $totales;
+            $calidad->parcial = 'SI';
+            $calidad->save();
+            fallasCalidadModel::where('id', '=', $id)->update(['status' => 'Closed']);
+            regPar::where('wo', '=', $falla->wo)->update(['testPar' => $totales, 'fallasCalidad' => 0]);
+
+            return back()->with('response', 'Falla Cerrada correctamente');
+        }
     }
 }

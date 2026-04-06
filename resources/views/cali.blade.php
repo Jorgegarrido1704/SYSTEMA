@@ -273,8 +273,9 @@
                                                 <td>{{ $item->accionCorrectiva }}</td>
                                                 <td>
                                                 @if(!empty($item->porqueProduccion))
+                                                <button class="btn btn-danger" onclick="location.href='{{ route('calidad.cerrarFalla', ['id' => $item->id, 'accion' =>'0']) }}'">{{ __('Reopen') }}</button>
                                                 <button class="btn btn-success" 
-                                                onclick="location.href='{{ route('cerrarFalla', ['id' => $item->id]) }}'">{{ __('Close') }}</button>
+                                                onclick="location.href='{{ route('calidad.cerrarFalla', ['id' => $item->id, 'accion' =>'1']) }}'">{{ __('Close') }}</button>
                                                 @endif
                                                 </td>
                                             </tr>

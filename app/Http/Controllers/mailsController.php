@@ -7,9 +7,11 @@ use App\Mail\firmasCompletas;
 use App\Mail\solicitudVacacionesMail;
 use App\Models\accionesCorrectivas;
 use App\Models\desviation;
+use App\Models\fallasCalidadModel;
 use App\Models\personalBergsModel;
 use App\Models\PPAPandPRIM;
 use App\Models\registroVacacionesModel;
+use App\Models\Wo;
 use App\Models\workScreduleModel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -97,9 +99,14 @@ class mailsController extends Controller
             ];
             $i++;
         }
+        $rework = fallasCalidadModel::where('status', '=', 'Open')->where('responsable_produccion', '=', $value)->get();
+        foreach ($rework as $cal) {
+            $reg = Wo::where('wo', $cal->wo)->first();
+            $cal->pn = $reg->NumPart;
+        }
 
         return view('firmas.npi.npi', ['vacaciones' => $vacaciones, 'desviations' => $desviations,
-            'registroFirmas' => $registroFirmas, 'value' => $value, 'cat' => $cat, 'firmasPendients' => $firmasPendients]);
+            'registroFirmas' => $registroFirmas, 'value' => $value, 'cat' => $cat, 'firmasPendients' => $firmasPendients, 'rework' => $rework]);
 
     }
 
@@ -314,5 +321,24 @@ class mailsController extends Controller
         header('Content-Disposition: attachment;filename="Reporte de desviaciones.xlsx"');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
+    }
+
+    public function llenadoRetrabajo(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer',
+            'quePaso' => 'required|string',
+            'queSeHara' => 'required|string',
+        ]);
+        $id = $request->input('id');
+        $quePaso = $request->input('quePaso');
+        $queSeHarra = $request->input('queSeHara');
+        $accion = fallasCalidadModel::where('id', '=', $id)->first();
+        $accion->porqueProduccion = $quePaso;
+        $accion->accionCorrectiva = $queSeHarra;
+        $accion->updated_at = now();
+        $accion->save();
+
+        return redirect('/Pendigs')->with('response', 'Accion de retrabajo registrada correctamente');
     }
 }

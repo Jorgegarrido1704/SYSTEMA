@@ -236,6 +236,52 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-lg-12 mb-4">
+
+                            <!-- Header Firmas -->
+                            <div class="card shadow mb-4">
+                                <div  class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">{{ __('Rework') }} </h6>
+                                </div>
+                                <!--Firmas -->
+                                <div class="card-body">
+                                    @if(!empty($firmasPendients))
+                                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th>{{ __('Part Number') }}</th>
+                                                <th>{{ __('WO') }}</th>
+                                                <th>{{ __('Issue') }}</th>
+                                                <th>{{ __('Why in production') }}</th>
+                                                <th>{{ __('What to do') }}</th>
+                                                <th>{{ __('Sign') }}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($rework as $pendient)
+                                            <tr class="text-center text-black">
+                                                <td>{{$pendient->pn}}</td>
+                                                <td>{{$pendient->wo}}</td>
+                                                <td>{{$pendient->porqueCalidad}}</td>   
+                                                @if(!empty($pendient->porqueProduccion) and !empty($pendient->accionCorrectiva))  
+                                                <td>{{$pendient->porqueProduccion}}</td>
+                                                <td>{{$pendient->accionCorrectiva}}</td>
+                                                <td>{{ ('Pending By ') }}Calidad</td>
+                                                @else                                        
+                                                    <form action="{{route('llenadoRetrabajo')}}" method="POST">
+                                                        @csrf
+                                                        <input type="hidden" name="id" value="{{$pendient->id}}">
+                                                       <td><textarea name="quePaso" id="quePaso" cols="30" rows="2" required></textarea></td>
+                                                       <td><textarea name="queSeHara" id="queSeHara" cols="30" rows="2" required></textarea></td>
+                                                       <td><button type="submit" class="btn btn-primary">{{ __('Sign') }}</button></td>
+                                                    </form>
+                                                @endif
+                                            </tr>
+                                                    @endforeach
+                                    </table>
+                                    @endif
+                                </div>
+                            </div>
 </div>
 
 

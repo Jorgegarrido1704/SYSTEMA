@@ -143,7 +143,7 @@ Route::controller(caliController::class)->group(function () {
     Route::post('/informationWo', [caliController::class, 'informationWo'])->name('informationWo');
     Route::get('/excel_calidad_pendientes', [caliController::class, 'excel_calidad_pendientes'])->name('excel_calidad_pendientes');
     Route::get('/calidad/rechazos', [caliController::class, 'calidad_producto_no_conforme'])->name('calidad.calidad_producto_no_conforme');
-    Route::get('/calidad/cerrarFalla/{id}', [caliController::class, 'cerrarFalla'])->name('calidad.cerrarFalla');
+    Route::get('/calidad/cerrarFalla/{id}/{accion}', [caliController::class, 'cerrarFalla'])->name('calidad.cerrarFalla');
 });
 Route::controller(BossCaliController::class)->group(function () {
     Route::get('/BossCali', BossCaliController::class);
@@ -257,6 +257,7 @@ Route::controller(mailsController::class)->group(function () {
     Route::get('/desviation/denied', [mailsController::class, 'desviationDenied'])->name('desviation.denied');
     Route::get('/desviation/excelDatos', [mailsController::class, 'desviationexcelDatos'])->name('desviation.excelDatos');
     Route::post('/vacaciones/update', [mailsController::class, 'vacacionesUpdate'])->name('vacaciones.update');
+    Route::POST('/llenadoRetrabajo', [mailsController::class, 'llenadoRetrabajo'])->name('llenadoRetrabajo');
 
 });
 
