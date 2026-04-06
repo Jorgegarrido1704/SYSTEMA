@@ -35,6 +35,10 @@ class caliController extends generalController
                 $cal->rev = $reg->rev;
             }
             $preorder = regPar::where('preCalidad', '>', 0)->get();
+            foreach ($preorder as $cal) {
+                $reg = Wo::where('wo', $cal->wo)->first();
+                $cal->rev = $reg->rev;
+            }
 
             return view('cali', ['cat' => $cat, 'value' => $value, 'calidad' => $calidad, 'preorder' => $preorder]);
         }

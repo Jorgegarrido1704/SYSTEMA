@@ -93,12 +93,14 @@
                                                                 <button type="submit" class="btn btn-success">Acepted</button>
                                                             </form>
                                                         </td>
+                                                        @if(substr($item->rev, 0, 4) != 'PPAP' and substr($item->rev, 0, 4) != 'PRIM')
                                                         <td> <form action="{{ route('accepted') }}" method="GET">
                                                             @csrf
                                                             <input type="hidden" name="denied" value="{{ $item->id }}" id="denied">
                                                             <button type="submit" class="btn btn-danger">Rejected  </button>
                                                         </form>
                                                         </td>
+                                                        @endif
                                                     </tr>
                                                 @endforeach
                                                 @endif
