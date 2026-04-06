@@ -40,7 +40,14 @@ class caliController extends generalController
                 $cal->rev = $reg->rev;
             }
 
-            return view('cali', ['cat' => $cat, 'value' => $value, 'calidad' => $calidad, 'preorder' => $preorder]);
+            $personal = personalBergsModel::select('user', 'employeeName')->where('status', 'Activo')->whereNotNull('user')->orderBy('user', 'ASC')->get();
+            $fallas = fallasCalidadModel::where('status', '=', 'Open')->orderBy('id', 'DESC')->get();
+            foreach ($fallas as $cal) {
+                $reg = Wo::where('wo', $cal->wo)->first();
+                $cal->pn = $reg->NumPart;
+            }
+
+            return view('cali', ['cat' => $cat, 'value' => $value, 'calidad' => $calidad, 'preorder' => $preorder, 'personal' => $personal, 'fallas' => $fallas]);
         }
     }
 
@@ -915,35 +922,27 @@ class caliController extends generalController
     {
         $cat = session('categoria');
         $value = session('user');
-        $fallasId = $request->input('fallas');
-        if (! empty($fallasId)) {
-            $buscar = DB::table('regsitrocalidad')->where('id', '=', $fallasId)->first();
-            $update = DB::table('registroparcial')
-                ->where('codeBar', '=', $buscar->info)
-                ->update([
-                    'fallasCalidad' => DB::raw('fallasCalidad - 1'),
-                    'embPar' => DB::raw('embPar + 1'),
-                ]);
-            $deleteFall = DB::table('fallascalidad')->where('idCalidad', '=', $fallasId)->delete();
+        $request->validate([
+            'idRechazos' => 'required',
+            'porqueRechazo' => 'required',
+            'responsableRechazon' => 'required',
+        ]);
+        $calidad = calidad_registro_baja::where('id', '=', $request->input('idRechazos'))->first();
+        $fallasRegistro = new fallasCalidadModel;
+        $fallasRegistro->idCalidad = $request->input('idRechazos');
+        $fallasRegistro->wo = $calidad->wo;
+        $fallasRegistro->porqueCalidad = $request->input('porqueRechazo');
+        $fallasRegistro->responsable_produccion = $request->input('responsableRechazon');
+        $fallasRegistro->save();
+        $buscarParcial = regPar::where('wo', '=', $calidad->wo)->first();
+        $preCalidad = $buscarParcial->testPar;
+        $ensamble = $buscarParcial->fallasCalidad;
+        $noloomqy = $preCalidad + $ensamble;
+        $updateParcia = regPar::where('wo', '=', $calidad->wo)->update(['testPar' => 0, 'fallasCalidad' => $noloomqy]);
+        $calidad->delete();
 
-            return redirect('/calidad');
-        } else {
-            $registrosFallas = [];
-            $i = 0;
-            $fallas = DB::table('fallascalidad')->get();
-            foreach ($fallas as $rowfallas) {
-                $id = $rowfallas->idCalidad;
-                $datosCalidadFallas = DB::table('regsitrocalidad')->where('id', '=', $id)->first();
-                $registrosFallas[$i][0] = $datosCalidadFallas->id;
-                $registrosFallas[$i][1] = $datosCalidadFallas->pn;
-                $registrosFallas[$i][2] = $datosCalidadFallas->codigo;
-                $registrosFallas[$i][3] = $datosCalidadFallas->Responsable;
-                $registrosFallas[$i][4] = $datosCalidadFallas->info;
-                $i++;
-            }
+        return redirect()->back()->with('response', 'You do not have permission to perform this action');
 
-            return view('calidad.retrabajos', ['value' => $value, 'cat' => $cat, 'registrosFallas' => $registrosFallas]);
-        }
     }
 
     public function excel_calidad(Request $request)
@@ -1218,5 +1217,15 @@ class caliController extends generalController
 
         return back()->with('response', 'forma de manejo: '.$forma);
 
+    }
+
+    public function cerrarFalla(Request $request, $id)
+    {
+        $id = $request->input('id');
+        $falla = fallasCalidadModel::where('id', '=', $id)->first();
+        $falla->estado = 'Closed';
+        $falla->save();
+
+        return back()->with('response', 'Falla cerrada correctamente');
     }
 }

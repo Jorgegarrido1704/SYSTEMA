@@ -137,12 +137,13 @@ Route::controller(caliController::class)->group(function () {
     Route::get('/timesDead', [caliController::class, 'timesDead'])->name('timesDead');
     Route::get('/accepted', [caliController::class, 'accepted'])->name('accepted');
     Route::get('/excel_calidad', [caliController::class, 'excel_calidad'])->name('excel_calidad');
-    Route::get('/fallasCalidad', [caliController::class, 'fallasCalidad'])->name('fallasCalidad');
+    Route::post('/fallasCalidad', [caliController::class, 'fallasCalidad'])->name('fallasCalidad');
     Route::post('/personalFallas', [caliController::class, 'personalFallas'])->name('personalFallas');
     Route::post('/RequestTesting', [caliController::class, 'RequestTesting'])->name('RequestTesting');
     Route::post('/informationWo', [caliController::class, 'informationWo'])->name('informationWo');
     Route::get('/excel_calidad_pendientes', [caliController::class, 'excel_calidad_pendientes'])->name('excel_calidad_pendientes');
     Route::get('/calidad/rechazos', [caliController::class, 'calidad_producto_no_conforme'])->name('calidad.calidad_producto_no_conforme');
+    Route::get('/calidad/cerrarFalla/{id}', [caliController::class, 'cerrarFalla'])->name('calidad.cerrarFalla');
 });
 Route::controller(BossCaliController::class)->group(function () {
     Route::get('/BossCali', BossCaliController::class);

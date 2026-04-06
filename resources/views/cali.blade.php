@@ -4,7 +4,22 @@
  <!-- Page Heading -->
  <meta http-equiv="refresh" content="180">
  <script src="{{ asset('/dashjs/calidadReg.js')}}"></script>
+ <style>
+    #overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 99; }
+    .modal { display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); z-index: 100; width: 340px; max-height: 80vh; overflow-y: auto; }
+    .modal h3 { margin-top: 0; font-size: 16px; border-bottom: 1px solid #eee; padding-bottom: 10px; position: sticky; top: 0; background: white; z-index: 2;}
 
+</style>
+    <div class="d-sm-flex align-items-center justify-content-between mb-4"></div>
+    <div class="row" id="annuncement">
+        @if(session('response'))
+            <div class="col-lg-12 mb-4">
+                <div class="alert alert-success">
+                    {{ session('response') }}
+                </div>
+            </div>
+            @endif
+    </div>
                     <!-- Content Row -->
         <div class="row">
                         <!-- Content Column -->
@@ -45,18 +60,35 @@
                                                         </form></td>
                                                         <td class="text-center">
                                                             @if(substr($cal->rev, 0, 4) != 'PPAP' and substr($cal->rev, 0, 4) != 'PRIM')
+                                                            <button class="btn btn-danger" onclick="abrirModalRechazo({{$cal->id}})">Rechazar</button>
 
-                                                        <form action="{{route('calidad.calidad_producto_no_conforme')}}"  method="GET" id="forma">
-                                                            <input type="hidden" name="id" id="id" value="{{$cal->wo}}">
-                                                            <input type="hidden" name="porque" id="porque" >
-                                                            <button class="btn btn-danger" type="submit" id="enviar" >Rechazar</button>
-                                                        </form>
-                                                        </td>
                                                         @endif
+                                                        </td>
+
                                                     </tr>
                                                     @endforeach
                                             </tbody>
                                         </table>
+                                        </div>
+                                         <div id="overlay"></div>
+                                         <div id="modal-cable" class="modal">
+                                                <h3>{{__('Rejection')}} id: <span id="identificador"></span></h3>
+                                                <form action="{{ route('fallasCalidad') }}" method="POST" id="form-rechazo">
+                                                @csrf
+                                                <div class="form-group"><label>{{__('Why rejection')}}</label><textarea name="porqueRechazo" id="porqueRechazo" cols="30" rows="10" required class="form-control"></textarea></div>
+                                                   <div class="form-group"><label>{{__('Select responsible')}}</label> <select id="responsableRechazon" name="responsableRechazon" class="form-control" required>
+                                                        <option value="" selected disabled> {{__('Select responsible')}}</option>
+                                                        @foreach ($personal as $item)
+                                                            <option value="{{ $item->user }}">{{ $item->employeeName }}</option>
+                                                        @endforeach
+
+                                                    </select>
+                                                    <input type="hidden" name="idRechazos" id="idRechazos">
+                                                   </div>
+
+
+                                                <div class="modal-actions"><div><button class="btn-cancel btn-danger mr-2" onclick="cerrarModales()">{{ __('Cancel') }}</button><button class="btn-success btn" type="submit" >{{ __('Save') }}</button></div></div>
+                                                </form>
                                         </div>
                                         @endif
 
@@ -137,7 +169,7 @@
                                 </div>
                             </div>
                         </div>
-                           <div class="col-lg-3 mb-4">
+                        <div class="col-lg-3 mb-4">
                             <!-- Shipping Area -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
@@ -206,64 +238,51 @@
 
                                                     </div>
                                                 </div>
-                                        </div>
+                        </div>
 
 
              <div class="col-lg-6 mb-4">
                             <!-- Request Testing -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h4 class="m-0 font-weight-bold text-primary">Request Testing</h4>
+                                    <h4 class="m-0 font-weight-bold text-primary">{{ __('Reworks') }}</h4>
                                 </div>
 
-
                             <div class="card body" style="overflow-y: scroll; height: 360px">
-                                <!-- se hizo de manera automatica
-                                <form action="{{ route('RequestTesting') }}" method="POST">
-                                    @csrf
-                                    <div class="row">
+                                <table class="table table-bordered table-hover " id="reworkTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>{{ __('Part Number') }}</th>
+                                            <th>{{ __('WO') }}</th>
+                                            <th>{{ __('Issue') }}</th>
+                                            <th>{{ __('Responsable') }}</th>
+                                            <th>{{ __('Why in production') }}</th>
+                                            <th>{{ __('What to do') }}</th>
+                                            <th>{{ __('Actions') }}</th>
+                                        </tr>
+                                    </thead>
+                                    @if(!empty($fallas))
+                                    <tbody>
+                                        @foreach ($fallas as $item)
+                                            <tr>
+                                                <td>{{ $item->pn }}</td>
+                                                <td>{{ $item->wo }}</td>
+                                                <td>{{ $item->porqueCalidad }}</td>
+                                                <td>{{ $item->responsable_produccion }}</td>
+                                                <td>{{ $item->porqueProduccion }}</td>
+                                                <td>{{ $item->accionCorrectiva }}</td>
+                                                <td>
+                                                @if(!empty($item->porqueProduccion))
+                                                <button class="btn btn-success" 
+                                                onclick="location.href='{{ route('cerrarFalla', ['id' => $item->id]) }}'">{{ __('Close') }}</button>
+                                                @endif
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                    @endif  
 
-                                        <div class="col-lg-6">
-                                            <div class="form-group">
-                                                <label for="text">WO:</label>
-                                                <input type="text" class="form-control" name="workElectrical" id="workElectrical" minlength="6" maxlength="6" required onchange="updateInfoCalidad()">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-4">
-                                            <div class="form-group">
-                                                <label for="text">Part Number:</label>
-                                                <input type="text" class="form-control" name="pn" id="pn" required disabled>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-4">
-                                            <div class="form-group">
-                                                <label for="text">Customer:</label>
-                                                <input type="text" class="form-control" name="cust" id="cust" required disabled>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-4">
-                                            <div class="form-group">
-                                                <label for="text">Revision:</label>
-                                                <input type="text" class="form-control" name="rev" id="rev" required disabled>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-6">
-                                            <div class="form-group">
-                                                <label for="text">QTY</label>
-                                                <input type="number" class="form-control" name="qty" id="qty" step="1" required min="1" max="1">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-12 mt-2 text-center align-items-center justify-content-center">
-                                            <div class="form-group">
-                                                <button type="submit" class="btn btn-success">Request</button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </form> -->
-                                Se realizar de manera automatica cuando acceptes las ordenes
-
+                                </table>
                             </div>
                             </div>
              </div>
@@ -296,320 +315,22 @@
                     });
 
             }
+            function abrirModalRechazo(id) { enlaceActual = id; $('#overlay, #modal-cable').show();
+            document.getElementById('idRechazos').value=id;
+            document.getElementById('identificador').textContent=id;
+            }
+            function cerrarModales() { $('#overlay, #modal-cable').hide(); }
+            function VerificarRechazo() {
+                var idRechazos = document.getElementById('idRechazos').value;
+                var porqueRechazo = document.getElementById('porqueRechazo').value;
+                var responsableRechazon = document.getElementById('responsableRechazon').value;
+                if(porqueRechazo === '' || responsableRechazon === '' || idRechazos === '') {
+                    alert('Please fill in all fields');
+                    return false;
+                }
+                return true;
+            }
         </script>
-               <!-- <div class="row">
-
-               <div class="col-lg-6 mb-4">
-                            <-- AREAS
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h5 class="m-0 font-weight-bold text-primary">Assistence Request</h5>
-                                </div>
-                                <div class="card-body" style="overflow-y: auto; height: 360px;" id='work'>
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th>Equipo</th>
-                                                <th>Trabajo solicitado</th>
-                                                <th>Daño</th>
-                                                <th>Area</th>
-                                                <th>Guardar</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <form action="{{ route('maintanance') }}" method="POST" name="registro" id="form">
-                                                    @csrf
-                                                    <td align="center">
-                                                        <select name="equipo" id="equipo" onchange="updateSecondSelect()">
-                                                            <option selected="selected"> </option>
-                                                            <option value="Mantenimiento">Mantenimiento</option>
-                                                            <option value="Ingenieria">Ingenieria</option>
-                                                            <option value="Calidad">Calidad</option>
-                                                            <option value="Almacen">Almacen</option>
-                                                        </select>
-                                                    </td>
-                                                    <td align="center"><input type="text" name="nom_equipo" id="nom_equipo" required></td>
-                                                    <td align="center"><select name="dano" id="dano"></select></td>
-                                                    <td>
-                                                        <select name="area" id="area" required>
-                                                            <option value=""></option>
-                                                            <option value="Tablero_Esther">Tablero Esther</option>
-                                                            <option value="Tablero_Saul">Tableros Saul</option>
-                                                            <option value="Tablero_David">Tableros Jessi</option>
-                                                            <option value="Liberacion">Liberacion</option>
-                                                            <option value="Corte">Corte</option>
-                                                            <option value="Almacen">Alamacen</option>
-                                                            <option value="Tableros_Brandon">Tableros Brandon</option>
-                                                            <option value="Tableros_Alejandra">Tableros Alejenadra</option>
-                                                            <option value="Tableros_Zamarripa">Tableros Zamarripa</option>
-                                                            <option value="Loom">Loom</option>
-                                                            <option value="Calidad">Calidad</option>
-                                                        </select>
-                                                    </td>
-                                                    <td align="center"><button type="submit" value="save" id="guardar" name="guardar">Guardar</button></td>
-                                                </form>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6 mb-4">
-
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h5 class="m-0 font-weight-bold text-primary">Assistence Proccess</h5>
-                                </div>
-                                <div class="card-body" style="overflow-y: auto; height: 360px;" id="tableChange">
-                                    <table>
-                                        <thead>
-                                            <th>Fecha</th>
-                                            <th>Team</th>
-                                            <th>Trabajo</th>
-                                            <th>Tipo de reparacion</th>
-                                            <th>Status</th>
-                                        </thead>
-                                        <tbody>
-                                            @if(!empty($paros))
-                                                @foreach($paros as $paro)
-                                                    <tr>
-                                                        <td>{{$paro[0]}}</td>
-                                                        <td>{{$paro[1]}}</td>
-                                                        <td>{{$paro[2]}}</td>
-                                                        <td>{{$paro[3]}}</td>
-                                                        <td>{{$paro[4]}}</td>
-                                                    </tr>
-                                                @endforeach
-                                            @endif
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6 mb-4">
-
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h5 class="m-0 font-weight-bold text-primary">Tiempo Muerto</h5>
-                                </div>
-                                <div class="card-body" style="overflow-y: auto; height: 360px;" id='work'>
-                                    <div align="center">
-                                        <table>
-                                            <thead>
-                                                <th>Fecha</th>
-                                                <th>Cliente</th>
-                                                <th>Numero de parte</th>
-                                                <th>Codigo de barra</th>
-                                                <th>Codigo de defecto</th>
-                                                <th>Resposable Area</th>
-                                                <th>Detener Proceso</th>
-                                            </thead>
-                                            <tbody>
-                                                @if(!empty($fallas))
-                                                    @foreach($fallas as $falla)
-                                                        <tr>
-                                                            <td>{{$falla[1]}}</td>
-                                                            <td>{{$falla[2]}}</td>
-                                                            <td>{{$falla[3]}}</td>
-                                                            <td>{{$falla[4]}}</td>
-                                                            <td>{{$falla[5]}}</td>
-                                                            <td>{{$falla[6]}}</td>
-                                                            <form action="{{route('timesDead')}}" method='GET'>
-                                                                <td><input type="hidden" name="id" id="id" value={{$falla[0]}}>
-                                                                    <input type="submit" name="enviar" id="enviar" value="Detener"></td>
-                                                            </form>
-                                                        </tr>
-                                                     @endforeach
-                                                @endif
-                                            </tbody>
-                                            </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6 mb-4">
-
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h5 class="m-0 font-weight-bold text-primary">Material Proccess</h5>
-                                </div>
-                                <div class="card-body" style="overflow-y: auto; height: 360px;" id="tableChange">
-                                    <div class="row">
-
-                                            <table>
-                                                <thead>
-                                                    <th>Folio</th>
-                                                    <th>Descripcion</th>
-                                                    <th>Notas</th>
-                                                    <th>Cantidad</th>
-                                                    <th>Status</th>
-                                                </thead>
-                                                <tbody>
-                                                    @if(!empty($materials))
-                                              @foreach ( $materials as $material)
-                                                    <tr>
-                                                        <td>{{$material[0]}}</td>
-                                                        <td>{{$material[1]}}</td>
-                                                        <td>{{$material[2]}}</td>
-                                                        <td>{{$material[3]}}</td>
-                                                        <td>{{$material[4]}}</td>
-
-                                                    </tr>
-                                              @endforeach
-                                              @endif
-
-                                                </tbody>
-                                            </table>
-
-
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6 mb-4">
-
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h5 class="m-0 font-weight-bold text-primary">Assistence WEEK @if(!empty($week)){{$week}}@endif</h5>
-                                </div>
-                                <div class="card-body" style="overflow-y: auto; height: 360px;">
-                                    <table>
-                                        <thead>
-                                            <th>Nombre</th>
-                                            <th>Lunes</th>
-                                            <th>Martes</th>
-                                            <th>Miercoles</th>
-                                            <th>Jueves</th>
-                                            <th>Viernes</th>
-                                            <th>Sabado</th>
-                                            <th>Domingo</th>
-                                            <th>Bono Asistencia</th>
-                                            <th>Bono puntualidad</th>
-                                            <th>extras</th>
-                                        </thead>
-                                        <tbody>
-                                            <form action="{{ route('ascali')}}" method="POST">
-                                                @csrf
-                                                @if(!empty($assit))
-                                                @foreach($assit as $as)
-                                                    <tr>
-                                                        <td><input type="hidden" name="name[]" id="name">{{$as[2]}}</td>
-                                                        @if(!empty($as[3]))
-                                                        <td><input type="text" style="max-width: 40px" name="dlu[]" id="dlu" value="{{$as[3]}}"></td>
-                                                        @else
-                                                        <td><input type="text" style="max-width: 40px" name="dlu[]" id="dlu" value="N/R"></td>
-                                                        @endif
-                                                        @if(!empty($as[4]))
-                                                        <td><input type="text" style="max-width: 40px" name="dma[]" id="dma" value="{{$as[4]}}"></td>
-                                                        @else
-                                                        <td><input type="text" style="max-width: 40px" name="dma[]" id="dma" value="N/R"></td>
-                                                        @endif
-                                                        @if(!empty($as[5]))
-                                                        <td><input type="text" style="max-width: 40px" name="dmi[]" id="dmi" value="{{$as[5]}}"></td>
-                                                        @else
-                                                        <td><input type="text" style="max-width: 40px" name="dmi[]" id="dmi" value="N/R"></td>
-                                                        @endif
-                                                        @if(!empty($as[6]))
-                                                        <td><input type="text" style="max-width: 40px" name="dju[]" id="dju" value="{{$as[6]}}"></td>
-                                                        @else
-                                                        <td><input type="text" style="max-width: 40px" name="dju[]" id="dju" value="N/R"></td>
-                                                        @endif
-                                                        @if(!empty($as[7]))
-                                                        <td><input type="text" style="max-width: 40px" name="dvi[]" id="dvi" value="{{$as[7]}}"></td>
-                                                        @else
-                                                        <td><input type="text" style="max-width: 40px" name="dvi[]" id="dvi" value="N/R"></td>
-                                                        @endif
-                                                        @if(!empty($as[8]))
-                                                        <td><input type="text" style="max-width: 40px" name="dsa[]" id="dsa" value="{{$as[8]}}"></td>
-                                                        @else
-                                                        <td><input type="text" style="max-width: 40px" name="dsa[]" id="dsa" value="N/R"></td>
-                                                        @endif
-                                                        @if(!empty($as[9]))
-                                                        <td><input type="text" style="max-width: 40px" name="ddo[]" id="ddo" value="{{$as[9]}}"></td>
-                                                        @else
-                                                        <td><input type="text" style="max-width: 40px" name="ddo[]" id="ddo" value="N/R"></td>
-                                                        @endif
-                                                        @if(!empty($as[10]))
-                                                        <td><input type="text" style="max-width: 40px" name="dba[]" id="dba" value="{{$as[10]}}"></td>
-                                                        @else
-                                                        <td><input type="text" style="max-width: 40px" name="dba[]" id="dba" value="N/R"></td>
-                                                        @endif
-                                                        @if(!empty($as[11]))
-                                                        <td><input type="text" style="max-width: 40px" name="dbp[]" id="dbp" value="{{$as[11]}}"></td>
-                                                        @else
-                                                        <td><input type="text" style="max-width: 40px" name="dbp[]" id="dbp" value="N/R"></td>
-                                                        @endif
-                                                        @if(!empty($as[12]))
-                                                        <td><input type="number" style="max-width: 40px" name="dex[]" id="dex" value="{{$as[12]}}"></td>
-                                                        @else
-                                                        <td><input type="numer" style="max-width: 40px" name="dex[]" id="dex" value="0"></td>
-                                                        @endif
-                                                        <td><input type="hidden" name="id[]" id="id" value="{{$as[13]}}"></td>
-                                                    </tr>
-                                                @endforeach
-                                                @endif
-                                                <input type="submit" style="border-radius: 4px; background-color:lightblue;border-bottom:10px" name="sendassit" id="sendassist" value="Save Assistence">
-                                            </form>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6 mb-4">
-
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h5 class="m-0 font-weight-bold text-primary">Registro de incidencias</h5>
-                                </div>
-                                <div class="card-body" style="overflow-y: auto; height: 360px;">
-                                            <form action="{{ route('excel_calidad')}}" method="GET" >
-
-                                                <div class="form-group">
-                                                    <label for="text">De fecha:</label>
-                                                    <input type="date" class="form-control" name="de" id="de" required >
-                                                    <input type="hidden" name="di" id="di">
-
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="text">A fecha:</label>
-                                                    <input type="date" class="form-control" name="a" id="a" required>
-                                                    <input type="hidden" name="df" id="df">
-                                                </div>
-                                                <input type="submit" class="btn btn-primary"   value="Descargar Excel">
-                                            </form>
-                                            <script>
-                                                document.getElementById('de').addEventListener('change', function() {
-                                                    var de = document.getElementById('de').value;
-                                                    deA= de.slice(0,4);
-                                                    dem=de.slice(5,7);
-                                                    deD=de.slice(8,10);
-                                                    de=deD+"-"+dem+"-"+deA+" 00:00";
-                                                    document.getElementById('di').value=de;
-                                                    console.log('De fecha:', de);
-                                                    });
-
-                                                document.getElementById('a').addEventListener('change', function() {
-                                                    var a = document.getElementById('a').value;
-                                                    aA= a.slice(0,4);
-                                                    am=a.slice(5,7);
-                                                    aD=a.slice(8,10);
-                                                    a=aD+"-"+am+"-"+aA+" 23:59";
-                                                    document.getElementById('df').value=a;
-                                                       console.log('A fecha:', a);
-                                                    });
-                                            </script>
-
-                                </div>
-                            </div>
-                        </div> -->
-
 
 
 
