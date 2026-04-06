@@ -82,10 +82,6 @@
                     </ul>
                         @endif
                 </li>
-                @if ($cat == 'cali')
-                    <li class="submenu" id="submenu"><a style="color:white;"
-                            href="{{ route('fallasCalidad') }}">{{ __('Rework') }}</a></li>
-                @endif
                 <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('rhDashBoard') }}"
                     onmouseover=showRRHH();>{{ __('HR') }}</a></li>
                      <ul class="submenu" id="RRHH" style="display:none;">

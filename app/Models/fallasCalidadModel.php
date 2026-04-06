@@ -8,8 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class fallasCalidadModel extends Model
 {
     use HasFactory;
-    protected $fillable = ['idCalidad'];
+
+    protected $fillable = ['idCalidad', 'wo', 'porqueCalidad', 'responsable_produccion', 'porqueProduccion',
+        'accionCorrectiva', 'status', 'created_at', 'updated_at'];
 
     protected $table = 'fallascalidad';
-    public $timestamps = false;
+
+    public $timestamps = true;
 }
