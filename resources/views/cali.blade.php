@@ -41,16 +41,17 @@
                                                     <td class="text-center">
                                                         <form action="{{route('baja')}}" method="GET" id="forma">
                                                             <input type="hidden" name="id" id="id" value="{{$cal->id}}">
-                                                            <button class="btn btn-primary" type="submit" id="enviar">Empezar</button></td>
-                                                        </form>
+                                                            <button class="btn btn-primary" type="submit" id="enviar">Empezar</button>
+                                                        </form></td>
                                                         <td class="text-center">
-                                                            @if(substr($cal->rev, 0, 4) != 'PPAP' and $cal->rev != 'PRIM')
-                                                            {{dd($cal->rev) }}
+                                                            @if(substr($cal->rev, 0, 4) != 'PPAP' and substr($cal->rev, 0, 4) != 'PRIM')
+
                                                         <form action="{{route('calidad.calidad_producto_no_conforme')}}"  method="GET" id="forma">
                                                             <input type="hidden" name="id" id="id" value="{{$cal->wo}}">
                                                             <input type="hidden" name="porque" id="porque" >
-                                                            <button class="btn btn-danger" type="submit" id="enviar" >Rechazar</button></td>
+                                                            <button class="btn btn-danger" type="submit" id="enviar" >Rechazar</button>
                                                         </form>
+                                                        </td>
                                                         @endif
                                                     </tr>
                                                     @endforeach
