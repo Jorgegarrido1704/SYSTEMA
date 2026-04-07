@@ -27,7 +27,7 @@
                             <!-- Project Card Example -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h4 class="m-0 font-weight-bold text-primary">Ready for test</h4>
+                                    <h4 class="m-0 font-weight-bold text-primary">{{ __('Ready for test') }}</h4>
 
                                 </div>
                                 <!-- Percent section -->
@@ -38,12 +38,12 @@
                                     <div class="table">
                                         <table style="width: 100%;">
                                             <thead  align="center" style=" color:aliceblue; background-color:rgb(253, 3, 3);">
-                                                <th>Número de parte</th>
-                                                <th>Cliente</th>
-                                                <th>WO</th>
-                                                <th>Cantidad</th>
-                                                <th>Iniciar test</th>
-                                                <th>Rechazar</th>
+                                                <th>{{__('Part Number')}}</th>
+                                                <th>{{ __('Customer') }}</th>
+                                                <th>{{ __('WO') }}</th>
+                                                <th>{{ __('Qty') }}</th>
+                                                <th>{{ __('Start Test') }}</th>
+                                                <th>{{ __('Reject') }}</th>
                                             </thead>
                                             <tbody class="table-group-divider">
 
@@ -56,11 +56,11 @@
                                                     <td class="text-center">
                                                         <form action="{{route('baja')}}" method="GET" id="forma">
                                                             <input type="hidden" name="id" id="id" value="{{$cal->id}}">
-                                                            <button class="btn btn-primary" type="submit" id="enviar">Empezar</button>
+                                                            <button class="btn btn-primary" type="submit" id="enviar">{{ __('Start') }}</button>
                                                         </form></td>
                                                         <td class="text-center">
                                                             @if(substr($cal->rev, 0, 4) != 'PPAP' and substr($cal->rev, 0, 4) != 'PRIM')
-                                                            <button class="btn btn-danger" onclick="abrirModalRechazo({{$cal->id}})">Rechazar</button>
+                                                            <button class="btn btn-danger" onclick="abrirModalRechazo({{$cal->id}})">{{ __('Reject') }}</button>
 
                                                         @endif
                                                         </td>
@@ -98,17 +98,17 @@
                             <div class="col-md-6">
                                 <div class="card shadow mb-4">
                                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                        <h4 class="m-0 font-weight-bold text-primary">Pre-accepted data</h4>
+                                        <h4 class="m-0 font-weight-bold text-primary">{{ __('Pre-accepted data') }}</h4>
                                     </div>
                                     <div class="card-body" style="overflow-y: auto; height: 500px;">
                                         <table class="table table-bordered" id="preorder">
                                             <thead>
                                                 <tr>
-                                                    <th scope="col">Part number</th>
-                                                    <th scope="col">Work Order</th>
-                                                    <th scope="col">Quantity</th>
-                                                    <th scope="col">Acepted</th>
-                                                    <th scope="col">Rejected</th>
+                                                    <th scope="col">{{ __('Part Number') }}</th>
+                                                    <th scope="col">{{ __('WO') }}</th>
+                                                    <th scope="col">{{ __('Qty') }}</th>
+                                                    <th scope="col">{{ __('Accept') }}</th>
+                                                    <th scope="col">{{ __('Decline') }}</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -122,14 +122,14 @@
                                                             <form action="{{ route('accepted') }}" method="GET">
                                                                 @csrf
                                                                 <input type="hidden" name="acpt" value="{{ $item->id }}" id="acpt">
-                                                                <button type="submit" class="btn btn-success">Acepted</button>
+                                                                <button type="submit" class="btn btn-success">{{ __('Accept') }}</button>
                                                             </form>
                                                         </td>
                                                         @if(substr($item->rev, 0, 4) != 'PPAP' and substr($item->rev, 0, 4) != 'PRIM')
                                                         <td> <form action="{{ route('accepted') }}" method="GET">
                                                             @csrf
                                                             <input type="hidden" name="denied" value="{{ $item->id }}" id="denied">
-                                                            <button type="submit" class="btn btn-danger">Rejected  </button>
+                                                            <button type="submit" class="btn btn-danger">{{ __('Decline') }}</button>
                                                         </form>
                                                         </td>
                                                         @endif
@@ -147,19 +147,19 @@
                             <!-- WO by Area -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">where is the order </h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">{{__('Where is the order?')}}</h6>
                                 </div>
                                 <div class="card-body">
                                     <!-- Your WO by Area content here -->
-                                    <div class="card-body" style="overflow-y: auto; height: 260px;">
+                                    <div class="card-body" style="overflow-y: auto; height: 320px;">
                                         <div class="chart-pie pt-4 pb-2">
                                             <form action="{{ route('codigoCalidad') }}" method="POST">
                                                 @csrf
                                                 <div class="form-group">
 
-                                                    <input type="text" class="form-control" name="code-bar" id="code-bar" placeholder="Enter code here">
+                                                    <input type="text" class="form-control" name="code-bar" id="code-bar" placeholder="{{ __('Enter code here') }}">
                                                 </div>
-                                                <button type="submit" class="btn btn-primary">Submit</button>
+                                                    <button type="submit" class="btn btn-primary">{{ __('Search') }}</button>
                                             </form>
                                             <br>
                                             <h3 align="center">{{ session('response') }}</h3>
@@ -256,8 +256,8 @@
                                             <th>{{ __('WO') }}</th>
                                             <th>{{ __('Issue') }}</th>
                                             <th>{{ __('Responsable') }}</th>
-                                            <th>{{ __('Why in production') }}</th>
-                                            <th>{{ __('What to do') }}</th>
+                                            <th>{{ __('Why? (production)') }}</th>
+                                            <th>{{ __('What will do') }}</th>
                                             <th>{{ __('Actions') }}</th>
                                         </tr>
                                     </thead>

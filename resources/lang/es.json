@@ -230,8 +230,24 @@
     "in": "en",
     "months": "meses",
     "for": "para",
-    "of": "de"
-
+    "of": "de",
+    "Ready for test": "Listo para prueba electrica",
+    "Start Test": "Empezar prueba",
+    "Reject": "Rechazar",
+    "Start": "Empezar",
+    "Rejection": "Rechazo",
+    "Test": "Prueba",
+    "Why rejection": "¿Por qué se rechazo?",
+    "Select responsible": "Selecciona responsable",
+    "Pre-accepted data": "Datos pre-aceptados",
+    "Accept": "Aceptar",
+    "Where is the order?": "¿Donde esta la orden?",
+    "Enter code here": "Ingrese el código aquí",
+    "Why? (production)": "¿Por qué? (producción)",
+    "What will do": "¿Qué se hará?",
+    "Issue": "Incidencia",
+    "Decline": "Declinar",
+    "Reworks": "Retrabajos"
 
 
 

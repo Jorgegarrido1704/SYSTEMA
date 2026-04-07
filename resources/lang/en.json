@@ -3,5 +3,9 @@
     "Email": "Email",
     "Password": "Password",
     "Welcome": "Welcome",
-    "to": "to"
+    "to": "to", 
+    "Ready for test": "Listo para prueba electrica",
+    "Start Test": "Empezar prueba",
+    "Reject": "Rechazar",
+    "Start": "Empezar"
 }
