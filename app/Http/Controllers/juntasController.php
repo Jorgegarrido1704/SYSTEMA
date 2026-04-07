@@ -581,7 +581,7 @@ class juntasController extends Controller
                 }
             })
             ->groupBy('client')
-            ->orderBy('buenos', 'desc')
+            ->orderBy('promedio', 'desc')
             ->get();
 
         $YearParto = date('Y');

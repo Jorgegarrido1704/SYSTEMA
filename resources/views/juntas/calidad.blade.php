@@ -167,9 +167,15 @@
                                                         <div class="col mr-2">
                                                             <div class="text-s font-weight-bold text-primary text-uppercase mb-1">
                                                                 {{ $ftq->client }}</div>
-                                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $ftq->promedio??0 }}%
-
-                                                            <i class="fas fa-users fa-2x text-success ml-4"></i>
+                                                               
+                                                                
+                                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ round($ftq->promedio,2)??0 }}%
+                                                @if($ftq->promedio>97)
+                                                                <i class="fas fa-thumbs-up fa-2x text-success ml-4"></i>
+                                                @else
+                                                                <i class="fas fa-thumbs-down fa-2x text-danger ml-4"></i>
+                                                @endif
+                                                            
                                                             </div>
 
                                                         </div>
@@ -224,7 +230,7 @@
             </div>
         </div>
               <!-- Reworks responsible yesterday -->
-        <div class="col-lg-6 col-lx-6 mb-3" style="max-width: 40%">
+        <div class="col-lg-6 col-lx-6 mb-3" >
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
                     <h5 class="m-0 font-weight-bold text-primary">{{ __('Responsable Rework Yesterday') }} </h5>
