@@ -149,8 +149,42 @@
 
             </div>
         </div>
+        <!-- Top porcentaje de incidencias by customer -->
+        <div class="col-xl-6 col-md-6 mb-4">
+             <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h5 class="m-0 font-weight-bold text-primary">{{ __('FTQ by Customer') }}</h5>
+                </div>
+                <div class="card-body" style="overflow-y: auto; height: 360px;">
+                    @if(!empty($ftqBycustomer))
+                    <div class="row">
+                        @foreach($ftqBycustomer as $ftq)
+
+                                        <div class="col-xl-4 col-md-6 mb-4">
+                                            <div class="card border-left-danger shadow h-100 py-2">
+                                                <div class="card-body">
+                                                    <div class="row no-gutters align-items-center">
+                                                        <div class="col mr-2">
+                                                            <div class="text-s font-weight-bold text-primary text-uppercase mb-1">
+                                                                {{ $ftq->client }}</div>
+                                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $ftq->promedio??0 }}%
+
+                                                            <i class="fas fa-users fa-2x text-success ml-4"></i>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                        @endforeach
+                    </div>
+                    @endif
+                </div>
+             </div>
+        </div> 
              <!-- Customer Complains -->
-        <div class="col-xl-3 col-lg-3">
+        <div class="col-xl-6 col-lg-6">
             <!-- AREAS -->
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
@@ -190,7 +224,7 @@
             </div>
         </div>
               <!-- Reworks responsible yesterday -->
-        <div class="col-lg-3 mb-3" style="max-width: 40%">
+        <div class="col-lg-6 col-lx-6 mb-3" style="max-width: 40%">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
                     <h5 class="m-0 font-weight-bold text-primary">{{ __('Responsable Rework Yesterday') }} </h5>

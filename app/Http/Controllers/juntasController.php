@@ -497,6 +497,7 @@ class juntasController extends Controller
             })
             // ->where('fecha', 'LIKE', "$crtl%")
             ->get();
+
         $totalb = calidadRegistro::where('codigo', 'TODO BIEN')
            // ->where('fecha', 'LIKE', "$crtl%")
             ->where(function ($query) use ($datesToCheck) {
@@ -564,6 +565,24 @@ class juntasController extends Controller
             $totalGood += $good;
             $totalBad += $bad;
         }
+
+        $ftqBycustomer = calidadRegistro::select(
+            'client',
+            DB::raw("SUM(CASE WHEN codigo = 'TODO BIEN' THEN 1 ELSE 0 END) as buenos"),
+            DB::raw("SUM(CASE WHEN codigo != 'TODO BIEN' THEN 1 ELSE 0 END) as malos"),
+            // Opcional: obtener el total para que tengas contexto
+            DB::raw('COUNT(client) as total'),
+            // Calculamos el promedio (porcentaje de buenos) multiplicando por 100.0 para asegurar decimales
+            DB::raw("(SUM(CASE WHEN codigo = 'TODO BIEN' THEN 1 ELSE 0 END) * 100.0 / COUNT(client)) as promedio")
+        )
+            ->where(function ($query) use ($datesToCheck) {
+                foreach ($datesToCheck as $date) {
+                    $query->orWhere('fecha', 'LIKE', "$date%");
+                }
+            })
+            ->groupBy('client')
+            ->orderBy('buenos', 'desc')
+            ->get();
 
         $YearParto = date('Y');
         $month = date('m');
@@ -711,67 +730,6 @@ class juntasController extends Controller
             ->limit(10)
             ->get();
 
-        // dd($top3registrosCalidas);
-        /*
-        // Query the database to retrieve records where 'codigo' column matches the $firstKey
-        $buscardatosClientes = DB::table('regsitrocalidad')->where('codigo', '=', $firstKey)
-           /* ->where(function ($query) use ($datesToCheck) {
-                foreach ($datesToCheck as $date) {
-                    $query->orWhere('fecha', 'LIKE', "$date%");
-                }
-            })
-            ->where('fecha', 'LIKE', "$crtl%")
-            ->orderBy('pn')->get();
-        foreach ($buscardatosClientes as $rowDatos) {
-            if ((in_array($rowDatos->client, array_column($datosF, 0)) and (in_array($rowDatos->pn, array_column($datosF, 3))))) {
-                $datosF[$rowDatos->pn][2] += $rowDatos->resto;
-            } else {
-                $datosF[$rowDatos->pn][0] = $rowDatos->client;
-                $datosF[$rowDatos->pn][1] = $rowDatos->codigo;
-                $datosF[$rowDatos->pn][2] = $rowDatos->resto;
-                $datosF[$rowDatos->pn][3] = $rowDatos->pn;
-            }
-        }
-        next($datos);
-        $secondKey = key($datos);
-        $buscardatosClientes2 = DB::table('regsitrocalidad')->where('codigo', '=', $secondKey)
-           /* ->where(function ($query) use ($datesToCheck) {
-                foreach ($datesToCheck as $date) {
-                    $query->orWhere('fecha', 'LIKE', "$date%");
-                }
-            })
-            ->orderBy('pn')->get();
-        foreach ($buscardatosClientes2 as $rowDatos2) {
-            if ((in_array($rowDatos2->client, array_column($datosS, 0)) and (in_array($rowDatos2->pn, array_column($datosS, 3))))) {
-                $datosS[$rowDatos2->pn][2] += $rowDatos2->resto;
-            } else {
-                $datosS[$rowDatos2->pn][0] = $rowDatos2->client;
-                $datosS[$rowDatos2->pn][1] = $rowDatos2->codigo;
-                $datosS[$rowDatos2->pn][2] = $rowDatos2->resto;
-                $datosS[$rowDatos2->pn][3] = $rowDatos2->pn;
-            }
-        }
-        next($datos);
-        $thirdKey = key($datos);
-        $buscardatosClientes3 = DB::table('regsitrocalidad')->where('codigo', $thirdKey)
-            /*->where(function ($query) use ($datesToCheck) {
-                foreach ($datesToCheck as $date) {
-                    $query->orWhere('fecha', 'LIKE', "$date%");
-                }
-            })
-            ->orderBy('codigo')->get();
-        foreach ($buscardatosClientes3 as $rowDatos3) {
-
-            if (in_array($rowDatos3->client, array_column($datosT, 0)) and (in_array($rowDatos3->pn, array_column($datosT, 3)))) {
-                $datosT[$rowDatos3->pn][2] += $rowDatos3->resto;
-            } else {
-                $datosT[$rowDatos3->pn][0] = $rowDatos3->client;
-                $datosT[$rowDatos3->pn][1] = $rowDatos3->codigo;
-                $datosT[$rowDatos3->pn][2] = $rowDatos3->resto;
-                $datosT[$rowDatos3->pn][3] = $rowDatos3->pn;
-            }
-        }*/
-
         // calidad Q
         $Qdays = $colorQ = $labelQ = [];
         $maxDays = cal_days_in_month(CAL_GREGORIAN, date('m'), date('Y'));
@@ -891,7 +849,7 @@ class juntasController extends Controller
             'empleados' => $top5,  'hoyb' => $hoyb, 'hoymal' => $hoymal, 'parhoy' => $parhoy, 'gultyY' => $gultyY, 'gulty' => $gulty,
             'datosHoy' => $datosHoy, 'totalm' => $totalm, 'totalb' => $totalb, 'monthAndYearPareto' => $monthAndYearPareto,
             'datosT' => $datosT, 'datosS' => $datosS, 'datosF' => $datosF, 'labelQ' => $labelQ, 'colorQ' => $colorQ, 'value' => $value,
-            'cat' => $cat, 'datos' => $datos, 'pareto' => $pareto, 'Qdays' => $Qdays]);
+            'cat' => $cat, 'datos' => $datos, 'pareto' => $pareto, 'Qdays' => $Qdays, 'ftqBycustomer' => $ftqBycustomer]);
     }
 
     public function litas_junta($id)
