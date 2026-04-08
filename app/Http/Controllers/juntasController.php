@@ -575,11 +575,7 @@ class juntasController extends Controller
             // Calculamos el promedio (porcentaje de buenos) multiplicando por 100.0 para asegurar decimales
             DB::raw("(SUM(CASE WHEN codigo = 'TODO BIEN' THEN 1 ELSE 0 END) * 100.0 / COUNT(client)) as promedio")
         )
-            ->where(function ($query) use ($datesToCheck) {
-                foreach ($datesToCheck as $date) {
-                    $query->orWhere('fecha', 'LIKE', "$date%");
-                }
-            })
+            ->where('fecha', 'LIKE', "%-$monthAndYear%")
             ->groupBy('client')
             ->orderBy('promedio', 'desc')
             ->get();

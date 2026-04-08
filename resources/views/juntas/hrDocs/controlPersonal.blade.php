@@ -10,7 +10,7 @@
                     <div class="col-md-12">
                         <div class="card shadow mb-4">
                             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                <h5 class="m-0 font-weight-bold text-primary">Registros de personal </h5>
+                                <h5 class="m-0 font-weight-bold text-primary">{{ __('Employee Data') }} </h5>
                                 <form action="{{route('datosPersonal')}}"method='GET' class="form-inline">
                                     <div class="form-group">
                                         <label  class ="form-label"for="empleado">Numero de empleado:</label>
