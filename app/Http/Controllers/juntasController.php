@@ -577,7 +577,7 @@ class juntasController extends Controller
         )
             ->where('fecha', 'LIKE', "%-$monthAndYear%")
             ->groupBy('client')
-            ->orderBy('promedio', 'desc')
+            ->orderBy('promedio', 'ASC')
             ->get();
 
         $YearParto = date('Y');
