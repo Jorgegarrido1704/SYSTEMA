@@ -114,7 +114,7 @@ class loginController extends Controller
                     return redirect('/salud');
                 } elseif ($categoria == 'RRHH') {
                     return redirect('/rhDashBoard');
-                } elseif ($categoria == 'herramentales') {
+                } elseif ($categoria == 'herra') {
                     return redirect('/herramentales');
                 } else {
                     return redirect()->back()->with('error', 'Failed to save login information');
