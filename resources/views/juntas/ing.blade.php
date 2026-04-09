@@ -66,7 +66,7 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                             aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="#" onclick="changeGraph('donaMes')">{{ __('Graph lines') }}</a>
+                            <a class="dropdown-item" href="#" onclick="change-Graph('donaMes')">{{ __('Graph lines') }}</a>
                             <a class="dropdown-item" href="#" onclick="changeGraph('barraYear')">{{ __('Table') }}</a>
                         </div>
                     </div>

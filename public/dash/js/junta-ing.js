@@ -273,11 +273,11 @@ try{
                         <td>${item[8] || item.col12}</td>
                         <td>${item[19] || item.col13}</td>
                         <td>${item[20] || item.col14}</td>
-                        <td>${item[9] || item.col15}</td>
-                        <td>${item[10] || item.col16}</td>
-                        <td>${item[11] || item.col17}</td>
-                        <td>${item[12] || item.col18}</td>
-                        <td>${item[13] || item.col19}</td>
+                        <td style="text-align: center; background-color:rgba(${item[22] || item.col22});">${item[9] || item.col15}</td>
+                        <td style="text-align: center; background-color:rgba(${item[22] || item.col22});">${item[10] || item.col16}</td>
+                        <td style="text-align: center; background-color:rgba(${item[22] || item.col22});">${item[11] || item.col17}</td>
+                        <td style="text-align: center; background-color:rgba(${item[22] || item.col22});">${item[12] || item.col18}</td>
+                        <td style="text-align: center; background-color:rgba(${item[22] || item.col22});">${item[13] || item.col19}</td>
 
 
                     </tr>`;

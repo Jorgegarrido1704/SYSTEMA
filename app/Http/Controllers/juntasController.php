@@ -2508,7 +2508,7 @@ class juntasController extends Controller
                 $registroPPAP[$i][11] = $datosTiempos->ensamble ?? 'No Aun';
                 $registroPPAP[$i][12] = $datosTiempos->loom ?? 'No Aun';
                 $registroPPAP[$i][13] = $datosTiempos->calidad ?? 'No Aun';
-                $registroPPAP[$i][14] = '96, 242, 83, 0.3';
+                $registroPPAP[$i][14] = '96, 242, 83, 0.61';
                 $registroPPAP[$i][15] = $workschedule ? $workschedule->resposible : '';
                 $registroPPAP[$i][16] = $workschedule ? $workschedule->documentsApproved : '-';
                 $registroPPAP[$i][17] = 'Black';
@@ -2516,6 +2516,7 @@ class juntasController extends Controller
                 $registroPPAP[$i][19] = $reg->wo ?? 'No Aun';
                 $registroPPAP[$i][20] = $reg->Qty ?? 0;
                 $registroPPAP[$i][21] = 'c-white';
+                $registroPPAP[$i][22] = $workschedule ? carbon::parse($workschedule->customerDate)->isPast() ? '255, 5, 5, 0.67' : '240, 221, 0, 0.51' : '240, 221, 0, 0.51';
 
                 $i++;
             }
@@ -2555,6 +2556,8 @@ class juntasController extends Controller
                 $registroPPAP[$i][19] = $reg->wo ?? 'No Aun';
                 $registroPPAP[$i][20] = $reg->Qty ?? 0;
                 $registroPPAP[$i][21] = 'c-white';
+                $registroPPAP[$i][22] = $workschedule ? carbon::parse($workschedule->customerDate)->isPast() ? '255, 5, 5, 0.67' : '240, 221, 0, 0.51' : '240, 221, 0, 0.51';
+
 
                 $i++;
             }
