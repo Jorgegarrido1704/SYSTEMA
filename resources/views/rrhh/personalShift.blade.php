@@ -16,15 +16,34 @@
                                 <th>{{ __('Employee') }}</th>
                                 <th>{{ __('Shift') }}</th>
                                 <th>{{ __('Schedule') }}</th>
+                              
                             </tr>
                         </thead>
                         <tbody>
-                            @if(!empty($personalShift))
-                                @foreach ( $personalShift as $persons )
+                            @if(!empty($personal))
+                                @foreach ( $personal as $persons )
                                     <tr>
                                         <td>{{ $persons->employeeName }}</td>
-                                        <td>{{ $persons->employeeShift }}</td>
-                                        <td>{{ $persons->employeeSchedule }}</td>
+                                        <form  id="formShift">
+                                            <td><div class="form-group">
+                                                <select name="shift" id="shift" class="form-control" >
+                                                    <option value="{{ $persons->employeeShift }}" selected disabled> {{ $persons->employeeShift }}</option>
+                                                    <option value="firstShift">{{ __('firstShift') }}</option>
+                                                    <option value="secondShift">{{ __('secondShift') }}</option>
+                                                </select>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-group">
+                                                    <select name="schedule" id="schedule" class="form-control" onchange="guardarDatosShift('{{ $persons->employeeName }}')">
+                                                        <option value="{{ $persons->employeeSchedule }}" selected disabled> {{ $persons->employeeSchedule }}</option>
+                                                        <option value="07:00 - 15:30">07:00 - 15:30</option>
+                                                        <option value="07:00 - 17:30">07:00 - 17:30</option>
+                                                        <option value="19:00 - 07:00">19:00 - 07:00</option>
+                                                    </select>
+                                                </div>
+                                            </td>
+                                            
                                         
                                     </tr>
                                     
@@ -37,8 +56,38 @@
         </div>
     </div>
 
-
-
+    <script>
+        function guardarDatosShift(employee) {
+          const url = @json(route('jsonPersonalShift'));
+       
+         let  shift= document.getElementById("shift").value;
+         let  schedule= document.getElementById("schedule").value;
+        // alert(employee + " " + shift + " " + schedule);
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                   // 'X-Requested-With': 'XMLHttpRequest',
+                                       
+                },
+                body: JSON.stringify({
+                    employee: employee,
+                    shift: shift,
+                    schedule: schedule
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+             console.log(data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+          
+        }
+        
+    </script>
 
 
     @endsection

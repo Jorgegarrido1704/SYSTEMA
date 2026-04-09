@@ -1258,7 +1258,45 @@ class rrhhController extends Controller
     {
         $value = session('user');
         $cat=session('categoria');
+        $personal= array();
+        if($value==null){
+            return redirect()->route('login');
+        }elseif( $value=="Admin" or $cat=="rrhh"){
+            $personal=personalBergsModel::where('status','Activo')->get();
+        }else{
+            $lider=personalBergsModel::select('employeeName')->where('user',$value)->first();
+            $sublider=personalBergsModel::select('employeeName')->where('employeeLider',$lider->employeeName)->where('status','Activo')->get();
+            foreach($sublider as $s){
+                $personas=personalBergsModel::select('employeeNumber','employeeName','employeeShift','employeeSchedule')->where('status','Activo')->where('employeeLider',$s->employeeName)->get();
+                foreach($personas as $p){
+                    $personal=collect($personal)->push($p);
+                }
+            }
 
-        return view('rrhh.personalShift',['value'=>$value,'cat'=>$cat]);
+        }
+
+        return view('rrhh.personalShift',['value'=>$value,'cat'=>$cat,'personal'=>$personal]);
+    }
+    public function jsonPersonalShift(Request $request)
+    {
+        $value = session('user');
+        $employee=$request->input('employee');
+        $shift=$request->input('shift');
+        $schedule=$request->input('schedule');
+        $data = [
+            'employeeName' => $employee,
+            'employeeShift' => $shift,
+            'employeeSchedule' => $schedule,
+        ];
+       // dd($data);
+        personalBergsModel::where('employeeName', '=', $employee)->update($data);
+        
+        return response()->json([
+            'message' => "Se guardo con exito",
+            'success' => true,
+            'data' => $data
+        ]);
+
+
     }
 }

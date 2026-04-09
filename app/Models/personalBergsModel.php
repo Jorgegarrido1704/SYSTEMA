@@ -17,7 +17,7 @@ class personalBergsModel extends Model
 
     protected $autoIncrement = true;
 
-    public $timestamps = true;
+    public $timestamps = false;
 
     protected $fillable = [
         'employeeNumber', 'employeeName', 'employeeArea', 'employeeLider',

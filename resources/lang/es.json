@@ -252,7 +252,15 @@
     "Weekends are not allowed!": "Los fines de semana no están permitidos!",
     "FTQ by Customer": "FTQ por cliente",
     "Employee Data":"Datos de empleado",
-    "Personal Shift": "Turno personal"
+    "Personal Shift": "Turno personal",
+    "Shift": "Turno",
+    "Shifts": "Turnos",
+    "Shifts Report": "Reporte de turnos",
+    "Shifts Report by Shift": "Reporte de turnos por turno",
+    "secondShift": "segundo turno",
+    "thirdShift": "tercer turno",
+    "firstShift": "primer turno",
+    "Schedule": "Horario"
 
 
 
