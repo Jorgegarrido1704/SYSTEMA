@@ -19,7 +19,7 @@ class herramentalesController extends Controller
     {
         $value = session('user');
         $cat = session('categoria');
-        if ($value != 'Admin' or $cat == 'herramentales') {
+        if ($value != 'Admin' or $cat == 'herra') {
             return redirect('/login');
         }
         $crimpersRequested = DB::table('registro_paro')
