@@ -39,7 +39,7 @@ class loginController extends Controller
             $newLog->action = 'login';
 
             if ($newLog->save()) {
-                $buscauser = DB::select("SELECT category,user_email FROM login WHERE user='$user'");
+                $buscauser = login::where('user', $user)->first();
                 foreach ($buscauser as $rowuser) {
                     $categoria = $rowuser->category;
                     $email = $rowuser->user_email;
