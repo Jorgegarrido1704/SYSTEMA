@@ -2308,7 +2308,7 @@ class juntasController extends Controller
             }
         }
         // Accidentes
-        $ultimoAccidente = carbon::parse('2026-01-05');
+        $ultimoAccidente = carbon::parse('2025-11-03');
         $withoutAccidents = carbon::now()->diffInDays($ultimoAccidente);
 
         return view('juntas.hr', ['enplanta' => $enplanta, 'vacas' => $vacas, 'promaus' => $promaus, 'diaActual' => $diaActual,
