@@ -2488,8 +2488,8 @@ class juntasController extends Controller
             // dd($registros);
 
             foreach ($registros as $reg) {
-                $registroPPAP[$i][0] = $reg->cliente ?? '';
-                $registroPPAP[$i][1] = $reg->NumPart ?? '';
+                $registroPPAP[$i][0] =$reg? $reg->cliente : '';
+                $registroPPAP[$i][1] =$reg? $reg->NumPart : '';
                 $rev = substr($reg->rev, 5);
                 // Datos para tamano, por que en el excel no se muestra el rev completo
                 $workschedule = workScreduleModel::where('pn', $reg->NumPart)->where('WorkRev', 'LIKE', '%'.$rev.'%')->orderBy('id', 'desc')->first();
@@ -2502,19 +2502,19 @@ class juntasController extends Controller
                 $registroPPAP[$i][6] = $workschedule ? $workschedule->CompletionDate : '';
                 $registroPPAP[$i][7] = $workschedule ? $workschedule->customerDate : '-';
                 $datosTiempos = tiempos::where('info', $reg->info)->first();
-                $registroPPAP[$i][8] = $datosTiempos->planeacion ?? 'No Aun';
-                $registroPPAP[$i][9] = $datosTiempos->corte ?? 'No Aun';
-                $registroPPAP[$i][10] = $datosTiempos->liberacion ?? 'No Aun';
-                $registroPPAP[$i][11] = $datosTiempos->ensamble ?? 'No Aun';
-                $registroPPAP[$i][12] = $datosTiempos->loom ?? 'No Aun';
-                $registroPPAP[$i][13] = $datosTiempos->calidad ?? 'No Aun';
+                $registroPPAP[$i][8] = $datosTiempos?carbon::parse($datosTiempos->planeacion)->format("Y-m-d") : 'No Aun';
+                $registroPPAP[$i][9] = $datosTiempos?carbon::parse($datosTiempos->corte)->format("Y-m-d") : 'No Aun';
+                $registroPPAP[$i][10] = $datosTiempos?carbon::parse($datosTiempos->liberacion)->format("Y-m-d") : 'No Aun';
+                $registroPPAP[$i][11] = $datosTiempos?carbon::parse($datosTiempos->ensamble)->format("Y-m-d") : 'No Aun';
+                $registroPPAP[$i][12] = $datosTiempos?carbon::parse($datosTiempos->loom)->format("Y-m-d") : 'No Aun';
+                $registroPPAP[$i][13] = $datosTiempos?carbon::parse($datosTiempos->calidad)->format("Y-m-d") :'No Aun';
                 $registroPPAP[$i][14] = '96, 242, 83, 0.15';
                 $registroPPAP[$i][15] = $workschedule ? $workschedule->resposible : '';
                 $registroPPAP[$i][16] = $workschedule ? $workschedule->documentsApproved : '-';
                 $registroPPAP[$i][17] = 'Black';
-                $registroPPAP[$i][18] = $reg->Qty ?? 0;
-                $registroPPAP[$i][19] = $reg->wo ?? 'No Aun';
-                $registroPPAP[$i][20] = $reg->Qty ?? 0;
+                $registroPPAP[$i][18] = $reg?$reg->Qty : 0;
+                $registroPPAP[$i][19] = $reg?$reg->wo : 'No Aun';
+                $registroPPAP[$i][20] = $reg?$reg->Qty : 0;
                 $registroPPAP[$i][21] = 'c-white';
                 $registroPPAP[$i][22] = $workschedule ? carbon::parse($workschedule->customerDate)->isPast() ? '255, 5, 5, 0.67' : '240, 221, 0, 0.51' : '240, 221, 0, 0.51';
 
@@ -2530,8 +2530,8 @@ class juntasController extends Controller
             // dd($registros);
 
             foreach ($registros as $reg) {
-                $registroPPAP[$i][0] = $reg->cliente ?? '';
-                $registroPPAP[$i][1] = $reg->NumPart ?? '';
+                $registroPPAP[$i][0] =$reg? $reg->cliente : '';
+                $registroPPAP[$i][1] =$reg? $reg->NumPart : '';
                 $rev = substr($reg->rev, 5);
                 $workschedule = workScreduleModel::where('pn', $reg->NumPart)->where('WorkRev', 'LIKE', '%'.$rev.'%')->orderBy('id', 'desc')->first();
 
@@ -2542,19 +2542,19 @@ class juntasController extends Controller
                 $registroPPAP[$i][6] = $workschedule ? $workschedule->CompletionDate : '';
                 $registroPPAP[$i][7] = $workschedule ? $workschedule->customerDate : '-';
                 $datosTiempos = tiempos::where('info', $reg->info)->first();
-                $registroPPAP[$i][8] = $datosTiempos->planeacion ?? 'No Aun';
-                $registroPPAP[$i][9] = $datosTiempos->corte ?? 'No Aun';
-                $registroPPAP[$i][10] = $datosTiempos->liberacion ?? 'No Aun';
-                $registroPPAP[$i][11] = $datosTiempos->ensamble ?? 'No Aun';
-                $registroPPAP[$i][12] = $datosTiempos->loom ?? 'No Aun';
-                $registroPPAP[$i][13] = $datosTiempos->calidad ?? 'No Aun';
+                $registroPPAP[$i][8] = $datosTiempos?carbon::parse($datosTiempos->planeacion)->format("Y-m-d") : 'No Aun';
+                $registroPPAP[$i][9] = $datosTiempos?carbon::parse($datosTiempos->corte)->format("Y-m-d") : 'No Aun';
+                $registroPPAP[$i][10] = $datosTiempos?carbon::parse($datosTiempos->liberacion)->format("Y-m-d") : 'No Aun';
+                $registroPPAP[$i][11] = $datosTiempos?carbon::parse($datosTiempos->ensamble)->format("Y-m-d") : 'No Aun';
+                $registroPPAP[$i][12] = $datosTiempos?carbon::parse($datosTiempos->loom)->format("Y-m-d") : 'No Aun';
+                $registroPPAP[$i][13] = $datosTiempos?carbon::parse($datosTiempos->calidad)->format("Y-m-d") :'No Aun';
                 $registroPPAP[$i][14] = '236, 236, 9, 0.15';
                 $registroPPAP[$i][15] = $workschedule ? $workschedule->resposible : '';
                 $registroPPAP[$i][16] = $workschedule ? $workschedule->documentsApproved : '-';
                 $registroPPAP[$i][17] = 'Black';
-                $registroPPAP[$i][18] = $reg->Qty ?? 0;
-                $registroPPAP[$i][19] = $reg->wo ?? 'No Aun';
-                $registroPPAP[$i][20] = $reg->Qty ?? 0;
+               $registroPPAP[$i][18] = $reg?$reg->Qty : 0;
+                $registroPPAP[$i][19] = $reg?$reg->wo : 'No Aun';
+                $registroPPAP[$i][20] = $reg?$reg->Qty : 0;
                 $registroPPAP[$i][21] = 'c-white';
                 $registroPPAP[$i][22] = $workschedule ? carbon::parse($workschedule->customerDate)->isPast() ? '255, 5, 5, 0.67' : '240, 221, 0, 0.51' : '240, 221, 0, 0.51';
 
