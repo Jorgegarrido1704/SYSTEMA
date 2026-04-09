@@ -40,10 +40,10 @@ class loginController extends Controller
 
             if ($newLog->save()) {
                 $buscauser = login::where('user', $user)->first();
-                foreach ($buscauser as $rowuser) {
-                    $categoria = $rowuser->category;
-                    $email = $rowuser->user_email;
-                }
+               
+                    $categoria = $buscauser->category;
+                    $email = $buscauser->user_email;
+                
                 session((['categoria' => $categoria]));
                 session((['email' => $email]));
                 if ($categoria == 'Boss') {
