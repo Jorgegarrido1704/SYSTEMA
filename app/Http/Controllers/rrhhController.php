@@ -1254,4 +1254,11 @@ class rrhhController extends Controller
             ['Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']
         );
     }
+    Public function personalShift(Request $request)
+    {
+        $value = session('user');
+        $cat=session('categoria');
+
+        return view('rrhh.personalShift',['value'=>$value,'cat'=>$cat]);
+    }
 }

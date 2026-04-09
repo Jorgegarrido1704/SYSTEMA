@@ -17,12 +17,12 @@ class personalBergsModel extends Model
 
     protected $autoIncrement = true;
 
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $fillable = [
         'employeeNumber', 'employeeName', 'employeeArea', 'employeeLider',
         'DateIngreso', 'DaysVacationsAvailble', 'lastYear', 'currentYear',
         'nextYear', 'Gender', 'typeWorker', 'status', 'DateSalida', 'typeSalida', 'email',
-        'user', 'clave', 'category',
+        'user', 'clave', 'category','employeeShift', 'employeeSchedule'
     ];
 }

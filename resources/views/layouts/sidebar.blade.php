@@ -89,7 +89,9 @@
                         <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('rrhhDashBoard') }}">{{ __('Assistance') }}</a></li>
                         <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('relogChecador') }}">{{ __('Log check') }}</a></li>
                         <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('datosPersonal') }}">{{ __('Personal Data') }}</a></li>
-
+                        @endif
+                         @if($value=='Admin' || $cat=='RRHH' || $value=='Juan O' || $value=='David V' || $value=='Jesus_C' || $value=='Andrea P')
+                        <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('personalShift') }}">{{ __('Personal Shift') }}</a></li>
                         @endif
                     </ul>
 
