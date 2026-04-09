@@ -2508,7 +2508,7 @@ class juntasController extends Controller
                 $registroPPAP[$i][11] = $datosTiempos->ensamble ?? 'No Aun';
                 $registroPPAP[$i][12] = $datosTiempos->loom ?? 'No Aun';
                 $registroPPAP[$i][13] = $datosTiempos->calidad ?? 'No Aun';
-                $registroPPAP[$i][14] = '96, 242, 83, 0.61';
+                $registroPPAP[$i][14] = '96, 242, 83, 0.15';
                 $registroPPAP[$i][15] = $workschedule ? $workschedule->resposible : '';
                 $registroPPAP[$i][16] = $workschedule ? $workschedule->documentsApproved : '-';
                 $registroPPAP[$i][17] = 'Black';
@@ -2548,7 +2548,7 @@ class juntasController extends Controller
                 $registroPPAP[$i][11] = $datosTiempos->ensamble ?? 'No Aun';
                 $registroPPAP[$i][12] = $datosTiempos->loom ?? 'No Aun';
                 $registroPPAP[$i][13] = $datosTiempos->calidad ?? 'No Aun';
-                $registroPPAP[$i][14] = '236, 236, 9, 0.497';
+                $registroPPAP[$i][14] = '236, 236, 9, 0.15';
                 $registroPPAP[$i][15] = $workschedule ? $workschedule->resposible : '';
                 $registroPPAP[$i][16] = $workschedule ? $workschedule->documentsApproved : '-';
                 $registroPPAP[$i][17] = 'Black';
