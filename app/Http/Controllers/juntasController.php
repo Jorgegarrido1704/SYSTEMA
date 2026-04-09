@@ -2128,10 +2128,10 @@ class juntasController extends Controller
 
         $total = $aus = $falt = $promaus = $enPlanta = 0;
         $dias = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
-        $datoGeneros = DB::table('personalberg')
-            ->select('Gender', 'typeWorker')
+        $datoGeneros = personalBergsModel::select('Gender', 'typeWorker')
             ->where('status', '!=', 'Baja')
             ->where('typeWorker', '!=', 'Corporativo')
+            ->where('employeeShift', '=', 'firstShift')
             ->get();
         foreach ($datoGeneros as $datoGenero) {
             if ($datoGenero->Gender == 'H') {
@@ -2231,14 +2231,27 @@ class juntasController extends Controller
         $porcentajaVacaciones = $total > 0 ? $rotacion->vacaciones > 0 ? round(($rotacion->vacaciones * 100) / $total, 2) : 0 : 0;
         // end porcentaje Vacaciones
         // Total headCount
-        $headcount = DB::table('personalberg')
-            ->select('typeWorker')
+        $headcount = personalBergsModel::select('typeWorker')
             ->where('status', '!=', 'Baja')
             ->whereNotIn('typeWorker', ['Corporativo', 'Practicante', 'Asimilado', 'Servicios Comprados'])
             ->count();
         // end Total headCount
+         // First Shift
+        $firstShift = personalBergsModel::select('typeWorker')
+            ->where('status', '!=', 'Baja')
+            ->whereNotIn('typeWorker', ['Corporativo', 'Practicante', 'Asimilado', 'Servicios Comprados'])
+            ->where('employeeShift', '=', 'firstShift')
+            ->count();
+        // end  First Shift
+         // Second Shift
+        $secondShift = personalBergsModel::select('typeWorker')
+            ->where('status', '!=', 'Baja')
+            ->whereNotIn('typeWorker', ['Corporativo', 'Practicante', 'Asimilado', 'Servicios Comprados'])
+            ->where('employeeShift', '=', 'secondShift')
+            ->count();
+        // end Second Shift
         // Maximum capacity direct workers
-        $personalDirectoMaximo = DB::table('personalberg')->where('status', '!=', 'Baja')->whereNotIn('typeWorker', ['Corporativo', 'Practicante', 'Asimilado', 'Servicios Comprados', 'Indirecto'])->count();
+        $personalDirectoMaximo = personalBergsModel::where('status', '!=', 'Baja')->whereNotIn('typeWorker', ['Corporativo', 'Practicante', 'Asimilado', 'Servicios Comprados', 'Indirecto'])->count();
         $maximoporcentajedeDatos = DB::table('assistence')
             ->select('lider', $diaActual)
             ->where('week', '=', $week)
@@ -2253,7 +2266,7 @@ class juntasController extends Controller
                         'Asimilado',
                         'Servicios Comprados',
                         'Indirecto',
-                    ]);
+                    ])->where('employeeShift', '=', 'firstShift');
             })
             ->count();
         $porcentajeMAximodeProduccionHoy = $personalDirectoMaximo > 0 ? $maximoporcentajedeDatos > 0 ? round(($maximoporcentajedeDatos * 100) / $personalDirectoMaximo, 2) : 0 : 0;
@@ -2316,7 +2329,7 @@ class juntasController extends Controller
             'registrosDeAsistencia' => $registrosDeAsistencia, 'value' => session('user'), 'cat' => session('categoria'),
             'accidente' => $accidente, 'porcentajaAusentismo' => $porcentajaAusentismo, 'promedioCorrectoVacciones' => $promedioCorrectoVacciones,
             'porcentajaVacaciones' => $porcentajaVacaciones, 'headcount' => $headcount, 'porcentajeMAximodeProduccionHoy' => $porcentajeMAximodeProduccionHoy,
-            'withoutAccidents' => $withoutAccidents]);
+            'withoutAccidents' => $withoutAccidents, 'firstShift' => $firstShift, 'secondShift' => $secondShift]);
     }
 
     // Show Names per category

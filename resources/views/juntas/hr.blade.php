@@ -129,7 +129,72 @@
                                                 <div class="col mr-2">
                                                     <div class="text-s font-weight-bold text-primary text-uppercase mb-1">
                                                        {{__('Head Count')}}</div>
-                                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $headcount??0 }}
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $headcount??0 }} {{ __('Workers') }} 
+
+                                                       <i class="fas fa-users fa-2x text-success ml-4"></i>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-md-6 mb-4">
+                                    <div class="card border-left-warning shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+
+                                                <div class="col mr-2">
+
+                                                        <div class="text-x font-weight-bold text-primary text-uppercase mb-2">
+                                                            {{ __('Days without Accidents') }}</div>
+
+                                                        <div class="h5 mb-0 font-weight-bold text-gray-800"> <strong>{{ $withoutAccidents??0 }}</strong>
+
+                                                            <i class="fas fa-user-nurse fa-2x  text-gray-250 text-success ml-4"></i>
+
+                                                         </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-md-6 mb-4">
+                                    <div class="card border-left-warning shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+
+                                                        <div class="text-x font-weight-bold text-primary text-uppercase mb-1">
+                                                            {{ __('Absentism Rate') }}</div>
+                                                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                            {{ $porcentajaAusentismo }}%
+
+                                                         @if($porcentajaAusentismo<3)
+                                                            <i class="fas fa-thumbs-up fa-2x text-success ml-4"></i>
+                                                        @else
+                                                            <i class="fas fa-thumbs-down fa-2x text-danger ml-4"></i>
+                                                        @endif
+                                                         </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                              <div class="row">
+                                 <div class="col-xl-4 col-md-6 mb-4">
+                                    <div class="card border-left-danger shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-s font-weight-bold text-primary text-uppercase mb-1">
+                                                       {{__('firstShift')}}</div>
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $firstShift??0 }} {{ __('Workers') }}
 
                                                        <i class="fas fa-users fa-2x text-success ml-4"></i>
                                                     </div>
@@ -145,13 +210,9 @@
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
                                                     <div class="text-s font-weight-bold text-primary text-uppercase mb-1">
-                                                        {{__('Employees in the facility')}}</div>
-                                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $enplanta??0 }} {{ __('Workers') }}
-                                                     @if($porcentajaAusentismo<3)
-                                                        <i class="fas fa-thumbs-up fa-2x text-success ml-4"></i>
-                                                    @else
-                                                        <i class="fas fa-thumbs-down fa-2x text-danger ml-4"></i>
-                                                    @endif
+                                                        {{__('secondShift')}}</div>
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $secondShift??0 }} {{ __('Workers') }}
+                                                   <i class="fas fa-users fa-2x text-success ml-4"></i>
                                                     </div>
 
                                                 </div>
@@ -230,27 +291,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-xl-4 col-md-6 mb-4">
-                                    <div class="card border-left-warning shadow h-100 py-2">
-                                        <div class="card-body">
-                                            <div class="row no-gutters align-items-center">
-
-                                                <div class="col mr-2">
-
-                                                        <div class="text-x font-weight-bold text-primary text-uppercase mb-2">
-                                                            {{ __('Days without Accidents') }}</div>
-
-                                                        <div class="h5 mb-0 font-weight-bold text-gray-800"> <strong>{{ $withoutAccidents??0 }}</strong>
-
-                                                            <i class="fas fa-user-nurse fa-2x  text-gray-250 text-success ml-4"></i>
-
-                                                         </div>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                               
 
                             </div>
             </div>
