@@ -21,6 +21,6 @@ class sub_acciones_model extends Model
 
     protected $fillable = [
         'folioAccion', 'descripcionSubAccion', 'resposableSubAccion', 'fechaInicioSubAccion', 'fechaFinSubAccion',
-        'auditorSubAccion', 'statusSubAccion', 'commentSubAccion',
+        'auditorSubAccion', 'statusSubAccion', 'commentSubAccion','lastEmail'
     ];
 }
