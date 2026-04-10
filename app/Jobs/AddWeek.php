@@ -47,7 +47,7 @@ class AddWeek implements ShouldQueue
             '2026-11-16',
             '2026-12-25', ];
 
-        $registrosEmpleados = personalBergsModel::where('status', '!=', 'Baja')->where('typeWorker', '!=', 'Corporativo')->get();
+        $registrosEmpleados = personalBergsModel::where('status', '!=', 'Baja')->where('typeWorker', '!=', 'Corporativo')->where('shift', '=', 'firstShift')->get();
 
         foreach ($registrosEmpleados as $registroEmpleado) {
             if (assistence::where('week', '=', $week)->where('id_empleado', '=', $registroEmpleado->employeeNumber)->count() == 0) {
