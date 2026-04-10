@@ -13,7 +13,7 @@
         var paoTd = @json($paolaTdesc);
         var url = @json(route('datosWO'));
 
-        //    console.log(paoT + paoTd);
+            console.log(paola + " "+paoT +" "+ paoTd);
         //   console.log(alex + alexDesc);
         function workOrder() {
             var workOrder = document.getElementById('workIs').value;
@@ -41,8 +41,46 @@
                     console.error('Error fetching work order info:', error);
                 });
         }
+        const paolaGraph = document.getElementById('Paola S');
+    const paos = new Chart(paolaGraph, {
+                                type: 'bar',
+                                data: {
+                                    labels: paola,
+                                    datasets: paoTd
 
-        if ()
+                                    },
+                                    options: {
+                                        responsive: true,
+                                        maintainAspectRatio: false,
+                                        scales: {
+                                        x: {
+                                            title: {
+                                            display: true,
+                                            text: 'Nombre'
+                                            }
+                                        },
+                                        y: {
+                                            beginAtZero: true,
+                                            title: {
+                                            display: true,
+                                            text: 'Horas'
+                                            }
+                                        }
+                                        },
+                                        plugins: {
+                                        legend: {
+                                            display: true,
+                                            position: 'top'
+                                        },
+                                        tooltip: {
+                                            enabled: true
+                                        }
+                                        }
+                                    }
+
+                                    });
+
+        
     </script>
     <style>
         .ppap {
@@ -674,7 +712,7 @@
                 color: #007bff;
             }
         </style>
-        <!-- <div class="col-lg-6 mb-4">
+         <div class="col-lg-6 mb-4">
                          AREAS
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
@@ -685,7 +723,7 @@
                                 <canvas id="Alex V" style="width: 100%; height: 100%;"></canvas>
                             </div>
                         </div>
-                    </div>-->
+                    </div>
 
         <!-- Reportes -->
         <!--<div class="row">-->

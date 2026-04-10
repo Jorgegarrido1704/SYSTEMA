@@ -1024,7 +1024,7 @@ class caliController extends generalController
             foreach ($pn as $pn => $codigo) {
                 foreach ($codigo as $codigo => $responsable) {
                     foreach ($responsable as $responsable => $cuenta) {
-                        $sheet->setCellValue('A'.$t, $fecha);
+                        $sheet->setCellValue('A'.$t, carbon::parse($fecha)->format('d-m-Y'));
                         $sheet->setCellValue('B'.$t, $pn);
                         $sheet->setCellValue('C'.$t, $codigo);
                         $sheet->setCellValue('D'.$t, $responsable);
