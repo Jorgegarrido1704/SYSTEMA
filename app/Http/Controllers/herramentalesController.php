@@ -135,7 +135,7 @@ class herramentalesController extends Controller
     {
         $value = session('user');
         $cat = session('categoria');
-        if ($value != 'Admin' or $cat == 'herra') {
+        if ($value != 'Admin' or $cat != 'herra') {
             return redirect('/login');
         }
 
@@ -200,7 +200,7 @@ class herramentalesController extends Controller
     {
         $value = session('user');
         $cat = session('categoria');
-        if ($value != 'Admin' or $cat == 'herra') {
+        if ($value != 'Admin' or $cat != 'herra') {
             return redirect('/login');
         }
         $promedioespera = Maintanance::selectRaw('AVG(TIMESTAMPDIFF(MINUTE,STR_TO_DATE(fecha, "%d-%m-%Y %H:%i"), STR_TO_DATE(inimant, "%d-%m-%Y %H:%i"))) as promedio')->where('inimant', '!=', '')->where('area', '=', 'maquina')->groupBy('area')->orderBy('id', 'desc')->get();
