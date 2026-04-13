@@ -113,6 +113,8 @@
                         <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('timeLine') }}">{{ __('Time Study') }}</a></li>
                     </ul>
                 </li>
+                @endif
+                @if($value=='Admin' || $cat=='herra')
                  <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('herramentales.index') }}"
                     onmouseover=showHerramentales();>{{ __('Toolings') }}</a>
                     <ul class="submenu" id="herramentales" style="display:none;">
