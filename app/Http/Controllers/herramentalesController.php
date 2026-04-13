@@ -135,9 +135,6 @@ class herramentalesController extends Controller
     {
         $value = session('user');
         $cat = session('categoria');
-        if ($value != 'Admin' or $cat != 'herra') {
-            return redirect('/login');
-        }
 
         $preventivo = herramentalInfo::where('mantenimiento', '=', 'ok')->orderBy('golpesTotales', 'DESC')->orderBy('terminal', 'asc')->get();
         $correctivo = herramentalInfo::where('mantenimiento', '!=', 'ok')->orderBy('golpesTotales', 'DESC')->orderBy('terminal', 'asc')->get();
@@ -200,9 +197,7 @@ class herramentalesController extends Controller
     {
         $value = session('user');
         $cat = session('categoria');
-        if ($value != 'Admin' or $cat != 'herra') {
-            return redirect('/login');
-        }
+
         $promedioespera = Maintanance::selectRaw('AVG(TIMESTAMPDIFF(MINUTE,STR_TO_DATE(fecha, "%d-%m-%Y %H:%i"), STR_TO_DATE(inimant, "%d-%m-%Y %H:%i"))) as promedio')->where('inimant', '!=', '')->where('area', '=', 'maquina')->groupBy('area')->orderBy('id', 'desc')->get();
         $promedio = $promedioespera[0]->promedio;
         $times = Maintanance::selectRaw('AVG(TIMESTAMPDIFF(MINUTE,STR_TO_DATE(inimant, "%d-%m-%Y %H:%i"), STR_TO_DATE(finhora, "%d-%m-%Y %H:%i"))) as promedio')->where('inimant', '!=', '')->where('area', '=', 'maquina')->groupBy('area')->orderBy('id', 'desc')->get();
