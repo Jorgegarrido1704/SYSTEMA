@@ -4,13 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\herramentales\golesDiarios;
 use App\Models\herramentales\herramentalInfo;
+use App\Models\Maintanance;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\URL;
-use App\Models\Maintanance;
-
 
 class herramentalesController extends Controller
 {
@@ -19,7 +17,7 @@ class herramentalesController extends Controller
     {
         $value = session('user');
         $cat = session('categoria');
-       
+
         $crimpersRequested = DB::table('registro_paro')
             ->select('fecha', 'nombreEquipo', 'id', 'dano', 'quien', 'atiende', 'inimant', 'finhora')
             ->where('finhora', null)
@@ -61,55 +59,57 @@ class herramentalesController extends Controller
         $date = Carbon::now()->format('d-m-Y');
         $tooling = explode('||', $request->input('tooling'))[1];
         $termina = explode('||', $request->input('tooling'))[0];
-        $termina= str_replace(' ', '', $termina);
-        $tooling=str_replace(' ', '', $tooling);
+        $termina = str_replace(' ', '', $termina);
+        $tooling = str_replace(' ', '', $tooling);
         $golpesDiarios = preg_replace('/[^0-9]+/', '', $request->input('qtyHits')) ?? 0;
         golesDiarios::create([
             'herramental' => $tooling,
             'terminal' => $termina,
             'fecha_reg' => $date,
             'golpesDiarios' => $golpesDiarios,
-        ]); 
-        $lastMantainence=herramentalInfo::select('golpesTotales','totalmant')->where('herramental', '=', $tooling)->where('terminal', '=', $termina)->orderBy('id', 'desc')->first();
-        $totalMant = round(intval($lastMantainence->golpesTotales+$golpesDiarios)/5000);
-        if($totalMant>$lastMantainence->totalmant){$respuesta = "falta";
-            //email de alerta
-             $acciones['inicio']= 'Se les informaque el dia de hoy se acumularon mas de 5000 golpes en el siguiente herramiental';
+        ]);
+        $lastMantainence = herramentalInfo::select('golpesTotales', 'totalmant')->where('herramental', '=', $tooling)->where('terminal', '=', $termina)->orderBy('id', 'desc')->first();
+        $totalMant = round(intval($lastMantainence->golpesTotales + $golpesDiarios) / 5000);
+        if ($totalMant > $lastMantainence->totalmant) {
+            $respuesta = 'falta';
+            // email de alerta
+            $acciones['inicio'] = 'Se les informaque el dia de hoy se acumularon mas de 5000 golpes en el siguiente herramiental';
             $acciones['quepaso'] = 'Herramental: '.$tooling.' Terminal: '.$termina.' Total de golpes: '.$lastMantainence->golpesTotales;
             $acciones['final'] = 'Este herramental cuenta con de '.$lastMantainence->totalmant.' mantenimientos correctivos actualmente';
-          $recipients = [
-                                'jolaes@mx.bergstrominc.com',
-                                'lramos@mx.bergstrominc.com',
-                                'emedina@mx.bergstrominc.com',
-                                'ediaz@mx.bergstrominc.com',
-                                'AnGonzalez@mx.bergstrominc.com',
-                                'scastillo@mx.bergstrominc.com',
-                                'rramirez@mx.bergstrominc.com',
-                                'drocha@mx.bergstrominc.com',
-                                 'jgarrido@mx.bergstrominc.com',
-                            ];
-                            Mail::to($recipients)->send(new \App\Mail\herramentales("Nueva requisición de mantenimiento", $acciones));
-        }else{$respuesta = "ok";}
+            $recipients = [
+                'jolaes@mx.bergstrominc.com',
+                'lramos@mx.bergstrominc.com',
+                'emedina@mx.bergstrominc.com',
+                'ediaz@mx.bergstrominc.com',
+                'AnGonzalez@mx.bergstrominc.com',
+                'scastillo@mx.bergstrominc.com',
+                'rramirez@mx.bergstrominc.com',
+                'drocha@mx.bergstrominc.com',
+                'jgarrido@mx.bergstrominc.com',
+            ];
+            Mail::to($recipients)->send(new \App\Mail\herramentales('Nueva requisición de mantenimiento', $acciones));
+        } else {
+            $respuesta = 'ok';
+        }
 
         if (herramentalInfo::where('herramental', '=', $tooling)->where('terminal', '=', $termina)->where('fecha_reg', '=', $date)->exists()) {
             herramentalInfo::where('herramental', '=', $tooling)->where('terminal', '=', $termina)->update([
                 'golpesDiarios' => DB::raw("golpesDiarios + $golpesDiarios"),
                 'golpesTotales' => DB::raw('golpesTotales +'.$golpesDiarios),
                 'totalmant' => $totalMant,
-                'mantenimiento' => $respuesta
+                'mantenimiento' => $respuesta,
 
             ]);
-        }else{
+        } else {
             herramentalInfo::where('herramental', '=', $tooling)->where('terminal', '=', $termina)->update([
-                'fecha_reg'=> $date,
+                'fecha_reg' => $date,
                 'golpesDiarios' => $golpesDiarios,
-                'golpesTotales' =>  DB::raw('golpesTotales +'.$golpesDiarios),
+                'golpesTotales' => DB::raw('golpesTotales +'.$golpesDiarios),
                 'totalmant' => $totalMant,
-                'mantenimiento' => $respuesta
+                'mantenimiento' => $respuesta,
 
             ]);
         }
-
 
         return back()->with('message', 'Count of hits added successfully.');
     }
@@ -120,8 +120,8 @@ class herramentalesController extends Controller
             'newTooling' => ['required', 'string'],
             'terminalNewTooling' => ['required', 'string'],
         ]);
-        $newTooling=strtoupper($request->input('newTooling'));
-        $terminalNewTooling=strtoupper($request->input('terminalNewTooling'));
+        $newTooling = strtoupper($request->input('newTooling'));
+        $terminalNewTooling = strtoupper($request->input('terminalNewTooling'));
         $herramental = new herramentalInfo;
         $herramental->herramental = $newTooling;
         $herramental->terminal = $terminalNewTooling;
@@ -130,21 +130,26 @@ class herramentalesController extends Controller
 
         return back()->with('message', 'Inventory added successfully.');
     }
-    public function toolingMaintenance(){
-          $value = session('user');
+
+    public function toolingMaintenance()
+    {
+        $value = session('user');
         $cat = session('categoria');
-        if ($value != 'Admin' or $cat == 'herramentales') {
+        if ($value != 'Admin' or $cat == 'herra') {
             return redirect('/login');
         }
-        
+
         $preventivo = herramentalInfo::where('mantenimiento', '=', 'ok')->orderBy('golpesTotales', 'DESC')->orderBy('terminal', 'asc')->get();
-        $correctivo =  herramentalInfo::where('mantenimiento', '!=', 'ok')->orderBy('golpesTotales', 'DESC')->orderBy('terminal', 'asc')->get();
-        $maintenanceRecord= DB::table('mant_herramental')->orderBy('id', 'desc')->limit(25)->get();
-        return view('herramentales.maintenenceTooling', [ 'cat' => $cat, 'value' => $value,
-            'preventivo' => $preventivo, 'correctivo' => $correctivo,'maintenanceRecord' => $maintenanceRecord]);
+        $correctivo = herramentalInfo::where('mantenimiento', '!=', 'ok')->orderBy('golpesTotales', 'DESC')->orderBy('terminal', 'asc')->get();
+        $maintenanceRecord = DB::table('mant_herramental')->orderBy('id', 'desc')->limit(25)->get();
+
+        return view('herramentales.maintenenceTooling', ['cat' => $cat, 'value' => $value,
+            'preventivo' => $preventivo, 'correctivo' => $correctivo, 'maintenanceRecord' => $maintenanceRecord]);
 
     }
-    public function saveMantTooling(Request $request ){
+
+    public function saveMantTooling(Request $request)
+    {
         $request->validate([
             'tooling' => ['required', 'string'],
             'cantidad' => ['required', 'integer'],
@@ -155,7 +160,7 @@ class herramentalesController extends Controller
         $tooling = explode('//', $request->input('tooling'))[0];
         $terminal = explode('//', $request->input('tooling'))[1];
         $minutes = preg_replace('/[^0-9]+/', '', $request->input('cantidad')) ?? 0;
-        $personal= preg_replace('/[^\p{L} ]/u', ' ', $request->input('personalRegistro')) ?? '';
+        $personal = preg_replace('/[^\p{L} ]/u', ' ', $request->input('personalRegistro')) ?? '';
 
         DB::table('mant_herramental')->insert([
             'fecha_reg' => Carbon::now()->format('d-m-Y'),
@@ -164,51 +169,51 @@ class herramentalesController extends Controller
             'terminal' => $terminal,
             'Minutos' => $minutes,
             'quien' => $personal,
-            'docMant' => $observaciones
+            'docMant' => $observaciones,
         ]);
 
         herramentalInfo::where('herramental', '=', $tooling)->where('terminal', '=', $terminal)->update([
             'mantenimiento' => 'ok',
         ]);
-        //email alerta
-    $acciones['inicio']= 'Se les informaque el dia de hoy se realizo el mantenimiento en el siguiente herramiental';
-    $acciones['quepaso'] = 'Herramental: '.$tooling.' Terminal: '.$terminal.' Minutos de trabajp: '.$minutes;
-    $acciones['final'] = 'Quien realizo el mantenimiento fue : '.$personal.' y redacto las siguientes observaciones: '.$observaciones;
-          $recipients = [
-                                'jolaes@mx.bergstrominc.com',
-                                'lramos@mx.bergstrominc.com',
-                                'emedina@mx.bergstrominc.com',
-                                'ediaz@mx.bergstrominc.com',
-                                'AnGonzalez@mx.bergstrominc.com',
-                                'scastillo@mx.bergstrominc.com',
-                                'rramirez@mx.bergstrominc.com',
-                                'drocha@mx.bergstrominc.com',
-                                 'jgarrido@mx.bergstrominc.com',
-                            ];
-                            Mail::to($recipients)->send(new \App\Mail\herramentales("Realizacion de mantenimiento", $acciones));
-                        
+        // email alerta
+        $acciones['inicio'] = 'Se les informaque el dia de hoy se realizo el mantenimiento en el siguiente herramiental';
+        $acciones['quepaso'] = 'Herramental: '.$tooling.' Terminal: '.$terminal.' Minutos de trabajp: '.$minutes;
+        $acciones['final'] = 'Quien realizo el mantenimiento fue : '.$personal.' y redacto las siguientes observaciones: '.$observaciones;
+        $recipients = [
+            'jolaes@mx.bergstrominc.com',
+            'lramos@mx.bergstrominc.com',
+            'emedina@mx.bergstrominc.com',
+            'ediaz@mx.bergstrominc.com',
+            'AnGonzalez@mx.bergstrominc.com',
+            'scastillo@mx.bergstrominc.com',
+            'rramirez@mx.bergstrominc.com',
+            'drocha@mx.bergstrominc.com',
+            'jgarrido@mx.bergstrominc.com',
+        ];
+        Mail::to($recipients)->send(new \App\Mail\herramentales('Realizacion de mantenimiento', $acciones));
+
         return back()->with('message', 'Maintenence added successfully.');
-        
+
     }
 
-    public function toolingAnalysis(){
-         $value = session('user');
+    public function toolingAnalysis()
+    {
+        $value = session('user');
         $cat = session('categoria');
-        if ($value != 'Admin' or $cat == 'herramentales') {
+        if ($value != 'Admin' or $cat == 'herra') {
             return redirect('/login');
         }
-        $promedioespera=Maintanance::selectRaw('AVG(TIMESTAMPDIFF(MINUTE,STR_TO_DATE(fecha, "%d-%m-%Y %H:%i"), STR_TO_DATE(inimant, "%d-%m-%Y %H:%i"))) as promedio')->where('inimant', '!=', '')->where('area', '=', 'maquina')->groupBy('area')->orderBy('id', 'desc')->get();
-        $promedio=$promedioespera[0]->promedio;
-         $times=Maintanance::selectRaw('AVG(TIMESTAMPDIFF(MINUTE,STR_TO_DATE(inimant, "%d-%m-%Y %H:%i"), STR_TO_DATE(finhora, "%d-%m-%Y %H:%i"))) as promedio')->where('inimant', '!=', '')->where('area', '=', 'maquina')->groupBy('area')->orderBy('id', 'desc')->get();
-        $timeWorking=$times[0]->promedio;
-         $ttimes=Maintanance::selectRaw('AVG(TIMESTAMPDIFF(MINUTE,STR_TO_DATE(fecha, "%d-%m-%Y %H:%i"), STR_TO_DATE(finhora, "%d-%m-%Y %H:%i"))) as promedio')->where('inimant', '!=', '')->where('area', '=', 'maquina')->groupBy('area')->orderBy('id', 'desc')->get();
-        $totalTimesAVG=$ttimes[0]->promedio;
-        $tooling=Maintanance::selectRaw('nombreEquipo,COUNT(nombreEquipo) as tiemposVal')->where('area', '=', 'maquina')->groupBy('nombreEquipo')->orderBy('tiemposVal', 'desc')->limit(5)->get();
-        
-        return view('herramentales.analysis', [ 'cat' => $cat, 'value' => $value,'promedioespera' => $promedio,'timeWorking' => $timeWorking,
-            'totalTimesAVG' => $totalTimesAVG,'tooling' => $tooling
-            ]);
+        $promedioespera = Maintanance::selectRaw('AVG(TIMESTAMPDIFF(MINUTE,STR_TO_DATE(fecha, "%d-%m-%Y %H:%i"), STR_TO_DATE(inimant, "%d-%m-%Y %H:%i"))) as promedio')->where('inimant', '!=', '')->where('area', '=', 'maquina')->groupBy('area')->orderBy('id', 'desc')->get();
+        $promedio = $promedioespera[0]->promedio;
+        $times = Maintanance::selectRaw('AVG(TIMESTAMPDIFF(MINUTE,STR_TO_DATE(inimant, "%d-%m-%Y %H:%i"), STR_TO_DATE(finhora, "%d-%m-%Y %H:%i"))) as promedio')->where('inimant', '!=', '')->where('area', '=', 'maquina')->groupBy('area')->orderBy('id', 'desc')->get();
+        $timeWorking = $times[0]->promedio;
+        $ttimes = Maintanance::selectRaw('AVG(TIMESTAMPDIFF(MINUTE,STR_TO_DATE(fecha, "%d-%m-%Y %H:%i"), STR_TO_DATE(finhora, "%d-%m-%Y %H:%i"))) as promedio')->where('inimant', '!=', '')->where('area', '=', 'maquina')->groupBy('area')->orderBy('id', 'desc')->get();
+        $totalTimesAVG = $ttimes[0]->promedio;
+        $tooling = Maintanance::selectRaw('nombreEquipo,COUNT(nombreEquipo) as tiemposVal')->where('area', '=', 'maquina')->groupBy('nombreEquipo')->orderBy('tiemposVal', 'desc')->limit(5)->get();
+
+        return view('herramentales.analysis', ['cat' => $cat, 'value' => $value, 'promedioespera' => $promedio, 'timeWorking' => $timeWorking,
+            'totalTimesAVG' => $totalTimesAVG, 'tooling' => $tooling,
+        ]);
 
     }
-
 }
