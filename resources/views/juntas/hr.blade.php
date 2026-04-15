@@ -299,7 +299,7 @@
                                                 <div class="col mr-2">
 
                                                         <div class="text-x font-weight-bold text-primary text-uppercase mb-1">
-                                                            {{ __('Porcentage of Hours Worked second shift (%)') }}</div>
+                                                            {{ __('Porcentage of Hours Work disponible (%) in first shift') }}</div>
                                                         <div class="h5 mb-0 font-weight-bold text-gray-800">
                                                             {{ $porcentajaAusentismo }}%
 

@@ -262,15 +262,6 @@
     "firstShift": "primer turno",
     "Schedule": "Horario",
     "Vacation Rate Ideal(%)": "Tasa de vacaciones ideal(%)",
-    "Porcentage of Hours Worked first shift (%)": "Porcentaje de horas trabajadas en el primer turno (%)",
-    "Porcentage of Hours Worked second shift (%)": "Porcentaje de horas trabajadas en el segundo turno (%)"
-
-
-
-
-
-
-
-
-
-}
+    "Porcentage of Hours Work disponible (%) in first shift":   "Porcentaje de horas disponibles (%) en el primer turno",
+    "Porcentage of Hours Work disponible (%) in second shift":  "Porcentaje de horas disponibles (%) en el segundo turno",
+    "Porcentage of Hours Work disponible (%) in third shift":   "Porcentaje de horas disponibles (%) en el tercer turno"
