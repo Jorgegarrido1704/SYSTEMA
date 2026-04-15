@@ -129,7 +129,7 @@
                                                 <div class="col mr-2">
                                                     <div class="text-s font-weight-bold text-primary text-uppercase mb-1">
                                                        {{__('Head Count')}}</div>
-                                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $headcount??0 }} {{ __('Workers') }} 
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $headcount??0 }} {{ __('Workers') }}
 
                                                        <i class="fas fa-users fa-2x text-success ml-4"></i>
                                                     </div>
@@ -220,7 +220,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-xl-4 col-md-6 mb-4">
+                              <!--  <div class="col-xl-4 col-md-6 mb-4">
                                     <div class="card border-left-warning shadow h-100 py-2">
                                         <div class="card-body">
                                             <div class="row no-gutters align-items-center">
@@ -243,7 +243,7 @@
                                         </div>
                                     </div>
                                 </div>
-
+                            -->
 
                             </div>
                              <div class="row">
@@ -253,14 +253,15 @@
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
                                                     <div class="text-x font-weight-bold text-primary text-uppercase mb-1">
-                                                        {{ __('Vacation Rate') }}</div>
+                                                        {{ __('Vacation Rate Ideal(%)') }}<strong>5.4% </strong></div>
                                                     <div class="h5 mb-0 font-weight-bold text-gray-800">
                                                         {{ $porcentajaVacaciones }}%
-
-                                                         @if($promedioCorrectoVacciones<$porcentajaVacaciones && $porcentajaVacaciones>7 )
+                                                         @if(  $porcentajaVacaciones>4.79 && $porcentajaVacaciones<6.1)
                                                             <i class="fas fa-thumbs-up fa-2x text-success ml-4"></i>
+                                                            @elseif(($porcentajaVacaciones>3.32 && $porcentajaVacaciones<4.8) || ($porcentajaVacaciones>6.09 && $porcentajaVacaciones<7.6))
+                                                            <i class="fas fa-thumbs-up fa-2x text-warning ml-4"></i>
                                                         @else
-                                                          <i class="fas fa-thumbs-up fa-2x text-warning ml-4"></i>
+                                                          <i class="fas fa-thumbs-down fa-2x text-danger ml-4"></i>
                                                         @endif
                                                     </div>
 
@@ -275,7 +276,7 @@
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
                                                     <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                      {{ __('Production Capacity with Direct Workers') }}</div>
+                                                      {{ __('Porcentage of Hours Worked first shift (%)') }}</div>
                                                     <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $porcentajeMAximodeProduccionHoy??0 }}%
                                                      @if($porcentajeMAximodeProduccionHoy>=90)
                                                         <i class="fas fa-thumbs-up fa-2x text-success ml-4"></i>
@@ -291,7 +292,31 @@
                                         </div>
                                     </div>
                                 </div>
-                               
+                                  <!--  <div class="col-xl-4 col-md-6 mb-4">
+                                    <div class="card border-left-warning shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+
+                                                        <div class="text-x font-weight-bold text-primary text-uppercase mb-1">
+                                                            {{ __('Porcentage of Hours Worked second shift (%)') }}</div>
+                                                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                            {{ $porcentajaAusentismo }}%
+
+                                                         @if($porcentajaAusentismo<3)
+                                                            <i class="fas fa-thumbs-up fa-2x text-success ml-4"></i>
+                                                        @else
+                                                            <i class="fas fa-thumbs-down fa-2x text-danger ml-4"></i>
+                                                        @endif
+                                                         </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            -->
+
 
                             </div>
             </div>

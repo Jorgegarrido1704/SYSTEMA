@@ -260,8 +260,11 @@
     "secondShift": "segundo turno",
     "thirdShift": "tercer turno",
     "firstShift": "primer turno",
-    "Schedule": "Horario"
-    
+    "Schedule": "Horario",
+    "Vacation Rate Ideal(%)": "Tasa de vacaciones ideal(%)",
+    "Porcentage of Hours Worked first shift (%)": "Porcentaje de horas trabajadas en el primer turno (%)",
+    "Porcentage of Hours Worked second shift (%)": "Porcentaje de horas trabajadas en el segundo turno (%)"
+
 
 
 
