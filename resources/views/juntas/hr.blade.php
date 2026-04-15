@@ -120,7 +120,7 @@
             <div class="card-header py-3">
                 <h5 class="m-1 font-weight-bold text-primary">{{ __('Facility Data') }}</h5>
             </div>
-            <div class="card-body" style=" max-height: 550px;" >
+            <div class="card-body" style=" max-height: 570px; overflow-y: auto;" >
                             <div class="row">
                                  <div class="col-xl-4 col-md-6 mb-4">
                                     <div class="card border-left-danger shadow h-100 py-2">
