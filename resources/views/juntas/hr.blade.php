@@ -35,6 +35,14 @@
         a:hover {
             text-decoration: none;
         }
+         .tabs { display: flex; margin-bottom: 20px; border-bottom: 2px solid #dee2e6; }
+        .tab-button {
+            padding: 10px 20px; cursor: pointer; border: none; background: none;
+            font-weight: bold; color: #6c757d; outline: none;
+        }
+        .tab-button.active { color: #007bff; border-bottom: 3px solid #007bff; }
+        .tab-content { display: none; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .tab-content.active { display: block; }
 
 </style>
 <script>
@@ -45,13 +53,19 @@
     const promaus = @json($promaus);
     const vacaciones = @json($vacas);
 </script>
-<div class="row">
+ <div class="tabs">
+        <button class="tab-button active" onclick="openTab( 'tab1')">{{__('firstShift')}}</button>
+        <button class="tab-button" onclick="openTab('tab2')">{{__('secondShift')}}</button>
+        <span class="tab-line align-self-center text-primary font-weight-bold font-size-24" style="font-size: 25px; item-align: right;">{{ __('Today assistence') }}:  {{ date('d-M') }} </span>
+    </div>
+<div class="row" >
     <!-- Asistencia -->
+
+
     <div class="col-lg-6 col-md-6 mb-4">
         <div class="card shadow mb-5">
             <div class="card-header py-3">
-                <h5 class="m-1 font-weight-bold text-primary">{{ __('Today assistence') }}:  {{ date('d-M') }}
-                    <br> {{ __('Missing Assitence Records') }}: {{ $faltan??0 }}</h5>
+                <h5 class="m-1 font-weight-bold text-primary">{{ __('Missing Assitence Records') }}: {{ $faltan??0 }}</h5>
             </div>
             <div class="card-body" style=" max-height: 570px;">
                 <div class="row">
@@ -187,7 +201,8 @@
 
                             </div>
                               <div class="row">
-                                 <div class="col-xl-4 col-md-6 mb-4">
+                                <!-- First Shift -->
+                                 <div class="col-xl-4 col-md-6 mb-4" id="tab1">
                                     <div class="card border-left-danger shadow h-100 py-2">
                                         <div class="card-body">
                                             <div class="row no-gutters align-items-center">
@@ -204,7 +219,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-xl-4 col-md-6 mb-4">
+                                <!-- end First Shift -->
+                                <!-- Second Shift -->
+                                <div class="col-xl-4 col-md-6 mb-4" id="tab2" style="display: none;">
                                     <div class="card border-left-danger shadow h-100 py-2">
                                         <div class="card-body">
                                             <div class="row no-gutters align-items-center">
@@ -220,6 +237,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                <!-- end Second Shift -->
                               <!--  <div class="col-xl-4 col-md-6 mb-4">
                                     <div class="card border-left-warning shadow h-100 py-2">
                                         <div class="card-body">
@@ -244,9 +262,6 @@
                                     </div>
                                 </div>
                             -->
-
-                            </div>
-                             <div class="row">
                                 <div class="col-xl-4 col-md-6 mb-4">
                                     <div class="card border-left-primary shadow h-100 py-2">
                                         <div class="card-body">
@@ -322,9 +337,7 @@
             </div>
         </div>
     </div>
-</div>
 
-<div class="row">
     <div class="col-lg-6 col-md-6 mb-8">
         <div class="card shadow mb-5">
             <div class="card-header py-3">
@@ -402,4 +415,15 @@
     </div>
 </div>
 
+<script>
+    function openTab( tabName) {
+       if(tabName == 'tab1'){
+           document.getElementById("tab1").style.display = "block";
+           document.getElementById("tab2").style.display = "none";
+       }else if (tabName == 'tab2'){
+           document.getElementById("tab1").style.display = "none";
+           document.getElementById("tab2").style.display = "block";
+       }
+    }
+    </script>
 @endsection
