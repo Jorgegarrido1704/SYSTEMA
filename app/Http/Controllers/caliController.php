@@ -15,11 +15,12 @@ use App\Models\regParTime;
 use App\Models\specialWireModel;
 use App\Models\timeDead;
 use App\Models\Wo;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use Carbon\Carbon;
+
 class caliController extends generalController
 {
     public function __invoke()
@@ -32,19 +33,19 @@ class caliController extends generalController
             $calidad = calidad_registro_baja::orderBy('id', 'DESC')->get();
             foreach ($calidad as $cal) {
                 $reg = Wo::where('wo', $cal->wo)->first();
-                $cal->rev = $reg->rev;
+                $cal->rev = $reg->rev ?? '';
             }
             $preorder = regPar::where('preCalidad', '>', 0)->get();
             foreach ($preorder as $cal) {
                 $reg = Wo::where('wo', $cal->wo)->first();
-                $cal->rev = $reg->rev;
+                $cal->rev = $reg->rev ?? '';
             }
 
             $personal = personalBergsModel::select('user', 'employeeName')->where('status', 'Activo')->whereNotNull('user')->orderBy('user', 'ASC')->get();
             $fallas = fallasCalidadModel::where('status', '=', 'Open')->orderBy('id', 'DESC')->get();
             foreach ($fallas as $cal) {
                 $reg = Wo::where('wo', $cal->wo)->first();
-                $cal->pn = $reg->NumPart;
+                $cal->pn = $reg->NumPart ?? '';
             }
 
             return view('cali', ['cat' => $cat, 'value' => $value, 'calidad' => $calidad, 'preorder' => $preorder, 'personal' => $personal, 'fallas' => $fallas]);
