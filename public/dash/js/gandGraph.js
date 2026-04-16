@@ -8,7 +8,7 @@ const formatTime = (minutes) => {
 };
 
 var paola = [[0, 30], [30, 120], [120, 180], [180, 240], [240, 300], [300, 360], [360, 420], [420, 480], [480, 540], [540, 600]];
-var paoT = [[0, 30], [30, 100], [100, 150], [150, 220], [22g0, 300], [300, 360], [360, 420], [420, 480], [480, 540], [540, 600]];
+var paoT = [[0, 30], [30, 100], [100, 150], [150, 220], [220, 300], [300, 360], [360, 420], [420, 480], [480, 540], [540, 600]];
 var paoDesc = ["FullSize 1001488939 REV 3","FullSize 1001488939 REV 2","FullSize 1001488939 REV 1","FullSize 1001488939 REV 0","FullSize 1001488939 REV 0","FullSize 1001488939 REV 0","FullSize 1001488939 REV 0","FullSize 1001488939 REV 0","FullSize 1001488939 REV 0","FullSize 1001488939 REV 0"];
 
 var gann = document.getElementById('Paola S').getContext('2d');
