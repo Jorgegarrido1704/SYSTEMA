@@ -945,4 +945,12 @@ class PpapIngController extends Controller
 
         return response()->json($data);
     }
+
+    public function graffWorksEng()
+    {
+        $value = session('user');
+        $cat = session('categoria');
+
+        return view('inge.graffWorksEng', ['value' => $value, 'cat' => $cat]);
+    }
 }

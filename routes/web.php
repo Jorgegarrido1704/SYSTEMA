@@ -104,7 +104,7 @@ Route::controller(PpapIngController::class)->group(function () {
     Route::get('/editDelite', [PpapIngController::class, 'editDelite'])->name('editDelite');
     Route::get('/ganttGraph', [PpapIngController::class, 'ganttGraph'])->name('ganttGraph');
     Route::post('/datosWO', [PpapIngController::class, 'datosWo'])->name('datosWO');
-
+    Route::get('/graffWorksEng', [PpapIngController::class, 'graffWorksEng'])->name('graffWorksEng');
 });
 
 Route::controller(AlmacenController::class)->group(function () {
