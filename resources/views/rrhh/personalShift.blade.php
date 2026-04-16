@@ -16,7 +16,7 @@
                                 <th>{{ __('Employee') }}</th>
                                 <th>{{ __('Shift') }}</th>
                                 <th>{{ __('Schedule') }}</th>
-                              
+
                             </tr>
                         </thead>
                         <tbody>
@@ -37,16 +37,16 @@
                                                 <div class="form-group">
                                                     <select name="schedule" id="schedule" class="form-control" onchange="guardarDatosShift('{{ $persons->employeeName }}')">
                                                         <option value="{{ $persons->employeeSchedule }}" selected disabled> {{ $persons->employeeSchedule }}</option>
-                                                        <option value="07:00 - 15:30">07:00 - 15:30</option>
-                                                        <option value="07:00 - 17:30">07:00 - 17:30</option>
+                                                        <option value="07:00 - 15:30">07:30 - 15:30</option>
+                                                        <option value="07:00 - 17:30">07:30 - 17:30</option>
                                                         <option value="19:00 - 07:00">19:00 - 07:00</option>
                                                     </select>
                                                 </div>
                                             </td>
-                                            
-                                        
+
+
                                     </tr>
-                                    
+
                                 @endforeach
                                 @endif
                         </tbody>
@@ -59,7 +59,7 @@
     <script>
         function guardarDatosShift(employee) {
           const url = @json(route('jsonPersonalShift'));
-       
+
          let  shift= document.getElementById("shift").value;
          let  schedule= document.getElementById("schedule").value;
         // alert(employee + " " + shift + " " + schedule);
@@ -69,7 +69,7 @@
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                    // 'X-Requested-With': 'XMLHttpRequest',
-                                       
+
                 },
                 body: JSON.stringify({
                     employee: employee,
@@ -84,9 +84,9 @@
             .catch(error => {
                 console.error('Error:', error);
             });
-          
+
         }
-        
+
     </script>
 
 

@@ -77,7 +77,7 @@
                         <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('workState') }}">{{ __('Work Scheduled') }}</a></li>
                         <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('ganttGraph') }}">{{ __('Gantt Work Graph') }}</a></li>
                         <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('pruebasElecticas') }}">{{ __('Electrical Tests') }}</a></li>
-                        <li class="submenu" id="engsub"><a style="color:white;" href="#">{{ __('Cut List') }}</a>
+                        <li class="submenu" id="engsub"><a style="color:white;" href="#">{{ __('Engineer Scheduleeng') }}</a>
                         </li>
                     </ul>
                         @endif
