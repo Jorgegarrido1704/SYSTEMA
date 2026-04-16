@@ -65,7 +65,7 @@
     <div class="col-lg-6 col-md-6 mb-4">
         <div class="card shadow mb-5">
             <div class="card-header py-3">
-                <h5 class="m-1 font-weight-bold text-primary">{{ __('Missing Assitence Records') }}: {{ $faltan??0 }}</h5>
+                <h5 class="m-1 font-weight-bold text-primary">{{ __('Assitence Records') }}</h5>
             </div>
             <div class="card-body" style=" max-height: 570px;">
                 <div class="row">

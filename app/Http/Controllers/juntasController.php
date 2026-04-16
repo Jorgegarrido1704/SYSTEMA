@@ -2273,9 +2273,6 @@ class juntasController extends Controller
 
         // End Maximum capacity direct workers
 
-        $faltan = $total - ($rotacion->tsp + $rotacion->assistencia + $rotacion->faltas + $rotacion->incapacidad + $rotacion->permisos_gose +
-            $rotacion->permisos_sin_gose + $rotacion->vacaciones + $rotacion->retardos + $rotacion->suspension + $rotacion->practicantes
-            + $rotacion->asimilados + $rotacion->ServiciosComprados + $rotacion->horarioEspecial);
         $registrosDeAsistencia = [
             $rotacion->assistencia,
             $rotacion->faltas,
@@ -2325,7 +2322,7 @@ class juntasController extends Controller
         $withoutAccidents = carbon::now()->diffInDays($ultimoAccidente);
 
         return view('juntas.hr', ['enplanta' => $enplanta, 'vacas' => $vacas, 'promaus' => $promaus, 'diaActual' => $diaActual,
-            'tipoTrabajador' => $tipoTrabajador, 'faltantes' => $faltantes, 'faltan' => $faltan, 'genero' => $genero,
+            'tipoTrabajador' => $tipoTrabajador, 'faltantes' => $faltantes,  'genero' => $genero,
             'registrosDeAsistencia' => $registrosDeAsistencia, 'value' => session('user'), 'cat' => session('categoria'),
             'accidente' => $accidente, 'porcentajaAusentismo' => $porcentajaAusentismo, 'promedioCorrectoVacciones' => $promedioCorrectoVacciones,
             'porcentajaVacaciones' => $porcentajaVacaciones, 'headcount' => $headcount, 'porcentajeMAximodeProduccionHoy' => $porcentajeMAximodeProduccionHoy,
