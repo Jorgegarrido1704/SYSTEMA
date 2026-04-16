@@ -47,7 +47,7 @@ class AddWeek implements ShouldQueue
             '2026-11-16',
             '2026-12-25', ];
 
-        $registrosEmpleados = personalBergsModel::where('status', '!=', 'Baja')->where('typeWorker', '!=', 'Corporativo')->where('employeeShift', '=', 'firstShift')->get();
+        $registrosEmpleados = personalBergsModel::where('status', '!=', 'Baja')->where('typeWorker', '!=', 'Corporativo')->get();
 
         foreach ($registrosEmpleados as $registroEmpleado) {
             if (assistence::where('week', '=', $week)->where('id_empleado', '=', $registroEmpleado->employeeNumber)->count() == 0) {
@@ -57,6 +57,7 @@ class AddWeek implements ShouldQueue
                     'lider' => $registroEmpleado->employeeLider,
                     'name' => $registroEmpleado->employeeName,
                     'yearOfAssistence' => $year,
+                    'shift' => $registroEmpleado->employeeShift,
                 ]);
             }
             if (carbon::now()->format('H') > 6) {
