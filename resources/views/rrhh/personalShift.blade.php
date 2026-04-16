@@ -62,13 +62,14 @@
 
          let  shift= document.getElementById("shift").value;
          let  schedule= document.getElementById("schedule").value;
-        // alert(employee + " " + shift + " " + schedule);
+         alert(employee + " " + shift + " " + schedule);
             fetch(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                   // 'X-Requested-With': 'XMLHttpRequest',
+
+
 
                 },
                 body: JSON.stringify({
@@ -79,7 +80,7 @@
             })
             .then(response => response.json())
             .then(data => {
-             console.log(data);
+             //console.log(data);
             })
             .catch(error => {
                 console.error('Error:', error);
