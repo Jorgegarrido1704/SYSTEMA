@@ -26,7 +26,7 @@
                                         <td>{{ $persons->employeeName }}</td>
                                         <form  id="formShift">
                                             <td><div class="form-group">
-                                                <select name="shift" id="shift" class="form-control" >
+                                                <select name="shift" id="shift_{{ $persons->employeeName }}" class="form-control" >
                                                     <option value="{{ $persons->employeeShift }}" selected disabled> {{ $persons->employeeShift }}</option>
                                                     <option value="firstShift">{{ __('firstShift') }}</option>
                                                     <option value="secondShift">{{ __('secondShift') }}</option>
@@ -35,7 +35,7 @@
                                             </td>
                                             <td>
                                                 <div class="form-group">
-                                                    <select name="schedule" id="schedule" class="form-control" onchange="guardarDatosShift('{{ $persons->employeeName }}')">
+                                                    <select name="schedule" id="schedule_{{ $persons->employeeName }}" class="form-control" onchange="guardarDatosShift('{{ $persons->employeeName }}')">
                                                         <option value="{{ $persons->employeeSchedule }}" selected disabled> {{ $persons->employeeSchedule }}</option>
                                                         <option value="07:00 - 15:30">07:30 - 15:30</option>
                                                         <option value="07:00 - 17:30">07:30 - 17:30</option>
@@ -60,8 +60,11 @@
         function guardarDatosShift(employee) {
           const url = @json(route('jsonPersonalShift'));
 
-         let  shift= document.getElementById("shift").value;
-         let  schedule= document.getElementById("schedule").value;
+         let  shift= document.getElementById("shift_"+employee+"").value;
+         let  schedule= document.getElementById("schedule_"+employee+"").value;
+         if (shift !== null && schedule !== null) {
+
+
          alert(employee + " " + shift + " " + schedule);
             fetch(url, {
                 method: 'POST',
@@ -84,6 +87,7 @@
             });
 
         }
+    }
 
     </script>
 
