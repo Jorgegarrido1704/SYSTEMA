@@ -37,8 +37,8 @@
                                                 <div class="form-group">
                                                     <select name="schedule" id="schedule_{{ $persons->employeeName }}" class="form-control" onchange="guardarDatosShift('{{ $persons->employeeName }}')">
                                                         <option value="{{ $persons->employeeSchedule }}" selected disabled> {{ $persons->employeeSchedule }}</option>
-                                                        <option value="07:00 - 15:30">07:30 - 15:30</option>
-                                                        <option value="07:00 - 17:30">07:30 - 17:30</option>
+                                                        <option value="07:30 - 15:30">07:30 - 15:30</option>
+                                                        <option value="07:30 - 17:30">07:30 - 17:30</option>
                                                         <option value="19:00 - 07:00">19:00 - 07:00</option>
                                                     </select>
                                                 </div>
