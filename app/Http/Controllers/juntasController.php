@@ -724,7 +724,7 @@ class juntasController extends Controller
                     $query->orWhere('fecha', 'LIKE', "$date%");
                 }
             })
-            ->limit(3)
+            ->limit(10)
             ->get();
 
         // calidad Q
