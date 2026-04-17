@@ -948,100 +948,71 @@ class caliController extends generalController
 
     public function excel_calidad(Request $request)
     {
-        $di = $request->input('di'); // 26-02-2025 00:00
-        $df = $request->input('df'); // 26-02-2025 23.59
-        $di = substr($di, 0, 10);
-        $df = substr($df, 0, 10);
+        $di = Carbon::parse($request->input('di'))->startOfDay()->format('d-m-Y H:i');
+        $df = Carbon::parse($request->input('df'))->endOfDay()->format('d-m-Y H:i');
 
-        // Initialize the spreadsheet
+        // 2. Consulta Única y Directa (Eliminamos los bucles while y búsquedas por ID)
+        $buscarinfo = calidadRegistro::select('fecha', 'pn', 'codigo', 'Responsable')
+            ->selectRaw('count(*) as total')
+            ->whereRaw('STR_TO_DATE(fecha, "%d-%m-%Y %H:%i") BETWEEN STR_TO_DATE(?, "%d-%m-%Y %H:%i") AND STR_TO_DATE(?, "%d-%m-%Y %H:%i")', [$di, $df])
+            ->groupBy('fecha', 'pn', 'codigo', 'Responsable')
+            ->orderByRaw('STR_TO_DATE(fecha, "%d-%m-%Y %H:%i") DESC')
+            ->get();
+
+        // 3. Preparación de Excel
         $spreadsheet = new Spreadsheet;
         $sheet = $spreadsheet->getActiveSheet();
-        $min = $max = '';
-        $t = 2; // Row counter for the data
-        while ($min == '') {
-            $regmin = DB::table('regsitrocalidad')
-                ->select('id')
-                ->where('fecha', 'LiKE', $di.'%')
-                ->orderBy('id', 'asc')
-                ->first();
 
-            if ($regmin) {
-                $min = $regmin->id;
-            } else {
-                $di = date('d-m-Y', strtotime($di.' +1 day'));
+        // Encabezados (Establecer de una vez)
+        $headers = ['Fecha', 'Número de parte', 'Código', 'Responsable', 'Lider', 'Cuenta'];
+        $sheet->fromArray($headers, null, 'A1');
 
-            }
-        }
-        while ($max == '') {
-            $regmax = DB::table('regsitrocalidad')
-                ->select('id')
-                ->where('fecha', 'LiKE', $df.'%')
-                ->orderBy('id', 'desc')
-                ->first();
-            if ($regmax) {
-                $max = $regmax->id;
-            } else {
-
-                $df = date('d-m-Y', strtotime($df.' -1 day'));
-            }
-        }
-
-        $registro = [];
-
-        // Set the headers for the spreadsheet
-        $headers = [
-            'A1' => 'Fecha',
-            'B1' => 'Numero de parte',
-            'C1' => 'Codigo',
-            'D1' => 'Responsable',
-            'E1' => 'Cuenta',
-        ];
-
-        // auto size columns
+        // Estilo: Auto-size y negritas en cabecera
         foreach (range('A', 'E') as $columnID) {
             $sheet->getColumnDimension($columnID)->setAutoSize(true);
         }
-        // Loop through the headers and add them to the spreadsheet
-        foreach ($headers as $cell => $header) {
-            $sheet->setCellValue($cell, $header);
-        }
-        // Get the data within the id range
-        $buscarinfo = DB::table('regsitrocalidad')
-            ->whereBetween('id', [$min, $max]) // Compare only the id part (between $min, $min)
-            ->orderBy('fecha', 'desc')
-            ->orderBy('pn', 'desc')
-            ->orderBy('codigo', 'desc')
-            ->orderBy('Responsable', 'desc')
-            ->get();
+        $sheet->getStyle('A1:E1')->getFont()->setBold(true);
+
+        // 4. Llenado de datos
+        $t = 2;
         foreach ($buscarinfo as $row) {
-            if (! isset($registro[$row->fecha][$row->pn][$row->codigo][$row->Responsable])) {
-                $registro[$row->fecha][$row->pn][$row->codigo][$row->Responsable] = 1;
+            // Intentamos parsear la fecha, si falla usamos el valor original
+            try {
+                $fechaExcel = Carbon::createFromFormat('d-m-Y H:i', $row->fecha)->format('Y/m/d');
+            } catch (\Exception $e) {
+                $fechaExcel = $row->fecha;
+            }
+
+            $sheet->setCellValue('A'.$t, $fechaExcel);
+            $sheet->setCellValue('B'.$t, $row->pn);
+            $sheet->setCellValue('C'.$t, $row->codigo);
+            $sheet->setCellValue('D'.$t, $row->Responsable == 'No Specific' ? '' : $row->Responsable);
+            if ($row->Responsable == 'No Specific') {
+                $sheet->setCellValue('E'.$t, '');
             } else {
-                $registro[$row->fecha][$row->pn][$row->codigo][$row->Responsable]++;
-            }
-        }
-        // Loop through the records and add them to the spreadsheet
-        foreach ($registro as $fecha => $pn) {
-            foreach ($pn as $pn => $codigo) {
-                foreach ($codigo as $codigo => $responsable) {
-                    foreach ($responsable as $responsable => $cuenta) {
-                        $sheet->setCellValue('A'.$t, carbon::parse($fecha)->format('Y/m/d'));
-                        $sheet->setCellValue('B'.$t, $pn);
-                        $sheet->setCellValue('C'.$t, $codigo);
-                        $sheet->setCellValue('D'.$t, $responsable);
-                        $sheet->setCellValue('E'.$t, $cuenta);
-                        $t++;
-                    }
+                if (personalBergsModel::where('employeeName', '=', $row->Responsable)->exists()) {
+                    $lider = personalBergsModel::select('employeeLider')->where('employeeName', '=', $row->Responsable)->first();
+                    $sheet->setCellValue('E'.$t, $lider->employeeLider);
+                } else {
+                    $sheet->setCellValue('E'.$t, '');
                 }
+
             }
+
+            $sheet->setCellValue('F'.$t, $row->total);
+            $t++;
         }
 
-        // Generate the Excel file and output it to the browser
+        // 5. Salida del archivo
+        $fileName = 'Reporte_Calidad_'.date('d-m-Y').'.xlsx';
         $writer = new Xlsx($spreadsheet);
+
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="Reporte de calidad del '.$di.' al '.$df.'.xlsx"');
+        header("Content-Disposition: attachment;filename=\"$fileName\"");
         header('Cache-Control: max-age=0');
+
         $writer->save('php://output');
+        exit;
     }
 
     public function excel_calidad_pendientes(Request $request)
