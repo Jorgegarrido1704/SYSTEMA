@@ -713,17 +713,18 @@ class juntasController extends Controller
         arsort($datos);
         $firstKey = key($datos);
         $datosF = $pnrs = $datosT = $datosS = [];
+        // top 3 calida
         $top3registrosCalidas = calidadRegistro::selectRaw('codigo,client, pn, SUM(resto) as total_resto')
             ->where('codigo', '!=', 'TODO BIEN')
             ->groupBy('codigo', 'pn', 'client')
-            ->orderByDesc('codigo', 'total_resto')
+            ->orderByDesc('total_resto')
             // ->where('fecha', 'LIKE', "$crtl%")
             ->where(function ($query) use ($datesToCheck) {
                 foreach ($datesToCheck as $date) {
                     $query->orWhere('fecha', 'LIKE', "$date%");
                 }
             })
-            ->limit(10)
+            ->limit(3)
             ->get();
 
         // calidad Q
