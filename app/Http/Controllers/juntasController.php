@@ -2123,44 +2123,44 @@ class juntasController extends Controller
     public function rhDashBoard()
     {
         $accidente = '61928 REV B.pdf';
+        // Calculos
         $today = date('Y-m-d');
         $genero = $tipoTrabajador = [0, 0, 0];
         $month = date('Y-m');
-
-        $total = $aus = $falt = $promaus = $enPlanta = 0;
+        $total = 0;
+        $aus = $falt = $promaus = $enPlanta = 0;
         $dias = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
-        $datoGeneros = personalBergsModel::select('Gender', 'typeWorker')
+        $diaActual = Carbon::now()->dayOfWeek == '0' ? $dias[6] : $dias[Carbon::now()->dayOfWeek - 1];
+        // end calculos
+        // genero
+        $genero = personalBergsModel::select('Gender', DB::raw('count(*) as total'))
             ->where('status', '!=', 'Baja')
             ->where('typeWorker', '!=', 'Corporativo')
-            ->where('employeeShift', '=', 'firstShift')
+            ->groupBy('Gender')
             ->get();
-        foreach ($datoGeneros as $datoGenero) {
-            if ($datoGenero->Gender == 'H') {
-                $genero[1]++;
-            } elseif ($datoGenero->Gender == 'M') {
-                $genero[0]++;
-            }
-            if ($datoGenero->typeWorker == 'Directo') {
-                $tipoTrabajador[0]++;
-            } elseif ($datoGenero->typeWorker == 'Indirecto') {
-                $tipoTrabajador[1]++;
-            } elseif ($datoGenero->typeWorker != 'Directo' && $datoGenero->typeWorker != 'Indirecto') {
-                $tipoTrabajador[2]++;
-            }
-            $total++;
-        }
+        // end genero
+        // tipo trabajador
+        $tipoTrabajado = personalBergsModel::select('typeWorker', DB::raw('count(*) as total'))
+            ->where('status', '!=', 'Baja')
+            ->where('typeWorker', '!=', 'Corporativo')
+            ->groupBy('typeWorker')
+            ->get();
+        // end tipo trabajador
+        // rotacion
         $registroRotacion = personalBergsModel::select('employeeNumber')
             ->where('status', '=', 'Baja')
             ->where('typeSalida', '=', 'VOLUNTARIA')
             ->whereMonth('DateSalida', '=', Carbon::now()->month)
             ->get();
         $rotacionTotal = count($registroRotacion);
+        $total = personalBergsModel::select('employeeNumber')
+            ->where('status', '!=', 'Baja')->count();
 
-        $totalRotacion = round($rotacionTotal / ($rotacionTotal + $total) * 100, 2);
+        $totalRotacion = round($rotacionTotal / ($rotacionTotal + $total) * 100, 2) ?? 0;
 
-        $selectDia = Carbon::now()->dayOfWeek;
-        $diaActual = $dias[$selectDia - 1];
-        $week = Carbon::now()->weekOfYear;
+        // end rotacion
+
+        $week = Carbon::now()->weekOfYear; // $diaActual para el dia
 
         $faltantes = [];
         $ausentismos = DB::connection('rrhh')
@@ -2323,14 +2323,15 @@ class juntasController extends Controller
         $withoutAccidents = carbon::now()->diffInDays($ultimoAccidente);
 
         return view('juntas.hr', ['enplanta' => $enplanta, 'vacas' => $vacas, 'promaus' => $promaus, 'diaActual' => $diaActual,
-            'tipoTrabajador' => $tipoTrabajador, 'faltantes' => $faltantes,  'genero' => $genero,
+            'tipoTrabajador' => $tipoTrabajador, 'faltantes' => $faltantes,
             'registrosDeAsistencia' => $registrosDeAsistencia, 'value' => session('user'), 'cat' => session('categoria'),
             'accidente' => $accidente, 'porcentajaAusentismo' => $porcentajaAusentismo, 'promedioCorrectoVacciones' => $promedioCorrectoVacciones,
             'porcentajaVacaciones' => $porcentajaVacaciones, 'headcount' => $headcount, 'porcentajeMAximodeProduccionHoy' => $porcentajeMAximodeProduccionHoy,
-            'withoutAccidents' => $withoutAccidents, 'firstShift' => $firstShift, 'secondShift' => $secondShift]);
+            'withoutAccidents' => $withoutAccidents, 'firstShift' => $firstShift, 'secondShift' => $secondShift,
+
+            'genero' => $genero, 'tipoTrabajado' => $tipoTrabajado]);
     }
 
-    // Show Names per category
     public function DatosRh(Request $request)
     {
         $id = $request->input('id');

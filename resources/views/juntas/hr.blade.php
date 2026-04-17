@@ -49,7 +49,7 @@
     const registros = @json($registrosDeAsistencia);
 
     const genero = @json($genero);
-    const tipoTrabajador = @json($tipoTrabajador);
+    const tipoTrabajador = @json($tipoTrabajado);
     const promaus = @json($promaus);
     const vacaciones = @json($vacas);
 </script>

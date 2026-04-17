@@ -1,14 +1,15 @@
 const assist = document.getElementById("assistence");
 
 const registroInicidencia = Object.values(registros);
-
 const generos = Object.values(genero);
+
+
 const tipoTrabajadors = Object.values(tipoTrabajador);
+    console.log(tipoTrabajadors);
 const registroVacaciones = Object.values(vacaciones);
 const promau = promaus || 0; // Default to 0 if promaus is not defined
 
-//console.log(promau);
-
+//lista de incidencias
 const rhAssistence = new Chart(assist, {
     type: "bar",
     data: {
@@ -122,6 +123,7 @@ const rhAssistence = new Chart(assist, {
         },
     },
 });
+//end lista de incidencias
 //rotacion
 const rota0 = new Chart(document.getElementById("rotation0"), {
     type: "doughnut",
@@ -181,65 +183,70 @@ const rota0 = new Chart(document.getElementById("rotation0"), {
         },
     ],
 });
-//diversidad
-const rota1 = new Chart(document.getElementById("rotation1"), {
-    type: "doughnut",
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: {
-                position: "top",
-            },
-            title: {
-                display: true,
-                text: "Rotación de personal",
-            },
-        },
-    },
-    data: {
-        labels: ["Mujeres: " + generos[0], "Hombres: " + generos[1]],
-        datasets: [
-            {
-                label: "Rotación de personal",
-                data: generos,
-                backgroundColor: [
-                    "rgba(249, 41, 176, 0.21)",
-                    "rgba(3, 50, 204, 0.21)",
-                ],
-                borderColor: ["rgba(249, 41, 176, 1)", "rgba(3, 50, 204, 1)"],
-                borderWidth: 1,
-            },
-        ],
-    },
-     plugins: [
-        {
-            beforeDraw: (chart) => {
-                const ctx = chart.ctx;
-                ctx.save();
-                ctx.font = "bold 20px Arial";
-                ctx.fillStyle = "black";
-                ctx.textAlign = "center";
-                ctx.textBaseline = "middle";
-                const total = chart.data.datasets[0].data.reduce(
-                    (a, b) => a + b,
-                    0
-                );
-                const centerX =
-                    chart.chartArea.left +
-                    (chart.chartArea.right - chart.chartArea.left) / 2;
-                const centerY =
-                    chart.chartArea.top +
-                    (chart.chartArea.bottom - chart.chartArea.top) / 2;
-                ctx.fillText(
-                    `${( generos[0] + generos[1])}`,
-                    centerX,
-                    centerY
-                );
-            },
-        },
-    ],
-});
+            //diversidad
+        try{
+                const rota1 = new Chart(document.getElementById("rotation1"), {
+                    type: "doughnut",
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: "top",
+                            },
+                            title: {
+                                display: true,
+                                text: "Rotación de personal",
+                            },
+                        },
+                    },
+                    data: {
+                        labels: ["Mujeres: " + generos[1]['total'],"Hombres: " + generos[0]['total']],
+                        datasets: [
+                            {
+                                label: "Rotación de personal",
+                                data: [generos[1]['total'],generos[0]['total']],
+                                backgroundColor: [
+                                    "rgba(249, 41, 176, 0.21)",
+                                    "rgba(3, 50, 204, 0.21)",
+                                ],
+                                borderColor: ["rgba(249, 41, 176, 1)", "rgba(3, 50, 204, 1)"],
+                                borderWidth: 1,
+                            },
+                        ],
+                    },
+                    plugins: [
+                        {
+                            beforeDraw: (chart) => {
+                                const ctx = chart.ctx;
+                                ctx.save();
+                                ctx.font = "bold 20px Arial";
+                                ctx.fillStyle = "black";
+                                ctx.textAlign = "center";
+                                ctx.textBaseline = "middle";
+                                const total = chart.data.datasets[0].data.reduce(
+                                    (a, b) => a + b,
+                                    0
+                                );
+                                const centerX =
+                                    chart.chartArea.left +
+                                    (chart.chartArea.right - chart.chartArea.left) / 2;
+                                const centerY =
+                                    chart.chartArea.top +
+                                    (chart.chartArea.bottom - chart.chartArea.top) / 2;
+                                ctx.fillText(
+                                    `${( generos[0]['total'] + generos[1]['total'])}`,
+                                    centerX,
+                                    centerY
+                                );
+                            },
+                        },
+                    ],
+                });
+            }catch(e){
+                console.log(e)
+            }
+            //end diversidad
 //ausentismo
 const rota2 = new Chart(document.getElementById("rotation2"), {
     type: "doughnut",
@@ -300,6 +307,24 @@ const rota2 = new Chart(document.getElementById("rotation2"), {
     ],
 });
 //ratios
+
+let directos = 0;
+let indirectos = 0;
+Object.values(tipoTrabajadors).forEach(value => {
+  if (value.typeWorker === 'Directo') {
+    directos += value.total;
+  } else {
+    indirectos += value.total;
+  }
+});
+
+// Evitar división por cero
+let promedio = indirectos > 0 ? (directos / indirectos)  : 0;
+
+// Redondear a 2 decimales
+promedio = promedio.toFixed(2);
+console.log(promedio);
+
 const rota3 = new Chart(document.getElementById("rotation3"), {
     type: "doughnut",
     options: {
@@ -317,14 +342,23 @@ const rota3 = new Chart(document.getElementById("rotation3"), {
     },
     data: {
         labels: [
-            "Directos:" + tipoTrabajadors[0],
-            "Indirectos:" + tipoTrabajadors[1],
-            "Externos:" + tipoTrabajadors[2],
+
+            ...Object.values(tipoTrabajadors).map((value) => {
+                return value.typeWorker+": "+value.total;
+            }),
+
+
+
+
         ],
         datasets: [
             {
                 label: "Ratios de personal",
-                data: tipoTrabajadors,
+                data:[
+                 ...Object.values(tipoTrabajadors).map((value) => {
+
+                    return value.total;
+                }),],
                 backgroundColor: [
                     "rgba(2, 164, 75, 0.21)",
                     "rgba(255, 0, 0, 0.21)",
@@ -356,7 +390,8 @@ const rota3 = new Chart(document.getElementById("rotation3"), {
                     chart.chartArea.top +
                     (chart.chartArea.bottom - chart.chartArea.top) / 2;
                 ctx.fillText(
-                    `${(tipoTrabajadors[0] / (tipoTrabajadors[1]+tipoTrabajadors[2])).toFixed(2)}%`,
+
+                    `${promedio}`,
                     centerX,
                     centerY
                 );
