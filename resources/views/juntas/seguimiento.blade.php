@@ -17,7 +17,7 @@
                         <input type="text" name="onTime" id="onTime" value="{{ __('On Time') }}"  style="width:70px;  height: 30px;"  readonly>
                         <input type="text" name="onWorking" id="onWorking" value="{{ __('On precess') }}" style="width:85px;  height: 30px;"  readonly>
                         <input type="text" name="closeToexpiring" id="closeToexpiring" value="{{ __('close to expiring') }}"  style="width:135px; height: 30px;"  readonly>
-                        <input type="text" name="delayedOnTime" id="delayedOnTime" value="{{ __('Delayed') }} & {{ __('On Time') }}"  style="width: 155px; height: 30px;"  readonly>
+                        <input type="text" name="delayedOnTime" id="delayedOnTime" value="{{ __('Delayed') }} & {{ __('On Time') }}"  style="width: 170px; height: 30px;"  readonly>
                         <input type="text" name="delayed" id="delayed" value="{{ __('Delayed') }}"  style="width: 80px; height: 30px;"  readonly>
                         <input type="text" name="delayedandclosedtoexpiring" id="delayedandclosedtoexpiring" value="{{ __('Delayed') }} & {{ __('close to expiring') }}"  style="width:225px;  height: 30px;"  readonly>
                         <input type="text" name="late" id="late" value="{{ __('Late') }}" style="width: 50px; height: 30px;"  readonly>
@@ -30,7 +30,15 @@
 
                 <div class="card shadow mb-5">
                     <div class="card-header py-3">
-                        <h5 class="m-1 font-weight-bold text-primary">{{ __('Order Status') }} </h5>
+                        <h4 class="m-1 font-weight-bold text-primary">{{ __('Order Status') }} </h4>
+                        <h6 class="m-0 font-weight-bold text-primary d-flex align-items-center flex-wrap">
+
+
+                        <div class="d-flex align-items-center me-3">
+                            <label class="mb-0 me-1" for="tooling">{{ __('Filter By PN') }}</label>
+                            <input type="text" name="tooling" id="tooling" class="form-control form-control-sm ml-2 mr-2"  style="width: 85px;" onchange="filtroDeorndenes(this.value)">
+                        </div>
+                    </h6>
                     </div>
                     <div class="card-body" style="overflow-y: auto; ">
 
@@ -50,28 +58,12 @@
                                         <th>{{ __('Packing') }}</th>
                                     </tr>
                                 </thead>
-                                @if(!empty($buscarDatos))
-                                    @foreach ($buscarDatos as $cut)
+                              
 
-                                        <tbody>
-                                            <tr  onclick ="location.href='{{ url('juntas/seguimiento/'.$cut[15]) }}'" style="cursor: pointer;">
-                                                <td id="{{$cut[16]}}"><b>{{ $cut[0]  }}
-                                                    </td>
-                                                <td id="{{$cut[16]}}"><b>{{ $cut[1]  }}
-                                                </td>
-                                                </td>
-                                                <td id="{{$cut[16]}}"><b>{{ $cut[2] }}</td>
-                                                <td><b>{{ $cut[3] }}</td>
-                                                <td><b>{{ $cut[4] }}</td>
-                                                <td id="{{$cut[10]}}"><b>{{ $cut[5] }}</td>
-                                                <td id="{{$cut[11]}}"><b>{{ $cut[6] }}</td>
-                                                <td id="{{$cut[12]}}"><b>{{ $cut[7] }}</td>
-                                                <td id="{{$cut[13]}}"><b>{{ $cut[8] }}</td>
-                                                <td id="{{$cut[14]}}"><b>{{ $cut[9] }}</td>
-                                            </tr>
+                                        <tbody id="SeguimientoDeOrdenesDeTrabajo">
+                                            
                                         </tbody>
-                                    @endforeach
-                                @endif
+                                    
 
                             </table>
                         </div>
@@ -81,5 +73,63 @@
 
 
         </div>
+<script>
+    function filtroDeorndenes(valores) {
+    const url = "{{ route('jsonSeguimientos') }}";
 
+    // Fix: Re-assign the uppercase value
+    if (valores && valores.length > 0) {
+        valores = valores.toUpperCase();
+    } else {
+        valores = 'all';
+    }
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": document
+                .querySelector('meta[name="csrf-token"]')
+                .getAttribute("content"),
+        },
+        body: JSON.stringify({ valores: valores }),
+    })
+    .then(response => {
+        if (!response.ok) throw new Error('Network response was not ok');
+        return response.json();
+    })
+    .then(data => {
+       // console.log("Data received:", data);
+        
+        const $container = $('#SeguimientoDeOrdenesDeTrabajo');
+        $container.empty(); // Safer way to clear content in jQuery
+
+        data.forEach((cut) => {
+          //  console.log(cut);
+            let detailUrl = `{{ url('juntas/seguimiento') }}/${cut[15]}`;
+
+            $container.append(`
+                <tr onclick="window.location.href='${detailUrl}'" style="cursor: pointer;">
+                    <td id="${cut[16]}"><b>${cut[0]}</b></td>
+                    <td id="${cut[16]}"><b>${cut[1]}</b></td>
+                    <td id="${cut[16]}"><b>${cut[2]}</b></td>
+                    <td ><b>${cut[3]}</b></td>
+                    <td ><b>${cut[4]}</b></td>
+                    <td id="${cut[10]}"><b>${cut[5]}</b></td>
+                    <td id="${cut[11]}"><b>${cut[6]}</b></td>
+                    <td id="${cut[12]}"><b>${cut[7]}</b></td>
+                    <td id="${cut[13]}"><b>${cut[8]}</b></td>
+                    <td id="${cut[14]}"><b>${cut[9]}</b></td>
+                </tr>
+            `);
+        });
+    })
+    .catch(error => {
+        console.error('Error fetching data:', error);
+    });
+}
+    
+onload= filtroDeorndenes(''); ;
+
+</script>
     @endsection

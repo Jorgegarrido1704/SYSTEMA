@@ -1594,14 +1594,31 @@ class juntasController extends Controller
     {
         $value = session('user');
         $cat = session('categoria');
+
+        return view('juntas.seguimiento', ['value' => session('user'), 'cat' => session('categoria')]);
+    }
+
+    public function jsonSeguimientos(Request $request)
+    {
         $i = 0;
         $buscarDatos = [];
-        $tiempos = DB::table('registro')
-            ->join('tiempos', 'registro.info', '=', 'tiempos.info')
-            ->whereNotIn('count', ['12', '20'])
-            ->select('registro.*', 'tiempos.*', 'registro.id as ids')
-            ->orderBy('registro.wo', 'ASC')
-            ->get();
+        $valores = $request->input('valores');
+        if ($valores == 'all' or $valores == '') {
+            $tiempos = DB::table('registro')
+                ->join('tiempos', 'registro.info', '=', 'tiempos.info')
+                ->whereNotIn('count', ['12', '20'])
+                ->select('registro.*', 'tiempos.*', 'registro.id as ids')
+                ->orderBy('registro.wo', 'ASC')
+                ->get();
+        } else {
+            $tiempos = DB::table('registro')
+                ->join('tiempos', 'registro.info', '=', 'tiempos.info')
+                ->whereNotIn('count', ['12', '20'])
+                ->select('registro.*', 'tiempos.*', 'registro.id as ids')
+                ->where('registro.NumPart', 'LIKE', '%'.$valores.'%')
+                ->orderBy('registro.wo', 'ASC')
+                ->get();
+        }
 
         function deffColores($InitDays, $systemFinish, $lastStatus, $dias)
         {
@@ -1753,8 +1770,9 @@ class juntasController extends Controller
 
             $i++;
         }
+        $datos = $buscarDatos;
 
-        return view('juntas/seguimiento', ['value' => session('user'), 'cat' => session('categoria'), 'buscarDatos' => $buscarDatos]);
+        return json_encode($datos);
     }
 
     // Show seguimiento according ID

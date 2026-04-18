@@ -210,6 +210,7 @@ Route::controller(juntasController::class)->group(function () {
     Route::get('/registrosajax', [juntasController::class, 'registrosajax'])->name('registrosajax');
     Route::get('/RegistroQuality', [juntasController::class, 'customerComplains'])->name('customerComplains');
     Route::get('/npi', [juntasController::class, 'npi'])->name('juntas.npi');
+    Route::POST('/juntas/jsonSeguimientos', [juntasController::class, 'jsonSeguimientos'])->name('jsonSeguimientos');
 });
 
 Route::controller(SaludController::class)->group(function () {
