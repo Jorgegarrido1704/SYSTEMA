@@ -2254,7 +2254,7 @@ class juntasController extends Controller
             ->where('shift', '=', 'firstShift')
             ->count();
         $ausentismoPrimesTurno = $faltasPrimesTurno > 0 ? round(($faltasPrimesTurno / $firstShift) * 100, 2) : 0;
-        $disponibilidadPrimesTurno = $faltasPrimesTurno > 0 ? round(($firstShiftDirectos - ($faltasPrimesTurno) / $firstShiftDirectos) * 100, 2) : 100;
+        $disponibilidadPrimesTurno = $faltasPrimesTurno > 0 ? round(($firstShiftDirectos - $faltasPrimesTurno) / $firstShiftDirectos * 100, 2) : 100;
         // end ausentismo First Shift
         // end  First Shift
 
