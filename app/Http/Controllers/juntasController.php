@@ -2122,7 +2122,7 @@ class juntasController extends Controller
 
     public function rhDashBoard()
     {
-        $accidente = '61928 REV B.pdf';
+
         // Calculos
         $today = date('Y-m-d');
         $genero = $tipoTrabajador = [0, 0, 0];
@@ -2131,6 +2131,8 @@ class juntasController extends Controller
         $aus = $falt = $promaus = $enPlanta = 0;
         $dias = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
         $diaActual = Carbon::now()->dayOfWeek == '0' ? $dias[6] : $dias[Carbon::now()->dayOfWeek - 1];
+        $diaAnterior = Carbon::now()->subDay()->dayOfWeek == '0' ? $dias[6] : $dias[Carbon::now()->subDay()->dayOfWeek - 1];
+        $week = Carbon::now()->weekOfYear; // $diaActual para el dia
         // end calculos
         // genero
         $genero = personalBergsModel::select('Gender', DB::raw('count(*) as total'))
@@ -2139,13 +2141,13 @@ class juntasController extends Controller
             ->groupBy('Gender')
             ->get();
         // end genero
-        // tipo trabajador
+        // Ratios
         $tipoTrabajado = personalBergsModel::select('typeWorker', DB::raw('count(*) as total'))
             ->where('status', '!=', 'Baja')
             ->where('typeWorker', '!=', 'Corporativo')
             ->groupBy('typeWorker')
             ->get();
-        // end tipo trabajador
+        // end Ratios
         // rotacion
         $registroRotacion = personalBergsModel::select('employeeNumber')
             ->where('status', '=', 'Baja')
@@ -2155,36 +2157,34 @@ class juntasController extends Controller
         $rotacionTotal = count($registroRotacion);
         $total = personalBergsModel::select('employeeNumber')
             ->where('status', '!=', 'Baja')->count();
-
         $totalRotacion = round($rotacionTotal / ($rotacionTotal + $total) * 100, 2) ?? 0;
-
         // end rotacion
-
-        $week = Carbon::now()->weekOfYear; // $diaActual para el dia
-
+        // ausentismos
         $faltantes = [];
         $ausentismos = DB::connection('rrhh')
             ->table('rotacion')
+            ->selectRaw('
+        SUM(COALESCE(assistencia, 0) +
+            COALESCE(vacaciones, 0) +
+            COALESCE(incapacidad, 0) +
+            COALESCE(permisos_gose, 0) +
+            COALESCE(permisos_sin_gose, 0) +
+            COALESCE(retardos, 0) +
+            COALESCE(suspension, 0) +
+            COALESCE(tsp, 0)) as total_asistencia,
+        SUM(COALESCE(faltas, 0)) as total_faltas
+    ')
             ->whereMonth('fecha_rotacion', Carbon::now()->month)
             ->whereYear('fecha_rotacion', Carbon::now()->year)
-            // ->where('fecha_rotacion', 'LIKE', $month.'%')
-            ->get();
+            ->first(); // Usamos first() para obtener un solo objeto directamente
 
-        foreach ($ausentismos as $ausentismo) {
-            $aus += (int) $ausentismo->assistencia;
-            $aus += (int) $ausentismo->vacaciones;
-            $aus += (int) $ausentismo->incapacidad;
-            $falt += (int) $ausentismo->faltas;
-            $aus += (int) $ausentismo->permisos_gose;
-            $aus += (int) $ausentismo->permisos_sin_gose;
-            $aus += (int) $ausentismo->retardos;
-            $aus += (int) $ausentismo->suspension;
-            $aus += (int) $ausentismo->tsp;
-        }
+        // Verificación y asignación
+        $aus = $ausentismos->total_asistencia ?? 0;
+        $falt = $ausentismos->total_faltas ?? 0;
         if ($aus == 0 && $falt == 0) {
             $promaus = 0;
         } elseif ($falt > 0) {
-            $promaus = round($falt / $aus, 2);
+            $promaus = round(($falt / $aus) * 100, 2);
         }
 
         $rotacion = DB::connection('rrhh')
@@ -2211,8 +2211,7 @@ class juntasController extends Controller
         }
 
         $datosCorrector = ['OK', 'F', 'PSS', 'PCS', 'INC', 'V', 'R', 'SUS', 'PCT', 'TSP', 'ASM', 'SCE', 'HE'];
-        $restroFaltantes = DB::table('assistence')
-            ->select('lider', $diaActual)
+        $restroFaltantes = assistence::select('lider', $diaActual)
             ->where('week', '=', $week)
             ->get();
         foreach ($restroFaltantes as $faltante) {
@@ -2224,9 +2223,9 @@ class juntasController extends Controller
             }
         }
         // personal en planta
-        $enplanta = ($rotacion->assistencia + $rotacion->retardos + $rotacion->practicantes + $rotacion->tsp + $rotacion->ServiciosComprados);
+        //  $enplanta = ($rotacion->assistencia + $rotacion->retardos + $rotacion->practicantes + $rotacion->tsp + $rotacion->ServiciosComprados + $rotacion->asimilados);
         // porcentaje ausentismo
-        $porcentajaAusentismo = $total > 0 ? $rotacion->faltas > 0 ? round(($rotacion->faltas * 100) / $total, 2) : 0 : 0;
+        // $porcentajaAusentismo = $total > 0 ? $rotacion->faltas > 0 ? round(($rotacion->faltas * 100) / $total, 2) : 0 : 0;
         // porcentaje Vacaciones
         $promedioCorrectoVacciones = round((1000) / $total, 2);
         $porcentajaVacaciones = $total > 0 ? $rotacion->vacaciones > 0 ? round(($rotacion->vacaciones * 100) / $total, 2) : 0 : 0;
@@ -2243,13 +2242,42 @@ class juntasController extends Controller
             ->whereNotIn('typeWorker', ['Corporativo', 'Practicante', 'Asimilado', 'Servicios Comprados'])
             ->where('employeeShift', '=', 'firstShift')
             ->count();
+        // ausentismo First Shift
+        $firstShiftDirectos = personalBergsModel::select('typeWorker')
+            ->where('status', '!=', 'Baja')
+            ->where('typeWorker', '=', 'Directo')
+            ->where('employeeShift', '=', 'firstShift')
+            ->count();
+
+        $faltasPrimesTurno = assistence::where($diaActual, '=', 'F')
+            ->where('week', '=', $week)
+            ->where('shift', '=', 'firstShift')
+            ->count();
+        $ausentismoPrimesTurno = $faltasPrimesTurno > 0 ? round(($faltasPrimesTurno / $firstShift) * 100, 2) : 0;
+        $disponibilidadPrimesTurno = $faltasPrimesTurno > 0 ? round(($firstShiftDirectos - ($faltasPrimesTurno) / $firstShiftDirectos) * 100, 2) : 100;
+        // end ausentismo First Shift
         // end  First Shift
+
         // Second Shift
         $secondShift = personalBergsModel::select('typeWorker')
             ->where('status', '!=', 'Baja')
             ->whereNotIn('typeWorker', ['Corporativo', 'Practicante', 'Asimilado', 'Servicios Comprados'])
             ->where('employeeShift', '=', 'secondShift')
             ->count();
+        // ausentismo First Shift
+        $secondShiftDirectos = personalBergsModel::select('typeWorker')
+            ->where('status', '!=', 'Baja')
+            ->where('typeWorker', '=', 'Directo')
+            ->where('employeeShift', '=', 'secondShift')
+            ->count();
+
+        $faltasSecondShift = assistence::where($diaAnterior, '=', 'F')
+            ->where('week', '=', $week)
+            ->where('shift', '=', 'secondShift')
+            ->count();
+        $ausentismoSecondShift = $faltasSecondShift > 0 ? round(($faltasSecondShift / $secondShift) * 100, 2) : 0;
+        $disponibilidadSecondShift = $faltasSecondShift > 0 ? round((($secondShiftDirectos - $faltasSecondShift) / $secondShiftDirectos) * 100, 2) : 100;
+        // end ausentismo First Shift
         // end Second Shift
         // Maximum capacity direct workers
         $personalDirectoMaximo = personalBergsModel::where('status', '!=', 'Baja')->whereNotIn('typeWorker', ['Corporativo', 'Practicante', 'Asimilado', 'Servicios Comprados', 'Indirecto'])->count();
@@ -2322,14 +2350,16 @@ class juntasController extends Controller
         $ultimoAccidente = carbon::parse('2025-11-03');
         $withoutAccidents = carbon::now()->diffInDays($ultimoAccidente);
 
-        return view('juntas.hr', ['enplanta' => $enplanta, 'vacas' => $vacas, 'promaus' => $promaus, 'diaActual' => $diaActual,
-            'tipoTrabajador' => $tipoTrabajador, 'faltantes' => $faltantes,
+        return view('juntas.hr', ['vacas' => $vacas, 'promaus' => $promaus, 'diaActual' => $diaActual,
+            'faltantes' => $faltantes,
             'registrosDeAsistencia' => $registrosDeAsistencia, 'value' => session('user'), 'cat' => session('categoria'),
-            'accidente' => $accidente, 'porcentajaAusentismo' => $porcentajaAusentismo, 'promedioCorrectoVacciones' => $promedioCorrectoVacciones,
+            'promedioCorrectoVacciones' => $promedioCorrectoVacciones,
             'porcentajaVacaciones' => $porcentajaVacaciones, 'headcount' => $headcount, 'porcentajeMAximodeProduccionHoy' => $porcentajeMAximodeProduccionHoy,
             'withoutAccidents' => $withoutAccidents, 'firstShift' => $firstShift, 'secondShift' => $secondShift,
 
-            'genero' => $genero, 'tipoTrabajado' => $tipoTrabajado]);
+            'genero' => $genero, 'tipoTrabajado' => $tipoTrabajado, 'ausentismoPrimesTurno' => $ausentismoPrimesTurno, 'ausentismoSecondShift' => $ausentismoSecondShift,
+            'disponibilidadPrimesTurno' => $disponibilidadPrimesTurno, 'disponibilidadSecondShift' => $disponibilidadSecondShift,
+        ]);
     }
 
     public function DatosRh(Request $request)

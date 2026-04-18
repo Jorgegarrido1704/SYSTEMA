@@ -174,18 +174,19 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-xl-4 col-md-6 mb-4">
+                                <!-- Ausentismo Fist Shift -->
+                                <div class="col-xl-4 col-md-6 mb-4" id="tab1">
                                     <div class="card border-left-warning shadow h-100 py-2">
                                         <div class="card-body">
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
 
                                                         <div class="text-x font-weight-bold text-primary text-uppercase mb-1">
-                                                            {{ __('Absentism Rate') }}</div>
+                                                            {{ __('Absentism Rate') }} {{ __('First Shift') }}</div>
                                                         <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                            {{ $porcentajaAusentismo }}%
+                                                            {{ $ausentismoPrimesTurno }}%
 
-                                                         @if($porcentajaAusentismo<3)
+                                                         @if($ausentismoPrimesTurno<3)
                                                             <i class="fas fa-thumbs-up fa-2x text-success ml-4"></i>
                                                         @else
                                                             <i class="fas fa-thumbs-down fa-2x text-danger ml-4"></i>
@@ -197,6 +198,32 @@
                                         </div>
                                     </div>
                                 </div>
+                                <!-- end Ausentismo Fist Shift -->
+                                 <!-- Ausentismo second Shift -->
+                                <div class="col-xl-4 col-md-6 mb-4" id="tab2" style="display: none;">
+                                    <div class="card border-left-warning shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+
+                                                        <div class="text-x font-weight-bold text-primary text-uppercase mb-1">
+                                                            {{ __('Absentism Rate') }} {{ __('Second Shift') }}</div>
+                                                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                            {{ $ausentismoSecondShift }}%
+
+                                                         @if($ausentismoSecondShift<3)
+                                                            <i class="fas fa-thumbs-up fa-2x text-success ml-4"></i>
+                                                        @else
+                                                            <i class="fas fa-thumbs-down fa-2x text-danger ml-4"></i>
+                                                        @endif
+                                                         </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- end Ausentismo second Shift -->
 
 
                             </div>
@@ -237,31 +264,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- end Second Shift -->
-                              <!--  <div class="col-xl-4 col-md-6 mb-4">
-                                    <div class="card border-left-warning shadow h-100 py-2">
-                                        <div class="card-body">
-                                            <div class="row no-gutters align-items-center">
-                                                <div class="col mr-2">
 
-                                                        <div class="text-x font-weight-bold text-primary text-uppercase mb-1">
-                                                            {{ __('Absentism Rate') }}</div>
-                                                        <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                            {{ $porcentajaAusentismo }}%
-
-                                                         @if($porcentajaAusentismo<3)
-                                                            <i class="fas fa-thumbs-up fa-2x text-success ml-4"></i>
-                                                        @else
-                                                            <i class="fas fa-thumbs-down fa-2x text-danger ml-4"></i>
-                                                        @endif
-                                                         </div>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            -->
                                 <div class="col-xl-4 col-md-6 mb-4">
                                     <div class="card border-left-primary shadow h-100 py-2">
                                         <div class="card-body">
@@ -285,6 +288,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                <!--max production first shift -->
                                 <div class="col-xl-4 col-md-6 mb-4">
                                     <div class="card border-left-danger shadow h-100 py-2">
                                         <div class="card-body">
@@ -292,10 +296,10 @@
                                                 <div class="col mr-2">
                                                     <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                                       {{ __('Porcentage of Hours Worked first shift (%)') }}</div>
-                                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $porcentajeMAximodeProduccionHoy??0 }}%
-                                                     @if($porcentajeMAximodeProduccionHoy>=90)
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $disponibilidadPrimesTurno??0 }}%
+                                                     @if($disponibilidadPrimesTurno>=90)
                                                         <i class="fas fa-thumbs-up fa-2x text-success ml-4"></i>
-                                                        @elseif($porcentajeMAximodeProduccionHoy>75 && $porcentajeMAximodeProduccionHoy<90)
+                                                        @elseif($disponibilidadPrimesTurno>75 && $disponibilidadPrimesTurno<90)
                                                          <i class="fas fa-thumbs-up fa-2x text-warning ml-4"></i>
                                                     @else
                                                         <i class="fas fa-thumbs-down fa-2x text-danger ml-4"></i>
@@ -307,30 +311,31 @@
                                         </div>
                                     </div>
                                 </div>
-                                  <!--  <div class="col-xl-4 col-md-6 mb-4">
-                                    <div class="card border-left-warning shadow h-100 py-2">
+                                <!--end max production first shift -->
+                                  <!--max production second shift -->
+                                <div class="col-xl-4 col-md-6 mb-4" id="tab3" style="display: none;">
+                                    <div class="card border-left-danger shadow h-100 py-2">
                                         <div class="card-body">
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
-
-                                                        <div class="text-x font-weight-bold text-primary text-uppercase mb-1">
-                                                            {{ __('Porcentage of Hours Work disponible (%) in first shift') }}</div>
-                                                        <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                            {{ $porcentajaAusentismo }}%
-
-                                                         @if($porcentajaAusentismo<3)
-                                                            <i class="fas fa-thumbs-up fa-2x text-success ml-4"></i>
-                                                        @else
-                                                            <i class="fas fa-thumbs-down fa-2x text-danger ml-4"></i>
-                                                        @endif
-                                                         </div>
+                                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                      {{ __('Porcentage of Hours Worked second shift (%)') }}</div>
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $disponibilidadSecondShift??0 }}%
+                                                     @if($disponibilidadSecondShift>=90)
+                                                        <i class="fas fa-thumbs-up fa-2x text-success ml-4"></i>
+                                                        @elseif($disponibilidadSecondShift>75 && $disponibilidadSecondShift<90)
+                                                         <i class="fas fa-thumbs-up fa-2x text-warning ml-4"></i>
+                                                    @else
+                                                        <i class="fas fa-thumbs-down fa-2x text-danger ml-4"></i>
+                                                    @endif
+                                                    </div>
 
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            -->
+                                <!--end max production second shift -->
 
 
                             </div>
