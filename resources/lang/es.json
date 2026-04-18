@@ -267,7 +267,11 @@
     "Porcentage of Hours Work disponible (%) in third shift":   "Porcentaje de horas disponibles (%) en el tercer turno",
     "Engineer Week Schedule": "Horario de la semana de ingeniería",
     "Engineer Schedule": "Horario de ingeniería",
-    "Assitence Records": "Registros de asistencia"
+    "Assitence Records": "Registros de asistencia",
+    "Porcentage of Hours Workers firstshift (%)": "Porcentaje de horas trabajadas en el primer turno (%)",
+    "Porcentage of Hours Workers secondshift (%)": "Porcentaje de horas trabajadas en el segundo turno (%)"
+
+
 
 
 }

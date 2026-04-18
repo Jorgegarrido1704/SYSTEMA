@@ -44,6 +44,7 @@
         .tab-content { display: none; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         .tab-content.active { display: block; }
 
+
 </style>
 <script>
     const registros = @json($registrosDeAsistencia);
@@ -175,14 +176,14 @@
                                     </div>
                                 </div>
                                 <!-- Ausentismo Fist Shift -->
-                                <div class="col-xl-4 col-md-6 mb-4" id="tab1">
+                                <div class="col-xl-4 col-md-6 mb-4 tab-datos tab1">
                                     <div class="card border-left-warning shadow h-100 py-2">
                                         <div class="card-body">
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
 
                                                         <div class="text-x font-weight-bold text-primary text-uppercase mb-1">
-                                                            {{ __('Absentism Rate') }} {{ __('First Shift') }}</div>
+                                                            {{ __('Absentism Rate') }} {{ __('firstShift') }}</div>
                                                         <div class="h5 mb-0 font-weight-bold text-gray-800">
                                                             {{ $ausentismoPrimesTurno }}%
 
@@ -200,14 +201,14 @@
                                 </div>
                                 <!-- end Ausentismo Fist Shift -->
                                  <!-- Ausentismo second Shift -->
-                                <div class="col-xl-4 col-md-6 mb-4" id="tab2" style="display: none;">
+                                <div class="col-xl-4 col-md-6 mb-4 tab-datos tab2"  style="display: none;">
                                     <div class="card border-left-warning shadow h-100 py-2">
                                         <div class="card-body">
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
 
                                                         <div class="text-x font-weight-bold text-primary text-uppercase mb-1">
-                                                            {{ __('Absentism Rate') }} {{ __('Second Shift') }}</div>
+                                                            {{ __('Absentism Rate') }} {{ __('secondShift') }}</div>
                                                         <div class="h5 mb-0 font-weight-bold text-gray-800">
                                                             {{ $ausentismoSecondShift }}%
 
@@ -229,7 +230,7 @@
                             </div>
                               <div class="row">
                                 <!-- First Shift -->
-                                 <div class="col-xl-4 col-md-6 mb-4" id="tab1">
+                                 <div class="col-xl-4 col-md-6 mb-4 tab-datos tab1" >
                                     <div class="card border-left-danger shadow h-100 py-2">
                                         <div class="card-body">
                                             <div class="row no-gutters align-items-center">
@@ -248,7 +249,7 @@
                                 </div>
                                 <!-- end First Shift -->
                                 <!-- Second Shift -->
-                                <div class="col-xl-4 col-md-6 mb-4" id="tab2" style="display: none;">
+                                <div class="col-xl-4 col-md-6 mb-4 tab-datos tab2" style="display: none;">
                                     <div class="card border-left-danger shadow h-100 py-2">
                                         <div class="card-body">
                                             <div class="row no-gutters align-items-center">
@@ -265,7 +266,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-xl-4 col-md-6 mb-4">
+                                <div class="col-xl-4 col-md-6 mb-4 ">
                                     <div class="card border-left-primary shadow h-100 py-2">
                                         <div class="card-body">
                                             <div class="row no-gutters align-items-center">
@@ -289,13 +290,13 @@
                                     </div>
                                 </div>
                                 <!--max production first shift -->
-                                <div class="col-xl-4 col-md-6 mb-4">
+                                <div class="col-xl-4 col-md-6 mb-4  tab-datos tab1" >
                                     <div class="card border-left-danger shadow h-100 py-2">
                                         <div class="card-body">
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
                                                     <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                      {{ __('Porcentage of Hours Worked first shift (%)') }}</div>
+                                                      {{ __('Porcentage of Hours Workers firstshift (%)') }}</div>
                                                     <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $disponibilidadPrimesTurno??0 }}%
                                                      @if($disponibilidadPrimesTurno>=90)
                                                         <i class="fas fa-thumbs-up fa-2x text-success ml-4"></i>
@@ -313,13 +314,13 @@
                                 </div>
                                 <!--end max production first shift -->
                                   <!--max production second shift -->
-                                <div class="col-xl-4 col-md-6 mb-4" id="tab3" style="display: none;">
+                                <div class="col-xl-4 col-md-6 mb-4 tab-datos tab2"  style="display: none;">
                                     <div class="card border-left-danger shadow h-100 py-2">
                                         <div class="card-body">
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
                                                     <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                      {{ __('Porcentage of Hours Worked second shift (%)') }}</div>
+                                                      {{ __('Porcentage of Hours Workers secondshift (%)') }}</div>
                                                     <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $disponibilidadSecondShift??0 }}%
                                                      @if($disponibilidadSecondShift>=90)
                                                         <i class="fas fa-thumbs-up fa-2x text-success ml-4"></i>
@@ -421,14 +422,22 @@
 </div>
 
 <script>
-    function openTab( tabName) {
-       if(tabName == 'tab1'){
-           document.getElementById("tab1").style.display = "block";
-           document.getElementById("tab2").style.display = "none";
-       }else if (tabName == 'tab2'){
-           document.getElementById("tab1").style.display = "none";
-           document.getElementById("tab2").style.display = "block";
-       }
-    }
+
+    function openTab(tabClass) {
+    // 1. Escondemos ABSOLUTAMENTE TODO lo que sea "tab-content"
+    const allTabs = document.querySelectorAll('.tab-datos');
+    allTabs.forEach(el => {
+        el.style.display = 'none';
+    });
+
+    // 2. Buscamos todos los elementos que tengan la clase específica (ej: 'tab1')
+    const selectedTabs = document.querySelectorAll('.' + tabClass);
+
+    // 3. Los mostramos todos usando un bucle
+    selectedTabs.forEach(el => {
+        el.style.display = 'block';
+    });
+}
+
     </script>
 @endsection
