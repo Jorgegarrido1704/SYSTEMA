@@ -294,7 +294,17 @@
     "Maintainance Qty": "Cantidad de mantenimiento",
     "Filter By Tooling": "Filtrar por herramiental",
     "Filter By Terminal": "Filtrar por Terminal",
-    "Filter By Tooling or Terminal": "Filtrar por herramiental o Terminal"
+    "Filter By Tooling or Terminal": "Filtrar por herramiental o Terminal",
+    "Color Identification": "Identificación de color",
+    "Order Status": "Estado de la orden",
+    "Quantity": "Cantidad",
+    "Packing": "Empaquetado",
+    "Work Order": "Orden de trabajo",
+    "Excelent Work": "Trabajo excelente",
+    "On precess":"En proceso",
+    "close to expiring":"Cerca de vencer",
+    "Expired":"Vencido",
+    "On Hold": "En espera"
 
 
 
