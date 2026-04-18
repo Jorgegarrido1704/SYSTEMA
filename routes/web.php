@@ -280,6 +280,7 @@ Route::controller(herramentalesController::class)->group(function () {
     Route::get('/toolingMaintenance', [herramentalesController::class, 'toolingMaintenance'])->name('toolingMaintenance');
     Route::get('/toolingAnalysis', [herramentalesController::class, 'toolingAnalysis'])->name('toolingAnalysis');
     Route::post('/saveMantTooling', [herramentalesController::class, 'saveMantTooling'])->name('saveMantTooling');
+    Route::POST('/filterTooling', [herramentalesController::class, 'filterTooling'])->name('filterTooling');
 });
 Route::controller(corteController::class)->group(function () {
     Route::get('/corte', [corteController::class, 'indexCorte'])->name('corte.indexCorte');

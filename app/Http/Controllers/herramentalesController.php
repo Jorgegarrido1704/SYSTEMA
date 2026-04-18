@@ -24,7 +24,7 @@ class herramentalesController extends Controller
             ->orWhere('finhora', '')
             ->orderBy('id', 'asc')
             ->get();
-        $herramntal = herramentalInfo::orderBy('golpesTotales', 'DESC')->orderBy('terminal', 'asc')->get();
+        $herramntal = herramentalInfo::orderBy('terminal', 'asc')->get();
 
         return view('herramentales.index', ['crimpersRequested' => $crimpersRequested, 'cat' => $cat, 'value' => $value,
             'herramntal' => $herramntal]);
@@ -209,6 +209,22 @@ class herramentalesController extends Controller
         return view('herramentales.analysis', ['cat' => $cat, 'value' => $value, 'promedioespera' => $promedio, 'timeWorking' => $timeWorking,
             'totalTimesAVG' => $totalTimesAVG, 'tooling' => $tooling,
         ]);
+
+    }
+
+    public function filterTooling(Request $request)
+    {
+        $valor = $request->input('value');
+        if ($valor == 'all') {
+            $data = herramentalInfo::orderBy('golpesTotales', 'desc')->get();
+
+            return json_encode($data);
+        } else {
+            $data = herramentalInfo::where('herramental', '=', $valor)
+                ->orWhere('terminal', '=', $valor)->orderBy('golpesTotales', 'desc')->get();
+        }
+
+        return json_encode($data);
 
     }
 }

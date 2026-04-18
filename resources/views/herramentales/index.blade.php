@@ -17,8 +17,8 @@
         <div class="col-xl-6 col-md-6 mb-4">
             <div class="card shadow mb-4">
 
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" style="max-height: 25px">
-                    <h6 class="m-0 font-weight-bold text-primary">Requieriment Crimpers </h6>
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h4 class="m-0 font-weight-bold text-primary">{{ __('Requieriment Crimpers') }} </h4>
                 </div>
                 <!-- table Body -->
                 <div class="card-body"style="overflow-y: auto; height: 350px; max-height: 400px;">
@@ -26,12 +26,12 @@
                     <table  class="table table-bordered table-sm table-striped">
                         <thead>
                             <tr>
-                                <th>Date</th>
-                                <th>Tooling</th>
-                                <th>Work</th>
-                                <th>Whose order</th>
-                                <th>Working By</th>
-                                <th>Action</th>
+                                <th>{{ __('Date') }}</th>
+                                <th>{{ __('Tooling') }}</th>
+                                <th>{{ __('Work') }}</th>
+                                <th>{{ __('Whose order') }}</th>
+                                <th>{{ __('Working By') }}</th>
+                                <th>{{ __('Action') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -48,11 +48,11 @@
                                     @if($crimpersReq->atiende == null or $crimpersReq->atiende == '')
                                         <form action="{{ route('herramientales.update', $crimpersReq->id) }}" method="get">
                                             <td><input type="text" name="nombrePersonal" id="nombrePersonal" required></td>
-                                            <td><button type="submit" class="btn btn-primary">Take</button></td>
+                                            <td><button type="submit" class="btn btn-primary">{{ __('Take') }}</button></td>
                                         </form>
                                     @else
                                     <td>{{ $crimpersReq->atiende }}</td>
-                                    <td><a href="{{ route('herramientales.update', $crimpersReq->id) }}" class="btn btn-primary">Sign</a></td>
+                                    <td><a href="{{ route('herramientales.update', $crimpersReq->id) }}" class="btn btn-primary">{{ __('Sign') }}</a></td>
                                         @endif
 
                                 </tr>
@@ -67,28 +67,28 @@
         <!-- Add count in crimpers -->
         <div class="col-xl-3 col-md-3 mb-4">
             <div class="card shadow mb-4">
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" style="max-height: 25px">
-                    <h6 class="m-0 font-weight-bold text-primary">Add Count in Crimpers </h6>
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" >
+                    <h4 class="m-0 font-weight-bold text-primary">{{ __('Add Count in Crimpers') }} </h4>
                 </div>
                 <!-- table Body -->
                 <div class="card-body"style="overflow-y: auto; height: 350px;">
                     <form action="{{ route('herramientales.sumCrimpers') }}" method="post">
                         @csrf
                         <div class="form-group">
-                            <label for="tooling">Tooling</label>
+                            <label for="tooling">{{ __('Tooling') }}</label>
                             <select name="tooling" id="tooling" class="form-control" required>
-                                <option value="" selected disabled>Select tooling</option>
+                                <option value="" selected disabled>{{ __('Select tooling') }}</option>
                                 @foreach($herramntal as $tooling)
                                     <option value="{{ $tooling->terminal }} || {{ $tooling->herramental }}">{{ $tooling->terminal }} || {{ $tooling->herramental }} </option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="qtyHits">Quantity of hits</label>
+                            <label for="qtyHits">{{ __('Hits Quantity Record') }}</label>
                             <input type="number" name="qtyHits" id="qtyHits" class="form-control" min="1" step="1" required>
                         </div>
                         <div class="form-group">
-                           <button type="submit" class="btn btn-primary">Add Hits</button>
+                           <button type="submit" class="btn btn-primary">{{ __('Add Hits') }}</button>
                         </div>
                     </form>
                 </div>
@@ -97,23 +97,23 @@
         <!--end Add count in crimpers -->
         <div class="col-xl-3 col-md-3 mb-4">
             <div class="card shadow mb-4">
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" style="max-height: 25px">
-                    <h6 class="m-0 font-weight-bold text-primary">Add New Crimp Tooling </h6>
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" >
+                    <h4 class="m-0 font-weight-bold text-primary">{{ __('Add New Crimp Tooling') }} </h4>
                 </div>
                 <!-- table Body -->
                 <div class="card-body"style="overflow-y: auto; height: 350px;">
                     <form action="{{ route('herramientales.addHerramental') }}" method="post">
                         @csrf
                         <div class="form-group">
-                            <label for="newTooling">New Tooling Numbre code</label>
+                            <label for="newTooling">{{ __('New Tooling Numbre code') }}</label>
                             <input type="text" name="newTooling" id="newTooling"  pattern="[A-Za-z0-9-]{4,12}" class="form-control pattern" required>
                         </div>
                         <div class="form-group">
-                            <label for="terminalNewTooling">Terminal Applied to</label>
+                            <label for="terminalNewTooling">{{ __('Terminal Applied to') }}</label>
                             <input type="text" name="terminalNewTooling" id="terminalNewTooling" pattern="[A-Za-z0-9-]{4,12}" class="form-control" required>
                         </div>
                         <div class="form-group">
-                           <button type="submit" class="btn btn-primary">Add Crimper</button>
+                           <button type="submit" class="btn btn-primary">{{ __('Add Crimper') }}</button>
                         </div>
                     </form>
                 </div>
@@ -125,40 +125,80 @@
         <div class="col-xl-6 col-md-6 mb-4">
             <div class="card shadow mb-4">
 
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" style="max-height: 25px">
-                    <h6 class="m-0 font-weight-bold text-primary">Tooling list </h6>
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" >
+                    <h4 class="m-0 font-weight-bold text-primary">{{ __('Tooling list') }} </h4>
+                    <h6 class="m-0 font-weight-bold text-primary d-flex align-items-center flex-wrap">
+
+
+                        <div class="d-flex align-items-center me-3">
+                            <label class="mb-0 me-1" for="tooling">{{ __('Filter By Tooling or Terminal') }}</label>
+                            <input type="text" name="tooling" id="tooling" class="form-control form-control-sm ml-2 mr-2"  style="width: 85px;" onchange="filterTooling(this.value)">
+                        </div>
+                    </h6>
                 </div>
                 <!-- table Body -->
                 <div class="card-body"style="overflow-y: auto; height: 350px; max-height: 650px;">
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                        <thead>
-                            <tr class="text-center table-primary">
-                                <th class="table-header">Tooling</th>
-                                <th class="table-header">Terminal</th>
-                                <th class="table-header">Last update</th>
-                                <th class="table-header">Total hits</th>
-                                <th class="table-header">Mantainance Qty</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($herramntal as $tooling)
-                                @if($tooling->mantenimiento == 'ok')
-                                <tr class="text-center table-success">
-                                @else
-                                <tr class="text-center table-danger">
-                                @endif  
-                                    <td>{{ $tooling->herramental }}</td>
-                                    <td>{{ $tooling->terminal }}</td>
-                                    <td>{{ $tooling->fecha_reg }}</td>
-                                    <td>{{ $tooling->golpesTotales }}</td>
-                                    <td>{{ $tooling->totalmant }}</td>
+                            <thead class="text-center">
+                                <tr class="table-primary">
+                                    <th class="sticky-top table-header" style="top: 0; z-index: 2;">{{ __('Tooling') }}</th>
+                                    <th class="sticky-top table-header" style="top: 0; z-index: 2;">{{ __('Terminal') }}</th>
+                                    <th class="sticky-top table-header" style="top: 0; z-index: 2;">{{ __('Last update') }}</th>
+                                    <th class="sticky-top table-header" style="top: 0; z-index: 2;">{{ __('Total hits') }}</th>
+                                    <th class="sticky-top table-header" style="top: 0; z-index: 2;">{{ __('Maintainance Qty') }}</th>
                                 </tr>
-                            @endforeach
+                            </thead>
+                        <tbody class="text-center" id="toolingTable">
+
                         </tbody>
                     </table>
                 </div>
             </div>
-        </div>  
+        </div>
 
     </div>
+
+    <script>
+        const urlRoure = @json(route('filterTooling'));
+
+        function filterTooling(value) {
+
+
+                if(value.length >= 5) {
+                    value = value.toUpperCase();
+                }else{
+                    value ="all";
+                }
+                fetch(urlRoure,{
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": document
+                    .querySelector('meta[name="csrf-token"]')
+                    .getAttribute("content"),
+            },
+                        body: JSON.stringify({value: value})
+
+                    }).then(response => response.json()).then(data => {
+                        console.log(data);
+                        $('#toolingTable').html('');
+                        for (let i = 0; i < data.length; i++) {
+                            if(data[i].mantenimiento == 'ok'){
+                                color= '<tr class="text-center table-success">'
+                                }else{
+                                color= '<tr class="text-center table-danger">'
+                                    }
+                            $('#toolingTable').append(color +
+                                '<td>' + data[i].herramental + '</td>' +
+                                '<td>' + data[i].terminal + '</td>' +
+                                '<td>' + data[i].fecha_reg + '</td>' +
+                                '<td>' + data[i].golpesTotales + '</td>' +
+                                '<td>' + data[i].totalmant + '</td>' +
+                                '</tr>');
+                        }
+                    })
+        }
+        onload = filterTooling('all');
+    </script>
 @endsection
+

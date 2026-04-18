@@ -269,7 +269,33 @@
     "Engineer Schedule": "Horario de ingeniería",
     "Assitence Records": "Registros de asistencia",
     "Porcentage of Hours Workers firstshift (%)": "Porcentaje de horas trabajadas en el primer turno (%)",
-    "Porcentage of Hours Workers secondshift (%)": "Porcentaje de horas trabajadas en el segundo turno (%)"
+    "Porcentage of Hours Workers secondshift (%)": "Porcentaje de horas trabajadas en el segundo turno (%)",
+    "Requieriment Crimpers": "Requerimientos de herrmanetales",
+    "Date": "Fecha",
+    "Tooling": "Herramiental",
+    "Work": "Trabajo",
+    "Whose order": "Quien hizo la orden",
+    "Working By": "Trabajando por",
+    "Action": "Accion",
+    "Take": "Tomar",
+    "Sign": "Firmar",
+    "Add Count in Crimpers": "Agregar conteo en herrmanetales",
+    "Select tooling": "Seleccionar herramiental",
+    "Crimpers": "Herrmanetaltes",
+    "Hits Quantity Record": "Registros de cantidad de golpes",
+    "Add Hits": "Agregar golpes",
+    "Add New Crimp Tooling": "Agregar nueva herramienta",
+    "New Tooling Numbre code": "Nuevo codigo de herramienta",
+    "Terminal Applied to": "Terminal aplicada a",
+    "Add Crimper": "Agregar herrmanetal",
+    "Tooling list": "Lista de herramientales",
+    "Last update": "Ultima actualizacion",
+    "Total hits": "Total de golpes",
+    "Maintainance Qty": "Cantidad de mantenimiento",
+    "Filter By Tooling": "Filtrar por herramiental",
+    "Filter By Terminal": "Filtrar por Terminal",
+    "Filter By Tooling or Terminal": "Filtrar por herramiental o Terminal"
+
 
 
 
