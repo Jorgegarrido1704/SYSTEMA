@@ -21,7 +21,6 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class rrhhController extends Controller
 {
-    /*******  cf92efa2-efe2-42d1-9d57-bbe14f7dffdb  *******/
     public function rrhhDashBoard()
     {
 
@@ -45,7 +44,7 @@ class rrhhController extends Controller
 
         $diaNum = carbon::now()->dayOfWeek; //
         $datosRHWEEKLastWeek = [];
-        if (($diaNum == 1) and carbon::now()->format('H:i') < '10:00') {
+        if (($diaNum == 1) and (carbon::now()->format('H:i') < '10:00' or carbon::now()->format('H:i') > '19:00')) {
             if ($value == 'Admin' or $cat == 'RRHH') {
                 $datosRHWEEKLastWeek = assistence::LeaderLastWeek($value)->OrderBy('lider', 'desc')->get();
             } else {
@@ -57,10 +56,10 @@ class rrhhController extends Controller
             $diasRegistro[4] = '';
             $tt[4] = '';
 
-        } elseif (carbon::now()->format('H:i') < '08:20') {
+        } elseif (carbon::now()->format('H:i') < '08:20' or carbon::now()->format('H:i') > '19:00') {
             $diasRegistro[$diaNum - 1] = '';
         }
-        if (carbon::now()->format('H:i') < '12:00' and $diaNum >= 2) {
+        if ((carbon::now()->format('H:i') < '12:00' or carbon::now()->format('H:i') > '19:00') and $diaNum >= 2) {
             $tt[$diaNum - 1] = '';
         }
 
@@ -1295,6 +1294,8 @@ class rrhhController extends Controller
         ];
         // dd($data);
         personalBergsModel::where('employeeName', '=', $employee)->update($data);
+        assistence::where('name', '=', $employee)->update([
+            'shift' => $shift]);
 
         return response()->json([
             'message' => 'Se guardo con exito',

@@ -362,9 +362,11 @@ const rota3 = new Chart(document.getElementById("rotation3"), {
                 backgroundColor: [
                     "rgba(2, 164, 75, 0.21)",
                     "rgba(255, 0, 0, 0.21)",
-                    "rgba(85, 87, 96, 0.21)",
+                    "rgba(56, 8, 119, 0.21)",
+                    "rgba(255, 32, 248, 0.21)",
+                    "rgba(237, 165, 11, 0.21)",
                 ],
-                borderColor: ["rgb(3, 204, 43)", "rgb(168, 0, 0)", "rgb(85, 87, 96)"],
+                borderColor: ["rgb(3, 204, 43)", "rgb(168, 0, 0)", "rgb(56, 8, 119)","rgb(255, 32, 248)","rgb(237, 165, 11)"],
                 borderWidth: 1,
             },
         ],
