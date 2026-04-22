@@ -11,7 +11,7 @@
         <h2> Desviacion autorizada</h2>
     @elseif($accion->count == 5)
     <h2> Desviacion rechazada</h2>
-    <p> Se rechazo la siguiente desviacion por el motivo de: {{ $accion->rechazo }} </p>
+    <p > Se rechazo la siguiente desviacion por el motivo de: <strong><span style="background-color: red;">{{ $accion->rechazo }}</span></strong> </p>
 
     @endif
 
