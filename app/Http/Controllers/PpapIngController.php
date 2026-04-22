@@ -950,7 +950,16 @@ class PpapIngController extends Controller
     {
         $value = session('user');
         $cat = session('categoria');
+        // inicio de la semana formato Y-m-d
+        $inicioSemana = Carbon::now()->startOfWeek()->format('m/d/Y');
+        // fin de la semana
+        $finSemana = Carbon::now()->endOfWeek()->format('m/d/Y');
+        $eng = [];
 
-        return view('inge.graffWorksEng', ['value' => $value, 'cat' => $cat]);
+        $datos = DB::table('weekactivities')->select('id_eng', 'dateDay', 'iniTime', 'endTime', 'actDesc')->whereRaw('STR_TO_DATE(dateDay, "%m/%d/%Y") BETWEEN STR_TO_DATE("'.$inicioSemana.'", "%m/%d/%Y") AND STR_TO_DATE("'.$finSemana.'", "%m/%d/%Y")')
+            ->orderBy('id_eng', 'asc')->orderBy('dateDay', 'desc')->orderBy('iniTime', 'asc')
+            ->get();
+
+        return view('inge.graffWorksEng', ['value' => $value, 'cat' => $cat, 'datos' => $datos]);
     }
 }
