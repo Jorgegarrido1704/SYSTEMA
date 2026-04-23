@@ -116,7 +116,10 @@
                             <td class="font-weight-bold text-gray font-size-24"><a class ="text-agua" href="{{ route('DatosRh', ['id' => 'HE']) }}">Horario Especial</a></td>
                             <td class="font-weight-bold font-size-24">{{$registrosDeAsistencia[10]}}</td>
                            </tr>
-
+                            <tr>
+                            <td class="font-weight-bold text-gray font-size-24"><a class ="text-dark" href="{{ route('DatosRh', ['id' => 'N']) }}">Nocturno</a></td>
+                            <td class="font-weight-bold font-size-24">{{$registrosDeAsistencia[11]}}</td>
+                           </tr>
                         </table>
                     </div>
                     <div class="col-lg-8 col-md-8">

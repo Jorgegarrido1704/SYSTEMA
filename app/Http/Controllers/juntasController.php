@@ -2224,11 +2224,12 @@ class juntasController extends Controller
                 'asimilados' => 0,
                 'ServiciosComprados' => 0,
                 'horarioEspecial' => 0,
+                'nocturno' => 0,
 
             ];
         }
 
-        $datosCorrector = ['OK', 'F', 'PSS', 'PCS', 'INC', 'V', 'R', 'SUS', 'PCT', 'TSP', 'ASM', 'SCE', 'HE'];
+        $datosCorrector = ['OK', 'F', 'PSS', 'PCS', 'INC', 'V', 'R', 'SUS', 'PCT', 'TSP', 'ASM', 'SCE', 'HE', 'N'];
         $restroFaltantes = assistence::select('lider', $diaActual)
             ->where('week', '=', $week)
             ->get();
@@ -2372,7 +2373,7 @@ class juntasController extends Controller
             'faltantes' => $faltantes,
             'registrosDeAsistencia' => $registrosDeAsistencia, 'value' => session('user'), 'cat' => session('categoria'),
             'promedioCorrectoVacciones' => $promedioCorrectoVacciones,
-            'porcentajaVacaciones' => $porcentajaVacaciones, 'headcount' => $headcount, 'porcentajeMAximodeProduccionHoy' => $porcentajeMAximodeProduccionHoy,
+            'porcentajaVacaciones' => $porcentajaVacaciones, 'headcount' => $headcount,
             'withoutAccidents' => $withoutAccidents, 'firstShift' => $firstShift, 'secondShift' => $secondShift,
 
             'genero' => $genero, 'tipoTrabajado' => $tipoTrabajado, 'ausentismoPrimesTurno' => $ausentismoPrimesTurno, 'ausentismoSecondShift' => $ausentismoSecondShift,
@@ -2448,6 +2449,9 @@ class juntasController extends Controller
                 break;
             case 'SCE':
                 $id = 'ServiciosComprados';
+                break;
+            case 'N':
+                $id = 'Nocturno';
                 break;
 
             default:
