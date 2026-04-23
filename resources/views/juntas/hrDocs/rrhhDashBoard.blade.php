@@ -26,6 +26,7 @@ if (Error) {
             #SCE{background-color: rgba(239, 3, 164, 0.5); color: black; font-weight: bold; font-size: 16px;}
             #HE{background-color: rgba(3, 239, 145, 0.5); color: black; font-weight: bold; font-size: 16px;}
             #AddPersonal,#modificarEmpleado{display: none; }
+            #N{background-color: rgba(0, 0, 0, 0.5); color: white; font-weight: bold; font-size: 16px; }
         </style>
 
 
@@ -233,7 +234,7 @@ if (Error) {
                                         <th id="ASM">ASM = {{ __('Assimilated') }}</th>
                                         <th id="SCE">SCE = {{ __('Purchased Service') }}</th>
                                         <th id="HE">HE = {{ __('Special Schedule') }}</th>
-                                        <th id=""></th>
+                                        <th id="N">N = {{ __('Nocturn') }}</th>
                                         <th id=""></th>
                                         </tr>
                                     </thead>
@@ -314,7 +315,7 @@ if (Error) {
                                                         <th style="display: {{ $diasRegistros[4] }};">{{__('Sunday')}}</th> <th style="display: {{ $diasRegistros[4] }};">{{__('OverTime')}}</th> <th> {{ __('Attendance Bonus') }}</th>
                                                         <th>{{ __('Punctuality Bonus') }}</th>  <th>{{ __('Total Extras') }}</th> <th> {{ __('Time by Time') }}</th>
                                                         <th> {{ __('Employee Number') }}</th>
-                                                        
+
                                                         </tr>
                                                         </thead>
                                             <tbody>
@@ -377,7 +378,7 @@ if (Error) {
                                                     <th>{{ __('Sunday') }}</th> <th>{{ __('OverTime') }} {{ __('Sunday') }}</th> <th> {{ __('Attendance Bonus') }}</th>
                                                     <th>{{ __('Punctuality Bonus') }}</th>  <th>{{ __('Total OverTime') }}</th> <th> {{ __('Time by Time') }} </th>
                                                     <th>{{ __('Employee ID') }}</th>
-                                                    
+
 
                                             </tr>
                                         </thead>
