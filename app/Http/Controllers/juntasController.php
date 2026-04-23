@@ -2333,6 +2333,7 @@ class juntasController extends Controller
             $rotacion->asimilados,
             $rotacion->ServiciosComprados,
             $rotacion->horarioEspecial,
+            $rotacion->nocturno,
             $totalRotacion,
         ];
         $vacacionesReporte = registroVacacionesModel::wherebetween('fecha_de_solicitud', [Carbon::now()->startOfYear()->toDateString(), Carbon::now()->endOfYear()->toDateString()])
