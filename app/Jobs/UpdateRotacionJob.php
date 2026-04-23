@@ -57,6 +57,7 @@ class UpdateRotacionJob implements ShouldQueue
             'asimilados' => $registros['ASM'] ?? 0,
             'ServiciosComprados' => $registros['SCE'] ?? 0,
             'horarioEspecial' => $registros['HE'] ?? 0,
+            'nocturno' => $registros['N'] ?? 0,
         ];
 
         DB::connection('rrhh')->table('rotacion')
