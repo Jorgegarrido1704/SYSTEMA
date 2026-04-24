@@ -779,11 +779,10 @@ class juntasController extends Controller
                     $i++;
                 }
 
-                // Buscamos el registro o creamos una instancia nueva si no existe
                 $gutlyleader = personalBergsModel::where('employeeName', $issue->Responsable)->first();
 
                 if (! $gutlyleader) {
-                    // Si no existe el registro en la DB, creamos un objeto genérico o una nueva instancia
+
                     $gutlyleader = new personalBergsModel;
                     $gutlyleader->employeeLider = 'VERA VILLEGAS EFRAIN';
                 } else {
@@ -800,7 +799,7 @@ class juntasController extends Controller
                 if (empty($gutlyleader->employeeLider)) {
                     $gutlyleader->employeeLider = 'VERA VILLEGAS EFRAIN';
                 }
-                $issue->Responsable = explode(' ', $issue->Responsable)[0].' '.explode(' ', $issue->Responsable)[2];
+               
                 if (in_array($issue->Responsable.' Lider: '.$gutlyleader->employeeLider, array_column($gulty, 0))) {
                     $gulty[array_search($issue->Responsable.' Lider: '.$gutlyleader->employeeLider, array_column($gulty, 0))][1] += $issue->resto;
                 } else {
