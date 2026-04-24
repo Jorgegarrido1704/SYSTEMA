@@ -1,6 +1,7 @@
 @extends('layouts.main')
 
 @section('contenido')
+<meta http-equiv="refresh" content="20">
  <!-- Page Heading -->
  <div class="d-sm-flex align-items-center justify-content-between mb-4">  </div>
  @if(!empty(session('message')))
@@ -204,9 +205,7 @@
                     })
         }
         onload = filterTooling('all');
-        setInterval(() => {
-            window.location.reload();
-        }, 450000);
+
     </script>
 @endsection
 
