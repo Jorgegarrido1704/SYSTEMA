@@ -12,7 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('crimpers_tools', function (Blueprint $table) {
-            $table->id();
+            $table->id()->autoIncrement()->unique();
+            $table->date('dateRegistered');
+            $table->time('startHour');
+            $table->time('endHour');
+            $table->string('toolingCrimperName');
+            $table->string('TerminalsUsed');
+            $table->integer('minutesStop')->default(0);
+            $table->string('reasonStop')->nullable();
+            $table->string('observations')->nullable();
+
             $table->timestamps();
         });
     }

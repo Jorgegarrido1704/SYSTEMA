@@ -10,12 +10,14 @@ class crimpersTools extends Model
     use HasFactory;
 
     protected $fillable = [
-        'DateRegistered',
-        'StartHour',
-        'EndHour',
+        'dateRegistered',
+        'startHour',
+        'endHour',
         'toolingCrimperName',
         'TerminalsUsed',
-
+        'minutesStop',
+        'reasonStop',
+        'observations',
     ];
 
     protected $table = 'crimpers_tools';

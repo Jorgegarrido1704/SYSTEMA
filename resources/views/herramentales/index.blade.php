@@ -53,7 +53,7 @@
                                         </form>
                                         @endif
                                     @else
-                                    @if($value=='Admin' || $cat == 'herra' )
+                                    @if($value=='Admin' || $cat == 'herra')
                                     <td>{{ $crimpersReq->atiende }}</td>
                                     <td><a href="{{ route('herramientales.update', $crimpersReq->id) }}" class="btn btn-primary">{{ __('Sign') }}</a></td>
                                     @endif
