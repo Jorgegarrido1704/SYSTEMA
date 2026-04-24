@@ -45,15 +45,19 @@
                                     <td>{{ $crimpersReq->nombreEquipo }}</td>
                                     <td>{{ $crimpersReq->dano }}</td>
                                     <td>{{ $crimpersReq->quien }}</td>
-                                    @if($crimpersReq->atiende == null or $crimpersReq->atiende == '')
+                                    @if($crimpersReq->atiende == null || $crimpersReq->atiende == '' )
+                                       @if( $value=='Admin' || $cat == 'herra' )
                                         <form action="{{ route('herramientales.update', $crimpersReq->id) }}" method="get">
                                             <td><input type="text" name="nombrePersonal" id="nombrePersonal" required></td>
                                             <td><button type="submit" class="btn btn-primary">{{ __('Take') }}</button></td>
                                         </form>
+                                        @endif
                                     @else
+                                    @if($value=='Admin' || $cat == 'herra' )
                                     <td>{{ $crimpersReq->atiende }}</td>
                                     <td><a href="{{ route('herramientales.update', $crimpersReq->id) }}" class="btn btn-primary">{{ __('Sign') }}</a></td>
-                                        @endif
+                                    @endif
+                                    @endif
 
                                 </tr>
                             @endforeach
@@ -64,6 +68,7 @@
             </div>
         </div>
         <!--end Requieriment Crimpers -->
+        @if($value=='Admin' || $cat=='herra')
         <!-- Add count in crimpers -->
         <div class="col-xl-3 col-md-3 mb-4">
             <div class="card shadow mb-4">
@@ -119,7 +124,7 @@
                 </div>
             </div>
         </div>
-
+        @endif
     </div>
     <div class="row">
         <div class="col-xl-6 col-md-6 mb-4">

@@ -114,16 +114,20 @@
                     </ul>
                 </li>
                 @endif
-                @if($value=='Admin' || $cat=='herra')
+                
                  <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('herramentales.index') }}"
                     onmouseover=showHerramentales();>{{ __('Toolings') }}</a>
+                   
                     <ul class="submenu" id="herramentales" style="display:none;">
+                         @if($value=='Admin' || $cat=='herra')
                         <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('toolingMaintenance') }}">{{ __('Toolings Maintenance') }}</a></li>
+                        @endif
                         <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('toolingAnalysis') }}">{{ __('Toolings Analysis') }}</a></li>
-
+                   
                     </ul>
+                    
                 </li>
-                @endif
+                
                 <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('rrhhDashBoard') }}">{{ __('Assistance') }}</a></li>
                 <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('Pendings.index') }}">{{ __('Pendings') }}</a></li>
                  <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('vacations') }}">{{ __('Vacations') }}</a></li>
