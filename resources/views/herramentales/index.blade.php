@@ -204,6 +204,9 @@
                     })
         }
         onload = filterTooling('all');
+        setInterval(() => {
+            window.location.reload();
+        }, 450000);
     </script>
 @endsection
 
