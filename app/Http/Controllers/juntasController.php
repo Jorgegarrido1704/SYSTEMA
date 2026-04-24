@@ -799,7 +799,7 @@ class juntasController extends Controller
                 if (empty($gutlyleader->employeeLider)) {
                     $gutlyleader->employeeLider = 'VERA VILLEGAS EFRAIN';
                 }
-               
+
                 if (in_array($issue->Responsable.' Lider: '.$gutlyleader->employeeLider, array_column($gulty, 0))) {
                     $gulty[array_search($issue->Responsable.' Lider: '.$gutlyleader->employeeLider, array_column($gulty, 0))][1] += $issue->resto;
                 } else {
@@ -841,8 +841,26 @@ class juntasController extends Controller
             ->orderByDesc('codigo')
             ->get();
         foreach ($empleados as $rowEmp) {
-            $supRes = personalBergsModel::select('employeeLider')->where('employeeName', $rowEmp->Responsable)->first();
-            $supRes->employeeLider = explode(' ', $supRes->employeeLider)[0].' '.explode(' ', $supRes->employeeLider)[2];
+            $supRes = personalBergsModel::where('employeeName', $issue->Responsable)->first();
+
+            if (! $supRes) {
+
+                $supRes = new personalBergsModel;
+                $supRes->employeeLider = 'VERA VILLEGAS EFRAIN';
+            } else {
+                // Si existe, intentamos formatear el nombre
+                $parts = explode(' ', $supRes->employeeLider);
+
+                // Validamos que existan suficientes partes para evitar errores de índice [0] y [2]
+                if (count($parts) >= 3) {
+                    $supRes->employeeLider = $parts[0].' '.$parts[2];
+                }
+            }
+
+            // Validación final por si el campo estaba vacío en la base de datos
+            if (empty($supRes->employeeLider)) {
+                $supRes->employeeLider = 'VERA VILLEGAS EFRAIN';
+            }
             if (! isset($supRes->employeeLider)) {
                 continue;
             }
