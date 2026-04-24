@@ -778,8 +778,28 @@ class juntasController extends Controller
                     $datosHoy[$issue->codigo.'-'.$issue->pn][3] = $issue->pn;
                     $i++;
                 }
-                $gutlyleader = personalBergsModel::select('employeeLider')->where('employeeName', $issue->Responsable)->first();
-                $gutlyleader->employeeLider = explode(' ', $gutlyleader->employeeLider)[0].' '.explode(' ', $gutlyleader->employeeLider)[2] ?? 'VERA VILLEGAS EFRAIN';
+
+                // Buscamos el registro o creamos una instancia nueva si no existe
+                $gutlyleader = personalBergsModel::where('employeeName', $issue->Responsable)->first();
+
+                if (! $gutlyleader) {
+                    // Si no existe el registro en la DB, creamos un objeto genérico o una nueva instancia
+                    $gutlyleader = new personalBergsModel;
+                    $gutlyleader->employeeLider = 'VERA VILLEGAS EFRAIN';
+                } else {
+                    // Si existe, intentamos formatear el nombre
+                    $parts = explode(' ', $gutlyleader->employeeLider);
+
+                    // Validamos que existan suficientes partes para evitar errores de índice [0] y [2]
+                    if (count($parts) >= 3) {
+                        $gutlyleader->employeeLider = $parts[0].' '.$parts[2];
+                    }
+                }
+
+                // Validación final por si el campo estaba vacío en la base de datos
+                if (empty($gutlyleader->employeeLider)) {
+                    $gutlyleader->employeeLider = 'VERA VILLEGAS EFRAIN';
+                }
                 $issue->Responsable = explode(' ', $issue->Responsable)[0].' '.explode(' ', $issue->Responsable)[2];
                 if (in_array($issue->Responsable.' Lider: '.$gutlyleader->employeeLider, array_column($gulty, 0))) {
                     $gulty[array_search($issue->Responsable.' Lider: '.$gutlyleader->employeeLider, array_column($gulty, 0))][1] += $issue->resto;
