@@ -192,6 +192,7 @@ function checkCant() {
     }
 }
 function empleado1() {
+    let form = document.getElementById("formCalidad");
     const codigoValue = document.getElementById("responsable1").value;
     const url = empleadosFallas;
     fetch(url, {
@@ -210,7 +211,8 @@ function empleado1() {
           const personalDef=data.employeeName ? data.employeeName : "";
           if(personalDef == ""){
             alert("El empleado no existe");
-             window.location.reload();
+          document.getElementById("resp1").value = "VERA VILLEGAS EFRAIN";
+            window.location.reload();
           }
           document.getElementById("resp1").value = personalDef;
         })
@@ -237,6 +239,7 @@ function empleado2() {
           const personalDef=data.employeeName ? data.employeeName : "";
           if(personalDef == ""){
             alert("El empleado no existe");
+             document.getElementById("resp2").value = "VERA VILLEGAS EFRAIN";
              window.location.reload();
           }
           document.getElementById("resp2").value = personalDef;
@@ -264,6 +267,7 @@ function empleado3() {
           const personalDef=data.employeeName ? data.employeeName : "";
           if(personalDef == ""){
             alert("El empleado no existe");
+             document.getElementById("resp3").value = "VERA VILLEGAS EFRAIN";
              window.location.reload();
           }
           document.getElementById("resp3").value = personalDef;
@@ -291,6 +295,7 @@ function empleado4() {
           const personalDef=data.employeeName ? data.employeeName : "";
           if(personalDef == ""){
             alert("El empleado no existe");
+             document.getElementById("resp4").value = "VERA VILLEGAS EFRAIN";
              window.location.reload();
           }
           document.getElementById("resp4").value = personalDef;
@@ -318,6 +323,7 @@ function empleado5() {
           const personalDef=data.employeeName ? data.employeeName : "";
           if(personalDef == ""){
             alert("El empleado no existe");
+             document.getElementById("resp5").value = "VERA VILLEGAS EFRAIN";
             window.location.reload();
           }
           document.getElementById("resp5").value = personalDef;
@@ -325,6 +331,19 @@ function empleado5() {
         .catch((error) => {
             console.error("Error:", error);
         });
+}
+function confirmarEnvio(event) {
+    event.preventDefault();
+    let confirmar = confirm('¿Desea guardar el registro?');
+    if( confirmar ) {
+        document.getElementById("formCalidad").action = urlsRegistros;
+        document.getElementById("formCalidad").method = "POST";
+        document.getElementById("formCalidad").submit();
+    }else{
+        return false;
+
+    }
+
 }
 
 

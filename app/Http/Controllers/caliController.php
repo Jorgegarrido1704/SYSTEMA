@@ -327,6 +327,9 @@ class caliController extends generalController
                             break;
                         }
                     }
+                    if (is_int($responsable1)) {
+                        $responsable1 = 'VERA VILLEGAS EFRAIN';
+                    }
                     $serial = RegistroCalidadFunc($cant1, $cod1, $today, $client, $pn, $info, $value, $responsable1, $serial, $check1);
                     //  deadTime($cod1,$today,$client,$pn,$info,$value,$loom,$corteLibe,$ensa);
                 }

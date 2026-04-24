@@ -7,6 +7,7 @@
 <script>
     const modificacionsCali = @json(route('buscarcodigo'));
     const empleadosFallas = @json(route('personalFallas'));
+    const urlsRegistros = @json(route('saveData'));
     </script>
                     <!-- Content Row -->
         <div class="row">
@@ -28,10 +29,10 @@
                                               </div>
 
                                                     <br>
-                                                    <form action="{{route('saveData')}}" method="POST" id="formCalidad">
+                                                    <form  id="formCalidad" >
                                                         @csrf
                                         <div> <h4>OK<input type="number" style="width:80px;margin-right:80px;" name="ok" id="ok" value="0"  max="{{ $cambioestados[0] }}" onchange="return checkOk()">
-                                               NOK<input type="number" style="width: 80px;margin-right:80px" name="nok" id="nok" value="0"  max="5" onchange="return checkOk()"></h4></div>
+                                               NOK<input type="number" style="width: 80px;margin-right:80px" name="nok" id="nok" value="0"  max="5" readonly onchange="return checkOk()"></h4></div>
                                                          <script>
                                                                     function checkOk(){
                                                                     var checkOk=document.getElementById('ok').value;
@@ -51,7 +52,7 @@
                                                 <div class="d-flex justify-content-center">Code #1</div>
                                                 <div class="d-flex justify-content-center">
                                                 <input type="text" style="width:80px;" name="codigo1" id="codigo1" value="" onchange="buscarcodigo1()">
-                                                <input type="text" style="width:280px;" name="rest_code1" id="rest_code1">
+                                                <input type="text" style="width:280px;" name="rest_code1" id="rest_code1" readonly>
                                                 </div>
                                             </div>
                                             <div class="col-md-6 mt-6">
@@ -61,7 +62,7 @@
                                                 </div>
                                                 <div class="d-flex justify-content-center">
                                                     <input type="text" style="width: 80px;margin-right:80px"
-                                                    name="responsable1" id="responsable1" value="00" minlength="4" maxlength="4" onchange="empleado1()">
+                                                    name="responsable1" id="responsable1" value="00" minlength="4" maxlength="4" onchange="empleado1(event)">
                                                         <input type="text" style="width: 380px;margin-right:80px" name="resp1" id="resp1" readonly>
                                                     High Rework<input type="checkbox" name="check1" id="check1" value="1">
                                             </div>
@@ -169,7 +170,7 @@
                                         <input type="hidden" name="infoCal" id="infoCal" value="{{$buscarInfor->info}}">
                                         <input type="hidden" name="pn_cali" id="pn_cali" value="{{$buscarInfor->np}}">
                                         <input type="hidden" name="id_cali" id="id_cali" value="{{$buscarInfor->id}}">
-                                         <input type="submit" name="enviar" id="enviar" value="Save">
+                                         <input type="submit" name="enviar" id="enviar" value="Save" onclick = "return confirmarEnvio(event)" class="btn btn-primary" style="display:  {{ $cambioestados[3] }} ">
                                         </form>
                                     </div>
 
