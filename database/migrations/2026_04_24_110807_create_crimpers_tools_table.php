@@ -21,7 +21,6 @@ return new class extends Migration
             $table->integer('minutesStop')->default(0);
             $table->string('reasonStop')->nullable();
             $table->string('observations')->nullable();
-
             $table->timestamps();
         });
     }

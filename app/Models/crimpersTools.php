@@ -21,4 +21,8 @@ class crimpersTools extends Model
     ];
 
     protected $table = 'crimpers_tools';
+
+    protected $primaryKey = 'id';
+
+    public $timestamps = true;
 }
