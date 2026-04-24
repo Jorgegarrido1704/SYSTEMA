@@ -779,7 +779,7 @@ class juntasController extends Controller
                     $i++;
                 }
                 $gutlyleader = personalBergsModel::select('employeeLider')->where('employeeName', $issue->Responsable)->first();
-                $gutlyleader->employeeLider = explode(' ', $gutlyleader->employeeLider)[0].' '.explode(' ', $gutlyleader->employeeLider)[2];
+                $gutlyleader->employeeLider = explode(' ', $gutlyleader->employeeLider)[0].' '.explode(' ', $gutlyleader->employeeLider)[2] ?? 'VERA VILLEGAS EFRAIN';
                 $issue->Responsable = explode(' ', $issue->Responsable)[0].' '.explode(' ', $issue->Responsable)[2];
                 if (in_array($issue->Responsable.' Lider: '.$gutlyleader->employeeLider, array_column($gulty, 0))) {
                     $gulty[array_search($issue->Responsable.' Lider: '.$gutlyleader->employeeLider, array_column($gulty, 0))][1] += $issue->resto;
