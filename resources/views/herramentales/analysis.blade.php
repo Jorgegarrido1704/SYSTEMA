@@ -69,7 +69,7 @@
                             <table class="table  table-bordered table-hover">
                                 <thead>
                                     <tr>
-                                        <th scope="col" class="text-center">Top 5 most requiring tooling</th>
+                                        <th scope="col" class="text-center">Top 10 most requiring tooling</th>
                                         <th scope="col" class="text-center">Times</th>
                                     </tr>
                                 </thead>
