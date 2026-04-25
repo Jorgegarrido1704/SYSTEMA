@@ -285,6 +285,8 @@ Route::controller(herramentalesController::class)->group(function () {
 });
 Route::controller(corteController::class)->group(function () {
     Route::get('/corte', [corteController::class, 'indexCorte'])->name('corte.indexCorte');
+    Route::get('/corte/appJointTerminales', [corteController::class, 'appJointTerminales'])->name('corte.appJointTerminales');
+    Route::get('/corte/appJointTerminalesTabla', [corteController::class, 'appJointTerminalesTabla'])->name('corte.appJointTerminalesTabla');
 });
 
 // Cambiar Idioma
