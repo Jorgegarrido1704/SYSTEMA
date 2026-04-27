@@ -69,6 +69,8 @@ class AddWeek implements ShouldQueue
                     if (registroVacacionesModel::where('id_empleado', '=', $registroEmpleado->employeeNumber)->where('fecha_de_solicitud', '=', $dates)->exists()) {
                         $registro = 'V';
 
+                    } elseif ($registroEmpleado->employeeShift == 'secondShift') {
+                        $registro = 'N';
                     } elseif ($today == 6 || $today == 7) {
                         $registro = 'N/A';
                     } elseif ($registroEmpleado->employeeNumber == 'i2047' or $registroEmpleado->employeeNumber == 'i2116'
