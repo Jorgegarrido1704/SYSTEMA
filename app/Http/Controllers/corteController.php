@@ -21,11 +21,18 @@ class corteController extends Controller
     public function appJointTerminales()
     {
         try {
-            $hoy = carbon::now()->format('Y-m-d');
-            $ayer = $hoy->isMonday() ? $hoy->subDays(3)->format('Y-m-d') : $hoy->subDay()->format('Y-m-d');
+
+            $hoy = Carbon::now();
+
+            $ayer = $hoy->isMonday()
+                ? $hoy->copy()->subDays(3)
+                : $hoy->copy()->subDay();
+
+            $hoyFormatted = $hoy->format('Y-m-d');
+            $ayerFormatted = $ayer->format('Y-m-d');
 
             // Obtenemos los datos agrupados por máquina y sumados
-            $datos = crimpersTools::whereIn('dateRegistered', [$ayer, $hoy])
+            $datos = crimpersTools::whereIn('dateRegistered', [$ayerFormatted, $hoyFormatted])
                 ->select('toolingCrimperName')
                 ->selectRaw('SUM(CAST(TerminalsUsed AS UNSIGNED)) as total_terminales')
                 ->selectRaw('SUM(minutesStop) as total_paro')
@@ -42,13 +49,19 @@ class corteController extends Controller
     public function appJointTerminalesTabla()
     {
         try {
-            $hoy = carbon::now()->format('Y-m-d');
-            $ayer = $hoy->isMonday() ? $hoy->subDays(3)->format('Y-m-d') : $hoy->subDay()->format('Y-m-d');
+            $hoy = Carbon::now();
+
+            $ayer = $hoy->isMonday()
+                ? $hoy->copy()->subDays(3)
+                : $hoy->copy()->subDay();
+
+            $hoyFormatted = $hoy->format('Y-m-d');
+            $ayerFormatted = $ayer->format('Y-m-d');
             $horaCorte = '09:00:00';
             $horaActual = date('H:i:s');
 
             // Si es antes de las 9 AM, mostrar ayer. Si es después, mostrar hoy.
-            $fechaConsultar = ($horaActual < $horaCorte) ? $ayer : $hoy;
+            $fechaConsultar = ($horaActual < $horaCorte) ? $ayerFormatted : $hoyFormatted;
 
             $datos = crimpersTools::where('dateRegistered', $fechaConsultar)
                 ->orderBy('toolingCrimperName', 'asc')
