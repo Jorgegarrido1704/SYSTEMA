@@ -233,7 +233,7 @@ class herramentalesController extends Controller
         $promedio = $promedioespera[0]->promedio ?? 0;
 
         // 2. Time Working (Difference between inimant and finhora)
-        $times = Maintanance::selectRaw('
+        $times = Maintanance::selectRaw('COUNT(*) as total_trabajos,
         AVG(TIMESTAMPDIFF(MINUTE, 
             STR_TO_DATE(inimant, "%d-%m-%Y %H:%i"), 
             STR_TO_DATE(finhora, "%d-%m-%Y %H:%i")
@@ -245,6 +245,7 @@ class herramentalesController extends Controller
             ->get();
 
         $timeWorking = $times[0]->promedio ?? 0;
+        $totalDeTrabajos = $times[0]->total_trabajos ?? 0;
 
         // 3. Total Times AVG (Difference between fecha and finhora)
         $ttimes = Maintanance::selectRaw('
@@ -270,7 +271,7 @@ class herramentalesController extends Controller
         dd($tooling, $promedio, $timeWorking, $totalTimesAVG);
 
         return view('herramentales.analysis', ['cat' => $cat, 'value' => $value, 'promedioespera' => $promedioespera, 'timeWorking' => $timeWorking,
-            'totalTimesAVG' => $totalTimesAVG, 'tooling' => $tooling,
+            'totalTimesAVG' => $totalTimesAVG, 'tooling' => $tooling, 'totalDeTrabajos' => $totalDeTrabajos,
         ]);
 
     }
