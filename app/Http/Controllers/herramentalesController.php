@@ -224,6 +224,7 @@ class herramentalesController extends Controller
             ->where('inimant', '!=', '')->where('area', '=', 'maquina')->groupBy('area')->orderBy('id', 'desc')->get();
         $totalTimesAVG = $ttimes[0]->promedio ?? 0;
         $tooling = Maintanance::selectRaw('nombreEquipo,COUNT(nombreEquipo) as tiemposVal')->where('area', '=', 'maquina')->groupBy('nombreEquipo')->orderBy('tiemposVal', 'desc')->limit(10)->get();
+        dd($tooling, $promedio, $timeWorking, $totalTimesAVG);
 
         return view('herramentales.analysis', ['cat' => $cat, 'value' => $value, 'promedioespera' => $promedioespera, 'timeWorking' => $timeWorking,
             'totalTimesAVG' => $totalTimesAVG, 'tooling' => $tooling,
