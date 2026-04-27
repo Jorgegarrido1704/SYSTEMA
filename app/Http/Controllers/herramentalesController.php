@@ -268,7 +268,7 @@ class herramentalesController extends Controller
             ->limit(10)
             ->get();
 
-        dd($tooling, $promedio, $timeWorking, $totalTimesAVG);
+        // dd($tooling, $promedio, $timeWorking, $totalTimesAVG);
 
         return view('herramentales.analysis', ['cat' => $cat, 'value' => $value, 'promedioespera' => $promedioespera, 'timeWorking' => $timeWorking,
             'totalTimesAVG' => $totalTimesAVG, 'tooling' => $tooling, 'totalDeTrabajos' => $totalDeTrabajos,
