@@ -202,28 +202,71 @@ class herramentalesController extends Controller
         $hoy = Carbon::now();
 
         if ($hoy->isMonday()) {
-            // Si es lunes, desde el viernes (3 días atrás) hasta ayer (domingo)
-            $fechaInicio = $hoy->copy()->subDays(3)->format('d-m-Y');
+            // We search from Friday 00:00 to Monday 23:59
+            $fechaInicio = $hoy->copy()->subDays(3)->startOfDay()->format('d-m-Y');
             $fechaFin = $hoy->format('d-m-Y');
         } else {
-            // Cualquier otro día, solo el dato de ayer
-            $fechaInicio = $hoy->copy()->subDay()->format('d-m-Y');
+            $fechaInicio = $hoy->copy()->subDay()->startOfDay()->format('d-m-Y');
             $fechaFin = $hoy->copy()->format('d-m-Y');
         }
 
-        $promedioespera = Maintanance::selectRaw('AVG(TIMESTAMPDIFF(MINUTE,STR_TO_DATE(fecha, "%d-%m-%Y %H:%i"), STR_TO_DATE(inimant, "%d-%m-%Y %H:%i"))) as promedio')
-            ->whereRaw('str_to_date(fecha, "%d-%m-%Y") between ? and ?', [$fechaInicio, $fechaFin])
-            ->where('inimant', '!=', '')->where('area', '=', 'maquina')->groupBy('area')->orderBy('id', 'desc')->get();
+        /**
+         * IMPORTANT:
+         * In your screenshot, 'fecha' is YYYY-MM-DD.
+         * In your screenshot, 'inimant' and 'finhora' are DD-MM-YYYY.
+         * We must use different masks for each!
+         */
+
+        // 1. Promedio de Espera
+        $promedioespera = Maintanance::selectRaw('
+        AVG(TIMESTAMPDIFF(MINUTE, 
+            fecha, 
+            STR_TO_DATE(inimant, "%d-%m-%Y %H:%i")
+        )) as promedio')
+            // Correcting the filter: parsing 'fecha' (YYYY-MM-DD) to match your variable (DD-MM-YYYY)
+            ->whereRaw('DATE_FORMAT(fecha, "%d-%m-%Y") between ? and ?', [$fechaInicio, $fechaFin])
+            ->where('inimant', '!=', '')
+            ->where('area', '=', 'maquina')
+            ->groupBy('area')
+            ->get();
+
         $promedio = $promedioespera[0]->promedio ?? 0;
-        $times = Maintanance::selectRaw('AVG(TIMESTAMPDIFF(MINUTE,STR_TO_DATE(inimant, "%d-%m-%Y %H:%i"), STR_TO_DATE(finhora, "%d-%m-%Y %H:%i"))) as promedio')
-            ->whereRaw('str_to_date(fecha, "%d-%m-%Y") between ? and ?', [$fechaInicio, $fechaFin])
-            ->where('inimant', '!=', '')->where('area', '=', 'maquina')->groupBy('area')->orderBy('id', 'desc')->get();
+
+        // 2. Time Working (Difference between inimant and finhora)
+        $times = Maintanance::selectRaw('
+        AVG(TIMESTAMPDIFF(MINUTE, 
+            STR_TO_DATE(inimant, "%d-%m-%Y %H:%i"), 
+            STR_TO_DATE(finhora, "%d-%m-%Y %H:%i")
+        )) as promedio')
+            ->whereRaw('DATE_FORMAT(fecha, "%d-%m-%Y") between ? and ?', [$fechaInicio, $fechaFin])
+            ->where('inimant', '!=', '')
+            ->where('area', '=', 'maquina')
+            ->groupBy('area')
+            ->get();
+
         $timeWorking = $times[0]->promedio ?? 0;
-        $ttimes = Maintanance::selectRaw('AVG(TIMESTAMPDIFF(MINUTE,STR_TO_DATE(fecha, "%d-%m-%Y %H:%i"), STR_TO_DATE(finhora, "%d-%m-%Y %H:%i"))) as promedio')
-            ->whereRaw('str_to_date(fecha, "%d-%m-%Y") between ? and ?', [$fechaInicio, $fechaFin])
-            ->where('inimant', '!=', '')->where('area', '=', 'maquina')->groupBy('area')->orderBy('id', 'desc')->get();
+
+        // 3. Total Times AVG (Difference between fecha and finhora)
+        $ttimes = Maintanance::selectRaw('
+        AVG(TIMESTAMPDIFF(MINUTE, 
+            fecha, 
+            STR_TO_DATE(finhora, "%d-%m-%Y %H:%i")
+        )) as promedio')
+            ->whereRaw('DATE_FORMAT(fecha, "%d-%m-%Y") between ? and ?', [$fechaInicio, $fechaFin])
+            ->where('inimant', '!=', '')
+            ->where('area', '=', 'maquina')
+            ->groupBy('area')
+            ->get();
+
         $totalTimesAVG = $ttimes[0]->promedio ?? 0;
-        $tooling = Maintanance::selectRaw('nombreEquipo,COUNT(nombreEquipo) as tiemposVal')->where('area', '=', 'maquina')->groupBy('nombreEquipo')->orderBy('tiemposVal', 'desc')->limit(10)->get();
+
+        $tooling = Maintanance::selectRaw('nombreEquipo, COUNT(nombreEquipo) as tiemposVal')
+            ->where('area', '=', 'maquina')
+            ->groupBy('nombreEquipo')
+            ->orderBy('tiemposVal', 'desc')
+            ->limit(10)
+            ->get();
+
         dd($tooling, $promedio, $timeWorking, $totalTimesAVG);
 
         return view('herramentales.analysis', ['cat' => $cat, 'value' => $value, 'promedioespera' => $promedioespera, 'timeWorking' => $timeWorking,
