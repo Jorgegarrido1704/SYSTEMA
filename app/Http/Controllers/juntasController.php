@@ -841,9 +841,9 @@ class juntasController extends Controller
             ->orderByDesc('codigo')
             ->get();
         foreach ($empleados as $rowEmp) {
-            $supRes = personalBergsModel::where('employeeName', $issue->Responsable)->first();
-
-            if (! $supRes) {
+            if (! empty($issue->Responsable)) {
+                $supRes = personalBergsModel::where('employeeName', $issue->Responsable)->first();
+            } elseif (! $supRes) {
 
                 $supRes = new personalBergsModel;
                 $supRes->employeeLider = 'VERA VILLEGAS EFRAIN';
