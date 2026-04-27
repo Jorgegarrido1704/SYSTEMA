@@ -203,7 +203,7 @@ class herramentalesController extends Controller
 
         if ($hoy->isMonday()) {
             // Si es lunes, desde el viernes (3 días atrás) hasta ayer (domingo)
-            $fechaInicio = Carbon::yesterday()->subDays(2)->format('d-m-Y');
+            $fechaInicio = Carbon::yesterday()->subDays(3)->format('d-m-Y');
             $fechaFin = Carbon::yesterday()->format('d-m-Y');
         } else {
             // Cualquier otro día, solo el dato de ayer
