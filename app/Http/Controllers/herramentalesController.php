@@ -239,7 +239,7 @@ class herramentalesController extends Controller
             STR_TO_DATE(finhora, "%d-%m-%Y %H:%i")
         )) as promedio')
             ->whereRaw('DATE_FORMAT(fecha, "%d-%m-%Y") between ? and ?', [$fechaInicio, $fechaFin])
-            ->where('inimant', '!=', '')
+            ->where('finhora', '!=', '')
             ->where('area', '=', 'maquina')
             ->groupBy('area')
             ->get();
@@ -254,7 +254,7 @@ class herramentalesController extends Controller
             STR_TO_DATE(finhora, "%d-%m-%Y %H:%i")
         )) as promedio')
             ->whereRaw('DATE_FORMAT(fecha, "%d-%m-%Y") between ? and ?', [$fechaInicio, $fechaFin])
-            ->where('inimant', '!=', '')
+            ->where('finhora', '!=', '')
             ->where('area', '=', 'maquina')
             ->groupBy('area')
             ->get();
@@ -270,7 +270,7 @@ class herramentalesController extends Controller
 
         // dd($tooling, $promedio, $timeWorking, $totalTimesAVG);
 
-        return view('herramentales.analysis', ['cat' => $cat, 'value' => $value, 'promedioespera' => $promedioespera, 'timeWorking' => $timeWorking,
+        return view('herramentales.analysis', ['cat' => $cat, 'value' => $value, 'promedioespera' => $promedio, 'timeWorking' => $timeWorking,
             'totalTimesAVG' => $totalTimesAVG, 'tooling' => $tooling, 'totalDeTrabajos' => $totalDeTrabajos,
         ]);
 
