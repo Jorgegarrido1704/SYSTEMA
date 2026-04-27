@@ -203,12 +203,12 @@ class herramentalesController extends Controller
 
         if ($hoy->isMonday()) {
             // Si es lunes, desde el viernes (3 días atrás) hasta ayer (domingo)
-            $fechaInicio = Carbon::yesterday()->subDays(3)->format('d-m-Y');
-            $fechaFin = Carbon::yesterday()->format('d-m-Y');
+            $fechaInicio = $hoy->copy()->subDays(3)->format('d-m-Y');
+            $fechaFin = $hoy->format('d-m-Y');
         } else {
             // Cualquier otro día, solo el dato de ayer
-            $fechaInicio = Carbon::yesterday()->format('d-m-Y');
-            $fechaFin = Carbon::yesterday()->format('d-m-Y');
+            $fechaInicio = $hoy->format('d-m-Y');
+            $fechaFin = $hoy->copy()->subDay()->format('d-m-Y');
         }
 
         $promedioespera = Maintanance::selectRaw('AVG(TIMESTAMPDIFF(MINUTE,STR_TO_DATE(fecha, "%d-%m-%Y %H:%i"), STR_TO_DATE(inimant, "%d-%m-%Y %H:%i"))) as promedio')
@@ -225,7 +225,7 @@ class herramentalesController extends Controller
         $totalTimesAVG = $ttimes[0]->promedio ?? 0;
         $tooling = Maintanance::selectRaw('nombreEquipo,COUNT(nombreEquipo) as tiemposVal')->where('area', '=', 'maquina')->groupBy('nombreEquipo')->orderBy('tiemposVal', 'desc')->limit(10)->get();
 
-        return view('herramentales.analysis', ['cat' => $cat, 'value' => $value, 'promedioespera' => $promedio, 'timeWorking' => $timeWorking,
+        return view('herramentales.analysis', ['cat' => $cat, 'value' => $value, 'promedioespera' => $promedioespera, 'timeWorking' => $timeWorking,
             'totalTimesAVG' => $totalTimesAVG, 'tooling' => $tooling,
         ]);
 
