@@ -67,7 +67,7 @@
                                                     <div class="text-s font-weight-bold text-primary text-uppercase mb-1">
                                                        {{__('Crimper')}} l3-1</div>
                                                     <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                        <span id="l3-1"></span>
+                                                        <span id="L3-1"></span>
 
 
                                                     </div>
@@ -83,9 +83,9 @@
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
                                                     <div class="text-s font-weight-bold text-primary text-uppercase mb-1">
-                                                       {{__('Crimper')}} l3-2</div>
+                                                       {{__('Crimper')}} L3-2</div>
                                                     <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                        <span id="l3-2"></span>
+                                                        <span id="L3-2"></span>
 
 
                                                     </div>
@@ -101,9 +101,9 @@
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
                                                     <div class="text-s font-weight-bold text-primary text-uppercase mb-1">
-                                                       {{__('Crimper')}} l3-3</div>
+                                                       {{__('Crimper')}} L3-3</div>
                                                     <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                        <span id="l3-3"></span>
+                                                        <span id="L3-3"></span>
 
 
                                                     </div>
@@ -119,9 +119,9 @@
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
                                                     <div class="text-s font-weight-bold text-primary text-uppercase mb-1">
-                                                       {{__('Crimper')}} l3-4</div>
+                                                       {{__('Crimper')}} L3-4</div>
                                                     <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                        <span id="l3-4"></span>
+                                                        <span id="L3-4"></span>
 
 
                                                     </div>
@@ -137,9 +137,9 @@
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
                                                     <div class="text-s font-weight-bold text-primary text-uppercase mb-1">
-                                                       {{__('Crimper')}} l2-1</div>
+                                                       {{__('Crimper')}} L2-1</div>
                                                     <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                        <span id="l2-1"></span>
+                                                        <span id="L2-1"></span>
 
 
                                                     </div>
@@ -155,9 +155,9 @@
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
                                                     <div class="text-s font-weight-bold text-primary text-uppercase mb-1">
-                                                       {{__('Crimper')}} l2-2</div>
+                                                       {{__('Crimper')}} L2-2</div>
                                                     <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                        <span id="l2-2"></span>
+                                                        <span id="L2-2"></span>
                                                     </div>
 
                                                 </div>
@@ -171,9 +171,9 @@
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
                                                     <div class="text-s font-weight-bold text-primary text-uppercase mb-1">
-                                                       {{__('Crimper')}} l2-3</div>
+                                                       {{__('Crimper')}} L2-3</div>
                                                     <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                        <span id="l2-3"></span>
+                                                        <span id="L2-3"></span>
                                                     </div>
 
                                                 </div>
@@ -187,9 +187,9 @@
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
                                                     <div class="text-s font-weight-bold text-primary text-uppercase mb-1">
-                                                       {{__('Crimper')}} l2-4</div>
+                                                       {{__('Crimper')}} L2-4</div>
                                                     <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                        <span id="l2-4"></span>
+                                                        <span id="L2-4"></span>
                                                     </div>
 
                                                 </div>
@@ -204,9 +204,9 @@
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
                                                     <div class="text-s font-weight-bold text-primary text-uppercase mb-1">
-                                                       {{__('Crimper')}} l1-1</div>
+                                                       {{__('Crimper')}} L1-1</div>
                                                     <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                        <span id="l1-1"></span>
+                                                        <span id="L1-1"></span>
 
 
                                                     </div>
@@ -222,9 +222,9 @@
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
                                                     <div class="text-s font-weight-bold text-primary text-uppercase mb-1">
-                                                       {{__('Crimper')}} l1-2</div>
+                                                       {{__('Crimper')}} L1-2</div>
                                                     <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                        <span id="l1-2"></span>
+                                                        <span id="L1-2"></span>
                                                     </div>
 
                                                 </div>
@@ -238,9 +238,9 @@
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
                                                     <div class="text-s font-weight-bold text-primary text-uppercase mb-1">
-                                                       {{__('Crimper')}} l1-3</div>
+                                                       {{__('Crimper')}} L1-3</div>
                                                     <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                        <span id="l1-3"></span>
+                                                        <span id="L1-3"></span>
                                                     </div>
 
                                                 </div>
@@ -254,9 +254,9 @@
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
                                                     <div class="text-s font-weight-bold text-primary text-uppercase mb-1">
-                                                       {{__('Crimper')}} l1-4</div>
+                                                       {{__('Crimper')}} L1-4</div>
                                                     <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                        <span id="l1-4"></span>
+                                                        <span id="L1-4"></span>
                                                     </div>
 
                                                 </div>
