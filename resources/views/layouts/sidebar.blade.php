@@ -99,10 +99,11 @@
                     onmouseover=showProduction();>{{ __('Production States') }}</a>
                     <ul class="submenu" id="production" style="display:none;">
                         <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('litas_reg') }}">{{ __('Search Info') }}</a></li>
+                        <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('corte.indexCorte') }}">{{ __('Terminals Info') }}</a></li>
                         @if($value=='Admin')
                         <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('cutAndTerm') }}">{{ __('Cut & Terminals') }}</a></li>
                         <li class="submenu" id="submenu"><a style="color:white;" href="#">{{ __('Assembly & Looming') }}</a></li>
-                        <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('corte.indexCorte') }}">{{ __('Terminals Info') }}</a></li>
+                        
                         @endif
                     </ul>
                 </li>
