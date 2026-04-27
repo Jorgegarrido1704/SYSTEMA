@@ -207,8 +207,8 @@ class herramentalesController extends Controller
             $fechaFin = $hoy->format('d-m-Y');
         } else {
             // Cualquier otro día, solo el dato de ayer
-            $fechaInicio = $hoy->format('d-m-Y');
-            $fechaFin = $hoy->copy()->subDay()->format('d-m-Y');
+            $fechaInicio = $hoy->copy()->subDay()->format('d-m-Y');
+            $fechaFin = $hoy->copy()->format('d-m-Y');
         }
 
         $promedioespera = Maintanance::selectRaw('AVG(TIMESTAMPDIFF(MINUTE,STR_TO_DATE(fecha, "%d-%m-%Y %H:%i"), STR_TO_DATE(inimant, "%d-%m-%Y %H:%i"))) as promedio')
