@@ -25,7 +25,7 @@ class corteController extends Controller
             $hoy = Carbon::now();
 
             $ayer = $hoy->isMonday()
-                ? $hoy->copy()->subDays(3)
+                ? $hoy->copy()->subDays(2)
                 : $hoy->copy()->subDay();
 
             $hoyFormatted = $hoy->format('Y-m-d');
@@ -52,7 +52,7 @@ class corteController extends Controller
             $hoy = Carbon::now();
 
             $ayer = $hoy->isMonday()
-                ? $hoy->copy()->subDays(3)
+                ? $hoy->copy()->subDays(2)
                 : $hoy->copy()->subDay();
 
             $hoyFormatted = $hoy->format('Y-m-d');
