@@ -198,6 +198,73 @@
                                     </div>
                                 </div>
 
+                                   <div class="col-xl-2 col-md-6 mb-4">
+                                    <div class="card border-left-danger shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-s font-weight-bold text-primary text-uppercase mb-1">
+                                                       {{__('Crimper')}} l1-1</div>
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                        <span id="l1-1"></span>
+
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-2 col-md-6 mb-4">
+                                    <div class="card border-left-danger shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-s font-weight-bold text-primary text-uppercase mb-1">
+                                                       {{__('Crimper')}} l1-2</div>
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                        <span id="l1-2"></span>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-2 col-md-6 mb-4">
+                                    <div class="card border-left-danger shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-s font-weight-bold text-primary text-uppercase mb-1">
+                                                       {{__('Crimper')}} l1-3</div>
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                        <span id="l1-3"></span>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-2 col-md-6 mb-4">
+                                    <div class="card border-left-danger shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-s font-weight-bold text-primary text-uppercase mb-1">
+                                                       {{__('Crimper')}} l1-4</div>
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                        <span id="l1-4"></span>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
 
                 </div>
             </div>
@@ -246,9 +313,8 @@
         .then(response => response.json())
         .then(data => {
             console.log('Datos procesados:', data);
-
-            // Lista de IDs de tus elementos en el HTML (l3-1, l3-2, etc.)
-            const maquinas = ['l3-1', 'l3-2', 'l3-3', 'l3-4', 'l2-1', 'l2-2', 'l2-3', 'l2-4'];
+            // Lista de IDs de tus elementos en el HTML (L3-1, L3-2, etc.)
+            const maquinas = ['L3-1', 'L3-2', 'L3-3', 'L3-4', 'L2-1', 'L2-2', 'L2-3', 'L2-4', 'L1-1', 'L1-2', 'L1-3', 'L1-4'];
 
             maquinas.forEach(id => {
                 const elemento = document.getElementById(id);
