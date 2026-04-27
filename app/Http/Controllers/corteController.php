@@ -21,8 +21,8 @@ class corteController extends Controller
     public function appJointTerminales()
     {
         try {
-            $hoy = date('Y-m-d');
-            $ayer = date('Y-m-d', strtotime('-1 day'));
+            $hoy = carbon::now()->format('Y-m-d');
+            $ayer = $hoy->isMonday() ? $hoy->copy()->subDays(3)->format('Y-m-d') : $hoy->copy()->subDay()->format('Y-m-d');
 
             // Obtenemos los datos agrupados por máquina y sumados
             $datos = crimpersTools::whereIn('dateRegistered', [$ayer, $hoy])
@@ -42,8 +42,9 @@ class corteController extends Controller
     public function appJointTerminalesTabla()
     {
         try {
-            $hoy = date('Y-m-d');
-            $ayer = date('Y-m-d', strtotime('-1 day'));
+            $hoy = carbon::now()->format('Y-m-d');
+            $ayer = $hoy->isMonday() ? $hoy->copy()->subDays(2)->format('Y-m-d') : $hoy->copy()->subDay()->format('Y-m-d');
+
             $horaCorte = '09:00:00';
             $horaActual = date('H:i:s');
 
