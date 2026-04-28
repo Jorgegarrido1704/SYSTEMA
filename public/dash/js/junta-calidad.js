@@ -248,7 +248,7 @@ try{ // Pareto anual
 // Set default font family and color
 Chart.defaults.global.defaultFontFamily = 'Nunito';
 //Q as Quality
-
+try{ // Q days
 var ctxQ = document.getElementById("Q");
 var myPieChart = new Chart(ctxQ, {
 type: 'doughnut',
@@ -280,6 +280,9 @@ cutoutPercentage: 80,
 },
 
 });
+} catch (error) {
+    console.log("No hay fecha guardada");
+}
 
 try{ // Issues employees monthly
     var employees =empleados.map(empleados => empleados.Responsable.split(' ')[0] + ' ' + empleados.Responsable.split(' ')[1]);
@@ -355,72 +358,72 @@ try{ // Issues employees monthly
 try {
 
 
-var incidencias = [];
-var supnames = Object.keys(supIssue);
-var supvalues = Object.values(supIssue);
-var sups = document.getElementById("Supervisorissues");
-var supss = new Chart(sups, {
-    type: 'bar',
-    data: {
-        labels: supnames,
-        datasets: [
-            {
-                label: 'Incidencias del mes',
-                data: supvalues,
-                backgroundColor:[
-  'rgba(200, 48, 28, 1)',
-  'rgba(200, 94, 28, 1)',
-  'rgba(200, 117, 28, 1)',
-  'rgba(200, 131, 28, 1)',
-  'rgba(210, 150, 28, 1)',
-  'rgba(200, 154, 28, 1)',
-  'rgba(194, 200, 28, 1)',
-  'rgba(188, 200, 28, 1)',
-  'rgba(171, 200, 28, 1)',
-  'rgba(151, 200, 28, 1)'
-],
-                fill: false, // Evita rellenar el área debajo de la línea
-                borderWidth: 4
+    var incidencias = [];
+    var supnames = Object.keys(supIssue);
+    var supvalues = Object.values(supIssue);
+    var sups = document.getElementById("Supervisorissues");
+    var supss = new Chart(sups, {
+        type: 'bar',
+        data: {
+            labels: supnames,
+            datasets: [
+                {
+                    label: 'Incidencias del mes',
+                    data: supvalues,
+                    backgroundColor:[
+    'rgba(200, 48, 28, 1)',
+    'rgba(200, 94, 28, 1)',
+    'rgba(200, 117, 28, 1)',
+    'rgba(200, 131, 28, 1)',
+    'rgba(210, 150, 28, 1)',
+    'rgba(200, 154, 28, 1)',
+    'rgba(194, 200, 28, 1)',
+    'rgba(188, 200, 28, 1)',
+    'rgba(171, 200, 28, 1)',
+    'rgba(151, 200, 28, 1)'
+    ],
+                    fill: false, // Evita rellenar el área debajo de la línea
+                    borderWidth: 4
+                },
+
+            ]
+        },
+        options: {
+            maintainAspectRatio: false,
+            tooltips: {
+                backgroundColor: "rgb(255,255,255)",
+                bodyFontColor: "#858796",
+                borderColor: '#dddfeb',
+                borderWidth: 1,
+                xPadding: 15,
+                yPadding: 15,
+                displayColors: false,
+
             },
-
-        ]
-    },
-    options: {
-        maintainAspectRatio: false,
-        tooltips: {
-            backgroundColor: "rgb(255,255,255)",
-            bodyFontColor: "#858796",
-            borderColor: '#dddfeb',
-            borderWidth: 1,
-            xPadding: 15,
-            yPadding: 15,
-            displayColors: false,
-
-        },
-        legend: {
-            display: true
-        },
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true,
-                    min: 1,
-                    max: 150,
-                    stepSize: 10,
-                },
-                gridLines: {
-                    color: '#e3e3e3',
-                    drawBorder: false,
-                },
-            }],
-            xAxes: [{
-                gridLines: {
-                    display: false,
-                },
-            }]
+            legend: {
+                display: true
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true,
+                        min: 1,
+                        max: 150,
+                        stepSize: 10,
+                    },
+                    gridLines: {
+                        color: '#e3e3e3',
+                        drawBorder: false,
+                    },
+                }],
+                xAxes: [{
+                    gridLines: {
+                        display: false,
+                    },
+                }]
+            }
         }
-    }
-    });
+        });
 }catch (error) {
     console.log("No hay fecha guardada");
 }

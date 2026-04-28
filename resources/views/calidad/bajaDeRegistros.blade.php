@@ -170,7 +170,7 @@
                                         <input type="hidden" name="infoCal" id="infoCal" value="{{$buscarInfor->info}}">
                                         <input type="hidden" name="pn_cali" id="pn_cali" value="{{$buscarInfor->np}}">
                                         <input type="hidden" name="id_cali" id="id_cali" value="{{$buscarInfor->id}}">
-                                         <input type="submit" name="enviar" id="enviar" value="Save" onclick = "return confirmarEnvio(event)" class="btn btn-primary" style="display:  {{ $cambioestados[3] }} ">
+                                         <input type="submit" name="enviar" id="enviar" value="Save"   class="btn btn-primary" style="display:  {{ $cambioestados[3] }} ">
                                         </form>
                                     </div>
 
@@ -198,19 +198,29 @@
     //
 document.getElementById("formCalidad").addEventListener("submit", function (event) {
     event.preventDefault();
-
+    let result=false;
     for (let i = 1; i <= 5; i++) {
         const codigo = document.getElementById(`codigo${i}`).value;
+        const restCode = document.getElementById(`rest_code${i}`).value;
         const responsable = document.getElementById(`responsable${i}`).value;
+        const resp = document.getElementById(`resp${i}`).value;
 
-        if (codigo !== "" && responsable.length < 4) {
-            return false;
+        if(codigo !==""){
+            if (restCode === "" || responsable === "00" || resp === "") {
+                alert(`Por favor, complete todos los campos para el código ${i}.`);
+                return;
+            }
+            result=true;
         }
     }
 
-    this.submit();
+    if (result) {
+        document.getElementById("formCalidad").action = urlsRegistros;
+        document.getElementById("formCalidad").method = "POST";
+        this.submit();
+    }
 });
-
+p
 </script>
 
 

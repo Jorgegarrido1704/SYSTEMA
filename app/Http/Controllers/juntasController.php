@@ -860,7 +860,7 @@ class juntasController extends Controller
 
         }
         arsort($supIssue);
-        //dd($supIssue);
+        // dd($supIssue);
 
         return view('juntas.calidad', ['codigoErrores' => $codigoErrores, 'grupo' => $grupo, 'top3registrosCalidas' => $top3registrosCalidas,
             'supIssue' => $supIssue, 'days' => $days, 'personalYear' => $personalYear, 'respemp' => $empRes,
