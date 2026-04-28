@@ -838,8 +838,10 @@ class juntasController extends Controller
             ->select('Responsable')
             ->where('fecha', 'LIKE', "%$month-$YearParto%")
             ->where('codigo', '!=', 'TODO BIEN')
+            ->groupBy('Responsable')
             ->orderByDesc('codigo')
             ->get();
+        dd($empleados);
 
         foreach ($empleados as $rowEmp) {
             if (! empty($issue->Responsable)) {
@@ -879,7 +881,6 @@ class juntasController extends Controller
         }
         $supIssue = array_filter($supIssue, fn ($count) => $count > 2);
         arsort($supIssue);
-        dd($empleados);
 
         return view('juntas.calidad', ['codigoErrores' => $codigoErrores, 'grupo' => $grupo, 'top3registrosCalidas' => $top3registrosCalidas,
             'supIssue' => $supIssue, 'days' => $days, 'personalYear' => $personalYear, 'respemp' => $empRes,
