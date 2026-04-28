@@ -859,7 +859,7 @@ class juntasController extends Controller
             }
 
         }
-        ursort($supIssue);
+        arsort($supIssue);
         dd($supIssue);
 
         return view('juntas.calidad', ['codigoErrores' => $codigoErrores, 'grupo' => $grupo, 'top3registrosCalidas' => $top3registrosCalidas,
