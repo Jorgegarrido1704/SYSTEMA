@@ -42,13 +42,14 @@ class caliController extends generalController
             }
 
             $personal = personalBergsModel::select('user', 'employeeName')->where('status', 'Activo')->whereNotNull('user')->orderBy('user', 'ASC')->get();
+            $employee = personalBergsModel::select('employeeNumber', 'employeeName')->where('status', 'Activo')->where('typeWorker', 'Directo')->orderBy('employeeName', 'ASC')->get();
             $fallas = fallasCalidadModel::where('status', '=', 'Open')->orderBy('id', 'DESC')->get();
             foreach ($fallas as $cal) {
                 $reg = Wo::where('wo', $cal->wo)->first();
                 $cal->pn = $reg->NumPart ?? '';
             }
 
-            return view('cali', ['cat' => $cat, 'value' => $value, 'calidad' => $calidad, 'preorder' => $preorder, 'personal' => $personal, 'fallas' => $fallas]);
+            return view('cali', ['cat' => $cat, 'value' => $value, 'calidad' => $calidad, 'preorder' => $preorder, 'personal' => $personal, 'employee' => $employee, 'fallas' => $fallas]);
         }
     }
 

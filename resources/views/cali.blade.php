@@ -23,7 +23,7 @@
                     <!-- Content Row -->
         <div class="row">
                         <!-- Content Column -->
-                        <div class="col-lg-6 mb-4">
+                        <div class="col-lg-5 mb-4">
                             <!-- Project Card Example -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -95,7 +95,7 @@
                                 </div>
                                 </div>
                            </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4 mb-4">
                                 <div class="card shadow mb-4">
                                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                         <h4 class="m-0 font-weight-bold text-primary">{{ __('Pre-accepted data') }}</h4>
@@ -133,6 +133,34 @@
                                                         </form>
                                                         </td>
                                                         @endif
+                                                    </tr>
+                                                @endforeach
+                                                @endif
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-4">
+                                <div class="card shadow mb-4">
+                                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                        <h4 class="m-0 font-weight-bold text-primary">{{ __('Total') }}</h4>
+                                    </div>
+                                    <div class="card-body" style="overflow-y: auto; height: 500px;">
+                                        <table class="table table-bordered" id="total">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">{{ __('Employee') }}</th>
+                                                    <th scope="col">{{ __('No. Employee') }}</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if(!empty($employee))
+                                                @foreach ($employee as $emp)
+                                                    <tr>
+                                                        <td><strong>{{ $emp->employeeName }}</strong></td>
+                                                        <td><strong>{{ $emp->employeeNumber}}</strong></td>
                                                     </tr>
                                                 @endforeach
                                                 @endif
@@ -274,14 +302,14 @@
                                                 <td>
                                                 @if(!empty($item->porqueProduccion))
                                                 <button class="btn btn-danger" onclick="location.href='{{ route('calidad.cerrarFalla', ['id' => $item->id, 'accion' =>'0']) }}'">{{ __('Reopen') }}</button>
-                                                <button class="btn btn-success" 
+                                                <button class="btn btn-success"
                                                 onclick="location.href='{{ route('calidad.cerrarFalla', ['id' => $item->id, 'accion' =>'1']) }}'">{{ __('Close') }}</button>
                                                 @endif
                                                 </td>
                                             </tr>
                                         @endforeach
                                     </tbody>
-                                    @endif  
+                                    @endif
 
                                 </table>
                             </div>
