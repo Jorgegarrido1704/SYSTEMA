@@ -839,7 +839,7 @@ class juntasController extends Controller
             ->where('fecha', 'LIKE', "%$month-$YearParto%")
             ->where('codigo', '!=', 'TODO BIEN')
             ->groupBy('Responsable')
-            ->orderByDesc('codigo')
+            ->orderByDesc('errores')
             ->get();
         dd($empleados);
 
