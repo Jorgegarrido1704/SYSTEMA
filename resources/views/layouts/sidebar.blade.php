@@ -157,7 +157,7 @@
 
 </ul>
 <script>
-    function showStistic() {
+    function showStatistic() {
         var statisticMenu = document.getElementById("statistic");
         if (statisticMenu.style.display === "none" || statisticMenu.style.display === "") {
             statisticMenu.style.display = "block";
