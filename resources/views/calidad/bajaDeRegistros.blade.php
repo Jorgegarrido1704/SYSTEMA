@@ -213,6 +213,17 @@ document.getElementById("formCalidad").addEventListener("submit", function (even
             result=true;
         }
     }
+    if (!result) {
+        const okValue = document.getElementById("ok").value;
+        const nokValue = document.getElementById("nok").value;
+
+        if (okValue === "0" && nokValue === "0") {
+            alert("Por favor, ingrese un valor para OK o NOK.");
+            return;
+        }else if(okValue !== "0" && nokValue === "0"){
+            result=true;
+        }
+    }
 
     if (result) {
         document.getElementById("formCalidad").action = urlsRegistros;
