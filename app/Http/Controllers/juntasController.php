@@ -846,43 +846,21 @@ class juntasController extends Controller
         // dd($empleados);
 
         foreach ($empleados as $rowEmp) {
-            if (! empty($issue->Responsable)) {
-                $supRes = personalBergsModel::where('employeeName', $issue->Responsable)->first();
-            } elseif (! $supRes) {
-
-                $supRes = new personalBergsModel;
-                $supRes->employeeLider = 'VERA VILLEGAS EFRAIN';
+            $supRes = personalBergsModel::where('employeeName', $rowEmp->Responsable)->first();
+            if ($supRes == null) {
+                $supRes = personalBergsModel::where('employeeName', 'VERA VILLEGAS EFRAIN')->first();
+            }
+            // modify supinfo
+            $supInfo = explode(' ', $supRes->employeeLider)[0].' '.explode(' ', $supRes->employeeLider)[2];
+            if ($supIssue[$supInfo] == null) {
+                $supIssue[$supInfo] = $rowEmp->errores;
             } else {
-                // Si existe, intentamos formatear el nombre
-                $parts = explode(' ', $supRes->employeeLider);
-
-                // Validamos que existan suficientes partes para evitar errores de índice [0] y [2]
-                if (count($parts) >= 3) {
-                    $supRes->employeeLider = $parts[0].' '.$parts[2];
-                }
+                $supIssue[$supInfo] += $rowEmp->errores;
             }
 
-            // Validación final por si el campo estaba vacío en la base de datos
-            if (empty($supRes->employeeLider)) {
-                $supRes = new personalBergsModel;
-                $supRes->employeeLider = 'VERA VILLEGAS EFRAIN';
-            }
-            if (! isset($supRes->employeeLider)) {
-                continue;
-            }
-            if (strpos($supRes->employeeLider, ',') !== false) {
-                $superString = explode(',', $supRes->employeeLider)[0];
-            } else {
-                $superString = $supRes->employeeLider;
-            }
-            if (! in_array($superString, array_keys($supIssue))) {
-                $supIssue[$superString] = 1;
-            } else {
-                $supIssue[$superString]++;
-            }
         }
-        $supIssue = array_filter($supIssue, fn ($count) => $count > 2);
-        arsort($supIssue);
+        ursort($supIssue);
+        dd($supIssue);
 
         return view('juntas.calidad', ['codigoErrores' => $codigoErrores, 'grupo' => $grupo, 'top3registrosCalidas' => $top3registrosCalidas,
             'supIssue' => $supIssue, 'days' => $days, 'personalYear' => $personalYear, 'respemp' => $empRes,
