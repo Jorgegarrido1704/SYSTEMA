@@ -835,13 +835,13 @@ class juntasController extends Controller
             ->toArray();
         $supIssue = [];
         $empleados = DB::table('regsitrocalidad')
-            ->select('Responsable')
+            ->select('Responsable', 'COUNT(Responsable) as errores')
             ->where('fecha', 'LIKE', "%$month-$YearParto%")
             ->where('codigo', '!=', 'TODO BIEN')
             ->groupBy('Responsable')
             ->orderByDesc('codigo')
             ->get();
-        dd($empleados);
+        // dd($empleados);
 
         foreach ($empleados as $rowEmp) {
             if (! empty($issue->Responsable)) {
