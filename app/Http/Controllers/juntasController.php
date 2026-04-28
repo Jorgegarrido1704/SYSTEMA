@@ -852,7 +852,7 @@ class juntasController extends Controller
             }
             // modify supinfo
             $supInfo = explode(' ', $supRes->employeeLider)[0].' '.explode(' ', $supRes->employeeLider)[2];
-            if ($supIssue[$supInfo] == null) {
+            if (array_key_exists($supInfo, $supIssue) == false) {
                 $supIssue[$supInfo] = $rowEmp->errores;
             } else {
                 $supIssue[$supInfo] += $rowEmp->errores;
