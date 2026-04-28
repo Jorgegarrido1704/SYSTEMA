@@ -2682,7 +2682,7 @@ class juntasController extends Controller
 
             if ($diasDiff <= 0) {
                 return 'rgba(255, 0, 0, 0.5)'; // Urgente
-            } elseif ($diasDiff <= 1) {
+            } elseif ($diasDiff <= 3) {
                 return 'rgba(255, 255, 0, 0.5)'; // Próximo
             } else {
                 return 'rgba(0, 255, 0, 0.5)'; // A tiempo

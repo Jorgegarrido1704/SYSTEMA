@@ -20,7 +20,7 @@
                     <div class="card-header py-3">
                         <h5 class="m-0 font-weight-bold text-primary">Priorities</h5>
                     </div>
-                    <div class="card-body" style="overflow-y: auto;  height: 600px;" >
+                    <div class="card-body" style="overflow-y: auto;  height: 950px;" >
                         <table class="table table-bordered"  width="100%" cellspacing="0">
                             <thead style=" position: sticky; z-index: 1; top: 0; text-align: center; background-color: black; color: white; ">
                                 <tr>
@@ -76,7 +76,7 @@
                                     <th>Part Number</th>
                                     <th>Revision</th>
                                     <th>Customer</th>
-                                 
+
 
                                 </tr>
                             </thead>
