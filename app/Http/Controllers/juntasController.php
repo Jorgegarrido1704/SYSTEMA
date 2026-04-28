@@ -840,6 +840,7 @@ class juntasController extends Controller
             ->where('codigo', '!=', 'TODO BIEN')
             ->orderByDesc('codigo')
             ->get();
+
         foreach ($empleados as $rowEmp) {
             if (! empty($issue->Responsable)) {
                 $supRes = personalBergsModel::where('employeeName', $issue->Responsable)->first();
@@ -878,7 +879,8 @@ class juntasController extends Controller
         }
         $supIssue = array_filter($supIssue, fn ($count) => $count > 2);
         arsort($supIssue);
-                        dd($supIssue);
+        dd($empleados);
+
         return view('juntas.calidad', ['codigoErrores' => $codigoErrores, 'grupo' => $grupo, 'top3registrosCalidas' => $top3registrosCalidas,
             'supIssue' => $supIssue, 'days' => $days, 'personalYear' => $personalYear, 'respemp' => $empRes,
             'empleados' => $top5,  'hoyb' => $hoyb, 'hoymal' => $hoymal, 'parhoy' => $parhoy, 'gultyY' => $gultyY, 'gulty' => $gulty,
