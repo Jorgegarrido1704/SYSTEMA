@@ -99,11 +99,11 @@
                     onmouseover=showProduction();>{{ __('Production States') }}</a>
                     <ul class="submenu" id="production" style="display:none;">
                         <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('litas_reg') }}">{{ __('Search Info') }}</a></li>
-                        <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('corte.indexCorte') }}">{{ __('Terminals Info') }}</a></li>
+
                         @if($value=='Admin')
                         <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('cutAndTerm') }}">{{ __('Cut & Terminals') }}</a></li>
                         <li class="submenu" id="submenu"><a style="color:white;" href="#">{{ __('Assembly & Looming') }}</a></li>
-                        
+
                         @endif
                     </ul>
                 </li>
@@ -115,20 +115,20 @@
                     </ul>
                 </li>
                 @endif
-                
+
                  <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('herramentales.index') }}"
                     onmouseover=showHerramentales();>{{ __('Toolings') }}</a>
-                   
+
                     <ul class="submenu" id="herramentales" style="display:none;">
                          @if($value=='Admin' || $cat=='herra')
                         <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('toolingMaintenance') }}">{{ __('Toolings Maintenance') }}</a></li>
                         @endif
                         <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('toolingAnalysis') }}">{{ __('Toolings Analysis') }}</a></li>
-                   
+
                     </ul>
-                    
+
                 </li>
-                
+
                 <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('rrhhDashBoard') }}">{{ __('Assistance') }}</a></li>
                 <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('Pendings.index') }}">{{ __('Pendings') }}</a></li>
                  <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('vacations') }}">{{ __('Vacations') }}</a></li>
@@ -137,6 +137,17 @@
                 @if($value=='Valeria P' || $value=='Admin' || $value=='Jose Luis' || $value=='Jesus_C' )
                 <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('testingMaterialRequeriment') }}">{{ __('Requeriment Materials Testing') }}</a></li>
                 @endif
+                 <li class="submenu" id="submenu"><a style="color:white;" href="#"
+                    onmouseover=showStatistic();>{{ __('Statistics') }}</a>
+
+                    <ul class="submenu" id="statistic" style="display:none;">
+                        <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('corte.indexCorte') }}">{{ __('Terminals Info') }}</a></li>
+                        <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('juntas.npi') }}">{{ __('NPI') }}</a></li>
+                        <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('toolingAnalysis') }}">{{ __('Toolings Analysis') }}</a></li>
+
+                    </ul>
+
+                </li>
             </ul>
         </li>
 
@@ -146,6 +157,14 @@
 
 </ul>
 <script>
+    function showStistic() {
+        var statisticMenu = document.getElementById("statistic");
+        if (statisticMenu.style.display === "none" || statisticMenu.style.display === "") {
+            statisticMenu.style.display = "block";
+        } else {
+            statisticMenu.style.display = "none";
+        }
+    }
     function showProduction() {
         var productionMenu = document.getElementById("production");
         if (productionMenu.style.display === "none" || productionMenu.style.display === "") {
