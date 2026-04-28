@@ -2671,7 +2671,7 @@ class juntasController extends Controller
         function colorRetrado($fecha)
         {
             if (empty($fecha)) {
-                return 'gray'; // Sin fecha
+                return 'white'; // Sin fecha
             }
 
             $hoy = \Carbon\Carbon::now();
@@ -2680,9 +2680,9 @@ class juntasController extends Controller
             // Diferencia en días (puede ser negativa si está en el futuro)
             $diasDiff = $hoy->diffInDays($fechaCarbon, false);
 
-            if ($diasDiff <= 4) {
+            if ($diasDiff <= 0) {
                 return 'rgba(255, 0, 0, 0.5)'; // Urgente
-            } elseif ($diasDiff <= 6) {
+            } elseif ($diasDiff <= 1) {
                 return 'rgba(255, 255, 0, 0.5)'; // Próximo
             } else {
                 return 'rgba(0, 255, 0, 0.5)'; // A tiempo
