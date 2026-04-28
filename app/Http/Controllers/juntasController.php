@@ -859,7 +859,7 @@ class juntasController extends Controller
 
             // Validación final por si el campo estaba vacío en la base de datos
             if (empty($supRes->employeeLider)) {
-                 $supRes = new personalBergsModel;
+                $supRes = new personalBergsModel;
                 $supRes->employeeLider = 'VERA VILLEGAS EFRAIN';
             }
             if (! isset($supRes->employeeLider)) {
@@ -878,7 +878,7 @@ class juntasController extends Controller
         }
         $supIssue = array_filter($supIssue, fn ($count) => $count > 2);
         arsort($supIssue);
-
+                        dd($supIssue);
         return view('juntas.calidad', ['codigoErrores' => $codigoErrores, 'grupo' => $grupo, 'top3registrosCalidas' => $top3registrosCalidas,
             'supIssue' => $supIssue, 'days' => $days, 'personalYear' => $personalYear, 'respemp' => $empRes,
             'empleados' => $top5,  'hoyb' => $hoyb, 'hoymal' => $hoymal, 'parhoy' => $parhoy, 'gultyY' => $gultyY, 'gulty' => $gulty,
