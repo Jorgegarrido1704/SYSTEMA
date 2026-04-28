@@ -857,13 +857,7 @@ class juntasController extends Controller
                 }
             }
 
-            // Validación final por si el campo estaba vacío en la base de datos
-            if (empty($supRes->employeeLider)) {
-                $supRes->employeeLider = 'VERA VILLEGAS EFRAIN';
-            }
-            if (! isset($supRes->employeeLider)) {
-                continue;
-            }
+            
             if (strpos($supRes->employeeLider, ',') !== false) {
                 $superString = explode(',', $supRes->employeeLider)[0];
             } else {
