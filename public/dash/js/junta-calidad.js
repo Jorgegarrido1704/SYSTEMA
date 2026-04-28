@@ -5,8 +5,7 @@ var colorQ;
 var labelQ;
 var pyl=Object.keys(paretoYear);
 var pyv=Object.values(paretoYear);
-var employees =empleados.map(empleados => empleados.Responsable.split(' ')[0] + ' ' + empleados.Responsable.split(' ')[1]);
-var empvalues = empleados.map(empleados => empleados.errores);
+
 
 
 
@@ -282,71 +281,76 @@ cutoutPercentage: 80,
 
 });
 
+try{ // Issues employees monthly
+    var employees =empleados.map(empleados => empleados.Responsable.split(' ')[0] + ' ' + empleados.Responsable.split(' ')[1]);
+    var empvalues = empleados.map(empleados => empleados.errores);
+        var incidencias = [];
+        var inc = document.getElementById("MonthIncidences");
+        var incs = new Chart(inc, {
+            type: 'bar',
+            data: {
+                labels: employees,
+                datasets: [
+                    {
+                        label: 'Incidencias del mes',
+                        data: empvalues,
+                        backgroundColor:[
+        'rgba(200, 48, 28, 1)',
+        'rgb(234, 67, 67)',
+        'rgb(255, 127, 8)',
+        'rgb(236, 143, 3)',
+        'rgb(234, 160, 0)',
+        'rgba(200, 154, 28, 1)',
+        'rgba(255, 250, 0,0.9)',
+        'rgba(255, 240, 0,0.8)',
+        'rgba(240, 230, 0,0.7)',
+        'rgba(225, 200, 0, 0.5)'
+        ],
+                        fill: false, // Evita rellenar el área debajo de la línea
+                        borderWidth: 4
+                    },
 
-var incidencias = [];
-var inc = document.getElementById("MonthIncidences");
-var incs = new Chart(inc, {
-    type: 'bar',
-    data: {
-        labels: employees,
-        datasets: [
-            {
-                label: 'Incidencias del mes',
-                data: empvalues,
-                backgroundColor:[
-  'rgba(200, 48, 28, 1)',
-  'rgb(234, 67, 67)',
-  'rgb(255, 127, 8)',
-  'rgb(236, 143, 3)',
-  'rgb(234, 160, 0)',
-  'rgba(200, 154, 28, 1)',
-  'rgba(255, 250, 0,0.9)',
-  'rgba(255, 240, 0,0.8)',
-  'rgba(240, 230, 0,0.7)',
-  'rgba(225, 200, 0, 0.5)'
-],
-                fill: false, // Evita rellenar el área debajo de la línea
-                borderWidth: 4
+                ]
             },
+            options: {
+                maintainAspectRatio: false,
+                tooltips: {
+                    backgroundColor: "rgb(255,255,255)",
+                    bodyFontColor: "#858796",
+                    borderColor: '#dddfeb',
+                    borderWidth: 1,
+                    xPadding: 15,
+                    yPadding: 15,
+                    displayColors: false,
 
-        ]
-    },
-    options: {
-        maintainAspectRatio: false,
-        tooltips: {
-            backgroundColor: "rgb(255,255,255)",
-            bodyFontColor: "#858796",
-            borderColor: '#dddfeb',
-            borderWidth: 1,
-            xPadding: 15,
-            yPadding: 15,
-            displayColors: false,
-
-        },
-        legend: {
-            display: true
-        },
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true,
-                    min: 0,
-                    max: 30,
-                    stepSize: 10,
                 },
-                gridLines: {
-                    color: '#e3e3e3',
-                    drawBorder: false,
+                legend: {
+                    display: true
                 },
-            }],
-            xAxes: [{
-                gridLines: {
-                    display: false,
-                },
-            }]
-        }
-    }
-});
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            min: 0,
+                            max: 30,
+                            stepSize: 10,
+                        },
+                        gridLines: {
+                            color: '#e3e3e3',
+                            drawBorder: false,
+                        },
+                    }],
+                    xAxes: [{
+                        gridLines: {
+                            display: false,
+                        },
+                    }]
+                }
+            }
+        });
+}catch (error) {
+    console.log("No hay fecha guardada");
+}
 
 try {
 
