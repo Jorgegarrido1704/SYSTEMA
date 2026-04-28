@@ -841,7 +841,7 @@ class juntasController extends Controller
             ->groupBy('Responsable')
             ->orderByDesc('codigo')
             ->get();
-        // dd($empleados);
+        dd($empleados);
 
         foreach ($empleados as $rowEmp) {
             if (! empty($issue->Responsable)) {
