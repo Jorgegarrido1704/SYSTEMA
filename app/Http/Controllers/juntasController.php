@@ -2357,36 +2357,12 @@ class juntasController extends Controller
             $rotacion->nocturno,
             $totalRotacion,
         ];
-        $vacacionesReporte = registroVacacionesModel::wherebetween('fecha_de_solicitud', [Carbon::now()->startOfYear()->toDateString(), Carbon::now()->endOfYear()->toDateString()])
+        $vacas = registroVacacionesModel::selectRaw('MONTH(fecha_de_solicitud) as mesVac, count(*) as cantidad')
+            ->wherebetween('fecha_de_solicitud', [Carbon::now()->startOfYear()->toDateString(), Carbon::now()->endOfYear()->toDateString()])
+            ->groupBy('mesVac')
             ->get();
-        $vacas = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-        foreach ($vacacionesReporte as $vacacione) {
-            if (intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m')) == 1) {
-                $vacas[0]++;
-            } elseif (intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m')) == 2) {
-                $vacas[1]++;
-            } elseif (intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m')) == 3) {
-                $vacas[2]++;
-            } elseif (intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m')) == 4) {
-                $vacas[3]++;
-            } elseif (intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m')) == 5) {
-                $vacas[4]++;
-            } elseif (intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m')) == 6) {
-                $vacas[5]++;
-            } elseif (intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m')) == 7) {
-                $vacas[6]++;
-            } elseif (intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m')) == 8) {
-                $vacas[7]++;
-            } elseif (intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m')) == 9) {
-                $vacas[8]++;
-            } elseif (intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m')) == 10) {
-                $vacas[9]++;
-            } elseif (intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m')) == 11) {
-                $vacas[10]++;
-            } elseif (intval(carbon::parse($vacacione->fecha_de_solicitud)->format('m')) == 12) {
-                $vacas[11]++;
-            }
-        }
+        // dd($vacas);
+
         // Accidentes
         $ultimoAccidente = carbon::parse('2025-11-03');
         $withoutAccidents = carbon::now()->diffInDays($ultimoAccidente);

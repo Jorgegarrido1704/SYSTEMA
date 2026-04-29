@@ -75,11 +75,11 @@ class assistence extends Model
 
         $dias = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
         $diaActual = Carbon::now()->dayOfWeek == '0' ? $dias[6] : $dias[$dayNum - 1];
-
+        $shift = Carbon::now()->hour > 7 && Carbon::now()->hour < 18 ? 'firstShift' : 'secondShift';
         if ($leader == 'Admin' or $leader == 'Paola A' or $leader == 'Angy B') {
-            return $query->where('week', $week)->where('yearOfAssistence', $year)->OrderBy($diaActual, 'ASC')->OrderBy($diaActual, 'ASC');
+            return $query->where('week', $week)->where('yearOfAssistence', $year)->where('shift', $shift)->OrderBy($diaActual, 'ASC')->OrderBy($diaActual, 'ASC');
         } else {
-            return $query->where('week', $week)->where('yearOfAssistence', $year)->where('lider', 'LIKE', '%'.$leader.'%')->OrderBy($diaActual, 'ASC')->OrderBy($diaActual, 'ASC');
+            return $query->where('week', $week)->where('yearOfAssistence', $year)->where('lider', 'LIKE', '%'.$leader.'%')->where('shift', $shift)->OrderBy($diaActual, 'ASC')->OrderBy($diaActual, 'ASC');
         }
     }
 
@@ -93,11 +93,11 @@ class assistence extends Model
 
         $dias = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
         $diaActual = Carbon::now()->dayOfWeek == '0' ? $dias[6] : $dias[$dayNum - 1];
-
+        $shift = Carbon::now()->hour > 7 && Carbon::now()->hour < 18 ? 'firstShift' : 'secondShift';
         if ($leader == 'Admin' or $leader == 'Paola A' or $leader == 'Angy B') {
-            return $query->where('week', $week)->where('yearOfAssistence', $year)->OrderBy($diaActual, 'ASC')->OrderBy($diaActual, 'ASC');
+            return $query->where('week', $week)->where('yearOfAssistence', $year)->where('shift', $shift)->OrderBy($diaActual, 'ASC')->OrderBy($diaActual, 'ASC');
         } else {
-            return $query->where('week', $week)->where('yearOfAssistence', $year)->where('lider', 'LIKE', '%'.$leader.'%')->OrderBy($diaActual, 'ASC')->OrderBy($diaActual, 'ASC');
+            return $query->where('week', $week)->where('yearOfAssistence', $year)->where('lider', 'LIKE', '%'.$leader.'%')->where('shift', $shift)->OrderBy($diaActual, 'ASC')->OrderBy($diaActual, 'ASC');
         }
     }
 }
