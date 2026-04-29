@@ -872,14 +872,14 @@ class rrhhController extends Controller
             $sheet->setCellValue('G8', $datestart);
             $sheet->setCellValue('M8', $datefin);
 
-            $sheet->setCellValue('C11', $dias[0]);
-            $sheet->setCellValue('D11', $dias[1]);
-            $sheet->setCellValue('E11', $dias[2]);
-            $sheet->setCellValue('F11', $dias[3]);
-            $sheet->setCellValue('G11', $dias[4]);
-            $sheet->setCellValue('H11', $dias[5]);
-            $sheet->setCellValue('I11', $dias[6]);
-
+            /*  $sheet->setCellValue('C11', $dias[0]);
+              $sheet->setCellValue('D11', $dias[1]);
+              $sheet->setCellValue('E11', $dias[2]);
+              $sheet->setCellValue('F11', $dias[3]);
+              $sheet->setCellValue('G11', $dias[4]);
+              $sheet->setCellValue('H11', $dias[5]);
+              $sheet->setCellValue('I11', $dias[6]);
+*/
             // Datos
             $asistencias = DB::table('assistence')
                 ->where('week', $week)
@@ -915,6 +915,13 @@ class rrhhController extends Controller
                     'sabado' => strtoupper(str_replace('-', '', $row->sabado)),
                     'domingo' => strtoupper(str_replace('-', '', $row->domingo)),
                 ];
+                /* $lunes = $diasSemana['lunes'].' TE:'.$row->extLunes.' TT:'.$row->tt_lunes;
+                 $martes = $diasSemana['martes'].' TE:'.$row->extMartes.' TT:'.$row->tt_martes;
+                 $miercoles = $diasSemana['miercoles'].' TE:'.$row->extMiercoles.' TT:'.$row->tt_miercoles;
+                 $jueves = $diasSemana['jueves'].' TE:'.$row->extJueves.' TT:'.$row->tt_jueves;
+                 $viernes = $diasSemana['viernes'].' TE:'.$row->extViernes.' TT:'.$row->tt_viernes;
+                 $sabado = $diasSemana['sabado'].' TE:'.$row->extSabado.' TT:'.$row->tt_sabado;
+                 $domingo = $diasSemana['domingo'].' TE:'.$row->extDomingo.' TT:'.$row->tt_domingo;*/
                 $lunes = $diasSemana['lunes'].' TE:'.$row->extLunes.' TT:'.$row->tt_lunes;
                 $martes = $diasSemana['martes'].' TE:'.$row->extMartes.' TT:'.$row->tt_martes;
                 $miercoles = $diasSemana['miercoles'].' TE:'.$row->extMiercoles.' TT:'.$row->tt_miercoles;
@@ -925,28 +932,40 @@ class rrhhController extends Controller
 
                 $sheet->setCellValue('A'.$t, $row->name);
                 $sheet->setCellValue('B'.$t, substr($row->id_empleado, 1));
-                $sheet->setCellValue('C'.$t, $lunes);
-                $sheet->setCellValue('D'.$t, $martes);
-                $sheet->setCellValue('E'.$t, $miercoles);
-                $sheet->setCellValue('F'.$t, $jueves);
-                $sheet->setCellValue('G'.$t, $viernes);
-                $sheet->setCellValue('H'.$t, $sabado);
-                $sheet->setCellValue('I'.$t, $domingo);
-                $sheet->setCellValue('J'.$t, $row->extras);
-                $sheet->setCellValue('K'.$t, $row->tiempoPorTiempo);
+                $sheet->setCellValue('C'.$t, $diasSemana['lunes']);
+                $sheet->setCellValue('D'.$t, $row->extLunes);
+                $sheet->setCellValue('E'.$t, $diasSemana['martes']);
+                $sheet->setCellValue('F'.$t, $row->extMartes);
+                $sheet->setCellValue('G'.$t, $diasSemana['miercoles']);
+                $sheet->setCellValue('H'.$t, $row->extMiercoles);
+                $sheet->setCellValue('I'.$t, $diasSemana['jueves']);
+                $sheet->setCellValue('J'.$t, $row->extJueves);
+                $sheet->setCellValue('K'.$t, $diasSemana['viernes']);
+                $sheet->setCellValue('L'.$t, $row->extViernes);
+                $sheet->setCellValue('M'.$t, $diasSemana['sabado']);
+                $sheet->setCellValue('N'.$t, $row->extSabado);
+                $sheet->setCellValue('O'.$t, $diasSemana['domingo']);
+                $sheet->setCellValue('P'.$t, $row->extDomingo);
+                $sheet->setCellValue('Q'.$t, '48');
+                $sheet->setCellValue('R'.$t, $row->extras);
+                $sheet->setCellValue('S'.$t, '0');
+                $incidencias = '';
+                foreach ($diasSemana as $dia) {
+                    if ($dia != 'OK' && $dia != '' && $dia != '-') {
+                        $incidencias .= '1'.$dia.',';
+                    }
+                }
 
-                if (in_array('R', $diasSemana)) {
-                    $sheet->setCellValue('L'.$t, 'NO');
-                    $sheet->setCellValue('N'.$t, 'NOK');
-                    $sheet->setCellValue('P'.$t, 'NOK');
-                } elseif (in_array('F', $diasSemana)) {
-                    $sheet->setCellValue('L'.$t, 'SI');
-                    $sheet->setCellValue('N'.$t, 'NOK');
-                    $sheet->setCellValue('P'.$t, 'NOK');
+                $sheet->setCellValue('T'.$t, substr($incidencias, 0, -1));
+
+                if (in_array('R', $diasSemana) || in_array('F', $diasSemana)) {
+                    $sheet->setCellValue('U'.$t, '');
+                    $sheet->setCellValue('V'.$t, 'X');
+
                 } else {
-                    $sheet->setCellValue('L'.$t, 'NO');
-                    $sheet->setCellValue('M'.$t, 'OK');
-                    $sheet->setCellValue('O'.$t, 'OK');
+                    $sheet->setCellValue('U'.$t, 'X');
+                    $sheet->setCellValue('V'.$t, '');
+
                 }
 
                 $t++;
@@ -957,60 +976,60 @@ class rrhhController extends Controller
 
             $sheet->setCellValue('A'.$t, 'CONCEPTO ');
             $sheet->setCellValue('B'.$t, 'CODIGO');
-            $sheet->mergeCells('C'.$t.':K'.$t);
+            $sheet->mergeCells('C'.$t.':R'.$t);
             $sheet->setCellValue('C'.$t, 'INSTRUCCIONES');
-            $sheet->mergeCells('L'.$t.':P'.$t);
-            $sheet->setCellValue('L'.$t, 'OBSERVACIONES');
+            $sheet->mergeCells('S'.$t.':V'.$t);
+            $sheet->setCellValue('S'.$t, 'OBSERVACIONES');
             $t = $t + 1;
             $sheet->setCellValue('A'.$t, 'HORAS DOBLES');
             $sheet->setCellValue('B'.$t, '# HORAS');
-            $sheet->mergeCells('C'.$t.':K'.$t);
+            $sheet->mergeCells('C'.$t.':R'.$t);
             $sheet->setCellValue('C'.$t, 'DE 1 A 9 HORAS EXTRAS');
-            $sheet->mergeCells('L'.$t.':P'.$t);
+            $sheet->mergeCells('S'.$t.':V'.$t);
             $t = $t + 1;
             $sheet->setCellValue('A'.$t, 'HORAS TRIPLES');
             $sheet->setCellValue('B'.$t, '# HORAS');
-            $sheet->mergeCells('C'.$t.':K'.$t);
+            $sheet->mergeCells('C'.$t.':R'.$t);
             $sheet->setCellValue('C'.$t, 'APARTIR DE LA DECIMA HORA EXTRA');
-            $sheet->mergeCells('L'.$t.':P'.$t);
+            $sheet->mergeCells('S'.$t.':V'.$t);
             $t = $t + 1;
             $sheet->setCellValue('A'.$t, 'RETARDO');
             $sheet->setCellValue('B'.$t, 'R');
-            $sheet->mergeCells('C'.$t.':K'.$t);
+            $sheet->mergeCells('C'.$t.':R'.$t);
             $sheet->setCellValue('C'.$t, 'CONSIDERAR SOLO 5 MINUTOS DE TOLERANCIA');
-            $sheet->mergeCells('L'.$t.':P'.$t);
+            $sheet->mergeCells('S'.$t.':V'.$t);
             $t = $t + 1;
             $sheet->setCellValue('A'.$t, 'FALTA INJUSTIFICADA');
             $sheet->setCellValue('B'.$t, 'F');
-            $sheet->mergeCells('C'.$t.':K'.$t);
+            $sheet->mergeCells('C'.$t.':R'.$t);
             $sheet->setCellValue('C'.$t, 'NO ASISTENCIA');
-            $sheet->mergeCells('L'.$t.':P'.$t);
+            $sheet->mergeCells('S'.$t.':V'.$t);
             $t = $t + 1;
             $sheet->setCellValue('A'.$t, 'PERMISO SIN GOCE DE SUELDO');
             $sheet->setCellValue('B'.$t, 'PSS');
-            $sheet->mergeCells('C'.$t.':K'.$t);
+            $sheet->mergeCells('C'.$t.':R'.$t);
             $sheet->setCellValue('C'.$t, 'CUANDO COMRUEBAN MEDIANTE IMSS O SE DA UN PERMISO ESPECIAL PERO QUE SE COMPRUEBE CON DOCUMENTO OFICIAL');
-            $sheet->mergeCells('L'.$t.':P'.$t);
+            $sheet->mergeCells('S'.$t.':V'.$t);
             $t = $t + 1;
 
             $sheet->setCellValue('A'.$t, 'PERMISO CON GOCE DE SUELDO');
             $sheet->setCellValue('B'.$t, 'PCS');
-            $sheet->mergeCells('C'.$t.':K'.$t);
+            $sheet->mergeCells('C'.$t.':R'.$t);
             $sheet->setCellValue('C'.$t, 'PERMISOS CON GOCE DE SUELDO COMO: MATRIMONIO/ FALLECIMIENTO/ PATERNIDAD/ INC INTERNA');
-            $sheet->mergeCells('L'.$t.':P'.$t);
+            $sheet->mergeCells('S'.$t.':V'.$t);
             $t = $t + 1;
             $sheet->setCellValue('A'.$t, 'VACACION');
             $sheet->setCellValue('B'.$t, 'V');
-            $sheet->mergeCells('C'.$t.':K'.$t);
+            $sheet->mergeCells('C'.$t.':R'.$t);
             $sheet->setCellValue('C'.$t, 'CUANDO SE APLICA POR VACACION CON LA SOLICITUD PREVIA (SOLICITUD/OA)');
-            $sheet->mergeCells('L'.$t.':P'.$t);
+            $sheet->mergeCells('S'.$t.':V'.$t);
             $t = $t + 1;
             $sheet->setCellValue('A'.$t, 'INCAPACIDAD');
             $sheet->setCellValue('B'.$t, 'INC');
-            $sheet->mergeCells('C'.$t.':K'.$t);
+            $sheet->mergeCells('C'.$t.':R'.$t);
             $sheet->setCellValue('C'.$t, 'INCAPACIDAD POR ENFERMEDAD GENERAL IMSS');
-            $sheet->mergeCells('L'.$t.':P'.$t);
-            $sheet->getStyle('A10:P'.$t)->applyFromArray($headerStyle);
+            $sheet->mergeCells('S'.$t.':V'.$t);
+            $sheet->getStyle('A10:V'.$t)->applyFromArray($headerStyle);
             $t = $t + 2;
             $sheet->mergeCells('A'.$t.':B'.$t);
             $sheet->setCellValue('A'.$t, '____________________________________________');
@@ -1026,18 +1045,14 @@ class rrhhController extends Controller
             $sheet->setCellValue('A'.$t, 'Autorizacion LIDER');
             $sheet->mergeCells('D'.$t.':F'.$t);
             $sheet->setCellValue('D'.$t, 'Autorizacion SUPERVISOR');
-            $sheet->mergeCells('H'.$t.':J'.$t);
+            $sheet->mergeCells('H'.$t.':K'.$t);
             $sheet->setCellValue('H'.$t, 'Autorizacion GERENTE DE AREA');
             $sheet->mergeCells('L'.$t.':O'.$t);
             $sheet->setCellValue('L'.$t, 'Autorizacion RH');
             $t = $t + 1;
 
-            $sheet->mergeCells('A'.$t.':B'.$t);
-            $sheet->setCellValue('A'.$t, $lider[0]->employeeName);
-            $sheet->mergeCells('D'.$t.':F'.$t);
-            $sheet->setCellValue('D'.$t, $lider[0]->employeeLider);
-            $sheet->mergeCells('I'.$t.':N'.$t);
-            $sheet->setCellValue('I'.$t, 'GUILLEN MIRANDA JUAN JOSE');
+            $sheet->mergeCells('H'.$t.':K'.$t);
+            $sheet->setCellValue('H'.$t, 'GUILLEN MIRANDA JUAN JOSE');
             $sheet->mergeCells('L'.$t.':O'.$t);
             $sheet->setCellValue('L'.$t, 'AGUILAR HERNANDEZ ANA PAOLA');
         }
