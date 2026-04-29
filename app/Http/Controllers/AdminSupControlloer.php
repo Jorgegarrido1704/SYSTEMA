@@ -2,17 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\solicitudVacacionesMail;
 use App\Models\calidadRegistro;
 use App\Models\personalBergsModel;
 use App\Models\routingModel;
-use App\Mail\solicitudVacacionesMail;
+use carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Mail;
-use carbon\Carbon;
-
-
 
 class AdminSupControlloer extends Controller
 {
@@ -23,8 +20,8 @@ class AdminSupControlloer extends Controller
             return redirect('/login');
         } else {
             $empleados = personalBergsModel::select('employeeNumber', 'employeeName')
-            ->where('status', 'Activo')->where('DaysVacationsAvailble', '>', 0)
-            ->orderBy('employeeName', 'desc')->get();
+                ->where('status', 'Activo')->where('DaysVacationsAvailble', '>', 0)
+                ->orderBy('employeeName', 'desc')->get();
 
             return view('SupAdmin', ['value' => session('user'), 'cat' => session('categoria'), 'empleados' => $empleados]);
         }
@@ -320,11 +317,10 @@ class AdminSupControlloer extends Controller
         $fecha_de_solicitud = $endDate->toDateString();
         $noposible = $repetidosDias = 0;
         $email = null;
-         $daotsSup=DB::table('personalberg')->select('user')
+        $daotsSup = DB::table('personalberg')->select('user')
             ->where('employeeName', '=', $lider)
             ->first();
-        $supervisor = $daotsSup->user??"";
-        
+        $supervisor = $daotsSup->user ?? '';
 
         $email = 'jgarrido@mx.bergstrominc.com';
 
@@ -430,6 +426,64 @@ class AdminSupControlloer extends Controller
         $contend['Folio'] = $folio;
 
         Mail::to($email)->send(new solicitudVacacionesMail($contend, 'Solicitud de Vacaciones'));
+
+        return redirect()->route('SupAdmin')->with('success', 'Vacaciones agregadas correctamente.');
+    }
+
+    public function removeVacations(Request $request)
+    {
+        $input = $request->all();
+        $request->validate([
+            'removePersonal' => 'required',
+            'remover' => 'required|date',
+        ]);
+        $value = session('user');
+        $dias_solicitados = 1;
+        $pesonal = $input['removePersonal']; // employee Number
+        $remover = $input['remover']; // fecha a remover
+
+        $buscarFolio = DB::table('registro_vacaciones')
+            ->where('id_empleado', '=', $pesonal)->where('fecha_de_solicitud', '=', $remover)
+            ->orderBy('id', 'desc')->first();
+
+        $buscarPersonal = DB::table('personalberg')
+            ->where('employeeNumber', '=', $pesonal)
+            ->first();
+
+        $nombre = $buscarPersonal->employeeName;
+        $area = $buscarPersonal->employeeArea;
+        $supervisor = $buscarPersonal->employeeLider;
+        if ($buscarFolio->usedYear == Carbon::now()->year) {
+            DB::table('personalberg')
+                ->where('employeeNumber', '=', $pesonal)
+                ->update(['currentYear' => DB::raw('currentYear + '.$dias_solicitados), 'DaysVacationsAvailble' => DB::raw('DaysVacationsAvailble + '.$buscarFolio->dias_solicitados)]);
+        } elseif ($buscarFolio->usedYear == Carbon::now()->subYear()->year) {
+            DB::table('personalberg')
+                ->where('employeeNumber', '=', $pesonal)
+                ->update(['lastYear' => DB::raw('lastYear + '.$dias_solicitados), 'DaysVacationsAvailble' => DB::raw('DaysVacationsAvailble + '.$buscarFolio->dias_solicitados)]);
+        } elseif ($buscarFolio->usedYear == Carbon::now()->addYear()->year) {
+            DB::table('personalberg')
+                ->where('employeeNumber', '=', $pesonal)
+                ->update(['nextYear' => DB::raw('nextYear + '.$dias_solicitados), 'DaysVacationsAvailble' => DB::raw('DaysVacationsAvailble + '.$buscarFolio->dias_solicitados)]);
+        }
+
+        // $link = URL::temporarySignedRoute('loginWithoutSession', now()->addMinutes(30), ['user' => 'Juan G']);
+        $contend = [
+            'asunto' => 'Eliminacion de Vacaciones',
+            'nombre' => $nombre,
+            'departamento' => $area,
+            'supervisor' => $supervisor,
+            'fecha_de_solicitud' => $remover,
+            'fecha_retorno' => '',
+            'dias_solicitados' => $dias_solicitados ?? 1,
+            'Folio' => 'VAC-'.$buscarFolio->id,
+        ];
+
+        DB::table('registro_vacaciones')->where('id', $buscarFolio->id)->delete();
+
+        $email = 'jgarrido@mx.bergstrominc.com';
+
+        Mail::to($email)->send(new solicitudVacacionesMail($contend, 'Eliminacion de Vacaciones'));
 
         return redirect()->route('SupAdmin')->with('success', 'Vacaciones agregadas correctamente.');
     }

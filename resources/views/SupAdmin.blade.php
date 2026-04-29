@@ -141,7 +141,7 @@
                         </div>
                         <div class="card shadow mb-4 col-lg-4">
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Agregar Vacaciones</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">Mover Vacaciones</h6>
                                 </div>
                             <div class="form-group" id="agregarVacaciones" >
                             <form action="{{ route('addVacationAdmin') }}" method="GET">
@@ -159,7 +159,7 @@
                                     <div class="col-md-4 mb-3">
                                         <label for="endDate">Fecha de inicio:</label>
                                         <input type="date" class="form-control" id="endDate" name="endDate" required >
-                                        
+
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <label for="diasT">Dias:</label>
@@ -167,6 +167,30 @@
                                     </div>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Agregar</button>
+                            </form>
+                        </div>
+                        <br>
+                         <div class="form-group" id="agregarVacaciones" >
+                            <form action="{{ route('removeVacations') }}" method="GET">
+
+                                <div class="form-row">
+                                    <div class="col-md-4 mb-3">
+                                        <label for="removePersonal">Personal:</label>
+                                            <select  class="form-control" name="removePersonal" id="removePersonal" required>
+                                                <option value="" disabled selected> Select an option</option>
+                                                @foreach ($empleados as $empleado )
+                                                <option value="{{ $empleado->employeeNumber }}">{{$empleado->employeeNumber}} - {{$empleado->employeeName}}</option>
+                                                @endforeach
+                                            </select>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="remover">Fecha que se removera:</label>
+                                        <input type="date" class="form-control" id="remover" name="remover" required >
+
+                                    </div>
+
+                                </div>
+                                <button type="submit" class="btn btn-danger">Quitar</button>
                             </form>
                         </div>
                         </div>
