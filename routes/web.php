@@ -181,7 +181,7 @@ Route::controller(AdminSupControlloer::class)->group(function () {
     Route::get('/workSchedule/timeLine', [AdminSupControlloer::class, 'timeLine'])->name('timeLine');
     Route::get('/registrosGenerales', [AdminSupControlloer::class, 'registrosGenerales'])->name('registrosGenerales');
     Route::get('/qualityIssues', [AdminSupControlloer::class, 'qualityIssues'])->name('qualityIssues');
-    Route::get('/addVacationAdmin', [AdminSupControlloer::class, 'addVacationAdmin'])->name('addVacationAdmin');
+    // Route::get('/addVacationAdmin', [AdminSupControlloer::class, 'addVacationAdmin'])->name('addVacationAdmin');
     Route::get('/removeVacations', [AdminSupControlloer::class, 'removeVacations'])->name('removeVacations');
 });
 

@@ -2074,7 +2074,7 @@ class juntasController extends Controller
             }
             $checkDias->addDay(1);
         }
-
+        $noposible = $value == 'Admin' ? 0 : $noposible;
         if ($noposible > 0) {
             return redirect()->back()->with('error', 'Alguno de los días solicitados ya tiene el máximo de vacaciones aprobadas en su área.
         Por favor, revise con su supervisor y elija otras fechas.');
@@ -2156,7 +2156,7 @@ class juntasController extends Controller
         // Mail::to('jguillen@mx.bergstrominc.com')->send(new solicitudVacacionesMail($contend, 'Solicitud de Vacaciones'));
         // Mail::to('jgarrido@mx.bergstrominc.com')->send(new solicitudVacacionesMail($contend, 'Solicitud de Vacaciones'));
 
-        return redirect()->route('vacations')->with('success', 'Vacaciones agregadas correctamente.');
+        return redirect()->back()->with('success', 'Vacaciones agregadas correctamente.');
     }
 
     public function rhDashBoard()
@@ -2212,7 +2212,7 @@ class juntasController extends Controller
             COALESCE(suspension, 0) +
             COALESCE(tsp, 0)) as total_asistencia,
         SUM(COALESCE(faltas, 0)) as total_faltas
-    ')
+        ')
             ->whereMonth('fecha_rotacion', Carbon::now()->month)
             ->whereYear('fecha_rotacion', Carbon::now()->year)
             ->first(); // Usamos first() para obtener un solo objeto directamente
@@ -2296,7 +2296,7 @@ class juntasController extends Controller
 
         $disponibilidadPrimesTurno1 = assistence::selectRaw('
         ROUND(AVG(CASE WHEN '.$diaActual.' = "OK" THEN 100 ELSE 0 END), 2) as disponibilidad
-    ')
+     ')
             ->join('personalberg', function ($join) {
                 $join->on('assistence.shift', '=', DB::raw('personalberg.employeeShift COLLATE utf8mb4_unicode_ci'));
             })
@@ -2331,7 +2331,7 @@ class juntasController extends Controller
             ->count();
         $disponibilidadSecondShift1 = assistence::selectRaw('
         ROUND(AVG(CASE WHEN '.$diaAnterior.' = "N" THEN 100 ELSE 0 END), 2) as disponibilidad
-    ')
+             ')
             ->join('personalberg', function ($join) {
                 $join->on('assistence.shift', '=', DB::raw('personalberg.employeeShift COLLATE utf8mb4_unicode_ci'));
             })

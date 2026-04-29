@@ -144,7 +144,7 @@
                                     <h6 class="m-0 font-weight-bold text-primary">Mover Vacaciones</h6>
                                 </div>
                             <div class="form-group" id="agregarVacaciones" >
-                            <form action="{{ route('addVacationAdmin') }}" method="GET">
+                            <form action="{{ route('addVacation') }}" method="GET">
 
                                 <div class="form-row">
                                     <div class="col-md-4 mb-3">

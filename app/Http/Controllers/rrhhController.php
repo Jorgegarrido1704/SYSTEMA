@@ -879,7 +879,7 @@ class rrhhController extends Controller
               $sheet->setCellValue('G11', $dias[4]);
               $sheet->setCellValue('H11', $dias[5]);
               $sheet->setCellValue('I11', $dias[6]);
-*/
+            */
             // Datos
             $asistencias = DB::table('assistence')
                 ->where('week', $week)
