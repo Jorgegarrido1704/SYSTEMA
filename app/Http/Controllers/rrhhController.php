@@ -26,6 +26,9 @@ class rrhhController extends Controller
 
         $value = session('user');
         $cat = session('categoria');
+        if (! $value) {
+            return redirect()->route('login');
+        }
         $leadername = personalBergsModel::select('employeeName')->where('user', '=', $value)->first();
         $lidername = personalBergsModel::select('employeeLider')->distinct()->get();
         $laeder = $leadername->employeeName ?? $value;
@@ -72,6 +75,9 @@ class rrhhController extends Controller
     {
         $value = session('user');
         $cat = session('categoria');
+        if (! $value) {
+            return redirect()->route('login');
+        }
         $week = intval(date('W'));
         $year = $week <= 1 ? Carbon::now()->year + 1 : Carbon::now()->year;
         $validated = $request->validate([
@@ -146,6 +152,7 @@ class rrhhController extends Controller
 
     public function updateLastWeek(Request $request)
     {
+
         $week = intval(date('W')) - 1;
         $year = $week <= 1 ? Carbon::now()->year + 1 : Carbon::now()->year;
         $validated = $request->validate([
@@ -211,6 +218,10 @@ class rrhhController extends Controller
 
     public function addperson(Request $request)
     {
+        $value = session('user');
+        if (! $value) {
+            return redirect()->route('login');
+        }
         $validated = $request->validate([
             'nombre' => 'required|string|max:60',
             'id_empleado' => 'required|numeric|maxdigits:4',
@@ -251,6 +262,10 @@ class rrhhController extends Controller
 
     public function modificarEmpleado(Request $request)
     {
+        $value = session('user');
+        if (! $value) {
+            return redirect()->route('login');
+        }
         $datos = $request->input('dato');
         if (is_numeric($datos)) {
             $data = personalBergsModel::where('employeeNumber', '=', $datos)->get();
@@ -263,6 +278,10 @@ class rrhhController extends Controller
 
     public function editarEmepleado(Request $request)
     {
+        $value = session('user');
+        if (! $value) {
+            return redirect()->route('login');
+        }
         $valued = $request->input('valor');
         $id_empleado = $request->input('id_employee');
         $name = $request->input('nameEmployee');
