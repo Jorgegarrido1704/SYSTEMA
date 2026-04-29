@@ -315,6 +315,7 @@ class rrhhController extends Controller
             ]);
             assistence::where('name', '=', $name)->update([
                 'id_empleado' => 'i'.$id_empleado,
+                'lider' => $lider,
             ])->orderBy('id', 'desc')->first();
 
             if ($datosAdd) {
