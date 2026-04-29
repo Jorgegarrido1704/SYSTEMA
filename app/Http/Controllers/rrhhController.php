@@ -951,7 +951,7 @@ class rrhhController extends Controller
                 $sheet->setCellValue('S'.$t, '0');
                 $incidencias = '';
                 foreach ($diasSemana as $dia) {
-                    if ($dia != 'OK' && $dia != '' && $dia != '-') {
+                    if ($dia != 'OK' && $dia != '' && $dia != '-' && $dia != 'N/A') {
                         $incidencias .= '1'.$dia.',';
                     }
                 }
