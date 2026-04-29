@@ -2330,7 +2330,7 @@ class juntasController extends Controller
             ->where('shift', '=', 'secondShift')
             ->count();
         $disponibilidadSecondShift1 = assistence::selectRaw('
-        ROUND(AVG(CASE WHEN '.$diaAnterior.' = "OK" THEN 100 ELSE 0 END), 2) as disponibilidad
+        ROUND(AVG(CASE WHEN '.$diaAnterior.' = "N" THEN 100 ELSE 0 END), 2) as disponibilidad
     ')
             ->join('personalberg', function ($join) {
                 $join->on('assistence.shift', '=', DB::raw('personalberg.employeeShift COLLATE utf8mb4_unicode_ci'));
