@@ -2329,8 +2329,20 @@ class juntasController extends Controller
             ->where('week', '=', $week)
             ->where('shift', '=', 'secondShift')
             ->count();
+        $disponibilidadSecondShift1 = assistence::selectRaw('
+        ROUND(AVG(CASE WHEN '.$diaAnterior.' = "OK" THEN 100 ELSE 0 END), 2) as disponibilidad
+    ')
+            ->join('personalberg', function ($join) {
+                $join->on('assistence.shift', '=', DB::raw('personalberg.employeeShift COLLATE utf8mb4_unicode_ci'));
+            })
+            ->where('week', '=', $week)
+            ->where('personalberg.typeWorker', '=', 'Directo')
+            ->where('personalberg.status', '!=', 'Baja')
+            ->where('personalberg.employeeShift', '=', 'secondShift')
+            ->first();
         $ausentismoSecondShift = $faltasSecondShift > 0 ? round(($faltasSecondShift / $secondShift) * 100, 2) : 0;
-        $disponibilidadSecondShift = $faltasSecondShift > 0 ? round((($secondShiftDirectos - $faltasSecondShift) / $secondShiftDirectos) * 100, 2) : 0;
+        $disponibilidadSecondShift = $disponibilidadSecondShift1->disponibilidad ?? 0;
+
         // end ausentismo First Shift
         // end Second Shift
         // Maximum capacity direct workers
