@@ -82,9 +82,12 @@ class AddWeek implements ShouldQueue
                     $registro = 'ASM';
                 } elseif ($registroEmpleado->tyoeWorker == 'Servicio comprado') {
                     $registro = 'SCE';
+                } elseif ($registroEmpleado->employeeShift == 'secondShift') {
+                    $registro = 'N';
                 } else {
                     $registro = 'F';
                 }
+
                 assistence::where('week', '=', $week)
                     ->where('id_empleado', '=', $registroEmpleado->employeeNumber)
                     ->whereIn($day, ['-', '', null, ' '])
