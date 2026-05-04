@@ -9,6 +9,7 @@ use App\Models\issuesFloor;
 use App\Models\login;
 use App\Models\personalBergsModel;
 use App\Models\po;
+use App\Models\registoLogin;
 use App\Models\registro;
 use App\Models\registroQ;
 use App\Models\registroVacacionesModel;
@@ -1855,10 +1856,15 @@ class juntasController extends Controller
     // Save commets
     public function registroComment(Request $request)
     {
+        $value = session('user');
         $cat = session('categoria');
+        if (empty($value)) {
+            return redirect('/');
+        }
         $datosOk = $request->input('dataok');
         $finDate = Carbon::now()->format('Y-m-d H:i:s');
         DB::table('issuesfloor')->where('id_tiempos', '=', $datosOk)->where('actionOfComment', '!=', 'Issue Fixed')->update(['actionOfComment' => 'Issue Fixed', 'finReg' => $finDate]);
+        registoLogin::create(['fecha' => carbon::now()->format('d-m-Y H:i'), 'userName' => $value.' '.$cat, 'action' => 'Issue Fixed en seguimiento ID: '.$datosOk]);
         if ($cat == 'inge') {
             return redirect()->route('ing_junta');
         }
@@ -1880,6 +1886,7 @@ class juntasController extends Controller
         $issuesRegister->actionOfComment = $request->input('status_issue');
         $issuesRegister->inicioReg = Carbon::now()->format('Y-m-d H:i:s');
         $issuesRegister->save();
+        registoLogin::create(['fecha' => carbon::now()->format('d-m-Y H:i'), 'userName' => $value.' '.$cat, 'action' => 'Nuevo seguimiento creado para ID: '.$request->input('id_issue')]);
         if ($cat == 'inge') {
             return redirect()->route('ing_junta');
         }
@@ -2150,6 +2157,8 @@ class juntasController extends Controller
         $fechadeSolicitud = Carbon::parse($buscarFolio->fecha_de_solicitud)->addWeekdays(-$buscarFolio->dias_solicitados);
         $contend['fecha_de_solicitud'] = $fechadeSolicitud->toDateString();
         $contend['Folio'] = $folio;
+
+        registroLogin::create(['fecha' => carbon::now()->format('d-m-Y H:i'), 'userName' => $value, 'action' => 'Solicitud de vacaciones creada para el empleado: '.$nombre.' con folio: '.$folio]);
 
         Mail::to($email)->send(new solicitudVacacionesMail($contend, 'Solicitud de Vacaciones'));
 
@@ -2651,10 +2660,12 @@ class juntasController extends Controller
             $registroAlta->fecha = $alta;
             $registroAlta->presentacion = 'Alta';
             $registroAlta->save();
+            registroLogin::create(['fecha' => carbon::now()->format('d-m-Y H:i'), 'userName' => $value, 'action' => 'Alta Queja Calidad ID: '.$registroAlta->id]);
 
             return redirect()->route('calidad_junta');
         } elseif ($alta == '' && $baja != '') {
             $registroBaja = registroQ::where('fecha', $baja)->delete();
+            registroLogin::create(['fecha' => carbon::now()->format('d-m-Y H:i'), 'userName' => $value, 'action' => 'Eliminacion Queja Calidad ID: '.$baja]);
 
             return redirect()->route('calidad_junta');
         }
