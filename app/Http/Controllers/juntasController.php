@@ -2158,7 +2158,7 @@ class juntasController extends Controller
         $contend['fecha_de_solicitud'] = $fechadeSolicitud->toDateString();
         $contend['Folio'] = $folio;
 
-        registroLogin::create(['fecha' => carbon::now()->format('d-m-Y H:i'), 'userName' => $value, 'action' => 'Solicitud de vacaciones creada para el empleado: '.$nombre.' con folio: '.$folio]);
+        registoLogin::create(['fecha' => carbon::now()->format('d-m-Y H:i'), 'userName' => $value, 'action' => 'Solicitud de vacaciones creada para el empleado: '.$nombre.' con folio: '.$folio]);
 
         Mail::to($email)->send(new solicitudVacacionesMail($contend, 'Solicitud de Vacaciones'));
 
@@ -2660,12 +2660,12 @@ class juntasController extends Controller
             $registroAlta->fecha = $alta;
             $registroAlta->presentacion = 'Alta';
             $registroAlta->save();
-            registroLogin::create(['fecha' => carbon::now()->format('d-m-Y H:i'), 'userName' => $value, 'action' => 'Alta Queja Calidad ID: '.$registroAlta->id]);
+            registoLogin::create(['fecha' => carbon::now()->format('d-m-Y H:i'), 'userName' => $value, 'action' => 'Alta Queja Calidad ID: '.$registroAlta->id]);
 
             return redirect()->route('calidad_junta');
         } elseif ($alta == '' && $baja != '') {
             $registroBaja = registroQ::where('fecha', $baja)->delete();
-            registroLogin::create(['fecha' => carbon::now()->format('d-m-Y H:i'), 'userName' => $value, 'action' => 'Eliminacion Queja Calidad ID: '.$baja]);
+            registoLogin::create(['fecha' => carbon::now()->format('d-m-Y H:i'), 'userName' => $value, 'action' => 'Eliminacion Queja Calidad ID: '.$baja]);
 
             return redirect()->route('calidad_junta');
         }
