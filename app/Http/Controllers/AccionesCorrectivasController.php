@@ -13,6 +13,7 @@ use App\Models\accionesCorrectivas;
 use App\Models\accionesCorrectivas\monitoreosAcciones;
 use App\Models\eliminacionAccionCorrectiva;
 use App\Models\personalBergsModel;
+use App\Models\registroLogin;
 use App\Models\sub_acciones_model;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -54,6 +55,10 @@ class AccionesCorrectivasController extends Controller
 
     public function create(Request $request)
     {
+        $value = session('user');
+        if (empty($value)) {
+            return redirect('/');
+        }
         $request->validate([
             'fechaAccion' => 'required|date',
             'Afecta' => 'required|string|max:50',
@@ -98,7 +103,7 @@ class AccionesCorrectivasController extends Controller
         if ($email && $email->email) {
             $mailaddresses[] = $email->email;
         }
-
+        registroLogin::create(['fecha' => carbon::now()->format('d-m-Y H:i'), 'userName' => $value, 'action' => 'Creacion Accion Correctiva ID: '.$accion->folioAccion]);
         Mail::to($mailaddresses)->send(new accionesCorrectivasRecordatorio($accion, 'Acciones Correctivas Recordatorio'));
 
         return redirect()->route('accionesCorrectivas.index')->with('success', 'Acción correctiva creada exitosamente.');
