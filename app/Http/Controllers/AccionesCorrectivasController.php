@@ -13,7 +13,7 @@ use App\Models\accionesCorrectivas;
 use App\Models\accionesCorrectivas\monitoreosAcciones;
 use App\Models\eliminacionAccionCorrectiva;
 use App\Models\personalBergsModel;
-use App\Models\registroLogin;
+use App\Models\registoLogin;
 use App\Models\sub_acciones_model;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -103,7 +103,7 @@ class AccionesCorrectivasController extends Controller
         if ($email && $email->email) {
             $mailaddresses[] = $email->email;
         }
-        registroLogin::create(['fecha' => carbon::now()->format('d-m-Y H:i'), 'userName' => $value, 'action' => 'Creacion Accion Correctiva ID: '.$accion->folioAccion]);
+        registoLogin::create(['fecha' => carbon::now()->format('d-m-Y H:i'), 'userName' => $value, 'action' => 'Creacion Accion Correctiva ID: '.$accion->folioAccion]);
         Mail::to($mailaddresses)->send(new accionesCorrectivasRecordatorio($accion, 'Acciones Correctivas Recordatorio'));
 
         return redirect()->route('accionesCorrectivas.index')->with('success', 'Acción correctiva creada exitosamente.');
@@ -187,6 +187,7 @@ class AccionesCorrectivasController extends Controller
         if ($mailto && $mailto->email) {
             $mailaddresses[] = $mailto->email;
         }
+        registoLogin::create(['fecha' => carbon::now()->format('d-m-Y H:i'), 'userName' => session('user'), 'action' => 'Registro de 5 porques para la accion correctiva ID: '.$id]);
         Mail::to($mailaddresses)->send(new cincoPorques($acciones, 'Registro de 5 porques para la accion correctiva'));
 
         return redirect()->route('accionesCorrectivas.show', $id)->with('success', 'Acción correctiva actualizada exitosamente.');
@@ -225,6 +226,7 @@ class AccionesCorrectivasController extends Controller
             'IsSistemicProblem' => $sistemic,
             'status' => 'etapa 2 - Causa Raiz',
         ]);
+        registoLogin::create(['fecha' => carbon::now()->format('d-m-Y H:i'), 'userName' => session('user'), 'action' => 'Registro de causa raiz para la accion correctiva ID: '.$request->input('accion_id')]);
 
         return redirect()->route('accionesCorrectivas.show', $accion->folioAccion)->with('success', 'Acción correctiva actualizada exitosamente.');
     }
@@ -252,6 +254,7 @@ class AccionesCorrectivasController extends Controller
             'auditorSubAccion' => $verificadorAccion,
 
         ]);
+        registoLogin::create(['fecha' => carbon::now()->format('d-m-Y H:i'), 'userName' => session('user'), 'action' => 'Registro de sub accion para la accion correctiva ID: '.$id]);
 
         return redirect()->route('accionesCorrectivas.show', $request->input('id'))->with('success', 'Acción correctiva actualizada exitosamente.');
     }
@@ -259,6 +262,7 @@ class AccionesCorrectivasController extends Controller
     public function destroy($id)
     {
         $accion = accionesCorrectivas::findOrFail($id);
+        registoLogin::create(['fecha' => carbon::now()->format('d-m-Y H:i'), 'userName' => session('user'), 'action' => 'Eliminacion de accion correctiva ID: '.$accion->folioAccion]);
         $accion->delete();
 
         return redirect()->route('accionesCorrectivas.index')->with('success', 'Acción correctiva eliminada exitosamente.');
@@ -281,6 +285,7 @@ class AccionesCorrectivasController extends Controller
             'descripcionSeguimiento' => $segimiento,
             'AprobadorSeguimiento' => $validador,
         ]);
+        registoLogin::create(['fecha' => carbon::now()->format('d-m-Y H:i'), 'userName' => session('user'), 'action' => 'Registro de seguimiento para la accion correctiva ID: '.$folio]);
 
         return redirect()->route('accionesCorrectivas.show', $folio)->with('success', 'Acción correctiva actualizada exitosamente.');
 
@@ -311,7 +316,7 @@ class AccionesCorrectivasController extends Controller
         if ($mailto && $mailto->email) {
             $mailaddresses[] = $mailto->email;
         }
-
+        registoLogin::create(['fecha' => carbon::now()->format('d-m-Y H:i'), 'userName' => session('user'), 'action' => 'Registro de contencion para la accion correctiva ID: '.$id]);
         $mail = Mail::to($mailaddresses)->send(new contencion($acciones, 'Acciones Correctivas Contencion'));
 
         return redirect()->route('accionesCorrectivas.show', $id)->with('success', 'Acción correctiva actualizada exitosamente.');
@@ -371,6 +376,7 @@ class AccionesCorrectivasController extends Controller
         if ($mailto && $mailto->email) {
             $mailaddresses[] = $mailto->email;
         }
+        registoLogin::create(['fecha' => carbon::now()->format('d-m-Y H:i'), 'userName' => session('user'), 'action' => 'Eliminacion de causa raiz para la accion correctiva ID: '.$id]);
 
         $mail = Mail::to($mailaddresses)->send(new eliminacionCausas($acciones, 'Eliminacion de causa raiz'));
 
@@ -407,7 +413,7 @@ class AccionesCorrectivasController extends Controller
         if ($mailto && $mailto->email) {
             $mailaddresses[] = $mailto->email;
         }
-
+        registoLogin::create(['fecha' => carbon::now()->format('d-m-Y H:i'), 'userName' => session('user'), 'action' => 'Eliminacion de plan de accion para la accion correctiva ID: '.$folio]);
         $mail = Mail::to($mailaddresses)->send(new eliminacionCausas($acciones, 'Eliminacion de plan de accion'));
 
         return redirect()->route('accionesCorrectivas.show', $folio)->with('success', 'Plan de acción eliminado exitosamente.');
@@ -435,7 +441,7 @@ class AccionesCorrectivasController extends Controller
         if ($mailto && $mailto->email) {
             $mailaddresses[] = $mailto->email;
         }
-
+        registoLogin::create(['fecha' => carbon::now()->format('d-m-Y H:i'), 'userName' => session('user'), 'action' => 'Aceptacion de acciones para la accion correctiva ID: '.$folio]);
         $mail = Mail::to($mailaddresses)->send(new aceptacionAcciones($acciones, 'Aceptación de acciones correctivas'));
 
         return redirect()->route('accionesCorrectivas.show', $folio)->with('success', 'Acción aceptada exitosamente.');
@@ -465,7 +471,7 @@ class AccionesCorrectivasController extends Controller
         if ($mailto && $mailto->email) {
             $mailaddresses[] = $mailto->email;
         }
-
+        registoLogin::create(['fecha' => carbon::now()->format('d-m-Y H:i'), 'userName' => session('user'), 'action' => 'Registro de medición de eficacia para la accion correctiva ID: '.$folioEficacia]);
         $mail = Mail::to($mailaddresses)->send(new medicionEficacia($acciones, 'Registro de medición de eficacia para acción correctiva'));
 
         return redirect()->route('accionesCorrectivas.show', $folioEficacia)->with('success', 'Registro de medición de eficacia exitoso.');
@@ -495,6 +501,7 @@ class AccionesCorrectivasController extends Controller
             if ($mailto && $mailto->email) {
                 $mailaddresses[] = $mailto->email;
             }
+            registoLogin::create(['fecha' => carbon::now()->format('d-m-Y H:i'), 'userName' => session('user'), 'action' => 'Aceptacion de planes de accion para la accion correctiva ID: '.$folio]);
             Mail::to($mailaddresses)->send(new planAccion($subAcciones, 'Aceptación de planes de accion'));
         }
 

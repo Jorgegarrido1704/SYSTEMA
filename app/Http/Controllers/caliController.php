@@ -10,6 +10,7 @@ use App\Models\listaCalidad;
 use App\Models\Maintanance;
 use App\Models\material;
 use App\Models\personalBergsModel;
+use App\Models\registoLogin;
 use App\Models\regPar;
 use App\Models\regParTime;
 use App\Models\specialWireModel;
@@ -583,6 +584,8 @@ class caliController extends generalController
             'finhora' => '',
         ]);
         if ($maint->save()) {
+            registoLogin::create(['fecha' => carbon::now()->format('d-m-Y H:i'), 'userName' => $value, 'action' => 'Solicitud de Mantenimiento Registrado ID: '.$maint->id]);
+
             return redirect('/calidad')->with('error', 'Failed to save data.');
         }
     }
@@ -614,6 +617,7 @@ class caliController extends generalController
                 $newarticulo->aprovadaComp = '';
                 $newarticulo->negada = '';
                 if (! empty($cant[$i])) {
+                    registoLogin::create(['fecha' => carbon::now()->format('d-m-Y H:i'), 'userName' => $value, 'action' => 'Registro de Material para Calidad ID: '.$folio.' Articulo: '.$articulo[$i].' Cantidad: '.$cant[$i]]);
                     $newarticulo->save();
                 }
             }
@@ -678,6 +682,7 @@ class caliController extends generalController
         $Totaltime = $timeNow - $timeIni;
         $total = round($Totaltime / 60, 2);
         $update = DB::table('timedead')->where('id', '=', $id)->update(['timeFin' => $timeNow, 'total' => $total]);
+        registoLogin::create(['fecha' => date('d-m-Y H:i'), 'usuario' => session('user'), 'accion' => 'Finalizo el tiempo muerto con el id '.$id.' con un total de '.$total.' minutos']);
 
         return redirect('/calidad');
     }
@@ -722,6 +727,7 @@ class caliController extends generalController
                 $newCalidad->parcial = 'SI';
                 $newCalidad->save();
                 $updateParcia = DB::table('registroparcial')->where('codeBar', '=', $barcode)->update(['preCalidad' => 0, 'testPar' => $qtycal]);
+                registoLogin::create(['fecha' => date('d-m-Y H:i'), 'usuario' => $value, 'accion' => 'Acepto el registro parcial de calidad con el codigo de barra '.$barcode]);
 
                 return back()->with('response', 'Registro actualizado correctamente');
             }
@@ -918,6 +924,7 @@ class caliController extends generalController
                 $updateParcia = DB::table('registroparcial')->where('id', '=', $denied)->update(['preCalidad' => 0, 'loomPar' => $sum]);
                 $upCount = DB::table('registro')->where('info', '=', $barcode)->update(['count' => '8', 'donde' => 'Denid by Quality']);
             }
+            registoLogin::create(['fecha' => date('d-m-Y H:i'), 'usuario' => $value, 'accion' => 'Se nego el registro parcial de calidad con el codigo de barra '.$barcode.' y el wo '.$denied]);
 
             return back()->with('response', 'Registro actualizado correctamente');
         }
@@ -945,6 +952,11 @@ class caliController extends generalController
         $noloomqy = $preCalidad + $ensamble;
         $updateParcia = regPar::where('wo', '=', $calidad->wo)->update(['testPar' => 0, 'fallasCalidad' => $noloomqy]);
         $calidad->delete();
+        registoLogin::create([
+            'user' => $value,
+            'action' => 'Registro de falla de calidad',
+            'fecha' => date('d-m-Y H:i'),
+        ]);
 
         return redirect()->back()->with('response', 'You do not have permission to perform this action');
 
@@ -1010,6 +1022,11 @@ class caliController extends generalController
         // 5. Salida del archivo
         $fileName = 'Reporte_Calidad_'.date('d-m-Y').'.xlsx';
         $writer = new Xlsx($spreadsheet);
+        registoLogin::create([
+            'user' => session('user'),
+            'action' => 'Exportación de reporte de calidad',
+            'fecha' => date('d-m-Y H:i'),
+        ]);
 
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header("Content-Disposition: attachment;filename=\"$fileName\"");
@@ -1099,9 +1116,16 @@ class caliController extends generalController
         }
 
         $writer = new Xlsx($spreadsheet);
+        registoLogin::create([
+            'user' => session('user'),
+            'action' => 'Exportación de reporte de calidad pendientes',
+            'fecha' => date('d-m-Y H:i'),
+        ]);
+
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="Reporte de existencias en el area de calidad.xlsx"');
         header('Cache-Control: max-age=0');
+
         $writer->save('php://output');
     }
 
@@ -1147,6 +1171,7 @@ class caliController extends generalController
             $registos->requested_by = $value;
             $registos->save();
         }
+        registoLogin::create(['fecha' => carbon::now()->format('d-m-Y H:i'), 'userName' => $value, 'action' => 'Solicitud de Testing Registrado para el WO: '.$numero]);
 
         return redirect()->route('calidad')->with('success', 'Se ha creado un nuevo registro de testing');
 
@@ -1190,6 +1215,7 @@ class caliController extends generalController
             $upCount = DB::table('registro')->where('info', '=', $barcode)->update(['count' => '8', 'donde' => 'Denid by Quality']);
         }
         listaCalidad::where('wo', $denied)->delete();
+        registoLogin::create(['fecha' => date('d-m-Y H:i'), 'usuario' => $value, 'accion' => 'Registro de producto no conforme para el WO '.$denied.' con la forma de manejo: '.$forma]);
 
         return back()->with('response', 'forma de manejo: '.$forma);
 
@@ -1222,6 +1248,7 @@ class caliController extends generalController
             $calidad->save();
             fallasCalidadModel::where('id', '=', $id)->update(['status' => 'Closed']);
             regPar::where('wo', '=', $falla->wo)->update(['testPar' => $totales, 'fallasCalidad' => 0]);
+            registoLogin::create(['fecha' => date('d-m-Y H:i'), 'usuario' => session('user'), 'accion' => 'Falla cerrada para el WO '.$falla->wo]);
 
             return back()->with('response', 'Falla Cerrada correctamente');
         }

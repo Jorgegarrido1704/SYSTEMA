@@ -11,12 +11,13 @@ use App\Models\material;
 use App\Models\Paros;
 use App\Models\ParosProd;
 use App\Models\regfull;
+use App\Models\registoLogin;
 use App\Models\regParTime;
 use App\Models\specialWireModel;
+use App\Models\Wo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
-use App\Models\Wo;
 
 class generalController extends Controller
 {
@@ -409,8 +410,8 @@ class generalController extends Controller
                             $date = date('d-m-Y');
                             $time = date('H:i');
                             $content['inicio'] = 'Buen día, Les comparto que el día '.$date.' a las '.$time;
-                            $content ['cuerpo']= 'Salió de liberacion el número de parte: '.$pnReg.' Con Work order: '.$wo;
-                            $content ['final']= ' Se solicita de su apoyo para revisar el motivo por el cual no se realizo la prueba de pull';
+                            $content['cuerpo'] = 'Salió de liberacion el número de parte: '.$pnReg.' Con Work order: '.$wo;
+                            $content['final'] = ' Se solicita de su apoyo para revisar el motivo por el cual no se realizo la prueba de pull';
                             $recipients = [
                                 'jcervera@mx.bergstrominc.com',
                                 'jcrodriguez@mx.bergstrominc.com',
@@ -572,6 +573,8 @@ class generalController extends Controller
         ]);
 
         if ($desv->save()) {
+            registoLogin::create(['fecha' => $today, 'user' => $user, 'accion' => 'Registro de desviacion para el modelo '.$modelo]);
+
             return redirect('/general')->with('success', 'Data successfully saved.');
         } else {
             return redirect('/general')->with('error', 'Failed to save data.');
@@ -629,6 +632,8 @@ class generalController extends Controller
                 'id_falla' => $id_f,
             ]);
             if ($Paro->save()) {
+                registroLogin::create(['fecha' => $today, 'user' => $value, 'accion' => 'Solicitud de Mantenimiento Registrado ID: '.$maint->id]);
+
                 return redirect('/general')->with('success', 'Data successfully saved.');
             } else {
                 return redirect('/general')->with('error', 'Failed to save data.');
@@ -667,6 +672,7 @@ class generalController extends Controller
             }
             $i++;
         }
+        registoLogin::create(['fecha' => $today, 'user' => $value, 'accion' => 'Registro de Material ID: '.$folio]);
 
         return redirect('/general');
     }
@@ -857,6 +863,7 @@ class generalController extends Controller
                 default:
                     break;
             }
+
         }
 
         return redirect('/general');
@@ -867,6 +874,7 @@ class generalController extends Controller
         $id = $request->input('id_but');
         $today = date('d-m-Y H:i');
         $uptimes = DB::table('registro_paro')->where('id', '=', $id)->update(['finhora' => $today, 'trabajo' => 'Finalizado']);
+        registoLogin::create(['fecha' => $today, 'user' => session('user'), 'accion' => 'Finalizo el paro ID: '.$id]);
 
         return redirect('/general');
     }
@@ -899,6 +907,8 @@ class generalController extends Controller
                 $addKit->horaSolicitud = $time;
                 $addKit->nivel = $nivel;
                 if ($addKit->save()) {
+                    registoLogin::create(['fecha' => $time, 'user' => $value, 'accion' => 'Solicitud de kit para el WO: '.$work.' con NP: '.$np]);
+
                     return redirect('/general');
                 }
             }
@@ -913,11 +923,11 @@ class generalController extends Controller
         $buscarDatos = Wo::where('wo', '=', $wo)->first();
         $pn = $buscarDatos->NumPart;
         $rev = $buscarDatos->rev;
-        $client = $buscarDatos->cliente;            
+        $client = $buscarDatos->cliente;
 
         $tablero = 1;
         $time = date('d-m-Y H:i');
-        
+
         $tablero = strtoupper($tablero);
         $addfull = new regfull;
         $addfull->SolicitadoPor = $value;
@@ -934,6 +944,8 @@ class generalController extends Controller
         $addfull->fechaCalidad = 'No Aun';
         $addfull->tablero = $tablero;
         if ($addfull->save()) {
+            registoLogin::create(['fecha' => $time, 'user' => $value, 'accion' => 'Registro de FULLSIZE ID: '.$addfull->id]);
+
             return redirect('/general');
         }
     }
@@ -965,6 +977,8 @@ class generalController extends Controller
         $addProb->DateIs = $date;
         $addProb->validator = $val;
         if ($addProb->save()) {
+            registoLogin::create(['fecha' => $date, 'user' => $value, 'accion' => 'Problemas Generales Registrado ID: '.$addProb->id]);
+
             return redirect('/general');
         }
     }

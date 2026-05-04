@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\solicitudVacacionesMail;
 use App\Models\calidadRegistro;
 use App\Models\personalBergsModel;
+use App\Models\registoLogin;
 use App\Models\routingModel;
 use carbon\Carbon;
 use Illuminate\Http\Request;
@@ -335,7 +336,7 @@ class AdminSupControlloer extends Controller
             'dias_solicitados' => $dias_solicitados ?? 1,
             'Folio' => 'VAC-'.$buscarFolio->id,
         ];
-
+        registoLogin::create(['fecha' => carbon::now()->format('d-m-Y H:i'), 'userName' => session('user'), 'action' => 'Eliminacion de Vacaciones para el empleado ID: '.$pesonal.' - Folio: VAC-'.$buscarFolio->id]);
         DB::table('registro_vacaciones')->where('id', $buscarFolio->id)->delete();
 
         $email = 'jgarrido@mx.bergstrominc.com';
