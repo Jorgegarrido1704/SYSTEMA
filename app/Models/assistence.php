@@ -43,9 +43,9 @@ class assistence extends Model
         'viernes' => 'string',
         'extViernes' => 'float',
         'sabado' => 'string',
-        'extSabado' => 'string',
+        'extSabado' => 'float',
         'domingo' => 'string',
-        'extDomingo' => 'string',
+        'extDomingo' => 'float',
         'bonoAsistencia' => 'string',
         'bonoPuntualidad' => 'string',
         'extras' => 'string',
@@ -75,7 +75,7 @@ class assistence extends Model
 
         $dias = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
         $diaActual = Carbon::now()->dayOfWeek == '0' ? $dias[6] : $dias[$dayNum - 1];
-        $shift = Carbon::now()->hour > 7 && Carbon::now()->hour < 18 ? 'firstShift' : 'secondShift';
+        $shift = Carbon::now()->hour > 6 && Carbon::now()->hour < 18 ? 'firstShift' : 'secondShift';
         if ($leader == 'Admin' or $leader == 'Paola A' or $leader == 'Angy B') {
             return $query->where('week', $week)->where('yearOfAssistence', $year)->where('shift', $shift)->OrderBy($diaActual, 'ASC')->OrderBy($diaActual, 'ASC');
         } else {
@@ -93,7 +93,7 @@ class assistence extends Model
 
         $dias = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
         $diaActual = Carbon::now()->dayOfWeek == '0' ? $dias[6] : $dias[$dayNum - 1];
-        $shift = Carbon::now()->hour > 7 && Carbon::now()->hour < 18 ? 'firstShift' : 'secondShift';
+        $shift = Carbon::now()->hour > 6 && Carbon::now()->hour < 18 ? 'firstShift' : 'secondShift';
         if ($leader == 'Admin' or $leader == 'Paola A' or $leader == 'Angy B') {
             return $query->where('week', $week)->where('yearOfAssistence', $year)->where('shift', $shift)->OrderBy($diaActual, 'ASC')->OrderBy($diaActual, 'ASC');
         } else {
