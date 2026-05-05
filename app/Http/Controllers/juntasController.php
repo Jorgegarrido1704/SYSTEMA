@@ -2003,7 +2003,7 @@ class juntasController extends Controller
             $InicioYear->addDay(1);
         }
 
-        return view('juntas/hrDocs/vacations', ['vacacions' => $vacacions, 'anos' => $anos, 'empleados' => $empleados, 'diasAviles' => $diasAviles, 'value' => $value, 'cat' => $cat]);
+        return view('juntas.hrDocs.vacations', ['vacacions' => $vacacions, 'anos' => $anos, 'empleados' => $empleados, 'diasAviles' => $diasAviles, 'value' => $value, 'cat' => $cat]);
     }
 
     public function addVacation(Request $request)
