@@ -5,7 +5,7 @@ const generos = Object.values(genero);
 
 
 const tipoTrabajadors = Object.values(tipoTrabajador);
-   
+
 const promau = promaus || 0; // Default to 0 if promaus is not defined
 
 try{//lista de incidencias
@@ -145,7 +145,7 @@ try{//rotacion
             },
         },
         data: {
-            labels: ["Max rotacion: " + 3 + "%", "Rotacion: " +registroInicidencia[11] + "%"],
+            labels: ["Max rotacion: " + 3 + "%", "Rotacion: " +registroInicidencia[12] + "%"],
             datasets: [
                 {
                     label: "Rotación de personal",
@@ -410,7 +410,7 @@ const rota3 = new Chart(document.getElementById("rotation3"), {
 });
 try {//vacaciones
     const registroVacaciones = Object.values(vacaciones);
-      //cambiar nuemero de mes por nombre del mes 
+      //cambiar nuemero de mes por nombre del mes
         registroVacaciones.forEach((vac) => {
             const mesNum = parseInt(vac.mesVac, 10);
             const meses = [
@@ -432,7 +432,7 @@ try {//vacaciones
 
     const vacations = new Chart(document.getElementById("vacations"), {
 
-      
+
         type: "bar",
         data: {
             labels: registroVacaciones.map((vac) => vac.mesVac),
