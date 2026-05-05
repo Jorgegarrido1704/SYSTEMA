@@ -1023,7 +1023,7 @@ class caliController extends generalController
         $fileName = 'Reporte_Calidad_'.date('d-m-Y').'.xlsx';
         $writer = new Xlsx($spreadsheet);
         registoLogin::create([
-            'user' => session('user'),
+            'userName' => session('user'),
             'action' => 'Exportación de reporte de calidad',
             'fecha' => date('d-m-Y H:i'),
         ]);
@@ -1117,7 +1117,7 @@ class caliController extends generalController
 
         $writer = new Xlsx($spreadsheet);
         registoLogin::create([
-            'user' => session('user'),
+            'userName' => session('user'),
             'action' => 'Exportación de reporte de calidad pendientes',
             'fecha' => date('d-m-Y H:i'),
         ]);
