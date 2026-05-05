@@ -682,7 +682,7 @@ class caliController extends generalController
         $Totaltime = $timeNow - $timeIni;
         $total = round($Totaltime / 60, 2);
         $update = DB::table('timedead')->where('id', '=', $id)->update(['timeFin' => $timeNow, 'total' => $total]);
-        registoLogin::create(['fecha' => date('d-m-Y H:i'), 'usuario' => session('user'), 'accion' => 'Finalizo el tiempo muerto con el id '.$id.' con un total de '.$total.' minutos']);
+        registoLogin::create(['fecha' => date('d-m-Y H:i'), 'userName' => session('user'), 'action' => 'Finalizo el tiempo muerto con el id '.$id.' con un total de '.$total.' minutos']);
 
         return redirect('/calidad');
     }
@@ -924,7 +924,7 @@ class caliController extends generalController
                 $updateParcia = DB::table('registroparcial')->where('id', '=', $denied)->update(['preCalidad' => 0, 'loomPar' => $sum]);
                 $upCount = DB::table('registro')->where('info', '=', $barcode)->update(['count' => '8', 'donde' => 'Denid by Quality']);
             }
-            registoLogin::create(['fecha' => date('d-m-Y H:i'), 'usuario' => $value, 'accion' => 'Se nego el registro parcial de calidad con el codigo de barra '.$barcode.' y el wo '.$denied]);
+            registoLogin::create(['fecha' => date('d-m-Y H:i'), 'userName' => $value, 'action' => 'Se nego el registro parcial de calidad con el codigo de barra '.$barcode.' y el wo '.$denied]);
 
             return back()->with('response', 'Registro actualizado correctamente');
         }
@@ -953,7 +953,7 @@ class caliController extends generalController
         $updateParcia = regPar::where('wo', '=', $calidad->wo)->update(['testPar' => 0, 'fallasCalidad' => $noloomqy]);
         $calidad->delete();
         registoLogin::create([
-            'user' => $value,
+            'userName' => $value,
             'action' => 'Registro de falla de calidad',
             'fecha' => date('d-m-Y H:i'),
         ]);
@@ -1215,7 +1215,7 @@ class caliController extends generalController
             $upCount = DB::table('registro')->where('info', '=', $barcode)->update(['count' => '8', 'donde' => 'Denid by Quality']);
         }
         listaCalidad::where('wo', $denied)->delete();
-        registoLogin::create(['fecha' => date('d-m-Y H:i'), 'usuario' => $value, 'accion' => 'Registro de producto no conforme para el WO '.$denied.' con la forma de manejo: '.$forma]);
+        registoLogin::create(['fecha' => date('d-m-Y H:i'), 'userName' => $value, 'action' => 'Registro de producto no conforme para el WO '.$denied.' con la forma de manejo: '.$forma]);
 
         return back()->with('response', 'forma de manejo: '.$forma);
 
@@ -1248,7 +1248,7 @@ class caliController extends generalController
             $calidad->save();
             fallasCalidadModel::where('id', '=', $id)->update(['status' => 'Closed']);
             regPar::where('wo', '=', $falla->wo)->update(['testPar' => $totales, 'fallasCalidad' => 0]);
-            registoLogin::create(['fecha' => date('d-m-Y H:i'), 'usuario' => session('user'), 'accion' => 'Falla cerrada para el WO '.$falla->wo]);
+            registoLogin::create(['fecha' => date('d-m-Y H:i'), 'userName' => session('user'), 'action' => 'Falla cerrada para el WO '.$falla->wo]);
 
             return back()->with('response', 'Falla Cerrada correctamente');
         }
