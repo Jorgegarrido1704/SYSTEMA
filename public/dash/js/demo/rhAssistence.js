@@ -149,7 +149,7 @@ try{//rotacion
             datasets: [
                 {
                     label: "Rotación de personal",
-                    data: [3, registroInicidencia[11]],
+                    data: [3, registroInicidencia[12]],
                     backgroundColor: [
                         "rgba(2, 164, 75, 0.25)",
                         "rgba(205, 2, 2, 0.25)",
@@ -179,7 +179,7 @@ try{//rotacion
                         chart.chartArea.top +
                         (chart.chartArea.bottom - chart.chartArea.top) / 2;
                     ctx.fillText(
-                        `${( registroInicidencia[11])}%`,
+                        `${( registroInicidencia[12])}%`,
                         centerX,
                         centerY
                     );
