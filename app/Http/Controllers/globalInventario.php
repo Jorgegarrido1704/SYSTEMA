@@ -1,57 +1,61 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Support\Facades\DB;
+
 use App\Models\globalInventarios;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class globalInventario extends Controller
 {
-    //index
-    public function index_inventario(Request $request){
-        $cat=session('categoria');
-        $value=session('user');
-        if( $value=="" ){
+    // index
+    public function index_inventario(Request $request)
+    {
+        $cat = session('categoria');
+        $value = session('user');
+        if ($value == '') {
             return redirect('/');
-        }else{
-        //Moviment registered
-        $itemOut=$inventario=$kitsReg=[];
-        $i=$y=0;
-        $buscaractual=DB::table('controlalmacen')
-        ->orderBy("idRegALm", "desc")
-        ->limit(100)
-        ->get();
-            foreach($buscaractual as $val){
-                $itemOut[$i][0]=$val->fechaMov;
-                $itemOut[$i][1]=$val->itIdInt;
-                $itemOut[$i][2]=$val->Qty;
-                $itemOut[$i][3]=$val->MovType;
+        } else {
+            // Moviment registered
+            $itemOut = $inventario = $kitsReg = [];
+            $i = $y = 0;
+            $buscaractual = DB::table('controlalmacen')
+                ->orderBy('idRegALm', 'desc')
+                ->limit(100)
+                ->get();
+            foreach ($buscaractual as $val) {
+                $itemOut[$i][0] = $val->fechaMov;
+                $itemOut[$i][1] = $val->itIdInt;
+                $itemOut[$i][2] = $val->Qty;
+                $itemOut[$i][3] = $val->MovType;
                 $i++;
             }
-        $inv=DB::table('controlalmacen')
-        ->select('itIdInt',DB::raw('SUM(Qty) as Qty'))
-        ->groupBy('itIdInt')
-        ->get();
-        foreach($inv as $row){
-            $inventario[$y][0]=$row->itIdInt;
-            $inventario[$y][1]=$row->Qty;
-            $y++;
+            $inv = DB::table('controlalmacen')
+                ->select('itIdInt', DB::raw('SUM(Qty) as Qty'))
+                ->groupBy('itIdInt')
+                ->get();
+            foreach ($inv as $row) {
+                $inventario[$y][0] = $row->itIdInt;
+                $inventario[$y][1] = $row->Qty;
+                $y++;
+            }
+            $kits = DB::table('kits')
+                ->where('status', '!=', 'finalizado')
+                ->get();
+            $y = 0;
+            foreach ($kits as $kit) {
+                $kitsReg[$y][0] = $kit->numeroParte;
+                $kitsReg[$y][1] = $kit->wo;
+                $kitsReg[$y][2] = $kit->qty;
+                $kitsReg[$y][3] = $kit->status;
+                $y++;
+            }
+
+            return view('globalInventary', ['cat' => $cat, 'value' => $value, 'itemOut' => $itemOut, 'inventario' => $inventario, 'kitsReg' => $kitsReg]);
         }
-        $kits=DB::table('kits')
-        ->where('status','!=','finalizado')
-        ->get();
-        $y=0;
-        foreach($kits as $kit){
-            $kitsReg[$y][0]=$kit->numeroParte;
-            $kitsReg[$y][1]=$kit->wo;
-            $kitsReg[$y][2]=$kit->qty;
-            $kitsReg[$y][3]=$kit->status;
-            $y++;
-        }
-        return view('globalInventary', ['cat'=>$cat,'value'=>$value,'itemOut'=>$itemOut,'inventario'=>$inventario,'kitsReg'=>$kitsReg]);
     }
-}
-/*    public function index_inventario(Request $request){
+
+    /*    public function index_inventario(Request $request){
         $cat=session('categoria');
         $user=session('user');
         $wo=request('wo');
@@ -89,49 +93,50 @@ class globalInventario extends Controller
 
         return view('globalInventary', ['cat'=>$cat,'user'=>$user]);}
     }*/
-    public function WOitems(Request $request){
-        $cat=session('categoria');
-        $user=session('user');
-        $wo=request('wo');
-        $qty=request('qty');
-        $items=request('items');
-        $i=0;
-        foreach($items as $item){
-            if($qty[$i]>0){
-            $addItem=new globalInventarios;
-            $addItem->items=$item;
-            $addItem->Register=$user;
-            $addItem->qty=$qty[$i];
-            $addItem->fecha=date('d-m-Y');
-            $addItem->hora=date('H:i');
-            $addItem->id_workOrder=$wo;
-            $addItem->Validador='-';
-            $addItem->save();
+    public function WOitems(Request $request)
+    {
+        $cat = session('categoria');
+        $user = session('user');
+        $wo = request('wo');
+        $qty = request('qty');
+        $items = request('items');
+        $i = 0;
+        foreach ($items as $item) {
+            if ($qty[$i] > 0) {
+                $addItem = new globalInventarios;
+                $addItem->items = $item;
+                $addItem->Register = $user;
+                $addItem->qty = $qty[$i];
+                $addItem->fecha = date('d-m-Y');
+                $addItem->hora = date('H:i');
+                $addItem->id_workOrder = $wo;
+                $addItem->Validador = '-';
+                $addItem->save();
             }
             $i++;
         }
-        if($addItem){
-            return redirect('globalInventario')->with('success','Items agregados correctamente');
+        if ($addItem) {
+            return redirect('globalInventario')->with('success', 'Items agregados correctamente');
         }
     }
 
-        public function indItems(Request $request){
-            $cat=session(key: 'categoria');
-            $user=session('user');
-           $qty=request('qtyunic');
-            $items=request('itemunic');
-            $item=strtoupper($items);
-                $addItem=new globalInventarios;
-                $addItem->items=$item;
-                $addItem->Register=$user;
-                $addItem->qty=$qty;
-                $addItem->fecha=date('d-m-Y');
-                $addItem->hora=date('H:i');
-                $addItem->id_workOrder='individual';
-                $addItem->Validador='-';
-              if(  $addItem->save()){
-                return redirect('globalInventario')->with('success','Items agregados correctamente');
-            }
+    public function indItems(Request $request)
+    {
+        $cat = session(key: 'categoria');
+        $user = session('user');
+        $qty = request('qtyunic');
+        $items = request('itemunic');
+        $item = strtoupper($items);
+        $addItem = new globalInventarios;
+        $addItem->items = $item;
+        $addItem->Register = $user;
+        $addItem->qty = $qty;
+        $addItem->fecha = date('d-m-Y');
+        $addItem->hora = date('H:i');
+        $addItem->id_workOrder = 'individual';
+        $addItem->Validador = '-';
+        if ($addItem->save()) {
+            return redirect('globalInventario')->with('success', 'Items agregados correctamente');
         }
-
+    }
 }

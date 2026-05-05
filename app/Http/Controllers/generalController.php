@@ -573,7 +573,7 @@ class generalController extends Controller
         ]);
 
         if ($desv->save()) {
-            registoLogin::create(['fecha' => $today, 'user' => $user, 'accion' => 'Registro de desviacion para el modelo '.$modelo]);
+            registoLogin::create(['fecha' => $today, 'userName' => $user, 'action' => 'Registro de desviacion para el modelo '.$modelo]);
 
             return redirect('/general')->with('success', 'Data successfully saved.');
         } else {
@@ -632,7 +632,7 @@ class generalController extends Controller
                 'id_falla' => $id_f,
             ]);
             if ($Paro->save()) {
-                registroLogin::create(['fecha' => $today, 'user' => $value, 'accion' => 'Solicitud de Mantenimiento Registrado ID: '.$maint->id]);
+                registroLogin::create(['fecha' => $today, 'userName' => $value, 'action' => 'Solicitud de Mantenimiento Registrado ID: '.$maint->id]);
 
                 return redirect('/general')->with('success', 'Data successfully saved.');
             } else {
@@ -672,7 +672,7 @@ class generalController extends Controller
             }
             $i++;
         }
-        registoLogin::create(['fecha' => $today, 'user' => $value, 'accion' => 'Registro de Material ID: '.$folio]);
+        registoLogin::create(['fecha' => $today, 'userName' => $value, 'action' => 'Registro de Material ID: '.$folio]);
 
         return redirect('/general');
     }
@@ -874,7 +874,7 @@ class generalController extends Controller
         $id = $request->input('id_but');
         $today = date('d-m-Y H:i');
         $uptimes = DB::table('registro_paro')->where('id', '=', $id)->update(['finhora' => $today, 'trabajo' => 'Finalizado']);
-        registoLogin::create(['fecha' => $today, 'user' => session('user'), 'accion' => 'Finalizo el paro ID: '.$id]);
+        registoLogin::create(['fecha' => $today, 'userName' => session('user'), 'action' => 'Finalizo el paro ID: '.$id]);
 
         return redirect('/general');
     }
@@ -907,7 +907,7 @@ class generalController extends Controller
                 $addKit->horaSolicitud = $time;
                 $addKit->nivel = $nivel;
                 if ($addKit->save()) {
-                    registoLogin::create(['fecha' => $time, 'user' => $value, 'accion' => 'Solicitud de kit para el WO: '.$work.' con NP: '.$np]);
+                    registoLogin::create(['fecha' => $time, 'userName' => $value, 'action' => 'Solicitud de kit para el WO: '.$work.' con NP: '.$np]);
 
                     return redirect('/general');
                 }
@@ -944,7 +944,7 @@ class generalController extends Controller
         $addfull->fechaCalidad = 'No Aun';
         $addfull->tablero = $tablero;
         if ($addfull->save()) {
-            registoLogin::create(['fecha' => $time, 'user' => $value, 'accion' => 'Registro de FULLSIZE ID: '.$addfull->id]);
+            registoLogin::create(['fecha' => $time, 'userName' => $value, 'action' => 'Registro de FULLSIZE ID: '.$addfull->id]);
 
             return redirect('/general');
         }
@@ -968,7 +968,7 @@ class generalController extends Controller
         $addProb->wo = $wo;
         $addProb->rev = $rev;
         $addProb->problem = $prob;
-        if ($prob == 'Paper work' || $prob = 'Both(Prosses Error and Paper work)') {
+        if ($prob == 'Paper work' || $prob == 'Both(Prosses Error and Paper work)') {
             $addProb->mostrar_ing = 1;
         }
         $addProb->descriptionIs = $descIs;
@@ -977,7 +977,7 @@ class generalController extends Controller
         $addProb->DateIs = $date;
         $addProb->validator = $val;
         if ($addProb->save()) {
-            registoLogin::create(['fecha' => $date, 'user' => $value, 'accion' => 'Problemas Generales Registrado ID: '.$addProb->id]);
+            registoLogin::create(['fecha' => $date, 'userName' => $value, 'action' => 'Problemas Generales Registrado ID: '.$addProb->id]);
 
             return redirect('/general');
         }
