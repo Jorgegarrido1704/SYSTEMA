@@ -727,7 +727,7 @@ class caliController extends generalController
                 $newCalidad->parcial = 'SI';
                 $newCalidad->save();
                 $updateParcia = DB::table('registroparcial')->where('codeBar', '=', $barcode)->update(['preCalidad' => 0, 'testPar' => $qtycal]);
-                registoLogin::create(['fecha' => date('d-m-Y H:i'), 'userName' => $value, 'accion' => 'Acepto el registro parcial de calidad con el codigo de barra '.$barcode]);
+                registoLogin::create(['fecha' => date('d-m-Y H:i'), 'userName' => $value, 'action' => 'Acepto el registro parcial de calidad con el codigo de barra '.$barcode]);
 
                 return back()->with('response', 'Registro actualizado correctamente');
             }
