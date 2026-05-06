@@ -2304,7 +2304,7 @@ class juntasController extends Controller
             ->count();
 
         $disponibilidadPrimesTurno1 = assistence::selectRaw('
-        ROUND(AVG(CASE WHEN '.$diaActual.' = "OK" THEN 100 ELSE 0 END), 2) as disponibilidad
+        ROUND(AVG(CASE WHEN '.$diaActual.' IN ("OK", "R") THEN 100 ELSE 0 END), 2) as disponibilidad
      ')
             ->join('personalberg', function ($join) {
                 $join->on('assistence.shift', '=', DB::raw('personalberg.employeeShift COLLATE utf8mb4_unicode_ci'));
@@ -2327,7 +2327,7 @@ class juntasController extends Controller
             ->whereNotIn('typeWorker', ['Corporativo', 'Practicante', 'Asimilado', 'Servicios Comprados'])
             ->where('employeeShift', '=', 'secondShift')
             ->count();
-        // ausentismo First Shift
+        // ausentismo second Shift
         $secondShiftDirectos = personalBergsModel::select('typeWorker')
             ->where('status', '!=', 'Baja')
             ->where('typeWorker', '=', 'Directo')
