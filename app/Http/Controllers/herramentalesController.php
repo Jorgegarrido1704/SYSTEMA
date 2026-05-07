@@ -294,12 +294,21 @@ class herramentalesController extends Controller
 
     public function removeCrimpers(Request $request)
     {
+        $value = session('user');
+        if (empty($value)) {
+            return redirect('/');
+        }
         $request->validate([
             'removeTooling' => ['required', 'string'],
         ]);
 
         herramentalInfo::where('id', '=', $request->input('removeTooling'))->update([
             'mantenimiento' => 'removed',
+        ]);
+        registoLogin::create([
+            'fecha' => Carbon::now()->format('d-m-Y H:i'),
+            'userName' => $value,
+            'action' => 'Removed tooling with ID: '.$request->input('removeTooling'),
         ]);
 
         return back()->with('message', 'Crimper removed successfully.');
