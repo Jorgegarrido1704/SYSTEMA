@@ -693,6 +693,9 @@ class caliController extends generalController
         $denied = $request->input('denied');
         $cat = session('categoria');
         $value = session('user');
+        if (empty($value)) {
+            return redirect('/');
+        }
         if (! empty($acpt)) {
             $preorder = regPar::where('id', '=', $acpt)->first();
             $barcode = $preorder->codeBar;
