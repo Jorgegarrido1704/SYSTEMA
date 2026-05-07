@@ -24,7 +24,7 @@ class herramentalesController extends Controller
             ->orWhere('finhora', '')
             ->orderBy('id', 'asc')
             ->get();
-        $herramntal = herramentalInfo::orderBy('terminal', 'asc')->get();
+        $herramntal = herramentalInfo::where('mantenimiento', '!=', 'removed')->orderBy('terminal', 'asc')->get();
 
         return view('herramentales.index', ['crimpersRequested' => $crimpersRequested, 'cat' => $cat, 'value' => $value,
             'herramntal' => $herramntal]);
@@ -219,8 +219,8 @@ class herramentalesController extends Controller
 
         // 1. Promedio de Espera
         $promedioespera = Maintanance::selectRaw('
-        AVG(TIMESTAMPDIFF(MINUTE, 
-            fecha, 
+        AVG(TIMESTAMPDIFF(MINUTE,
+            fecha,
             STR_TO_DATE(inimant, "%d-%m-%Y %H:%i")
         )) as promedio')
             // Correcting the filter: parsing 'fecha' (YYYY-MM-DD) to match your variable (DD-MM-YYYY)
@@ -234,8 +234,8 @@ class herramentalesController extends Controller
 
         // 2. Time Working (Difference between inimant and finhora)
         $times = Maintanance::selectRaw('COUNT(*) as total_trabajos,
-        AVG(TIMESTAMPDIFF(MINUTE, 
-            STR_TO_DATE(inimant, "%d-%m-%Y %H:%i"), 
+        AVG(TIMESTAMPDIFF(MINUTE,
+            STR_TO_DATE(inimant, "%d-%m-%Y %H:%i"),
             STR_TO_DATE(finhora, "%d-%m-%Y %H:%i")
         )) as promedio')
             ->whereRaw('DATE_FORMAT(fecha, "%d-%m-%Y") between ? and ?', [$fechaInicio, $fechaFin])
@@ -249,8 +249,8 @@ class herramentalesController extends Controller
 
         // 3. Total Times AVG (Difference between fecha and finhora)
         $ttimes = Maintanance::selectRaw('
-        AVG(TIMESTAMPDIFF(MINUTE, 
-            fecha, 
+        AVG(TIMESTAMPDIFF(MINUTE,
+            fecha,
             STR_TO_DATE(finhora, "%d-%m-%Y %H:%i")
         )) as promedio')
             ->whereRaw('DATE_FORMAT(fecha, "%d-%m-%Y") between ? and ?', [$fechaInicio, $fechaFin])
@@ -280,15 +280,28 @@ class herramentalesController extends Controller
     {
         $valor = $request->input('value');
         if ($valor == 'all') {
-            $data = herramentalInfo::orderBy('golpesTotales', 'desc')->get();
+            $data = herramentalInfo::where('mantenimiento', '!=', 'removed')->orderBy('golpesTotales', 'desc')->get();
 
             return json_encode($data);
         } else {
             $data = herramentalInfo::where('herramental', '=', $valor)
-                ->orWhere('terminal', '=', $valor)->orderBy('golpesTotales', 'desc')->get();
+                ->orWhere('terminal', '=', $valor)->where('mantenimiento', '!=', 'removed')->orderBy('golpesTotales', 'desc')->get();
         }
 
         return json_encode($data);
 
+    }
+
+    public function removeCrimpers(Request $request)
+    {
+        $request->validate([
+            'removeTooling' => ['required', 'string'],
+        ]);
+
+        herramentalInfo::where('id', '=', $request->input('removeTooling'))->update([
+            'mantenimiento' => 'removed',
+        ]);
+
+        return back()->with('message', 'Crimper removed successfully.');
     }
 }

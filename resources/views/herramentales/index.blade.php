@@ -101,6 +101,34 @@
             </div>
         </div>
         <!--end Add count in crimpers -->
+                <!-- remove crimpers -->
+        <div class="col-xl-3 col-md-3 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" >
+                    <h4 class="m-0 font-weight-bold text-primary">{{ __('Remove Crimpers') }} </h4>
+                </div>
+                <!-- table Body -->
+                <div class="card-body"style="overflow-y: auto; height: 350px;">
+                    <form action="{{ route('herramientales.removeCrimpers') }}" method="post">
+                        @csrf
+                        <div class="form-group">
+                            <label for="removeTooling">{{ __('Tooling For Remove') }}</label>
+                            <select name="removeTooling" id="removeTooling" class="form-control" required>
+                                <option value="" selected disabled>{{ __('Select tooling') }}</option>
+                                @foreach($herramntal as $tooling)
+                                    <option value="{{ $tooling->id }}">{{ $tooling->terminal }} || {{ $tooling->herramental }} </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                           <button type="submit" class="btn btn-primary">{{ __('Delete') }}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!--end remove crimpers -->
+        <!-- Add New Crimp Tooling -->
         <div class="col-xl-3 col-md-3 mb-4">
             <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" >
@@ -125,10 +153,9 @@
                 </div>
             </div>
         </div>
+          <!-- end Add New Crimp Tooling -->
         @endif
-    </div>
-    <div class="row">
-        <div class="col-xl-6 col-md-6 mb-4">
+         <div class="col-xl-6 col-md-6 mb-4">
             <div class="card shadow mb-4">
 
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" >
@@ -161,6 +188,8 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="row">
 
     </div>
 
