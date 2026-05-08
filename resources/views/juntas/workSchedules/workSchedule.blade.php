@@ -9,7 +9,7 @@
         const datas = '{{ route('workStateJason') }}';
     </script>
     <style>
-        #pns1{
+        .pns{
             width: 350px;
         }
     </style>
@@ -18,7 +18,7 @@
             <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                     <h5 class="m-0 font-weight-bold text-primary"> {{ __('Engineering work scheduled') }} </h5>
-                    <input type="text" class="form-control" id="pns1"  value="" placeholder="Search for PNs.." onchange="search()">
+                    <input type="text" class="form-control pns" id="pns"  value="" placeholder="Search for PNs.." onchange="search()">
                 </div>
                 <!-- filtros -->
                     <div class="col-12 text-center mb-5">
@@ -146,13 +146,13 @@
                                     <div class="col-3">
                                         <div class="form-group">
                                             <label for="qtyInPo">{{ __('Po Qty') }}:</label><br>
-                                            <input type="text" name="qtyInPo" id="qtyInPo" min=0 step="1" required value="0">
+                                            <input type="text" name="qtyInPo" id="qtyInPo" min=1 step="1" required value="0">
                                         </div>
                                     </div>
                                     <div class="col-3">
                                         <div class="form-group">
-                                            <label for="mrpWork">{{ __('Price') }} {{ __('PO') }}:</label><br>
-                                            <input type="number" name="mrpWork" id="mrpWork" min=0  step="0.01" required value="0">
+                                            <label for="price">{{ __('Price') }} {{ __('PO') }}:</label><br>
+                                            <input type="number" name="price" id="price" min=0.01  step="0.01" required value="0">
                                         </div>
                                     </div>
 

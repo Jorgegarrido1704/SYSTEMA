@@ -8,6 +8,7 @@ use App\Models\ingAct;
 use App\Models\login;
 use App\Models\PPAPandPRIM;
 use App\Models\ppapIng;
+use App\Models\precios;
 use App\Models\regfull;
 use App\Models\regPar;
 use App\Models\Wo;
@@ -793,8 +794,8 @@ class PpapIngController extends Controller
         $input = $request->all();
         $newRegistro = new workScreduleModel;
         $newRegistro->fill([
-            'customer' => $input['customerWork'],
-            'pn' => $input['pnWork'],
+            'customer' => strtoupper($input['customerWork']),
+            'pn' => strtoupper($input['pnWork']),
             'WorkRev' => $input['revWork'],
             'size' => $input['sizeWork'],
             'receiptDate' => $input['receiptDateWork'] ?? null,
@@ -807,6 +808,23 @@ class PpapIngController extends Controller
             'price' => $input['price'] ?? 0,
         ]);
         $newRegistro->save();
+        $rev = strpos($input['revWork'], 'to') ? explode('to', $input['revWork'])[1] : $input['revWork'];
+        $rev = strpos($rev, 'TO') ? explode('TO', $rev)[1] : $rev;
+        $rev = str_replace(' ', '', $rev);
+
+        if (precios::where('pn', $input['pnWork'])->exists()) {
+            precios::where('pn', $input['pnWork'])->update([
+                'rev' => $rev,
+                'price' => $input['price'] ?? 0,
+            ]);
+        } else {
+            precios::insert([
+                'pn' => $input['pnWork'],
+                'client' => $input['customerWork'],
+                'rev' => $rev,
+                'price' => $input['price'] ?? 0,
+            ]);
+        }
 
         return redirect('/workSchedule');
     }

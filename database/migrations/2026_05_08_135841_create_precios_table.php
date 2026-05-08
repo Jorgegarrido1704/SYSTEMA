@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id()->autoIncrement()->unique();
             $table->string('client', 50);
             $table->string('pn', 25);
-            $table->string('desc', 225);
+            $table->string('desc', 225)->default('-');
             $table->string('rev', 7);
             $table->decimal('price', 10, 2);
             $table->string('send', 255)->default('-');
