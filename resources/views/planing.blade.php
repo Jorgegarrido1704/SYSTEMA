@@ -422,6 +422,7 @@ var dat = {!! json_encode($datosP) !!};
                                             document.getElementById('Uprice').value = respuesta.price || '';
                                             document.getElementById('Enviar').value = respuesta.send || '';
                                             document.getElementById('ChangeOrders').style.backgroundColor = respuesta.color || '#e0e0e0';
+                                            document.getElementById('ChangeOrders').style.color = 'white';
                                         } catch (error) {
                                             console.error('Error parsing JSON response:', error);
                                         }
@@ -453,6 +454,7 @@ var dat = {!! json_encode($datosP) !!};
                             if (ppapCheckbox.checked) {
                                 primCheckbox.checked = false;
                                 colorenpagina.style.backgroundColor = 'green';
+                                colorenpagina.style.color = 'white';
                                 document.getElementById('Rev').value = 'PPAP '+ document.getElementById('Rev1').value;
                                 alert(document.getElementById('Rev').value);
 
@@ -460,11 +462,13 @@ var dat = {!! json_encode($datosP) !!};
                             if (primCheckbox.checked) {
                                 ppapCheckbox.checked = false;
                                 colorenpagina.style.backgroundColor = 'yellow';
+                                colorenpagina.style.color = 'white';
                                 document.getElementById('Rev').value = 'PRIM '+ document.getElementById('Rev1').value;
                                 alert(document.getElementById('Rev').value);
                             }
                             if(!ppapCheckbox.checked && !primCheckbox.checked){
                                 colorenpagina.style.backgroundColor = 'white';
+                                colorenpagina.style.color = 'black';
                                 document.getElementById('Rev').value = document.getElementById('Rev1').value;
                                 alert(document.getElementById('Rev').value);
                             }
