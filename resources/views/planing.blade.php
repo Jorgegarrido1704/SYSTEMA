@@ -442,6 +442,7 @@ var dat = {!! json_encode($datosP) !!};
                                 document.getElementById('Description').value = '';
                                 document.getElementById('Uprice').value = '';
                                 document.getElementById('Enviar').value = '';
+                                document.getElementById('ChangeOrders').style.color = 'black';
                             }
                         }
                         function validarPpapPrim() {
