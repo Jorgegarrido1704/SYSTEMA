@@ -9,17 +9,8 @@
         const datas = '{{ route('workStateJason') }}';
     </script>
     <style>
-        input[type="text"] {
-            text-align: center;
-            width: 100px;
-        }
-        select {
-            text-align: center;
-            width: 100px;
-        }
-        #pns{
-            text-align: center;
-            width: 400px;
+        #pns1{
+            width: 350px;
         }
     </style>
     <div class="row">
@@ -27,7 +18,7 @@
             <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                     <h5 class="m-0 font-weight-bold text-primary"> {{ __('Engineering work scheduled') }} </h5>
-                    <input type="text" class="form-control" id="pns"  value="" placeholder="Search for PNs.." onchange="search()">
+                    <input type="text" class="form-control" id="pns1"  value="" placeholder="Search for PNs.." onchange="search()">
                 </div>
                 <!-- filtros -->
                     <div class="col-12 text-center mb-5">
@@ -111,53 +102,84 @@
                     <div class ="col-12 text-center mb-5 ">
                         <div id="formularioRegistro"  style="display: none">
                             <form action="{{ route('saveWorkschedule') }}" method="GET">
-                                <div class="form-group">
-                                <label for="color">{{ __('Color sheet') }}:</label><br>
-                                    <select name="color" id="color">
-                                       <option value="" selected disabled>Color</option>
-                                       <option value="green">PPAP // {{ __('Change Rev') }} PPAP</option>
-                                       <option value="yellow">PRIM // {{ __('Change Rev') }} PRIM</option>
-                                       <option value="white">NO PPAP // {{ __('Just documentation') }}</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                <label for="pnWork">{{ __('Part Number') }}:</label> <br>
-                                <input type="text" name="pnWork" id="pnWork" required>
-                                </div> <div class="form-group">
-                                <label for="customerWork">{{ __('Customer') }}:</label><br>
-                                <input type="text" name="customerWork" id="customerWork" required>
-                                </div><div>
-                                <label for="revWork">{{ __('Revision') }}:</label><br>
-                                <input type="text" name="revWork" id="revWork" required>
-                                </div>  <div>
-                                <label for="sizeWork">{{ __('Size') }}:</label><br>
-                                <select name="sizeWork" id="sizeWork" required>
-                                    <option value="" selected disabled>{{ __('Size') }}</option>
-                                    <option value="Ch">{{ __('Small') }}</option>
-                                    <option value="M">{{ __('Medium') }}</option>
-                                    <option value="G">{{ __('Large') }}</option>
-                                </select>
-                                </div> <div>
-                                <label for="qtyInPo">{{ __('Po Qty') }}:</label><br>
-                                <input type="text" name="qtyInPo" id="qtyInPo" min=0>
-                                </div> <div>
+                                <div class="row">
+                                    <div class="col-3 ">
+                                        <div class="form-group lg-12 text-center">
+                                        <label for="color" class="form-label">{{ __('Color sheet') }}:</label><br>
+                                            <select name="color" id="color" required class="form-select">
+                                            <option value="" selected disabled>Color</option>
+                                            <option value="green">PPAP // {{ __('Change Rev') }} PPAP</option>
+                                            <option value="yellow">PRIM // {{ __('Change Rev') }} PRIM</option>
+                                            <option value="white">NO PPAP // {{ __('Just documentation') }}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="form-group">
+                                        <label for="pnWork">{{ __('Part Number') }}:</label> <br>
+                                        <input type="text" name="pnWork" id="pnWork" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="form-group">
+                                        <label for="customerWork">{{ __('Customer') }}:</label><br>
+                                        <input type="text" name="customerWork" id="customerWork" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="form-group">
+                                            <label for="revWork">{{ __('Revision') }}:</label><br>
+                                            <input type="text" name="revWork" id="revWork" required>
+                                            </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="form-group">
+                                            <label for="sizeWork">{{ __('Size') }}:</label><br>
+                                            <select name="sizeWork" id="sizeWork" required>
+                                                <option value="" selected disabled>{{ __('Size') }}</option>
+                                                <option value="Ch">{{ __('Small') }}</option>
+                                                <option value="M">{{ __('Medium') }}</option>
+                                                <option value="G">{{ __('Large') }}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="form-group">
+                                            <label for="qtyInPo">{{ __('Po Qty') }}:</label><br>
+                                            <input type="text" name="qtyInPo" id="qtyInPo" min=0 step="1" required value="0">
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="form-group">
+                                            <label for="mrpWork">{{ __('Price') }} {{ __('PO') }}:</label><br>
+                                            <input type="number" name="mrpWork" id="mrpWork" min=0  step="0.01" required value="0">
+                                        </div>
+                                    </div>
+
+                                <div class="col-3">
                                 <label for="receiptDateWork">{{ __('Receipt Date') }}:</label><br>
                                 <input type="date" name="receiptDateWork" id="receiptDateWork" >
-                                </div><div>
+                                </div>
+                                <div class="col-3">
                                 <label for="commitmentDateWork">{{ __('Commitment Date') }}:</label><br>
                                 <input type="date" name="commitmentDateWork" id="commitmentDateWork" >
-                                </div><div>
+                                </div>
+                                <div class="col-3">
                                 <label for="customerDateWork">{{ __('Customer Date') }}:</label><br>
                                 <input type="date" name="customerDateWork" id="customerDateWork" >
-                                </div><div>
+                                </div>
+                                <div class="col-3">
                                 <label for="resposible">{{ __('Resposible') }}:</label><br>
                                 <input type="text" name="resposible" id="resposible" >
-                                </div><div>
+                                </div>
+                                <div class="col-3">
                                 <label for="comments">{{ __('Comments') }}:</label><br>
                                 <textarea name="comments" id="comments" cols="10" rows="3"></textarea>
                                 </div>
-                                <input type="submit" class="btn btn-primary" name="enviar" id="enviar" value="{{ __('Save') }}">
-
+                                <div class="col-12">
+                                <input type="submit" class="btn btn-success" name="enviar" id="enviar" value="{{ __('Save') }}">
+                                </div>
+                            </div>
                             </form>
 
                         </div>

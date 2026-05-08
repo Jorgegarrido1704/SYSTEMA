@@ -745,7 +745,7 @@ class PpapIngController extends Controller
             $ingResp[$row->resposible] = $row->resposible;
         }
 
-        return view('juntas/workSchedules/workSchedule', ['ingResp' => $ingResp, 'customer' => $customer, 'cat' => $cat, 'value' => $value]);
+        return view('juntas.workSchedules.workSchedule', ['ingResp' => $ingResp, 'customer' => $customer, 'cat' => $cat, 'value' => $value]);
     }
 
     public function workStateJason(Request $request)
@@ -804,6 +804,7 @@ class PpapIngController extends Controller
             'comments' => $input['comments'] ?? '',
             'qtyInPo' => $input['qtyInPo'] ?? 0,
             'Color' => $input['color'] ?? '',
+            'price' => $input['price'] ?? 0,
         ]);
         $newRegistro->save();
 
