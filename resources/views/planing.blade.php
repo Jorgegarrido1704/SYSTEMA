@@ -9,6 +9,7 @@ var dat = {!! json_encode($datosP) !!};
 </script>
 
  <style>
+    body { font-family: Arial, sans-serif;  background-color: red; color: #333; text-align: center; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); font:bold; }
     table {     width: 100%;    text-align: center;  }
     td {border-bottom: solid 2px lightblue; }
     thead{background-color: #FC4747; color:white;  }
@@ -50,6 +51,10 @@ var dat = {!! json_encode($datosP) !!};
             width: 100%; /* Each form takes full width on smaller screens */
         }
     }
+    #ordenes {
+    background-color: #6ff693;
+
+    }
 </style>
  <div class="d-sm-flex align-items-center justify-content-between mb-4">
 
@@ -57,14 +62,14 @@ var dat = {!! json_encode($datosP) !!};
                     <div class="row">
 
                         <!-- Table and Graph -->
-                        <div class="col-xl-8 col-lg-7">
+                        <div class="col-xl-6 col-lg-6">
                             <div class="card shadow mb-4">
 
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                     <h5 class="m-0 font-weight-bold text-primary">
                                         <form action="{{ route('planning') }}" method="GET"> @csrf
-                                            <label for="sono">Buscar por Numero de parte </label>
+                                            <label for="sono">{{ __('Search Part Number') }} </label>
                                             <input type="text" name="sono" id="sono" ></form></h5>
                                 </div>
 
@@ -74,13 +79,13 @@ var dat = {!! json_encode($datosP) !!};
                                         <table>
                                             <thead>
                                                 <tr>
-                                                    <th>Numero de parte</th>
-                                                    <th>Revision</th>
-                                                    <th>WO</th>
-                                                    <th>Sono</th>
-                                                    <th>Qty</th>
-                                                    <th>Fecha de registro</th>
-                                                    <th>Status</th>
+                                                    <th>{{ __('Part Number') }}</th>
+                                                    <th>{{ __('Revision') }}</th>
+                                                    <th>{{ __('WO') }}</th>
+                                                    <th>{{ __('Sono') }}</th>
+                                                    <th>{{ __('Quantity') }}</th>
+                                                    <th>{{ __('Registration Date') }}</th>
+                                                    <th>{{ __('Status') }}</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -103,7 +108,7 @@ var dat = {!! json_encode($datosP) !!};
                                                     <td>{{$d[2]}}</td>
                                                     <td>{{$d[3]}}</td>
                                                     <td>{{$d[4]}}</td>
-                                                    <td>Ya se fue</td>
+                                                    <td>{{__('Already delivered')}}</td>
                                                 </tr>
                                                 @endforeach
                                             </tbody>
@@ -114,12 +119,12 @@ var dat = {!! json_encode($datosP) !!};
                         </div>
 
 
-                        <div class="col-xl-4 col-lg-5">
+                        <div class="col-xl-2 col-lg-2">
                             <div class="card shadow mb-4">
                                     <!-- printer code -->
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h5 class="m-0 font-weight-bold text-primary">Imprime Codigos anterioses</h5>
+                                    <h5 class="m-0 font-weight-bold text-primary">{{ __('Print BarCode') }}</h5>
 
                                 </div>
 
@@ -128,11 +133,11 @@ var dat = {!! json_encode($datosP) !!};
                                         <div class="form-container">
                                         <form action="{{route('planning')}}" method="GET">
                                             <div>
-                                                <label for="wo">WO For Barcode</label>
+                                                <label for="wo">{{ __('Insert WO') }}</label>
                                                 <input type="text" name="wo" id="wo"  autofocus >
                                             </div>
 
-                                            <input type="submit" name="enviar" id="enviar" value="Imprimir">
+                                            <input type="submit" name="enviar" id="enviar" value="{{ __('Print') }}">
                                         </form>
                                         </div>
                                     </div>
@@ -140,98 +145,161 @@ var dat = {!! json_encode($datosP) !!};
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Content Row -->
-                    <div class="row">
-                        <div class="col-lg-6 mb-4" style="max-width: 33%">
+                         <div class=" col-xl-2 col-lg-2 mb-2" >
                             <!-- AREAS -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h5 class="m-0 font-weight-bold text-primary">Impresion de consecutivos</h5>
+                                    <h5 class="m-0 font-weight-bold text-primary">{{ __('Print Lebels') }}</h5>
                                 </div>
                                 <div class="card-body" style="overflow-y: auto; height: 360px;">
                                     <div class="form-container">
                                     <form action="{{route('planning')}}" method="GET">
                                         <div>
-                                            <label for="tren1">Wo For lables</label>
+                                            <label for="tren1">{{ __('Insert WO') }}</label>
                                             @if (!empty($labels))
                                             <input type="text" name="wola" id="wola" value={{$labels}} required >
                                             @else
                                             <input type="text" name="wola" id="wola" required >
                                             @endif
                                         </div>
-                                        <div>
-                                            <label for="tren2">Begin label</label>
-                                            <input type="number" name="label1" id="label1" value='1' required>
-                                        </div>
-                                        <div>
-                                            <label for="tren1">end label</label>
-                                            <input type="number" name="label2" id="label2" required >
-                                        </div>
-                                        <input type="submit" name="enviar" id="enviar" value="Imprimir">
+
+                                        <input type="submit" name="enviar" id="enviar" value="{{ __('Print') }}">
                                     </form>
                                 </div>
 
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-6 mb-4" style="max-width: 33%">
+
+                         <div class=" col-xl-2 col-lg-2 mb-2" >
                             <!-- AREAS -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h5 class="m-0 font-weight-bold text-primary">Registro de Ordenes</h5>
+                                    <h5 class="m-0 font-weight-bold text-primary">{{ __('Liberate Order') }}</h5>
                                 </div>
                                 <div class="card-body" style="overflow-y: auto; height: 360px;">
+                                    <form action="{{route('codeBarPlan')}}" method="GET">
+                                        <div class="form-group">
+                                            <label for="wo_scan" class="form-label">{{ __('Scan WO') }}</label>
+                                            </div>
+                                            <div class="form-group">
+                                            <input type="text" name="wo_scan" id="wo_scan" class="form-control" autofocus>
+                                            </div>
+                                            <div class="form-group">
+                                            <button class="btn btn-primary" type="submit"> {{ __('Liberate') }}</button>
+                                            </div>
+
+                                    </form>
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Content Row -->
+                    <div class="row">
+
+                        <div class=" col-xl-6 col-lg-6 mb-4" >
+                            <!-- AREAS -->
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h5 class="m-0 font-weight-bold text-primary">{{ __('Register Orders') }}</h5>
+                                </div>
+                                <div class="card-body" id="ChangeOrders" style="overflow-y: auto; height: 360px; background-color: #e0e0e0">
                                     <div class="form-container">
                                         <form class="" action="{{ route('pos') }}" method="GET">
                                             @csrf
-                                            <div class="form-group">
-                                                <label class="po-label" for="pn">Número de parte</label>
-                                                <input type="text" name="pn" id="pn" class="form-control" required onchange="return obtenerInformacion()" autofocus>
+                                            <div class="row">
+                                                <div class="col-lg-2 col-xl-2 mb-4">
+                                                            <div class="form-group">
+                                                                <label class="po-label" for="pn">{{ __('Part Number') }}</label>
+                                                                <input type="text" name="pn" id="pn" class="form-control" required onchange="return obtenerInformacion()" autofocus>
+                                                            </div>
+                                                </div>
+                                                <div class="col-lg-3 col-xl-3 mb-4">
+                                                    <div class="form-group">
+                                                        <label class="po-label" for="client">{{ __('Customer') }}</label>
+                                                        <input type="text" id="client" name="client" class="form-control" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-1 col-xl-1 mb-4">
+                                                    <div class="form-group">
+                                                        <label class="po-label" for="Rev1">{{ __('REV') }}</label>
+                                                        <input type="text" name="Rev1" id="Rev1" class="form-control" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-2 col-xl-2 mb-4">
+                                                    <div class="form-group">
+                                                        <label class="po-label" for="Uprice">{{ __('Price') }}</label>
+                                                        <input type="number" name="Uprice" id="Uprice" step="0.01" min="0.01" class="form-control" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-2 col-xl-2 mb-4">
+                                                    <div class="form-group">
+                                                        <label class="po-label" for="po">PO</label>
+                                                        <input type="text" id="po" name="po" class="form-control"   minlength="11" maxlength="15" required>
+                                                    </div>
+                                                </div>
+                                                 <div class="col-lg-2 col-xl-2 mb-4">
+                                                    <div class="form-group">
+                                                        <label class="po-label" for="qty">{{ __('Qty') }}</label>
+                                                        <input type="number" name="qty" id="qty" min="1" class="form-control" minlength="10" maxlength="10" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6 col-xl-6 mb-4">
+                                                    <div class="form-group">
+                                                        <label class="po-label" for="Description">{{ __('Description') }}</label>
+                                                        <input type="text" id="Description" name="Description" class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6 col-xl-6 mb-4">
+                                                    <div class="form-group">
+                                                        <label class="po-label" for="Enviar">{{ __('Send To') }}</label>
+                                                        <input type="text" id="Enviar" name="Enviar" class="form-control">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-2 col-xl-2 mb-4">
+                                                    <div class="form-group">
+                                                        <label class="po-label" for="Orday">{{ __('Order Date') }}</label>
+                                                        <input type="date" id="Orday" name="Orday" class="form-control"  minlength="10" maxlength="10"  required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-2 col-xl-2 mb-4">
+                                                    <div class="form-group">
+                                                        <label class="po-label" for="Reqday">{{ __('Required Date') }}</label>
+                                                        <input type="date" name="Reqday" id="Reqday" class="form-control"    required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-2 col-xl-2 mb-4">
+                                                    <div class="form-group">
+                                                        <label class="po-label" for="WO">{{ __('WO') }}</label>
+                                                        <input type="text" name="WO" id="WO" class="form-control" minlength="6" maxlength="6" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-1 col-xl-1 mb-4">
+                                                    <div class="form-group">
+                                                        <label class="po-label" for="ppap">{{ __('PPAP') }}</label>
+                                                        <input type="checkbox" name="ppap" id="ppap" class="form-control"  onchange="return validarPpapPrim()">
+                                                    </div>
+                                                </div>
+                                                 <div class="col-lg-1 col-xl-1 mb-4">
+                                                    <div class="form-group">
+                                                        <label class="po-label" for="prim">{{ __('PRIM') }}</label>
+                                                        <input type="checkbox" name="prim" id="prim" class="form-control"  onchange="return validarPpapPrim()">
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-1 col-xl-1 mb-4">
+                                                    <div class="form-group">
+                                                        <input type="hidden" name="Rev" id="Rev" >
+                                                     <button class="btn btn-success" type="submit" >{{ __('Save') }}</button>
+                                                    </div>
+                                                </div>
+
                                             </div>
-                                            <div class="form-group">
-                                                <label class="po-label" for="client">Cliente</label>
-                                                <input type="text" id="client" name="client" class="form-control" required>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="po-label" for="Rev">REV</label>
-                                                <input type="text" name="Rev" id="Rev" class="form-control" required>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="po-label" for="Description">Descripción</label>
-                                                <input type="text" id="Description" name="Description" class="form-control">
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="po-label" for="Uprice">Precio unitario</label>
-                                                <input type="number" name="Uprice" id="Uprice" step="0.01" min="0" class="form-control" required>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="po-label" for="Enviar">Enviar a</label>
-                                                <input type="text" id="Enviar" name="Enviar" class="form-control">
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="po-label" for="po">PO</label>
-                                                <input type="text" id="po" name="po" class="form-control"   minlength="11" maxlength="15" required>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="po-label" for="qty">Cantidad req</label>
-                                                <input type="number" name="qty" id="qty" min="1" class="form-control" minlength="10" maxlength="10" required>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="po-label" for="Orday">Día que se ordenó (Formato dd/mm/YY)</label>
-                                                <input type="text" id="Orday" name="Orday" class="form-control"  minlength="10" maxlength="10"  required>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="po-label" for="Reqday">Día requerido (Formato dd/mm/YY)</label>
-                                                <input type="text" name="Reqday" id="Reqday" class="form-control"    required>
-                                            </div>
-                                            <br>
-                                            <div class="form-group">
-                                                <label class="po-label" for="WO">WO</label>
-                                                <input type="text" name="WO" id="WO" class="form-control" minlength="6" maxlength="6" required>
-                                            </div>
-                                            <input type="submit" name="enviar" id="enviar" value="Crear" class="btn btn-primary">
                                         </form>
                                     </div>
 
@@ -239,31 +307,60 @@ var dat = {!! json_encode($datosP) !!};
                             </div>
                         </div>
                         <!-- Column 2 -->
+                          <div class="col-lg-6  col-xl-6 mb-4" >
+                            <!-- Pending Requests Card Example -->
+                                <div class="card shadow mb-4">
+                                    <div class="card-header py-3">
+                                        <h5 class="m-0 font-weight-bold text-primary">{{ __('Pending to sign') }}</h5>
+                                    </div>
+                                    <div class="card-body" style="overflow-y: auto; height: 360px;" id="tableChange">
+                                        <div class="row">
+                                            <table>
+                                                <thead>
+                                                    <th>Type</th>
+                                                    <th>Client</th>
+                                                    <th>part Number</th>
+                                                    <th>Rev 1</th>
+                                                    <th>Rev 2</th>
+                                                    <th>Description Moviement</th>
+                                                    <th>Date</th>
+                                                    <th>Enginner</th>
+                                                    <th>Sign Quality</th>
+                                                    <th>Sign Imex</th>
+                                                    <th>Sign Testing</th>
+                                                    <th>Sign Production</th>
+                                                    <th>Sign Purchase</th>
+                                                    <th>Sign Planning</th>
+                                                </thead>
+                                                <tbody>
+                                                    @if (!empty($answer))
+                                                        @foreach ($answer as $answer)
+                                                            <tr>
+                                                                <td>{{ $answer[0] }}</td>
+                                                                <td>{{ $answer[1] }}</td>
+                                                                <td>{{ $answer[2] }}</td>
+                                                                <td>{{ $answer[3] }}</td>
+                                                                <td>{{ $answer[4] }}</td>
+                                                                <td>{{ $answer[5] }}</td>
+                                                                <td>{{ $answer[6] }}</td>
+                                                                <td>{{ $answer[7] }}</td>
+                                                                <td>{{ $answer[8] }}</td>
+                                                                <td>{{ $answer[9] }}</td>
+                                                                <td>{{ $answer[10] }}</td>
+                                                                <td>{{ $answer[11] }}</td>
+                                                                <td>{{ $answer[12] }}</td>
+                                                                <td>{{ $answer[13] }}</td>
+                                                            </tr>
+                                                        @endforeach
+                                                    @endif
+                                                </tbody>
+                                            </table>
 
-                        <div class="col-lg-6 mb-4" style="max-width: 33%">
-                            <!-- AREAS -->
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h5 class="m-0 font-weight-bold text-primary">Escaneo ordenes</h5>
-                                </div>
-                                <div class="card-body" style="overflow-y: auto; height: 360px;">
-                                    <form action="{{route('codeBarPlan')}}" method="GET">
-                                        <div class="form-group">
-                                            <label for="wo_scan" class="form-label">Registra la wo a escanear</label>
-                                            </div>
-                                            <div class="form-group">
-                                            <input type="text" name="wo_scan" id="wo_scan" class="form-control" autofocus>
-                                            </div>
-                                            <div class="form-group">
-                                            <button class="btn btn-primary" type="submit"> Escanear</button>
-                                            </div>
-
-                                    </form>
-
-
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+
 
                     </div>
                     <div class="row">
@@ -296,81 +393,7 @@ var dat = {!! json_encode($datosP) !!};
                         </div>-->
 
 
-                            <div class="col-lg-6  col-xl-6 mb-4" >
-                                <!-- AREAS
-                                <div class="card shadow mb-4">
-                                    <div class="card-header py-3">
-                                        <h5 class="m-0 font-weight-bold text-primary">Impresion Semanal</h5>
-                                    </div>
-                                    <div class="card-body" style="overflow-y: auto; height: 360px;">
-                                        <div class="form-container">
-                                        <form action="{{route('planning')}}" method="GET">
-                                            <div>
-                                                <label for="wk">week For lables</label>
-                                                @if (!empty($labels))
-                                                <input type="text" name="wk" id="wk" value={{$labels}} required >
-                                                @else
-                                                <input type="text" name="wk" id="wk" required >
-                                                @endif
-                                            </div>
-                                            <input type="submit" name="enviar" id="enviar" value="Imprimir">
-                                        </form>
-                                    </div>
 
-                                    </div>
-                                </div>-->
-                                <!-- Faltan por firmar  -->
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h5 class="m-0 font-weight-bold text-primary">Table of Works PPAP&PRIM </h5>
-                </div>
-                <div class="card-body" style="overflow-y: auto; height: 360px;" id="tableChange">
-                    <div class="row">
-                        <table>
-                            <thead>
-                                <th>Type</th>
-                                <th>Client</th>
-                                <th>part Number</th>
-                                <th>Rev 1</th>
-                                <th>Rev 2</th>
-                                <th>Description Moviement</th>
-                                <th>Date</th>
-                                <th>Enginner</th>
-                                <th>Sign Quality</th>
-                                <th>Sign Imex</th>
-                                <th>Sign Testing</th>
-                                <th>Sign Production</th>
-                                <th>Sign Purchase</th>
-                                <th>Sign Planning</th>
-                            </thead>
-                            <tbody>
-                                @if (!empty($answer))
-                                    @foreach ($answer as $answer)
-                                        <tr>
-                                            <td>{{ $answer[0] }}</td>
-                                            <td>{{ $answer[1] }}</td>
-                                            <td>{{ $answer[2] }}</td>
-                                            <td>{{ $answer[3] }}</td>
-                                            <td>{{ $answer[4] }}</td>
-                                            <td>{{ $answer[5] }}</td>
-                                            <td>{{ $answer[6] }}</td>
-                                            <td>{{ $answer[7] }}</td>
-                                            <td>{{ $answer[8] }}</td>
-                                            <td>{{ $answer[9] }}</td>
-                                            <td>{{ $answer[10] }}</td>
-                                            <td>{{ $answer[11] }}</td>
-                                            <td>{{ $answer[12] }}</td>
-                                            <td>{{ $answer[13] }}</td>
-                                        </tr>
-                                    @endforeach
-                                @endif
-                            </tbody>
-                        </table>
-
-                    </div>
-                </div>
-            </div>
-                            </div>
 
 
                     </div>
@@ -393,10 +416,12 @@ var dat = {!! json_encode($datosP) !!};
                                             var respuesta = JSON.parse(xhr.responseText);
                                             console.log(respuesta);
                                             document.getElementById('client').value = respuesta.client || '';
+                                            respuesta.rev = respuesta.rev.replace('PPAP ', '').replace('PRIM ', '');
                                             document.getElementById('Rev').value = respuesta.rev || '';
                                             document.getElementById('Description').value = respuesta.desc || '';
                                             document.getElementById('Uprice').value = respuesta.price || '';
                                             document.getElementById('Enviar').value = respuesta.send || '';
+                                            document.getElementById('ChangeOrders').style.backgroundColor = respuesta.color || '#e0e0e0';
                                         } catch (error) {
                                             console.error('Error parsing JSON response:', error);
                                         }
@@ -417,6 +442,27 @@ var dat = {!! json_encode($datosP) !!};
                                 document.getElementById('Uprice').value = '';
                                 document.getElementById('Enviar').value = '';
                             }
+                        }
+                        function validarPpapPrim() {
+                            var ppapCheckbox = document.getElementById('ppap');
+                            var primCheckbox = document.getElementById('prim');
+                            var colorenpagina = document.getElementById('ChangeOrders');
+
+
+                            if (ppapCheckbox.checked) {
+                                primCheckbox.checked = false;
+                                colorenpagina.style.backgroundColor = 'green';
+                                document.getElementById('Rev').value = 'PPAP '+ document.getElementById('Rev1').value;
+                                alert(document.getElementById('Rev').value);
+
+                            }
+                            if (primCheckbox.checked) {
+                                ppapCheckbox.checked = false;
+                                colorenpagina.style.backgroundColor = 'yellow';
+                                document.getElementById('Rev').value = 'PRIM '+ document.getElementById('Rev1').value;
+                                alert(document.getElementById('Rev').value);
+                            }
+
                         }
                     </script>
 

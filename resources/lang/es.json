@@ -306,7 +306,23 @@
     "Expired":"Vencido",
     "On Hold": "En espera",
     "Nocturne": "Nocturno",
-    "Reception Date": "Fecha de recepción"
+    "Reception Date": "Fecha de recepción",
+    "Print": "Imprimir",
+    "Print Lebels": "Imprimir etiquetas",
+    "Search Part Number": "Buscar número de parte",
+    "Delivered": "Entregado",
+     "Already delivered": "Ya se entregó",
+     "Print BarCode": "Imprimir código de barras",
+     "Insert WO": "Insertar orden de trabajo",
+     "Liberate Order": "Liberar orden",
+     "Liberate": "Liberar",
+     "Scan WO": "Escanear orden de trabajo",
+     "Register Orders": "Registrar ordenes",
+     "Pending to sign": "Pendientes por firmar",
+     "Price": "Precio",
+     "Order Date": "Fecha de la orden",
+     "Required Date": "Fecha requerida",
+     "Send To": "Enviar a"
 
 
 

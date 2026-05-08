@@ -46,19 +46,15 @@ class planingController extends Controller
             if (! empty($sono)) {
                 $buscarIguales = DB::table('registro')
                     ->where('NumPart', 'LIKE', '%'.$sono.'%')
-                    ->orWhere('NumPart', 'LIKE', $sono.'%')
-                    ->orWhere('NumPart', 'LIKE', '%'.$sono)
                     ->orderBy('NumPart', 'asc')->get();
                 $desiguales = DB::table('retiradad')
                     ->where('np', 'LIKE', '%'.$sono.'%')
-                    ->orwhere('np', 'LIKE', $sono.'%')
-                    ->orwhere('np', 'LIKE', '%'.$sono)
                     ->orderBy('np', 'asc')->get();
             } elseif (empty($sono)) {
                 $buscarIguales = DB::table('registro')
-                    ->orderBy('NumPart', 'asc')->limit(100)->get();
+                    ->orderBy('NumPart', 'asc')->limit(50)->get();
                 $desiguales = DB::table('retiradad')
-                    ->orderBy('np', 'asc')->limit(100)->get();
+                    ->orderBy('np', 'asc')->limit(50)->get();
             }
             foreach ($buscarIguales as $pos) {
                 $post[$i][0] = $pos->NumPart;
@@ -316,7 +312,9 @@ class planingController extends Controller
             $price = $request->input('Uprice');
             $send = strtoupper($request->input('Enviar'));
             $orday = $request->input('Orday');
+            $orday = Carbon::parse($orday)->format('d-m-Y');
             $reqday = $request->input('Reqday');
+            $reqday = Carbon::parse($reqday)->format('d-m-Y');
             $wo = $request->input('WO');
             $count = 1;
 
@@ -328,7 +326,7 @@ class planingController extends Controller
             }
 
             $today = date('d-m-Y H:i');
-
+            $barcodes = substr($rev, 0, 4) == 'PPAP' || substr($rev, 0, 4) == 'PRIM' ? (substr($np, 0, 3).substr($client, 0, 3).$qty.substr($wo, 0, 5).'R'.substr($rev, 5)) : (substr($np, 0, 3).substr($client, 0, 3).$qty.substr($wo, 0, 5).'R'.$rev);
             // Insert data into the Po table
             $poData = new Po;
             $poData->client = $client;
@@ -356,12 +354,7 @@ class planingController extends Controller
                 $newWo->po = $po;
                 $newWo->Qty = $qty;
                 $newWo->Barcode = '0';
-
-                if (substr($rev, 0, 4) == 'PPAP' || substr($rev, 0, 4) == 'PRIM') {
-                    $newWo->info = (substr($np, 0, 2).substr($client, 0, 2).$qty.substr($wo, 1, 5).substr($po, 2, 4).'R'.substr($rev, 5));
-                } else {
-                    $newWo->info = (substr($np, 0, 2).substr($client, 0, 2).$qty.substr($wo, 1, 5).substr($po, 2, 4).'R'.$rev);
-                }
+                $newWo->info = $barcodes;
                 $newWo->donde = 'planeacion';
                 $newWo->count = 1;
                 $newWo->tiempoTotal = 0;
@@ -375,11 +368,7 @@ class planingController extends Controller
 
                 if ($newWo->save()) {
                     $times = new tiempos;
-                    if (substr($rev, 0, 4) == 'PPAP' || substr($rev, 0, 4) == 'PRIM') {
-                        $times->info = (substr($np, 0, 2).substr($client, 0, 2).$qty.substr($wo, 1, 5).substr($po, 2, 4).'R'.substr($rev, 5));
-                    } else {
-                        $times->info = (substr($np, 0, 2).substr($client, 0, 2).$qty.substr($wo, 1, 5).substr($po, 2, 4).'R'.$rev);
-                    }
+                    $times->info = $barcodes;
                     $times->planeacion = '';
                     $times->corte = '';
                     $times->liberacion = '';
@@ -442,11 +431,8 @@ class planingController extends Controller
                     $agegartiempos->pn = $np;
                     $agegartiempos->wo = $wo;
                     $agegartiempos->cut = $today;
-                    if (substr($rev, 0, 4) == 'PPAP' || substr($rev, 0, 4) == 'PRIM') {
-                        $agegartiempos->bar = (substr($np, 0, 2).substr($client, 0, 2).$qty.substr($wo, 1, 5).substr($po, 2, 4).'R'.substr($rev, 5));
-                    } else {
-                        $agegartiempos->bar = (substr($np, 0, 2).substr($client, 0, 2).$qty.substr($wo, 1, 5).substr($po, 2, 4).'R'.$rev);
-                    }
+
+                    $agegartiempos->bar = $barcodes;
                     $agegartiempos->fecha = $today;
                     $agegartiempos->save();
 
