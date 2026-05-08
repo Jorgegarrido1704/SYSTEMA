@@ -228,7 +228,7 @@ var dat = {!! json_encode($datosP) !!};
                                                 <div class="col-lg-1 col-xl-1 mb-4">
                                                     <div class="form-group">
                                                         <label class="po-label" for="Rev1">{{ __('REV') }}</label>
-                                                        <input type="text" name="Rev1" id="Rev1" class="form-control" required>
+                                                        <input type="text" name="Rev1" id="Rev1" class="form-control" required onchange="return validarPpapPrim()">
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-2 col-xl-2 mb-4">
@@ -417,7 +417,7 @@ var dat = {!! json_encode($datosP) !!};
                                             console.log(respuesta);
                                             document.getElementById('client').value = respuesta.client || '';
                                             respuesta.rev = respuesta.rev.replace('PPAP ', '').replace('PRIM ', '');
-                                            document.getElementById('Rev').value = respuesta.rev || '';
+                                            document.getElementById('Rev1').value = respuesta.rev || '';
                                             document.getElementById('Description').value = respuesta.desc || '';
                                             document.getElementById('Uprice').value = respuesta.price || '';
                                             document.getElementById('Enviar').value = respuesta.send || '';
