@@ -447,6 +447,7 @@ var dat = {!! json_encode($datosP) !!};
                             var ppapCheckbox = document.getElementById('ppap');
                             var primCheckbox = document.getElementById('prim');
                             var colorenpagina = document.getElementById('ChangeOrders');
+                            var rev = document.getElementById('Rev1').value;
 
 
                             if (ppapCheckbox.checked) {
@@ -460,6 +461,11 @@ var dat = {!! json_encode($datosP) !!};
                                 ppapCheckbox.checked = false;
                                 colorenpagina.style.backgroundColor = 'yellow';
                                 document.getElementById('Rev').value = 'PRIM '+ document.getElementById('Rev1').value;
+                                alert(document.getElementById('Rev').value);
+                            }
+                            if(!ppapCheckbox.checked && !primCheckbox.checked){
+                                colorenpagina.style.backgroundColor = 'white';
+                                document.getElementById('Rev').value = document.getElementById('Rev1').value;
                                 alert(document.getElementById('Rev').value);
                             }
 
