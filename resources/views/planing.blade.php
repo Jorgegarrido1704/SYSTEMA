@@ -422,7 +422,7 @@ var dat = {!! json_encode($datosP) !!};
                                             document.getElementById('Uprice').value = respuesta.price || '';
                                             document.getElementById('Enviar').value = respuesta.send || '';
                                             document.getElementById('ChangeOrders').style.backgroundColor = respuesta.color || '#e0e0e0';
-                                            document.getElementById('ChangeOrders').style.color = 'white';
+                                            document.getElementById('ChangeOrders').style.color = respuesta.color === 'white' ? 'black' : 'white';
                                         } catch (error) {
                                             console.error('Error parsing JSON response:', error);
                                         }
