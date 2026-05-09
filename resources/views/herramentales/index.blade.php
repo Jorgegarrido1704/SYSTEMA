@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('contenido')
-<meta http-equiv="refresh" content="20">
+<meta http-equiv="refresh" content="45">
  <!-- Page Heading -->
  <div class="d-sm-flex align-items-center justify-content-between mb-4">  </div>
  @if(!empty(session('message')))

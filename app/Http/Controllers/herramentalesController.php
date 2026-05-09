@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\herramentales\golesDiarios;
 use App\Models\herramentales\herramentalInfo;
 use App\Models\Maintanance;
+use App\Models\registoLogin;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
