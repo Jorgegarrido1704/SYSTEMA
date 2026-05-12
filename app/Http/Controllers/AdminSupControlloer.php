@@ -353,4 +353,5 @@ class AdminSupControlloer extends Controller
             'shrink' => Proceso::where('nombre', 'shrink')->first(),
             'global' => ['demanda_diaria' => Pedido::hoy()->count()],
         ]);
-K}
+    }
+}
