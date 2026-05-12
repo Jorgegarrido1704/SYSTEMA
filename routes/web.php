@@ -183,6 +183,7 @@ Route::controller(AdminSupControlloer::class)->group(function () {
     Route::get('/qualityIssues', [AdminSupControlloer::class, 'qualityIssues'])->name('qualityIssues');
     // Route::get('/addVacationAdmin', [AdminSupControlloer::class, 'addVacationAdmin'])->name('addVacationAdmin');
     Route::get('/removeVacations', [AdminSupControlloer::class, 'removeVacations'])->name('removeVacations');
+    Route::get('/datosVsm', [AdminSupControlloer::class, 'datosVsm'])->name('datosVsm');
 });
 
 Route::controller(globalInventario::class)->group(function () {

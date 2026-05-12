@@ -345,4 +345,13 @@ class AdminSupControlloer extends Controller
 
         return redirect()->route('SupAdmin')->with('success', 'Vacaciones agregadas correctamente.');
     }
+
+    public function datosVsm(Request $request)
+    {
+        return response()->json([
+            'corte' => Proceso::where('nombre', 'corte')->first(),
+            'shrink' => Proceso::where('nombre', 'shrink')->first(),
+            'global' => ['demanda_diaria' => Pedido::hoy()->count()],
+        ]);
+    }
 }
