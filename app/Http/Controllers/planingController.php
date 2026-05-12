@@ -293,7 +293,6 @@ class planingController extends Controller
                 'pn' => 'required',
                 'po' => 'required',
                 'qty' => 'required',
-                'Rev' => 'required',
                 'Description' => 'required',
                 'Uprice' => 'required',
                 'Enviar' => 'required',
