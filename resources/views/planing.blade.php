@@ -418,6 +418,7 @@ var dat = {!! json_encode($datosP) !!};
                                             document.getElementById('client').value = respuesta.client || '';
                                             respuesta.rev = respuesta.rev.replace('PPAP ', '').replace('PRIM ', '');
                                             document.getElementById('Rev1').value = respuesta.rev || '';
+                                            document.getElementById('Rev').value = respuesta.rev || '';
                                             document.getElementById('Description').value = respuesta.desc || '';
                                             document.getElementById('Uprice').value = respuesta.price || '';
                                             document.getElementById('Enviar').value = respuesta.send || '';
