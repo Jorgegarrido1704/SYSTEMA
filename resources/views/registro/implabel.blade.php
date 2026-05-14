@@ -31,10 +31,10 @@
 
         /* Salto de página para cada etiqueta */
         .label-container {
-            width: 104mm;
-            height: 54mm;
+            width: 100mm;
+            height: 50mm;
             box-sizing: border-box;
-            padding: 2mm;
+            padding: 3mm;
             display: flex; /* Dividimos en Izquierda (Barcode) y Derecha (Info) */
             overflow: hidden;
             page-break-after: always;
