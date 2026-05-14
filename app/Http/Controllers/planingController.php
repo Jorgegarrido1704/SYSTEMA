@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Corte;
 use App\Models\Kits;
 use App\Models\po;
+use App\Models\precios;
 use App\Models\regPar;
 use App\Models\specialWireModel;
 use App\Models\tiempos;
@@ -324,7 +325,14 @@ class planingController extends Controller
             if ($duplicate or $dupreg) {
                 return redirect()->back()->with('error', 'Arnes ya registrado, Revíselo y vuelva a intentarlo');
             }
-
+            $descPrecio = precios::where('pn', $np)->first();
+            if ($descPrecio != null) {
+                $descnew = $desc == $descPrecio->desc ? $descPrecio->desc : $desc;
+                $precionew = $price == $descPrecio->precio ? $descPrecio->precio : $price;
+                precios::where('pn', $np)->update(['desc' => $descnew, 'precio' => $precionew]);
+            } else {
+                precios::insert(['client' => $client, 'pn' => $np, 'desc' => $desc, 'precio' => $price, 'send' => $send, 'rev' => $rev]);
+            }
             $today = date('d-m-Y H:i');
             $barcodes = substr($rev, 0, 4) == 'PPAP' || substr($rev, 0, 4) == 'PRIM' ? (substr($np, 0, 3).substr($client, 0, 3).$qty.$wo.'R'.substr($rev, 5)) : (substr($np, 0, 3).substr($client, 0, 3).$qty.substr($wo, 0, 5).'R'.$rev);
             // Insert data into the Po table
