@@ -166,16 +166,16 @@
                                                     <div class="row no-gutters align-items-center">
                                                         <div class="col mr-2">
                                                             <div class="text-s font-weight-bold text-primary text-uppercase mb-1">
-                                                                {{ $ftq->client }}</div>
-                                                               
-                                                                
+                                                               <a href="{{ route('calidad.ftqPorCliente', $ftq->client) }}" class="text-primary no-underline" > {{ $ftq->client }}</a></div>
+
+
                                                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{ round($ftq->promedio,2)??0 }}%
                                                 @if($ftq->promedio>97)
                                                                 <i class="fas fa-thumbs-up fa-2x text-success ml-4"></i>
                                                 @else
                                                                 <i class="fas fa-thumbs-down fa-2x text-danger ml-4"></i>
                                                 @endif
-                                                            
+
                                                             </div>
 
                                                         </div>
@@ -188,7 +188,7 @@
                     @endif
                 </div>
              </div>
-        </div> 
+        </div>
              <!-- Customer Complains -->
         <div class="col-xl-6 col-lg-6">
             <!-- AREAS -->

@@ -144,6 +144,7 @@ Route::controller(caliController::class)->group(function () {
     Route::get('/excel_calidad_pendientes', [caliController::class, 'excel_calidad_pendientes'])->name('excel_calidad_pendientes');
     Route::get('/calidad/rechazos', [caliController::class, 'calidad_producto_no_conforme'])->name('calidad.calidad_producto_no_conforme');
     Route::get('/calidad/cerrarFalla/{id}/{accion}', [caliController::class, 'cerrarFalla'])->name('calidad.cerrarFalla');
+    Route::get('/calidad/ftqPorCliente/{customer}', [caliController::class, 'ftqPorCliente'])->name('calidad.ftqPorCliente');
 });
 Route::controller(BossCaliController::class)->group(function () {
     Route::get('/BossCali', BossCaliController::class);

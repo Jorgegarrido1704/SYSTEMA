@@ -1256,4 +1256,21 @@ class caliController extends generalController
             return back()->with('response', 'Falla Cerrada correctamente');
         }
     }
+
+    public function ftqPorCliente($customer)
+    {
+        $value = session('user');
+        $cat = session('categoria');
+        if ($value == null) {
+            return redirect('/');
+        }
+
+        $codigos = calidadRegistro::selectRaw('count(*) as total,client,codigo')->where('client', '=', $customer)
+            ->whereRaw('MONTH(str_to_date(fecha, "%d-%m-%Y %H:%i")) = MONTH(NOW()) AND YEAR(str_to_date(fecha, "%d-%m-%Y %H:%i")) = YEAR(NOW())')
+            ->groupBy('client', 'codigo')
+            ->orderBy('total', 'desc')
+            ->get();
+
+        return view('calidad.ftqPorCliente', ['codigos' => $codigos, 'value' => $value, 'cat' => $cat, 'customer' => $customer]);
+    }
 }
