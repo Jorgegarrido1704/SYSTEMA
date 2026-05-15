@@ -148,7 +148,7 @@
         JsBarcode("#barcode{{$i}}", "{{$corte[$i][7]}}", {
             format: "CODE128",
             width: 1.5,
-            height: 20,
+            height: 25,
             displayValue: true,
             fontSize: 10
         });
