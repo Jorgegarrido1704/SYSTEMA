@@ -17,7 +17,7 @@
     <style>
         /* Configuración de página para etiquetas */
         @page {
-            size: 100mm 50mm;
+            size: 95mm 48mm;
             margin: 0;
         }
 
@@ -31,8 +31,8 @@
 
         /* Salto de página para cada etiqueta */
         .label-container {
-            width: 100mm;
-            height: 50mm;
+            width: 95mm;
+            height: 48mm;
             box-sizing: border-box;
             padding: 1mm;
             display: flex; /* Dividimos en Izquierda (Barcode) y Derecha (Info) */
@@ -72,7 +72,7 @@
         }
 
         .logo {
-            width: 60px;
+            width: 50px;
             height: auto;
         }
 
