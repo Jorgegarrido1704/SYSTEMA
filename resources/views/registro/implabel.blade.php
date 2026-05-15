@@ -122,14 +122,14 @@
             </div>
         -->
             <div class="content-grid">
-                <div class="full-width"><span class="label-bold">Customer:</span> {{$corte[$i][0]}}</div>
+                <div class="full-width"><span class="label-bold">Cust:</span> {{$corte[$i][0]}}</div>
                 <div><span class="label-bold">Qty:</span> {{$corte[$i][12]}}</div>
                 <div><span class="label-bold">WO:</span> {{$corte[$i][2]}}</div>
                 <div><span class="label-bold">AWG:</span> {{$corte[$i][6]}}</div>
                 <div><span class="label-bold">Tipo:</span> {{$corte[$i][5]}}</div>
                 <div><span class="label-bold">PN:</span> {{$corte[$i][1]}}</div>
                 <div><span class="label-bold">Rev:</span> {{$corte[$i][15]}}</div>
-                <div><span class="label-bold">Color:</span> {{$corte[$i][4]}}</div>
+                <div><span class="label-bold">Col:</span> {{$corte[$i][4]}}</div>
                 <div><span class="label-bold"><b>Cons:</b></span> {{$corte[$i][3]}}</div>
 
                 <div class="full-width" style="font-size: 8pt; margin-top: 2px;">
@@ -140,7 +140,7 @@
 
             <div class="footer-barcode">
                 <svg id="bcode{{$i}}"></svg>
-                <div style="font-size: 5pt;">Estampado: {{$corte[$i][14]}}</div>
+                <div style="font-size: 5pt;">{{$corte[$i][14]}}</div>
             </div>
         </div>
     </div>
@@ -152,14 +152,14 @@
             width: 1.5,
             height: 25,
             displayValue: true,
-            fontSize: 10
+            fontSize: 8
         });
 
         // Generar Barcode Inferior (Horizontal)
         JsBarcode("#bcode{{$i}}", "{{$corte[$i][14]}}", {
             format: "CODE128",
             width: 1,
-            height: 20,
+            height: 15,
             displayValue: false
         });
     </script>

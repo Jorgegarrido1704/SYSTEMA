@@ -1,0 +1,33 @@
+{
+    "ET2-27":{
+        "externo":"1062-16-0122",
+        "Imagen":"componets/terminales/ET2-27.png",
+        "infoPdf":"componets/terminales/ET2-27.pdf",
+        "medidas":{
+            "ancho":0,
+            "alto":0,
+            "strip:":0,
+            "calibres":{
+                "18":{
+                    "crimpCobreAncho":0,
+                    "crimpCobreAlto":0,
+                    "crimpForroAncho":0,
+                    "crimpForroAlto":0
+                },
+                "16":{
+                    "crimpCobreAncho":0,
+                    "crimpCobreAlto":0,
+                    "crimpForroAncho":0,
+                    "crimpForroAlto":0
+                },
+                "14":{
+                    "crimpCobreAncho":0,
+                    "crimpCobreAlto":0,
+                    "crimpForroAncho":0,
+                    "crimpForroAlto":0
+                }
+            }
+        }
+
+    }
+}
