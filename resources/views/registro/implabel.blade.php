@@ -115,11 +115,12 @@
 
         <!-- CONTENIDO PRINCIPAL -->
         <div class="info-side">
-            <div class="header">
+           <!--
+             <div class="header">
                 <img src="{{ asset('/dash/img/bergs.jpg')}}" class="logo" alt="Logo">
                 <span><b>Cons:</b> {{$corte[$i][3]}}</span>
             </div>
-
+        -->
             <div class="content-grid">
                 <div class="full-width"><span class="label-bold">Customer:</span> {{$corte[$i][0]}}</div>
                 <div><span class="label-bold">Qty:</span> {{$corte[$i][12]}}</div>
@@ -129,6 +130,7 @@
                 <div><span class="label-bold">PN:</span> {{$corte[$i][1]}}</div>
                 <div><span class="label-bold">Rev:</span> {{$corte[$i][15]}}</div>
                 <div><span class="label-bold">Color:</span> {{$corte[$i][4]}}</div>
+                <div><span class="label-bold"><b>Cons:</b></span> {{$corte[$i][3]}}</div>
 
                 <div class="full-width" style="font-size: 8pt; margin-top: 2px;">
                     <b>T1:</b> {{$corte[$i][8]}} | <b>T2:</b> {{$corte[$i][9]}}<br>
@@ -156,7 +158,7 @@
         // Generar Barcode Inferior (Horizontal)
         JsBarcode("#bcode{{$i}}", "{{$corte[$i][14]}}", {
             format: "CODE128",
-            width: 1.2,
+            width: 1,
             height: 20,
             displayValue: false
         });
