@@ -17,7 +17,7 @@
     <style>
         /* Configuración de página para etiquetas */
         @page {
-            size: 104mm 54mm;
+            size: 100mm 50mm;
             margin: 0;
         }
 
@@ -34,7 +34,7 @@
             width: 100mm;
             height: 50mm;
             box-sizing: border-box;
-            padding: 3mm;
+            padding: 1mm;
             display: flex; /* Dividimos en Izquierda (Barcode) y Derecha (Info) */
             overflow: hidden;
             page-break-after: always;
@@ -78,7 +78,7 @@
 
         .content-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 1fr ;
             gap: 1px;
             line-height: 1.1;
         }
@@ -99,7 +99,7 @@
 
         #bcode-canvas {
             max-width: 100%;
-            height: 8mm;
+            height: 7mm;
         }
     </style>
 </head>
@@ -109,7 +109,7 @@
     @for ($i=0; $i < count($corte); $i++)
     <div class="label-container">
         <!-- BARRA LATERAL (Barcode Principal) -->
-        <div class="barcode-side">
+        <div class="barcode-side" style="transform: rotate(90deg);">
             <svg id="barcode{{$i}}" class="barcode-vertical"></svg>
         </div>
 
@@ -121,7 +121,7 @@
             </div>
 
             <div class="content-grid">
-                <div class="full-width"><span class="label-bold">Desc:</span> {{$corte[$i][0]}}</div>
+                <div class="full-width"><span class="label-bold">Customer:</span> {{$corte[$i][0]}}</div>
                 <div><span class="label-bold">Qty:</span> {{$corte[$i][12]}}</div>
                 <div><span class="label-bold">WO:</span> {{$corte[$i][2]}}</div>
                 <div><span class="label-bold">AWG:</span> {{$corte[$i][6]}}</div>
@@ -138,7 +138,7 @@
 
             <div class="footer-barcode">
                 <svg id="bcode{{$i}}"></svg>
-                <div style="font-size: 7pt;">Estampado: {{$corte[$i][14]}}</div>
+                <div style="font-size: 5pt;">Estampado: {{$corte[$i][14]}}</div>
             </div>
         </div>
     </div>
@@ -148,7 +148,7 @@
         JsBarcode("#barcode{{$i}}", "{{$corte[$i][7]}}", {
             format: "CODE128",
             width: 1.5,
-            height: 40,
+            height: 20,
             displayValue: true,
             fontSize: 10
         });
@@ -157,7 +157,7 @@
         JsBarcode("#bcode{{$i}}", "{{$corte[$i][14]}}", {
             format: "CODE128",
             width: 1.2,
-            height: 25,
+            height: 20,
             displayValue: false
         });
     </script>
