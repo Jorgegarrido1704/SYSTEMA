@@ -43,7 +43,7 @@
 
         /* Contenedor del código de barras vertical */
         .barcode-side {
-            width: 25mm;
+            width: 15mm;
             display: flex;
             align-items: center;
             justify-content: center;
