@@ -4,27 +4,38 @@
         "Imagen":"componets/terminales/ET2-27.png",
         "infoPdf":"componets/terminales/ET2-27.pdf",
         "medidas":{
-            "ancho":0,
-            "alto":0,
-            "strip:":0,
+            "ancho":20.22,
+            "alto":3.3,
+            "strip:":4.45,
             "calibres":{
                 "18":{
-                    "crimpCobreAncho":0,
-                    "crimpCobreAlto":0,
-                    "crimpForroAncho":0,
-                    "crimpForroAlto":0
+                    "crimpCobreAnchoMin":2.31,
+                    "crimpCobreAnchoMax":2.47,
+                    "crimpCobreAltoMin":1.19,
+                    "crimpCobreAltoMax":1.27,
+                    "crimpForroAnchoMin":1.91,
+                    "crimpForroAnchoMax":3.56,
+                    "crimpForroAltoMin":1.91,
+                    "crimpForroAltoMax":3.56
                 },
                 "16":{
-                    "crimpCobreAncho":0,
-                    "crimpCobreAlto":0,
-                    "crimpForroAncho":0,
-                    "crimpForroAlto":0
+                    "crimpCobreAnchoMin":2.31,
+                    "crimpCobreAnchoMax":2.47,
+                    "crimpCobreAltoMin":1.22,
+                    "crimpCobreAltoMax":1.30,
+                    "crimpForroAnchoMin":1.91,
+                    "crimpForroAnchoMax":3.56,
+                    "crimpForroAltoMin":1.91,
+                    "crimpForroAltoMax":3.56
                 },
-                "14":{
-                    "crimpCobreAncho":0,
-                    "crimpCobreAlto":0,
-                    "crimpForroAncho":0,
-                    "crimpForroAlto":0
+                "14":{"crimpCobreAnchoMin":2.31,
+                    "crimpCobreAnchoMax":2.47,
+                    "crimpCobreAltoMin":1.35,
+                    "crimpCobreAltoMax":1.43,
+                    "crimpForroAnchoMin":1.91,
+                    "crimpForroAnchoMax":3.56,
+                    "crimpForroAltoMin":1.91,
+                    "crimpForroAltoMax":3.56
                 }
             }
         }
