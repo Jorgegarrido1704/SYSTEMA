@@ -328,10 +328,10 @@ class planingController extends Controller
             $descPrecio = precios::where('pn', $np)->first();
             if ($descPrecio != null) {
                 $descnew = $desc == $descPrecio->desc ? $descPrecio->desc : $desc;
-                $precionew = $price == $descPrecio->precio ? $descPrecio->precio : $price;
-                precios::where('pn', $np)->update(['desc' => $descnew, 'precio' => $precionew]);
+                $precionew = $price == $descPrecio->price ? $descPrecio->price : $price;
+                precios::where('pn', $np)->update(['desc' => $descnew, 'price' => $precionew]);
             } else {
-                precios::insert(['client' => $client, 'pn' => $np, 'desc' => $desc, 'precio' => $price, 'send' => $send, 'rev' => $rev]);
+                precios::insert(['client' => $client, 'pn' => $np, 'desc' => $desc, 'price' => $price, 'send' => $send, 'rev' => $rev]);
             }
             $today = date('d-m-Y H:i');
             $barcodes = substr($rev, 0, 4) == 'PPAP' || substr($rev, 0, 4) == 'PRIM' ? (substr($np, 0, 3).substr($client, 0, 3).$qty.$wo.'R'.substr($rev, 5)) : (substr($np, 0, 3).substr($client, 0, 3).$qty.substr($wo, 0, 5).'R'.$rev);
