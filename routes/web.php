@@ -6,6 +6,7 @@ use App\Http\Controllers\AlmacenController;
 use App\Http\Controllers\BossCaliController;
 use App\Http\Controllers\bossController;
 use App\Http\Controllers\caliController;
+use App\Http\Controllers\chartController;
 use App\Http\Controllers\corteController;
 use App\Http\Controllers\generalController;
 use App\Http\Controllers\getPnDetailsController;
@@ -291,6 +292,10 @@ Route::controller(corteController::class)->group(function () {
     Route::get('/corte', [corteController::class, 'indexCorte'])->name('corte.indexCorte');
     Route::get('/corte/appJointTerminales', [corteController::class, 'appJointTerminales'])->name('corte.appJointTerminales');
     Route::get('/corte/appJointTerminalesTabla', [corteController::class, 'appJointTerminalesTabla'])->name('corte.appJointTerminalesTabla');
+});
+Route::controller(chartController::class)->group(function () {
+    Route::get('/chart', [chartController::class, 'index'])->name('chart.index');
+    Route::get('/chart/getDatacorte/', [chartController::class, 'getDatacorte'])->name('getDatacorte');
 });
 
 // Cambiar Idioma
