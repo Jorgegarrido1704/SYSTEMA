@@ -31,7 +31,17 @@ class ChartController extends Controller
             ->orderBy('fecha', 'ASC')
             ->orderBy('id', 'ASC')
             ->get();
-
+        $cortes = DB::connection('toi')
+            ->selectRaw('COUNT(*) as cortes')
+            ->table('lecturas')
+            ->where('maquina', 'M1')
+            ->where('estado', 'RUN')
+            ->whereBetween('fecha', [$fechaDelDia.' 07:30:00', $fechaDelDia.' 15:30:00'])
+            // FIX 1: Match the exact ordering of your first script
+            ->orderBy('fecha', 'ASC')
+            ->orderBy('id', 'ASC')
+            ->get();
+        $qtyCortes = $cortes->cortes>0? round($cortes->cortes/2, 2): 0;
         $paros = 0;
         $running = 0;
         $lastTiempo = null;
@@ -92,6 +102,7 @@ class ChartController extends Controller
             'running' => $running,
             'OEE' => $oee,
             'tiempo_total_turno' => $diferenciaDeTiempoMinutes,
+            'cortes' => $qtyCortes,
         ];
 
         return response()->json($datos);

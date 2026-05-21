@@ -40,6 +40,18 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-xl-2 col-md-2 mb-2">
+                                    <div class="card border-left-danger shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class=" font-weight-bold text-warning text-uppercase mb-1">
+                                                     <strong><span id="cortesCuenta"></span> </strong> {{ __('Quantity of wires') }}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                 </div>
 
 
@@ -102,6 +114,7 @@
         document.getElementById('workingTime').textContent = data.running;
 
         document.getElementById('parosTime').textContent = (data.tiempo_total_turno-data.running).toFixed(2);
+        document.getElementById('cortesCuenta').textContent = data.cortes;
         
 
     } catch (error) {
