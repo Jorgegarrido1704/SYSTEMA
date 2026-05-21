@@ -323,8 +323,19 @@
      "Order Date": "Fecha de la orden",
      "Required Date": "Fecha requerida",
      "Send To": "Enviar a",
-     "Code": "Código"
-
+     "Code": "Código",
+     "per hour / tooling": "por hora / herramiental",
+     "per hour": "por hora",
+     "Crimper applicators": "Aplicadores de herrmanetales",
+     "Terminals applied": "Terminales aplicadas",
+     "Total Stops time": "Tiempo total de paros",
+     "Performance": "Performance",
+     "Last update of terminals information": "Ultima actualizacion de informacion de terminales",
+     "Time Range": "Rango de tiempo",
+     "Terminals Used": "Terminales usadas",
+     "Stops Time (min)": "Tiempo de paros (min)",
+     "Reason for Stop": "Motivo del paro",
+    "Observations": "Observaciones"
 
 
 

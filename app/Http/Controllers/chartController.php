@@ -51,7 +51,7 @@ class ChartController extends Controller
             $diffTimeSeconds = abs($fechaActual - $lastTiempo);
             $diffTimeMinutes = round($diffTimeSeconds / 60, 2);
 
-            if ($lasStatus == 'STOP') {
+            if ($lasStatus == 'STOP' && $diffTimeSeconds > 3) {
                 $paros += $diffTimeMinutes;
             } else {
                 $running += $diffTimeMinutes;
@@ -76,6 +76,7 @@ class ChartController extends Controller
 
         $diferenciaDeTiempo = abs($tiempoAhora - $TiempoInicial);
         $diferenciaDeTiempoMinutes = round($diferenciaDeTiempo / 60, 2);
+        $diferenciaDeTiempoMinutes = $diferenciaDeTiempoMinutes > 30 ? $diferenciaDeTiempoMinutes - 30 : $diferenciaDeTiempoMinutes; // Evitar división por cero
 
         if ($diferenciaDeTiempoMinutes > 0) {
             $oee = round(($running / $diferenciaDeTiempoMinutes) * 100, 2);

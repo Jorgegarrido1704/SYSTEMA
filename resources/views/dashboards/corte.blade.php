@@ -3,44 +3,84 @@
 @section('contenido')
  <!-- Page Heading -->
  <div class="d-sm-flex align-items-center justify-content-between mb-4"> </div>
+ <div class="row">
+                     <div class="col-xl-2 col-md-2 mb-2">
+                                    <div class="card border-left-danger shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-s font-weight-bold text-success text-uppercase mb-1">
+                                                  <strong>    450 min</strong> {{ __('per shift (8 hours)') }}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                 <div class="col-xl-2 col-md-2 mb-2">
+                                    <div class="card border-left-danger shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-s font-weight-bold text-success text-uppercase mb-1">
+                                                    <strong> <span id="workingTime"></span> Min </strong> {{ __('working Time') }}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-2 col-md-2 mb-2">
+                                    <div class="card border-left-danger shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class=" font-weight-bold text-danger text-uppercase mb-1">
+                                                     <strong><span id="parosTime"></span> Min </strong> {{ __('Stop Time') }}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                </div>
 
 
-<div class="row">
-    <!-- registro de fechas -->
-    <div class="col-xl-12 col-md-6 mb-4">
-                <div class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
-                    <div class="form-group  ">
-                        <div class= "row">
-                            <div class="col-md-6">
-                                <h4 class="m-0 font-weight-bold text-primary">{{ __('Date') }} </h4>
+            <div class="row">
+                <!-- registro de fechas -->
+                <div class="col-xl-12 col-md-6 mb-4">
+                            <div class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
+                                <div class="form-group  ">
+                                    <div class= "row">
+                                        <div class="col-md-6">
+                                            <h4 class="m-0 font-weight-bold text-primary">{{ __('Date') }} </h4>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="date" name="fecha" id="fecha" value="{{ date('Y-m-d') }}" onchange="getCorte()">
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-md-6">
-                                <input type="date" name="fecha" id="fecha" value="{{ date('Y-m-d') }}" onchange="getCorte()">
+                    </div>
+                    <!-- end registro de fechas -->
+                    <!-- Maquina 1 -->
+                    
+                                    
+                    <div class="col-xl-2 col-md-6 mb-4">
+                        <div class="card border-left-primary shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-x font-weight-bold text-primary text-uppercase mb-1">
+                                            MC-1</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800"><span id="mc1"></span>%</div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-Pallet fa-3x text-gray-300"></i>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-         </div>
-         <!-- end registro de fechas -->
-         <!-- Maquina 1 -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-primary shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-x font-weight-bold text-primary text-uppercase mb-1">
-                                MC-1</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800"><span id="mc1"></span>%</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-Pallet fa-3x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
+                    <!--end Maquina 1 -->
             </div>
-        </div>
-         <!--end Maquina 1 -->
-</div>
     <script>
 
       async function getCorte(){
@@ -59,6 +99,10 @@
         const data = await response.json();
         console.log(data);
         document.getElementById('mc1').textContent = data.OEE;
+        document.getElementById('workingTime').textContent = data.running;
+
+        document.getElementById('parosTime').textContent = (data.tiempo_total_turno-data.running).toFixed(2);
+        
 
     } catch (error) {
         console.error("Hubo un problema al obtener el corte:", error);
