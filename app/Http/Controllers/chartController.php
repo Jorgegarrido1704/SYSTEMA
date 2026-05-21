@@ -67,9 +67,12 @@ class ChartController extends Controller
         // FIX 2: Normalize time calculation to handle time strings accurately
         $TiempoInicial = strtotime($fechaDelDia.' 07:30:00');
 
-        if ($fechaDelDia === date('Y-m-d')) {
-            // Ensuring both timestamps include the exact same date structure
+        if ($fechaDelDia === date('Y-m-d') and date('H:i:s') < '15:30:01') {
+
             $tiempoAhora = strtotime($fechaDelDia.' '.date('H:i:s'));
+        } elseif ($fechaDelDia === date('Y-m-d') and date('H:i:s') > '15:30:00') {
+
+            $tiempoAhora = strtotime($fechaDelDia.' 15:30:00');
         } else {
             $tiempoAhora = strtotime($fechaDelDia.' 15:30:00');
         }
