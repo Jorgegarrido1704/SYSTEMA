@@ -32,7 +32,6 @@ class ChartController extends Controller
             ->orderBy('id', 'ASC')
             ->get();
         $cortes = DB::connection('toi')
-            ->selectRaw('COUNT(*) as cortes')
             ->table('lecturas')
             ->where('maquina', 'M1')
             ->where('estado', 'RUN')
@@ -40,8 +39,8 @@ class ChartController extends Controller
             // FIX 1: Match the exact ordering of your first script
             ->orderBy('fecha', 'ASC')
             ->orderBy('id', 'ASC')
-            ->get();
-        $qtyCortes = $cortes->cortes>0? round($cortes->cortes/2, 2): 0;
+            ->count();
+        $qtyCortes = $cortes>0?round($cortes/2):0;
         $paros = 0;
         $running = 0;
         $lastTiempo = null;
