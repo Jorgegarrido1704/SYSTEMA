@@ -20,15 +20,16 @@ class ChartController extends Controller
 
     public function getDatacorte(Request $request)
     {
-        // 1. Si no viene fecha, usamos el día de hoy
+
         $fechaDelDia = $request->input('fecha') ?? \Carbon\Carbon::now()->format('Y-m-d');
 
-        // 2. IMPORTANTE: Agregamos el ->whereDate() para no saturar el servidor con datos viejos
         $colection = DB::connection('toi')
             ->table('lecturas')
             ->where('maquina', 'M1')
-            ->whereDate('fecha', $fechaDelDia) // <-- Evita traer miles de filas innecesarias
+            ->whereBetween('fecha', [$fechaDelDia.' 07:30:00', $fechaDelDia.' 15:30:00'])
+            // FIX 1: Match the exact ordering of your first script
             ->orderBy('fecha', 'ASC')
+            ->orderBy('id', 'ASC')
             ->get();
 
         $paros = 0;
@@ -63,28 +64,19 @@ class ChartController extends Controller
         $paros = round($paros, 2);
         $running = round($running, 2);
 
-        // 3. Ajustamos para que calcule el tiempo transcurrido basándose en la fecha seleccionada
+        // FIX 2: Normalize time calculation to handle time strings accurately
         $TiempoInicial = strtotime($fechaDelDia.' 07:30:00');
 
-        // Si la fecha consultada es HOY, comparamos contra la hora actual.
-        // Si están consultando un día del pasado, comparamos contra el fin de turno (ej. 16:30 u otra hora) para que no dé negativo.
         if ($fechaDelDia === date('Y-m-d')) {
-            $tiempoAhora = time();
+            // Ensuring both timestamps include the exact same date structure
+            $tiempoAhora = strtotime($fechaDelDia.' '.date('H:i:s'));
         } else {
-
             $tiempoAhora = strtotime($fechaDelDia.' 15:30:00');
         }
 
-        $diferenciaDeTiempo = $tiempoAhora - $TiempoInicial;
-
-        // Evitamos que si entran antes de las 7:30 am dé minutos negativos
-        if ($diferenciaDeTiempo < 0) {
-            $diferenciaDeTiempo = 0;
-        }
-
+        $diferenciaDeTiempo = abs($tiempoAhora - $TiempoInicial);
         $diferenciaDeTiempoMinutes = round($diferenciaDeTiempo / 60, 2);
 
-        // 4. Protección contra división por cero
         if ($diferenciaDeTiempoMinutes > 0) {
             $oee = round(($running / $diferenciaDeTiempoMinutes) * 100, 2);
         } else {
@@ -95,10 +87,9 @@ class ChartController extends Controller
             'paros' => $paros,
             'running' => $running,
             'OEE' => $oee,
-            'tiempo_total_turno' => $diferenciaDeTiempoMinutes, // Agregado para que puedas validar en tu JS
+            'tiempo_total_turno' => $diferenciaDeTiempoMinutes,
         ];
 
-        // En Laravel es mejor retornar una respuesta JSON nativa en lugar de usar json_encode
         return response()->json($datos);
     }
 }
