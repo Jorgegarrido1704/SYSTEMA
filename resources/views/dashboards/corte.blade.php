@@ -129,17 +129,20 @@
         console.log(data);
         registroParos= document.getElementById('regostroParos');
         registroParos.innerHTML = '';
+        let total_de_paros=0;
         if(data.registroParos !== null){
             registroParos.innerHTML = ``;
             for (let i = 0; i < data.registroParos.length; i++) {
                 const paro = data.registroParos[i];
+                 total_de_paros+=paro.time_min;
+                
                 const fila = document.createElement('tr');
                 fila.innerHTML = `
                 <tr class="text-center align-middle table-light">
-                    <td>${paro.maquina}</td>
-                    <td>${paro.motive}</td>
-                    <td>${paro.time_min}</td>
-                    <td>${paro.hora}</td>
+                    <td>${paro.maquina}-</td>
+                    <td>-${paro.motive}-</td>
+                    <td>-${paro.time_min} min-</td>
+                    <td>-${paro.hora}</td>
                     </tr>
                 `;
                 registroParos.appendChild(fila);
@@ -148,7 +151,7 @@
         document.getElementById('mc1').textContent = data.OEE;
         document.getElementById('workingTime').textContent = data.running;
 
-        document.getElementById('parosTime').textContent = (data.tiempo_total_turno-data.running).toFixed(2);
+        document.getElementById('parosTime').textContent = (data.tiempo_total_turno-data.running-total_de_paros).toFixed(2);
         document.getElementById('cortesCuenta').textContent = data.cortes;        
 
     } catch (error) {
