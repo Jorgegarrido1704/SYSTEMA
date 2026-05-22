@@ -14,6 +14,8 @@ class ChartController extends Controller
         if ($value == '') {
             return redirect('/');
         }
+       
+
 
         return view('dashboards.corte', ['cat', 'value' => $value, 'cat' => $cat]);
     }
@@ -40,6 +42,13 @@ class ChartController extends Controller
             ->orderBy('fecha', 'ASC')
             ->orderBy('id', 'ASC')
             ->count();
+
+             $registroParos = DB::connection('toi')
+            ->table('cutting_machine_stops')
+            ->where('maquina', 'M1')
+            ->where('fecha', $fechaDelDia)
+            ->get();
+
         $qtyCortes = $cortes>0?round($cortes/2):0;
         $paros = 0;
         $running = 0;
@@ -102,6 +111,7 @@ class ChartController extends Controller
             'OEE' => $oee,
             'tiempo_total_turno' => $diferenciaDeTiempoMinutes,
             'cortes' => $qtyCortes,
+            'registroParos' => $registroParos,
         ];
 
         return response()->json($datos);

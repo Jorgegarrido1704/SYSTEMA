@@ -24,7 +24,7 @@
                             <!-- Cantidad -->
                             <div class="input-group" style="flex: 1; min-width: 150px;">
                                 <label for="cantidad" class="form-label" style="padding-right: 10px;"><b>Qty scanned</b></label>
-                                <input type="number" class="form-control" name="cantidad" id="cantidad" value="0" min="0" required>
+                                <input type="number" class="form-control" name="cantidad" id="cantidad" value="0" min="0" step="1" required>
                             </div>
 
                             <!-- Código de Barras -->

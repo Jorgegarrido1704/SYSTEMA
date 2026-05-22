@@ -93,6 +93,23 @@
                     </div>
                     <!--end Maquina 1 -->
             </div>
+            <div class="row">
+                <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card shadow mb-4">
+
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" style="max-height: 25px">
+                        <h6 class="m-0 font-weight-bold text-primary">{{ __('Machine Stops') }}</h6>
+
+                    </div>
+
+                         <!-- table Body -->
+                             <div class="card-body" style="">
+                                <div class="table-responsive" id="regostroParos">
+                            </div>
+                        </div>
+                    </div>
+                 </div>
+            </div>
     <script>
 
       async function getCorte(){
@@ -110,12 +127,29 @@
 
         const data = await response.json();
         console.log(data);
+        registroParos= document.getElementById('regostroParos');
+        registroParos.innerHTML = '';
+        if(data.registroParos !== null){
+            registroParos.innerHTML = ``;
+            for (let i = 0; i < data.registroParos.length; i++) {
+                const paro = data.registroParos[i];
+                const fila = document.createElement('tr');
+                fila.innerHTML = `
+                <tr class="text-center align-middle table-light">
+                    <td>${paro.maquina}</td>
+                    <td>${paro.motive}</td>
+                    <td>${paro.time_min}</td>
+                    <td>${paro.hora}</td>
+                    </tr>
+                `;
+                registroParos.appendChild(fila);
+            }
+        }
         document.getElementById('mc1').textContent = data.OEE;
         document.getElementById('workingTime').textContent = data.running;
 
         document.getElementById('parosTime').textContent = (data.tiempo_total_turno-data.running).toFixed(2);
-        document.getElementById('cortesCuenta').textContent = data.cortes;
-        
+        document.getElementById('cortesCuenta').textContent = data.cortes;        
 
     } catch (error) {
         console.error("Hubo un problema al obtener el corte:", error);
