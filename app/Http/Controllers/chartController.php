@@ -83,32 +83,7 @@ class ChartController extends Controller
             $hora = Carbon::parse($row->fecha)->format('H:i:s');
             if ($lasStatus == 'STOP' ) {
                 $paros += $diffTimeMinutes;
-                switch( Carbon::parse($row->fecha)->format('H:i:s')){
-                case  Carbon::parse($row->fecha)->format('H:i:s') > '07:29:59' &&  Carbon::parse($row->fecha)->format('H:i:s') < '08:30:00':
-                    $subgroups['07:30:00']['STOP'] += $diffTimeMinutes;
-                    break;
-                case  Carbon::parse($row->fecha)->format('H:i:s') > '08:29:59' &&  Carbon::parse($row->fecha)->format('H:i:s') < '09:30:00':
-                    $subgroups['08:30:00']['STOP'] += $diffTimeMinutes;
-                    break;
-                case  Carbon::parse($row->fecha)->format('H:i:s') > '09:29:59' &&  Carbon::parse($row->fecha)->format('H:i:s') < '10:30:00':
-                    $subgroups['09:30:00']['STOP'] += $diffTimeMinutes;
-                    break;
-                case  Carbon::parse($row->fecha)->format('H:i:s') > '10:29:59' &&  Carbon::parse($row->fecha)->format('H:i:s') < '11:30:00':
-                    $subgroups['10:30:00']['STOP'] += $diffTimeMinutes;
-                    break;
-                case  Carbon::parse($row->fecha)->format('H:i:s') > '11:29:59' &&  Carbon::parse($row->fecha)->format('H:i:s') < '12:30:00':
-                    $subgroups['11:30:00']['STOP'] += $diffTimeMinutes;
-                    break;
-                case  Carbon::parse($row->fecha)->format('H:i:s') > '12:29:59' &&  Carbon::parse($row->fecha)->format('H:i:s') < '13:30:00':
-                    $subgroups['12:30:00']['STOP'] += $diffTimeMinutes;
-                    break;
-                case  Carbon::parse($row->fecha)->format('H:i:s') > '13:29:59' &&  Carbon::parse($row->fecha)->format('H:i:s') < '14:30:00':
-                    $subgroups['13:30:00']['STOP'] += $diffTimeMinutes;
-                    break;
-                case  Carbon::parse($row->fecha)->format('H:i:s') > '14:29:59' &&  Carbon::parse($row->fecha)->format('H:i:s') <= '15:30:00':
-                    $subgroups['14:30:00']['STOP'] += $diffTimeMinutes;
-                    break;
-            }
+                
             } else {
                 $running += $diffTimeMinutes;switch( Carbon::parse($row->fecha)->format('H:i:s')){
                 case  Carbon::parse($row->fecha)->format('H:i:s') > '07:29:59' &&  Carbon::parse($row->fecha)->format('H:i:s') < '08:30:00':
@@ -138,6 +113,14 @@ class ChartController extends Controller
             }
                 
             }
+            $subgroups['07:30:00']['STOP'] = 60-$subgroups['07:30:00']['RUN'];
+            $subgroups['08:30:00']['STOP'] = 60-$subgroups['08:30:00']['RUN'];
+            $subgroups['09:30:00']['STOP'] = 60-$subgroups['09:30:00']['RUN'];
+            $subgroups['10:30:00']['STOP'] = 60-$subgroups['10:30:00']['RUN'];
+            $subgroups['11:30:00']['STOP'] = 60-$subgroups['11:30:00']['RUN'];
+            $subgroups['12:30:00']['STOP'] = 60-$subgroups['12:30:00']['RUN'];
+            $subgroups['13:30:00']['STOP'] = 60-$subgroups['13:30:00']['RUN'];
+            $subgroups['14:30:00']['STOP'] = 60-$subgroups['14:30:00']['RUN'];
 
             $lastTiempo = $fechaActual;
             $lasStatus = $estatus;
