@@ -334,7 +334,7 @@ class planingController extends Controller
                 precios::insert(['client' => $client, 'pn' => $np, 'desc' => $desc, 'price' => $price, 'send' => $send, 'rev' => $rev]);
             }
             $today = date('d-m-Y H:i');
-            $barcodes = substr($rev, 0, 4) == 'PPAP' || substr($rev, 0, 4) == 'PRIM' ? (substr($np, 0, 3).substr($client, 0, 3).$qty.$wo.'R'.substr($rev, 5)) : (substr($np, 0, 3).substr($client, 0, 3).$qty.substr($wo, 0, 5).'R'.$rev);
+            $barcodes = substr($rev, 0, 4) == 'PPAP' || substr($rev, 0, 4) == 'PRIM' ? (substr($np, 0, 2).substr($client, 0, 2).$qty.$wo.substr($po,1,3).'R'.substr($rev, 5)) : (substr($np, 0, 2).substr($client, 0, 2).$qty.$wo.substr($po,1,3).'R'.$rev);
             // Insert data into the Po table
             $poData = new Po;
             $poData->client = $client;
