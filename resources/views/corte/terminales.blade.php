@@ -457,7 +457,7 @@ function fetchTerminalDataTabla() {
             document.getElementById('total-conteo').textContent = sumaTerminales;
             document.getElementById('total-paro').textContent = sumaParo + ' min';
             // 720 * ((8 )-(sumaParo/60).toFixed(2)) * 16 / (720 * 8  * 16) 
-            const performance = (sumaTerminales/(720 * (8 - (sumaParo / 60)) * 16)*100).toFixed(2);
+            const performance = (sumaTerminales/(720 * ((8  * 16) - sumaParo/60))*100).toFixed(2);
             document.getElementById('Performance').textContent = performance + '%';
         })
         .catch(error => console.error('Error al obtener datos:', error));
