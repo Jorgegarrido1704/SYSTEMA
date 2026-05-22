@@ -3,7 +3,22 @@
 @section('contenido')
  <!-- Page Heading -->
  <div class="d-sm-flex align-items-center justify-content-between mb-4"> </div>
- <div class="row">
+
+    <div class="row">
+                    <div class="col-xl-12 col-md-6 mb-4">
+                            <div class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
+                                <div class="form-group  ">
+                                    <div class= "row">
+                                        <div class="col-md-6">
+                                            <h4 class="m-0 font-weight-bold text-primary">{{ __('Date') }} </h4>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="date" name="fecha" id="fecha" value="{{ date('Y-m-d') }}" onchange="getCorte()">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
                      <div class="col-xl-2 col-md-2 mb-2">
                                     <div class="card border-left-danger shadow h-100 py-2">
                                         <div class="card-body">
@@ -52,47 +67,46 @@
                                         </div>
                                     </div>
                                 </div>
+                                <!-- Maquina 1 -->
+                    
+                                    
+                                <div class="col-xl-2 col-md-6 mb-4">
+                                    <div class="card border-left-primary shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-x font-weight-bold text-primary text-uppercase mb-1">
+                                                        MC-1</div>
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800"><span id="mc1"></span>%</div>
+                                                </div>
+                                                <div class="col-auto" id="mc1Estado">
+                                                    <i class="fas fa-Pallet fa-2x text-gray-300"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end Maquina 1 -->
                 </div>
 
 
             <div class="row">
-                <!-- registro de fechas -->
-                <div class="col-xl-12 col-md-6 mb-4">
-                            <div class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
-                                <div class="form-group  ">
-                                    <div class= "row">
-                                        <div class="col-md-6">
-                                            <h4 class="m-0 font-weight-bold text-primary">{{ __('Date') }} </h4>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <input type="date" name="fecha" id="fecha" value="{{ date('Y-m-d') }}" onchange="getCorte()">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                <div class="col-xl-4 col-md-6 mb-4">
+                        <div class="card shadow mb-4">
+
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" style="max-height: 25px">
+                        <h6 class="m-0 font-weight-bold text-primary">{{ __('Pareto Times') }}</h6>
+
                     </div>
-                    <!-- end registro de fechas -->
-                    <!-- Maquina 1 -->
-                    
-                                    
-                    <div class="col-xl-2 col-md-6 mb-4">
-                        <div class="card border-left-primary shadow h-100 py-2">
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="text-x font-weight-bold text-primary text-uppercase mb-1">
-                                            MC-1</div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800"><span id="mc1"></span>%</div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="fas fa-Pallet fa-3x text-gray-300"></i>
-                                    </div>
-                                </div>
+
+                         <!-- table Body -->
+                             <div class="card-body" style="">
+                               <canvas id="paretoTiempos Maquina1" width="400" height="400"></canvas>
                             </div>
                         </div>
                     </div>
-                    <!--end Maquina 1 -->
-            </div>
+                 </div>
+            
             <div class="row">
                 <div class="col-xl-3 col-md-6 mb-4">
                         <div class="card shadow mb-4">
@@ -152,14 +166,49 @@
         document.getElementById('workingTime').textContent = data.running;
 
         document.getElementById('parosTime').textContent = (data.tiempo_total_turno-data.running-total_de_paros).toFixed(2);
-        document.getElementById('cortesCuenta').textContent = data.cortes;        
+        document.getElementById('cortesCuenta').textContent = data.cortes;    
+        if(data.estado !== null){
+            document.getElementById('mc1Estado').innerHTML = ``;
+            if(data.estado == 'RUN'){
+            document.getElementById('mc1Estado').innerHTML = `<i class="fas fa-Pallet  fa-3x text-success"></i>`;
+            }else{
+            document.getElementById('mc1Estado').innerHTML = `<i class="fas fa-Pallet  fa-3x text-danger"></i>`;
+            }
+        }
+
+        const paretoTiemposMaquina1 = document.getElementById('paretoTiempos Maquina1');
+        const paretoData = {
+            labels: ['Tiempos total disponible', 'Running', 'Paros'],
+            datasets: [{
+                label: 'Pareto Tiempos',
+                data: [data.tiempo_total_turno,data.running,total_de_paros],
+                backgroundColor: ['rgba(255, 226, 0, 0.4)','rgba(98, 179, 59, 0.54)','rgba(235, 0, 0, 0.54)'],
+                borderColor: ['rgba(255, 226, 0, 1)', 'rgba(98, 179, 59, 1)', 'rgba(235, 0, 0, 1)'],
+                borderWidth: 1
+            }]
+        };
+
+        if (paretoTiemposMaquina1) {
+            paretoTiemposMaquina1.innerHTML = '';
+            new Chart(paretoTiemposMaquina1, {
+                type: 'bar',
+                data: paretoData,
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
 
     } catch (error) {
         console.error("Hubo un problema al obtener el corte:", error);
     }
 }
     getCorte();
-    setInterval(getCorte, 30000);
+    setInterval(getCorte, 20000);
     </script>
 
 

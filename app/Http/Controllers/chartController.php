@@ -29,7 +29,6 @@ class ChartController extends Controller
             ->table('lecturas')
             ->where('maquina', 'M1')
             ->whereBetween('fecha', [$fechaDelDia.' 07:30:00', $fechaDelDia.' 15:30:00'])
-            // FIX 1: Match the exact ordering of your first script
             ->orderBy('fecha', 'ASC')
             ->orderBy('id', 'ASC')
             ->get();
@@ -38,7 +37,6 @@ class ChartController extends Controller
             ->where('maquina', 'M1')
             ->where('estado', 'RUN')
             ->whereBetween('fecha', [$fechaDelDia.' 07:30:00', $fechaDelDia.' 15:30:00'])
-            // FIX 1: Match the exact ordering of your first script
             ->orderBy('fecha', 'ASC')
             ->orderBy('id', 'ASC')
             ->count();
@@ -69,7 +67,7 @@ class ChartController extends Controller
             $diffTimeSeconds = abs($fechaActual - $lastTiempo);
             $diffTimeMinutes = round($diffTimeSeconds / 60, 2);
 
-            if ($lasStatus == 'STOP' && $diffTimeSeconds > 3) {
+            if ($lasStatus == 'STOP' && $diffTimeSeconds > 5) {
                 $paros += $diffTimeMinutes;
             } else {
                 $running += $diffTimeMinutes;
@@ -77,6 +75,7 @@ class ChartController extends Controller
 
             $lastTiempo = $fechaActual;
             $lasStatus = $estatus;
+            $ultimoEstado = $row->estado;
         }
 
         $paros = round($paros, 2);
@@ -112,6 +111,7 @@ class ChartController extends Controller
             'tiempo_total_turno' => $diferenciaDeTiempoMinutes,
             'cortes' => $qtyCortes,
             'registroParos' => $registroParos,
+            'estado' => $ultimoEstado
         ];
 
         return response()->json($datos);
