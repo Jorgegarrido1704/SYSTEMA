@@ -293,7 +293,7 @@ const horaporo = document.getElementById('hora_por_hora'); // Evita espacios en 
     }
 }
     getCorte();
-    setInterval(getCorte, 20000);
+    setInterval(getCorte, 60000);
     </script>
 
 
