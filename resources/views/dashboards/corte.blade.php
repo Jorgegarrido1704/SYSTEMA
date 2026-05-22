@@ -24,8 +24,20 @@
                                         <div class="card-body">
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
+                                                    <div class="text-s font-weight-bold text-warning text-uppercase mb-1">
+                                                  <strong>450 min</strong> {{ __('Per shift/machine') }}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                 <div class="col-xl-2 col-md-2 mb-2">
+                                    <div class="card border-left-danger shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
                                                     <div class="text-s font-weight-bold text-success text-uppercase mb-1">
-                                                  <strong>    450 min</strong> {{ __('per shift (8 hours)') }}</div>
+                                                  <strong> <span id="disponibilidad"></span> MIN</strong> {{ __('Disponibility (-10% Fatigue)(-downtime)') }}</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -112,7 +124,7 @@
                         <div class="card shadow mb-4">
 
                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" style="max-height: 25px">
-                        <h6 class="m-0 font-weight-bold text-primary">{{ __('Machine Stops') }}</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">{{ __('Machine Downtime') }}</h6>
 
                     </div>
 
@@ -141,32 +153,40 @@
 
         const data = await response.json();
         console.log(data);
+        
         registroParos= document.getElementById('regostroParos');
         registroParos.innerHTML = '';
-        let total_de_paros=0;
+        let total_de_paros=disponibilidad=0;
         if(data.registroParos !== null){
             registroParos.innerHTML = ``;
+            //en una tabla
+            
             for (let i = 0; i < data.registroParos.length; i++) {
                 const paro = data.registroParos[i];
                  total_de_paros+=paro.time_min;
                 
                 const fila = document.createElement('tr');
                 fila.innerHTML = `
-                <tr class="text-center align-middle table-light">
+                
                     <td>${paro.maquina}-</td>
                     <td>-${paro.motive}-</td>
                     <td>-${paro.time_min} min-</td>
                     <td>-${paro.hora}</td>
-                    </tr>
+                    
                 `;
                 registroParos.appendChild(fila);
             }
+            
         }
-        document.getElementById('mc1').textContent = data.OEE;
+        disponibilidad=(data.tiempo_total_turno*0.9).toFixed(2)-total_de_paros;
+        
+        document.getElementById('mc1').textContent = (data.running/disponibilidad*100).toFixed(2);
         document.getElementById('workingTime').textContent = data.running;
-
+        
+        document.getElementById('disponibilidad').textContent = disponibilidad;
         document.getElementById('parosTime').textContent = (total_de_paros).toFixed(2);
-        document.getElementById('cortesCuenta').textContent = data.cortes;    
+        document.getElementById('cortesCuenta').textContent = data.cortes;   
+         
         if(data.estado !== null){
             document.getElementById('mc1Estado').innerHTML = ``;
             if(data.estado == 'RUN'){
@@ -196,6 +216,7 @@
                 type: 'bar',
                 data: paretoData,
                 options: {
+                    responsive: true,
                     scales: {
                         y: {
                             beginAtZero: true

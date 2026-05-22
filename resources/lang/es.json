@@ -336,9 +336,21 @@
      "Stops Time (min)": "Tiempo de paros (min)",
      "Reason for Stop": "Motivo del paro",
     "Observations": "Observaciones",
-    "Quantity of wires": "Cantidad de cables"
-
-
+    "Quantity of wires": "Cantidad de cables",
+    "Downtime": "Tiempo de paro",
+    "Fatigue": "Fatiga",
+    "Disponibility": "Disponibilidad",
+    "fatigue": "Fatiga",
+    "disponibility": "Disponibilidad",
+    "downtime": "Tiempo de paro",
+    "Machine": "Maquina",
+    "machine": "maquina",
+    "Machine Downtime": "Tiempo de paro de la maquina",
+    "Pareto Times": "Tiempos Pareto",
+    "Pareto": "Pareto",
+    "working Time": "Tiempo de trabajo",
+    "Disponibility (-10% Fatigue)(-downtime)": "Disponibilidad (-10% Fatiga)(-tiempo de paro)",
+    "Per shift/machine": "Por turno/maquina"
 
 
 }

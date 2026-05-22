@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class ChartController extends Controller
 {
@@ -32,6 +33,19 @@ class ChartController extends Controller
             ->orderBy('fecha', 'ASC')
             ->orderBy('id', 'ASC')
             ->get();
+        // subgroups per hour of day
+        $subgroups = [];
+        $subgroups['07:30:00'] = ['STOP'=>0, 'RUN'=>0];
+        $subgroups['08:30:00'] = ['STOP'=>0, 'RUN'=>0];
+        $subgroups['09:30:00'] = ['STOP'=>0, 'RUN'=>0];
+        $subgroups['10:30:00'] = ['STOP'=>0, 'RUN'=>0];
+        $subgroups['11:30:00'] = ['STOP'=>0, 'RUN'=>0];
+        $subgroups['12:30:00'] = ['STOP'=>0, 'RUN'=>0];
+        $subgroups['13:30:00'] = ['STOP'=>0, 'RUN'=>0];
+        $subgroups['14:30:00'] = ['STOP'=>0, 'RUN'=>0];
+        
+
+
         $cortes = DB::connection('toi')
             ->table('lecturas')
             ->where('maquina', 'M1')
@@ -66,16 +80,70 @@ class ChartController extends Controller
 
             $diffTimeSeconds = abs($fechaActual - $lastTiempo);
             $diffTimeMinutes = round($diffTimeSeconds / 60, 2);
-
-            if ($lasStatus == 'STOP' && $diffTimeSeconds > 5) {
+            $hora = Carbon::parse($row->fecha)->format('H:i:s');
+            if ($lasStatus == 'STOP' ) {
                 $paros += $diffTimeMinutes;
+                switch( Carbon::parse($row->fecha)->format('H:i:s')){
+                case  Carbon::parse($row->fecha)->format('H:i:s') > '07:29:59' &&  Carbon::parse($row->fecha)->format('H:i:s') < '08:30:00':
+                    $subgroups['07:30:00']['STOP'] += $diffTimeMinutes;
+                    break;
+                case  Carbon::parse($row->fecha)->format('H:i:s') > '08:29:59' &&  Carbon::parse($row->fecha)->format('H:i:s') < '09:30:00':
+                    $subgroups['08:30:00']['STOP'] += $diffTimeMinutes;
+                    break;
+                case  Carbon::parse($row->fecha)->format('H:i:s') > '09:29:59' &&  Carbon::parse($row->fecha)->format('H:i:s') < '10:30:00':
+                    $subgroups['09:30:00']['STOP'] += $diffTimeMinutes;
+                    break;
+                case  Carbon::parse($row->fecha)->format('H:i:s') > '10:29:59' &&  Carbon::parse($row->fecha)->format('H:i:s') < '11:30:00':
+                    $subgroups['10:30:00']['STOP'] += $diffTimeMinutes;
+                    break;
+                case  Carbon::parse($row->fecha)->format('H:i:s') > '11:29:59' &&  Carbon::parse($row->fecha)->format('H:i:s') < '12:30:00':
+                    $subgroups['11:30:00']['STOP'] += $diffTimeMinutes;
+                    break;
+                case  Carbon::parse($row->fecha)->format('H:i:s') > '12:29:59' &&  Carbon::parse($row->fecha)->format('H:i:s') < '13:30:00':
+                    $subgroups['12:30:00']['STOP'] += $diffTimeMinutes;
+                    break;
+                case  Carbon::parse($row->fecha)->format('H:i:s') > '13:29:59' &&  Carbon::parse($row->fecha)->format('H:i:s') < '14:30:00':
+                    $subgroups['13:30:00']['STOP'] += $diffTimeMinutes;
+                    break;
+                case  Carbon::parse($row->fecha)->format('H:i:s') > '14:29:59' &&  Carbon::parse($row->fecha)->format('H:i:s') <= '15:30:00':
+                    $subgroups['14:30:00']['STOP'] += $diffTimeMinutes;
+                    break;
+            }
             } else {
-                $running += $diffTimeMinutes;
+                $running += $diffTimeMinutes;switch( Carbon::parse($row->fecha)->format('H:i:s')){
+                case  Carbon::parse($row->fecha)->format('H:i:s') > '07:29:59' &&  Carbon::parse($row->fecha)->format('H:i:s') < '08:30:00':
+                    $subgroups['07:30:00']['RUN'] += $diffTimeMinutes;
+                    break;
+                case  Carbon::parse($row->fecha)->format('H:i:s') > '08:29:59' &&  Carbon::parse($row->fecha)->format('H:i:s') < '09:30:00':
+                    $subgroups['08:30:00']['RUN'] += $diffTimeMinutes;
+                    break;
+                case  Carbon::parse($row->fecha)->format('H:i:s') > '09:29:59' &&  Carbon::parse($row->fecha)->format('H:i:s') < '10:30:00':
+                    $subgroups['09:30:00']['RUN'] += $diffTimeMinutes;
+                    break;
+                case  Carbon::parse($row->fecha)->format('H:i:s') > '10:29:59' &&  Carbon::parse($row->fecha)->format('H:i:s') < '11:30:00':
+                    $subgroups['10:30:00']['RUN'] += $diffTimeMinutes;
+                    break;
+                case  Carbon::parse($row->fecha)->format('H:i:s') > '11:29:59' &&  Carbon::parse($row->fecha)->format('H:i:s') < '12:30:00':
+                    $subgroups['11:30:00']['RUN'] += $diffTimeMinutes;
+                    break;
+                case  Carbon::parse($row->fecha)->format('H:i:s') > '12:29:59' &&  Carbon::parse($row->fecha)->format('H:i:s') < '13:30:00':
+                    $subgroups['12:30:00']['RUN'] += $diffTimeMinutes;
+                    break;
+                case  Carbon::parse($row->fecha)->format('H:i:s') > '13:29:59' &&  Carbon::parse($row->fecha)->format('H:i:s') < '14:30:00':
+                    $subgroups['13:30:00']['RUN'] += $diffTimeMinutes;
+                    break;
+                case  Carbon::parse($row->fecha)->format('H:i:s') > '14:29:59' &&  Carbon::parse($row->fecha)->format('H:i:s') <= '15:30:00':
+                    $subgroups['14:30:00']['RUN'] += $diffTimeMinutes;
+                    break;
+            }
+                
             }
 
             $lastTiempo = $fechaActual;
             $lasStatus = $estatus;
             $ultimoEstado = $row->estado;
+           
+
         }
 
         $paros = round($paros, 2);
@@ -111,7 +179,8 @@ class ChartController extends Controller
             'tiempo_total_turno' => $diferenciaDeTiempoMinutes,
             'cortes' => $qtyCortes,
             'registroParos' => $registroParos,
-            'estado' => $ultimoEstado
+            'estado' => $ultimoEstado,
+            "subgroups" => $subgroups,
         ];
 
         return response()->json($datos);
