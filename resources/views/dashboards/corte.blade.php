@@ -49,7 +49,7 @@
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
                                                     <div class=" font-weight-bold text-danger text-uppercase mb-1">
-                                                     <strong><span id="parosTime"></span> Min </strong> {{ __('Stop Time') }}</div>
+                                                     <strong><span id="parosTime"></span> Min </strong> {{ __('Downtime') }}</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -70,14 +70,14 @@
                                 <!-- Maquina 1 -->
                     
                                     
-                                <div class="col-xl-2 col-md-6 mb-4">
+                                <div class="col-xl-2 col-md-2 mb-2">
                                     <div class="card border-left-primary shadow h-100 py-2">
                                         <div class="card-body">
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
                                                     <div class="text-x font-weight-bold text-primary text-uppercase mb-1">
                                                         MC-1</div>
-                                                    <div class="h5 mb-0 font-weight-bold text-gray-800"><span id="mc1"></span>%</div>
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800"><strong><span id="mc1"></span>%</strong></div>
                                                 </div>
                                                 <div class="col-auto" id="mc1Estado">
                                                     <i class="fas fa-Pallet fa-2x text-gray-300"></i>
@@ -101,7 +101,7 @@
 
                          <!-- table Body -->
                              <div class="card-body" style="">
-                               <canvas id="paretoTiempos Maquina1" width="400" height="400"></canvas>
+                               <canvas id="paretoTiempos Maquina1" width="300" height="200"></canvas>
                             </div>
                         </div>
                     </div>
@@ -165,7 +165,7 @@
         document.getElementById('mc1').textContent = data.OEE;
         document.getElementById('workingTime').textContent = data.running;
 
-        document.getElementById('parosTime').textContent = (data.tiempo_total_turno-data.running-total_de_paros).toFixed(2);
+        document.getElementById('parosTime').textContent = (total_de_paros).toFixed(2);
         document.getElementById('cortesCuenta').textContent = data.cortes;    
         if(data.estado !== null){
             document.getElementById('mc1Estado').innerHTML = ``;
@@ -175,7 +175,9 @@
             document.getElementById('mc1Estado').innerHTML = `<i class="fas fa-Pallet  fa-3x text-danger"></i>`;
             }
         }
-
+        if(data.tiempo_total_turno !== null){
+            
+        
         const paretoTiemposMaquina1 = document.getElementById('paretoTiempos Maquina1');
         const paretoData = {
             labels: ['Tiempos total disponible', 'Running', 'Paros'],
@@ -202,6 +204,7 @@
                 }
             });
         }
+    }
 
     } catch (error) {
         console.error("Hubo un problema al obtener el corte:", error);
