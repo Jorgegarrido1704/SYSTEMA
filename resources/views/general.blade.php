@@ -280,13 +280,28 @@
                             <!-- AREAS -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3" align="center">
-                                    <h5 class="m-0 font-weight-bold text-primary">Boms Filter <form action="{{ route('Bom') }}" method="POST">
-                                        @csrf
-                                        <input type="text" name="partnum" id="partnum" >
-                                    </form> </h5>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <h5 class="m-0 font-weight-bold text-primary">Boms Filter <form action="{{ route('Bom') }}" method="POST">
+                                                @csrf
+                                                <input type="text" name="partnum" id="partnum" >
+                                            </form> </h5>
+                                        </div>
+                                        <div class="col-6">
+                                            <h6 class="m-0 font-weight-bold text-primary">{{ __('Part Number W/braid') }}</h6>
+                                            <div class="form-group">
+                                                <select name="braid" id="braid" class="form-control" onchange="selectBraid()">
+                                                    <option value="" disabled selected></option>
+                                                    <option value="LSL132-1">Braid 0.028 delgado</option>
+                                                    <option value="LSL364-34">Braid 0.040 grueso</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="card-body">
-
+                                    <div class="table-responsive" id="resps">
+                                    </div>
                                     @if(isset($resps) && !empty($resps))
 
                                     <table class="table">
@@ -313,7 +328,26 @@
                         </div>
 
                  </div>
+                 <script>
+                    async function selectBraid() {
+                        const braid = document.getElementById('braid').value 
+    // Si el input está vacío, puedes decidir no enviar nada o enviar la fecha de hoy
+    if(!braid) return;
+                         try {
+        const response = await fetch('/getBraid?braid=' + braid);
 
+        // Si el servidor responde con error (500, 404, etc) saltará al catch
+        if (!response.ok) {
+            throw new Error(`Error en el servidor: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log(data);
 
+                    }
+                    catch (error) {
+                        console.error(error);
+                    }
+                    }
+                    </script>
 
                     @endsection

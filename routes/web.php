@@ -78,6 +78,7 @@ Route::controller(generalController::class)->group(function () {
     Route::get('/KitsReq', [generalController::class, 'KitsReq'])->name('KitsReq');
     Route::post('/regfull', [generalController::class, 'regfull'])->name('regfull');
     Route::post('/problemas_general', [generalController::class, 'problemas_general'])->name('problemas_general');
+    Route::get('/getBraid', [generalController::class, 'getBraid'])->name('getBraid');
 });
 Route::controller(pruebasElectricasController::class)->group(function () {
     Route::get('/pruebasElectricas', 'pruebasElecticas')->name('pruebasElecticas');

@@ -982,4 +982,16 @@ class generalController extends Controller
             return redirect('/general');
         }
     }
+    public function getBraid(Request $request)
+    {
+        $value = session('user');
+        $cat = session('categoria');
+        if($value == '' or $cat == '') {
+            return view('login');
+        }
+        $braid= $request->input('braid');
+        $datos= DB::table('datos')->select('part_num', 'qty')->where('item', $braid)->get();    
+
+        return response()->json($datos);
+    }
 }
