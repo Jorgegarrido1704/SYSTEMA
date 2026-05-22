@@ -103,6 +103,7 @@
 
 
             <div class="row">
+                <!-- Paretos -->
                 <div class="col-xl-4 col-md-6 mb-4">
                         <div class="card shadow mb-4">
 
@@ -117,9 +118,28 @@
                             </div>
                         </div>
                     </div>
+                    <!--  END Paretos -->
+                    <!-- Hora por hora -->
+                <div class="col-xl-4 col-md-6 mb-4">
+                        <div class="card shadow mb-4">
+
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" style="max-height: 25px">
+                        <h6 class="m-0 font-weight-bold text-primary">{{ __('Pareto Times') }}</h6>
+
+                    </div>
+
+                         <!-- table Body -->
+                             <div class="card-body" style="">
+                               <canvas id="hora_por_hora" width="300" height="200"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <!--  END Hora por hora -->
+
                  </div>
             
             <div class="row">
+                <!-- Paretos -->
                 <div class="col-xl-3 col-md-6 mb-4">
                         <div class="card shadow mb-4">
 
@@ -127,7 +147,6 @@
                         <h6 class="m-0 font-weight-bold text-primary">{{ __('Machine Downtime') }}</h6>
 
                     </div>
-
                          <!-- table Body -->
                              <div class="card-body" style="">
                                 <div class="table-responsive" id="regostroParos">
@@ -135,6 +154,9 @@
                         </div>
                     </div>
                  </div>
+                 <!--end Paretos -->
+                 
+                 
             </div>
     <script>
 
@@ -226,6 +248,45 @@
             });
         }
     }
+   // Gráfica hora por hora
+const horaporo = document.getElementById('hora_por_hora'); // Evita espacios en el id
+
+
+    const horaXhora = new Chart(horaporo, {
+        type: 'line',
+        data: {
+            labels: Object.keys(data.stop), // Ej: ["07:00", "08:00", "09:00", ...]
+            datasets: [
+                {
+                    label: 'Not Working',
+                    data: Object.values(data.stop), // Ej: [5, 8, 6, ...]
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.1
+                },
+                {
+                    label: 'Running',
+                    data: Object.values(data.run), // Ej: [2, 1, 3, ...]
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.5
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+
 
     } catch (error) {
         console.error("Hubo un problema al obtener el corte:", error);

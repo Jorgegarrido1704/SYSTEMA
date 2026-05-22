@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
 
 class ChartController extends Controller
 {
@@ -15,8 +15,6 @@ class ChartController extends Controller
         if ($value == '') {
             return redirect('/');
         }
-       
-
 
         return view('dashboards.corte', ['cat', 'value' => $value, 'cat' => $cat]);
     }
@@ -34,17 +32,24 @@ class ChartController extends Controller
             ->orderBy('id', 'ASC')
             ->get();
         // subgroups per hour of day
-        $subgroups = [];
-        $subgroups['07:30:00'] = ['STOP'=>0, 'RUN'=>0];
-        $subgroups['08:30:00'] = ['STOP'=>0, 'RUN'=>0];
-        $subgroups['09:30:00'] = ['STOP'=>0, 'RUN'=>0];
-        $subgroups['10:30:00'] = ['STOP'=>0, 'RUN'=>0];
-        $subgroups['11:30:00'] = ['STOP'=>0, 'RUN'=>0];
-        $subgroups['12:30:00'] = ['STOP'=>0, 'RUN'=>0];
-        $subgroups['13:30:00'] = ['STOP'=>0, 'RUN'=>0];
-        $subgroups['14:30:00'] = ['STOP'=>0, 'RUN'=>0];
-        
-
+        $stop = [];
+        $stop['07:30:00'] = 0;
+        $stop['08:30:00'] = 0;
+        $stop['09:30:00'] = 0;
+        $stop['10:30:00'] = 0;
+        $stop['11:30:00'] = 0;
+        $stop['12:30:00'] = 0;
+        $stop['13:30:00'] = 0;
+        $stop['14:30:00'] = 0;
+        $run = [];
+        $run['07:30:00'] = 0;
+        $run['08:30:00'] = 0;
+        $run['09:30:00'] = 0;
+        $run['10:30:00'] = 0;
+        $run['11:30:00'] = 0;
+        $run['12:30:00'] = 0;
+        $run['13:30:00'] = 0;
+        $run['14:30:00'] = 0;
 
         $cortes = DB::connection('toi')
             ->table('lecturas')
@@ -55,13 +60,13 @@ class ChartController extends Controller
             ->orderBy('id', 'ASC')
             ->count();
 
-             $registroParos = DB::connection('toi')
+        $registroParos = DB::connection('toi')
             ->table('cutting_machine_stops')
             ->where('maquina', 'M1')
             ->where('fecha', $fechaDelDia)
             ->get();
 
-        $qtyCortes = $cortes>0?round($cortes/2):0;
+        $qtyCortes = $cortes > 0 ? round($cortes / 2) : 0;
         $paros = 0;
         $running = 0;
         $lastTiempo = null;
@@ -81,51 +86,51 @@ class ChartController extends Controller
             $diffTimeSeconds = abs($fechaActual - $lastTiempo);
             $diffTimeMinutes = round($diffTimeSeconds / 60, 2);
             $hora = Carbon::parse($row->fecha)->format('H:i:s');
-            if ($lasStatus == 'STOP' ) {
+            if ($lasStatus == 'STOP') {
                 $paros += $diffTimeMinutes;
-                
+
             } else {
-                $running += $diffTimeMinutes;switch( Carbon::parse($row->fecha)->format('H:i:s')){
-                case  Carbon::parse($row->fecha)->format('H:i:s') > '07:29:59' &&  Carbon::parse($row->fecha)->format('H:i:s') < '08:30:00':
-                    $subgroups['07:30:00']['RUN'] += $diffTimeMinutes;
-                    break;
-                case  Carbon::parse($row->fecha)->format('H:i:s') > '08:29:59' &&  Carbon::parse($row->fecha)->format('H:i:s') < '09:30:00':
-                    $subgroups['08:30:00']['RUN'] += $diffTimeMinutes;
-                    break;
-                case  Carbon::parse($row->fecha)->format('H:i:s') > '09:29:59' &&  Carbon::parse($row->fecha)->format('H:i:s') < '10:30:00':
-                    $subgroups['09:30:00']['RUN'] += $diffTimeMinutes;
-                    break;
-                case  Carbon::parse($row->fecha)->format('H:i:s') > '10:29:59' &&  Carbon::parse($row->fecha)->format('H:i:s') < '11:30:00':
-                    $subgroups['10:30:00']['RUN'] += $diffTimeMinutes;
-                    break;
-                case  Carbon::parse($row->fecha)->format('H:i:s') > '11:29:59' &&  Carbon::parse($row->fecha)->format('H:i:s') < '12:30:00':
-                    $subgroups['11:30:00']['RUN'] += $diffTimeMinutes;
-                    break;
-                case  Carbon::parse($row->fecha)->format('H:i:s') > '12:29:59' &&  Carbon::parse($row->fecha)->format('H:i:s') < '13:30:00':
-                    $subgroups['12:30:00']['RUN'] += $diffTimeMinutes;
-                    break;
-                case  Carbon::parse($row->fecha)->format('H:i:s') > '13:29:59' &&  Carbon::parse($row->fecha)->format('H:i:s') < '14:30:00':
-                    $subgroups['13:30:00']['RUN'] += $diffTimeMinutes;
-                    break;
-                case  Carbon::parse($row->fecha)->format('H:i:s') > '14:29:59' &&  Carbon::parse($row->fecha)->format('H:i:s') <= '15:30:00':
-                    $subgroups['14:30:00']['RUN'] += $diffTimeMinutes;
-                    break;
+                $running += $diffTimeMinutes;
+                switch (Carbon::parse($row->fecha)->format('H:i:s')) {
+                    case Carbon::parse($row->fecha)->format('H:i:s') > '07:29:59' && Carbon::parse($row->fecha)->format('H:i:s') < '08:30:00':
+                        $run['07:30:00'] += $diffTimeMinutes;
+                        break;
+                    case Carbon::parse($row->fecha)->format('H:i:s') > '08:29:59' && Carbon::parse($row->fecha)->format('H:i:s') < '09:30:00':
+                        $run['08:30:00'] += $diffTimeMinutes;
+                        break;
+                    case Carbon::parse($row->fecha)->format('H:i:s') > '09:29:59' && Carbon::parse($row->fecha)->format('H:i:s') < '10:30:00':
+                        $run['09:30:00'] += $diffTimeMinutes;
+                        break;
+                    case Carbon::parse($row->fecha)->format('H:i:s') > '10:29:59' && Carbon::parse($row->fecha)->format('H:i:s') < '11:30:00':
+                        $run['10:30:00'] += $diffTimeMinutes;
+                        break;
+                    case Carbon::parse($row->fecha)->format('H:i:s') > '11:29:59' && Carbon::parse($row->fecha)->format('H:i:s') < '12:30:00':
+                        $run['11:30:00'] += $diffTimeMinutes;
+                        break;
+                    case Carbon::parse($row->fecha)->format('H:i:s') > '12:29:59' && Carbon::parse($row->fecha)->format('H:i:s') < '13:30:00':
+                        $run['12:30:00'] += $diffTimeMinutes;
+                        break;
+                    case Carbon::parse($row->fecha)->format('H:i:s') > '13:29:59' && Carbon::parse($row->fecha)->format('H:i:s') < '14:30:00':
+                        $run['13:30:00'] += $diffTimeMinutes;
+                        break;
+                    case Carbon::parse($row->fecha)->format('H:i:s') > '14:29:59' && Carbon::parse($row->fecha)->format('H:i:s') <= '15:30:00':
+                        $run['14:30:00'] += $diffTimeMinutes;
+                        break;
+                }
+
             }
-                
-            }
-            $subgroups['07:30:00']['STOP'] = 60-$subgroups['07:30:00']['RUN'];
-            $subgroups['08:30:00']['STOP'] = 60-$subgroups['08:30:00']['RUN'];
-            $subgroups['09:30:00']['STOP'] = 60-$subgroups['09:30:00']['RUN'];
-            $subgroups['10:30:00']['STOP'] = 60-$subgroups['10:30:00']['RUN'];
-            $subgroups['11:30:00']['STOP'] = 60-$subgroups['11:30:00']['RUN'];
-            $subgroups['12:30:00']['STOP'] = 60-$subgroups['12:30:00']['RUN'];
-            $subgroups['13:30:00']['STOP'] = 60-$subgroups['13:30:00']['RUN'];
-            $subgroups['14:30:00']['STOP'] = 60-$subgroups['14:30:00']['RUN'];
+            $stop['07:30:00'] = 60 - $run['07:30:00'];
+            $stop['08:30:00'] = 60 - $run['08:30:00'];
+            $stop['09:30:00'] = 60 - $run['09:30:00'];
+            $stop['10:30:00'] = 60 - $run['10:30:00'];
+            $stop['11:30:00'] = 60 - $run['11:30:00'];
+            $stop['12:30:00'] = 60 - $run['12:30:00'];
+            $stop['13:30:00'] = 60 - $run['13:30:00'];
+            $stop['14:30:00'] = 60 - $run['14:30:00'];
 
             $lastTiempo = $fechaActual;
             $lasStatus = $estatus;
             $ultimoEstado = $row->estado;
-           
 
         }
 
@@ -163,7 +168,8 @@ class ChartController extends Controller
             'cortes' => $qtyCortes,
             'registroParos' => $registroParos,
             'estado' => $ultimoEstado,
-            "subgroups" => $subgroups,
+            'stop' => $stop,
+            'run' => $run
         ];
 
         return response()->json($datos);
