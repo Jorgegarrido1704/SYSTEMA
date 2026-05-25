@@ -63,7 +63,6 @@ class VacacionesRegistrosJob implements ShouldQueue
             // Determinar días de vacaciones según antigüedad
             $diasVacaciones = calcularDiasVacaciones($anosEnEmpleado);
             $diasVacacionesAnteriores = calcularDiasVacaciones($anosEmpleadoAnterios);
-            };
 
             if ($difference < 0) {
                 $absDifference = abs($difference);
@@ -85,12 +84,12 @@ class VacacionesRegistrosJob implements ShouldQueue
                 $total = $diasVacacionesPendientes + $diasVacacionesAnteriores - $menos - $menosAnoAnterios;
                 $diasVacacionesAnteriores -= $menosAnoAnterios;
 
-
                 $diasVacacionesPendientes -= $menos;
 
                 DB::table('personalberg')
                     ->where('id', $emp->id)
                     ->update([
+                        'lastYear' => $diasVacacionesAnteriores,
                         'currentYear' => $diasVacacionesPendientes,
                         'DaysVacationsAvailble' => $total,
                     ]);
@@ -104,12 +103,21 @@ class VacacionesRegistrosJob implements ShouldQueue
                     ->where('usedYear', $nextYear)
                     ->count();
 
-                $total = $emp->currentYear + $diasVacacionesPendientes + $emp->lastYear - $menos;
+                $menosAnoAnterios = DB::table('registro_vacaciones')
+                    ->where(function ($q) use ($emp) {
+                        $q->where('id_empleado', $emp->employeeNumber);
+                    })
+                    ->where('usedYear', $anio)
+                    ->count();
+
+                $total = $diasVacacionesPendientes + $diasVacacionesAnteriores + $emp->lastYear - $menos - $menosAnoAnterios;
                 $diasVacacionesPendientes -= $menos;
+                $diasVacacionesAnteriores -= $menosAnoAnterios;
 
                 DB::table('personalberg')
                     ->where('id', $emp->id)
                     ->update([
+                        'currentYear' => $diasVacacionesAnteriores,
                         'nextYear' => $diasVacacionesPendientes,
                         'DaysVacationsAvailble' => $total,
                     ]);
