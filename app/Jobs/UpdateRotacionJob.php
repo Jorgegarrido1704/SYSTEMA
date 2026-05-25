@@ -39,6 +39,7 @@ class UpdateRotacionJob implements ShouldQueue
         $registros = DB::table('assistence')
             ->select($column, DB::raw('COUNT(*) as total'))
             ->where('week', $week)
+            ->where('yearOfAssistence', $now->year)
             ->groupBy($column)
             ->pluck('total', $column);
 
