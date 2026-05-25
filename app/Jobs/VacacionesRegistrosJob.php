@@ -15,95 +15,68 @@ class VacacionesRegistrosJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    /**
-     * Create a new job instance.
-     */
-    public function __construct()
-    {
-        //
-    }
+    // 1. Dale más tiempo de vida al Job (ejemplo: 5 minutos / 300 segundos)
+    public $timeout = 300;
 
-    /**
-     * Execute the job.
-     */
+    // 2. Define cuántas veces se puede reintentar antes de ir a 'failed_jobs'
+    public $tries = 3;
+
     public function handle(): void
     {
-        // Traemos los empleados. Nota: Si son miles, considera usar personalBergsModel::where('status', 'Activo')->chunk(100, function($empleados) { ... })
-        $empleados = personalBergsModel::where('status', 'Activo')->get();
-
         $hoy = Carbon::now();
         $anio = $hoy->year;
         $nextYear = $anio + 1;
         $anoAnterior = $anio - 1;
 
-        foreach ($empleados as $emp) {
-            $empleadoIngreso = Carbon::parse($emp->DateIngreso);
-            $cumple = Carbon::createFromDate($anio, $empleadoIngreso->month, $empleadoIngreso->day);
-            $difference = $cumple->diffInDays($hoy, false); // negativo si ya pasó
+        // 3. Cambiamos ->get() por ->chunk() para liberar memoria y no saturar la base de datos
+        personalBergsModel::where('status', 'Activo')->chunk(100, function ($empleados) use ($hoy, $anio, $nextYear, $anoAnterior) {
+            foreach ($empleados as $emp) {
 
-            $anosEnEmpleado = ($difference < 0) ? $anio - $empleadoIngreso->year : $nextYear - $empleadoIngreso->year;
-            $anosEmpleadoAnterios = ($difference < 0) ? $anoAnterior - $empleadoIngreso->year : $anio - $empleadoIngreso->year;
+                // --- TU LÓGICA DE CÁLCULO SE QUEDA IGUAL AQUÍ ---
+                $empleadoIngreso = Carbon::parse($emp->DateIngreso);
+                $cumple = Carbon::createFromDate($anio, $empleadoIngreso->month, $empleadoIngreso->day);
+                $difference = $cumple->diffInDays($hoy, false);
 
-            // Llamada al método de la clase
-            $diasVacaciones = $this->calcularDiasVacaciones($anosEnEmpleado);
-            $diasVacacionesAnteriores = $this->calcularDiasVacaciones($anosEmpleadoAnterios);
+                $anosEnEmpleado = ($difference < 0) ? $anio - $empleadoIngreso->year : $nextYear - $empleadoIngreso->year;
+                $anosEmpleadoAnterios = ($difference < 0) ? $anoAnterior - $empleadoIngreso->year : $anio - $empleadoIngreso->year;
 
-            if ($difference < 0) {
-                $absDifference = abs($difference);
-                $diasVacacionesPendientes = intval(($diasVacaciones / 365) * (365 - $absDifference));
+                $diasVacaciones = $this->calcularDiasVacaciones($anosEnEmpleado);
+                $diasVacacionesAnteriores = $this->calcularDiasVacaciones($anosEmpleadoAnterios);
 
-                $menos = DB::table('registro_vacaciones')
-                    ->where('id_empleado', $emp->employeeNumber)
-                    ->where('usedYear', $anio)
-                    ->count();
+                if ($difference < 0) {
+                    $absDifference = abs($difference);
+                    $diasVacacionesPendientes = intval(($diasVacaciones / 365) * (365 - $absDifference));
 
-                $menosAnoAnterios = DB::table('registro_vacaciones')
-                    ->where('id_empleado', $emp->employeeNumber)
-                    ->where('usedYear', $anoAnterior)
-                    ->count();
+                    $menos = DB::table('registro_vacaciones')->where('id_empleado', $emp->employeeNumber)->where('usedYear', $anio)->count();
+                    $menosAnoAnterios = DB::table('registro_vacaciones')->where('id_empleado', $emp->employeeNumber)->where('usedYear', $anoAnterior)->count();
 
-                $total = $diasVacacionesPendientes + $diasVacacionesAnteriores - $menos - $menosAnoAnterios;
-                $diasVacacionesAnteriores -= $menosAnoAnterios;
-                $diasVacacionesPendientes -= $menos;
+                    $total = $diasVacacionesPendientes + $diasVacacionesAnteriores - $menos - $menosAnoAnterios;
 
-                DB::table('personalberg')
-                    ->where('id', $emp->id)
-                    ->update([
-                        'lastYear' => $diasVacacionesAnteriores,
-                        'currentYear' => $diasVacacionesPendientes,
+                    DB::table('personalberg')->where('id', $emp->id)->update([
+                        'lastYear' => $diasVacacionesAnteriores - $menosAnoAnterios,
+                        'currentYear' => $diasVacacionesPendientes - $menos,
                         'DaysVacationsAvailble' => $total,
                     ]);
-            } else {
-                $diasVacacionesPendientes = intval(($diasVacaciones / 365) * $difference);
+                } else {
+                    $diasVacacionesPendientes = intval(($diasVacaciones / 365) * $difference);
 
-                $menos = DB::table('registro_vacaciones')
-                    ->where('id_empleado', $emp->employeeNumber)
-                    ->where('usedYear', $nextYear)
-                    ->count();
+                    $menos = DB::table('registro_vacaciones')->where('id_empleado', $emp->employeeNumber)->where('usedYear', $nextYear)->count();
+                    $menosAnoAnterios = DB::table('registro_vacaciones')->where('id_empleado', $emp->employeeNumber)->where('usedYear', $anio)->count();
 
-                $menosAnoAnterios = DB::table('registro_vacaciones')
-                    ->where('id_empleado', $emp->employeeNumber)
-                    ->where('usedYear', $anio)
-                    ->count();
+                    $total = $diasVacacionesPendientes + $diasVacacionesAnteriores + $emp->lastYear - $menos - $menosAnoAnterios;
 
-                $total = $diasVacacionesPendientes + $diasVacacionesAnteriores + $emp->lastYear - $menos - $menosAnoAnterios;
-                $diasVacacionesPendientes -= $menos;
-                $diasVacacionesAnteriores -= $menosAnoAnterios;
-
-                DB::table('personalberg')
-                    ->where('id', $emp->id)
-                    ->update([
-                        'currentYear' => $diasVacacionesAnteriores,
-                        'nextYear' => $diasVacacionesPendientes,
+                    DB::table('personalberg')->where('id', $emp->id)->update([
+                        'currentYear' => $diasVacacionesAnteriores - $menosAnoAnterios,
+                        'nextYear' => $diasVacacionesPendientes - $menos,
                         'DaysVacationsAvailble' => $total,
                     ]);
+                }
+                // --- FIN DE TU LÓGICA ---
+
             }
-        }
+        });
     }
 
-    /**
-     * Calcula los días de vacaciones según la ley mexicana (LFT actual).
-     */
     private function calcularDiasVacaciones(int $anos): int
     {
         return match (true) {
