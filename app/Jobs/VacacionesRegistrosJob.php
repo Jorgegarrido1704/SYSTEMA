@@ -33,28 +33,36 @@ class VacacionesRegistrosJob implements ShouldQueue
         $hoy = Carbon::now();
         $anio = $hoy->year;
         $nextYear = $anio + 1;
+        $anoAnterior = $anio - 1;
 
         foreach ($empleados as $emp) {
             $empleadoIngreso = Carbon::parse($emp->DateIngreso);
             $cumple = Carbon::createFromDate($anio, $empleadoIngreso->month, $empleadoIngreso->day);
             $difference = $cumple->diffInDays($hoy, false); // negativo si ya pasó
 
-            $anosEnEmpleado = ($difference < 0) ? $anio - $empleadoIngreso->year : ($anio + 1) - $empleadoIngreso->year;
+            $anosEnEmpleado = ($difference < 0) ? $anio - $empleadoIngreso->year : $nextYear - $empleadoIngreso->year;
+            $anosEmpleadoAnterios = ($difference < 0) ? $anoAnterior - $empleadoIngreso->year : $anio - $empleadoIngreso->year;
 
+            function calcularDiasVacaciones($anos)
+            {
+                return match (true) {
+                    $anos == 1 => 12,
+                    $anos == 2 => 14,
+                    $anos == 3 => 16,
+                    $anos == 4 => 18,
+                    $anos == 5 => 20,
+                    $anos > 5 && $anos < 11 => 22,
+                    $anos > 10 && $anos < 15 => 24,
+                    $anos > 15 && $anos < 21 => 26,
+                    $anos > 20 && $anos < 25 => 28,
+                    $anos > 25 && $anos < 31 => 30,
+                    $anos > 30 => 32,
+                    default => 0,
+                };
+            }
             // Determinar días de vacaciones según antigüedad
-            $diasVacaciones = match (true) {
-                $anosEnEmpleado == 1 => 12,
-                $anosEnEmpleado == 2 => 14,
-                $anosEnEmpleado == 3 => 16,
-                $anosEnEmpleado == 4 => 18,
-                $anosEnEmpleado == 5 => 20,
-                $anosEnEmpleado > 5 && $anosEnEmpleado < 11 => 22,
-                $anosEnEmpleado > 10 && $anosEnEmpleado < 15 => 24,
-                $anosEnEmpleado > 15 && $anosEnEmpleado < 21 => 26,
-                $anosEnEmpleado > 20 && $anosEnEmpleado < 25 => 28,
-                $anosEnEmpleado > 25 && $anosEnEmpleado < 31 => 30,
-                $anosEnEmpleado > 30 => 32,
-                default => 0,
+            $diasVacaciones = calcularDiasVacaciones($anosEnEmpleado);
+            $diasVacacionesAnteriores = calcularDiasVacaciones($anosEmpleadoAnterios);
             };
 
             if ($difference < 0) {
@@ -67,8 +75,17 @@ class VacacionesRegistrosJob implements ShouldQueue
                     })
                     ->where('usedYear', $anio)
                     ->count();
+                $menosAnoAnterios = DB::table('registro_vacaciones')
+                    ->where(function ($q) use ($emp) {
+                        $q->where('id_empleado', $emp->employeeNumber);
+                    })
+                    ->where('usedYear', $anoAnterior)
+                    ->count();
 
-                $total = $diasVacacionesPendientes + $emp->lastYear - $menos;
+                $total = $diasVacacionesPendientes + $diasVacacionesAnteriores - $menos - $menosAnoAnterios;
+                $diasVacacionesAnteriores -= $menosAnoAnterios;
+
+
                 $diasVacacionesPendientes -= $menos;
 
                 DB::table('personalberg')
