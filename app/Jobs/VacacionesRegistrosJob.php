@@ -28,6 +28,7 @@ class VacacionesRegistrosJob implements ShouldQueue
      */
     public function handle(): void
     {
+        // Traemos los empleados. Nota: Si son miles, considera usar personalBergsModel::where('status', 'Activo')->chunk(100, function($empleados) { ... })
         $empleados = personalBergsModel::where('status', 'Activo')->get();
 
         $hoy = Carbon::now();
@@ -43,47 +44,26 @@ class VacacionesRegistrosJob implements ShouldQueue
             $anosEnEmpleado = ($difference < 0) ? $anio - $empleadoIngreso->year : $nextYear - $empleadoIngreso->year;
             $anosEmpleadoAnterios = ($difference < 0) ? $anoAnterior - $empleadoIngreso->year : $anio - $empleadoIngreso->year;
 
-            function calcularDiasVacaciones($anos)
-            {
-                return match (true) {
-                    $anos == 1 => 12,
-                    $anos == 2 => 14,
-                    $anos == 3 => 16,
-                    $anos == 4 => 18,
-                    $anos == 5 => 20,
-                    $anos > 5 && $anos < 11 => 22,
-                    $anos > 10 && $anos < 15 => 24,
-                    $anos > 15 && $anos < 21 => 26,
-                    $anos > 20 && $anos < 25 => 28,
-                    $anos > 25 && $anos < 31 => 30,
-                    $anos > 30 => 32,
-                    default => 0,
-                };
-            }
-            // Determinar días de vacaciones según antigüedad
-            $diasVacaciones = calcularDiasVacaciones($anosEnEmpleado);
-            $diasVacacionesAnteriores = calcularDiasVacaciones($anosEmpleadoAnterios);
+            // Llamada al método de la clase
+            $diasVacaciones = $this->calcularDiasVacaciones($anosEnEmpleado);
+            $diasVacacionesAnteriores = $this->calcularDiasVacaciones($anosEmpleadoAnterios);
 
             if ($difference < 0) {
                 $absDifference = abs($difference);
                 $diasVacacionesPendientes = intval(($diasVacaciones / 365) * (365 - $absDifference));
 
                 $menos = DB::table('registro_vacaciones')
-                    ->where(function ($q) use ($emp) {
-                        $q->where('id_empleado', $emp->employeeNumber);
-                    })
+                    ->where('id_empleado', $emp->employeeNumber)
                     ->where('usedYear', $anio)
                     ->count();
+
                 $menosAnoAnterios = DB::table('registro_vacaciones')
-                    ->where(function ($q) use ($emp) {
-                        $q->where('id_empleado', $emp->employeeNumber);
-                    })
+                    ->where('id_empleado', $emp->employeeNumber)
                     ->where('usedYear', $anoAnterior)
                     ->count();
 
                 $total = $diasVacacionesPendientes + $diasVacacionesAnteriores - $menos - $menosAnoAnterios;
                 $diasVacacionesAnteriores -= $menosAnoAnterios;
-
                 $diasVacacionesPendientes -= $menos;
 
                 DB::table('personalberg')
@@ -97,16 +77,12 @@ class VacacionesRegistrosJob implements ShouldQueue
                 $diasVacacionesPendientes = intval(($diasVacaciones / 365) * $difference);
 
                 $menos = DB::table('registro_vacaciones')
-                    ->where(function ($q) use ($emp) {
-                        $q->where('id_empleado', $emp->employeeNumber);
-                    })
+                    ->where('id_empleado', $emp->employeeNumber)
                     ->where('usedYear', $nextYear)
                     ->count();
 
                 $menosAnoAnterios = DB::table('registro_vacaciones')
-                    ->where(function ($q) use ($emp) {
-                        $q->where('id_empleado', $emp->employeeNumber);
-                    })
+                    ->where('id_empleado', $emp->employeeNumber)
                     ->where('usedYear', $anio)
                     ->count();
 
@@ -122,7 +98,27 @@ class VacacionesRegistrosJob implements ShouldQueue
                         'DaysVacationsAvailble' => $total,
                     ]);
             }
-
         }
+    }
+
+    /**
+     * Calcula los días de vacaciones según la ley mexicana (LFT actual).
+     */
+    private function calcularDiasVacaciones(int $anos): int
+    {
+        return match (true) {
+            $anos == 1 => 12,
+            $anos == 2 => 14,
+            $anos == 3 => 16,
+            $anos == 4 => 18,
+            $anos == 5 => 20,
+            $anos > 5 && $anos < 11 => 22,
+            $anos > 10 && $anos < 15 => 24,
+            $anos > 15 && $anos < 21 => 26,
+            $anos > 20 && $anos < 25 => 28,
+            $anos > 25 && $anos < 31 => 30,
+            $anos > 31 => 32,
+            default => 0,
+        };
     }
 }
