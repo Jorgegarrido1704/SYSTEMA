@@ -74,6 +74,9 @@
                         onmouseover=showEng();>{{ __('engineering') }}</a>
                         @if($cat=='inge' || $value=='Admin')
                     <ul class="submenu" id="engsub" style="display:none;">
+                        @if($value == 'Nancy A' || $value == 'Jesus_C' || $value == 'Admin' || $value == 'Isabel E')
+                            <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('UpdateWorkFiles') }}">{{ __('UpdateWorkFiles') }}</a></li>
+                        @endif
                         <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('workState') }}">{{ __('Work Scheduled') }}</a></li>
                         <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('ganttGraph') }}">{{ __('Gantt Work Graph') }}</a></li>
                         <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('pruebasElecticas') }}">{{ __('Electrical Tests') }}</a></li>

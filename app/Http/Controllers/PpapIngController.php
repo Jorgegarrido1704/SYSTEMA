@@ -17,6 +17,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
@@ -980,5 +981,147 @@ class PpapIngController extends Controller
             ->get();
 
         return view('inge.graffWorksEng', ['value' => $value, 'cat' => $cat, 'datos' => $datos]);
+    }
+
+    public function UpdateWorkFiles()
+    {
+        $value = session('user');
+        $cat = session('categoria');
+        if ($value == null) {
+            return redirect('/');
+        }
+
+        return view('inge.updatefiles', ['value' => $value, 'cat' => $cat]);
+    }
+
+    public function updateBomfile(Request $request)
+    {
+        $excelFile = $request->file('excel_file');
+
+        ini_set('memory_limit', '1024M');
+        ini_set('max_execution_time', 300);
+
+        if (! $excelFile) {
+            return redirect()->back()->with('error', 'No se ha subido ningún archivo válido.');
+        }
+
+        try {
+            $reader = IOFactory::createReader('Xlsx');
+            $reader->setReadDataOnly(true);
+            $spreadsheet = $reader->load($excelFile->getRealPath());
+            $worksheet = $spreadsheet->getActiveSheet();
+
+            $rows = $worksheet->toArray(null, true, true, false);
+
+            if (count($rows) <= 1) {
+                return redirect()->back()->with('error', 'El archivo Excel está vacío o no contiene filas de datos.');
+            }
+
+            array_shift($rows); // Quitar encabezados
+            $totalRowsExcel = count($rows); // Total real que deberíamos tener
+
+            $insertData = [];
+            $batchSize = 1000;
+
+            DB::beginTransaction();
+            DB::table('datos')->truncate();
+
+            foreach ($rows as $index => $row) {
+                $pn = isset($row[0]) ? trim((string) $row[0]) : '';
+                $rev = isset($row[1]) ? trim((string) $row[1]) : '';
+                $cons = isset($row[3]) ? trim((string) $row[3]) : '';
+                $tipo = isset($row[4]) ? trim((string) $row[4]) : '';
+
+                if ($pn === '' && $cons === '') {
+                    continue;
+                }
+
+                // Limpieza
+                $pn = str_replace("\xA0", ' ', $pn);
+                $rev = str_replace("\xA0", ' ', $rev);
+                $cons = mb_convert_encoding(str_replace("\xA0", ' ', $cons), 'UTF-8', 'UTF-8');
+                $tipo = str_replace("\xA0", ' ', $tipo);
+
+                $insertData[] = [
+                    'part_num' => $pn,
+                    'rev' => $rev,
+                    'item' => $cons,
+                    'qty' => $tipo,
+                ];
+
+                if (count($insertData) === $batchSize) {
+                    // Usamos insertOrIgnore por si hay restricciones UNIQUE en tu tabla
+                    DB::table('datos')->insertOrIgnore($insertData);
+                    $insertData = [];
+                }
+            }
+
+            // Insertar el último bloque remanente del ciclo principal
+            if (! empty($insertData)) {
+                DB::table('datos')->insertOrIgnore($insertData);
+                $insertData = [];
+            }
+
+            // --- BLOQUE DE RE-VERIFICACIÓN Y CONTINGENCIA ---
+            $totalInsertado = DB::table('datos')->count();
+
+            // Si la base de datos tiene menos registros de los que leyó el Excel
+            if ($totalInsertado < $totalRowsExcel) {
+
+                $contingencyData = [];
+
+                // Recorremos de nuevo el Excel para buscar cuáles faltaron
+                foreach ($rows as $row) {
+                    $pn = isset($row[0]) ? trim((string) $row[0]) : '';
+                    $rev = isset($row[1]) ? trim((string) $row[1]) : '';
+                    $cons = isset($row[3]) ? trim((string) $row[3]) : '';
+                    $tipo = isset($row[4]) ? trim((string) $row[4]) : '';
+
+                    if ($pn === '' && $cons === '') {
+                        continue;
+                    }
+
+                    // Comprobar de forma estricta si este registro ya existe en la BD
+                    // Esto evita CUALQUIER duplicado
+                    $existe = DB::table('datos')
+                        ->where('part_num', $pn)
+                        ->where('rev', $rev)
+                        ->where('item', $cons)
+                        ->exists();
+
+                    if (! $existe) {
+                        $contingencyData[] = [
+                            'part_num' => $pn,
+                            'rev' => $rev,
+                            'item' => $cons,
+                            'qty' => $tipo,
+                        ];
+                    }
+
+                    // Insertar los faltantes en bloques pequeños
+                    if (count($contingencyData) === 500) {
+                        DB::table('datos')->insertOrIgnore($contingencyData);
+                        $contingencyData = [];
+                    }
+                }
+
+                // Insertar remanentes de la contingencia
+                if (! empty($contingencyData)) {
+                    DB::table('datos')->insertOrIgnore($contingencyData);
+                }
+            }
+
+            DB::commit();
+
+            // Conteo final absoluto post-contingencia
+            $conteoFinal = DB::table('datos')->count();
+
+            return redirect()->back()->with('success', "Proceso finalizado. Filas útiles en Excel: {$totalRowsExcel}. Registros asegurados en BD: {$conteoFinal}.");
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return redirect()->back()->with('error', 'Error crítico en el proceso: '.$e->getMessage());
+        }
     }
 }

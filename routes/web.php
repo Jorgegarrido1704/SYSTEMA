@@ -107,6 +107,8 @@ Route::controller(PpapIngController::class)->group(function () {
     Route::get('/ganttGraph', [PpapIngController::class, 'ganttGraph'])->name('ganttGraph');
     Route::post('/datosWO', [PpapIngController::class, 'datosWo'])->name('datosWO');
     Route::get('/graffWorksEng', [PpapIngController::class, 'graffWorksEng'])->name('graffWorksEng');
+    Route::get('/UpdateWorkFiles', [PpapIngController::class, 'UpdateWorkFiles'])->name('UpdateWorkFiles');
+    Route::post('/updateBomfile', [PpapIngController::class, 'updateBomfile'])->name('updateBomfile');
 });
 
 Route::controller(AlmacenController::class)->group(function () {
