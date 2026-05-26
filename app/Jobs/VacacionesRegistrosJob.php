@@ -71,7 +71,6 @@ class VacacionesRegistrosJob implements ShouldQueue
                         'DaysVacationsAvailble' => $total,
                     ]);
                 }
-                // --- FIN DE TU LÓGICA ---
 
             }
         });
