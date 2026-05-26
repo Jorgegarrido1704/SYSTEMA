@@ -10,7 +10,7 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    
+
                                  <div class="col-xl-2 col-md-2 mb-2">
                                     <div class="card border-left-danger shadow h-100 py-2">
                                         <div class="card-body">
@@ -23,14 +23,14 @@
                                         </div>
                                     </div>
                                 </div>
-                               
+
                                 <div class="col-xl-2 col-md-2 mb-2">
                                     <div class="card border-left-danger shadow h-100 py-2">
                                         <div class="card-body">
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
                                                     <div class="text-s font-weight-bold text-black text-uppercase mb-1">
-                                                     <strong> 16 </strong> {{ __('Crimper applicators') }}</div>
+                                                     <strong> 12 </strong> {{ __('Crimper applicators') }}</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -139,24 +139,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-xl-2 col-md-6 mb-4">
-                                    <div class="card border-left-danger shadow h-100 py-2">
-                                        <div class="card-body">
-                                            <div class="row no-gutters align-items-center">
-                                                <div class="col mr-2">
-                                                    <div class="text-s font-weight-bold text-primary text-uppercase mb-1">
-                                                       {{__('Crimper')}} L3-4</div>
-                                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                        <span id="L3-4"></span>
 
-
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                                 <div class="col-xl-2 col-md-6 mb-4">
                                     <div class="card border-left-danger shadow h-100 py-2">
                                         <div class="card-body">
@@ -184,38 +167,6 @@
                                                        {{__('Crimper')}} L2-2</div>
                                                     <div class="h5 mb-0 font-weight-bold text-gray-800">
                                                         <span id="L2-2"></span>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xl-2 col-md-6 mb-4">
-                                    <div class="card border-left-danger shadow h-100 py-2">
-                                        <div class="card-body">
-                                            <div class="row no-gutters align-items-center">
-                                                <div class="col mr-2">
-                                                    <div class="text-s font-weight-bold text-primary text-uppercase mb-1">
-                                                       {{__('Crimper')}} L2-3</div>
-                                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                        <span id="L2-3"></span>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xl-2 col-md-6 mb-4">
-                                    <div class="card border-left-danger shadow h-100 py-2">
-                                        <div class="card-body">
-                                            <div class="row no-gutters align-items-center">
-                                                <div class="col mr-2">
-                                                    <div class="text-s font-weight-bold text-primary text-uppercase mb-1">
-                                                       {{__('Crimper')}} L2-4</div>
-                                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                        <span id="L2-4"></span>
                                                     </div>
 
                                                 </div>
@@ -290,6 +241,22 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-xl-2 col-md-6 mb-4">
+                                    <div class="card border-left-danger shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-s font-weight-bold text-primary text-uppercase mb-1">
+                                                       {{__('Crimper')}} L1-5</div>
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                        <span id="L1-5"></span>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <!-- line 4 -->
                                  <div class="col-xl-2 col-md-6 mb-4">
                                     <div class="card border-left-danger shadow h-100 py-2">
@@ -325,38 +292,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-xl-2 col-md-6 mb-4">
-                                    <div class="card border-left-danger shadow h-100 py-2">
-                                        <div class="card-body">
-                                            <div class="row no-gutters align-items-center">
-                                                <div class="col mr-2">
-                                                    <div class="text-s font-weight-bold text-primary text-uppercase mb-1">
-                                                       {{__('Crimper')}} L4-3</div>
-                                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                        <span id="L4-3"></span>
-                                                    </div>
 
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xl-2 col-md-6 mb-4">
-                                    <div class="card border-left-danger shadow h-100 py-2">
-                                        <div class="card-body">
-                                            <div class="row no-gutters align-items-center">
-                                                <div class="col mr-2">
-                                                    <div class="text-s font-weight-bold text-primary text-uppercase mb-1">
-                                                       {{__('Crimper')}} L4-4</div>
-                                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                        <span id="L4-4"></span>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
 
 
                 </div>
@@ -384,7 +320,7 @@
                         <tbody id="tabla-terminales-body">
                             <!-- Aquí se llenará con JavaScript -->
                         </tbody>
-                      
+
                     </table>
                 </div>
 
@@ -400,13 +336,13 @@
         .then(data => {
             console.log('Datos procesados:', data);
             // Lista de IDs de tus elementos en el HTML (L3-1, L3-2, etc.)
-            const maquinas = ['L4-1', 'L4-2', 'L4-3', 'L4-4', 'L3-1', 'L3-2', 'L3-3', 'L3-4', 'L2-1', 'L2-2', 'L2-3', 'L2-4', 'L1-1', 'L1-2', 'L1-3', 'L1-4'];
+            const maquinas = ['L4-1', 'L4-2', 'L3-1', 'L3-2', 'L3-3', 'L2-1', 'L2-2', 'L1-1', 'L1-2', 'L1-3', 'L1-4', 'L1-5'];
 
             maquinas.forEach(id => {
                 const elemento = document.getElementById(id);
                 if (elemento) {
                     if (data[id]) {
-                       
+
                         const conteo = data[id].total_terminales || 0;
                         const paro = data[id].total_paro || 0;
 
@@ -424,7 +360,7 @@ setInterval(fetchTerminalData, 600000);
 fetchTerminalData();
 function fetchTerminalDataTabla() {
     const url = @json(route('corte.appJointTerminalesTabla'));
-    
+
     fetch(url)
         .then(response => response.json())
         .then(data => {
@@ -456,8 +392,8 @@ function fetchTerminalDataTabla() {
             // Actualizar etiquetas de totales en el tfoot
             document.getElementById('total-conteo').textContent = sumaTerminales;
             document.getElementById('total-paro').textContent = sumaParo + ' min';
-            // 720 * ((8 )-(sumaParo/60).toFixed(2)) * 16 / (720 * 8  * 16) 
-            const performance = (sumaTerminales/(720 * ((8  * 16) - sumaParo/60))*100).toFixed(2);
+            // 720 * ((8 )-(sumaParo/60).toFixed(2)) * 16 / (720 * 8  * 16)
+            const performance = (sumaTerminales/(720 * ((8  * 12) - sumaParo/60))*100).toFixed(2);
             document.getElementById('Performance').textContent = performance + '%';
         })
         .catch(error => console.error('Error al obtener datos:', error));
