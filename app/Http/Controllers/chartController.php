@@ -86,7 +86,7 @@ class ChartController extends Controller
             $diffTimeSeconds = abs($fechaActual - $lastTiempo);
             $diffTimeMinutes = round($diffTimeSeconds / 60, 2);
             $hora = Carbon::parse($row->fecha)->format('H:i:s');
-            if ($lasStatus == 'STOP' && $diffTimeSeconds>3) {
+            if ($lasStatus == 'STOP' && $diffTimeSeconds > 3) {
                 $paros += $diffTimeMinutes;
 
             } else {
@@ -137,7 +137,7 @@ class ChartController extends Controller
         $paros = round($paros, 2);
         $running = round($running, 2);
 
-        // FIX 2: Normalize time calculation to handle time strings accurately
+        //  Normalize time calculation to handle time strings accurately
         $TiempoInicial = strtotime($fechaDelDia.' 07:30:00');
 
         if ($fechaDelDia === date('Y-m-d') and date('H:i:s') < '15:30:01') {
@@ -152,7 +152,7 @@ class ChartController extends Controller
 
         $diferenciaDeTiempo = abs($tiempoAhora - $TiempoInicial);
         $diferenciaDeTiempoMinutes = round($diferenciaDeTiempo / 60, 2);
-        $diferenciaDeTiempoMinutes = $diferenciaDeTiempoMinutes > 30 ? $diferenciaDeTiempoMinutes - 30 : $diferenciaDeTiempoMinutes; // Evitar división por cero
+        $diferenciaDeTiempoMinutes = $diferenciaDeTiempoMinutes > 240 ? $diferenciaDeTiempoMinutes - 30 : $diferenciaDeTiempoMinutes; // Evitar división por cero
 
         if ($diferenciaDeTiempoMinutes > 0) {
             $oee = round(($running / $diferenciaDeTiempoMinutes) * 100, 2);
@@ -169,7 +169,7 @@ class ChartController extends Controller
             'registroParos' => $registroParos,
             'estado' => $ultimoEstado,
             'stop' => $stop,
-            'run' => $run
+            'run' => $run,
         ];
 
         return response()->json($datos);
