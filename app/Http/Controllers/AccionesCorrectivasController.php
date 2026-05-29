@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\accionesCorrectivas\aceptacionAcciones;
+use App\Mail\accionesCorrectivas\cerrarAcciones;
 use App\Mail\accionesCorrectivas\cincoPorques;
 use App\Mail\accionesCorrectivas\contencion;
 use App\Mail\accionesCorrectivas\eliminacionCausas;
@@ -29,10 +30,10 @@ class AccionesCorrectivasController extends Controller
         $diasRestantes = [];
         $responsable = personalBergsModel::select('employeeName')->where('user', $value)->first();
         if ($value == 'Admin' or $value == 'Martin A') {
-            $accionesActivas = accionesCorrectivas::where('status', '!=', 'finalizada')->orderBy('id_acciones_correctivas', 'ASC')->get();
+            $accionesActivas = accionesCorrectivas::orderBy('id_acciones_correctivas', 'ASC')->get();
 
         } else {
-            $accionesActivas = accionesCorrectivas::where('status', '!=', 'finalizada')->where('resposableAccion', $responsable->employeeName)->orderBy('id_acciones_correctivas', 'ASC')->get();
+            $accionesActivas = accionesCorrectivas::where('status', '!=', 'etapa 4 - Accion correctiva finalizada')->where('resposableAccion', $responsable->employeeName)->orderBy('id_acciones_correctivas', 'ASC')->get();
         }
         foreach ($accionesActivas as $accion) {
             if (strpos($accion->status, 'etapa 1') !== false) {
@@ -506,5 +507,31 @@ class AccionesCorrectivasController extends Controller
         }
 
         return redirect()->route('accionesCorrectivas.show', $folio)->with('success', 'Estatus de sub acción actualizado exitosamente.');
+    }
+
+    public function cerrarAcciones(Request $request, $folio)
+    {
+        $folio = preg_replace('/[^\p{L}0-9()._\- ]/u', ' ', $folio);
+
+        $acciones = accionesCorrectivas::where('folioAccion', $folio)->update([
+            'status' => 'etapa 4 - Accion correctiva finalizada',
+        ]);
+
+        // Mail eliminacion
+        $acciones = accionesCorrectivas::where('folioAccion', $folio)->first();
+        $mailto = personalBergsModel::where('employeeName', $acciones->resposableAccion)->first();
+
+        $mailaddresses = [
+            'jgarrido@mx.bergstrominc.com',
+            'maleman@mx.bergstrominc.com',
+        ];
+
+        if ($mailto && $mailto->email) {
+            $mailaddresses[] = $mailto->email;
+        }
+        registoLogin::create(['fecha' => carbon::now()->format('d-m-Y H:i'), 'userName' => session('user'), 'action' => 'Cierre de accion correctiva ID: '.$folio]);
+        $mail = Mail::to($mailaddresses)->send(new cerrarAcciones($acciones, 'Cierre de accion correctiva'));
+
+        return redirect()->route('accionesCorrectivas.show', $folio)->with('success', 'Acción cerrada exitosamente.');
     }
 }

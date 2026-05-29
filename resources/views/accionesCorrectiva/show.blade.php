@@ -303,7 +303,7 @@
                                                     <button type="submit" class="btn btn-primary">{{__('Save') }}</button>
                                                 </form>
                                             </div>
-                                            <div class ="col-6">   
+                                            <div class ="col-6">
                                                 <form id="eliminarAccionForm_{{$accion->id}}" method="GET" action="{{ route('accionesCorrectivas.eliminarPlandeAccion', ['id' => $accion->id, 'folio' => $accion->folioAccion]) }}" style="display: inline;">
                                                 <input type="hidden" name="donde" value="planAccion">
                                                         <input type="hidden" name="motivoeliminacion" id="motivoeliminacion_{{$accion->id}}" >
@@ -498,6 +498,20 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-lg-12 mb-4 d-flex justify-content-center">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            @if($value =="Admin" or $value=="Martin A")
+                        <form action="{{ route('accionesCorrectivas.cerrarAcciones', ['folio' => $registroPorquest->folioAccion]) }}" method="GET">
+                            <button type="submit" class="btn btn-primary float-center">Cerrar Accion Correctiva</button>
+                        </form>
+                            @endif
+
+                        </div>
+
+                    </div>
+                </div>
             @endif
+
     </div>
 @endsection
