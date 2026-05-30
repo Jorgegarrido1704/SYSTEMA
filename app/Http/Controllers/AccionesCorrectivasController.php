@@ -122,12 +122,13 @@ class AccionesCorrectivasController extends Controller
         if (empty($value)) {
             return redirect('/');
         }
-        if ($id = null) {
+        if ($id == null) {
             return redirect()->route('accionesCorrectivas.index');
         }
         $categorias = [];
-        $id = preg_replace('/[^\p{L}0-9()._\- ]/u', ' ', $id);
+
         $registroPorquest = accionesCorrectivas::where('folioAccion', $id)->first();
+
         if (! empty($registroPorquest->porques)) {
             $categorias = explode(' | ', $registroPorquest->porques);
         } elseif (! empty($registroPorquest->Ishikawa)) {
@@ -138,7 +139,8 @@ class AccionesCorrectivasController extends Controller
         $acciones = sub_acciones_model::where('folioAccion', $id)->get();
 
         $personal = personalBergsModel::select('employeeName')->where('email', '!=', null)->where('status', '!=', 'Baja')->get();
-        $seguimientosSubAcciones = monitoreosAcciones::where('folioAccion', $registroPorquest->folioAccion)
+
+        $seguimientosSubAcciones = monitoreosAcciones::where('folioAccion', $id)
             ->orderBy('idSubAccion', 'ASC')
             ->orderBy('id', 'ASC')->get();
 
@@ -146,7 +148,7 @@ class AccionesCorrectivasController extends Controller
             'acciones' => $acciones,
             'cat' => $cat,
             'value' => $value,
-            'problema' => $problema,
+            // 'problema' => $problema,
             'categorias' => $categorias,
             'registroPorquest' => $registroPorquest,
             'seguimientosSubAcciones' => $seguimientosSubAcciones,
