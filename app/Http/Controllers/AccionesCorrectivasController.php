@@ -19,6 +19,8 @@ use App\Models\sub_acciones_model;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class AccionesCorrectivasController extends Controller
 {
@@ -30,10 +32,12 @@ class AccionesCorrectivasController extends Controller
         $diasRestantes = [];
         $responsable = personalBergsModel::select('employeeName')->where('user', $value)->first();
         if ($value == 'Admin' or $value == 'Martin A') {
-            $accionesActivas = accionesCorrectivas::orderBy('id_acciones_correctivas', 'ASC')->get();
+            $accionesActivas = accionesCorrectivas::where('status', '!=', 'etapa 4 - Accion correctiva finalizada')->orderBy('id_acciones_correctivas', 'ASC')->get();
+            $accionesCerradas = accionesCorrectivas::where('status', 'etapa 4 - Accion correctiva finalizada')->orderBy('id_acciones_correctivas', 'DESC')->get();
 
         } else {
             $accionesActivas = accionesCorrectivas::where('status', '!=', 'etapa 4 - Accion correctiva finalizada')->where('resposableAccion', $responsable->employeeName)->orderBy('id_acciones_correctivas', 'ASC')->get();
+            $accionesCerradas = accionesCorrectivas::where('status', 'etapa 4 - Accion correctiva finalizada')->where('resposableAccion', $responsable->employeeName)->orderBy('id_acciones_correctivas', 'DESC')->get();
         }
         foreach ($accionesActivas as $accion) {
             if (strpos($accion->status, 'etapa 1') !== false) {
@@ -50,6 +54,7 @@ class AccionesCorrectivasController extends Controller
             'accionesActivas' => $accionesActivas,
             'diasRestantes' => $diasRestantes,
             'personal' => $personal,
+            'accionesCerradas' => $accionesCerradas,
 
         ]);
     }
@@ -114,7 +119,12 @@ class AccionesCorrectivasController extends Controller
     {
         $cat = session('categoria');
         $value = session('user');
-        $problema = 'Alta rotación de empleados';
+        if (empty($value)) {
+            return redirect('/');
+        }
+        if ($id = null) {
+            return redirect()->route('accionesCorrectivas.index');
+        }
         $categorias = [];
         $id = preg_replace('/[^\p{L}0-9()._\- ]/u', ' ', $id);
         $registroPorquest = accionesCorrectivas::where('folioAccion', $id)->first();
@@ -533,5 +543,39 @@ class AccionesCorrectivasController extends Controller
         $mail = Mail::to($mailaddresses)->send(new cerrarAcciones($acciones, 'Cierre de accion correctiva'));
 
         return redirect()->route('accionesCorrectivas.show', $folio)->with('success', 'Acción cerrada exitosamente.');
+    }
+
+    public function descargarAccionesCorrectivasExcel(Request $request)
+    {
+        $acciones = accionesCorrectivas::orderBy('id_acciones_correctivas', 'ASC')->get();
+
+        $spreadsheet = new Spreadsheet;
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setTitle('Acciones Correctivas');
+
+        $sheet->setCellValue('A1', 'Folio');
+        $sheet->setCellValue('B1', 'Fecha');
+        $sheet->setCellValue('C1', 'Accion');
+        $sheet->setCellValue('D1', 'Resposable');
+        $sheet->setCellValue('E1', 'Status');
+
+        $row = 2;
+
+        foreach ($acciones as $accion) {
+            $sheet->setCellValue('A'.$row, $accion->folioAccion);
+            $sheet->setCellValue('B'.$row, $accion->fechaAccion);
+            $sheet->setCellValue('C'.$row, $accion->descripcionAccion);
+            $sheet->setCellValue('D'.$row, $accion->resposableAccion);
+            $sheet->setCellValue('E'.$row, $accion->status);
+            $row++;
+        }
+
+        $writer = new Xlsx($spreadsheet);
+        $filename = 'acciones_correctivas.xlsx';
+
+        return response()->streamDownload(function () use ($writer) {
+            $writer->save('php://output');
+        }, $filename);
+
     }
 }

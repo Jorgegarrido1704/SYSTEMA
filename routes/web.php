@@ -244,6 +244,7 @@ Route::controller(rrhhController::class)->group(function () {
 });
 Route::controller(AccionesCorrectivasController::class)->group(function () {
     Route::get('/acciones-correctivas', [AccionesCorrectivasController::class, 'index'])->name('accionesCorrectivas.index');
+    Route::GET('/acciones-correctivas/excelAcciones', [AccionesCorrectivasController::class, 'descargarAccionesCorrectivasExcel'])->name('accionesCorrectivas.descargarAccionesCorrectivasExcel');
     Route::post('/acciones-correctivas/create', [AccionesCorrectivasController::class, 'create'])->name('accionesCorrectivas.create');
     Route::get('/acciones-correctivas/{id}', [AccionesCorrectivasController::class, 'show'])->name('accionesCorrectivas.show');
     Route::get('/acciones-correctivas/guardarPorques/{id}', [AccionesCorrectivasController::class, 'guardarPorques'])->name('accionesCorrectivas.guardarPorques');
@@ -258,6 +259,7 @@ Route::controller(AccionesCorrectivasController::class)->group(function () {
     Route::POST('/acciones-correctivas/denegarEficacia/{id}', [AccionesCorrectivasController::class, 'denegarEficacia'])->name('accionesCorrectivas.denegarEficacia');
     Route::GET('/acciones-correctivas/statusSubAccion/{id}/{folio}', [AccionesCorrectivasController::class, 'statusSubAccion'])->name('accionesCorrectivas.statusSubAccion');
     Route::GET('/acciones-correctivas/cerrarAcciones/{folio}', [AccionesCorrectivasController::class, 'cerrarAcciones'])->name('accionesCorrectivas.cerrarAcciones');
+
 });
 
 Route::controller(mailsController::class)->group(function () {

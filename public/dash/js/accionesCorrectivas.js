@@ -51,3 +51,6 @@ function denegarEficacia() {
         document.getElementById('denegarEficacia').submit();
 }
 document.querySelector('#origenAccion').addEventListener('onsubmit', datos);
+function DescargarExcel() {
+    window.location.href = "/acciones-correctivas/excelAcciones";
+}

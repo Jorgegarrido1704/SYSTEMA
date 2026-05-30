@@ -128,6 +128,55 @@
             </div>
             </div>
     </div>
+    <div class="col-lg-4 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Indicadores</h6>
+                   <button class="badge badge-success" onclick="DescargarExcel()" >Descargar Excel</button>
+                </div>
+
+                <div class="card-body" style="overflow-x:auto;">
+                    <p>Acciones Correctivas Activas: {{ $accionesActivas->count() }}</p>
+                    <p>Acciones Correctivas Cerradas: {{ $accionesCerradas->count() }}</p>
+                </div>
+                </div>
+    </div>
+    <div class="col-lg-8 mb-4">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Acciones Correctivas Cerradas</h6>
+            </div>
+
+            <div class="card-body" style="overflow-x:auto;">
+                <table class="table table-bordered" id="accionesCorrectivasCerradasTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Folio</th>
+                            <th>Fecha de Deteccion</th>
+                            <th>Proceso Afectado</th>
+                            <th>Origen de la Accion</th>
+                            <th>Responsable</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if($accionesCerradas->count() > 0)
+                            @foreach($accionesCerradas as $accion)
+                                <tr>
+                                    <td><a href="{{ route('accionesCorrectivas.show', $accion->folioAccion) }}">{{ $accion->folioAccion  }}</a></td>
+                                    <td>{{ $accion->fechaAccion}}</td>
+                                    <td>{{ $accion->Afecta }}</td>
+                                    <td>{{ $accion->origenAccion }}</td>
+                                    <td>{{ $accion->resposableAccion }}</td>
+                                    <td>{{ $accion->status }}</td>
+                                </tr>
+                            @endforeach
+                        @endif
+                    </tbody>
+                </table>
+            </div>
+            </div>
+    </div>
  </div>
 @endsection
 
