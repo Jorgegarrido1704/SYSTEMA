@@ -96,7 +96,7 @@
                 <h6 class="m-0 font-weight-bold text-primary">Acciones Correctivas Activas</h6>
             </div>
 
-            <div class="card-body" style="overflow-x:auto;">
+            <div class="card-body" style="overflow-x:auto; height: 400px;">
                 <table class="table table-bordered" id="accionesCorrectivasTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
@@ -147,7 +147,7 @@
                 <h6 class="m-0 font-weight-bold text-primary">Acciones Correctivas Cerradas</h6>
             </div>
 
-            <div class="card-body" style="overflow-x:auto;">
+            <div class="card-body" style="overflow-x:auto; height: 400px;">
                 <table class="table table-bordered" id="accionesCorrectivasCerradasTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
