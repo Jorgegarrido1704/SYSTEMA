@@ -59,7 +59,7 @@ class rrhhController extends Controller
             $diasRegistro[4] = '';
             $tt[4] = '';
 
-        } elseif (carbon::now()->format('H:i') < '08:20' or carbon::now()->format('H:i') > '19:00') {
+        } elseif (carbon::now()->format('H:i') < '09:20' or carbon::now()->format('H:i') > '19:00') {
             $diasRegistro[$diaNum - 1] = '';
         }
         if ((carbon::now()->format('H:i') < '12:00' or carbon::now()->format('H:i') > '19:00') and $diaNum >= 2) {
@@ -133,7 +133,7 @@ class rrhhController extends Controller
             ];
 
             $permitido =
-                    (Carbon::now()->lte(Carbon::parse('08:25')) && $cat != 'RRHH' && $value != 'Admin') ||
+                    (Carbon::now()->lte(Carbon::parse('09:25')) && $cat != 'RRHH' && $value != 'Admin') ||
                     $cat == 'RRHH' ||
                     $value == 'Admin';
 
