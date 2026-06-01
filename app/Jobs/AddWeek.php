@@ -52,7 +52,8 @@ class AddWeek implements ShouldQueue
                 ->update([$day => 'PCS']);
         }
 
-        $registrosEmpleados = personalBergsModel::where('status', '!=', 'Baja')->where('typeWorker', '!=', 'Corporativo')->get();
+        $registrosEmpleados = personalBergsModel::where('status', '!=', 'Baja')->where('typeWorker', '!=', 'Corporativo')
+            ->orderBy('employeeArea', 'ASC')->get();
 
         foreach ($registrosEmpleados as $registroEmpleado) {
             $registro = '';
