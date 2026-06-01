@@ -57,7 +57,8 @@ class AddWeek implements ShouldQueue
 
         foreach ($registrosEmpleados as $registroEmpleado) {
             $registro = '';
-            if (assistence::where('week', '=', $week)->where('id_empleado', '=', $registroEmpleado->employeeNumber)->count() == 0) {
+            if (assistence::where('week', '=', $week)->where('id_empleado', '=', $registroEmpleado->employeeNumber)
+                ->where('yearOfAssistence', '=', $year)->count() == 0) {
                 assistence::insert([
                     'id_empleado' => $registroEmpleado->employeeNumber,
                     'week' => $week,
