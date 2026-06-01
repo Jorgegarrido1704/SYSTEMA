@@ -198,7 +198,7 @@ class AccionesCorrectivasController extends Controller
             }
         }
 
-        $porcentajeCumplimiento = $vencidas > 0 ? round(($vencidas / $totalAcciones) * 100, 1) : 100;
+        $porcentajeCumplimiento = $vencidas > 0 ? 100 - round(($vencidas / $abiertas) * 100, 1) : 100;
 
         return view('accionesCorrectiva.estadisticasAcciones', [
             'cat' => $cat,
