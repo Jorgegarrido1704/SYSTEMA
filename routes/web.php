@@ -259,6 +259,7 @@ Route::controller(AccionesCorrectivasController::class)->group(function () {
     Route::POST('/acciones-correctivas/denegarEficacia/{id}', [AccionesCorrectivasController::class, 'denegarEficacia'])->name('accionesCorrectivas.denegarEficacia');
     Route::GET('/acciones-correctivas/statusSubAccion/{id}/{folio}', [AccionesCorrectivasController::class, 'statusSubAccion'])->name('accionesCorrectivas.statusSubAccion');
     Route::GET('/acciones-correctivas/cerrarAcciones/{folio}', [AccionesCorrectivasController::class, 'cerrarAcciones'])->name('accionesCorrectivas.cerrarAcciones');
+    Route::GET('/acciones-correctivas/excelAcciones/estadisticasAcciones', [AccionesCorrectivasController::class, 'estadisticasAcciones'])->name('accionesCorrectivas.estadisticasAcciones');
 
 });
 

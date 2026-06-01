@@ -157,6 +157,62 @@ class AccionesCorrectivasController extends Controller
         ]);
     }
 
+    public function estadisticasAcciones()
+    {
+        $value = session('user');
+        $cat = session('categoria');
+        if (empty($value)) {
+            return redirect('/');
+        }
+        $acciones = accionesCorrectivas::select('status', 'fechaInicioAccion')->get();
+
+        $now = Carbon::now();
+
+        $totalAcciones = $acciones->count();
+        $cerradas = 0;
+        $enProceso = 0;
+        $abiertas = 0;
+        $vencidas = 0;
+
+        foreach ($acciones as $accion) {
+
+            if (! is_null($accion->fechaInicioAccion) && Carbon::parse($accion->fechaInicioAccion)->isBefore($now) && $accion->status !== 'etapa 4 - Accion correctiva finalizada') {
+                $vencidas++;
+            }
+
+            if ($accion->status === 'etapa 4 - Accion correctiva finalizada') {
+                $cerradas++;
+            } else {
+
+                $abiertas++;
+
+                if (is_null($accion->fechaInicioAccion)) {
+
+                    $enProceso++;
+                } else {
+
+                    if (Carbon::parse($accion->fechaInicioAccion)->isBefore($now)) {
+                        $enProceso++;
+                    }
+                }
+            }
+        }
+
+        $porcentajeCumplimiento = $vencidas > 0 ? round(($vencidas / $totalAcciones) * 100, 1) : 100;
+
+        return view('accionesCorrectiva.estadisticasAcciones', [
+            'cat' => $cat,
+            'value' => $value,
+            'totalAcciones' => $totalAcciones,
+            'cerradas' => $cerradas,
+            'enProceso' => $enProceso,
+            'abiertas' => $abiertas,
+            'vencidas' => $vencidas,
+            'porcentajeCumplimiento' => $porcentajeCumplimiento,
+        ]);
+
+    }
+
     public function guardarPorques(Request $request, $id)
     {
         $request->validate([
@@ -527,6 +583,7 @@ class AccionesCorrectivasController extends Controller
 
         $acciones = accionesCorrectivas::where('folioAccion', $folio)->update([
             'status' => 'etapa 4 - Accion correctiva finalizada',
+            'fechaFinAccion' => Carbon::now()->format('Y-m-d'),
         ]);
 
         // Mail eliminacion
