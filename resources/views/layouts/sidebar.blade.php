@@ -135,12 +135,13 @@
                 <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('rrhhDashBoard') }}">{{ __('Assistance') }}</a></li>
                 <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('Pendings.index') }}">{{ __('Pendings') }}</a></li>
                  <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('vacations') }}">{{ __('Vacations') }}</a></li>
-                  <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('accionesCorrectivas.index') }}">{{ __('Corrective Actions') }}</a></li>
-                  @if ($value=='Admin' || $value=='Martin A')
-                   <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('accionesCorrectivas.estadisticasAcciones') }}">{{ __('Statistics Corrective Actions') }}</a></li>
-                   @endif
+                  <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('accionesCorrectivas.index') }}" onmouseover=showAcciones();>
+                    {{ __('Corrective Actions') }}</a>
+                    <ul class="submenu" id="acciones" style="display:none;">
+                        <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('accionesCorrectivas.estadisticasAcciones') }}">{{ __('Statistics Corrective Actions') }}</a></li>
+                    </ul>
+                </li>
 
-               
                 @if($value=='Valeria P' || $value=='Admin' || $value=='Jose Luis' || $value=='Jesus_C' )
                 <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('testingMaterialRequeriment') }}">{{ __('Requeriment Materials Testing') }}</a></li>
                 @endif
@@ -207,6 +208,14 @@
     }
     function showRRHH() {
           var engMenu = document.getElementById("RRHH");
+        if (engMenu.style.display === "none" || engMenu.style.display === "") {
+            engMenu.style.display = "block";
+        } else {
+            engMenu.style.display = "none";
+        }
+    }
+    function showAcciones() {
+          var engMenu = document.getElementById("acciones");
         if (engMenu.style.display === "none" || engMenu.style.display === "") {
             engMenu.style.display = "block";
         } else {
