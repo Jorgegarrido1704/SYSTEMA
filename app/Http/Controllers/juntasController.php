@@ -1222,7 +1222,7 @@ class juntasController extends Controller
         $porcentaje = $thisYearGoals[$mesGrafica];
         $b = $buenos[$mesGrafica] ?? 0;
         $m = $malos[$mesGrafica] ?? 0;
-        $mes = date('m', strtotime('-1 month'));
+        $mes = date('m', strtotime('-2 month'));
         $registrosmes = workScreduleModel::where('CompletionDate', 'LIKE', date('Y').'-'.$mes.'-%')->where('status', 'Completed')
             ->orderBy('CompletionDate', 'DESC')
             ->get();
