@@ -34,7 +34,7 @@ class UpdateRotacionJob implements ShouldQueue
 
         $days = ['domingo', 'lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado'];
 
-        $column = $days[$now->dayOfWeek + 1];
+        $column = $days[$now->dayOfWeek];
 
         // Obtener conteo agrupado directamente desde BD
         $registros = DB::table('assistence')
