@@ -3,6 +3,18 @@
 @section('contenido')
  <!-- Page Heading -->
  <div class="d-sm-flex align-items-center justify-content-between mb-4"> </div>
+ <div class="row">
+    <div class="col-xl-12 col-md-12 mb-4">
+        <ul class="list-group list-group-horizontal justify-content-center">
+            <li class="list-group-item"><button type="button" class="btn btn-primary" onclick="cambiarMaquina('M1')">M1</button></li>
+            <li class="list-group-item"><button type="button" class="btn btn-primary" onclick="cambiarMaquina('M2')">M2</button></li>
+            <li class="list-group-item"><button type="button" class="btn btn-primary" onclick="cambiarMaquina('M3')">M3</button></li>
+            <li class="list-group-item"><button type="button" class="btn btn-primary" onclick="cambiarMaquina('M4')">M4</button></li>
+            <li class="list-group-item"><button type="button" class="btn btn-primary" onclick="cambiarMaquina('M5')">M5</button></li>
+            <li class="list-group-item"><button type="button" class="btn btn-primary" onclick="cambiarMaquina('M6')">M6</button></li>
+        </ul>
+    </div>
+ </div>
 
     <div class="row">
                     <div class="col-xl-12 col-md-6 mb-4">
@@ -80,8 +92,8 @@
                                     </div>
                                 </div>
                                 <!-- Maquina 1 -->
-                    
-                                    
+
+
                                 <div class="col-xl-2 col-md-2 mb-2">
                                     <div class="card border-left-primary shadow h-100 py-2">
                                         <div class="card-body">
@@ -137,7 +149,7 @@
                     <!--  END Hora por hora -->
 
                  </div>
-            
+
             <div class="row">
                 <!-- Paretos -->
                 <div class="col-xl-3 col-md-6 mb-4">
@@ -155,8 +167,8 @@
                     </div>
                  </div>
                  <!--end Paretos -->
-                 
-                 
+
+
             </div>
     <script>
 
@@ -175,40 +187,40 @@
 
         const data = await response.json();
         console.log(data);
-        
+
         registroParos= document.getElementById('regostroParos');
         registroParos.innerHTML = '';
         let total_de_paros=disponibilidad=0;
         if(data.registroParos !== null){
             registroParos.innerHTML = ``;
             //en una tabla
-            
+
             for (let i = 0; i < data.registroParos.length; i++) {
                 const paro = data.registroParos[i];
                  total_de_paros+=paro.time_min;
-                
+
                 const fila = document.createElement('tr');
                 fila.innerHTML = `
-                
+
                     <td>${paro.maquina}-</td>
                     <td>-${paro.motive}-</td>
                     <td>-${paro.time_min} min-</td>
                     <td>-${paro.hora}</td>
-                    
+
                 `;
                 registroParos.appendChild(fila);
             }
-            
+
         }
         disponibilidad=(data.tiempo_total_turno*0.9).toFixed(2)-total_de_paros;
-        
+
         document.getElementById('mc1').textContent = (data.running/disponibilidad*100).toFixed(2);
         document.getElementById('workingTime').textContent = data.running;
-        
+
         document.getElementById('disponibilidad').textContent = disponibilidad;
         document.getElementById('parosTime').textContent = (total_de_paros).toFixed(2);
-        document.getElementById('cortesCuenta').textContent = data.cortes;   
-         
+        document.getElementById('cortesCuenta').textContent = data.cortes;
+
         if(data.estado !== null){
             document.getElementById('mc1Estado').innerHTML = ``;
             if(data.estado == 'RUN'){
@@ -218,8 +230,8 @@
             }
         }
         if(data.tiempo_total_turno !== null){
-            
-        
+
+
         const paretoTiemposMaquina1 = document.getElementById('paretoTiempos Maquina1');
         const paretoData = {
             labels: ['Tiempos total disponible', 'Running', 'Paros'],
