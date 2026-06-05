@@ -1223,7 +1223,7 @@ class juntasController extends Controller
         $b = $buenos[$mesGrafica] ?? 0;
         $m = $malos[$mesGrafica] ?? 0;
         $mes = date('m', strtotime('-1 month'));
-        $registrosmes = workScreduleModel::where('CompletionDate', 'LIKE', date('Y').'-'.$mes.'-%')->where('status', 'Completed')
+        $registrosmes = workScreduleModel::where('CompletionDate', 'LIKE', date('Y').'-'.$mes.'-%')
             ->orderBy('CompletionDate', 'DESC')
             ->get();
 
