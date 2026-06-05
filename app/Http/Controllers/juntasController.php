@@ -2262,6 +2262,7 @@ class juntasController extends Controller
         $datosCorrector = ['OK', 'F', 'PSS', 'PCS', 'INC', 'V', 'R', 'SUS', 'PCT', 'TSP', 'ASM', 'SCE', 'HE', 'N'];
         $restroFaltantes = assistence::select('lider', $diaActual)
             ->where('week', '=', $week)
+            ->where('yearOfAssistence', '=', Carbon::now()->year)
             ->get();
         foreach ($restroFaltantes as $faltante) {
             if (! in_array($faltante->$diaActual, $datosCorrector)) {
@@ -2301,6 +2302,7 @@ class juntasController extends Controller
         $faltasPrimesTurno = assistence::where($diaActual, '=', 'F')
             ->where('week', '=', $week)
             ->where('shift', '=', 'firstShift')
+            ->where('yearOfAssistence', '=', Carbon::now()->year)
             ->count();
 
         $disponibilidadPrimesTurno1 = assistence::selectRaw('
@@ -2310,6 +2312,7 @@ class juntasController extends Controller
                 $join->on('assistence.shift', '=', DB::raw('personalberg.employeeShift COLLATE utf8mb4_unicode_ci'));
             })
             ->where('week', '=', $week)
+            ->where('yearOfAssistence', '=', Carbon::now()->year)
             ->where('personalberg.typeWorker', '=', 'Directo')
             ->where('personalberg.status', '!=', 'Baja')
             ->where('personalberg.employeeShift', '=', 'firstShift')
@@ -2337,6 +2340,7 @@ class juntasController extends Controller
         $faltasSecondShift = assistence::where($diaAnterior, '=', 'F')
             ->where('week', '=', $week)
             ->where('shift', '=', 'secondShift')
+            ->where('yearOfAssistence', '=', Carbon::now()->year)
             ->count();
         $disponibilidadSecondShift1 = assistence::selectRaw('
         ROUND(AVG(CASE WHEN '.$diaAnterior.' = "N" THEN 100 ELSE 0 END), 2) as disponibilidad
@@ -2359,6 +2363,7 @@ class juntasController extends Controller
         $maximoporcentajedeDatos = DB::table('assistence')
             ->select('lider', $diaActual)
             ->where('week', '=', $week)
+            ->where('yearOfAssistence', '=', Carbon::now()->year)
             ->whereIn($diaActual, ['R',  'TSP', 'OK'])
             ->whereIn(DB::raw('id_empleado COLLATE utf8mb4_unicode_ci'), function ($query) {
                 $query->select(DB::raw('employeeNumber COLLATE utf8mb4_unicode_ci'))
