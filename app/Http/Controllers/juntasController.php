@@ -2434,13 +2434,16 @@ class juntasController extends Controller
 
         if ($id == 'P') {
             $datos = assistence::select('name')->where('week', '=', $week)
+                ->where('yearOfAssistence', '=', Carbon::now()->year)
                 ->where(function ($query) use ($diaActual) {
                     $query->where($diaActual, '=', 'PSS')
                         ->orWhere($diaActual, '=', 'PCS')
                         ->orWhere($diaActual, '=', 'TSP');
                 })->orderby('name', 'ASC')->get();
         } elseif ($id == 'V') {
-            $Inicio = assistence::select('id_empleado', 'name')->where($diaActual, '=', 'V')->where('week', '=', $week)->orderby('name', 'ASC')->get();
+            $Inicio = assistence::select('id_empleado', 'name')->where($diaActual, '=', 'V')->where('week', '=', $week)
+                ->where('yearOfAssistence', '=', Carbon::now()->year)
+                ->orderby('name', 'ASC')->get();
             foreach ($Inicio as $row) {
                 $buscarVacaciones = registroVacacionesModel::where('id_empleado', '=', $row->id_empleado)
                     ->where('estatus', '=', 'Confirmado')
@@ -2454,7 +2457,8 @@ class juntasController extends Controller
             }
         } else {
 
-            $datos = assistence::select('name')->where($diaActual, '=', $id)->where('week', '=', $week)->orderby('name', 'ASC')->get();
+            $datos = assistence::select('name')->where($diaActual, '=', $id)->where('week', '=', $week)
+                ->where('yearOfAssistence', '=', Carbon::now()->year)->orderby('name', 'ASC')->get();
         }
 
         switch ($id) {
