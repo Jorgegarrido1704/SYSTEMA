@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Jobs\reportemaquinasdecorte;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -22,6 +23,15 @@ class Kernel extends ConsoleKernel
             ->timezone('America/Mexico_City');
 
         $schedule->job(new \App\Jobs\VacacionesRegistrosJob)->cron('1 2,5,7 * * *');
+
+        $maquinas = ['M1', 'M2', 'M3', 'M4', 'M5', 'M6']; // Lista de máquinas a monitorear
+        foreach ($maquinas as $maquina) {
+            Schedule::job(new reportemaquinasdecorte($maquina))->everyFiveMinutes()
+                ->between('08:00', '15:30')
+                ->weekdays()->saturdays() // De Lunes a Sábado
+                ->timezone('America/Mexico_City')
+                ->withoutOverlapping(10);
+        }
 
         // $schedule->job(new \App\Jobs\accionesCorrectivasJob)->dailyAt('07:00');
         // Data base backup

@@ -29,6 +29,27 @@ class mailsController extends Controller
         return view('emails.accionesCorrectivasMail', ['accion' => $accion]);
     }
 
+    public function maquinasDeCorte($maquina)
+    {
+        // Reemplaza connection() por DB::connection() si te daba error
+        $accion = \DB::connection('toi')->table('lecturas')
+            ->where('maquina', '=', $maquina)
+            ->where('fecha', 'LIKE', Carbon::today()->format('Y-m-d').'%')
+            ->orderby('id', 'desc')
+            ->first();
+
+        if ($accion == null) {
+            $accion = (object) [
+                'id' => 'No hay lecturas de hoy',
+                'maquina' => $maquina,
+                'fecha' => 'No hay lecturas de hoy',
+            ];
+        }
+
+        // Corregido: de 'accion' => $accio a 'accion' => $accion
+        return view('emails.maquinasdcorte', ['accion' => $accion]);
+    }
+
     public function firmasNPI()
     {
         $accion = PPAPandPRIM::where('count', '=', 0)->orderby('id', 'desc')->first();
