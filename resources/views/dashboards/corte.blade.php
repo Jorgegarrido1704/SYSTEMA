@@ -100,7 +100,7 @@
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
                                                     <div class="text-x font-weight-bold text-primary text-uppercase mb-1">
-                                                        MC-1</div>
+                                                        <span id="maquina1"></span></div>
                                                     <div class="h5 mb-0 font-weight-bold text-gray-800"><strong><span id="mc1"></span>%</strong></div>
                                                 </div>
                                                 <div class="col-auto" id="mc1Estado">
@@ -171,14 +171,20 @@
 
             </div>
     <script>
+        let maquinaActual = 'M1'; // Valor inicial, puedes cambiarlo según tus necesidades
+        function cambiarMaquina(nuevaMaquina) {
+        maquinaActual = nuevaMaquina;
+        getCorte(maquinaActual);
 
-      async function getCorte(){
+    }
+
+      async function getCorte(maquina ) {
     const fechaInput = document.getElementById('fecha').value;
     // Si el input está vacío, puedes decidir no enviar nada o enviar la fecha de hoy
     if(!fechaInput) return;
 
     try {
-        const response = await fetch('/chart/getDatacorte?fecha=' + fechaInput);
+        const response = await fetch('/chart/getDatacorte?fecha=' + fechaInput + '&maquina=' + maquina);
 
         // Si el servidor responde con error (500, 404, etc) saltará al catch
         if (!response.ok) {
@@ -216,7 +222,7 @@
 
         document.getElementById('mc1').textContent = (data.running/disponibilidad*100).toFixed(2);
         document.getElementById('workingTime').textContent = data.running;
-
+        document.getElementById('maquina1').textContent = maquina;
         document.getElementById('disponibilidad').textContent = disponibilidad;
         document.getElementById('parosTime').textContent = (total_de_paros).toFixed(2);
         document.getElementById('cortesCuenta').textContent = data.cortes;
@@ -302,10 +308,11 @@ const horaporo = document.getElementById('hora_por_hora'); // Evita espacios en 
 
     } catch (error) {
         console.error("Hubo un problema al obtener el corte:", error);
+
     }
 }
-    getCorte();
-    setInterval(getCorte, 60000);
+    getCorte(maquinaActual);
+    setInterval(getCorte(maquinaActual), 60000);
     </script>
 
 

@@ -23,10 +23,11 @@ class ChartController extends Controller
     {
 
         $fechaDelDia = $request->input('fecha') ?? \Carbon\Carbon::now()->format('Y-m-d');
+        $maquina = $request->input('maquina') ?? 'M1';
 
         $colection = DB::connection('toi')
             ->table('lecturas')
-            ->where('maquina', 'M1')
+            ->where('maquina', $maquina)
             ->whereBetween('fecha', [$fechaDelDia.' 07:30:00', $fechaDelDia.' 15:30:00'])
             ->orderBy('fecha', 'ASC')
             ->orderBy('id', 'ASC')
@@ -53,7 +54,7 @@ class ChartController extends Controller
 
         $cortes = DB::connection('toi')
             ->table('lecturas')
-            ->where('maquina', 'M1')
+            ->where('maquina', $maquina)
             ->where('estado', 'RUN')
             ->whereBetween('fecha', [$fechaDelDia.' 07:30:00', $fechaDelDia.' 15:30:00'])
             ->orderBy('fecha', 'ASC')
@@ -62,7 +63,7 @@ class ChartController extends Controller
 
         $registroParos = DB::connection('toi')
             ->table('cutting_machine_stops')
-            ->where('maquina', 'M1')
+            ->where('maquina', $maquina)
             ->where('fecha', $fechaDelDia)
             ->get();
 
