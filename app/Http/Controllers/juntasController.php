@@ -2349,6 +2349,7 @@ class juntasController extends Controller
                 $join->on('assistence.shift', '=', DB::raw('personalberg.employeeShift COLLATE utf8mb4_unicode_ci'));
             })
             ->where('week', '=', $week)
+            ->where('yearOfAssistence', '=', Carbon::now()->year)
             ->where('personalberg.typeWorker', '=', 'Directo')
             ->where('personalberg.status', '!=', 'Baja')
             ->where('personalberg.employeeShift', '=', 'secondShift')
