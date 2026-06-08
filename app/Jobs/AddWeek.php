@@ -97,7 +97,7 @@ class AddWeek implements ShouldQueue
 
                 assistence::where('week', '=', $week)
                     ->where('id_empleado', '=', $registroEmpleado->employeeNumber)
-                    ->whereIn($day, ['-', '', null, ' '])
+                    ->whereIn($day, ['-', '', null, ' ', 'F'])
                     ->update([$day => $registro]);
             }
         }
