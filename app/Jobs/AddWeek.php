@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Models\assistence;
 use App\Models\personalBergsModel;
 use App\Models\registroVacacionesModel;
+use App\Models\relogChecadorModel;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
