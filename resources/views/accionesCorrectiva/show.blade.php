@@ -52,8 +52,7 @@
                                 <form id="eliminarContencionForm" method="POST" action="{{ route('accionesCorrectivas.eliminarCausaRaiz', $registroPorquest->folioAccion) }}" style="display: inline;">
                                     @csrf
                                     <input type="hidden" name="donde" value="contencion">
-                                        <input type="hidden" name="porqueCausaRaiz" id="porqueCausaRaiz" >
-                                    <button type="button" class="btn btn-danger float-right" >Aceptacion Eficacia</button>
+                                    <button type="button" class="btn btn-danger float-right" >Eliminacion de contencion</button>
                                 </form>
                                 @endif
                                         </div>
