@@ -71,6 +71,10 @@ class AddWeek implements ShouldQueue
             if (carbon::now()->format('H') > 6) {
                 if (registroVacacionesModel::where('id_empleado', '=', $registroEmpleado->employeeNumber)->where('fecha_de_solicitud', '=', $dates)->exists()) {
                     $registro = 'V';
+                } elseif (relogChecadorModel::where('employeeNumber', '=', $registroEmpleado->employeeNumber)
+                    ->where('fechaRegistro', '=', $dates)->exists()) {
+                    $registro = 'OK';
+
                 } elseif ($today == 6 || $today == 7) {
                     $registro = 'N/A';
                 } elseif ($registroEmpleado->employeeNumber == 'i2047' or $registroEmpleado->employeeNumber == 'i2116'

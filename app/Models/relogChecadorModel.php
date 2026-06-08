@@ -12,6 +12,7 @@ class relogChecadorModel extends Model
     protected $table = 'relogchecador';
 
     protected $fillable = [
+        'employeeNumber',
         'fechaRegistro',
         'entrada',
         'salida',
