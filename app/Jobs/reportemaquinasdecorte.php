@@ -16,31 +16,31 @@ class reportemaquinasdecorte implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public $maquina;
-
     // Puedes pasarle una máquina específica al Job o buscar todas dentro del handle
-    public function __construct($maquina)
-    {
-        $this->maquina = $maquina;
-    }
+    public function __construct() {}
 
     public function handle(): void
     {
-        $ultimaLectura = DB::connection('toi')->table('lecturas')
-            ->where('maquina', '=', $this->maquina)
-            ->orderby('id', 'desc')
-            ->first();
+        $maquinas = ['M1', 'M2', 'M3', 'M4', 'M5', 'M6'];
+        foreach ($maquinas as $maquina) {
 
-        if ($ultimaLectura) {
+            $ultimaLectura = DB::connection('toi')->table('lecturas')
+                ->where('maquina', '=', $this->maquina)
+                ->orderby('id', 'desc')
+                ->first();
 
-            $fechaLectura = Carbon::parse($ultimaLectura->fecha);
-            $ahora = Carbon::now('America/Mexico_City');
+            if ($ultimaLectura) {
 
-            if ($fechaLectura->diffInMinutes($ahora) > 30) {
-                $asunto = "ALERTA: La máquina {$this->maquina} lleva más de 30 minutos parada";
-                $correoDestino = ['jgarrido@mx.bergstrominc.com', 'jcrodriguez@mx.bergstrominc.com'];
+                $fechaLectura = Carbon::parse($ultimaLectura->fecha);
+                $ahora = Carbon::now('America/Mexico_City');
 
-                Mail::to($correoDestino)->send(new mailmaquinascorte($ultimaLectura, $asunto));
+                if ($fechaLectura->diffInMinutes($ahora) > 30) {
+                    $asunto = "ALERTA: La máquina {$this->maquina} lleva más de 30 minutos parada";
+                    $correoDestino = ['jgarrido@mx.bergstrominc.com', 'jcrodriguez@mx.bergstrominc.com'];
+
+                    Mail::to($correoDestino)->send(new mailmaquinascorte($ultimaLectura, $asunto));
+                }
+
             }
         }
     }
