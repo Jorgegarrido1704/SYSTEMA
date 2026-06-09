@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Corte extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'np',
         'cliente',
@@ -24,7 +25,12 @@ class Corte extends Model
         'dataTo',
         'qty',
         'tamano',
-        'conector'
+        'conector',
+        'tintaColor',
+        'time_ruteo',
+        'cutStatus',
+        'urgencia',
+        'fechaDeregistro',
     ];
 
     protected $table = 'corte'; // Adjust the table name if it's different

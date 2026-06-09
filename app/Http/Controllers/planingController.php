@@ -334,7 +334,7 @@ class planingController extends Controller
                 precios::insert(['client' => $client, 'pn' => $np, 'desc' => $desc, 'price' => $price, 'send' => $send, 'rev' => $rev]);
             }
             $today = date('d-m-Y H:i');
-            $barcodes = substr($rev, 0, 4) == 'PPAP' || substr($rev, 0, 4) == 'PRIM' ? (substr($np, 0, 2).substr($client, 0, 2).$qty.$wo.substr($po,1,3).'R'.substr($rev, 5)) : (substr($np, 0, 2).substr($client, 0, 2).$qty.$wo.substr($po,1,3).'R'.$rev);
+            $barcodes = substr($rev, 0, 4) == 'PPAP' || substr($rev, 0, 4) == 'PRIM' ? (substr($np, 0, 2).substr($client, 0, 2).$qty.$wo.substr($po, 1, 3).'R'.substr($rev, 5)) : (substr($np, 0, 2).substr($client, 0, 2).$qty.$wo.substr($po, 1, 3).'R'.$rev);
             // Insert data into the Po table
             $poData = new Po;
             $poData->client = $client;
@@ -411,6 +411,8 @@ class planingController extends Controller
                         ->get();
                     if (count($Buscarcorte) > 0) {
                         foreach ($Buscarcorte as $corte) {
+                            // falta ingresar la informacion de la corte
+                            // falta query para tinta y para tiempo de corte
                             $ADDcorte = new Corte;
                             $ADDcorte->np = $np;
                             $ADDcorte->cliente = $client;
@@ -432,6 +434,9 @@ class planingController extends Controller
                             $ADDcorte->qty = $qty;
                             $ADDcorte->tamano = $corte->tamano;
                             $ADDcorte->conector = $corte->conector;
+                            $ADDcorte->tintaColor = $$colorDetinta; // falta cambiar
+                            $ADDcorte->time_ruteo = $tiempoderuteo; // falta query
+
                             $ADDcorte->save();
                         }
                     }
