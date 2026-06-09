@@ -25,7 +25,7 @@ class reportemaquinasdecorte implements ShouldQueue
         foreach ($maquinas as $maquina) {
 
             $ultimaLectura = DB::connection('toi')->table('lecturas')
-                ->where('maquina', '=', $this->maquina)
+                ->where('maquina', '=', $maquina)
                 ->orderby('id', 'desc')
                 ->first();
 
@@ -35,7 +35,7 @@ class reportemaquinasdecorte implements ShouldQueue
                 $ahora = Carbon::now('America/Mexico_City');
 
                 if ($fechaLectura->diffInMinutes($ahora) > 30) {
-                    $asunto = "ALERTA: La máquina {$this->maquina} lleva más de 30 minutos parada";
+                    $asunto = "ALERTA: La máquina {$maquina} lleva más de 30 minutos parada";
                     $correoDestino = ['jgarrido@mx.bergstrominc.com', 'jcrodriguez@mx.bergstrominc.com'];
 
                     Mail::to($correoDestino)->send(new mailmaquinascorte($ultimaLectura, $asunto));
