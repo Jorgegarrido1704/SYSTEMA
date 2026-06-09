@@ -24,10 +24,10 @@ class Kernel extends ConsoleKernel
         $schedule->job(new \App\Jobs\VacacionesRegistrosJob)->cron('1 2,5,7 * * *');
 
         $schedule->job(new \App\Jobs\reportemaquinasdecorte)->everyMinute()
-            ->between('08:00', '16:30')
+            ->between('08:00', '16:35')
             ->weekdays()->saturdays() // De Lunes a Sábado
-            ->timezone('America/Mexico_City');
-             ->withoutOverlapping(10);
+            ->timezone('America/Mexico_City')
+            ->withoutOverlapping(10);
 
         // $schedule->job(new \App\Jobs\accionesCorrectivasJob)->dailyAt('07:00');
         // Data base backup
