@@ -34,12 +34,10 @@ class reportemaquinasdecorte implements ShouldQueue
                 $fechaLectura = Carbon::parse($ultimaLectura->fecha);
                 $ahora = Carbon::now('America/Mexico_City');
 
-                if ($fechaLectura->diffInMinutes($ahora) > 30) {
-                    $asunto = "ALERTA: La máquina {$maquina} lleva más de 30 minutos parada";
-                    $correoDestino = ['jgarrido@mx.bergstrominc.com', 'jcrodriguez@mx.bergstrominc.com'];
+                $asunto = "ALERTA: La máquina {$maquina} lleva más de 30 minutos parada";
+                $correoDestino = ['jgarrido@mx.bergstrominc.com'];
 
-                    Mail::to($correoDestino)->send(new mailmaquinascorte($ultimaLectura, $asunto));
-                }
+                Mail::to($correoDestino)->send(new mailmaquinascorte($ultimaLectura, $asunto));
 
             }
         }
