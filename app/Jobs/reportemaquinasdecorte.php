@@ -24,9 +24,6 @@ class reportemaquinasdecorte implements ShouldQueue
         $this->maquina = $maquina;
     }
 
-    /**
-     * Execute the job.
-     */
     public function handle(): void
     {
         $ultimaLectura = DB::connection('toi')->table('lecturas')
@@ -36,7 +33,7 @@ class reportemaquinasdecorte implements ShouldQueue
 
         if ($ultimaLectura) {
 
-            $fechaLectura = Carbon::parse($ultimaLectura->fecha, 'America/Mexico_City');
+            $fechaLectura = Carbon::parse($ultimaLectura->fecha);
             $ahora = Carbon::now('America/Mexico_City');
 
             if ($fechaLectura->diffInMinutes($ahora) > 30) {
