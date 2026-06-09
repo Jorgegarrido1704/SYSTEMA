@@ -434,8 +434,8 @@ class planingController extends Controller
                             $ADDcorte->qty = $qty;
                             $ADDcorte->tamano = $corte->tamano;
                             $ADDcorte->conector = $corte->conector;
-                            $ADDcorte->tintaColor = $$colorDetinta; // falta cambiar
-                            $ADDcorte->time_ruteo = $tiempoderuteo; // falta query
+                            // $ADDcorte->tintaColor = $$colorDetinta; // falta cambiar
+                            // $ADDcorte->time_ruteo = $tiempoderuteo; // falta query
 
                             $ADDcorte->save();
                         }
