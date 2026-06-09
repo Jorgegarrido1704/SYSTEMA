@@ -262,6 +262,8 @@ class AdminSupControlloer extends Controller
                 \App\Jobs\respolados::dispatch();
             } elseif ($request->input('setAddWeek') == 5) {
                 \App\Jobs\accionesCorrectivasJob::dispatch();
+            } elseif ($request->input('setAddWeek') == 6) {
+                \App\Jobs\reportemaquinasdecorte('M1')::dispatch();
             }
         }
 

@@ -16,7 +16,7 @@ class reportemaquinasdecorte implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $maquina;
+    public $maquina;
 
     // Puedes pasarle una máquina específica al Job o buscar todas dentro del handle
     public function __construct($maquina)
