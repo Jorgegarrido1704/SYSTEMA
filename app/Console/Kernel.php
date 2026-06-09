@@ -23,11 +23,15 @@ class Kernel extends ConsoleKernel
 
         $schedule->job(new \App\Jobs\VacacionesRegistrosJob)->cron('1 2,5,7 * * *');
 
-        $schedule->job(new \App\Jobs\reportemaquinasdecorte)->everyFiveMinutes()
+        $schedule->job(new \App\Jobs\reportemaquinasdecorte)
+            ->everyFiveMinutes()
             ->between('08:00', '18:15')
-            ->weekdays()->saturdays() // De Lunes a Sábado
-            ->timezone('America/Mexico_City');
-        // ->withoutOverlapping(10);
+            ->days([1, 2, 3, 4, 5, 6]) // Lunes a Sábado
+            ->timezone('America/Mexico_City')
+            ->appendOutputTo(storage_path('logs/schedule.log')) // Crea un log específico
+            ->onFailure(function () {
+                Log::error('El job de reporte de máquinas falló.');
+            });
 
         // $schedule->job(new \App\Jobs\accionesCorrectivasJob)->dailyAt('07:00');
         // Data base backup
