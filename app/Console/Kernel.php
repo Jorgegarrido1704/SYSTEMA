@@ -24,7 +24,7 @@ class Kernel extends ConsoleKernel
         $schedule->job(new \App\Jobs\VacacionesRegistrosJob)->cron('1 2,5,7 * * *');
 
         $schedule->job(new \App\Jobs\reportemaquinasdecorte)->everyFiveMinutes()
-            ->between('08:00', '16:35')
+            ->between('08:00', '18:05')
             ->weekdays()->saturdays() // De Lunes a Sábado
             ->timezone('America/Mexico_City')
             ->withoutOverlapping(10);
