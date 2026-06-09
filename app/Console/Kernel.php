@@ -24,8 +24,8 @@ class Kernel extends ConsoleKernel
         $schedule->job(new \App\Jobs\VacacionesRegistrosJob)->cron('1 2,5,7 * * *');
 
         $schedule->job(new \App\Jobs\reportemaquinasdecorte)
-            ->everyMinute()->randomDelay(5)
-            ->between('08:00', '19:15')
+            ->everyTenMinutes()
+            ->between('08:00', '16:00')
             ->days([1, 2, 3, 4, 5, 6]) // Lunes a Sábado
             ->timezone('America/Mexico_City')
             ->appendOutputTo(storage_path('logs/schedule.log')) // Crea un log específico
