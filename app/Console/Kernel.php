@@ -26,10 +26,10 @@ class Kernel extends ConsoleKernel
         $maquinas = ['M1', 'M2', 'M3', 'M4', 'M5', 'M6']; // Lista de máquinas a monitorear
         foreach ($maquinas as $maquina) {
             Schedule::job(new \App\Jobs\reportemaquinasdecorte($maquina))->everyFiveMinutes()
-                ->between('08:00', '15:30')
-                ->weekdays()->saturdays() // De Lunes a Sábado
-                ->timezone('America/Mexico_City')
-                ->withoutOverlapping(10);
+               // ->between('08:00', '15:30')
+               // ->weekdays()->saturdays() // De Lunes a Sábado
+                ->timezone('America/Mexico_City');
+            // ->withoutOverlapping(10);
         }
 
         // $schedule->job(new \App\Jobs\accionesCorrectivasJob)->dailyAt('07:00');
