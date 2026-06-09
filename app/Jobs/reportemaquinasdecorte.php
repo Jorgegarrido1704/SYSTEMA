@@ -3,7 +3,6 @@
 namespace App\Jobs;
 
 use App\Mail\maquinasCorte\mailmaquinascorte;
-use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -31,10 +30,11 @@ class reportemaquinasdecorte implements ShouldQueue
 
             if ($ultimaLectura) {
 
-                $fechaLectura = Carbon::parse($ultimaLectura->fecha);
-                $ahora = Carbon::now('America/Mexico_City');
+                $fechaLectura = date('Y-m-d H:i:s', strtotime($ultimaLectura->fecha));
+                $ahora = date('Y-m-d H:i:s');
 
-                $diferencia = $ahora->diffInMinutes($fechaLectura);
+                $diferencia = abs(strtotime($ahora) - strtotime($fechaLectura));
+                $diferencia = $diferencia / 60;
                 if ($diferencia > 30) {
                     $asunto = "ALERTA: La máquina {$maquina} lleva más de 30 minutos parada";
                     $correoDestino = ['jgarrido@mx.bergstrominc.com'];
