@@ -43,6 +43,14 @@ class reportemaquinasdecorte implements ShouldQueue
 
             } else {
 
+                $ultimaLectura = (object) [
+                    'maquina' => $maquina,
+                    'fecha' => 'No hay lecturas de hoy',
+                    'id' => 'No hay lecturas de hoy',
+                    'valor' => 'No hay lecturas de hoy',
+                    'estado' => 'No hay lecturas de hoy',
+                ];
+
                 $asunto = "ALERTA: La máquina {$maquina} lleva más de 30 minutos parada";
                 $correoDestino = ['jgarrido@mx.bergstrominc.com'];
                 Mail::to($correoDestino)->send(new mailmaquinascorte($ultimaLectura, $asunto));
