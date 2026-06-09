@@ -2,7 +2,6 @@
 
 namespace App\Console;
 
-use App\Jobs\reportemaquinasdecorte;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -26,7 +25,7 @@ class Kernel extends ConsoleKernel
 
         $maquinas = ['M1', 'M2', 'M3', 'M4', 'M5', 'M6']; // Lista de máquinas a monitorear
         foreach ($maquinas as $maquina) {
-            Schedule::job(new reportemaquinasdecorte($maquina))->everyFiveMinutes()
+            Schedule::job(new \App\Jobs\reportemaquinasdecorte($maquina))->everyFiveMinutes()
                 ->between('08:00', '15:30')
                 ->weekdays()->saturdays() // De Lunes a Sábado
                 ->timezone('America/Mexico_City')

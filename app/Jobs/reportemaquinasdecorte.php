@@ -35,7 +35,7 @@ class reportemaquinasdecorte implements ShouldQueue
             ->first();
 
         if ($ultimaLectura) {
-            // Aseguramos que Carbon interprete la fecha del servidor/base de datos y el "ahora" en la misma zona horaria
+
             $fechaLectura = Carbon::parse($ultimaLectura->fecha, 'America/Mexico_City');
             $ahora = Carbon::now('America/Mexico_City');
 
