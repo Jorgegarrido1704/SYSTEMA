@@ -21,10 +21,10 @@ class Kernel extends ConsoleKernel
             ->cron('31 3,5,7 * * *')
             ->timezone('America/Mexico_City');
 
-        $schedule->job(new \App\Jobs\VacacionesRegistrosJob)->cron('1 2,5,7 * * *');
+        $schedule->job(new \App\Jobs\VacacionesRegistrosJob)->cron('5 2,5,7,9 * * *');
 
         $schedule->job(new \App\Jobs\reportemaquinasdecorte)
-            ->everyHalfHour()
+            ->everyTenMinutes()
             ->between('08:00', '16:00')
             ->days([1, 2, 3, 4, 5, 6]) // Lunes a Sábado
             ->timezone('America/Mexico_City')
