@@ -20,7 +20,7 @@ class reportemaquinasdecorte implements ShouldQueue
 
     public function handle(): void
     {
-        $maquinas = ['M1', 'M2', 'M3', 'M4', 'M5', 'M6'];
+        $maquinas = ['M1', 'M2', 'M3', 'M4', 'M5'];
         foreach ($maquinas as $maquina) {
 
             $ultimaLectura = DB::connection('toi')->table('lecturas')
@@ -37,7 +37,7 @@ class reportemaquinasdecorte implements ShouldQueue
                 $diferencia = $diferencia / 60;
                 if ($diferencia > 30) {
                     $asunto = "ALERTA: La máquina {$maquina} lleva más de 30 minutos parada";
-                    $correoDestino = ['jgarrido@mx.bergstrominc.com'];
+                    $correoDestino = ['jgarrido@mx.bergstrominc.com', 'jcrodriguez@mx.bergstrominc.com'];
                     Mail::to($correoDestino)->send(new mailmaquinascorte($ultimaLectura, $asunto));
                 }
 
