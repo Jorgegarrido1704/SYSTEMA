@@ -35,9 +35,20 @@ class reportemaquinasdecorte implements ShouldQueue
 
                 $diferencia = abs(strtotime($ahora) - strtotime($fechaLectura));
                 $diferencia = $diferencia / 60;
-                if ($diferencia > 30) {
-                    $asunto = "ALERTA: La máquina {$maquina} lleva más de 30 minutos parada";
-                    $correoDestino = ['jgarrido@mx.bergstrominc.com', 'jcrodriguez@mx.bergstrominc.com'];
+                if ($diferencia > 90) {
+                    $asunto = "ALERTA: La máquina {$maquina} lleva más de 90 minutos parada";
+                    $correoDestino = ['jgarrido@mx.bergstrominc.com', 'jcrodriguez@mx.bergstrominc.com', 'jruiz@mx.bergstrominc.com', 'ediaz@mx.bergstrominc.com',
+                        'JPereida@mx.bergstrominc.com', 'AnGonzalez@mx.bergstrominc.com', 'jolaes@mx.bergstrominc.com', 'dvillalpando@mx.bergstrominc.com',
+                        'lramos@mx.bergstrominc.com', 'jcervantes@mx.bergstrominc.com', 'jguillen@mx.bergstrominc.com', 'hsuarez@mx.bergstrominc.com'];
+                    Mail::to($correoDestino)->send(new mailmaquinascorte($ultimaLectura, $asunto));
+                } elseif ($diferencia > 60) {
+                    $asunto = "ALERTA: La máquina {$maquina} lleva más de 60 minutos parada";
+                    $correoDestino = ['jgarrido@mx.bergstrominc.com', 'jcrodriguez@mx.bergstrominc.com', 'jruiz@mx.bergstrominc.com', 'ediaz@mx.bergstrominc.com',
+                        'JPereida@mx.bergstrominc.com', 'AnGonzalez@mx.bergstrominc.com'];
+                    Mail::to($correoDestino)->send(new mailmaquinascorte($ultimaLectura, $asunto));
+                } elseif ($diferencia > 20) {
+                    $asunto = "ALERTA: La máquina {$maquina} lleva más de 20 minutos parada";
+                    $correoDestino = ['jgarrido@mx.bergstrominc.com', 'jcrodriguez@mx.bergstrominc.com', 'jruiz@mx.bergstrominc.com'];
                     Mail::to($correoDestino)->send(new mailmaquinascorte($ultimaLectura, $asunto));
                 }
 
