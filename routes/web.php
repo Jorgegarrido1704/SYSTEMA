@@ -109,6 +109,7 @@ Route::controller(PpapIngController::class)->group(function () {
     Route::get('/graffWorksEng', [PpapIngController::class, 'graffWorksEng'])->name('graffWorksEng');
     Route::get('/UpdateWorkFiles', [PpapIngController::class, 'UpdateWorkFiles'])->name('UpdateWorkFiles');
     Route::post('/updateBomfile', [PpapIngController::class, 'updateBomfile'])->name('updateBomfile');
+    Route::post('/updateEtiquetas', [PpapIngController::class, 'updateEtiquetas'])->name('updateEtiquetas');
 });
 
 Route::controller(AlmacenController::class)->group(function () {

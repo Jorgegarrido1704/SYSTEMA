@@ -7,6 +7,7 @@ use App\Models\errores;
 use App\Models\ingAct;
 use App\Models\login;
 use App\Models\PPAPandPRIM;
+use App\Models\listasDeCorte;
 use App\Models\ppapIng;
 use App\Models\precios;
 use App\Models\regfull;
@@ -15,11 +16,13 @@ use App\Models\Wo;
 use App\Models\workScreduleModel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
 
 class PpapIngController extends Controller
 {
@@ -1123,5 +1126,119 @@ class PpapIngController extends Controller
 
             return redirect()->back()->with('error', 'Error crítico en el proceso: '.$e->getMessage());
         }
+    }
+
+    public function updateEtiquetas(Request $request)
+    {
+        // 1. Validar Sesión (Idealmente usa un Middleware, pero mantenemos tu lógica)
+        if (! session()->has('user')) {
+            return redirect('/');
+        }
+
+        // 2. Validar Formulario y Archivo
+        $validator = request()->validate([
+            'csv_file' => 'required|mimes:csv',
+            'Numero_de_Parte' => 'required',
+            'Revision' => 'required',
+        ]);
+
+        $pnInput = $request->input('Numero_de_Parte');
+        $revInput = $request->input('Revision');
+
+        $file = $request->file('csv_file');
+        $csvFile = $file->getRealPath();
+
+        try {
+            listasDeCorte::where('pn', $pnInput)->delete();
+            $handle = fopen($csvFile, 'r');
+            if (! $handle) {
+                throw new Exception('No se pudo abrir el archivo CSV.');
+            }
+
+            $rowCount = 0;
+            $maxRows = 600;
+            $insertData = []; // Array para inserción masiva (Bulk Insert)
+
+            // --- Procesar Primera Línea (Remover BOM si existe) ---
+            $firstLine = fgets($handle);
+            if ($firstLine !== false) {
+                if (str_starts_with($firstLine, "\xEF\xBB\xBF")) {
+                    $firstLine = substr($firstLine, 3);
+                }
+
+                $data = str_getcsv($firstLine, ',');
+
+                if (count($data) >= 15) {
+                    $cons = trim($data[0]); // El consecutivo o primer dato útil del excel
+
+                    if ($cons !== '') {
+                        $insertData[] = $this->mapCsvRow($data, $pnInput, $revInput);
+                        $rowCount++;
+                    }
+                }
+            }
+
+            // --- Procesar resto del archivo (Máximo 600 filas) ---
+            while (($data = fgetcsv($handle, 2000, ',')) !== false) {
+                if ($rowCount >= $maxRows) {
+                    break;
+                }
+
+                if (count($data) < 15) {
+                    continue; // Saltar filas incompletas
+                }
+
+                $cons = trim($data[0]);
+                if ($cons === '') {
+                    break; // Detener si encuentra una fila clave vacía
+                }
+
+                $insertData[] = $this->mapCsvRow($data, $pnInput, $revInput);
+                $rowCount++;
+            }
+
+            fclose($handle);
+
+            if (! empty($insertData)) {
+                DB::transaction(function () use ($insertData) {
+
+                    listasDeCorte::insert($insertData);
+                });
+            }
+
+            return redirect()->back()->with('success', "Se han procesado {$rowCount} registros correctamente.");
+
+        } catch (Exception $e) {
+            if (isset($handle) && is_resource($handle)) {
+                fclose($handle);
+            }
+
+            // Manejo de errores estilo Laravel
+            return redirect()->back()->withInput()->withErrors(['error' => 'Error al procesar el archivo: '.$e->getMessage()]);
+        }
+    }
+
+
+    private function mapCsvRow(array $data, string $pn, string $rev): array
+    {
+        return [
+            'pn' => $pn,
+            'rev' => $rev,
+            'cons' => trim($data[0] ?? ''), // A partir de aquí lee las columnas del Excel
+            'tipo' => trim($data[1] ?? ''),
+            'aws' => trim($data[2] ?? ''),
+            'color' => trim($data[3] ?? ''),
+            'tamano' => trim($data[4] ?? ''),
+            'strip1' => trim($data[5] ?? ''),
+            'terminal1' => trim($data[6] ?? ''),
+            'app1' => trim($data[7] ?? ''),
+            'strip2' => trim($data[8] ?? ''),
+            'terminal2' => trim($data[9] ?? ''),
+            'app2' => trim($data[10] ?? ''),
+            'conector' => trim($data[11] ?? ''),
+            'colorTinta' => trim($data[12] ?? ''),
+            'dataFrom' => trim($data[13] ?? ''),
+            'dataTo' => trim($data[14] ?? ''),
+        ];
     }
 }
