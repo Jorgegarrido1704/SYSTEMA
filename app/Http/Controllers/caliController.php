@@ -1096,7 +1096,7 @@ class caliController extends generalController
         $sheet->setCellValue('A'.$t, 'TOTALES');
         $t++;
         $ftqt = $tt > 0 ? round(($totalBunos / $tt) * 100, 2) : 0;
-        $sheet->setCellValue('A'.$t, 'TOTAL '.$tt);
+        $sheet->setCellValue('A'.$t, $tt);
         $sheet->setCellValue('B'.$t, $totalBunos);
         $sheet->setCellValue('C'.$t, $totalMalos);
         $sheet->setCellValue('D'.$t, $ftqt.'%');
