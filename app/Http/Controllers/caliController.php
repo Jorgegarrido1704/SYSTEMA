@@ -1093,6 +1093,7 @@ class caliController extends generalController
             // AVANCE SEGURO: Incrementamos el día directo en el objeto Carbon
             $fechaInicio->addDay();
         }
+        $sheet->setCellValue('A'.$t, 'TOTALES');
         $t++;
         $ftqt = $tt > 0 ? round(($totalBunos / $tt) * 100, 2) : 0;
         $sheet->setCellValue('A'.$t, 'TOTAL '.$tt);
