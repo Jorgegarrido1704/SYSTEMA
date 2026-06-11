@@ -35,6 +35,26 @@ class reportemaquinasdecorte implements ShouldQueue
 
                 $diferencia = abs(strtotime($ahora) - strtotime($fechaLectura));
                 $diferencia = $diferencia / 60;
+                switch ($ultimaLectura->maquina) {
+                    case 'M1':
+                        $ultimaLectura->maquina = 'MCUT-4';
+                        break;
+                    case 'M2':
+                        $ultimaLectura->maquina = 'MCUT-5';
+                        break;
+                    case 'M3':
+                        $ultimaLectura->maquina = 'MCUT-6';
+                        break;
+                    case 'M4':
+                        $ultimaLectura->maquina = 'MCUT-10';
+                        break;
+                    case 'M5':
+                        $ultimaLectura->maquina = 'MCUT-1';
+                        break;
+                    case 'M6':
+                        $ultimaLectura->maquina = 'MCUT-7';
+                        break;
+                }
                 if ($diferencia > 90) {
                     $asunto = "ALERTA: La máquina {$maquina} lleva más de 90 minutos parada";
                     $correoDestino = ['jgarrido@mx.bergstrominc.com', 'jcrodriguez@mx.bergstrominc.com', 'jruiz@mx.bergstrominc.com', 'ediaz@mx.bergstrominc.com',
@@ -47,7 +67,7 @@ class reportemaquinasdecorte implements ShouldQueue
                         'JPereida@mx.bergstrominc.com', 'AnGonzalez@mx.bergstrominc.com'];
                     Mail::to($correoDestino)->send(new mailmaquinascorte($ultimaLectura, $asunto));
                 } elseif ($diferencia > 20) {
-                    $asunto = "ALERTA: La máquina {$maquina} lleva más de 20 minutos parada";
+                    $asunto = "ALERTA: La máquina {$maquina} lleva más de 30 minutos parada";
                     $correoDestino = ['jgarrido@mx.bergstrominc.com', 'jcrodriguez@mx.bergstrominc.com', 'jruiz@mx.bergstrominc.com'];
                     Mail::to($correoDestino)->send(new mailmaquinascorte($ultimaLectura, $asunto));
                 }
