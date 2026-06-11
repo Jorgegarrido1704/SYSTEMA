@@ -1043,8 +1043,8 @@ class caliController extends generalController
     public function excel_calidad_ftq(Request $request)
     {
 
-        $fechaInicio = Carbon::parse($request->input('di'));
-        $fechaFin = Carbon::parse($request->input('df'));
+        $fechaInicio = Carbon::parse($request->input('de_ftq'));
+        $fechaFin = Carbon::parse($request->input('a_ftq'));
 
         $spreadsheet = new Spreadsheet;
         $sheet = $spreadsheet->getActiveSheet();
