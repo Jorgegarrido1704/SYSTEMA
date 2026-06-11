@@ -141,6 +141,7 @@ Route::controller(caliController::class)->group(function () {
     Route::get('/timesDead', [caliController::class, 'timesDead'])->name('timesDead');
     Route::get('/accepted', [caliController::class, 'accepted'])->name('accepted');
     Route::get('/excel_calidad', [caliController::class, 'excel_calidad'])->name('excel_calidad');
+    Route::get('/excel_calidad_ftq', [caliController::class, 'excel_calidad_ftq'])->name('excel_calidad_ftq');
     Route::post('/fallasCalidad', [caliController::class, 'fallasCalidad'])->name('fallasCalidad');
     Route::post('/personalFallas', [caliController::class, 'personalFallas'])->name('personalFallas');
     Route::post('/RequestTesting', [caliController::class, 'RequestTesting'])->name('RequestTesting');

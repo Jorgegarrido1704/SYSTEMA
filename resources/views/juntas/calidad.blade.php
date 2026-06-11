@@ -547,6 +547,37 @@
                     </div>
                 </div>
             </div>
+        </div>
+         <div class="col-lg-3 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h5 class="m-0 font-weight-bold text-primary">{{ __('Quality Testing Control Data') }}</h5>
+                </div>
+
+                            <div class="card-body" style="overflow-y: auto; height: 360px;">
+                                                                <form action="{{ route('excel_calidad_ftq')}}" method="GET" >
+
+                                                                    <div class="form-group">
+                                                                        <label for="text">{{ __('Start Date') }}:</label>
+                                                                        <input type="date" class="form-control" name="de_ftq" id="de_ftq" required >
+                                                                        <span id="errorMessage" style="color: red; display: none;">Weekends are not allowed!</span>
+                                                                        <input type="hidden" name="di" id="di">
+
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="text">{{ __('End Date') }}:</label>
+                                                                        <input type="date" class="form-control" name="a_ftq" id="a_ftq" required>
+                                                                        <span id="errorMessage1" style="color: red; display: none;">Weekends are not allowed!</span>
+                                                                        <input type="hidden" name="df" id="df">
+                                                                    </div>
+                                                                    <input type="submit" class="btn btn-primary"   value="{{ __('Download Excel File') }}">
+                                                                </form>
+                                                              
+
+                             </div>
+
+            </div>
+        </div>
     </div>
 
 

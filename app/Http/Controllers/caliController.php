@@ -1040,6 +1040,74 @@ class caliController extends generalController
         exit;
     }
 
+    public function excel_calidad_ftq(Request $request)
+    {
+
+        $fechaInicio = Carbon::parse($request->input('di'));
+        $fechaFin = Carbon::parse($request->input('df'));
+
+        $spreadsheet = new Spreadsheet;
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $headers = ['Fecha', 'Buenos', 'Malos', 'FTQ'];
+        $sheet->fromArray($headers, null, 'A1');
+
+        foreach (range('A', 'D') as $columnID) {
+            $sheet->getColumnDimension($columnID)->setAutoSize(true);
+        }
+        $sheet->getStyle('A1:D1')->getFont()->setBold(true);
+
+        $t = 2;
+
+        while ($fechaInicio->lte($fechaFin)) {
+
+            $diaActualBusqueda = $fechaInicio->format('d-m-Y');
+
+            // Consulta usando agregados condicionales (SUM y CASE)
+            $infoDia = calidadRegistro::selectRaw("
+                SUM(CASE WHEN codigo = 'TODO BIEN' THEN 1 ELSE 0 END) as buenos,
+                SUM(CASE WHEN codigo != 'TODO BIEN' THEN 1 ELSE 0 END) as malos,
+                COUNT(*) as total
+            ")
+                ->where('fecha', 'LIKE', $diaActualBusqueda.'%')
+                ->first();
+
+            $total = $infoDia->total ?? 0;
+            $buenos = $infoDia->buenos ?? 0;
+            $malos = $infoDia->malos ?? 0;
+
+            $ftq = $total > 0 ? round(($buenos / $total) * 100, 2) : 0;
+
+            // Escribir en el Excel
+            $sheet->setCellValue('A'.$t, $fechaInicio->format('d/m/Y'));
+            $sheet->setCellValue('B'.$t, $buenos);
+            $sheet->setCellValue('C'.$t, $malos);
+            $sheet->setCellValue('D'.$t, $ftq.'%');
+
+            $t++;
+
+            // AVANCE SEGURO: Incrementamos el día directo en el objeto Carbon
+            $fechaInicio->addDay();
+        }
+
+        // 4. Salida del archivo
+        $fileName = 'Reporte_Calidad_FTQ_'.date('d-m-Y').'.xlsx';
+        $writer = new Xlsx($spreadsheet);
+
+        registoLogin::create([
+            'userName' => session('user'),
+            'action' => 'Exportación de reporte de calidad FTQ',
+            'fecha' => date('d-m-Y H:i'),
+        ]);
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header("Content-Disposition: attachment;filename=\"$fileName\"");
+        header('Cache-Control: max-age=0');
+
+        $writer->save('php://output');
+        exit;
+    }
+
     public function excel_calidad_pendientes(Request $request)
     {
         // Initialize the spreadsheet
