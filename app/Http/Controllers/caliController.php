@@ -1048,6 +1048,7 @@ class caliController extends generalController
 
         $spreadsheet = new Spreadsheet;
         $sheet = $spreadsheet->getActiveSheet();
+        $totalBunos = $totalMalos = $tt = 0;
 
         $headers = ['Fecha', 'Buenos', 'Malos', 'FTQ'];
         $sheet->fromArray($headers, null, 'A1');
@@ -1075,6 +1076,9 @@ class caliController extends generalController
             $total = $infoDia->total ?? 0;
             $buenos = $infoDia->buenos ?? 0;
             $malos = $infoDia->malos ?? 0;
+            $totalBunos += $buenos;
+            $totalMalos += $malos;
+            $tt += $total;
 
             $ftq = $total > 0 ? round(($buenos / $total) * 100, 2) : 0;
 
@@ -1089,6 +1093,12 @@ class caliController extends generalController
             // AVANCE SEGURO: Incrementamos el día directo en el objeto Carbon
             $fechaInicio->addDay();
         }
+        $t++;
+        $ftqt = $tt > 0 ? round(($totalBunos / $tt) * 100, 2) : 0;
+        $sheet->setCellValue('A'.$t, 'TOTAL '.$tt);
+        $sheet->setCellValue('B'.$t, $totalBunos);
+        $sheet->setCellValue('C'.$t, $totalMalos);
+        $sheet->setCellValue('D'.$t, $ftqt.'%');
 
         // 4. Salida del archivo
         $fileName = 'Reporte_Calidad_FTQ_'.date('d-m-Y').'.xlsx';
