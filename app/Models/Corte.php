@@ -26,11 +26,11 @@ class Corte extends Model
         'qty',
         'tamano',
         'conector',
-        // 'tintaColor',
-        // 'time_ruteo',
-        // 'cutStatus',
-        // 'urgencia',
-        // 'fechaDeregistro',
+        'tintaColor',
+        'time_ruteo',
+        'cutStatus',
+        'urgencia',
+        'fechaDeregistro',
     ];
 
     protected $table = 'corte'; // Adjust the table name if it's different

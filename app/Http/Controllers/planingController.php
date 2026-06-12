@@ -10,6 +10,7 @@ use App\Models\regPar;
 use App\Models\specialWireModel;
 use App\Models\tiempos;
 use App\Models\timesHarn;
+use App\Models\listasDeCorte;
 use App\Models\Wo;
 use App\Models\workScreduleModel;
 use Carbon\Carbon;
@@ -405,8 +406,7 @@ class planingController extends Controller
                     } else {
                         $revn = $rev;
                     }
-                    $Buscarcorte = DB::table('listascorte')
-                        ->where('pn', '=', $np)
+                    $Buscarcorte = listasDeCorte::where('pn', '=', $np)
                         ->where('rev', '=', $revn)
                         ->get();
                     if (count($Buscarcorte) > 0) {
@@ -423,9 +423,9 @@ class planingController extends Controller
                             $ADDcorte->tipo = $corte->tipo;
                             $ADDcorte->aws = $corte->aws;
                             if (substr($corte->cons, 0, 5) == 'CORTE') {
-                                $ADDcorte->codigo = substr($wo, 2).'C'.substr($corte->cons, 7);
+                                $ADDcorte->codigo = $wo.'-C'.substr($corte->cons, 7);
                             } else {
-                                $ADDcorte->codigo = substr($wo, 2).$corte->cons;
+                                $ADDcorte->codigo = $wo.'-'.$corte->cons;
                             }
                             $ADDcorte->term1 = $corte->terminal1;
                             $ADDcorte->term2 = $corte->terminal2;
@@ -434,8 +434,8 @@ class planingController extends Controller
                             $ADDcorte->qty = $qty;
                             $ADDcorte->tamano = $corte->tamano;
                             $ADDcorte->conector = $corte->conector;
-                            // $ADDcorte->tintaColor = $$colorDetinta; // falta cambiar
-                            // $ADDcorte->time_ruteo = $tiempoderuteo; // falta query
+                            $ADDcorte->tintaColor = $corte->colorTinta;
+                            $ADDcorte->time_ruteo = round($corte->defaultTime*$qty,2); // falta query
 
                             $ADDcorte->save();
                         }
