@@ -1205,7 +1205,7 @@ class PpapIngController extends Controller
                     listasDeCorte::insert($insertData);
                 });
             }
-
+            
             return redirect()->back()->with('success', "Se han procesado {$rowCount} registros correctamente.");
 
         } catch (Exception $e) {
