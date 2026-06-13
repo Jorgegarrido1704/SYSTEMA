@@ -16,7 +16,7 @@
                            
                         </div>
                     </div>
-                    <div class="card-body" style="overflow-y: auto; height: 360px;" >
+                    <div class="card-body" >
                         <table class="table table-bordered"  width="100%" cellspacing="0">
                             <thead>
                                 <tr>
