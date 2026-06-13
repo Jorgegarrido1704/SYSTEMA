@@ -46,7 +46,7 @@ class loginController extends Controller
                 
                 session((['categoria' => $categoria]));
                 session((['email' => $email]));
-                if ($categoria == 'Boss') {
+               /* if ($categoria == 'Boss') {
                     return redirect('/boss');
                 } elseif ($categoria == 'Admin') {
                     return redirect('/admin');
@@ -115,7 +115,10 @@ class loginController extends Controller
                 } elseif ($categoria == 'RRHH') {
                     return redirect('/rhDashBoard');
                 } elseif ($categoria == 'herra') {
-                    return redirect('/herramentales');
+                    return redirect('/herramentales');*/
+                    if($categoria){
+                         return redirect('/globalInventario');
+                    }
                 } else {
                     return redirect()->back()->with('error', 'Failed to save login information');
                 }
