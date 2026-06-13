@@ -117,7 +117,7 @@ class loginController extends Controller
                 } elseif ($categoria == 'herra') {
                     return redirect('/herramentales');*/
                     if($categoria){
-                         return redirect('/globalInventario');
+                         return redirect('/pisoWork');
                     
                 } else {
                     return redirect()->back()->with('error', 'Failed to save login information');

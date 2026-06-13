@@ -42,12 +42,11 @@ class InventariosController extends Controller
         if ($value == "") {
             return redirect('/');
         }
-        $datosRegistros = globalInventarios::all();
-        $datosPendientes = globalInventarios::where('second_qty_count', '=', null)->orderby('difference', 'desc');
+        
         //dd($datosPendientes);
         return view(
             'inventarios.RecopilacionDeInventario',
-            ['value' => session('user'), 'cat' => session('categoria'), 'datosRegistros' => $datosRegistros, 'datosPendientes' => $datosPendientes]
+            ['value' => session('user'), 'cat' => session('categoria')]
         );
     }
 
@@ -71,7 +70,11 @@ class InventariosController extends Controller
 
         $qtyWo = $datosWo->Qty;
 
-        $datosRegistros = DB::table('datos')->select('item', DB::raw('(Round(qty,2)*' . $cantidad . ') as qty'))->where('part_num', $partNum)->where('rev', $rev)->get();
+        $datosRegistros = DB::table('datos')->select('item', DB::raw('(Round(qty,2)*' . $qtyWo . ') as qty'))->where('part_num', $partNum)->where('rev', $rev)->get();
+        foreach ($datosRegistros as $registro) {
+            $registro->pn=$partNum;
+            $registro->wo=$workOrder;
+        }
         return response()->json(['status' => 'success', 'data' => $datosRegistros]);
     }
     public function addInventarios(Request $request)
