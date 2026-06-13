@@ -8,6 +8,7 @@ use App\Models\ingAct;
 use App\Models\login;
 use App\Models\PPAPandPRIM;
 use App\Models\listasDeCorte;
+use App\Models\maintainRoutings;
 use App\Models\ppapIng;
 use App\Models\precios;
 use App\Models\regfull;
@@ -1144,6 +1145,13 @@ class PpapIngController extends Controller
 
         $pnInput = $request->input('Numero_de_Parte');
         $revInput = $request->input('Revision');
+        maintainRoutings::updateOrCreate(
+            [
+                'pn' => $pnInput,
+                'routing_status' => 'Pendiente'
+                
+            ]
+        );
 
         $file = $request->file('csv_file');
         $csvFile = $file->getRealPath();

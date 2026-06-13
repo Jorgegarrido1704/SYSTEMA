@@ -82,7 +82,7 @@ foreach ($datos as $np) {
     
     // Variables y estructuras en memoria PHP para acumular datos de este PN
     $totalCircuitsCorte = 0; 
-    $agrupadoTwist = [];     
+    $agrupadoTwist = [];    
     $terminalesConteo1 = []; 
     $terminalesConteo2 = []; 
     $terminalesSello1 = [];
@@ -90,7 +90,7 @@ foreach ($datos as $np) {
     $totalSoldar = 0;
     $cantidadMangas = 0;
     $tipoSplice = [];
-
+//PendienteRevision
     // --- A. CONSULTA ÚNICA A LISTASCORTE POR NÚMERO DE PARTE ---
     $queryCorte = "SELECT cons, tipo, aws, color, tamano, terminal1, terminal2, dataFrom, dataTo FROM listascorte WHERE pn='$npEscaped'";
     $queryCorte= listasDeCorte::where('pn', $npEscaped)->get();
