@@ -118,7 +118,7 @@ class loginController extends Controller
                     return redirect('/herramentales');*/
                     if($categoria){
                          return redirect('/globalInventario');
-                    }
+                    
                 } else {
                     return redirect()->back()->with('error', 'Failed to save login information');
                 }
