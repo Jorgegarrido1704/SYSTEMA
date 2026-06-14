@@ -8,7 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class maintainRoutings extends Model
 {
     use HasFactory;
+
     protected $table = 'maintain_routings';
+
     protected $primaryKey = 'id';
-    protected $fillable = ['pn','created_at','updated_at'];
+
+    protected $fillable = ['pn', 'routing_status', 'created_at', 'updated_at'];
+
+    public $timestamps = true;
 }

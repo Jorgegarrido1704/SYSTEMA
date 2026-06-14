@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Wo extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'fecha',
         'NumPart',
@@ -26,11 +27,12 @@ class Wo extends Model
         'price',
         'sento',
         'orday',
-        'reqday'
+        'reqday',
+        'programado',
+
     ];
 
     protected $table = 'registro'; // Adjust the table name if it's different
 
-    public $timestamps = false; 
-
+    public $timestamps = false;
 }

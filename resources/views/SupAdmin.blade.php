@@ -143,6 +143,14 @@
 
                                                             </form>
                                                 </div>
+                                                  <div class="col-lg-4 mb-4">
+                                                            <form action="{{ route('registrosGenerales')}}" method="GET" >
+                                                                <label for="setAddWeek">routings</label>
+                                                                <input type="hidden" name="setAddWeek" id="setAddWeek" value="7">
+                                                                <button type="submit" class="btn btn-primary">Solicitar</button>
+
+                                                            </form>
+                                                </div>
                                             </div>
 
                                         </div>

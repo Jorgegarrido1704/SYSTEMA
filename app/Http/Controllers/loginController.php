@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\login;
 use App\Models\registoLogin;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class loginController extends Controller
 {
@@ -40,13 +39,13 @@ class loginController extends Controller
 
             if ($newLog->save()) {
                 $buscauser = login::where('user', $user)->first();
-               
-                    $categoria = $buscauser->category;
-                    $email = $buscauser->user_email;
-                
+
+                $categoria = $buscauser->category;
+                $email = $buscauser->user_email;
+
                 session((['categoria' => $categoria]));
                 session((['email' => $email]));
-               /* if ($categoria == 'Boss') {
+                if ($categoria == 'Boss') {
                     return redirect('/boss');
                 } elseif ($categoria == 'Admin') {
                     return redirect('/admin');
@@ -115,10 +114,9 @@ class loginController extends Controller
                 } elseif ($categoria == 'RRHH') {
                     return redirect('/rhDashBoard');
                 } elseif ($categoria == 'herra') {
-                    return redirect('/herramentales');*/
-                    if($categoria){
-                         return redirect('/pisoWork');
-                    
+                    return redirect('/herramentales');
+                    //  if($categoria){  return redirect('/pisoWork');
+
                 } else {
                     return redirect()->back()->with('error', 'Failed to save login information');
                 }
