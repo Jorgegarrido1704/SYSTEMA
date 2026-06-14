@@ -2,6 +2,9 @@
 
 namespace App\Jobs;
 
+use App\Models\listasDeCorte;
+use App\Models\maintainRoutings;
+use App\Models\routingModel;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
