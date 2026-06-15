@@ -54,6 +54,7 @@ class updateRoutingsTimes implements ShouldQueue
 
         // 1. Obtener los PNs que están pendientes (Cambiado de 'Pendinete' a 'Pendiente' si es necesario corregir typos)
         $deledataPN = maintainRoutings::where('routing_status', 'Pendiente')
+            ->orderBy('id', 'DESC')
             ->limit(30)
             ->pluck('pn')
             ->toArray();
