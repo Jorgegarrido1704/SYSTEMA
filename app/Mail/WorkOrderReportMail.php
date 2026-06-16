@@ -2,12 +2,7 @@
 
 namespace App\Mail;
 
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
-use Illuminate\Queue\SerializesModels;
 
 class WorkOrderReportMail extends Mailable
 {
@@ -20,11 +15,11 @@ class WorkOrderReportMail extends Mailable
 
     public function build()
     {
-        return $this->subject('Reporte General de Work Orders')
-                    ->view('emails.report')
-                    ->attach($this->filePath, [
-                        'as' => basename($this->filePath),
-                        'mime' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                    ]);
+        return $this->from('reporte_general_ctvs@mx.bergstrominc.com')->subject('Reporte General de Work Orders')
+            ->view('emails.report')
+            ->attach($this->filePath, [
+                'as' => basename($this->filePath),
+                'mime' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            ]);
     }
 }

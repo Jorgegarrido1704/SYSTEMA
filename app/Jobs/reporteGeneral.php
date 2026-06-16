@@ -36,6 +36,6 @@ class reporteGeneral implements ShouldQueue
             'eceron@mx.bergstrominc.com', 'ejimenez@mx.bergstrominc.com', 'egaona@mx.bergstrominc.com', 'jolaes@mx.bergstrominc.com', 'dvillalpando@mx.bergstrominc.com',
             'apreciado@mx.bergstrominc.com', 'jgarrido@mx.bergstrominc.com'];
         // Mail::to('jgarrido@mx.bergstrominc.com')->send(new WorkOrderReportMail($filePath));
-        Mail::from('reporte_general_cvts@mx.bergstrominc.com')->to($senders)->send(new WorkOrderReportMail($filePath));
+        Mail::to($senders)->send(new WorkOrderReportMail($filePath));
     }
 }
