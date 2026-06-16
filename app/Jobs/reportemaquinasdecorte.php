@@ -20,8 +20,8 @@ class reportemaquinasdecorte implements ShouldQueue
 
     public function handle(): void
     {
-      //  $maquinas = ['M1', 'M2', 'M3', 'M4', 'M5'];
-      $maquinas = [];
+        $maquinas = ['M1', 'M2', 'M3', 'M4', 'M5'];
+        $maquinas = [];
         foreach ($maquinas as $maquina) {
 
             $ultimaLectura = DB::connection('toi')->table('lecturas')
