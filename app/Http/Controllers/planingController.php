@@ -4,13 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Corte;
 use App\Models\Kits;
+use App\Models\listasDeCorte;
 use App\Models\po;
 use App\Models\precios;
 use App\Models\regPar;
 use App\Models\specialWireModel;
 use App\Models\tiempos;
 use App\Models\timesHarn;
-use App\Models\listasDeCorte;
 use App\Models\Wo;
 use App\Models\workScreduleModel;
 use Carbon\Carbon;
@@ -407,12 +407,10 @@ class planingController extends Controller
                         $revn = $rev;
                     }
                     $Buscarcorte = listasDeCorte::where('pn', '=', $np)
-                        ->where('rev', '=', $revn)
+                        ->where('rev', '=', $revn)->where('tamano', '>', 0)
                         ->get();
                     if (count($Buscarcorte) > 0) {
                         foreach ($Buscarcorte as $corte) {
-                            // falta ingresar la informacion de la corte
-                            // falta query para tinta y para tiempo de corte
                             $ADDcorte = new Corte;
                             $ADDcorte->np = $np;
                             $ADDcorte->cliente = $client;
@@ -435,7 +433,7 @@ class planingController extends Controller
                             $ADDcorte->tamano = $corte->tamano;
                             $ADDcorte->conector = $corte->conector;
                             $ADDcorte->tintaColor = $corte->colorTinta;
-                            $ADDcorte->time_ruteo = round($corte->defaultTime*$qty,2); // falta query
+                            $ADDcorte->time_ruteo = round($corte->defaultTime * $qty, 2); // falta query
 
                             $ADDcorte->save();
                         }
