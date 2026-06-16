@@ -3,8 +3,8 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
@@ -14,6 +14,7 @@ class firmasNPIEmail extends Mailable
     use Queueable, SerializesModels;
 
     public $subject;
+
     public $accion;
 
     public function __construct($accion, $subject)
@@ -25,6 +26,7 @@ class firmasNPIEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
+            from: new Address('new_product_introduction@mx.bergstrominc.com', 'Firmas Completas'),
             subject: $this->subject,
         );
     }

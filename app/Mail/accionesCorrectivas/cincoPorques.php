@@ -38,7 +38,7 @@ class cincoPorques extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.accionescorrectivas.registroPorques')
+        return $this->from('acciones_correctivas@mx.bergstrominc.com')->view('emails.accionescorrectivas.registroPorques')
             ->subject($this->subject);
     }
 

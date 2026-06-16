@@ -40,7 +40,7 @@ class planAccion extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.accionescorrectivas.subAcciones')
+        return $this->from('acciones_correctivas@mx.bergstrominc.com')->view('emails.accionescorrectivas.subAcciones')
             ->subject($this->subject);
     }
 

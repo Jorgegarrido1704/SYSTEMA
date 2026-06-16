@@ -40,7 +40,7 @@ class cerrarAcciones extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.accionescorrectivas.cierreAccion')
+        return $this->from('acciones_correctivas@mx.bergstrominc.com')->view('emails.accionescorrectivas.cierreAccion')
             ->subject($this->subject);
     }
 

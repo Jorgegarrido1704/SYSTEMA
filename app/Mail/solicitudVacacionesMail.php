@@ -4,6 +4,7 @@ namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
@@ -32,6 +33,7 @@ class solicitudVacacionesMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
+            from: new Address('solicitud_vacaciones@mx.bergstrominc.com', 'Solicitud de Vacaciones'),
             subject: $this->subject,
         );
     }

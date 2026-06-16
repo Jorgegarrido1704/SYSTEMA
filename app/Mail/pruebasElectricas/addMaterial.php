@@ -4,6 +4,7 @@ namespace App\Mail\pruebasElectricas;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
@@ -31,6 +32,7 @@ class addMaterial extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
+            from: new Address('pruebas_electricas@mx.bergstrominc.com', 'Pruebas Electricas'),
             subject: $this->subject,
         );
     }

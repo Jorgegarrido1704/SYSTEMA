@@ -23,7 +23,7 @@ class salidanpi extends Mailable
 
     public function build()
     {
-        return $this->view('emails.npi.salidaNpi')
+        return $this->from('new_product_introduction@mx.bergstrominc.com')->view('emails.npi.salidaNpi')
             ->subject($this->subject);
     }
 

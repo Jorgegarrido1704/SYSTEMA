@@ -40,7 +40,7 @@ class aceptacionAcciones extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.accionescorrectivas.aceptacionAcciones')
+        return $this->from('acciones_correctivas@mx.bergstrominc.com')->view('emails.accionescorrectivas.aceptacionAcciones')
             ->subject($this->subject);
     }
 

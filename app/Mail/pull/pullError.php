@@ -3,7 +3,6 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Queue\SerializesModels;
@@ -13,6 +12,7 @@ class pullError extends Mailable
     use Queueable, SerializesModels;
 
     public $subject;
+
     public $content;
 
     public function __construct($subject, $content)
@@ -23,8 +23,8 @@ class pullError extends Mailable
 
     public function build()
     {
-        return $this->view('emails.pull.errorPull')
-                    ->subject($this->subject);
+        return $this->from('prueba_pull@mx.bergstrominc.com')->view('emails.pull.errorPull')
+            ->subject($this->subject);
     }
 
     public function content(): Content

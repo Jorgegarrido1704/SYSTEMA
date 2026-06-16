@@ -35,7 +35,7 @@ class recordatorio extends Mailable
 
     public function build()
     {
-        return $this->view('emails.accionescorrectivas.recordatorio')
+        return $this->from('acciones_correctivas@mx.bergstrominc.com')->view('emails.accionescorrectivas.recordatorio')
             ->subject($this->subject);
     }
 

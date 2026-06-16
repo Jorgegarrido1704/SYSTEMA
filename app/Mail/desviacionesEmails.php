@@ -3,8 +3,8 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
@@ -14,7 +14,9 @@ class desviacionesEmails extends Mailable
     use Queueable, SerializesModels;
 
     public $accion;
+
     public $subject;
+
     public function __construct($accion, $subject)
     {
         $this->accion = $accion;
@@ -27,6 +29,7 @@ class desviacionesEmails extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
+            from: new Address('desviaciones@mx.bergstrominc.com', 'Desviaciones'),
             subject: $this->subject,
         );
     }

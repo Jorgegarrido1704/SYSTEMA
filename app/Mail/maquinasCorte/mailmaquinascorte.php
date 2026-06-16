@@ -4,6 +4,7 @@ namespace App\Mail\maquinasCorte;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
@@ -25,6 +26,7 @@ class mailmaquinascorte extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
+            from: new Address('maquinasdecorte@mx.bergstrominc.com', 'Maquinas de Corte'),
             subject: $this->subject, // Usamos la variable dinámica que pasamos desde el Job
         );
     }
