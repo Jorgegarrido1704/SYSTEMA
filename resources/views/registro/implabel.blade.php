@@ -17,7 +17,7 @@
     <style>
         /* Configuración de página para etiquetas */
         @page {
-            size: 104mm 50mm;
+            size: 105mm 57.5mm;
             margin: 0;
         }
 
@@ -31,14 +31,14 @@
 
         /* Salto de página para cada etiqueta */
         .label-container {
-            width: 104mm;
-            height: 50mm;
+            width: 105mm;
+            height: 57.5;
             box-sizing: border-box;
             padding: 1mm;
             display: flex; /* Dividimos en Izquierda (Barcode) y Derecha (Info) */
             overflow: hidden;
             page-break-after: always;
-            border: 0.1mm solid #eee; /* Solo para visualización, se puede quitar */
+            border: 0.1mm dashed #eee; /* Solo para visualización, se puede quitar */
         }
 
         /* Contenedor del código de barras vertical */
@@ -107,43 +107,43 @@
 
 @if (!empty($corte))
     @for ($i=0; $i < count($corte); $i++)
-    <div class="label-container">
-        <!-- BARRA LATERAL (Barcode Principal) -->
-        <div class="barcode-side" style="transform: rotate(90deg);">
-            <svg id="barcode{{$i}}" class="barcode-vertical"></svg>
-        </div>
-
-        <!-- CONTENIDO PRINCIPAL -->
-        <div class="info-side">
-           <!--
-             <div class="header">
-                <img src="{{ asset('/dash/img/bergs.jpg')}}" class="logo" alt="Logo">
-                <span><b>Cons:</b> {{$corte[$i][3]}}</span>
+        <div class="label-container">
+            <!-- BARRA LATERAL (Barcode Principal) -->
+            <div class="barcode-side" style="transform: rotate(90deg);">
+                <svg id="barcode{{$i}}" class="barcode-vertical"></svg>
             </div>
-        -->
-            <div class="content-grid">
-                <div class="full-width"><span class="label-bold">Cust:</span> {{$corte[$i][0]}}</div>
-                <div><span class="label-bold">Qty:</span> {{$corte[$i][12]}}</div>
-                <div><span class="label-bold">WO:</span> {{$corte[$i][2]}}</div>
-                <div><span class="label-bold">AWG:</span> {{$corte[$i][6]}}</div>
-                <div><span class="label-bold">Tipo:</span> {{$corte[$i][5]}}</div>
-                <div><span class="label-bold">PN:</span> {{$corte[$i][1]}}</div>
-                <div><span class="label-bold">Rev:</span> {{$corte[$i][15]}}</div>
-                <div><span class="label-bold">Col:</span> {{$corte[$i][4]}}</div>
-                <div><span class="label-bold"><b>Cons:</b></span> {{$corte[$i][3]}}</div>
 
-                <div class="full-width" style="font-size: 8pt; margin-top: 2px;">
-                    <b>T1:</b> {{$corte[$i][8]}} | <b>T2:</b> {{$corte[$i][9]}}<br>
-                    <b>F:</b> {{$corte[$i][10]}} <b>T:</b> {{$corte[$i][11]}}
+            <!-- CONTENIDO PRINCIPAL -->
+            <div class="info-side">
+            <!--
+                <div class="header">
+                    <img src="{{ asset('/dash/img/bergs.jpg')}}" class="logo" alt="Logo">
+                    <span><b>Cons:</b> {{$corte[$i][3]}}</span>
+                </div>
+            -->
+                <div class="content-grid">
+                    <div class="full-width"><span class="label-bold">Cust:</span> {{$corte[$i][0]}}</div>
+                    <div><span class="label-bold">Qty:</span> {{$corte[$i][12]}}</div>
+                    <div><span class="label-bold">WO:</span> {{$corte[$i][2]}}</div>
+                    <div><span class="label-bold">AWG:</span> {{$corte[$i][6]}}</div>
+                    <div><span class="label-bold">Tipo:</span> {{$corte[$i][5]}}</div>
+                    <div><span class="label-bold">PN:</span> {{$corte[$i][1]}}</div>
+                    <div><span class="label-bold">Rev:</span> {{$corte[$i][15]}}</div>
+                    <div><span class="label-bold">Col:</span> {{$corte[$i][4]}}</div>
+                    <div><span class="label-bold"><b>Cons:</b></span> {{$corte[$i][3]}}</div>
+
+                    <div class="full-width" style="font-size: 8pt; margin-top: 2px;">
+                        <b>T1:</b> {{$corte[$i][8]}} | <b>T2:</b> {{$corte[$i][9]}}<br>
+                        <b>F:</b> {{$corte[$i][10]}} <b>T:</b> {{$corte[$i][11]}}
+                    </div>
+                </div>
+
+                <div class="footer-barcode">
+                    <svg id="bcode{{$i}}"></svg>
+                    <div style="font-size: 5pt;">{{$corte[$i][14]}}</div>
                 </div>
             </div>
-
-            <div class="footer-barcode">
-                <svg id="bcode{{$i}}"></svg>
-                <div style="font-size: 5pt;">{{$corte[$i][14]}}</div>
-            </div>
         </div>
-    </div>
 
     <script>
         // Generar Barcode Lateral (Vertical)
