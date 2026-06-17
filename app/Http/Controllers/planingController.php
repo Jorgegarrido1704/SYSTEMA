@@ -426,7 +426,9 @@ class planingController extends Controller
                                 $ADDcorte->codigo = $wo.'-'.$corte->cons;
                             }
                             $ADDcorte->term1 = $corte->terminal1;
+                            $ADDcorte->strip1 = $corte->strip1;
                             $ADDcorte->term2 = $corte->terminal2;
+                            $ADDcorte->strip2 = $corte->strip2;
                             $ADDcorte->dataFrom = $corte->dataFrom;
                             $ADDcorte->dataTo = $corte->dataTo;
                             $ADDcorte->qty = $qty;
