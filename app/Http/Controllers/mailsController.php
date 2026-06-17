@@ -79,7 +79,7 @@ class mailsController extends Controller
         $firmasPendients = [];
         $firmasPendients = PPAPandPRIM::where('count', '=', 1)->orderby('id', 'desc')->get();
 
-        if ($value == 'Jesus_C' or $value == 'Carlos R' or $value == 'Nancy A' or $value == 'Admin' or $value == 'Jorge G') {
+        if ($value == 'Jesus_C' or $value == 'Carlos R' or $value == 'Nancy A' or $value == 'Admin' or $value == 'Jorge G' or $value == 'Luis R') {
             $desviations = desviation::Where('fing', '=', '')->where('count', '<', 4)->get();
         } elseif ($value == 'Edward M' or $value == 'Luis R' or $value == 'Goretti Ro') {
             $desviations = desviation::Where('fing', '!=', '')->where('fcal', '=', '')->where('count', '<', 4)->get();
