@@ -30,6 +30,7 @@ class Corte extends Model
         'conector',
         'tintaColor',
         'time_ruteo',
+        'dist_stamp',
         'cutStatus',
         'urgencia',
         'fechaDeregistro',

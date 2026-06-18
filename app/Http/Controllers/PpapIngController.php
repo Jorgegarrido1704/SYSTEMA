@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\cronograma;
 use App\Models\errores;
 use App\Models\ingAct;
-use App\Models\login;
-use App\Models\PPAPandPRIM;
 use App\Models\listasDeCorte;
+use App\Models\login;
 use App\Models\maintainRoutings;
+use App\Models\PPAPandPRIM;
 use App\Models\ppapIng;
 use App\Models\precios;
 use App\Models\regfull;
@@ -17,13 +17,11 @@ use App\Models\Wo;
 use App\Models\workScreduleModel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-
 
 class PpapIngController extends Controller
 {
@@ -1148,8 +1146,8 @@ class PpapIngController extends Controller
         maintainRoutings::updateOrCreate(
             [
                 'pn' => $pnInput,
-                'routing_status' => 'Pendiente'
-                
+                'routing_status' => 'Pendiente',
+
             ]
         );
 
@@ -1176,7 +1174,7 @@ class PpapIngController extends Controller
 
                 $data = str_getcsv($firstLine, ',');
 
-                if (count($data) >= 15) {
+                if (count($data) >= 16) {
                     $cons = trim($data[0]); // El consecutivo o primer dato útil del excel
 
                     if ($cons !== '') {
@@ -1192,7 +1190,7 @@ class PpapIngController extends Controller
                     break;
                 }
 
-                if (count($data) < 15) {
+                if (count($data) < 16) {
                     continue; // Saltar filas incompletas
                 }
 
@@ -1213,7 +1211,7 @@ class PpapIngController extends Controller
                     listasDeCorte::insert($insertData);
                 });
             }
-            
+
             return redirect()->back()->with('success', "Se han procesado {$rowCount} registros correctamente.");
 
         } catch (Exception $e) {
@@ -1225,7 +1223,6 @@ class PpapIngController extends Controller
             return redirect()->back()->withInput()->withErrors(['error' => 'Error al procesar el archivo: '.$e->getMessage()]);
         }
     }
-
 
     private function mapCsvRow(array $data, string $pn, string $rev): array
     {
@@ -1247,6 +1244,7 @@ class PpapIngController extends Controller
             'colorTinta' => trim($data[12] ?? ''),
             'dataFrom' => trim($data[13] ?? ''),
             'dataTo' => trim($data[14] ?? ''),
+            'dist_stamp' => trim($data[15] ?? ''),
         ];
     }
 }
