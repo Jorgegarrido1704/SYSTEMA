@@ -34,6 +34,7 @@ class Corte extends Model
         'cutStatus',
         'urgencia',
         'fechaDeregistro',
+        'maq_asignada',
     ];
 
     protected $table = 'corte'; // Adjust the table name if it's different
