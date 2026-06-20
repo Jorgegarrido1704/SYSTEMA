@@ -1242,6 +1242,7 @@ class PpapIngController extends Controller
                 $selectWo = ListasDeCorte::where('pn', $pn)
                     ->where('rev', $rev)
                     ->where('cons', '!=', '')
+                    ->where('tamano', '>', 0)
                     ->get();
 
                 foreach ($selectWo as $rowList) {
