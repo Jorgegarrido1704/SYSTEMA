@@ -92,6 +92,7 @@
                         <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('rrhhDashBoard') }}">{{ __('Assistance') }}</a></li>
                         <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('relogChecador') }}">{{ __('Log check') }}</a></li>
                         <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('datosPersonal') }}">{{ __('Personal Data') }}</a></li>
+                        <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('rhvacations') }}">{{ __('Vacations') }}</a></li>
                         @endif
 
                         <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('personalShift') }}">{{ __('Personal Shift') }}</a></li>

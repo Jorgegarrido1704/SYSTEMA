@@ -1339,4 +1339,21 @@ class rrhhController extends Controller
         ]);
 
     }
+
+    public function rhvacations()
+    {
+        $value = session('user');
+        $cat = session('categoria');
+        if ($value == null) {
+            return redirect()->route('login');
+        }
+        $empleados = personalBergsModel::where('status', 'Activo')->get();
+        $vacaciones = registroVacacionesModel::join('personalberg', 'personalberg.employeeNumber', '=', 'registro_vacaciones.id_empleado')->where('personalberg.status', 'Activo')->ORDERBY('registro_vacaciones.id', 'DESC')->get();
+        foreach ($vacaciones as $v) {
+            $aniosdeUso = $v->usedYear;
+            $v->periodo = ($aniosdeUso - 1).' - '.$aniosdeUso;
+        }
+
+        return view('juntas.hrDocs.rhvacations', ['value' => $value, 'cat' => $cat, 'empleados' => $empleados, 'vacaciones' => $vacaciones]);
+    }
 }

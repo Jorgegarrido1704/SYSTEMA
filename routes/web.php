@@ -243,6 +243,8 @@ Route::controller(rrhhController::class)->group(function () {
     Route::post('/rrhh/exportarindividual', [rrhhController::class, 'exportarListaAsistenciaIndividual'])->name('exportarListaAsistenciaIndividual');
     Route::GET('/rrhh/personalShift', [rrhhController::class, 'personalShift'])->name('personalShift');
     Route::POST('/rrhh/jsonPersonalShift', [rrhhController::class, 'jsonPersonalShift'])->name('jsonPersonalShift');
+    Route::GET('/rrhh/rhVacation', [rrhhController::class, 'rhvacations'])->name('rhvacations');
+
 });
 Route::controller(AccionesCorrectivasController::class)->group(function () {
     Route::get('/acciones-correctivas', [AccionesCorrectivasController::class, 'index'])->name('accionesCorrectivas.index');
