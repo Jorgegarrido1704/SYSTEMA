@@ -1,105 +1,140 @@
 @extends('layouts.main')
 
 @section('contenido')
-<div class="d-sm-flex align-items-center justify-content-between mb-4">  </div>
-<style>
-    td {
-        font-size: 22px;
-        color: rgb(55, 55, 55)
-    }
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Introduccion de nuevos productos</h1>
+</div>
 
-</style>
-<script>
-    const registros = @json($registroPartNumbers);
-    console.log(registros);
-    </script>
-        <div class="row">
-            <div class="col-lg-8 col-lx-8">
-
-                <div class="card shadow mb-5">
-                    <div class="card-header py-3">
-                        <h5 class="m-0 font-weight-bold text-primary">Priorities</h5>
-                    </div>
-                    <div class="card-body" style="overflow-y: auto;  height: 950px;" >
-                        <table class="table table-bordered"  width="100%" cellspacing="0">
-                            <thead style=" position: sticky; z-index: 1; top: 0; text-align: center; background-color: black; color: white; ">
-                                <tr>
-                                    <th>Part Number</th>
-                                    <th>Customer</th>
-                                    <th>Work Order</th>
-                                    <th>Required Date by PO </th>
-                                    <th>Materials</th>
-                                    <th> Engineering Documentation</th>
-                                    <th>Cutting/Assembly</th>
-                                    <th>Quality</th>
-                                    <th>Approved by Customer</th>
-                                    <th>Comments</th>
-
-                                </tr>
-                            </thead>
-                            @if(!empty($registroPPAP))
-                                @foreach ($registroPPAP as $cut)
-
-                                    <tbody>
-                                        <tr style="background-color: {{ $cut['color'] }};">
-
-                                            <td><b>{{ $cut['cliente'] }}</td>
-                                            <td><b>{{ $cut['pn'] }}</td>
-                                            <td><b>{{ $cut['rev'] }}</td>
-                                            <td><b>{{ $cut['prioridad'] }}</td>
-                                            <td><b>{{$cut['materiales']}}</td>
-                                            <td><b>{{$cut['ingeniria']}}</td>
-                                            <td><b>{{$cut['cutting']}}/{{$cut['ensamble']}}</td>
-
-                                            <td><b>{{$cut['calidad']}}</td>
-                                            <td><b>{{$cut['aprovado']}}</td>
-                                            <td><b>{{ $cut['comments'] }}</td>
-                                        </tr>
-                                    </tbody>
-                                @endforeach
-                            @endif
-
-                        </table>
-                    </div>
-                </div>
+<div class="row text-center mb-4">
+    <div class="col-xl-4 col-md-6 mb-4">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-header bg-dark text-white font-weight-bold py-2">
+                Total nuevos productos
             </div>
-<div class="col-lg-4 col-lx-4">
-
-                <div class="card shadow mb-5">
-                    <div class="card-header py-3">
-                        <h5 class="m-0 font-weight-bold text-primary">No orders after PPAP</h5>
-                    </div>
-                    <div class="card-body" style="overflow-y: auto;  height: 600px;" >
-                        <table class="table table-bordered"  width="100%" cellspacing="0">
-                            <thead style=" position: sticky; z-index: 1; top: 0; text-align: center; background-color: black; color: white; ">
-                                <tr>
-                                    <th>Part Number</th>
-                                    <th>Revision</th>
-                                    <th>Customer</th>
-
-
-                                </tr>
-                            </thead>
-                            @if(!empty($registroPartNumbers))
-                                @foreach ($registroPartNumbers as $cut)
-
-                                    <tbody>
-                                        <tr >
-
-                                            <td><b>{{ $cut['pn'] }}</td>
-                                            <td><b>{{ $cut['rev'] }}</td>
-                                            <td><b>{{ $cut['cliente'] }}</td>
-
-
-                                        </tr>
-                                    </tbody>
-                                @endforeach
-                            @endif
-                        </table>
-
-                    </div>
-                </div>
+            <div class="card-body d-flex align-items-center justify-content-center py-4">
+                <h2 class="display-4 font-weight-bold text-dark mb-0">{{ $totales }}</h2>
             </div>
         </div>
+    </div>
 
-    @endsection
+    <div class="col-xl-4 col-md-6 mb-4" onclick="mostrar('ppap')">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-header bg-success text-white font-weight-bold py-2">
+                PPAP ( Hojas Verdes)
+            </div>
+            <div class="card-body d-flex align-items-center justify-content-center py-4">
+                <h2 class="display-4 font-weight-bold text-success mb-0">{{ $totalesPPAP }}</h2>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="col-xl-4 col-md-6 mb-4" onclick="mostrar('prim')">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-header bg-warning text-white font-weight-bold py-2" >
+                Primeras piezas ( Hojas Amarillas)
+            </div>
+            <div class="card-body d-flex align-items-center justify-content-center py-4">
+                <h2 class="display-4 font-weight-bold text-warning mb-0" >{{ $totalesPRIM }}</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" id="ppap" style="display: none;">
+            <div class="row text-center mb-4">
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 shadow-sm border-0">
+                        <div class="card-header text-white font-weight-bold py-2" style="background-color: #721c24;">
+                            En ingenieria
+                        </div>
+                        <div class="card-body d-flex align-items-center justify-content-center py-4">
+                            <h2 class="display-4 font-weight-bold mb-0" style="color: #721c24;">{{ $pendppaping }}</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 shadow-sm border-0">
+                        <div class="card-header text-white font-weight-bold py-2" style="background-color: #1e2156;">
+                           Pendiente por bajar
+                        </div>
+                        <div class="card-body d-flex align-items-center justify-content-center py-4">
+                            <h2 class="display-4 font-weight-bold mb-0" style="color: #1e2156;">{{ $pendbajarppap }}</h2>
+                        </div>
+                    </div>
+                </div>
+                    <div class="col-md-4 mb-4">
+                    <div class="card h-100 shadow-sm border-0">
+                        <div class="card-header text-white font-weight-bold py-2" style="background-color: #441e56;">
+                           En produccion
+                        </div>
+                        <div class="card-body d-flex align-items-center justify-content-center py-4">
+                            <h2 class="display-4 font-weight-bold mb-0" style="color: #441e56;">{{ $enproduccionppap }}</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+</div>
+<div class="row" id="prim" style="display: none;">
+            <div class="row text-center mb-4">
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 shadow-sm border-0">
+                        <div class="card-header text-white font-weight-bold py-2" style="background-color: #721c24;">
+                            En ingenieria
+                        </div>
+                        <div class="card-body d-flex align-items-center justify-content-center py-4">
+                            <h2 class="display-4 font-weight-bold mb-0" style="color: #721c24;">{{ $pendpriming }}</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 shadow-sm border-0">
+                        <div class="card-header text-white font-weight-bold py-2" style="background-color: #1e2156;">
+                           Pendiente por bajar
+                        </div>
+                        <div class="card-body d-flex align-items-center justify-content-center py-4">
+                            <h2 class="display-4 font-weight-bold mb-0" style="color: #1e2156;">{{ $pendbajarprim }}</h2>
+                        </div>
+                    </div>
+                </div>
+                    <div class="col-md-4 mb-4">
+                    <div class="card h-100 shadow-sm border-0">
+                        <div class="card-header text-white font-weight-bold py-2" style="background-color: #441e56;">
+                           En produccion
+                        </div>
+                        <div class="card-body d-flex align-items-center justify-content-center py-4">
+                            <h2 class="display-4 font-weight-bold mb-0" style="color: #441e56;">{{ $enproduccionprim}}</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+</div>
+
+
+<script>
+function mostrar(id) {
+   if(id == 'ppap'){
+        if(document.getElementById('ppap').style.display == 'block'){
+            document.getElementById('ppap').style.display = 'none';
+            document.getElementById('prim').style.display = 'none';
+        }else{
+       document.getElementById('ppap').style.display = 'block';
+       document.getElementById('prim').style.display = 'none';
+    }
+   }else{
+       if(document.getElementById('prim').style.display == 'block'){
+            document.getElementById('prim').style.display = 'none';
+            document.getElementById('ppap').style.display = 'none';
+        }else{
+       document.getElementById('prim').style.display = 'block';
+       document.getElementById('ppap').style.display = 'none';
+    }
+   }
+}
+
+</script>
+
+@endsection

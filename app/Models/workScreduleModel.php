@@ -30,6 +30,7 @@ class workScreduleModel extends Model
         'UpOrderDate',
         'Color',
         'qtyInPo',
+        'creation_date',
     ];
 
     public $timestamps = false;

@@ -2690,6 +2690,63 @@ class juntasController extends Controller
         if (empty($value)) {
             return redirect()->route('/');
         }
+        // 1. In Progress Schedules
+        $inprogres = workScreduleModel::selectRaw('color, count(*) as total')
+            ->where('status', 'In Progress')
+            ->groupBy('color')
+            ->get();
+
+        // 2. Completed General Schedules (Fixed case-sensitivity for column names if needed)
+        $totalgeneral = workScreduleModel::selectRaw('color, count(*) as total')
+            ->where('status', 'Completed') // Best practice: keep column names consistent (status vs Status)
+            ->whereNull('UpOrderDate')     // cleaner Laravel way for checking null
+            ->groupBy('color')
+            ->get();
+
+        // 3. Fixed Wo Query
+        $registros = Wo::selectRaw("
+            SUM(CASE WHEN rev LIKE '%PPAP%' THEN 1 ELSE 0 END) as ppap,
+            SUM(CASE WHEN rev LIKE '%PRIM%' THEN 1 ELSE 0 END) as prim
+        ")
+            ->whereNotIn('count', ['20', '12'])
+            ->get();
+        /*  $totales = $registros[0]->ppap + $registros[0]->prim +
+        $totalgeneral[0]->total//ppap + $totalgeneral[1]->total // prim
+        // + $inprogres[0]->total // ppap + $inprogres[1]->total // prim;
+*/
+        $totales = $registros[0]->ppap + $registros[0]->prim + $totalgeneral[0]->total + $totalgeneral[1]->total + $inprogres[0]->total + $inprogres[1]->total;
+        $totalesPPAP = $registros[0]->ppap + $inprogres[0]->total + $totalgeneral[0]->total;
+        $totalesPRIM = $registros[0]->prim + $inprogres[1]->total + $totalgeneral[1]->total;
+        $pendppaping = $inprogres[0]->total;
+        $pendpriming = $inprogres[1]->total;
+        $pendbajarppap = $totalgeneral[0]->total;
+        $pendbajarprim = $totalgeneral[1]->total;
+        $enproduccionppap = $registros[0]->ppap;
+        $enproduccionprim = $registros[0]->prim;
+
+        return view('juntas.npi.npi', [
+            'value' => $value,
+            'cat' => $cat,
+            'totales' => $totales,
+            'totalesPPAP' => $totalesPPAP,
+            'totalesPRIM' => $totalesPRIM,
+            'pendppaping' => $pendppaping,
+            'pendpriming' => $pendpriming,
+            'pendbajarppap' => $pendbajarppap,
+            'pendbajarprim' => $pendbajarprim,
+            'enproduccionppap' => $enproduccionppap,
+            'enproduccionprim' => $enproduccionprim,
+
+        ]);
+    }
+
+    public function info_npi()
+    {
+        $value = session('user');
+        $cat = session('categoria');
+        if (empty($value)) {
+            return redirect()->route('/');
+        }
         $ingependinses = $porbajara = $totalgeneral = $enproceso = $totalprim = $totalppap = 0;
         function colorRetrado($fecha)
         {
