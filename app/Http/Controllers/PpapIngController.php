@@ -1218,7 +1218,7 @@ class PpapIngController extends Controller
                 ->delete();
 
             // 2. Obtener órdenes de trabajo
-            $registroWO = Wo::where('pn', $pnInput)
+            $registroWO = Wo::where('NumPart', $pnInput)
                 ->whereIn('count', [1, 2, 3, 17])
                 ->get();
 
