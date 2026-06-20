@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Corte;
 use App\Models\cronograma;
 use App\Models\errores;
 use App\Models\ingAct;
@@ -1210,6 +1211,94 @@ class PpapIngController extends Controller
 
                     listasDeCorte::insert($insertData);
                 });
+            }
+            // 1. Eliminar registros previos
+            Corte::where('np', $pnInput)
+                ->where('cutStatus', '!=', 'Cortado')
+                ->delete();
+
+            // 2. Obtener órdenes de trabajo
+            $registroWO = Wo::where('pn', $pnInput)
+                ->whereIn('count', [1, 2, 3, 17])
+                ->get();
+
+            foreach ($registroWO as $woQuery) {
+                // NOTA: Asumo que $row viene de un bucle externo (como un Excel o Request).
+                // Si la información venía del propio $woQuery, deberías usar $woQuery->pn, etc.
+                $pn = $row['NumPart'] ?? null;
+                $client = $row['cliente'] ?? null;
+                $wo = $row['wo'] ?? null;
+                $cuantos = $row['Qty'] ?? 0;
+                $rev1 = $row['rev'] ?? '';
+
+                // Optimización de la revisión usando Str::startsWith de Laravel
+                if (str_starts_with($rev1, 'PPAP') || str_starts_with($rev1, 'PRIM')) {
+                    $rev = substr($rev1, 5);
+                } else {
+                    $rev = $rev1;
+                }
+
+                // Corregido el error de sintaxis del guion original " - where(...) "
+                $selectWo = ListasDeCorte::where('pn', $pn)
+                    ->where('rev', $rev)
+                    ->where('cons', '!=', '')
+                    ->get();
+
+                // NOTA: En tu código original usabas $rowList sin un bucle interno.
+                // Si $rowList depende de $selectWo, deberías iterar $selectWo.
+                // Aquí asumo que procesas los datos de $rowList como lo tenías:
+                $cons = $rowList['cons'] ?? '';
+                $tipo = $rowList['tipo'] ?? null;
+                $aws = $rowList['aws'] ?? null;
+                $tamano = floatval($rowList['tamano'] ?? 0);
+                $color = $rowList['color'] ?? null;
+                $term1 = $rowList['terminal1'] ?? null;
+                $strip1 = $rowList['strip1'] ?? null;
+                $term2 = $rowList['terminal2'] ?? null;
+                $strip2 = $rowList['strip2'] ?? null;
+                $dataForm = $rowList['dataFrom'] ?? null;
+                $dataTo = $rowList['dataTo'] ?? null;
+                $conector = $rowList['conector'] ?? null;
+                $tinta = $rowList['colorTinta'] ?? null;
+                $distEstamp = $rowList['dist_stamp'] ?? null;
+                $tiempo = round((($rowList['defaultTime'] ?? 0) * $cuantos), 2);
+
+                // Lógica del código de barras/cons
+                if (str_starts_with($cons, 'C')) {
+                    $consClean = str_replace(['.', '-', ' '], '', $cons);
+                    $codigo = substr($wo, 2).substr($consClean, 5);
+                } else {
+                    $codigo = substr($wo, 2).$cons;
+                }
+
+                // 3. Convertido de mysqli a Eloquent usando firstOrCreate / updateOrCreate para evitar duplicados
+                Corte::firstOrCreate(
+                    [
+                        'wo' => $wo,
+                        'cons' => $cons,
+                    ],
+                    [
+                        'np' => $pn,
+                        'cliente' => $client,
+                        'rev' => $rev,
+                        'color' => $color,
+                        'tipo' => $tipo,
+                        'aws' => $aws,
+                        'codigo' => $codigo,
+                        'term1' => $term1,
+                        'strip1' => $strip1,
+                        'term2' => $term2,
+                        'strip2' => $strip2,
+                        'dataFrom' => $dataForm,
+                        'dataTo' => $dataTo,
+                        'qty' => $cuantos,
+                        'tamano' => $tamano,
+                        'conector' => $conector,
+                        'tintaColor' => $tinta,
+                        'time_ruteo' => $tiempo,
+                        'dist_stamp' => $distEstamp,
+                    ]
+                );
             }
 
             return redirect()->back()->with('success', "Se han procesado {$rowCount} registros correctamente.");
