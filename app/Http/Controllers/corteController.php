@@ -32,7 +32,7 @@ class corteController extends Controller
             $ayerFormatted = $ayer->format('Y-m-d');
 
             // Obtenemos los datos agrupados por máquina y sumados
-            $datos = crimpersTools::where('dateRegistered', '2026-06-20')
+            $datos = crimpersTools::where('dateRegistered', '2026-06-19')
                 ->select('toolingCrimperName')
                 ->selectRaw('SUM(CAST(TerminalsUsed AS UNSIGNED)) as total_terminales')
                 ->selectRaw('SUM(minutesStop) as total_paro')
@@ -64,7 +64,7 @@ class corteController extends Controller
             $fechaConsultar = ($horaActual < $horaCorte) ? $ayerFormatted : $hoyFormatted;
 */
             $fechaConsultar = Carbon::now()->format('Y-m-d');
-            $datos = crimpersTools::where('dateRegistered', '2026-06-20')
+            $datos = crimpersTools::where('dateRegistered', '2026-06-19')
                 ->orderBy('toolingCrimperName', 'asc')
                 ->orderBy('startHour', 'asc')
                 ->get();
