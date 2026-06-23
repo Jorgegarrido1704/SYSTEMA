@@ -81,7 +81,7 @@
                         <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('workState') }}">{{ __('Work Scheduled') }}</a></li>
                         <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('ganttGraph') }}">{{ __('Gantt Work Graph') }}</a></li>
                         @endif
-                        @if( || $value == 'Admin' || $value == 'Jose Luis' )
+                        @if(  $value == 'Admin' || $value == 'Jose Luis' )
                         <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('pruebasElecticas') }}">{{ __('Electrical Tests') }}</a></li>
                         @endif
                         <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('graffWorksEng') }}">{{ __('Engineer Scheduleeng') }}</a>
