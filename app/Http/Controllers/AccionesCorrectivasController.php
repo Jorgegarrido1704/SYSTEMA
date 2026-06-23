@@ -31,14 +31,15 @@ class AccionesCorrectivasController extends Controller
         $value = session('user');
         $diasRestantes = [];
         $responsable = personalBergsModel::select('employeeName')->where('user', $value)->first();
-        if (! $responsable) {
-            return back()->with('error', 'No tienes personal asignado');
-        }
+
         if ($value == 'Admin' or $value == 'Martin A') {
             $accionesActivas = accionesCorrectivas::where('status', '!=', 'etapa 4 - Accion correctiva finalizada')->orderBy('id_acciones_correctivas', 'ASC')->get();
             $accionesCerradas = accionesCorrectivas::where('status', 'etapa 4 - Accion correctiva finalizada')->orderBy('id_acciones_correctivas', 'DESC')->get();
 
         } else {
+            if (! $responsable) {
+                return back()->with('error', 'No tienes personal asignado');
+            }
             $accionesActivas = accionesCorrectivas::where('status', '!=', 'etapa 4 - Accion correctiva finalizada')->where('resposableAccion', $responsable->employeeName)->orderBy('id_acciones_correctivas', 'ASC')->get();
             $accionesCerradas = accionesCorrectivas::where('status', 'etapa 4 - Accion correctiva finalizada')->where('resposableAccion', $responsable->employeeName)->orderBy('id_acciones_correctivas', 'DESC')->get();
         }
