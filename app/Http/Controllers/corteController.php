@@ -63,8 +63,8 @@ class corteController extends Controller
             // Si es antes de las 9 AM, mostrar ayer. Si es después, mostrar hoy.
             $fechaConsultar = ($horaActual < $horaCorte) ? $ayerFormatted : $hoyFormatted;
 */
-            $fechaConsultar = Carbon::now()->format('Y-m-d');
-            $datos = crimpersTools::where('dateRegistered', '2026-06-19')
+            $fechaConsultar = Carbon::now()->subDay()->format('Y-m-d');
+            $datos = crimpersTools::where('dateRegistered', $fechaConsultar)
                 ->orderBy('toolingCrimperName', 'asc')
                 ->orderBy('startHour', 'asc')
                 ->get();
