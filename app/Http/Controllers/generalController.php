@@ -8,9 +8,9 @@ use App\Models\errores;
 use App\Models\KitsAlmcen;
 use App\Models\Maintanance;
 use App\Models\material;
-use App\Models\Paros;
 use App\Models\ParosProd;
 use App\Models\regfull;
+use App\Models\registo_mant;
 use App\Models\registoLogin;
 use App\Models\regParTime;
 use App\Models\specialWireModel;
@@ -605,11 +605,11 @@ class generalController extends Controller
         ]);
 
         if ($maint->save()) {
-            $idUlt = DB::table('registro_paro')->where('equipo', 'Mantenimiento')->orderBy('id', 'desc')->first();
-            $id_f = $idUlt->id;
-            $hoy = date('d-m-Y');
+            $idUlt = registo_mant::select('id')->where('equipo', 'Mantenimiento')->orderBy('id', 'desc')->first();
+            $id_f = $idUlt->id ?? 1;
+            $hoy = date('Y-m-d');
             $hora = date('H:i');
-            $Paro = new Paros;
+            $Paro = new registo_mant;
             $Paro->fill([
                 'id_maquina' => $NomEq,
                 'area' => $area,
@@ -619,20 +619,12 @@ class generalController extends Controller
                 'equipo' => $NomEq,
                 'estatus' => '',
                 'comentarios' => '',
-                'fechReq' => $hoy,
-                'fechaProg' => '',
-                'fechaEntre' => '',
-                'horaIniServ' => '',
-                'horaFinServ' => '',
-                'ttServ' => 0,
                 'solPor' => $quien,
-                'SupMant' => 'Javier Cervantes',
-                'tecMant' => '',
-                'ValGer' => '',
+                'fechReq' => $hoy,
                 'id_falla' => $id_f,
             ]);
             if ($Paro->save()) {
-                registroLogin::create(['fecha' => $today, 'userName' => $value, 'action' => 'Solicitud de Mantenimiento Registrado ID: '.$maint->id]);
+                registoLogin::create(['fecha' => $today, 'userName' => $value, 'action' => 'Solicitud de Mantenimiento Registrado ID: '.$maint->id]);
 
                 return redirect('/general')->with('success', 'Data successfully saved.');
             } else {
