@@ -30,6 +30,9 @@ class rrhhController extends Controller
             return redirect()->route('login');
         }
         $leadername = personalBergsModel::select('employeeName')->where('user', '=', $value)->first();
+        if (empty($leadername)) {
+            return back()->with('error', 'No tiene lider');
+        }
         $lidername = personalBergsModel::select('employeeLider')->distinct()->get();
         $laeder = $leadername->employeeName ?? $value;
         $weekNum = Carbon::now()->weekOfYear;
