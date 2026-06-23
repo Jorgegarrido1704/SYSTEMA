@@ -77,9 +77,13 @@
                         @if($value == 'Nancy A' || $value == 'Jesus_C' || $value == 'Admin' || $value == 'Isabel E')
                             <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('UpdateWorkFiles') }}">{{ __('UpdateWorkFiles') }}</a></li>
                         @endif
+                        @if($value == 'Nancy A' || $value == 'Jesus_C' || $value == 'Admin' || $value == 'Isabel E' || $value == 'Paola S')
                         <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('workState') }}">{{ __('Work Scheduled') }}</a></li>
                         <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('ganttGraph') }}">{{ __('Gantt Work Graph') }}</a></li>
+                        @endif
+                        @if( || $value == 'Admin' || $value == 'Jose Luis' )
                         <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('pruebasElecticas') }}">{{ __('Electrical Tests') }}</a></li>
+                        @endif
                         <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('graffWorksEng') }}">{{ __('Engineer Scheduleeng') }}</a>
                         </li>
                     </ul>

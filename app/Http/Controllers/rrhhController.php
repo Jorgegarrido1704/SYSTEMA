@@ -1308,7 +1308,7 @@ class rrhhController extends Controller
                 }
             }
             if (empty($personal)) {
-                $personal = $sublider;
+                return back()->with('error', 'No tienes personal asignado');
             }
 
         }
