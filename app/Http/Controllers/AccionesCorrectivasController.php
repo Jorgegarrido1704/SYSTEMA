@@ -310,10 +310,10 @@ class AccionesCorrectivasController extends Controller
             'fechaFinAccion' => 'required|date',
             'verificadorAccion' => 'required|string|max:500',
         ]);
-        $id = preg_replace('/[^\p{L}0-9()._\- ]/u', ' ', $request->input('id'));
-        $accionIngesada = preg_replace('/[^\p{L}0-9()._\- ]/u', ' ', $request->input('accion'));
-        $responsableAccion = preg_replace('/[^\p{L}0-9()._\- ]/u', ' ', $request->input('reponsableAccion'));
-        $verificadorAccion = preg_replace('/[^\p{L}0-9()._\- ]/u', ' ', $request->input('verificadorAccion'));
+        $id = $request->input('id');
+        $accionIngesada = $request->input('accion');
+        $responsableAccion = $request->input('reponsableAccion');
+        $verificadorAccion = $request->input('verificadorAccion');
         sub_acciones_model::create([
             'folioAccion' => $id,
             'descripcionSubAccion' => $accionIngesada,
