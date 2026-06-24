@@ -308,7 +308,7 @@ class AccionesCorrectivasController extends Controller
     {
         $request->validate([
             'id' => 'required|string|max:15',
-            'accion' => 'required|string|max:500',
+            'accion' => 'required|string|max:1000',
             'reponsableAccion' => 'required|string|max:500',
             'fechaInicioAccion' => 'required|date',
             'fechaFinAccion' => 'required|date',
