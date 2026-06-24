@@ -176,7 +176,7 @@ class updateRoutingsTimes implements ShouldQueue
                                 'work_description' => "Plug {$termClean1} Terminal in {$df}",
                                 'QtyTimes' => 1,
                                 'timePerProcess' => Arr::random($plugIn),
-                                'setUp_routing' => 300,
+                                'setUp_routing' => 60,
                             ];
                             $bulkInserts[] = [
                                 'pn_routing' => $np,
@@ -185,7 +185,7 @@ class updateRoutingsTimes implements ShouldQueue
                                 'work_description' => "Routing Wire in {$df}",
                                 'QtyTimes' => 1,
                                 'timePerProcess' => Arr::random($routingBoardTime),
-                                'setUp_routing' => 300,
+                                'setUp_routing' => 30,
                             ];
                         }
                     }
@@ -208,7 +208,7 @@ class updateRoutingsTimes implements ShouldQueue
                                 'work_description' => "Plug {$termClean2} Terminal in {$dt}",
                                 'QtyTimes' => 1,
                                 'timePerProcess' => Arr::random($plugIn),
-                                'setUp_routing' => 300,
+                                'setUp_routing' => 60,
                             ];
                             $bulkInserts[] = [
                                 'pn_routing' => $np,
@@ -217,7 +217,7 @@ class updateRoutingsTimes implements ShouldQueue
                                 'work_description' => "Routing Wire in {$dt}",
                                 'QtyTimes' => 1,
                                 'timePerProcess' => Arr::random($routingBoardTime),
-                                'setUp_routing' => 300,
+                                'setUp_routing' => 30,
                             ];
                         }
                     }
@@ -254,6 +254,12 @@ class updateRoutingsTimes implements ShouldQueue
                     } elseif ($totalCircuitsCorte <= 50) {
                         $testing = 240;
                         $packing = 180;
+                    } elseif ($totalCircuitsCorte <= 100) {
+                        $testing = 600;
+                        $packing = 360;
+                    } elseif ($totalCircuitsCorte > 100) {
+                        $testing = 900;
+                        $packing = 480;
                     }
 
                     $bulkInserts[] = ['pn_routing' => $np, 'work_routing' => '11501', 'posible_stations' => 'Pend', 'work_description' => "Testing: {$totalCircuitsCorte} Circuits", 'QtyTimes' => 1, 'timePerProcess' => $testing, 'setUp_routing' => 300];
