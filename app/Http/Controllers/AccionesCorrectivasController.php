@@ -306,7 +306,7 @@ class AccionesCorrectivasController extends Controller
 
     public function guardarAccion(Request $request)
     {
-       
+
         $id = $request->input('id');
         $accionIngesada = $request->input('accion');
         $responsableAccion = $request->input('reponsableAccion');
