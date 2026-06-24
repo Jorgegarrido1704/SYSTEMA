@@ -244,11 +244,11 @@
                                     <div class="row">
                                         <div class="col-6 mb-3">
                                             <label for="accion" class="form-label font-weight-bold"><a>Descripcion de la accion:</a></label>
-                                            <textarea class="form-control" name="accion" id="accion" cols="45" rows="3"  pattern="[A-Za-z0-9\- ()]+" required></textarea>
+                                            <textarea class="form-control" name="accion" id="accion" cols="45" rows="3"  maxlength="1500" required></textarea>
                                         </div>
                                         <div class="col-3 mb-3">
                                             <label for="reponsableAccion" class="form-label font-weight-bold">Reponsable de la accion</label>
-                                            <select name="reponsableAccion" id="reponsableAccion" class="form-control" pattern="[A-Za-z0-9\- ()]+"  required>
+                                            <select name="reponsableAccion" id="reponsableAccion" class="form-control"   required>
                                                 <option value="" selected disabled>...</option>
                                             @foreach($personal as $p)
                                             <option value="{{ $p->employeeName }}">{{ $p->employeeName }}</option>
@@ -268,7 +268,7 @@
 
                                     <div class="col-6 mb-3">
                                         <label for="verificadorAccion">Quien aprobara la accion</label>
-                                        <input type="text" name="verificadorAccion" id="verificadorAccion" value="Martin Aleman" pattern="[A-Za-z0-9\- ()]+" readonly>
+                                        <input type="text" name="verificadorAccion" id="verificadorAccion" value="Martin Aleman" class="form-control" readonly>
 
                                     </div>
                                     <div class="col-3 mb-3" >
