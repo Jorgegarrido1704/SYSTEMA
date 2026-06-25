@@ -259,11 +259,11 @@ class caliController extends generalController
                 $serial = str_replace(']', '|', $serial);
             }
 
-            $responsable1 = $request->input('responsable1');
-            $responsable2 = $request->input('responsable2');
-            $responsable3 = $request->input('responsable3');
-            $responsable4 = $request->input('responsable4');
-            $responsable5 = $request->input('responsable5');
+            $responsable1 = $request->input('resp1');
+            $responsable2 = $request->input('resp2');
+            $responsable3 = $request->input('resp3');
+            $responsable4 = $request->input('resp4');
+            $responsable5 = $request->input('resp5');
             $check1 = $request->input('check1');
             $check2 = $request->input('check2');
             $check3 = $request->input('check3');
@@ -287,7 +287,7 @@ class caliController extends generalController
             if (strpos($responsable5, ',')) {
                 $responsable5 = str_replace(',', ';', $responsable5);
             }
-            if ($pn == '300-1570-00-R01' or $pn == '185-4147' or $pn == '199-4942' or $pn == '199-6660' or $pn == '199-3871' or $pn == '189-6256' or $pn == '190-3559' or $pn == '185-4142') {
+            if ($pn == '300-1922-00-R01' or $pn == '300-1570-00-R01' or $pn == '185-4147' or $pn == '199-4942' or $pn == '199-6660' or $pn == '199-3871' or $pn == '189-6256' or $pn == '190-3559' or $pn == '185-4142') {
 
                 if (DB::table('registroqrs')->where('CodigoIdentificaicon', '=', $serial)->exists()) {
                     $registroQr = DB::table('registroqrs')->where('CodigoIdentificaicon', '=', $serial)->delete();
