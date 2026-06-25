@@ -31,7 +31,7 @@ class rrhhController extends Controller
         }
 
         $weekNum = Carbon::now()->weekOfYear;
-        $datosRHWEEK = $tt = [];
+        $datosRHWEEK = $tt = $lidername = [];
         if ($value == 'Admin' or $cat == 'RRHH') {
             $datosRHWEEK = assistence::leader($value)->OrderBy('lider', 'desc')->get();
             $diasRegistro = ['', '', '', '', '', ''];
