@@ -286,6 +286,9 @@ Route::controller(mantainenceController::class)->group(function () {
     Route::get('/mantainence/{id}', [mantainenceController::class, 'show'])->name('mantainence.show');
     Route::post('/mantainence/guardarMantencion', [mantainenceController::class, 'guardarMantencion'])->name('mantainence.guardarMantencion');
     Route::post('/mantainence/guardarSeguimiento', [mantainenceController::class, 'guardarSeguimiento'])->name('mantainence.guardarSeguimiento');
+    Route::post('/mantainence/excel', [mantainenceController::class, 'excel'])->name('mantainence.excel');
+    Route::get('/mantenimiento/{id}/completar', [mantainenceController::class, 'completarForm'])->name('mantainence.completarForm');
+    Route::post('/mantenimiento/{id}/completar', [mantainenceController::class, 'completar'])->name('mantainence.completar');
 });
 
 Route::controller(herramentalesController::class)->group(function () {
