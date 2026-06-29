@@ -58,7 +58,7 @@
                 <div class="col-md-4 mb-4">
                     <div class="card h-100 shadow-sm border-0">
                         <div class="card-header text-white font-weight-bold py-2" style="background-color: #1e2156;">
-                           Pendiente por planeacion (WO)
+                           Pendiente por planeacion ( GenerarWO)
                         </div>
                         <div class="card-body d-flex align-items-center justify-content-center py-4">
                             <h2 class="display-4 font-weight-bold mb-0" style="color: #1e2156;">{{ $pendbajarppap }}</h2>
@@ -93,7 +93,7 @@
                 <div class="col-md-4 mb-4">
                     <div class="card h-100 shadow-sm border-0">
                         <div class="card-header text-white font-weight-bold py-2" style="background-color: #1e2156;">
-                           Pendiente por planeacion (WO)
+                           Pendiente por planeacion (Generar WO)
                         </div>
                         <div class="card-body d-flex align-items-center justify-content-center py-4">
                             <h2 class="display-4 font-weight-bold mb-0" style="color: #1e2156;">{{ $pendbajarprim }}</h2>
@@ -139,7 +139,7 @@
         </div>
         <div class="card h-100 shadow-sm border-0">
             <div class="card-header text-white font-weight-bold py-2" style="background-color: #1e2156;">
-               Pendiente por planeacion (WO)
+               Pendiente por planeacion (Generar WO)
             </div>
             <div class="card-body d-flex align-items-center justify-content-center py-4">
                  <table class="table table-striped table-bordered"  cellspacing="0" width="100%">
