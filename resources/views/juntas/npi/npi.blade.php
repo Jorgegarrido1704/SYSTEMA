@@ -58,7 +58,7 @@
                 <div class="col-md-4 mb-4">
                     <div class="card h-100 shadow-sm border-0">
                         <div class="card-header text-white font-weight-bold py-2" style="background-color: #1e2156;">
-                           Pendiente por bajar
+                           Pendiente por planeacion (WO)
                         </div>
                         <div class="card-body d-flex align-items-center justify-content-center py-4">
                             <h2 class="display-4 font-weight-bold mb-0" style="color: #1e2156;">{{ $pendbajarppap }}</h2>
@@ -93,7 +93,7 @@
                 <div class="col-md-4 mb-4">
                     <div class="card h-100 shadow-sm border-0">
                         <div class="card-header text-white font-weight-bold py-2" style="background-color: #1e2156;">
-                           Pendiente por bajar
+                           Pendiente por planeacion (WO)
                         </div>
                         <div class="card-body d-flex align-items-center justify-content-center py-4">
                             <h2 class="display-4 font-weight-bold mb-0" style="color: #1e2156;">{{ $pendbajarprim }}</h2>
@@ -112,6 +112,75 @@
                 </div>
             </div>
 </div>
+<div class="row text-center"  id="tablas_datos"style="display: none;">
+    <div class="col-md-12 mb-4">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-header text-white font-weight-bold py-2" style="background-color: #721c24;">
+               Ingenieria
+            </div>
+            <div class="card-body d-flex align-items-center justify-content-center py-4">
+               
+                    <table class="table table-striped table-bordered"  cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                 <th>{{__('Status') }}</th>
+                                <th>{{__('Customer') }}</th>
+                                <th>{{ __('Part Number') }}</th>
+                                <th>{{__('Revision') }}</th>
+                                <th>{{__('Received Date') }}</th>
+                                <th>{{__('Commitment Date') }}</th>
+                            </tr>
+                            <thead>
+                                <tbody id="tbody_ingenieria">
+
+                                </tbody>
+                    </table>
+            </div>
+        </div>
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-header text-white font-weight-bold py-2" style="background-color: #1e2156;">
+               Pendiente por planeacion (WO)
+            </div>
+            <div class="card-body d-flex align-items-center justify-content-center py-4">
+                 <table class="table table-striped table-bordered"  cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>{{__('Status') }}</th>
+                                <th>{{__('Customer') }}</th>
+                                <th>{{ __('Part Number') }}</th>
+                                <th>{{__('Revision') }}</th>
+                                <th>{{__('Received Date') }}</th>
+                                <th>{{__('Commitment Date') }}</th>
+                                <th>{{ __('Completion Date') }}</th>
+                            </tr>
+                            <thead>
+                                <tbody id="tabla_pendiente"> </tbody>
+                    </table>
+            </div>
+        </div>
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-header text-white font-weight-bold py-2" style="background-color: #441e56;">
+               En piso
+            </div>
+            <div class="card-body d-flex align-items-center justify-content-center py-4">
+                 <table class="table table-striped table-bordered"  cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>{{__('Status') }}</th>
+                                <th>{{__('Customer') }}</th>
+                                <th>{{ __('Part Number') }}</th>
+                                <th>{{__('Revision') }}</th>
+                                <th>{{__('Where is it located') }}</th>
+                                <th>{{__('Required Date') }}</th>
+                                
+                            </tr>
+                            <thead>
+                                <tbody id="tabla_piso"> </tbody>
+                    </table>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <script>
@@ -120,20 +189,83 @@ function mostrar(id) {
         if(document.getElementById('ppap').style.display == 'block'){
             document.getElementById('ppap').style.display = 'none';
             document.getElementById('prim').style.display = 'none';
+            document.getElementById('tablas_datos').style.display = 'none';
         }else{
        document.getElementById('ppap').style.display = 'block';
        document.getElementById('prim').style.display = 'none';
+       mostrarTablas('ppap');
     }
-   }else{
+     }else{
        if(document.getElementById('prim').style.display == 'block'){
             document.getElementById('prim').style.display = 'none';
             document.getElementById('ppap').style.display = 'none';
+             document.getElementById('tablas_datos').style.display = 'none';
         }else{
        document.getElementById('prim').style.display = 'block';
        document.getElementById('ppap').style.display = 'none';
+       mostrarTablas('prim');
     }
    }
 }
+function mostrarTablas(id){
+    //alert(id);
+    document.getElementById('tablas_datos').style.display = 'block';
+    let url;
+    if(id === 'ppap'){
+         url = "{{ route('info_npi', ['id' => 'ppap']) }}";
+    }else{
+     url = "{{ route('info_npi', ['id' => 'prim']) }}";
+    }
+    fetch(url).then(response => response.json()).then(data => {
+        console.log(data);
+        let tabla_ingenieria = document.getElementById('tbody_ingenieria');
+        let tabla_pendiente = document.getElementById('tabla_pendiente');
+        let tabla_piso = document.getElementById('tabla_piso');
+        let html_ingenieria = '';
+        let html_pendiente = '';
+        let html_piso = '';
+        data.inprogres.forEach(inprogres => {
+            html_ingenieria += `<tr>
+                <td></td>
+            <td>${inprogres.customer}</td>
+            <td>${inprogres.pn}</td>
+            <td>${inprogres.WorkRev}</td>
+            <td>${inprogres.receiptDate}</td>
+            <td>${inprogres.commitmentDate}</td>
+        </tr>`;
+        });
+        data.totalgeneral.forEach(inprogres => {
+            html_pendiente += `<tr>
+                <td></td>
+            <td>${inprogres.customer}</td>
+            <td>${inprogres.pn}</td>
+            <td>${inprogres.WorkRev}</td>
+            <td>${inprogres.receiptDate}</td>
+            <td>${inprogres.commitmentDate}</td>
+            <td>${inprogres.CompletionDate}</td>
+
+        </tr>`;
+        });
+      
+        data.registros.forEach(inprogres => {
+            html_piso += `<tr>
+                <td></td>
+            <td>${inprogres.cliente}</td>
+            <td>${inprogres.NumPart}</td>
+            <td>${inprogres.rev}</td>
+            <td>${inprogres.donde}</td>
+            <td>${inprogres.reqday}</td>
+        </tr>`;
+        });
+        tabla_ingenieria.innerHTML = html_ingenieria;
+        tabla_pendiente.innerHTML = html_pendiente;
+        tabla_piso.innerHTML = html_piso;
+      
+      
+    })
+
+}
+
 
 </script>
 

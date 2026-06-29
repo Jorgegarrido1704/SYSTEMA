@@ -2713,7 +2713,7 @@ class juntasController extends Controller
         /*  $totales = $registros[0]->ppap + $registros[0]->prim +
         $totalgeneral[0]->total//ppap + $totalgeneral[1]->total // prim
         // + $inprogres[0]->total // ppap + $inprogres[1]->total // prim;
-*/
+        */
         $totales = $registros[0]->ppap + $registros[0]->prim + $totalgeneral[0]->total + $totalgeneral[1]->total + $inprogres[0]->total + $inprogres[1]->total;
         $totalesPPAP = $registros[0]->ppap + $inprogres[0]->total + $totalgeneral[0]->total;
         $totalesPRIM = $registros[0]->prim + $inprogres[1]->total + $totalgeneral[1]->total;
@@ -2740,159 +2740,42 @@ class juntasController extends Controller
         ]);
     }
 
-    public function info_npi()
+    public function info_npi(Request $request, $id)
     {
         $value = session('user');
         $cat = session('categoria');
-        if (empty($value)) {
-            return redirect()->route('/');
+        if ($value == null) {
+            return redirect('/');
         }
-        $ingependinses = $porbajara = $totalgeneral = $enproceso = $totalprim = $totalppap = 0;
-        function colorRetrado($fecha)
-        {
-            if (empty($fecha)) {
-                return 'white'; // Sin fecha
-            }
+        //  $id = $request->input('id');
 
-            $hoy = \Carbon\Carbon::now();
-            $fechaCarbon = \Carbon\Carbon::parse($fecha);
-
-            // Diferencia en días (puede ser negativa si está en el futuro)
-            $diasDiff = $hoy->diffInDays($fechaCarbon, false);
-
-            if ($diasDiff <= 0) {
-                return 'rgba(255, 0, 0, 0.5)'; // Urgente
-            } elseif ($diasDiff <= 3) {
-                return 'rgba(255, 255, 0, 0.5)'; // Próximo
-            } else {
-                return 'rgba(0, 255, 0, 0.5)'; // A tiempo
-            }
+        if ($id == 'prim') {
+            $color = 'yellow';
+            $tipo = 'PRIM';
+        } else {
+            $color = 'green';
+            $tipo = 'PPAP';
         }
+        $inprogres = workScreduleModel::where('status', 'In Progress')->where('color', $color)->get();
 
-        $WS = workScreduleModel::where('status', '!=', 'CANCELLED')
-            ->whereNull('UpOrderDate')
-            ->orderBy('customerDate', 'ASC')
+        // 2. Completed General Schedules (Fixed case-sensitivity for column names if needed)
+        $totalgeneral = workScreduleModel::where('status', 'Completed') // Best practice: keep column names consistent (status vs Status)
+            ->whereNull('UpOrderDate')     // cleaner Laravel way for checking null
+            ->where('color', $color)
             ->get();
 
-        foreach ($WS as $res) {
-            $ing = '';
-            if ($res->documentsApproved == null) {
-                $ing = 'Pending by engineering';
-            } else {
-                $ing = 'Pending by creation WO';
-            }
-            $registroPPAP[] = [
-                'cliente' => $res->customer,
-                'pn' => $res->pn,
-                'rev' => $res->WorkRev,
-                'prioridad' => $res->customerDate,
-                'color' => colorRetrado($res->customerDate),
-                'tipo' => 'WS',
-                'comments' => $res->comments,
-                'materiales' => '-',
-                'ingeniria' => $ing,
-                'cutting' => '-',
-                'ensamble' => '-',
-                'calidad' => '-',
-                'aprovado' => '-',
-            ];
-
-            if (! empty($res->documentsApproved)) {
-                $porbajara++;
-            } else {
-                $ingependinses++;
-            }
-        }
-
-        $registros = Wo::where('count', '!=', 12)
-            ->where(function ($q) {
-                $q->where('rev', 'LIKE', 'PRIM%')
-                    ->orWhere('rev', 'LIKE', 'PPAP%');
-            })
-            ->orderBy('id', 'asc')
-            ->orderBy('cliente', 'asc')
+        // 3. Fixed Wo Query
+        $registros = Wo::where('rev', 'like', $tipo.'%')
+            ->whereNotIn('count', ['20', '12'])
             ->get();
 
-        foreach ($registros as $reg) {
-            $registroWS = workScreduleModel::where('pn', $reg->NumPart)
-                ->orderBy('id', 'desc')
-                ->first();
-            $issuesfloor = issuesFloor::select('comment_issue')->where('id_tiempos', $reg->id)->first();
-
-            if ($reg->count == 18 or $reg->count == 10) {
-                $materiales = 'OK';
-                $corte = 'OK';
-                $ensamble = 'OK';
-                $calidad = 'In process';
-                $aprovado = '-';
-            } elseif ($reg->count == 17 or $reg->count == 16) {
-                $materiales = 'OK';
-                $corte = 'In process';
-                $ensamble = '-';
-                $calidad = '-';
-                $aprovado = '-';
-
-            } elseif ($reg->count == 14 or $reg->count == 14) {
-                $materiales = 'OK';
-                $corte = 'OK';
-                $ensamble = 'In process';
-                $calidad = '-';
-                $aprovado = '-';
-            }
-            $fecha = $registroWS ? $registroWS->customerDate : null;
-
-            $registroPPAP[] = [
-                'cliente' => $reg->cliente,
-                'pn' => $reg->NumPart,
-                'rev' => $reg->rev,
-                'prioridad' => $fecha,
-                'color' => colorRetrado($fecha),
-                'tipo' => 'WO',
-                'comments' => $issuesfloor ? $issuesfloor->comment_issue : '',
-                'materiales' => $materiales ?? '-',
-                'ingeniria' => 'OK',
-                'cutting' => $corte ?? '-',
-                'ensamble' => $ensamble ?? '-',
-                'calidad' => $calidad ?? '-',
-                'aprovado' => $aprovado ?? 'No',
-            ];
-        }
-
-        // --- 3. Ordenar por prioridad (fecha más próxima primero) ---
-        usort($registroPPAP, function ($a, $b) {
-            return strtotime($a['prioridad']) <=> strtotime($b['prioridad']);
-        });
-
-        // --- 4. Retornar vista ---
-        $enproceso = count($registros);
-        $totalgeneral = count($registroPPAP);
-        $registroPartNumbers = $registrosprevios = [];
-
-        $ultimasRevisiones = Po::selectRaw('pn,client, COUNT(pn) as revisiones')
-            ->where('rev', 'LIKE', 'PRIM%')
-            ->orWhere('rev', 'LIKE', 'PPAP%')
-            ->groupBy('pn', 'client')
-            ->orderBy('pn', 'asc')
-            ->get();
-
-        foreach ($ultimasRevisiones as $ultimaRevision) {
-            if ($ultimaRevision->revisiones > 1) {
-                $registrosprevios[] = [
-                    'pn' => $ultimaRevision->pn,
-                    'rev' => $ultimaRevision->revisiones,
-                    'cliente' => $ultimaRevision->client,
-                ];
-            }
-
-        }
-
-        return view('juntas.npi.npi', [
-            'value' => $value,
-            'cat' => $cat,
-            'registroPPAP' => $registroPPAP,
-            'enproceso' => $enproceso,
+        $datos = [
+            'inprogres' => $inprogres,
             'totalgeneral' => $totalgeneral,
-            'registroPartNumbers' => $registroPartNumbers,
-        ]);
+            'registros' => $registros,
+        ];
+
+        return json_encode($datos);
+
     }
 }
