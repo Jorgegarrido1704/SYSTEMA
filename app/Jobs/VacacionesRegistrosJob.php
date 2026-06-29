@@ -55,7 +55,7 @@ class VacacionesRegistrosJob implements ShouldQueue
                     DB::table('personalberg')->where('id', $emp->id)->update([
                         'lastYear' => $diasVacacionesAnteriores - $menosAnoAnterios,
                         'currentYear' => $diasVacacionesPendientes - $menos,
-                        'DaysVacationsAvailble' => $total, z,
+                        'DaysVacationsAvailble' => $total,
                     ]);
                 } else {
                     $diasVacacionesPendientes = intval(($diasVacaciones / 365) * $difference);
