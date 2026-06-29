@@ -21,11 +21,6 @@
        </div>
     </div>
 
-<div>
-    <input type="hidden" name="cortes" id="cortes" >
-    <input type="hidden" name="rendimiento" id="rendimiento" >
-    <input type="hidden" name="disponibilidad" id="disponibilidad" >
-    <input type="hidden" name="calidad" id="calidad" >
-</div>
+
 </div>
 @endsection
