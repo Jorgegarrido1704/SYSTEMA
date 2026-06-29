@@ -87,7 +87,7 @@ class ChartController extends Controller
             $diffTimeSeconds = abs($fechaActual - $lastTiempo);
             $diffTimeMinutes = round($diffTimeSeconds / 60, 2);
             $hora = Carbon::parse($row->fecha)->format('H:i:s');
-            if ($lasStatus == 'STOP' && $diffTimeSeconds > 4) {
+            if ($lasStatus == 'STOP' && $diffTimeSeconds > 6) {
                 $paros += $diffTimeMinutes;
 
             } else {

@@ -158,7 +158,9 @@
                         <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('juntas.npi') }}">{{ __('NPI') }}</a></li>
                         <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('toolingAnalysis') }}">{{ __('Toolings Analysis') }}</a></li>
                         <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('chart.index') }}">{{ __('Cutting Machine') }}</a></li>
-
+                         @if( $value=='Admin' )
+                        <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('oee.indexEoo') }}">{{ __('OEE') }}</a></li>
+                        @endif
                     </ul>
 
                 </li>

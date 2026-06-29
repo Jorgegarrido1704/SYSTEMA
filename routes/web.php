@@ -19,6 +19,7 @@ use App\Http\Controllers\juntasController;
 use App\Http\Controllers\loginController;
 use App\Http\Controllers\mailsController;
 use App\Http\Controllers\mantainenceController;
+use App\Http\Controllers\oeeController;
 use App\Http\Controllers\planingController;
 use App\Http\Controllers\PoController;
 use App\Http\Controllers\PpapIngController;
@@ -311,6 +312,13 @@ Route::controller(corteController::class)->group(function () {
 Route::controller(chartController::class)->group(function () {
     Route::get('/chart', [chartController::class, 'index'])->name('chart.index');
     Route::get('/chart/getDatacorte/', [chartController::class, 'getDatacorte'])->name('getDatacorte');
+});
+
+Route::controller(oeeController::class)->group(function () {
+    Route::get('/oee', [oeeController::class, 'indexEoo'])->name('oee.indexEoo');
+    Route::get('/eoo/appJointtiemposCompletos', [oeeController::class, 'appJointtiemposCompletos'])->name('oee.appJointtiemposCompletos');
+    Route::get('/eoo/appJointTerminalesTabla', [oeeController::class, 'appJointTerminalesTabla'])->name('oee.appJointTerminalesTabla');
+    Route::get('/eoo/appJointtiemposCalidad', [oeeController::class, 'appJointtiemposCalidad'])->name('oee.appJointtiemposCalidad');
 });
 
 // Cambiar Idioma
