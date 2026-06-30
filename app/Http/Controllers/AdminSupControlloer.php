@@ -233,9 +233,9 @@ class AdminSupControlloer extends Controller
 
     public function timeLine(Request $request)
     {
-        if (session('categoria') != 'SupAdmin') {
+        /*if (session('categoria') != 'SupAdmin') {
             return redirect('/login');
-        }
+        }*/
         $np = $request->input('np');
 
         if ($np) {
