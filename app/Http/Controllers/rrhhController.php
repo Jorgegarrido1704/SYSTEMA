@@ -32,6 +32,7 @@ class rrhhController extends Controller
 
         $weekNum = Carbon::now()->weekOfYear;
         $datosRHWEEK = $tt = $lidername = [];
+        $lidername = personalBergsModel::select('employeeLider')->distinct()->get();
         if ($value == 'Admin' or $cat == 'RRHH') {
             $datosRHWEEK = assistence::leader($value)->OrderBy('lider', 'desc')->get();
             $diasRegistro = ['', '', '', '', '', ''];
@@ -41,7 +42,7 @@ class rrhhController extends Controller
             if (empty($leadername)) {
                 return back()->with('error', 'No tiene lider');
             }
-            $lidername = personalBergsModel::select('employeeLider')->distinct()->get();
+
             $laeder = $leadername->employeeName ?? $value;
 
             $diasRegistro = ['readonly', 'readonly', 'readonly', 'readonly', 'readonly'];
