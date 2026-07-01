@@ -75,6 +75,8 @@ class caliController extends generalController
                 '185-4142',
                 '300-1570-00-R01',
                 '300-1922-00-R01',
+                '300-157000R01-R',
+
             ];
             if (in_array($buscarInfor->np, $numQr)) {
                 $cambioestados = [1, 'readonly', '', 'none', 'focus'];
