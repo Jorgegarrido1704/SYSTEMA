@@ -115,7 +115,7 @@
                         @endif
                     </ul>
                 </li>
-                @if($value=='Admin' or $value == 'Hector S' or $value== 'Daniel G')
+                @if($value=='Admin' or $value == 'Hector S' or $value== 'Daniel G' or $value=='Eliot D' or $value=='Paola S')
                  <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('vsm_schedule') }}"
                     onmouseover=showSchedule();>{{ __('Value Stream Mapping') }}</a>
                     <ul class="submenu" id="schedule" style="display:none;">
