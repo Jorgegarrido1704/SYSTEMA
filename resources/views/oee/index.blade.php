@@ -17,15 +17,15 @@
     <div class="col-xl-12 col-lg-12">
        <h1 class="h3 mb-0 text-gray-800 text-center tex">OEE: <strong ><span id="oee"></span>%</strong></h1>
     </div>
-    
-    <div class="col-xl-3 col-lg-4">
+
+    <div class="col-xl-4 col-lg-4">
         <div class="text-center " id="graficaDisponibilidad">  </div>
     </div>
-    <div class="col-xl-3 col-lg-4">
+    <div class="col-xl-4 col-lg-4">
         <div class="text-center " id="graficaRendimiento">  </div>
     </div>
 
-    <div class="col-xl-3 col-lg-4">
+    <div class="col-xl-4 col-lg-4">
         <div class="text-center " id="graficaCalidad">  </div>
     </div>
 

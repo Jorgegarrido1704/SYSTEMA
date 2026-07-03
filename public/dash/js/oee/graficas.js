@@ -16,7 +16,7 @@ function cortes() {
         fetch(url_cortes)
         .then(response => response.json())
         .then(data => {
-           console.log("Datos recibidos de todas las máquinas:", data);
+         //  console.log("Datos recibidos de todas las máquinas:", data);
           //   document.getElementById('cortes').value = data.totalCortes;
                document.getElementById('oee').innerHTML = data.oee;
 
@@ -102,9 +102,9 @@ function cortes() {
         new Chart(ctx2, {
             type: 'doughnut',
             data: {
-                labels: ['Disponibilidad: '+data.porcentajeCalidad.toFixed(2)+'%', 'Paros: '+ (100 - data.porcentajeCalidad).toFixed(2) + '%'],
+                labels: ['Acceptable: '+data.porcentajeCalidad.toFixed(2)+'%', 'No aceptable: '+ (100 - data.porcentajeCalidad).toFixed(2) + '%'],
                 datasets: [{
-                    label: 'Disponibilidad %',
+                    label: 'Calidad %',
                     data: [data.porcentajeCalidad, 100 - data.porcentajeCalidad],
                     backgroundColor: [
 
@@ -136,9 +136,9 @@ function cortes() {
         new Chart(ctx1, {
             type: 'doughnut',
             data: {
-                labels: ['Disponibilidad: '+data.productividad.toFixed(2)+'%', 'Paros: '+ (100 - data.productividad).toFixed(2) + '%'],
+                labels: ['Rendimiento: '+data.productividad.toFixed(2)+'%', 'Pérdidas: '+ (100 - data.productividad).toFixed(2) + '%'],
                 datasets: [{
-                    label: 'Disponibilidad %',
+                    label: 'Rendimiento %',
                     data: [data.productividad, 100 - data.productividad],
                     backgroundColor: [
 
