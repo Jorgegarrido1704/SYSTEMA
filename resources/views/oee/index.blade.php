@@ -3,8 +3,8 @@
 
 @section('contenido')
  <script src="{{ asset('dash/js/oee/graficas.js') }}" defer></script>
- <meta http-equiv="refresh" content="180">
- 
+
+
 <div class="d-sm-flex align-items-center justify-content-between mb-4"> </div>
 
 <div class='row'>
@@ -14,11 +14,19 @@
             <input type="date" class="form-control" id="fecha" name="fecha" onchange="cargarGraficas()">
         </div>
     </div>
-    <div class="col-xl-6 col-lg-6">
-       <h1 class="h3 mb-0 text-gray-800 text-center">OEE: <strong ><span id="oee"></span>%</strong></h1>
-       <div class="text-center " id="graficaOee">
-       
-       </div>
+    <div class="col-xl-12 col-lg-12">
+       <h1 class="h3 mb-0 text-gray-800 text-center tex">OEE: <strong ><span id="oee"></span>%</strong></h1>
+    </div>
+    
+    <div class="col-xl-3 col-lg-4">
+        <div class="text-center " id="graficaDisponibilidad">  </div>
+    </div>
+    <div class="col-xl-3 col-lg-4">
+        <div class="text-center " id="graficaRendimiento">  </div>
+    </div>
+
+    <div class="col-xl-3 col-lg-4">
+        <div class="text-center " id="graficaCalidad">  </div>
     </div>
 
 <div>
