@@ -319,6 +319,7 @@ Route::controller(oeeController::class)->group(function () {
     Route::get('/eoo/appJointtiemposCompletos', [oeeController::class, 'appJointtiemposCompletos'])->name('oee.appJointtiemposCompletos');
     Route::get('/eoo/appJointTerminalesTabla', [oeeController::class, 'appJointTerminalesTabla'])->name('oee.appJointTerminalesTabla');
     Route::get('/eoo/appJointtiemposCalidad', [oeeController::class, 'appJointtiemposCalidad'])->name('oee.appJointtiemposCalidad');
+    Route::get('/eoo/appJointtiemposParos', [oeeController::class, 'appJointtiemposParos'])->name('oee.appJointtiemposParos');
 });
 
 // Cambiar Idioma

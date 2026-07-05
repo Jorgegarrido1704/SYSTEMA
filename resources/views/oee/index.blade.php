@@ -36,4 +36,73 @@
     <input type="hidden" name="calidad" id="calidad" >
 </div>
 </div>
+<br>
+<div class="row">
+        <div class="col-xl-6 col-lg-6 mb-4">
+            <div class="card shadow">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-danger">Top 3 Defectos Calidad</h6>
+                </div>
+                <div class="card-body">
+                    <table class="table table-sm table-borderless">
+                        <thead>
+                            <tr><th>#</th><th>Defecto</th><th>Cantidad</th></tr>
+                        </thead>
+                        <tbody id="topDefectosBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-6 col-lg-6 mb-4">
+            <div class="card shadow">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-danger">Top 3 Motivos Paros</h6>
+                </div>
+                <div class="card-body">
+                    <table class="table table-sm table-borderless">
+                        <thead>
+                            <tr><th>#</th><th>Paro</th><th>Minutos</th></tr>
+                        </thead>
+                        <tbody id="topDefectosBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-4 col-lg-4 mb-4" style="display: none;">
+            <div class="card shadow">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Detalle de Calidad</h6>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive" style="max-height:300px; overflow-y:auto;">
+                        <table class="table table-sm table-bordered">
+                            <thead class="thead-light">
+                                <tr><th>Máquina</th><th>Defecto</th><th>Cant.</th><th>Fecha</th></tr>
+                            </thead>
+                            <tbody id="tablaCalidadBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-4 col-lg-4 mb-4" style="display: none;">
+            <div class="card shadow">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-warning">Paros Registrados</h6>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive" style="max-height:300px; overflow-y:auto;">
+                        <table class="table table-sm table-bordered">
+                            <thead class="thead-light">
+                                <tr><th>Máquina</th><th>Inicio</th><th>Fin</th><th>Dur.</th><th>Motivo</th></tr>
+                            </thead>
+                            <tbody id="tablaParosBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
 @endsection

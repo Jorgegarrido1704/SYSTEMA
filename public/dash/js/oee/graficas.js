@@ -181,14 +181,68 @@ function cortes() {
 }
 function calidad(){
     let fecha = document.getElementById('fecha').value;
-    let url_calidad = '/eoo/appJointtiemposCalidad?fecha=' + fecha;
-    fetch(url_calidad)
-    .then(response => response.json())
-    .then(data => {
-     //   console.log("Datos recibidos de todas las máquinas Calidad:", data);
-    })
-    .catch(error => {
-        console.error('Error al obtener los cortes:', error);
+
+    fetch('/eoo/appJointtiemposCalidad?fecha=' + fecha)
+        .then(response => response.json())
+        .then(data => {
+            pintarTablaCalidad(data.detalle);
+            pintarTopDefectos(data.topDefectos);
+        })
+        .catch(error => console.error('Error al obtener calidad:', error));
+
+    fetch('/eoo/appJointtiemposParos?fecha=' + fecha)
+        .then(response => response.json())
+        .then(data => pintarTablaParos(data))
+        .catch(error => console.error('Error al obtener paros:', error));
+}
+
+function pintarTablaCalidad(detallePorMaquina) {
+    const tbody = document.getElementById('tablaCalidadBody');
+    tbody.innerHTML = '';
+
+    Object.keys(detallePorMaquina).forEach(maquina => {
+        detallePorMaquina[maquina].forEach(registro => {
+            tbody.innerHTML += `
+                <tr>
+                    <td>${maquina}</td>
+                    <td>${registro.tipo_defecto ?? '-'}</td>
+                    <td>${registro.qty_errores}</td>
+                    <td>${registro.fecha}</td>
+                </tr>`;
+        });
+    });
+}
+
+function pintarTopDefectos(topDefectos) {
+    const tbody = document.getElementById('topDefectosBody');
+    tbody.innerHTML = '';
+
+    const medallas = ['🥇', '🥈', '🥉'];
+
+    topDefectos.forEach((defecto, i) => {
+        tbody.innerHTML += `
+            <tr>
+                <td>${medallas[i] ?? ''} ${i + 1}</td>
+                <td>${defecto.tipo_defecto ?? 'Sin especificar'}</td>
+                <td><strong>${defecto.total}</strong></td>
+            </tr>`;
+    });
+}
+
+function pintarTablaParos(paros) {
+    const tbody = document.getElementById('tablaParosBody');
+    tbody.innerHTML = '';
+
+    paros.forEach(p => {
+        const esLargo = p.time_min > 15; // umbral ajustable
+        tbody.innerHTML += `
+            <tr class="${esLargo ? 'table-danger' : ''}">
+                <td>${p.maquina}</td>
+                <td>${p.hora_inicio ?? '-'}</td>
+                <td>${p.hora_fin ?? '-'}</td>
+                <td>${p.time_min} min</td>
+                <td>${p.motivo ?? 'Sin registrar'}</td>
+            </tr>`;
     });
 }
 

@@ -123,7 +123,7 @@ class oeeController extends Controller
         $productividad = round($runnigGrantotal / ((450 * 5) - $registrosparos) * 100, 2);
         $resultadoPorMaquina['registrosparos'] = ['tiempo_total_detenido' => round($registrosparos, 2)];
         $disponibilidad = round(((450 * 5) - $registrosparos) / (450 * 5) * 100, 2);
-
+        $totalCortes = $totalCortes > 0 ? $totalCortes : 1; //
         $porcentajeCalidad = round((($totalCortes - $totalFallasCalidad) / $totalCortes) * 100, 2);
 
         $oee = (($porcentajeCalidad / 100) * ($disponibilidad / 100) * ($productividad / 100));
@@ -145,6 +145,7 @@ class oeeController extends Controller
     public function appJointtiemposCalidad(Request $request)
     {
         $fechaDelDia = $request->input('fecha') ?? Carbon::now()->format('Y-m-d');
+
         $coleccionGeneral = DB::connection('toi')
             ->table('calidad_corte_oee')
             ->where('fecha', $fechaDelDia)
@@ -152,8 +153,36 @@ class oeeController extends Controller
             ->orderBy('fecha', 'ASC')
             ->orderBy('id', 'ASC')
             ->get()
-            ->groupBy('maquina'); // Agrupamos por máquina en Laravel
+            ->groupBy('maquina');
 
-        return response()->json($coleccionGeneral);
+        // Top 3 defectos del día (ajusta 'tipo_defecto' al nombre real de tu columna)
+        $topDefectos = DB::connection('toi')
+            ->table('calidad_corte_oee')
+            ->select('tipo_defecto', DB::raw('SUM(qty_errores) as total'))
+            ->where('fecha', $fechaDelDia)
+            ->groupBy('tipo_defecto')
+            ->orderByDesc('total')
+            ->limit(3)
+            ->get();
+
+        return response()->json([
+            'detalle' => $coleccionGeneral,
+            'topDefectos' => $topDefectos,
+        ]);
+    }
+
+    // NUEVO: detalle de paros (para la tabla, ya que solo tenías el SUM)
+    public function appJointtiemposParos(Request $request)
+    {
+        $fechaDelDia = $request->input('fecha') ?? Carbon::now()->format('Y-m-d');
+
+        $paros = DB::connection('toi')
+            ->table('cutting_machine_stops')
+            ->where('fecha', $fechaDelDia)
+            ->orderBy('maquina', 'ASC')
+            ->orderBy('id', 'ASC')
+            ->get();
+
+        return response()->json($paros);
     }
 }
