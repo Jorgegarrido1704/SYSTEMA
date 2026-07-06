@@ -214,7 +214,7 @@ function calidad() {
         .then((data) => {
             pintarTablaCalidad(data.detalle);
             pintarTopDefectos(data.topDefectos);
-            alert(fecha);
+           // alert(fecha);
             console.log("Datos de calidad:", data);
         })
         .catch((error) => console.error("Error al obtener calidad:", error));
