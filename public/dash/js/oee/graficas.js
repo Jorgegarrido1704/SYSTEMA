@@ -263,39 +263,53 @@ function pintarTopDefectos(topDefectos) {
 
 
 function pintarTablaParos(paros) {
-    const tbody = document.getElementById("tablaParosBody");
-    tbody.innerHTML = "";
+        const tbody = document.getElementById("tablaParosBody");
+        if (!tbody) {
+            console.error("No se encontró el elemento #tablaParosBody en el HTML");
+            return;
+        }
 
-    // 1. Monitoreo: Ver en la consola qué llegó exactamente del servidor
-    console.log("Datos recibidos en pintarTablaParos:", paros);
+        tbody.innerHTML = "";
 
-    // 2. Si el servidor respondió con un error controlado por el try/catch
-    if (paros && paros.error) {
-        tbody.innerHTML = `<tr><td colspan="2" class="text-danger">Error: ${paros.error}</td></tr>`;
-        return;
+        console.log("1. Datos brutos recibidos:", paros);
+
+        if (paros && paros.error) {
+            tbody.innerHTML = `<tr><td colspan="3" class="text-danger">Error: ${paros.error}</td></tr>`;
+            return;
+        }
+
+        // Desenvolver si viene en una propiedad común como 'data' o 'rows'
+        const datosPuros = paros.data || paros.rows || paros;
+
+        const datosArray = Array.isArray(datosPuros) ? datosPuros : Object.values(datosPuros || {});
+        console.log("2. Array procesado para el bucle:", datosArray);
+
+        if (datosArray.length === 0 || typeof datosArray[0] === "string") {
+            tbody.innerHTML = `<tr><td colspan="3" class="text-muted">No hay paros registrados para esta fecha o el formato es incorrecto.</td></tr>`;
+            return;
+        }
+
+        const medallas = ["🥇", "🥈", "🥉"];
+        let filasHTML = ""; // Usar una variable es más rápido que modificar el DOM en cada vuelta
+
+        datosArray.forEach((registro, i) => {
+            // Monitoreo interno: Ver si las propiedades realmente existen en este registro
+            console.log(`Fila ${i} -> Máquina: ${registro.maquina}, Motivo: ${registro.motive}, Tiempo: ${registro.tiempo_total}`);
+
+            filasHTML += `
+                <tr>
+                    <td>${medallas[i] ?? ""} ${i + 1}</td>
+                    <td>${registro.maquina || "Sin máquina"} - ${registro.motive || "Sin motivo"}</td>
+                    <td><strong>${registro.tiempo_total || "00:00"}</strong></td>
+                </tr>`;
+        });
+
+        tbody.innerHTML = filasHTML;
+
+
+
     }
 
-    // 3. Si llegó un objeto en vez de un array, lo convertimos a array a la fuerza
-    const datosArray = Array.isArray(paros) ? paros : Object.values(paros || {});
-
-    // 4. Si al final no hay datos o no es una lista válida
-    if (datosArray.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="2" class="text-muted">No hay paros registrados para esta fecha.</td></tr>`;
-        return;
-    }
-     const medallas = ["🥇", "🥈", "🥉"];
-    // 5. Ahora sí, recorremos los datos de forma segura usando datosArray
-    datosArray.forEach((registro,i) => {
-         tbody.innerHTML += `
-            <tr>
-                <td>${medallas[i] ?? ""} ${i + 1}</td>
-                <td>${registro.maquina} - ${registro.motive}</td>
-                <td><strong>${registro.tiempo_total}</strong></td>
-            </tr>`;
-    });
-
-
-}
 function cargarGraficas() {
     cortes();
     calidad();
