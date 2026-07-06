@@ -263,14 +263,11 @@ function pintarTablaParos(paros) {
     tbody.innerHTML = "";
 
     paros.forEach((p) => {
-        const esLargo = p.time_min > 15; // umbral ajustable
+        const esLargo = p.tiempo_total > 15; // umbral ajustable
         tbody.innerHTML += `
             <tr class="${esLargo ? "table-danger" : ""}">
-                <td>${p.maquina}</td>
-                <td>${p.hora_inicio ?? "-"}</td>
-                <td>${p.hora_fin ?? "-"}</td>
-                <td>${p.time_min} min</td>
-                <td>${p.motivo ?? "Sin registrar"}</td>
+                <td>${p.maquina} - ${p.motivo}</td>
+                <td>${p.tiempo_total} min</td>
             </tr>`;
     });
 }

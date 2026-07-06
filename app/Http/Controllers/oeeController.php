@@ -182,7 +182,10 @@ class oeeController extends Controller
 
         $paros = DB::connection('toi')
             ->table('cutting_machine_stops')
+            ->select('maquina', 'motivo', DB::raw('SUM(time_min) as tiempo_total'))
             ->where('fecha', $fechaDelDia)
+            ->groupBy('maquina', 'motivo')
+            ->orderBy('tiempo_total', 'DESC')
             ->orderBy('maquina', 'ASC')
             ->orderBy('id', 'ASC')
             ->get();
