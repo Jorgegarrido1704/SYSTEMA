@@ -251,6 +251,6 @@ function pintarTablaParos(paros) {
 
 function cargarGraficas(){
    cortes();
-
+    calidad();
 
 }
