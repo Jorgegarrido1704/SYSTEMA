@@ -265,16 +265,34 @@ function pintarTablaParos(paros) {
     const tbody = document.getElementById("tablaParosBody");
     tbody.innerHTML = "";
 
-    paros.forEach((p) => {
+    // 1. Monitoreo: Ver en la consola qué llegó exactamente del servidor
+    console.log("Datos recibidos en pintarTablaParos:", paros);
+
+    // 2. Si el servidor respondió con un error controlado por el try/catch
+    if (paros && paros.error) {
+        tbody.innerHTML = `<tr><td colspan="2" class="text-danger">Error: ${paros.error}</td></tr>`;
+        return;
+    }
+
+    // 3. Si llegó un objeto en vez de un array, lo convertimos a array a la fuerza
+    const datosArray = Array.isArray(paros) ? paros : Object.values(paros || {});
+
+    // 4. Si al final no hay datos o no es una lista válida
+    if (datosArray.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="2" class="text-muted">No hay paros registrados para esta fecha.</td></tr>`;
+        return;
+    }
+
+    // 5. Ahora sí, recorremos los datos de forma segura usando datosArray
+    datosArray.forEach((p) => {
         const esLargo = p.tiempo_total > 15; // umbral ajustable
         tbody.innerHTML += `
             <tr class="${esLargo ? "table-danger" : ""}">
-                <td>${p.maquina} - ${p.motivo}</td>
-                <td>${p.tiempo_total} min</td>
+                <td>${p.maquina || 'Sin máquina'} - ${p.motivo || 'Sin motivo'}</td>
+                <td>${p.tiempo_total || 0} min</td>
             </tr>`;
     });
 }
-
 function cargarGraficas() {
     cortes();
     calidad();
