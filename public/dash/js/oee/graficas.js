@@ -261,6 +261,7 @@ function pintarTopDefectos(topDefectos) {
     });
 }
 
+
 function pintarTablaParos(paros) {
     const tbody = document.getElementById("tablaParosBody");
     tbody.innerHTML = "";
@@ -282,16 +283,18 @@ function pintarTablaParos(paros) {
         tbody.innerHTML = `<tr><td colspan="2" class="text-muted">No hay paros registrados para esta fecha.</td></tr>`;
         return;
     }
-
+     const medallas = ["🥇", "🥈", "🥉"];
     // 5. Ahora sí, recorremos los datos de forma segura usando datosArray
-    datosArray.forEach((p) => {
-        const esLargo = p.tiempo_total > 15; // umbral ajustable
-        tbody.innerHTML += `
-            <tr class="${esLargo ? "table-danger" : ""}">
-                <td>${p.maquina || 'Sin máquina'} - ${p.motive || 'Sin motivo'}</td>
-                <td>${p.tiempo_total || 0} min</td>
+    datosArray.forEach((registro,i) => {
+         tbody.innerHTML += `
+            <tr>
+                <td>${medallas[i] ?? ""} ${i + 1}</td>
+                <td>${registro.maquina} - ${registro.motive}</td>
+                <td><strong>${registro.tiempo_total}</strong></td>
             </tr>`;
     });
+
+
 }
 function cargarGraficas() {
     cortes();
