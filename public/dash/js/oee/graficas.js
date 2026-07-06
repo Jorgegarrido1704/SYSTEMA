@@ -225,7 +225,7 @@ function pintarTopDefectos(topDefectos) {
         tbody.innerHTML += `
             <tr>
                 <td>${medallas[i] ?? ''} ${i + 1}</td>
-                <td>${defecto.tipo_defecto ?? 'Sin especificar'}</td>
+                <td>${defecto.motivo ?? 'Sin especificar'}</td>
                 <td><strong>${defecto.total}</strong></td>
             </tr>`;
     });
