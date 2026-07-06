@@ -215,7 +215,7 @@ function calidad() {
             pintarTablaCalidad(data.detalle);
             pintarTopDefectos(data.topDefectos);
            // alert(fecha);
-            console.log("Datos de calidad:", data);
+          //  console.log("Datos de calidad:", data);
         })
         .catch((error) => console.error("Error al obtener calidad:", error));
 
@@ -250,6 +250,10 @@ function pintarTopDefectos(topDefectos) {
     tbody.innerHTML = "";
 
     const medallas = ["🥇", "🥈", "🥉"];
+     if (topDefectos.length === 0 || typeof topDefectos[0] === "string") {
+            tbody.innerHTML = `<tr><td colspan="3" class="text-muted">No hay paros registrados para esta fecha o el formato es incorrecto.</td></tr>`;
+            return;
+        }
 
     topDefectos.forEach((defecto, i) => {
         tbody.innerHTML += `
