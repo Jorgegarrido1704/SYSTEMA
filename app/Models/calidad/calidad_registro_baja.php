@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class calidad_registro_baja extends Model
 {
     use HasFactory;
+
     protected $table = 'calidad';
 
     protected $fillable = [
@@ -17,18 +18,20 @@ class calidad_registro_baja extends Model
         'po',
         'info',
         'qty',
-        'parcial'
+        'parcial',
 
     ];
-    protected $primaryKey = 'id';
-    public $timestamps = false;
-    protected $autoIncrement = true;
-    protected $keyType = 'int';
 
+    protected $primaryKey = 'id';
+
+    public $timestamps = false;
+
+    protected $autoIncrement = true;
+
+    protected $keyType = 'int';
 
     public function calidadRegistro()
     {
         return $this->hasMany(calidad_registro_baja::class, 'id');
     }
-
 }

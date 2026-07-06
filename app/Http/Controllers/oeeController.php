@@ -164,6 +164,10 @@ class oeeController extends Controller
             ->orderByDesc('total')
             ->limit(3)
             ->get();
+        foreach ($topDefectos as $defecto) {
+            $buscarDefectoNombre = DB::table('clavecali')->where('clave', $defecto->motivo)->first();
+            $defecto->defecto = $buscarDefectoNombre ? $buscarDefectoNombre->defecto : 'Desconocido';
+        }
 
         return response()->json([
             'detalle' => $coleccionGeneral,
