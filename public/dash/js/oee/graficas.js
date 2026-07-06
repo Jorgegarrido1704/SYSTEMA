@@ -288,7 +288,7 @@ function pintarTablaParos(paros) {
         const esLargo = p.tiempo_total > 15; // umbral ajustable
         tbody.innerHTML += `
             <tr class="${esLargo ? "table-danger" : ""}">
-                <td>${p.maquina || 'Sin máquina'} - ${p.motivo || 'Sin motivo'}</td>
+                <td>${p.maquina || 'Sin máquina'} - ${p.motive || 'Sin motivo'}</td>
                 <td>${p.tiempo_total || 0} min</td>
             </tr>`;
     });

@@ -186,9 +186,9 @@ class oeeController extends Controller
 
             $paros = DB::connection('toi')
                 ->table('cutting_machine_stops')
-                ->select('maquina', 'motivo', DB::raw('SUM(time_min) as tiempo_total'))
+                ->select('maquina', 'motive', DB::raw('SUM(time_min) as tiempo_total'))
                 ->where('fecha', $fechaDelDia)
-                ->groupBy('maquina', 'motivo')
+                ->groupBy('maquina', 'motive')
                 ->orderBy(DB::raw('SUM(time_min)'), 'DESC') // Más seguro para evitar fallos de SQL estricto
                 ->limit(3)
                 ->get();
