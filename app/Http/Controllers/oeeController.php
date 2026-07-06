@@ -158,9 +158,9 @@ class oeeController extends Controller
         // Top 3 defectos del día (ajusta 'tipo_defecto' al nombre real de tu columna)
         $topDefectos = DB::connection('toi')
             ->table('calidad_corte_oee')
-            ->select('tipo_defecto', DB::raw('SUM(qty_errores) as total'))
+            ->select('motivo', DB::raw('SUM(qty_errores) as total'))
             ->where('fecha', $fechaDelDia)
-            ->groupBy('tipo_defecto')
+            ->groupBy('motivo')
             ->orderByDesc('total')
             ->limit(3)
             ->get();
