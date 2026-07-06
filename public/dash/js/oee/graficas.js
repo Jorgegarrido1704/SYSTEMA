@@ -263,7 +263,7 @@ function pintarTopDefectos(topDefectos) {
 
 
 function pintarTablaParos(paros) {
-        const tbody = document.getElementById("tablaParosBody");
+        const tbody = document.getElementById("topParosBody");
         if (!tbody) {
             console.error("No se encontró el elemento #tablaParosBody en el HTML");
             return;
@@ -271,7 +271,7 @@ function pintarTablaParos(paros) {
 
         tbody.innerHTML = "";
 
-        console.log("1. Datos brutos recibidos:", paros);
+        //console.log("1. Datos brutos recibidos:", paros);
 
         if (paros && paros.error) {
             tbody.innerHTML = `<tr><td colspan="3" class="text-danger">Error: ${paros.error}</td></tr>`;
@@ -282,7 +282,7 @@ function pintarTablaParos(paros) {
         const datosPuros = paros.data || paros.rows || paros;
 
         const datosArray = Array.isArray(datosPuros) ? datosPuros : Object.values(datosPuros || {});
-        console.log("2. Array procesado para el bucle:", datosArray);
+        //console.log("2. Array procesado para el bucle:", datosArray);
 
         if (datosArray.length === 0 || typeof datosArray[0] === "string") {
             tbody.innerHTML = `<tr><td colspan="3" class="text-muted">No hay paros registrados para esta fecha o el formato es incorrecto.</td></tr>`;
@@ -294,7 +294,7 @@ function pintarTablaParos(paros) {
 
         datosArray.forEach((registro, i) => {
             // Monitoreo interno: Ver si las propiedades realmente existen en este registro
-            console.log(`Fila ${i} -> Máquina: ${registro.maquina}, Motivo: ${registro.motive}, Tiempo: ${registro.tiempo_total}`);
+          //  console.log(`Fila ${i} -> Máquina: ${registro.maquina}, Motivo: ${registro.motive}, Tiempo: ${registro.tiempo_total}`);
 
             filasHTML += `
                 <tr>

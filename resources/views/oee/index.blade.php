@@ -61,15 +61,15 @@
                 <div class="card-body">
                     <table class="table table-sm table-borderless">
                         <thead>
-                            <tr><th>#</th><th>Paro</th><th>Minutos</th></tr>
+                            <tr><th>Máquina - Motivo</th><th>Minutos</th></tr>
                         </thead>
-                        <tbody id="topDefectosBody"></tbody>
+                        <tbody id="topParosBody"></tbody>
                     </table>
                 </div>
             </div>
         </div>
 
-        <div class="col-xl-4 col-lg-4 mb-4" >
+        <div class="col-xl-4 col-lg-4 mb-4" style="display: none;">
             <div class="card shadow">
                 <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary">Detalle de Calidad</h6>
@@ -87,7 +87,7 @@
             </div>
         </div>
 
-        <div class="col-xl-4 col-lg-4 mb-4">
+        <div class="col-xl-4 col-lg-4 mb-4" style="display: none;">
             <div class="card shadow">
                 <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-warning">Paros Registrados</h6>
