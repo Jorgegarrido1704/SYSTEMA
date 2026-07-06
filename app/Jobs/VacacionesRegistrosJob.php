@@ -67,11 +67,13 @@ class VacacionesRegistrosJob implements ShouldQueue
                     $diasNextYear = $diasVacacionesPendientes - $menos > 0 ? $diasVacacionesPendientes - $menos : 0;
                     $total = $diasCurrentYear + $diasNextYear;
 
-                    DB::table('personalberg')->where('id', $emp->id)->update([
-                        'currentYear' => $diasCurrentYear,
-                        'nextYear' => $diasNextYear,
-                        'DaysVacationsAvailble' => $total + DB::raw('lastYear'),
-                    ]);
+                    DB::table('personalberg')
+                        ->where('id', $emp->id)
+                        ->update([
+                            'currentYear' => $diasCurrentYear,
+                            'nextYear' => $diasNextYear,
+                            'DaysVacationsAvailble' => DB::raw("lastYear + {$total}"),
+                        ]);
                 }
 
             }
