@@ -61,7 +61,7 @@
                 <div class="card-body">
                     <table class="table table-sm table-borderless">
                         <thead>
-                            <tr><th>Máquina - Motivo</th><th>Minutos</th></tr>
+                            <tr><th>#</th><th>Máquina - Motivo</th><th>Minutos</th></tr>
                         </thead>
                         <tbody id="topParosBody"></tbody>
                     </table>
