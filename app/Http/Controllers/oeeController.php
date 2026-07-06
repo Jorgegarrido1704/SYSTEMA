@@ -180,15 +180,24 @@ class oeeController extends Controller
     {
         $fechaDelDia = $request->input('fecha') ?? Carbon::now()->format('Y-m-d');
 
-        $paros = DB::connection('toi')
-            ->table('cutting_machine_stops')
-            ->select('maquina', 'motivo', DB::raw('SUM(time_min) as tiempo_total'))
-            ->where('fecha', $fechaDelDia)
-            ->groupBy('maquina', 'motivo')
-            ->orderBy('tiempo_total', 'DESC')
+        try {
+            // Si no viene fecha, usamos la de hoy
+            $fechaDelDia = $request->input('fecha') ?? Carbon::now()->format('Y-m-d');
 
-            ->get();
+            $paros = DB::connection('toi')
+                ->table('cutting_machine_stops')
+                ->select('maquina', 'motivo', DB::raw('SUM(time_min) as tiempo_total'))
+                ->where('fecha', $fechaDelDia)
+                ->groupBy('maquina', 'motivo')
+                ->orderBy(DB::raw('SUM(time_min)'), 'DESC') // Más seguro para evitar fallos de SQL estricto
+                ->limit(3)
+                ->get();
 
-        return response()->json($paros);
+            return response()->json($paros);
+
+        } catch (\Exception $e) {
+            // Si algo falla, te devolverá un JSON con el error real en vez de romper la app
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 }
