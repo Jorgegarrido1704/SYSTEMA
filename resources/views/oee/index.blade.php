@@ -69,7 +69,7 @@
             </div>
         </div>
 
-        <div class="col-xl-4 col-lg-4 mb-4" style="display: none;">
+        <div class="col-xl-4 col-lg-4 mb-4" >
             <div class="card shadow">
                 <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary">Detalle de Calidad</h6>
@@ -87,7 +87,7 @@
             </div>
         </div>
 
-        <div class="col-xl-4 col-lg-4 mb-4" style="display: none;">
+        <div class="col-xl-4 col-lg-4 mb-4">
             <div class="card shadow">
                 <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-warning">Paros Registrados</h6>
