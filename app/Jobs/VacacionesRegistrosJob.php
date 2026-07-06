@@ -49,12 +49,13 @@ class VacacionesRegistrosJob implements ShouldQueue
 
                     $menos = DB::table('registro_vacaciones')->where('id_empleado', $emp->employeeNumber)->where('usedYear', $anio)->count();
                     $menosAnoAnterios = DB::table('registro_vacaciones')->where('id_empleado', $emp->employeeNumber)->where('usedYear', $anoAnterior)->count();
-
-                    $total = $diasVacacionesPendientes + $diasVacacionesAnteriores - $menos - $menosAnoAnterios;
+                    $diaslastYear = $diasVacacionesAnteriores - $menosAnoAnterios > 0 ? $diasVacacionesAnteriores - $menosAnoAnterios : 0;
+                    $diasCurrentYear = $diasVacacionesPendientes - $menos > 0 ? $diasVacacionesPendientes - $menos : 0;
+                    $total = $diaslastYear + $diasCurrentYear;
 
                     DB::table('personalberg')->where('id', $emp->id)->update([
-                        'lastYear' => $diasVacacionesAnteriores - $menosAnoAnterios,
-                        'currentYear' => $diasVacacionesPendientes - $menos,
+                        'lastYear' => $diaslastYear,
+                        'currentYear' => $diasCurrentYear,
                         'DaysVacationsAvailble' => $total,
                     ]);
                 } else {
@@ -62,12 +63,13 @@ class VacacionesRegistrosJob implements ShouldQueue
 
                     $menos = DB::table('registro_vacaciones')->where('id_empleado', $emp->employeeNumber)->where('usedYear', $nextYear)->count();
                     $menosAnoAnterios = DB::table('registro_vacaciones')->where('id_empleado', $emp->employeeNumber)->where('usedYear', $anio)->count();
-
-                    $total = $diasVacacionesPendientes + $diasVacacionesAnteriores + $emp->lastYear - $menos - $menosAnoAnterios;
+                    $diasCurrentYear = $diasVacacionesAnteriores - $menosAnoAnterios > 0 ? $diasVacacionesAnteriores - $menosAnoAnterios : 0;
+                    $diasNextYear = $diasVacacionesPendientes - $menos > 0 ? $diasVacacionesPendientes - $menos : 0;
+                    $total = $diasCurrentYear + $diasNextYear;
 
                     DB::table('personalberg')->where('id', $emp->id)->update([
-                        'currentYear' => $diasVacacionesAnteriores - $menosAnoAnterios,
-                        'nextYear' => $diasVacacionesPendientes - $menos,
+                        'currentYear' => $diasCurrentYear,
+                        'nextYear' => $diasNextYear,
                         'DaysVacationsAvailble' => $total,
                     ]);
                 }
