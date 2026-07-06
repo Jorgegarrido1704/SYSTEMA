@@ -6,12 +6,12 @@
  <div class="row">
     <div class="col-xl-12 col-md-12 mb-4">
         <ul class="list-group list-group-horizontal justify-content-center">
+            <li class="list-group-item"><button type="button" class="btn btn-primary" onclick="cambiarMaquina('M5')">MCUT-1</button></li>
+            <li class="list-group-item"><button type="button" class="btn btn-primary" onclick="cambiarMaquina('M6')">MCUT-2</button></li>
+            <li class="list-group-item"><button type="button" class="btn btn-primary" onclick="cambiarMaquina('M4')">MCUT-3</button></li>
             <li class="list-group-item"><button type="button" class="btn btn-primary" onclick="cambiarMaquina('M1')">MCUT-4</button></li>
             <li class="list-group-item"><button type="button" class="btn btn-primary" onclick="cambiarMaquina('M2')">MCUT-5</button></li>
             <li class="list-group-item"><button type="button" class="btn btn-primary" onclick="cambiarMaquina('M3')">MCUT-6</button></li>
-            <li class="list-group-item"><button type="button" class="btn btn-primary" onclick="cambiarMaquina('M4')">MCUT-10</button></li>
-            <li class="list-group-item"><button type="button" class="btn btn-primary" onclick="cambiarMaquina('M5')">MCUT-1</button></li>
-            <li class="list-group-item"><button type="button" class="btn btn-primary" onclick="cambiarMaquina('M6')">MCUT-7</button></li>
         </ul>
     </div>
  </div>
