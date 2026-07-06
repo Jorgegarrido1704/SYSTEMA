@@ -220,8 +220,11 @@ function calidad() {
         .catch((error) => console.error("Error al obtener calidad:", error));
 
     fetch("/eoo/appJointtiemposParos?fecha=" + fecha)
+
         .then((response) => response.json())
-        .then((data) => pintarTablaParos(data))
+        .then((data) => {pintarTablaParos(data)
+        })
+
         .catch((error) => console.error("Error al obtener paros:", error));
 }
 

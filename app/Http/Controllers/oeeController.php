@@ -186,8 +186,7 @@ class oeeController extends Controller
             ->where('fecha', $fechaDelDia)
             ->groupBy('maquina', 'motivo')
             ->orderBy('tiempo_total', 'DESC')
-            ->orderBy('maquina', 'ASC')
-            ->orderBy('id', 'ASC')
+
             ->get();
 
         return response()->json($paros);

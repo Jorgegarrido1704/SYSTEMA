@@ -96,7 +96,7 @@
                     <div class="table-responsive" style="max-height:300px; overflow-y:auto;">
                         <table class="table table-sm table-bordered">
                             <thead class="thead-light">
-                                <tr><th>Máquina</th><th>Inicio</th><th>Fin</th><th>Dur.</th><th>Motivo</th></tr>
+                                <tr><th>Máquina - Motivo</th><th>Minutos</th></tr>
                             </thead>
                             <tbody id="tablaParosBody"></tbody>
                         </table>
