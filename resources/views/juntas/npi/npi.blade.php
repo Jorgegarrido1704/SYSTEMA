@@ -245,8 +245,8 @@ function mostrarTablas(id){
             <td>${inprogres.commitmentDate}</td>
             <td>${inprogres.CompletionDate}</td>
             <td>${inprogres.customerDate}</td>
-            <td><input type="checkbox" id="material_${inprogres.id}" name="material_${inprogres.id}" value="${inprogres.id}" {{$checher[0]}}></td>
-            <td><input type="checkbox" id="kit_${inprogres.id}" name="kit_${inprogres.id}" value="${inprogres.id}" {{$checher[1]}}></td>
+            <td><input type="checkbox" id="material_${inprogres.id}" name="material_${inprogres.id}" value="${inprogres.id}" @checked="{{$checher[0]}}"></td>
+            <td><input type="checkbox" id="kit_${inprogres.id}" name="kit_${inprogres.id}" value="${inprogres.id}" @checked="{{$checher[1]}}"></td>
 
         </tr>`;
         });
