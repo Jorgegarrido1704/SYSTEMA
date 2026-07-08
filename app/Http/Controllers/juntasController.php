@@ -2811,7 +2811,7 @@ class juntasController extends Controller
 
         $workSchedule = workScreduleModel::find($id);
         if ($workSchedule) {
-            $workSchedule->kits = $revision;
+            $workSchedule->kit = $revision;
             $workSchedule->save();
         }
 
