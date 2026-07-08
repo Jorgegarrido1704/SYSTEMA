@@ -277,7 +277,7 @@ function mostrarTablas(id){
          if($value == "Julio R" || $value == "Admin"){
             alert(id);}
             else{
-            alert("No puedes marcar el kit como armado, favor de contactar a planeacion");
+            alert("No puedes marcar el material como listo, favor de contactar a Compras");
              checkbox.checked = false;
             return;
         }
@@ -298,7 +298,7 @@ function mostrarTablas(id){
         if($value == "Alex M" || $value == "Admin"){
                      alert(id); }
             else{
-            alert("No puedes marcar el kit como armado, favor de contactar a planeacion");
+            alert("No puedes marcar el kit como armado, favor de contactar a Almacen");
              checkbox.checked = false;
             return;
            
