@@ -2804,4 +2804,17 @@ class juntasController extends Controller
 
         return response()->json(['success' => true]);
     }
+
+    public function update_kits(Request $request, $id)
+    {
+        $revision = $request->input('isChecked');
+
+        $workSchedule = workScreduleModel::find($id);
+        if ($workSchedule) {
+            $workSchedule->kits = $revision;
+            $workSchedule->save();
+        }
+
+        return response()->json(['success' => true]);
+    }
 }

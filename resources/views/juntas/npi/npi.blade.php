@@ -297,15 +297,8 @@ function mostrarTablas(id){
         $value = "{{ $value }}";
         let checkbox = document.getElementById(`kit_${id}`);
         let isChecked = checkbox.checked;
-        if($value == "Alex M" || $value == "Admin"){
-                     alert(id); }
-            else{
-            alert("No puedes marcar el kit como armado, favor de contactar a Almacen");
-             checkbox.checked = false;
-            return;
-           
-        }
-       /* fetch(`/update-kits/${id}`, {
+        
+       fetch(`/update_kits/${id}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -314,7 +307,7 @@ function mostrarTablas(id){
             body: JSON.stringify({ isChecked: isChecked })
         }).then(response => response.json()).then(data => {
             console.log(data);
-        })*/
+        })
     }
 
 </script>
