@@ -2692,13 +2692,14 @@ class juntasController extends Controller
         }
         // 1. In Progress Schedules
         $inprogres = workScreduleModel::selectRaw('color, count(*) as total')
-            ->where('status', 'In Progress')
+            ->whereNull('documentsApproved')
             ->groupBy('color')
             ->get();
 
         // 2. Completed General Schedules (Fixed case-sensitivity for column names if needed)
         $totalgeneral = workScreduleModel::selectRaw('color, count(*) as total')
-            ->where('status', 'Completed') // Best practice: keep column names consistent (status vs Status)
+            ->where('status', 'Completed')
+            ->whereNotNull('documentsApproved')
             ->whereNull('UpOrderDate')     // cleaner Laravel way for checking null
             ->groupBy('color')
             ->get();
@@ -2756,10 +2757,11 @@ class juntasController extends Controller
             $color = 'green';
             $tipo = 'PPAP';
         }
-        $inprogres = workScreduleModel::where('status', 'In Progress')->where('color', $color)->get();
+        $inprogres = workScreduleModel::whereNull('documentsApproved')->where('color', $color)->get();
 
         // 2. Completed General Schedules (Fixed case-sensitivity for column names if needed)
-        $totalgeneral = workScreduleModel::where('status', 'Completed') // Best practice: keep column names consistent (status vs Status)
+        $totalgeneral = workScreduleModel::where('status', 'Completed')
+            ->whereNotNull('documentsApproved')
             ->whereNull('UpOrderDate')     // cleaner Laravel way for checking null
             ->where('color', $color)
             ->get();
