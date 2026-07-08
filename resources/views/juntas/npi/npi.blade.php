@@ -254,8 +254,8 @@ function mostrarTablas(id){
             <td>${inprogres.commitmentDate}</td>
             <td>${inprogres.CompletionDate}</td>
             <td>${inprogres.customerDate}</td>
-            <td><input type="checkbox" id="material_${inprogres.id}" name="material_${inprogres.id}" ${checando[0]} onclick="materialsComponent(${inprogres.id})" ></td>
-            <td><input type="checkbox" id="kit_${inprogres.id}" name="kit_${inprogres.id}" ${checando[1]} onclick="kitsComponent(${inprogres.id})" ></td>
+            <td><input type="checkbox" id="material_${inprogres.id}" name="material_${inprogres.id}" ${checando[0]}  ${material} onclick="materialsComponent(${inprogres.id})" ></td>
+            <td><input type="checkbox" id="kit_${inprogres.id}" name="kit_${inprogres.id}" ${checando[1]} ${kit} onclick="kitsComponent(${inprogres.id})" ></td>
 
         </tr>`;
         });
