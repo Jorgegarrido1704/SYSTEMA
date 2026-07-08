@@ -364,8 +364,8 @@ class planingController extends Controller
                 $newWo->Qty = $qty;
                 $newWo->Barcode = '0';
                 $newWo->info = $barcodes;
-                $newWo->donde = 'planeacion';
-                $newWo->count = 1;
+                $newWo->donde = substr($rev, 0, 4) == 'PPAP' || substr($rev, 0, 4) == 'PRIM' ? 'En Ingenieria // Corte' : 'En espera de corte';
+                $newWo->count = substr($rev, 0, 4) == 'PPAP' || substr($rev, 0, 4) == 'PRIM' ? 17 : 2;
                 $newWo->tiempoTotal = 0;
                 $newWo->paro = '';
                 $newWo->description = $desc;
@@ -378,7 +378,7 @@ class planingController extends Controller
                 if ($newWo->save()) {
                     $times = new tiempos;
                     $times->info = $barcodes;
-                    $times->planeacion = '';
+                    $times->planeacion = $today;
                     $times->corte = '';
                     $times->liberacion = '';
                     $times->ensamble = '';

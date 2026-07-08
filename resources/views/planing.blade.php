@@ -172,8 +172,8 @@ var dat = {!! json_encode($datosP) !!};
                             </div>
                         </div>
 
-                         <div class=" col-xl-2 col-lg-2 mb-2" >
-                            <!-- AREAS -->
+                     <!--    <div class=" col-xl-2 col-lg-2 mb-2" >
+                            <-- AREAS ->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
                                     <h5 class="m-0 font-weight-bold text-primary">{{ __('Liberate Order') }}</h5>
@@ -195,7 +195,7 @@ var dat = {!! json_encode($datosP) !!};
 
                                 </div>
                             </div>
-                        </div>
+                        </div>-->
 
                     </div>
 
