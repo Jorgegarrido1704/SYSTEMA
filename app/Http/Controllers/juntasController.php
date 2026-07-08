@@ -2725,6 +2725,16 @@ class juntasController extends Controller
         $enproduccionppap = $registros[0]->ppap;
         $enproduccionprim = $registros[0]->prim;
 
+        if ($value == 'Julio R') {
+            $checher = ['', 'readonly'];
+        } elseif ($value == 'Alex M') {
+            $checher = ['readonly', ''];
+        } elseif ($value == 'Admin') {
+            $checher = ['', ''];
+        } else {
+            $checher = ['readonly', 'readonly'];
+        }
+
         return view('juntas.npi.npi', [
             'value' => $value,
             'cat' => $cat,
@@ -2737,6 +2747,7 @@ class juntasController extends Controller
             'pendbajarprim' => $pendbajarprim,
             'enproduccionppap' => $enproduccionppap,
             'enproduccionprim' => $enproduccionprim,
+            'checher' => $checher,
 
         ]);
     }
