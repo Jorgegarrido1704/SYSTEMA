@@ -281,14 +281,8 @@ function mostrarTablas(id){
         $value = "{{ $value }}";
         let checkbox = document.getElementById(`material_${id}`);
         let isChecked = checkbox.checked;
-         if($value == "Julio R" || $value == "Admin"){
-            alert(id);}
-            else{
-            alert("No puedes marcar el material como listo, favor de contactar a Compras");
-             checkbox.checked = false;
-            return;
-        }
-        /*fetch(`/update-materials/${id}`, {
+        alert(isChecked);
+        fetch(`/update_materials/${id}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -297,7 +291,7 @@ function mostrarTablas(id){
             body: JSON.stringify({ isChecked: isChecked })
         }).then(response => response.json()).then(data => {
             console.log(data);
-        });*/
+        });
     }
     function kitsComponent(id){
         $value = "{{ $value }}";

@@ -31,6 +31,8 @@ class workScreduleModel extends Model
         'Color',
         'qtyInPo',
         'creation_date',
+        'material',
+        'kit',
     ];
 
     public $timestamps = false;

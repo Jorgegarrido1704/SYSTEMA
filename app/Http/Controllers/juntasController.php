@@ -2791,4 +2791,17 @@ class juntasController extends Controller
         return json_encode($datos);
 
     }
+
+    public function update_materials(Request $request, $id)
+    {
+        $revision = $request->input('isChecked');
+
+        $workSchedule = workScreduleModel::find($id);
+        if ($workSchedule) {
+            $workSchedule->material = $revision;
+            $workSchedule->save();
+        }
+
+        return response()->json(['success' => true]);
+    }
 }
