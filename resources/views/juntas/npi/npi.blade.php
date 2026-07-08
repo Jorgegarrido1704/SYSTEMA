@@ -237,6 +237,8 @@ function mostrarTablas(id){
         </tr>`;
         });
         data.totalgeneral.forEach(inprogres => {
+          let material= inprogres.material>0 ? 'checked' : '';
+          let kit= inprogres.kit>0 ? 'checked' : '';
             html_pendiente += `<tr>
             <td>${inprogres.customer}</td>
             <td>${inprogres.pn}</td>
@@ -245,8 +247,8 @@ function mostrarTablas(id){
             <td>${inprogres.commitmentDate}</td>
             <td>${inprogres.CompletionDate}</td>
             <td>${inprogres.customerDate}</td>
-            <td><input type="checkbox" id="material_${inprogres.id}" name="material_${inprogres.id}" value="${inprogres.id}" ></td>
-            <td><input type="checkbox" id="kit_${inprogres.id}" name="kit_${inprogres.id}" value="${inprogres.id}" ></td>
+            <td><input type="checkbox" id="material_${inprogres.id}" name="material_${inprogres.id}" ${material} onclick="materialsComponent(${inprogres.id})"></td>
+            <td><input type="checkbox" id="kit_${inprogres.id}" name="kit_${inprogres.id}" ${kit} onclick="kitsComponent(${inprogres.id})"></td>
 
         </tr>`;
         });
@@ -268,7 +270,50 @@ function mostrarTablas(id){
     })
 
 }
-
+    function materialsComponent(id){
+        $value = "{{ $value }}";
+        let checkbox = document.getElementById(`material_${id}`);
+        let isChecked = checkbox.checked;
+         if($value == "Julio R" || $value == "Admin"){
+            alert(id);}
+            else{
+            alert("No puedes marcar el kit como armado, favor de contactar a planeacion");
+             checkbox.checked = false;
+            return;
+        }
+        /*fetch(`/update-materials/${id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({ isChecked: isChecked })
+        }).then(response => response.json()).then(data => {
+            console.log(data);
+        });*/
+    }
+    function kitsComponent(id){
+        let checkbox = document.getElementById(`kit_${id}`);
+        let isChecked = checkbox.checked;
+        if($value == "Alex M" || $value == "Admin"){
+                     alert(id); }
+            else{
+            alert("No puedes marcar el kit como armado, favor de contactar a planeacion");
+             checkbox.checked = false;
+            return;
+           
+        }
+       /* fetch(`/update-kits/${id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({ isChecked: isChecked })
+        }).then(response => response.json()).then(data => {
+            console.log(data);
+        })*/
+    }
 
 </script>
 
