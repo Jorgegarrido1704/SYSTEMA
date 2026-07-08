@@ -300,6 +300,7 @@ function mostrarTablas(id){
         });*/
     }
     function kitsComponent(id){
+        $value = "{{ $value }}";
         let checkbox = document.getElementById(`kit_${id}`);
         let isChecked = checkbox.checked;
         if($value == "Alex M" || $value == "Admin"){
