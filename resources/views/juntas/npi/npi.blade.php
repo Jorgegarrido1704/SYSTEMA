@@ -119,16 +119,16 @@
                Ingenieria
             </div>
             <div class="card-body d-flex align-items-center justify-content-center py-4">
-               
+
                     <table class="table table-striped table-bordered"  cellspacing="0" width="100%">
                         <thead>
                             <tr>
-                                 <th>{{__('Status') }}</th>
                                 <th>{{__('Customer') }}</th>
                                 <th>{{ __('Part Number') }}</th>
                                 <th>{{__('Revision') }}</th>
                                 <th>{{__('Received Date') }}</th>
                                 <th>{{__('Commitment Date') }}</th>
+                                 <th>{{__('Required Date') }}</th>
                             </tr>
                             <thead>
                                 <tbody id="tbody_ingenieria">
@@ -145,13 +145,15 @@
                  <table class="table table-striped table-bordered"  cellspacing="0" width="100%">
                         <thead>
                             <tr>
-                                <th>{{__('Status') }}</th>
                                 <th>{{__('Customer') }}</th>
                                 <th>{{ __('Part Number') }}</th>
                                 <th>{{__('Revision') }}</th>
                                 <th>{{__('Received Date') }}</th>
                                 <th>{{__('Commitment Date') }}</th>
                                 <th>{{ __('Completion Date') }}</th>
+                                <th>{{__('Required Date') }}</th>
+                                <th>{{__('Components in the System') }}</th>
+                                <th>{{__('Kit Builded') }}</th>
                             </tr>
                             <thead>
                                 <tbody id="tabla_pendiente"> </tbody>
@@ -166,13 +168,13 @@
                  <table class="table table-striped table-bordered"  cellspacing="0" width="100%">
                         <thead>
                             <tr>
-                                <th>{{__('Status') }}</th>
+
                                 <th>{{__('Customer') }}</th>
                                 <th>{{ __('Part Number') }}</th>
                                 <th>{{__('Revision') }}</th>
                                 <th>{{__('Where is it located') }}</th>
                                 <th>{{__('Required Date') }}</th>
-                                
+
                             </tr>
                             <thead>
                                 <tbody id="tabla_piso"> </tbody>
@@ -226,30 +228,31 @@ function mostrarTablas(id){
         let html_piso = '';
         data.inprogres.forEach(inprogres => {
             html_ingenieria += `<tr>
-                <td></td>
             <td>${inprogres.customer}</td>
             <td>${inprogres.pn}</td>
             <td>${inprogres.WorkRev}</td>
             <td>${inprogres.receiptDate}</td>
             <td>${inprogres.commitmentDate}</td>
+            <td>${inprogres.customerDate}</td>
         </tr>`;
         });
         data.totalgeneral.forEach(inprogres => {
             html_pendiente += `<tr>
-                <td></td>
             <td>${inprogres.customer}</td>
             <td>${inprogres.pn}</td>
             <td>${inprogres.WorkRev}</td>
             <td>${inprogres.receiptDate}</td>
             <td>${inprogres.commitmentDate}</td>
             <td>${inprogres.CompletionDate}</td>
+            <td>${inprogres.customerDate}</td>
+            <td><input type="checkbox" id="material_${inprogres.id}" name="material_${inprogres.id}" value="${inprogres.id}"></td>
+            <td><input type="checkbox" id="kit_${inprogres.id}" name="kit_${inprogres.id}" value="${inprogres.id}"></td>
 
         </tr>`;
         });
-      
+
         data.registros.forEach(inprogres => {
             html_piso += `<tr>
-                <td></td>
             <td>${inprogres.cliente}</td>
             <td>${inprogres.NumPart}</td>
             <td>${inprogres.rev}</td>
@@ -260,8 +263,8 @@ function mostrarTablas(id){
         tabla_ingenieria.innerHTML = html_ingenieria;
         tabla_pendiente.innerHTML = html_pendiente;
         tabla_piso.innerHTML = html_piso;
-      
-      
+
+
     })
 
 }
