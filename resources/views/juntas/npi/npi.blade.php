@@ -240,11 +240,11 @@ function mostrarTablas(id){
           let material= inprogres.material>0 ? 'checked' : '';
           let kit= inprogres.kit>0 ? 'checked' : '';
           let value = "{{ $value }}";
-          let checando=['readonly','readonly'];
+          let checando=['disabled','disabled'];
           if(value == "Julio R" || value == "Admin"){
-             checando =['onclick="materialsComponent(${inprogres.id})"' , 'readonly'];
+             checando =['' , 'disabled'];
           }else if(value == "Alex M" || value == "Admin"){
-          checando = [  'readonly', 'onclick="kitsComponent(${inprogres.id})"'];
+          checando = [  'disabled', ''];
         }
             html_pendiente += `<tr>
             <td>${inprogres.customer}</td>
@@ -254,8 +254,8 @@ function mostrarTablas(id){
             <td>${inprogres.commitmentDate}</td>
             <td>${inprogres.CompletionDate}</td>
             <td>${inprogres.customerDate}</td>
-            <td><input type="checkbox" id="material_${inprogres.id}" name="material_${inprogres.id}" ${checando[0]} ></td>
-            <td><input type="checkbox" id="kit_${inprogres.id}" name="kit_${inprogres.id}" ${checando[1]} ></td>
+            <td><input type="checkbox" id="material_${inprogres.id}" name="material_${inprogres.id}" ${checando[0]} onclick="materialsComponent(${inprogres.id})" ></td>
+            <td><input type="checkbox" id="kit_${inprogres.id}" name="kit_${inprogres.id}" ${checando[1]} onclick="kitsComponent(${inprogres.id})" ></td>
 
         </tr>`;
         });
