@@ -172,7 +172,7 @@ var dat = {!! json_encode($datosP) !!};
                             </div>
                         </div>
 
-                     <!--    <div class=" col-xl-2 col-lg-2 mb-2" >
+                     <!--        <div class=" col-xl-2 col-lg-2 mb-2" >
                             <-- AREAS ->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
