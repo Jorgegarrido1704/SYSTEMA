@@ -459,7 +459,7 @@ class planingController extends Controller
                         $content['qty'] = $qty;
                         $content['client'] = $client;
                         $content['reqDay'] = $request->input('Reqday');
-
+                        workScreduleModel::where('pn', $np)->orderby('id', 'desc')->first()->update(['UpOrderDate' => carbon::now()->format('Y-m-d')]);
                         $recipients = [
                             'jguillen@mx.bergstrominc.com',
                             'drocha@mx.bergstrominc.com',
