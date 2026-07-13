@@ -248,6 +248,8 @@ Route::controller(rrhhController::class)->group(function () {
     Route::GET('/rrhh/personalShift', [rrhhController::class, 'personalShift'])->name('personalShift');
     Route::POST('/rrhh/jsonPersonalShift', [rrhhController::class, 'jsonPersonalShift'])->name('jsonPersonalShift');
     Route::GET('/rrhh/rhVacation', [rrhhController::class, 'rhvacations'])->name('rhvacations');
+    Route::GET('/rrhh/searchVacaciones/{id}', [rrhhController::class, 'searchVacaciones'])->name('searchVacaciones');
+    Route::GET('/rrhh/excelVacaciones', [rrhhController::class, 'excelVacaciones'])->name('excelVacaciones');
 
 });
 Route::controller(AccionesCorrectivasController::class)->group(function () {

@@ -1357,12 +1357,71 @@ class rrhhController extends Controller
             return redirect()->route('login');
         }
         $empleados = personalBergsModel::where('status', 'Activo')->get();
-        $vacaciones = registroVacacionesModel::join('personalberg', 'personalberg.employeeNumber', '=', 'registro_vacaciones.id_empleado')->where('personalberg.status', 'Activo')->ORDERBY('registro_vacaciones.id', 'DESC')->get();
+        $vacaciones = registroVacacionesModel::join('personalberg', 'personalberg.employeeNumber', '=', 'registro_vacaciones.id_empleado')
+            ->select('registro_vacaciones.*', 'personalberg.employeeName')
+            ->where('personalberg.status', 'Activo')->ORDERBY('registro_vacaciones.id', 'DESC')->get();
         foreach ($vacaciones as $v) {
             $aniosdeUso = $v->usedYear;
             $v->periodo = ($aniosdeUso - 1).' - '.$aniosdeUso;
         }
 
         return view('juntas.hrDocs.rhvacations', ['value' => $value, 'cat' => $cat, 'empleados' => $empleados, 'vacaciones' => $vacaciones]);
+    }
+
+    public function searchVacaciones($id)
+    {
+        $id = 'i'.$id;
+        $datos = registroVacacionesModel::join('personalberg', 'personalberg.employeeNumber', '=', 'registro_vacaciones.id_empleado')
+            ->select('registro_vacaciones.*', 'personalberg.employeeName')->where('personalberg.employeeNumber', $id)->where('personalberg.status', 'Activo')
+            ->ORDERBY('registro_vacaciones.id', 'DESC')->get();
+
+        return json_encode($datos);
+    }
+
+    public function excelVacaciones(Request $request)
+    {
+        $di = Carbon::parse($request->input('fechaInicio'));
+        $df = Carbon::parse($request->input('fechaFinal'));
+
+        $datos = registroVacacionesModel::join('personalberg', 'personalberg.employeeNumber', '=', 'registro_vacaciones.id_empleado')
+            ->select('registro_vacaciones.*', 'personalberg.employeeName')->whereBetween('registro_vacaciones.fecha_de_solicitud', [$di, $df])
+            ->ORDERBY('registro_vacaciones.id', 'DESC')->get();
+
+        // 3. Preparación de Excel
+        $spreadsheet = new Spreadsheet;
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Encabezados (Establecer de una vez)
+        $headers = ['Folio', 'Empleado', 'Numero de empleado', 'Fecha de Vacacion'];
+        $sheet->fromArray($headers, null, 'A1');
+
+        // Estilo: Auto-size y negritas en cabecera
+        foreach (range('A', 'D') as $columnID) {
+            $sheet->getColumnDimension($columnID)->setAutoSize(true);
+        }
+        $sheet->getStyle('A1:D1')->getFont()->setBold(true);
+
+        // 4. Llenado de datos
+        $t = 2;
+        foreach ($datos as $row) {
+            // Intentamos parsear la fecha, si falla usamos el valor original
+
+            $sheet->setCellValue('A'.$t, 'VAC-'.$row->id);
+            $sheet->setCellValue('B'.$t, $row->employeeName);
+            $sheet->setCellValue('C'.$t, $row->id_empleado);
+            $sheet->setCellValue('D'.$t, $row->fecha_de_solicitud);
+            $t++;
+        }
+
+        // 5. Salida del archivo
+        $fileName = 'Registro de vacaciones del '.$di.' al '.$df.'.xlsx';
+        $writer = new Xlsx($spreadsheet);
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header("Content-Disposition: attachment;filename=\"$fileName\"");
+        header('Cache-Control: max-age=0');
+
+        $writer->save('php://output');
+        exit;
     }
 }

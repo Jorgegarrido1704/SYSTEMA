@@ -12,7 +12,7 @@
             <div class="card-body">
                 <div class="form-group mb-4" id="seccionAgregarVacaciones">
                     <form action="{{ route('addVacation') }}" method="GET">
-                        
+
                         <div class="form-row">
                             <div class="col-md-12 mb-3">
                                 <label class="font-weight-bold" for="personalIng">Personal:</label>
@@ -63,6 +63,28 @@
                         </button>
                     </form>
                 </div>
+
+                 <hr class="sidebar-divider">
+
+                <div class="form-group mt-4" id="excelVacaciones">
+                    <form action="{{ route('excelVacaciones') }}" method="GET">
+
+                        <div class="form-row">
+                           <div class="col-md-12 mb-3">
+                                <label class="font-weight-bold" for="fechaInicio">Fecha de inicio:</label>
+                                <input type="date" class="form-control" id="fechaInicio" name="fechaInicio" required>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label class="font-weight-bold" for="fechaFinal">Fecha final:</label>
+                                <input type="date" class="form-control" id="fechaFinal" name="fechaFinal" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-success btn-block">
+                            <i class="fas fa-trash fa-sm"></i> Extraer reporte
+                        </button>
+                    </form>
+                </div>
+
             </div>
         </div>
     </div>
@@ -71,6 +93,12 @@
         <div class="card shadow">
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">Lista de Vacaciones</h6>
+                <nav class="navbar navbar-expand navbar-light bg-light">
+                    <div class="navbar-nav">
+                        <input type="text" class="form-control" id="searchVacaciones"
+                        placeholder="Numero de empleado" aria-label="Search" onchange="searchVacaciones(this.value);">
+
+                    </div>
             </div>
             <div class="card-body">
                 <div class="table-responsive" id="VacacionesPersonal">
@@ -79,10 +107,10 @@
                             <tr>
                                 <th>Empleado</th>
                                 <th>Dia de vacacion</th>
-                                <th>periodo de vacacion</th>
+                                <th>Folio</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="tbodyVacaciones">
                             @if (!empty($vacaciones))
                             @foreach ($vacaciones as $vacacion)
                             <tr>
@@ -100,5 +128,33 @@
     </div>
 </div>
 
+<script>
+    function searchVacaciones(value) {
+    const SEARCH_URL = "{{ route('searchVacaciones', 'id') }}";
+
+    const url = SEARCH_URL.replace('id', value);
+        fetch(url, { method: 'GET',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        }).then(response => response.json())
+        .then(data => {
+            const tbody = document.getElementById('tbodyVacaciones');
+            tbody.innerHTML = '';
+            data.forEach(vacacion => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${vacacion.employeeName}</td>
+                    <td>${vacacion.fecha_de_solicitud}</td>
+                    <td>VAC-${vacacion.id}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        })
+        .catch(error => console.error('Error:', error));
+
+
+    }
+    </script>
 
 @endsection
