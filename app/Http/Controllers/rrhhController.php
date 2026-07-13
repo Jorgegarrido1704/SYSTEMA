@@ -1359,7 +1359,7 @@ class rrhhController extends Controller
         $empleados = personalBergsModel::where('status', 'Activo')->get();
         $vacaciones = registroVacacionesModel::join('personalberg', 'personalberg.employeeNumber', '=', 'registro_vacaciones.id_empleado')
             ->select('registro_vacaciones.*', 'personalberg.employeeName')
-            ->where('personalberg.status', 'Activo')->ORDERBY('registro_vacaciones.id', 'DESC')->get();
+            ->where('personalberg.status', 'Activo')->ORDERBY('registro_vacaciones.id', 'DESC')->limit(75)->get();
         foreach ($vacaciones as $v) {
             $aniosdeUso = $v->usedYear;
             $v->periodo = ($aniosdeUso - 1).' - '.$aniosdeUso;

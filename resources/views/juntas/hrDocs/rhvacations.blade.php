@@ -116,7 +116,7 @@
                             <tr>
                                 <td>{{ $vacacion->employeeName }}</td>
                                 <td>{{ $vacacion->fecha_de_solicitud }}</td>
-                                <td>{{ $vacacion->periodo }}</td>
+                                <td>VAC-{{ $vacacion->id }}</td>
                             </tr>
                             @endforeach
                             @endif
