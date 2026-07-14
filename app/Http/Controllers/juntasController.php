@@ -2689,7 +2689,7 @@ class juntasController extends Controller
         $value = session('user');
         $cat = session('categoria');
         if (empty($value)) {
-            return redirect()->route('/');
+            return redirect()->route('login');
         }
         // 1. In Progress Schedules
         $inprogres = workScreduleModel::selectRaw('color, count(*) as total')
