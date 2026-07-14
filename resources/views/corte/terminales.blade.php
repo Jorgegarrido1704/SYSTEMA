@@ -7,6 +7,9 @@
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <h5 class="m-0 font-weight-bold text-primary">{{ __('Rates') }} </h5>
+                <nav class="d-none d-md-block">
+                     <input type="date" id="fechasCrimping"  name="fechasCrimping" value="{{ Carbon\Carbon::now()->format('Y-m-d') }}" onchange="getData();">
+                </nav>
             </div>
             <div class="card-body">
                 <div class="row">
@@ -328,9 +331,13 @@
 
 
 <script>
+    function getData() {
+        fetchTerminalData();
+        fetchTerminalDataTabla();
+    }
    function fetchTerminalData() {
-    const url = @json(route('corte.appJointTerminales'));
-
+    const fecha = document.getElementById("fechasCrimping").value;
+    const url = '/corte/appJointTerminales?fecha=' + encodeURIComponent(fecha);
     fetch(url)
         .then(response => response.json())
         .then(data => {
@@ -356,10 +363,9 @@
         .catch(error => console.error('Error:', error));
 }
 
-setInterval(fetchTerminalData, 600000);
-fetchTerminalData();
 function fetchTerminalDataTabla() {
-    const url = @json(route('corte.appJointTerminalesTabla'));
+    const fecha = document.getElementById("fechasCrimping").value;
+    const url = '/corte/appJointTerminalesTabla?fecha=' + encodeURIComponent(fecha);
 
     fetch(url)
         .then(response => response.json())

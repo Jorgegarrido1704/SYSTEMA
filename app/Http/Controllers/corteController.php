@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\crimpersTools;
 use carbon\Carbon;
+use Illuminate\Http\Request;
 
 class corteController extends Controller
 {
@@ -18,8 +19,9 @@ class corteController extends Controller
         return view('corte.terminales', ['value' => $value, 'cat' => $cat, 'day' => $day]);
     }
 
-    public function appJointTerminales()
+    public function appJointTerminales(Request $request)
     {
+        $fechaCrimper = $request->input('fecha');
         try {
 
             $hoy = Carbon::now();
@@ -32,7 +34,7 @@ class corteController extends Controller
             $ayerFormatted = $ayer->format('Y-m-d');
 
             // Obtenemos los datos agrupados por máquina y sumados
-            $datos = crimpersTools::where('dateRegistered', '2026-07-09')
+            $datos = crimpersTools::where('dateRegistered', $fechaCrimper)
                 ->select('toolingCrimperName')
                 ->selectRaw('SUM(CAST(TerminalsUsed AS UNSIGNED)) as total_terminales')
                 ->selectRaw('SUM(minutesStop) as total_paro')
@@ -46,8 +48,9 @@ class corteController extends Controller
         }
     }
 
-    public function appJointTerminalesTabla()
+    public function appJointTerminalesTabla(Request $request)
     {
+        $fechaCrimper = $request->input('fecha');
         try {
             /*$hoy = Carbon::now();
 
@@ -63,8 +66,8 @@ class corteController extends Controller
             // Si es antes de las 9 AM, mostrar ayer. Si es después, mostrar hoy.
             $fechaConsultar = ($horaActual < $horaCorte) ? $ayerFormatted : $hoyFormatted;
 */
-            $fechaConsultar = Carbon::now()->subDay()->format('Y-m-d');
-            $datos = crimpersTools::where('dateRegistered', $fechaConsultar)
+
+            $datos = crimpersTools::where('dateRegistered', $fechaCrimper)
                 ->orderBy('toolingCrimperName', 'asc')
                 ->orderBy('startHour', 'asc')
                 ->get();
