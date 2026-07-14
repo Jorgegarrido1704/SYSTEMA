@@ -2048,7 +2048,7 @@ class juntasController extends Controller
             $liderInicial = personalBergsModel::select('user', 'email', 'employeeLider')->where('employeeName', '=', $lider)->first();
             $buscarEmails = personalBergsModel::select('email', 'employeeLider', 'employeeName', 'user')->where('employeeName', '=', $liderInicial->employeeLider)->first();
             $supervisor = $buscarEmails->user;
-            if ($buscarEmails->email == null or $buscarEmails->email == '') {
+            if ($buscarEmails->email != null or $buscarEmails->email != '') {
                 $email = $buscarEmails->email;
             } elseif ($liderInicial->email != null or $liderInicial->email != '') {
                 $email = $liderInicial->email;
