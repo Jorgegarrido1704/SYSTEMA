@@ -1,6 +1,14 @@
 @extends('layouts.main')
 
 @section('contenido')
+<style>
+    .circulo{
+        background-color: blue;
+        width: 33px;
+        height: 33px;
+        border-radius: 50%;
+}
+    </style>
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Introduccion de nuevos productos</h1>
 </div>
@@ -123,6 +131,7 @@
                     <table class="table table-striped table-bordered"  cellspacing="0" width="100%">
                         <thead>
                             <tr>
+                                <th>{{ __('Status') }}</th>
                                 <th>{{__('Customer') }}</th>
                                 <th>{{ __('Part Number') }}</th>
                                 <th>{{__('Revision') }}</th>
@@ -168,7 +177,7 @@
                  <table class="table table-striped table-bordered"  cellspacing="0" width="100%">
                         <thead>
                             <tr>
-
+                                <th>{{ __('Status') }}</th>
                                 <th>{{__('Customer') }}</th>
                                 <th>{{ __('Part Number') }}</th>
                                 <th>{{__('Revision') }}</th>
@@ -228,6 +237,7 @@ function mostrarTablas(id){
         let html_piso = '';
         data.inprogres.forEach(inprogres => {
             html_ingenieria += `<tr>
+            <td><div class="circulo" style="background-color: ${inprogres.statusColor};"></div></td>
             <td>${inprogres.customer}</td>
             <td>${inprogres.pn}</td>
             <td>${inprogres.WorkRev}</td>
@@ -247,6 +257,7 @@ function mostrarTablas(id){
           checando = [  'disabled', ''];
         }
             html_pendiente += `<tr>
+               
             <td>${inprogres.customer}</td>
             <td>${inprogres.pn}</td>
             <td>${inprogres.WorkRev}</td>
@@ -262,11 +273,12 @@ function mostrarTablas(id){
 
         data.registros.forEach(inprogres => {
             html_piso += `<tr>
+            <td><div class="circulo" style="background-color: ${inprogres.statusColor};"></div></td>
             <td>${inprogres.cliente}</td>
             <td>${inprogres.NumPart}</td>
             <td>${inprogres.rev}</td>
             <td>${inprogres.donde}</td>
-            <td>${inprogres.reqday}</td>
+            <td>${inprogres.customerDate}</td>
         </tr>`;
         });
         tabla_ingenieria.innerHTML = html_ingenieria;
@@ -297,7 +309,7 @@ function mostrarTablas(id){
         $value = "{{ $value }}";
         let checkbox = document.getElementById(`kit_${id}`);
         let isChecked = checkbox.checked;
-        
+
        fetch(`/update_kits/${id}`, {
             method: 'POST',
             headers: {

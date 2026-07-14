@@ -2770,6 +2770,12 @@ class juntasController extends Controller
             $tipo = 'PPAP';
         }
         $inprogres = workScreduleModel::whereNull('documentsApproved')->where('color', $color)->get();
+        foreach ($inprogres as $inp) {
+            $receiptDate = Carbon::parse($inp->receiptDate)->startOfDay();
+            $days = $receiptDate->diffInWeekDays(Carbon::now()->startOfDay());
+            $color = $days < 4 ? 'green' : ($days < 8 ? 'yellow' : 'red');
+            $inp->statusColor = $color;
+        }
 
         // 2. Completed General Schedules (Fixed case-sensitivity for column names if needed)
         $totalgeneral = workScreduleModel::where('status', 'Completed')
@@ -2782,6 +2788,36 @@ class juntasController extends Controller
         $registros = Wo::where('rev', 'like', $tipo.'%')
             ->whereNotIn('count', ['20', '12'])
             ->get();
+        foreach ($registros as $reg) {
+            $pn = $reg->NumPart;
+            $buscarfecha = workScreduleModel::select('customerDate')->where('pn', $pn)->orderBy('id', 'desc')->first();
+
+            if ($buscarfecha) {
+                $now = Carbon::now()->startOfDay();
+                $receiptDate = Carbon::parse($buscarfecha->customerDate)->startOfDay();
+
+                // 1. Verificar si la fecha de entrega ya pasó (es menor a la fecha actual)
+                if ($receiptDate->lessThan($now)) {
+                    $color = 'red';
+                    // Si ya venció, calculamos los días que lleva de retraso (opcional, como número negativo)
+                    $days = -$receiptDate->diffInWeekDays($now);
+                } else {
+                    // 2. Si es a futuro, calculamos los días hábiles que faltan
+                    $days = $now->diffInWeekDays($receiptDate);
+
+                    // Si faltan de 1 a 8 días se convierte en amarillo, si son más de 8 es verde
+                    if ($days >= 1 && $days <= 8) {
+                        $color = 'yellow';
+                    } else {
+                        $color = 'green';
+                    }
+                }
+
+                $reg->statusColor = $color;
+                $reg->customerDate = $buscarfecha->customerDate;
+                $reg->days = $days;
+            }
+        }
 
         $datos = [
             'inprogres' => $inprogres,
