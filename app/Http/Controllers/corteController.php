@@ -32,7 +32,7 @@ class corteController extends Controller
             $ayerFormatted = $ayer->format('Y-m-d');
 
             // Obtenemos los datos agrupados por máquina y sumados
-            $datos = crimpersTools::where('dateRegistered', '2026-07-13')
+            $datos = crimpersTools::where('dateRegistered', '2026-07-09')
                 ->select('toolingCrimperName')
                 ->selectRaw('SUM(CAST(TerminalsUsed AS UNSIGNED)) as total_terminales')
                 ->selectRaw('SUM(minutesStop) as total_paro')
