@@ -257,7 +257,7 @@ function mostrarTablas(id){
           checando = [  'disabled', ''];
         }
             html_pendiente += `<tr>
-               
+            <td><div class="circulo" style="background-color: ${inprogres.statusColor};"></div></td>
             <td>${inprogres.customer}</td>
             <td>${inprogres.pn}</td>
             <td>${inprogres.WorkRev}</td>

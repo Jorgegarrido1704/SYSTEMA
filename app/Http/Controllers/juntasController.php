@@ -2784,29 +2784,62 @@ class juntasController extends Controller
             ->where('color', $color)
             ->get();
 
+        foreach ($totalgeneral as $inp) {
+            $now = Carbon::now()->startOfDay();
+            $receiptDate = Carbon::parse($buscarfecha->customerDate)->startOfDay();
+            if ($receiptDate->lessThan($now)) {
+                $color = 'red';
+                $days = -$receiptDate->diffInWeekDays($now);
+            } else {
+                $days = $now->diffInWeekDays($receiptDate);
+                if ($days >= 1 && $days <= 9) {
+                    $color = 'yellow';
+                } else {
+                    $color = 'green';
+                }
+            }
+            $inp->statusColor = $color;
+            $inp->days = $days;
+        }
+
         // 3. Fixed Wo Query
         $registros = Wo::where('rev', 'like', $tipo.'%')
             ->whereNotIn('count', ['20', '12'])
             ->get();
         foreach ($registros as $reg) {
             $pn = $reg->NumPart;
+            $reqday = Carbon::parse($reg->reqday)->format('Y-m-d')->startOfDay();
             $buscarfecha = workScreduleModel::select('customerDate')->where('pn', $pn)->orderBy('id', 'desc')->first();
 
             if ($buscarfecha) {
                 $now = Carbon::now()->startOfDay();
                 $receiptDate = Carbon::parse($buscarfecha->customerDate)->startOfDay();
-
-                // 1. Verificar si la fecha de entrega ya pasó (es menor a la fecha actual)
                 if ($receiptDate->lessThan($now)) {
                     $color = 'red';
-                    // Si ya venció, calculamos los días que lleva de retraso (opcional, como número negativo)
                     $days = -$receiptDate->diffInWeekDays($now);
                 } else {
-                    // 2. Si es a futuro, calculamos los días hábiles que faltan
                     $days = $now->diffInWeekDays($receiptDate);
 
-                    // Si faltan de 1 a 8 días se convierte en amarillo, si son más de 8 es verde
-                    if ($days >= 1 && $days <= 8) {
+                    if ($days >= 0 && $days <= 9) {
+                        $color = 'yellow';
+                    } else {
+                        $color = 'green';
+                    }
+                }
+
+                $reg->statusColor = $color;
+                $reg->customerDate = $buscarfecha->customerDate;
+                $reg->days = $days;
+            } else {
+                $now = Carbon::now()->startOfDay();
+                $receiptDate = $reqday;
+                if ($receiptDate->lessThan($now)) {
+                    $color = 'red';
+                    $days = -$receiptDate->diffInWeekDays($now);
+                } else {
+                    $days = $now->diffInWeekDays($receiptDate);
+
+                    if ($days >= 0 && $days <= 9) {
                         $color = 'yellow';
                     } else {
                         $color = 'green';
