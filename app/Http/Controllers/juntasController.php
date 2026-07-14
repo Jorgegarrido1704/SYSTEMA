@@ -2775,6 +2775,7 @@ class juntasController extends Controller
             $days = $receiptDate->diffInWeekDays(Carbon::now()->startOfDay());
             $color = $days < 4 ? 'green' : ($days < 8 ? 'yellow' : 'red');
             $inp->statusColor = $color;
+            $inp->days = $days;
         }
 
         // 2. Completed General Schedules (Fixed case-sensitivity for column names if needed)
