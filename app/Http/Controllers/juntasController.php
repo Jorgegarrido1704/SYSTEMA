@@ -2786,7 +2786,7 @@ class juntasController extends Controller
 
         foreach ($totalgeneral as $inp) {
             $now = Carbon::now()->startOfDay();
-            $receiptDate = Carbon::parse($buscarfecha->customerDate)->startOfDay();
+            $receiptDate = Carbon::parse($inp->customerDate)->startOfDay();
             if ($receiptDate->lessThan($now)) {
                 $color = 'red';
                 $days = -$receiptDate->diffInWeekDays($now);
@@ -2829,8 +2829,8 @@ class juntasController extends Controller
                 $reg->statusColor = $color;
                 $reg->customerDate = $buscarfecha->customerDate;
                 $reg->days = $days;
-            } 
-              
+            }
+
         }
 
         $datos = [
