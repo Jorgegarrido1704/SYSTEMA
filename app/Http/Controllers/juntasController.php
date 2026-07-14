@@ -2829,6 +2829,25 @@ class juntasController extends Controller
                 $reg->statusColor = $color;
                 $reg->customerDate = $buscarfecha->customerDate;
                 $reg->days = $days;
+            } else {
+                $now = Carbon::now()->startOfDay();
+                $receiptDate = Carbon::parse($reg->reqday)->format('Y-m-d')->startOfDay();
+                if ($receiptDate->lessThan($now)) {
+                    $color = 'red';
+                    $days = -$receiptDate->diffInWeekDays($now);
+                } else {
+                    $days = $now->diffInWeekDays($receiptDate);
+
+                    if ($days >= 0 && $days <= 9) {
+                        $color = 'yellow';
+                    } else {
+                        $color = 'green';
+                    }
+                }
+
+                $reg->statusColor = $color;
+                $reg->customerDate = $buscarfecha->reqday;
+                $reg->days = $days;
             }
 
         }
