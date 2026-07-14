@@ -2831,7 +2831,7 @@ class juntasController extends Controller
                 $reg->days = $days;
             } else {
                 $now = Carbon::now()->startOfDay();
-                $receiptDate = Carbon::parse($reg->reqday)->format('Y-m-d')->startOfDay();
+                $receiptDate = Carbon::parse($reg->reqday)->startOfDay();
                 if ($receiptDate->lessThan($now)) {
                     $color = 'red';
                     $days = -$receiptDate->diffInWeekDays($now);
