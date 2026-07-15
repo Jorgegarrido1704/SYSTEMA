@@ -193,7 +193,7 @@
                                             @elseif ($inge->count == 19)
                                                 <td>Electrical testing</td>
                                                 @else
-                                                <td></td>
+                                                <td>{{ $inge->donde }}</td>
                                             @endif
                                             <td><input type="hidden" id='iding' name='iding'
                                                     value="{{ $inge->id }}">
