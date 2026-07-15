@@ -36,7 +36,7 @@ class PpapIngController extends Controller
             $i = 0;
             $inges = $activ = $answer = $enginners = [];
             $inges = Wo::where('rev', 'LIKE', 'PPAP%')->orwhere('rev', 'LIKE', 'PRIM%')
-                ->orderby('wo', 'desc')->get();
+                ->orderby('wo', 'desc')->where('count', '!=', '20')->get();
 
             $i = 0;
             $enginners = DB::table('ingactividades')->where('count', '<', '4')->orderby('Id_request')->get();
