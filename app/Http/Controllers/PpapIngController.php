@@ -35,10 +35,8 @@ class PpapIngController extends Controller
         } else {
             $i = 0;
             $inges = $activ = $answer = $enginners = [];
-            $inges = Wo::where('count', '=', '13')
-                ->orwhere('count', '=', '17')->orwhere('count', '=', '14')->orwhere('count', '=', '16')
-                ->orwhere('count', '=', '18')->orwhere('count', '=', '19')->OrderBy('cliente', 'asc')
-                ->get();
+            $inges = Wo::where('rev', 'LIKE', 'PPAP%')->orwhere('rev', 'LIKE', 'PRIM%')
+                ->orderby('wo', 'desc')->get();
 
             $i = 0;
             $enginners = DB::table('ingactividades')->where('count', '<', '4')->orderby('Id_request')->get();
@@ -247,13 +245,13 @@ class PpapIngController extends Controller
 
         if ($cuenta == 17) {
             upRegistro(16, 'Ingenieria// liberacion', $info, 'corte', $idIng, $today, 'eng', $eng, $value);
-        } elseif ($cuenta == 19) {
+        } elseif ($cuenta == 19 || $cuenta == 8 || $cuenta == 9) {
             upRegistro(10, 'En espera de calidad', $info, 'calidad', $idIng, $today, 'preCalidad', $eng, $value);
         } elseif ($cuenta == 14) {
             upRegistro(19, 'Ingenieria // pruebas electricas', $info, 'loom', $idIng, $today, 'eng', $eng, $value);
-        } elseif ($cuenta == 13) {
+        } elseif ($cuenta == 13 || $cuenta == 6 || $cuenta == 7) {
             upRegistro(14, 'Ingenieria // loom', $info, 'ensamble', $idIng, $today, 'eng', $eng, $value);
-        } elseif ($cuenta == 16) {
+        } elseif ($cuenta == 16 || $cuenta == 4 || $cuenta == 5) {
             upRegistro(13, 'Ingenieria // ensamble', $info, 'liberacion', $idIng, $today, 'eng', $eng, $value);
         } elseif ($cuenta == 18) {
             upRegistro(12, 'En espera de embarque', $info, 'calidad', $idIng, $today, 'embPar', $eng, $value);
