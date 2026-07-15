@@ -180,15 +180,15 @@
                                             <td>{{ $inge->rev }}</td>
                                             <td>{{ $inge->wo }}</td>
                                             <td>{{ $inge->Qty }}</td>
-                                            @if ($inge->count == 13)
+                                            @if ($inge->count == 13 || $inge->count == 6 || $ing->count == 7)
                                                 <td>Assembly</td>
-                                            @elseif ($inge->count == 14)
+                                            @elseif ($inge->count == 14 || $inge->count == 8 || $ing->count == 9)
                                                 <td>Loom</td>
-                                            @elseif ($inge->count == 16)
+                                            @elseif ($inge->count == 16 || $inge->count == 4 || $ing->count == 5)
                                                 <td>Terminals</td>
-                                            @elseif ($inge->count == 17)
+                                            @elseif ($inge->count == 17 || $inge->count == 2 || $ing->count == 3)
                                                 <td>Cutting</td>
-                                            @elseif ($inge->count == 18)
+                                            @elseif ($inge->count == 18 )
                                                 <td>Quality</td>
                                             @elseif ($inge->count == 19)
                                                 <td>Electrical testing</td>
