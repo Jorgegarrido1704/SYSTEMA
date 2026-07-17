@@ -222,10 +222,10 @@ function mostrarTablas(id){
     //alert(id);
     document.getElementById('tablas_datos').style.display = 'block';
     let url;
-    if(id === 'ppap'){
-         url = "{{ route('info_npi', ['id' => 'ppap']) }}";
-    }else{
-     url = "{{ route('info_npi', ['id' => 'prim']) }}";
+    if(id == 'ppap'){
+         url = "/npi/info_npi?id=ppap";
+    }else if(id == 'prim'){
+     url = "/npi/info_npi?id=prim";
     }
     fetch(url).then(response => response.json()).then(data => {
         console.log(data);

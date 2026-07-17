@@ -2753,19 +2753,19 @@ class juntasController extends Controller
         ]);
     }
 
-    public function info_npi(Request $request, $id)
+    public function info_npi(Request $request)
     {
         $value = session('user');
         $cat = session('categoria');
         if ($value == null) {
             return redirect('/');
         }
-        //  $id = $request->input('id');
+        $id = $request->input('id');
 
         if ($id == 'prim') {
             $color = 'yellow';
             $tipo = 'PRIM';
-        } else {
+        } elseif ($id == 'ppap') {
             $color = 'green';
             $tipo = 'PPAP';
         }
@@ -2773,8 +2773,8 @@ class juntasController extends Controller
         foreach ($inprogres as $inp) {
             $receiptDate = Carbon::parse($inp->receiptDate)->startOfDay();
             $days = $receiptDate->diffInWeekDays(Carbon::now()->startOfDay());
-            $color = $days < 4 ? 'green' : ($days < 8 ? 'yellow' : 'red');
-            $inp->statusColor = $color;
+            $colorInside = $days < 4 ? 'green' : ($days < 8 ? 'yellow' : 'red');
+            $inp->statusColor = $colorInside;
             $inp->days = $days;
         }
 
@@ -2789,17 +2789,17 @@ class juntasController extends Controller
             $now = Carbon::now()->startOfDay();
             $receiptDate = Carbon::parse($inp->customerDate)->startOfDay();
             if ($receiptDate->lessThan($now)) {
-                $color = 'red';
+                $colorInside = 'red';
                 $days = -$receiptDate->diffInWeekDays($now);
             } else {
                 $days = $now->diffInWeekDays($receiptDate);
                 if ($days >= 1 && $days <= 9) {
-                    $color = 'yellow';
+                    $colorInside = 'yellow';
                 } else {
-                    $color = 'green';
+                    $colorInside = 'green';
                 }
             }
-            $inp->statusColor = $color;
+            $inp->statusColor = $colorInside;
             $inp->days = $days;
         }
 
@@ -2815,19 +2815,19 @@ class juntasController extends Controller
                 $now = Carbon::now()->startOfDay();
                 $receiptDate = Carbon::parse($buscarfecha->customerDate)->startOfDay();
                 if ($receiptDate->lessThan($now)) {
-                    $color = 'red';
+                    $colorInside = 'red';
                     $days = -$receiptDate->diffInWeekDays($now);
                 } else {
                     $days = $now->diffInWeekDays($receiptDate);
 
                     if ($days >= 0 && $days <= 9) {
-                        $color = 'yellow';
+                        $colorInside = 'yellow';
                     } else {
-                        $color = 'green';
+                        $colorInside = 'green';
                     }
                 }
 
-                $reg->statusColor = $color;
+                $reg->statusColor = $colorInside;
                 $reg->customerDate = $buscarfecha->customerDate;
                 $reg->days = $days;
             }
@@ -2838,6 +2838,7 @@ class juntasController extends Controller
             'inprogres' => $inprogres,
             'totalgeneral' => $totalgeneral,
             'registros' => $registros,
+            'color' => $color,
         ];
 
         return json_encode($datos);
