@@ -913,6 +913,9 @@ class generalController extends Controller
         $wo = $request->input('parte');
         $cant = $request->input('cant');
         $buscarDatos = Wo::where('wo', '=', $wo)->first();
+        if (! $buscarDatos) {
+            return redirect('/general')->with('error', 'No se encontro el WO');
+        }
         $pn = $buscarDatos->NumPart;
         $rev = $buscarDatos->rev;
         $client = $buscarDatos->cliente;

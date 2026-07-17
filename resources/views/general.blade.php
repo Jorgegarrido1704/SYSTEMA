@@ -1,11 +1,26 @@
 @extends('layouts.main')
 
 @section('contenido')
+
  <!-- Page Heading -->
  <div class="d-sm-flex align-items-center justify-content-between mb-4">  </div>
 
  <div class="row">
-
+    @if(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+        @endif
+        @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+        @endif
+        <script>
+            setTimeout(function() {
+                $('.alert').fadeOut('slow');
+            }, 5000);
+        </script>
     <!-- Escanner -->
     <div class="col-xl-12 col-lg-4" >
         <div class="card shadow mb-4">
@@ -330,7 +345,7 @@
                  </div>
                  <script>
                     async function selectBraid() {
-                        const braid = document.getElementById('braid').value 
+                        const braid = document.getElementById('braid').value
     // Si el input está vacío, puedes decidir no enviar nada o enviar la fecha de hoy
     if(!braid) return;
                          try {
