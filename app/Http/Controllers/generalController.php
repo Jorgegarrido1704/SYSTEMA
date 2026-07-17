@@ -198,6 +198,18 @@ class generalController extends Controller
         }
     }
 
+    public function responseCodigo(request $request)
+    {
+        $cat = session('categoria');
+        $user = session('user');
+        if (! $user) {
+            return view('login');
+        }
+        $codigo = $request->input('code-bar');
+        $buscarCodigo = regPar::where('codeBar', $codigo)->first();
+
+    }
+
     public function codigo(request $request)
     {
         $cat = session('categoria');
