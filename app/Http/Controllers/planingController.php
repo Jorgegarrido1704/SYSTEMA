@@ -9,8 +9,6 @@ use App\Models\po;
 use App\Models\precios;
 use App\Models\regPar;
 use App\Models\specialWireModel;
-use App\Models\tiempos;
-use App\Models\timesHarn;
 use App\Models\Wo;
 use App\Models\workScreduleModel;
 use Carbon\Carbon;
@@ -318,177 +316,119 @@ class planingController extends Controller
             $reqday = $request->input('Reqday');
             $reqday = Carbon::parse($reqday)->format('d-m-Y');
             $wo = $request->input('WO');
-            $count = 1;
 
-            // Check for duplicate entry
             $duplicate = Po::where('po', $po)->exists();
-            $dupreg = Wo::where('wo', $wo)->exists();
-            if ($duplicate or $dupreg) {
+            $dupreg = Wo::where('wo', $wo)->orWhere('po', $po)->exists();
+            $duplicados_retiradas = DB::table('retiradad')->where('sono', $po)->orWhere('wo', $wo)->exists();
+            if ($duplicate or $dupreg or $duplicados_retiradas) {
                 return redirect()->back()->with('error', 'Arnes ya registrado, Revíselo y vuelva a intentarlo');
             }
-            $descPrecio = precios::where('pn', $np)->first();
-            if ($descPrecio != null) {
-                $descnew = $desc == $descPrecio->desc ? $descPrecio->desc : $desc;
-                $precionew = $price == $descPrecio->price ? $descPrecio->price : $price;
-                precios::where('pn', $np)->update(['desc' => $descnew, 'price' => $precionew]);
-            } else {
+
+            if (! precios::where('pn', $np)->exists()) {
                 precios::insert(['client' => $client, 'pn' => $np, 'desc' => $desc, 'price' => $price, 'send' => $send, 'rev' => $rev]);
             }
             $today = date('d-m-Y H:i');
             $barcodes = substr($rev, 0, 4) == 'PPAP' || substr($rev, 0, 4) == 'PRIM' ? (substr($np, 0, 2).substr($client, 0, 2).$qty.$wo.substr($po, 1, 3).'R'.substr($rev, 5)) : (substr($np, 0, 2).substr($client, 0, 2).$qty.$wo.substr($po, 1, 3).'R'.$rev);
-            // Insert data into the Po table
-            $poData = new Po;
-            $poData->client = $client;
-            $poData->pn = $np;
-            $poData->fecha = $today;
-            $poData->rev = $rev;
-            $poData->po = $po;
-            $poData->qty = $qty;
-            $poData->description = $desc;
-            $poData->price = $price;
-            $poData->send = $send;
-            $poData->orday = $orday;
-            $poData->reqday = $reqday;
-            $poData->count = $count;
-            $poData->quien = $value;
 
-            if ($poData->save()) {
+            $newWo = new Wo;
+            $newWo->NumPart = $np;
+            $newWo->cliente = $client;
+            $newWo->rev = $rev;
+            $newWo->wo = $wo;
+            $newWo->po = $po;
+            $newWo->Qty = $qty;
+            $newWo->Barcode = '0';
+            $newWo->info = $barcodes;
+            $newWo->donde = substr($rev, 0, 4) == 'PPAP' || substr($rev, 0, 4) == 'PRIM' ? 'En Ingenieria // Corte' : 'En espera de corte';
+            $newWo->count = substr($rev, 0, 4) == 'PPAP' || substr($rev, 0, 4) == 'PRIM' ? 17 : 2;
+            $newWo->description = $desc;
+            $newWo->price = $price;
+            $newWo->sento = $send;
+            $newWo->orday = $orday;
+            $newWo->reqday = $reqday;
+            $newWo->quien = $value;
+            $newWo->save();
 
-                $newWo = new Wo;
-                $newWo->fecha = $today;
-                $newWo->NumPart = $np;
-                $newWo->cliente = $client;
-                $newWo->rev = $rev;
-                $newWo->wo = $wo;
-                $newWo->po = $po;
-                $newWo->Qty = $qty;
-                $newWo->Barcode = '0';
-                $newWo->info = $barcodes;
-                $newWo->donde = substr($rev, 0, 4) == 'PPAP' || substr($rev, 0, 4) == 'PRIM' ? 'En Ingenieria // Corte' : 'En espera de corte';
-                $newWo->count = substr($rev, 0, 4) == 'PPAP' || substr($rev, 0, 4) == 'PRIM' ? 17 : 2;
-                $newWo->tiempoTotal = 0;
-                $newWo->paro = '';
-                $newWo->description = $desc;
-                $newWo->price = $price;
-                $newWo->sento = $send;
-                $newWo->orday = $orday;
-                $newWo->reqday = $reqday;
-                $newWo->quien = $value;
-
-                if ($newWo->save()) {
-                    $times = new tiempos;
-                    $times->info = $barcodes;
-                    $times->planeacion = $today;
-                    $times->corte = '';
-                    $times->liberacion = '';
-                    $times->ensamble = '';
-                    $times->loom = '';
-                    $times->calidad = '';
-                    $times->embarque = '';
-                    $times->kitsinicial = '';
-                    $times->kitsfinal = '';
-                    $times->retrabajoi = '';
-                    $times->retrabajof = '';
-                    $times->totalparos = '';
-                    $times->save();
-                    $buscarDatos = DB::table('datos')->where('part_num', '=', $np)->get();
-                    if ($buscarDatos->count() > 0) {
-                        $savekits = new kits;
-                        $savekits->numeroParte = $np;
-                        $savekits->qty = $qty;
-                        $savekits->wo = $wo;
-                        $savekits->status = 'En espera';
-                        $savekits->usuario = $value;
-                        $savekits->save();
-                    }
-                    if (substr($rev, 0, 4) == 'PPAP' || substr($rev, 0, 4) == 'PRIM') {
-                        $revn = substr($rev, 5);
-                    } else {
-                        $revn = $rev;
-                    }
-                    $Buscarcorte = listasDeCorte::where('pn', '=', $np)
-                        ->where('rev', '=', $revn)->where('tamano', '>', 0)
-                        ->get();
-                    if (count($Buscarcorte) > 0) {
-                        foreach ($Buscarcorte as $corte) {
-                            $ADDcorte = new Corte;
-                            $ADDcorte->np = $np;
-                            $ADDcorte->cliente = $client;
-                            $ADDcorte->rev = $corte->rev;
-                            $ADDcorte->wo = $wo;
-                            $ADDcorte->cons = $corte->cons;
-                            $ADDcorte->color = $corte->color;
-                            $ADDcorte->tipo = $corte->tipo;
-                            $ADDcorte->aws = $corte->aws;
-                            if (substr($corte->cons, 0, 5) == 'CORTE') {
-                                $ADDcorte->codigo = $wo.'-C'.substr($corte->cons, 7);
-                            } else {
-                                $ADDcorte->codigo = $wo.'-'.$corte->cons;
-                            }
-                            $ADDcorte->term1 = $corte->terminal1;
-                            $ADDcorte->strip1 = $corte->strip1;
-                            $ADDcorte->term2 = $corte->terminal2;
-                            $ADDcorte->strip2 = $corte->strip2;
-                            $ADDcorte->dataFrom = $corte->dataFrom;
-                            $ADDcorte->dataTo = $corte->dataTo;
-                            $ADDcorte->qty = $qty;
-                            $ADDcorte->tamano = $corte->tamano;
-                            $ADDcorte->conector = $corte->conector;
-                            $ADDcorte->tintaColor = $corte->colorTinta;
-                            $ADDcorte->time_ruteo = round($corte->defaultTime * $qty, 2); // falta query
-
-                            $ADDcorte->save();
-                        }
-                    }
-                    $agegartiempos = new timesHarn;
-                    $agegartiempos->pn = $np;
-                    $agegartiempos->wo = $wo;
-                    $agegartiempos->cut = $today;
-
-                    $agegartiempos->bar = $barcodes;
-                    $agegartiempos->fecha = $today;
-                    $agegartiempos->save();
-
-                    if (substr($rev, 0, 4) == 'PPAP' || substr($rev, 0, 4) == 'PRIM') {
-                        $content = [];
-                        $subject = 'ALTA '.substr($rev, 0, 4).' Numero de parte:'.$np.' Rev: '.substr($rev, 5);
-                        $content['info'] = 'Les comparto que hoy'.date('d-m-Y').' , a las'.date('H:i').' se libero a piso la siguiente '.substr($rev, 0, 4).':';
-                        $content['np'] = $np;
-                        $content['rev'] = substr($rev, 5);
-                        $content['wo'] = $wo;
-                        $content['qty'] = $qty;
-                        $content['client'] = $client;
-                        $content['reqDay'] = $request->input('Reqday');
-                        workScreduleModel::where('pn', $np)->orderby('id', 'desc')->first()->update(['UpOrderDate' => carbon::now()->format('Y-m-d')]);
-                        $recipients = [
-                            'jguillen@mx.bergstrominc.com',
-                            'drocha@mx.bergstrominc.com',
-                            'jcervera@mx.bergstrominc.com',
-                            'jcrodriguez@mx.bergstrominc.com',
-                            'dvillalpando@mx.bergstrominc.com',
-                            'egaona@mx.bergstrominc.com',
-                            'rramirez@mx.bergstrominc.com',
-                            'jolaes@mx.bergstrominc.com',
-                            'lramos@mx.bergstrominc.com',
-                            'emedina@mx.bergstrominc.com',
-                            'jgarrido@mx.bergstrominc.com',
-                            'ediaz@mx.bergstrominc.com',
-                            'dmartinez@mx.bergstrominc.com',
-                            'jgamboa@mx.bergstrominc.com',
-                            'apreciado@mx.bergstrominc.com',
-                        ];
-                        Mail::to($recipients)->send(new \App\Mail\PPAPING($subject, $content));
-                    }
-                    $codigo = DB::select("SELECT * FROM registro  WHERE wo='$wo' ORDER BY id DESC LIMIT 1");
-                    $codes = $codigo[0]->info;
-
-                    return view('registro/code', ['codes' => $codes, 'cat' => $cat]);
-                } else {
-                    return redirect()->back()->with('error', 'Error al registrar Wo');
-                }
-            } else {
-                return redirect()->back()->with('error', 'Error al registrar Po');
+            $buscarDatos = DB::table('datos')->where('part_num', '=', $np)->get();
+            if ($buscarDatos->count() > 0) {
+                $savekits = new kits;
+                $savekits->numeroParte = $np;
+                $savekits->qty = $qty;
+                $savekits->wo = $wo;
+                $savekits->status = 'En espera';
+                $savekits->usuario = $value;
+                $savekits->save();
             }
+            $revn = substr($rev, 0, 4) == 'PPAP' || substr($rev, 0, 4) == 'PRIM' ? substr($rev, 5) : $rev;
+
+            $Buscarcorte = listasDeCorte::where('pn', '=', $np)
+                ->where('rev', '=', $revn)->where('tamano', '>', 0)
+                ->get();
+            if (count($Buscarcorte) > 0) {
+                foreach ($Buscarcorte as $corte) {
+                    $ADDcorte = new Corte;
+                    $ADDcorte->np = $np;
+                    $ADDcorte->cliente = $client;
+                    $ADDcorte->rev = $corte->rev;
+                    $ADDcorte->wo = $wo;
+                    $ADDcorte->cons = $corte->cons;
+                    $ADDcorte->color = $corte->color;
+                    $ADDcorte->tipo = $corte->tipo;
+                    $ADDcorte->aws = $corte->aws;
+                    if (substr($corte->cons, 0, 5) == 'CORTE') {
+                        $ADDcorte->codigo = $wo.'-C'.substr($corte->cons, 7);
+                    } else {
+                        $ADDcorte->codigo = $wo.'-'.$corte->cons;
+                    }
+                    $ADDcorte->term1 = $corte->terminal1;
+                    $ADDcorte->strip1 = $corte->strip1;
+                    $ADDcorte->term2 = $corte->terminal2;
+                    $ADDcorte->strip2 = $corte->strip2;
+                    $ADDcorte->dataFrom = $corte->dataFrom;
+                    $ADDcorte->dataTo = $corte->dataTo;
+                    $ADDcorte->qty = $qty;
+                    $ADDcorte->tamano = $corte->tamano;
+                    $ADDcorte->conector = $corte->conector;
+                    $ADDcorte->tintaColor = $corte->colorTinta;
+                    $ADDcorte->time_ruteo = round($corte->defaultTime * $qty, 2); // falta query
+
+                    $ADDcorte->save();
+                }
+            }
+
+            if (substr($rev, 0, 4) == 'PPAP' || substr($rev, 0, 4) == 'PRIM') {
+                $content = [];
+                $subject = 'ALTA '.substr($rev, 0, 4).' Numero de parte:'.$np.' Rev: '.substr($rev, 5);
+                $content['info'] = 'Les comparto que hoy'.date('d-m-Y').' , a las'.date('H:i').' se libero a piso la siguiente '.substr($rev, 0, 4).':';
+                $content['np'] = $np;
+                $content['rev'] = substr($rev, 5);
+                $content['wo'] = $wo;
+                $content['qty'] = $qty;
+                $content['client'] = $client;
+                $content['reqDay'] = $request->input('Reqday');
+                workScreduleModel::where('pn', $np)->orderby('id', 'desc')->first()->update(['UpOrderDate' => carbon::now()->format('Y-m-d')]);
+                $recipients = [
+                    'jguillen@mx.bergstrominc.com',
+                    'drocha@mx.bergstrominc.com',
+                    'jcervera@mx.bergstrominc.com',
+                    'jcrodriguez@mx.bergstrominc.com',
+                    'dvillalpando@mx.bergstrominc.com',
+                    'egaona@mx.bergstrominc.com',
+                    'rramirez@mx.bergstrominc.com',
+                    'jolaes@mx.bergstrominc.com',
+                    'lramos@mx.bergstrominc.com',
+                    'emedina@mx.bergstrominc.com',
+                    'jgarrido@mx.bergstrominc.com',
+                    'ediaz@mx.bergstrominc.com',
+                    'dmartinez@mx.bergstrominc.com',
+                    'jgamboa@mx.bergstrominc.com',
+                    'apreciado@mx.bergstrominc.com',
+                ];
+                Mail::to($recipients)->send(new \App\Mail\PPAPING($subject, $content));
+            }
+
+            return view('registro.code', ['codes' => $barcodes, 'cat' => $cat]);
+
         }
     }
 

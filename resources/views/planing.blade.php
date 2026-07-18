@@ -2,7 +2,7 @@
 
 @section('contenido')
  <!-- Page Heading -->
- <meta http-equiv="refresh" content="180">
+
 
  <script>
 var dat = {!! json_encode($datosP) !!};
@@ -56,11 +56,25 @@ var dat = {!! json_encode($datosP) !!};
 
     }
 </style>
- <div class="d-sm-flex align-items-center justify-content-between mb-4">
-
-                    </div>
+ <div class="d-sm-flex align-items-center justify-content-between mb-4"></div>
                     <div class="row">
-
+                         <div class="col-xl-12 col-lg-12">
+                         @if(session('error'))
+                            <div class="alert alert-danger">
+                                {{ session('error') }}
+                            </div>
+                            @endif
+                            @if(session('success'))
+                            <div class="alert alert-success">
+                                {{ session('success') }}
+                            </div>
+                            @endif
+                            <script>
+                                setTimeout(function() {
+                                    $('.alert').fadeOut('slow');
+                                }, 5000);
+                            </script>
+                         </div>
                         <!-- Table and Graph -->
                         <div class="col-xl-6 col-lg-6">
                             <div class="card shadow mb-4">
