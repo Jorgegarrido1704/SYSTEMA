@@ -1128,41 +1128,50 @@ class PpapIngController extends Controller
 
     public function updateEtiquetas(Request $request)
     {
-        // 1. Validar Sesión (Idealmente usa un Middleware, pero mantenemos tu lógica)
+        // 1. Validar Sesión
         if (! session()->has('user')) {
             return redirect('/');
         }
 
         // 2. Validar Formulario y Archivo
         $validator = request()->validate([
-            'csv_file' => 'required|mimes:csv',
+            'csv_file' => 'required|mimes:csv,txt',
             'Numero_de_Parte' => 'required',
             'Revision' => 'required',
         ]);
 
         $pnInput = $request->input('Numero_de_Parte');
         $revInput = $request->input('Revision');
-        maintainRoutings::updateOrCreate(
-            [
-                'pn' => $pnInput,
-                'routing_status' => 'Pendiente',
-
-            ]
-        );
 
         $file = $request->file('csv_file');
         $csvFile = $file->getRealPath();
 
         try {
-            listasDeCorte::where('pn', $pnInput)->delete();
             $handle = fopen($csvFile, 'r');
             if (! $handle) {
-                throw new Exception('No se pudo abrir el archivo CSV.');
+                // USAR \Exception AQUÍ
+                throw new \Exception('No se pudo abrir el archivo CSV.');
             }
+
+            // VALIDAR SI EL CSV ESTÁ VACÍO
+            $fileStats = fstat($handle);
+            if ($fileStats['size'] === 0) {
+                // USAR \Exception AQUÍ
+                throw new \Exception('El archivo CSV está completamente vacío.');
+            }
+
+            maintainRoutings::updateOrCreate(
+                [
+                    'pn' => $pnInput,
+                    'routing_status' => 'Pendiente',
+                ]
+            );
+
+            listasDeCorte::where('pn', $pnInput)->delete();
 
             $rowCount = 0;
             $maxRows = 600;
-            $insertData = []; // Array para inserción masiva (Bulk Insert)
+            $insertData = [];
 
             // --- Procesar Primera Línea (Remover BOM si existe) ---
             $firstLine = fgets($handle);
@@ -1174,7 +1183,7 @@ class PpapIngController extends Controller
                 $data = str_getcsv($firstLine, ',');
 
                 if (count($data) >= 16) {
-                    $cons = trim($data[0]); // El consecutivo o primer dato útil del excel
+                    $cons = trim($data[0]);
 
                     if ($cons !== '') {
                         $insertData[] = $this->mapCsvRow($data, $pnInput, $revInput);
@@ -1190,12 +1199,12 @@ class PpapIngController extends Controller
                 }
 
                 if (count($data) < 16) {
-                    continue; // Saltar filas incompletas
+                    continue;
                 }
 
                 $cons = trim($data[0]);
                 if ($cons === '') {
-                    break; // Detener si encuentra una fila clave vacía
+                    break;
                 }
 
                 $insertData[] = $this->mapCsvRow($data, $pnInput, $revInput);
@@ -1204,12 +1213,17 @@ class PpapIngController extends Controller
 
             fclose($handle);
 
+            if ($rowCount === 0) {
+                // USAR \Exception AQUÍ
+                throw new \Exception('El archivo CSV no contiene registros válidos o procesables.');
+            }
+
             if (! empty($insertData)) {
                 DB::transaction(function () use ($insertData) {
-
                     listasDeCorte::insert($insertData);
                 });
             }
+
             // 1. Eliminar registros previos
             Corte::where('np', $pnInput)
                 ->where('cutStatus', '!=', 'Cortado')
@@ -1221,22 +1235,18 @@ class PpapIngController extends Controller
                 ->get();
 
             foreach ($registroWO as $woQuery) {
-                // NOTA: Asumo que $row viene de un bucle externo (como un Excel o Request).
-                // Si la información venía del propio $woQuery, deberías usar $woQuery->pn, etc.
                 $pn = $woQuery->NumPart ?? null;
                 $client = $woQuery->cliente ?? null;
                 $wo = $woQuery->wo ?? null;
                 $cuantos = $woQuery->Qty ?? 0;
                 $rev1 = $woQuery->rev ?? '';
 
-                // Optimización de la revisión usando Str::startsWith de Laravel
                 if (str_starts_with($rev1, 'PPAP') || str_starts_with($rev1, 'PRIM')) {
                     $rev = substr($rev1, 5);
                 } else {
                     $rev = $rev1;
                 }
 
-                // Corregido el error de sintaxis del guion original " - where(...) "
                 $selectWo = ListasDeCorte::where('pn', $pn)
                     ->where('rev', $rev)
                     ->where('cons', '!=', '')
@@ -1261,7 +1271,6 @@ class PpapIngController extends Controller
                     $distEstamp = $rowList->dist_stamp ?? null;
                     $tiempo = round((($rowList->defaultTime ?? 0) * $cuantos), 2);
 
-                    // Lógica del código de barras/cons
                     if (str_starts_with($cons, 'C')) {
                         $consClean = str_replace(['.', '-', ' '], '', $cons);
                         $codigo = substr($wo, 2).substr($consClean, 5);
@@ -1269,7 +1278,6 @@ class PpapIngController extends Controller
                         $codigo = substr($wo, 2).$cons;
                     }
 
-                    // 3. Convertido de mysqli a Eloquent usando firstOrCreate / updateOrCreate para evitar duplicados
                     Corte::firstOrCreate(
                         [
                             'wo' => $wo,
@@ -1302,12 +1310,11 @@ class PpapIngController extends Controller
 
             return redirect()->back()->with('success', "Se han procesado {$rowCount} registros correctamente.");
 
-        } catch (Exception $e) {
+        } catch (\Exception $e) { // USAR \Exception AQUÍ EN EL CATCH
             if (isset($handle) && is_resource($handle)) {
                 fclose($handle);
             }
 
-            // Manejo de errores estilo Laravel
             return redirect()->back()->withInput()->withErrors(['error' => 'Error al procesar el archivo: '.$e->getMessage()]);
         }
     }

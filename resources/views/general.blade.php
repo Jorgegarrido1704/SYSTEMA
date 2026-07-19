@@ -21,6 +21,8 @@
                 $('.alert').fadeOut('slow');
             }, 5000);
         </script>
+ </div>
+ <div class="row">
     <!-- Escanner -->
     <div class="col-xl-12 col-lg-4" >
         <div class="card shadow mb-4">

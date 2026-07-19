@@ -6,6 +6,23 @@
     <div class="d-sm-flex align-items-center justify-content-between mb-4 text-center"></div>
 
         <div class = "row">
+             @if(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+        @endif
+        @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+        @endif
+        <script>
+            setTimeout(function() {
+                $('.alert').fadeOut('slow');
+            }, 5000);
+        </script>
+        </div>
+        <div class="row">
              <div class="col-xl-2 col-lg-3">
                             <div class="card shadow mb-6">
 
