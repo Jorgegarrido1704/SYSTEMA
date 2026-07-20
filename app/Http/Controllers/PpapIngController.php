@@ -996,22 +996,58 @@ class PpapIngController extends Controller
         return view('inge.updatefiles', ['value' => $value, 'cat' => $cat]);
     }
 
+    /*
+     * Versión corregida de updateBomfile()
+     *
+     * Cambios respecto al original:
+     * 1. Valida que el archivo se haya subido correctamente (isValid()) antes de procesar.
+     * 2. Lee la hoja por NOMBRE ("MASTER") en vez de getActiveSheet(), para no
+     *    depender de qué pestaña estaba seleccionada al guardar el Excel.
+     * 3. Elimina el bloque de "contingencia" que hacía un SELECT EXISTS por cada
+     *    fila (65,000+ queries individuales) — esa era la causa más probable de
+     *    que la transacción muriera por timeout ("There is no active transaction").
+     * 4. Usa upsert() en vez de insertOrIgnore() + verificación manual, para
+     *    garantizar en una sola pasada que todos los registros válidos queden
+     *    en la tabla, sin duplicados y sin miles de queries extra.
+     * 5. El rollback ahora verifica si hay una transacción activa antes de
+     *    intentar revertirla, y se registra el error real en el log.
+     *
+     * IMPORTANTE: ajusta 'part_num', 'rev', 'item' como columnas UNIQUE (o
+     * unique compuesto) en tu migración de la tabla `datos` para que upsert()
+     * funcione correctamente. Si no tienes ese índice único, dímelo y te
+     * paso la versión con insertOrIgnore() en su lugar.
+     */
+
     public function updateBomfile(Request $request)
     {
+        $request->validate([
+            'excel_file' => 'required|file|mimes:xlsx|max:20480', // 20MB máx
+        ]);
+
         $excelFile = $request->file('excel_file');
+
+        if (! $excelFile || ! $excelFile->isValid()) {
+            return redirect()->back()->with('error',
+                'El archivo no se subió correctamente. Código de error: '.($excelFile?->getError() ?? 'sin archivo')
+            );
+        }
 
         ini_set('memory_limit', '1024M');
         ini_set('max_execution_time', 300);
-
-        if (! $excelFile) {
-            return redirect()->back()->with('error', 'No se ha subido ningún archivo válido.');
-        }
 
         try {
             $reader = IOFactory::createReader('Xlsx');
             $reader->setReadDataOnly(true);
             $spreadsheet = $reader->load($excelFile->getRealPath());
-            $worksheet = $spreadsheet->getActiveSheet();
+
+            // Hoja fija por nombre, NO getActiveSheet()
+            $worksheet = $spreadsheet->getSheetByName('MASTER');
+
+            if (! $worksheet) {
+                return redirect()->back()->with('error',
+                    'No se encontró la hoja "MASTER" en el archivo Excel.'
+                );
+            }
 
             $rows = $worksheet->toArray(null, true, true, false);
 
@@ -1020,15 +1056,16 @@ class PpapIngController extends Controller
             }
 
             array_shift($rows); // Quitar encabezados
-            $totalRowsExcel = count($rows); // Total real que deberíamos tener
+            $totalRowsExcel = count($rows);
 
             $insertData = [];
             $batchSize = 1000;
+            $totalProcesadas = 0;
 
             DB::beginTransaction();
             DB::table('datos')->truncate();
 
-            foreach ($rows as $index => $row) {
+            foreach ($rows as $row) {
                 $pn = isset($row[0]) ? trim((string) $row[0]) : '';
                 $rev = isset($row[1]) ? trim((string) $row[1]) : '';
                 $cons = isset($row[3]) ? trim((string) $row[3]) : '';
@@ -1038,7 +1075,7 @@ class PpapIngController extends Controller
                     continue;
                 }
 
-                // Limpieza
+                // Limpieza de espacios no separables (nbsp) y encoding
                 $pn = str_replace("\xA0", ' ', $pn);
                 $rev = str_replace("\xA0", ' ', $rev);
                 $cons = mb_convert_encoding(str_replace("\xA0", ' ', $cons), 'UTF-8', 'UTF-8');
@@ -1052,76 +1089,40 @@ class PpapIngController extends Controller
                 ];
 
                 if (count($insertData) === $batchSize) {
-                    // Usamos insertOrIgnore por si hay restricciones UNIQUE en tu tabla
-                    DB::table('datos')->insertOrIgnore($insertData);
+                    DB::table('datos')->upsert(
+                        $insertData,
+                        ['part_num', 'rev', 'item'], // columnas que definen un registro único
+                        ['qty'] // columnas a actualizar si ya existe
+                    );
+                    $totalProcesadas += count($insertData);
                     $insertData = [];
                 }
             }
 
-            // Insertar el último bloque remanente del ciclo principal
+            // Último bloque remanente
             if (! empty($insertData)) {
-                DB::table('datos')->insertOrIgnore($insertData);
-                $insertData = [];
-            }
-
-            // --- BLOQUE DE RE-VERIFICACIÓN Y CONTINGENCIA ---
-            $totalInsertado = DB::table('datos')->count();
-
-            // Si la base de datos tiene menos registros de los que leyó el Excel
-            if ($totalInsertado < $totalRowsExcel) {
-
-                $contingencyData = [];
-
-                // Recorremos de nuevo el Excel para buscar cuáles faltaron
-                foreach ($rows as $row) {
-                    $pn = isset($row[0]) ? trim((string) $row[0]) : '';
-                    $rev = isset($row[1]) ? trim((string) $row[1]) : '';
-                    $cons = isset($row[3]) ? trim((string) $row[3]) : '';
-                    $tipo = isset($row[4]) ? trim((string) $row[4]) : '';
-
-                    if ($pn === '' && $cons === '') {
-                        continue;
-                    }
-
-                    // Comprobar de forma estricta si este registro ya existe en la BD
-                    // Esto evita CUALQUIER duplicado
-                    $existe = DB::table('datos')
-                        ->where('part_num', $pn)
-                        ->where('rev', $rev)
-                        ->where('item', $cons)
-                        ->exists();
-
-                    if (! $existe) {
-                        $contingencyData[] = [
-                            'part_num' => $pn,
-                            'rev' => $rev,
-                            'item' => $cons,
-                            'qty' => $tipo,
-                        ];
-                    }
-
-                    // Insertar los faltantes en bloques pequeños
-                    if (count($contingencyData) === 500) {
-                        DB::table('datos')->insertOrIgnore($contingencyData);
-                        $contingencyData = [];
-                    }
-                }
-
-                // Insertar remanentes de la contingencia
-                if (! empty($contingencyData)) {
-                    DB::table('datos')->insertOrIgnore($contingencyData);
-                }
+                DB::table('datos')->upsert(
+                    $insertData,
+                    ['part_num', 'rev', 'item'],
+                    ['qty']
+                );
+                $totalProcesadas += count($insertData);
             }
 
             DB::commit();
 
-            // Conteo final absoluto post-contingencia
             $conteoFinal = DB::table('datos')->count();
 
-            return redirect()->back()->with('success', "Proceso finalizado. Filas útiles en Excel: {$totalRowsExcel}. Registros asegurados en BD: {$conteoFinal}.");
+            return redirect()->back()->with('success',
+                "Proceso finalizado. Filas útiles en Excel: {$totalRowsExcel}. Registros asegurados en BD: {$conteoFinal}."
+            );
 
         } catch (\Exception $e) {
-            DB::rollBack();
+            if (DB::transactionLevel() > 0) {
+                DB::rollBack();
+            }
+
+            \Log::error('Error en updateBomfile: '.$e->getMessage(), ['exception' => $e]);
 
             return redirect()->back()->with('error', 'Error crítico en el proceso: '.$e->getMessage());
         }
