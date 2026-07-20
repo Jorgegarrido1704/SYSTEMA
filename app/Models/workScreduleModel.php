@@ -60,10 +60,18 @@ class workScreduleModel extends Model
         }
         $last12MonthsfirstDay = Carbon::now()->subMonths(12)->startOfMonth()->format('Y-m-d');
         $lastMonthlastDay = Carbon::now()->subMonth()->endOfMonth()->format('Y-m-d');
-        $registros = workScreduleModel::whereBetween('CompletionDate', [$last12MonthsfirstDay, $lastMonthlastDay])->where('status', 'Completed')
-            ->orderBy('CompletionDate', 'DESC')
-            ->get();
+        $registros = workScreduleModel::selectRaw('
+        SUM(CASE WHEN commitmentDate >= CompletionDate THEN 1 ELSE 0 END) as buenos,
+        SUM(CASE WHEN commitmentDate < CompletionDate THEN 1 ELSE 0 END) as malos,
+        FORMAT(commitmentDate, "yyyy-MM") as mes
 
+    ')
+            ->whereBetween('CompletionDate', [$last12MonthsfirstDay, $lastMonthlastDay])
+            ->where('status', 'Completed')
+            ->groupBy('mes')
+            ->orderBy('mes', 'DESC')
+            ->get();
+        // dd($registros);
         foreach ($registros as $registro) {
             $mes = (int) date('m', strtotime($registro->CompletionDate));
             if ($registro->commitmentDate >= $registro->CompletionDate) {

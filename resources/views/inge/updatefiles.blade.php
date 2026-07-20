@@ -19,7 +19,7 @@
         <script>
             setTimeout(function() {
                 $('.alert').fadeOut('slow');
-            }, 5000);
+            }, 10000);
         </script>
         </div>
         <div class="row">
@@ -58,14 +58,14 @@
                                 <div class="card-body" style=" max-height: 250px;">
                                    <form action="{{ route('updateEtiquetas') }}" method="POST" enctype="multipart/form-data">
                                     @csrf
-                                   <div class="row">  
+                                   <div class="row">
                                         <div class="col-6 ">
                                                 <label for="Numero_de_Parte" class="form-label">{{ __('Part Number') }}</label>
-                                                <input type="text" name="Numero_de_Parte" id="Numero_de_Parte"  class="form-control" required>    
+                                                <input type="text" name="Numero_de_Parte" id="Numero_de_Parte"  class="form-control" required>
                                         </div>
                                         <div class="col-6 ">
                                                 <label for="Revision" class="form-label">{{ __('Revision') }}</label>
-                                                <input type="text" name="Revision" id="Revision"  class="form-control" required>    
+                                                <input type="text" name="Revision" id="Revision"  class="form-control" required>
                                         </div>
                                             <div class="col-9 ">
                                                 <label for="csv_file" class="form-label">{{ __('Select Excel File') }}</label>

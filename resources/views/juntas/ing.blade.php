@@ -3,13 +3,13 @@
 @section('contenido')
 
 
-    <script  >
+    <script>
          //grafica tiempos
         const actividades = {!! json_encode($actividades) !!};
         const actividadesLastMonth = {!! json_encode($actividadesLastMonth) !!};
         const url = '{{ route('registrosajax') }}';
     </script>
-
+    <script src="{{ asset('dash/js/Junta_Ingenieria/chart_documentacion.js') }}"></script>
     <script>
         //grafica ppaps
        // $jesp=$nanp=$bp=$jcp=$psp=$alv=$asp=$jg
@@ -55,21 +55,12 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-xl-6 col-lg-6 mb-4">
+        <div class="col-xl-12 col-lg-12 mb-4">
             <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <h5 class="m-0 font-weight-bold text-primary">KPI {{ __('DOCUMENTATION DEVELOPMENT') }}</h5>
-                      <div class="dropdown no-arrow">
-                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                            aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="#" onclick="change-Graph('donaMes')">{{ __('Graph lines') }}</a>
-                            <a class="dropdown-item" href="#" onclick="changeGraph('barraYear')">{{ __('Table') }}</a>
-                        </div>
-                    </div>
+                <input type="date" id="fechas_por_mes" name="fechas_por_mes" style="width: 200px;" onchange="cargarGraficas(this.value)" >
+
                 </div>
                 <!-- table Body -->
                  <div class="card-body" style="overflow-y: auto; height: 480px;">
@@ -83,7 +74,7 @@
                      <label for="registros"></label>
                      <canvas id="cakes2" width="400" height="300" ></canvas>
                  </div>
-                    <div id="paretoTime" style="overflow-y: auto; height: 350px; display: none">
+                    <div id="paretoTime" style="overflow-y: auto; height: 350px;">
                         @if(!empty($registrosmes))
                         <table class="table table-striped table-bordered"  cellspacing="0" width="100%">
                              <thead style=" position: sticky; z-index: 1; top: 0; text-align: center; background-color: black; color: white; ">
@@ -117,21 +108,18 @@
 
             </div>
         </div>
-         <div class="col-xl-6 col-lg-6 mb-4">
+      <!--   <div class="col-xl-6 col-lg-6 mb-4">
             <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <h5 class="m-0 font-weight-bold text-primary">KPI {{ __('PPAP TIMES') }}</h5>
 
                 </div>
-                <!-- table Body -->
+                <!- table Body ->
                  <div class="card-body" style="overflow-y: auto; height: 480px;">
                 <canvas id="diferencias" width="320" height="200" ></canvas>
                 </div>
-
-
              </div>
-
-        </div>
+        </div>-->
     </div>
         <div class="row">
             <div class="col-xl-12 col-lg-12 mb-4">
