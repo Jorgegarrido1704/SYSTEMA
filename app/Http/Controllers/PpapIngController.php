@@ -996,28 +996,6 @@ class PpapIngController extends Controller
         return view('inge.updatefiles', ['value' => $value, 'cat' => $cat]);
     }
 
-    /*
-     * Versión corregida de updateBomfile()
-     *
-     * Cambios respecto al original:
-     * 1. Valida que el archivo se haya subido correctamente (isValid()) antes de procesar.
-     * 2. Lee la hoja por NOMBRE ("MASTER") en vez de getActiveSheet(), para no
-     *    depender de qué pestaña estaba seleccionada al guardar el Excel.
-     * 3. Elimina el bloque de "contingencia" que hacía un SELECT EXISTS por cada
-     *    fila (65,000+ queries individuales) — esa era la causa más probable de
-     *    que la transacción muriera por timeout ("There is no active transaction").
-     * 4. Usa upsert() en vez de insertOrIgnore() + verificación manual, para
-     *    garantizar en una sola pasada que todos los registros válidos queden
-     *    en la tabla, sin duplicados y sin miles de queries extra.
-     * 5. El rollback ahora verifica si hay una transacción activa antes de
-     *    intentar revertirla, y se registra el error real en el log.
-     *
-     * IMPORTANTE: ajusta 'part_num', 'rev', 'item' como columnas UNIQUE (o
-     * unique compuesto) en tu migración de la tabla `datos` para que upsert()
-     * funcione correctamente. Si no tienes ese índice único, dímelo y te
-     * paso la versión con insertOrIgnore() en su lugar.
-     */
-
     public function updateBomfile(Request $request)
     {
         $request->validate([
