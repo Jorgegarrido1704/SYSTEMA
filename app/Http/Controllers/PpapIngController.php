@@ -30,194 +30,195 @@ class PpapIngController extends Controller
     {
         $value = session('user');
         $cat = session('categoria');
-        if ($cat == '') {
+        if ($cat == '' or $value == null) {
             return view('login');
-        } else {
-            $i = 0;
-            $inges = $activ = $answer = $enginners = [];
-            $inges = Wo::where('rev', 'LIKE', 'PPAP%')->orwhere('rev', 'LIKE', 'PRIM%')
-                ->orderby('wo', 'desc')->where('count', '!=', '20')->get();
-
-            $i = 0;
-            $enginners = DB::table('ingactividades')->where('count', '<', '4')->orderby('Id_request')->get();
-            foreach ($enginners as $enginner) {
-                $now = Carbon::now();
-                $hours = \Carbon\Carbon::parse($enginner->fecha)->diffInHours(\Carbon\Carbon::now()) ?? 00;
-                if ($hours > 1) {
-                    $minutes = \Carbon\Carbon::parse($enginner->fecha)->diffInMinutes(\Carbon\Carbon::now()) ?? 00;
-                    $minutes = ($minutes - ($hours * 60));
-                } else {
-                    $minutes = \Carbon\Carbon::parse($enginner->fecha)->diffInMinutes(\Carbon\Carbon::now()) ?? 00;
-                }
-                $enginner->times = $hours.'h '.$minutes.'m';
-            }
-
-            $i = 0;
-            $busarResp = DB::table('ppapandprim')->where('count', '<', '2')->get();
-            foreach ($busarResp as $respPPAP) {
-                $answer[$i][0] = $respPPAP->tp;
-                $answer[$i][1] = $respPPAP->client;
-                $answer[$i][2] = $respPPAP->pn;
-                $answer[$i][3] = $respPPAP->REV1;
-                $answer[$i][4] = $respPPAP->REV2;
-                $answer[$i][5] = $respPPAP->cambios;
-                $answer[$i][6] = $respPPAP->fecha;
-                $answer[$i][7] = $respPPAP->eng;
-                $answer[$i][8] = $respPPAP->quality;
-                $answer[$i][9] = $respPPAP->ime;
-                $answer[$i][10] = $respPPAP->test;
-                $answer[$i][11] = $respPPAP->production;
-                $answer[$i][12] = $respPPAP->compras;
-                $answer[$i][13] = $respPPAP->gernete;
-                $i++;
-            }
-            $mont = $request->input('mont');
-            if ($mont == '') {
-                $today = intval(date('m'));
-                $month = date('m');
-            } else {
-                $today = intval(date('m', strtotime('+1 month')));
-                $month = date('m', strtotime('+1 month'));
-            }
-            $day_month = date('t');
-            $year = date('Y');
-            $dias_mes = [];
-            for ($i = 1; $i <= $day_month; $i++) {
-                $dateTime = date_create($i.'-'.$month.'-'.$year);
-                $dayNumber = date_format($dateTime, 'w');
-                if ($dayNumber != 0 && $dayNumber != 6) {
-                    $dias_mes[] = $i;
-                }
-            }
-            $cronoGram = [];
-            $graficOnTime = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-            $graficasLate = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-            $i = 0;
-            $buscarCrono = DB::table('croning')->where('fechaFin', '')->get();
-            foreach ($buscarCrono as $rowCrono) {
-                $cronoGram[$i][0] = $rowCrono->id;
-                $cronoGram[$i][1] = $rowCrono->cliente;
-                $cronoGram[$i][2] = $rowCrono->pn;
-                $cronoGram[$i][3] = $rowCrono->rev;
-                $cronoGram[$i][4] = $rowCrono->fechaReg;
-                $cronoGram[$i][5] = $rowCrono->fechaCompromiso;
-                $cronoGram[$i][6] = $rowCrono->fechaCambio;
-                $cronoGram[$i][7] = $rowCrono->fechaFin;
-                $cronoGram[$i][8] = $rowCrono->quienReg;
-                $cronoGram[$i][9] = $rowCrono->quienCamb;
-                $inicio = intval(substr($rowCrono->fechaReg, 0, 2));
-                $fin = intval(substr($rowCrono->fechaCambio, 0, 2));
-                $fin_org = intval(substr($rowCrono->fechaCompromiso, 0, 2));
-                $mescontrol = intval(substr($rowCrono->fechaReg, 3, 2));
-                $mesFin = intval(substr($rowCrono->fechaCambio, 3, 2));
-                $mesComp = intval(substr($rowCrono->fechaCompromiso, 3, 2));
-                if ($today == intval(substr($rowCrono->fechaReg, 3, 2))) {
-                    if ($mescontrol == $mesFin) {
-                        $controles = ($fin - $inicio);
-                        $cronoGram[$i][10] = $inicio + $controles;
-                        $cronoGram[$i][11] = $inicio;
-                        $cronoGram[$i][12] = $fin - $fin_org;
-                    } elseif ($mescontrol < $mesFin && $mescontrol == intval(date('m'))) {
-                        $cronoGram[$i][10] = 31;
-                        $cronoGram[$i][11] = $inicio;
-                        $cronoGram[$i][12] = $fin - $fin_org;
-                    } elseif ($mescontrol < $mesFin && $mescontrol != intval(date('m'))) {
-                        $cronoGram[$i][10] = $fin;
-                        $cronoGram[$i][11] = 1;
-                        $cronoGram[$i][12] = $fin - $fin_org;
-                    }
-                } else {
-                    if ($mescontrol > $today) {
-                        $cronoGram[$i][10] = 0;
-                        $cronoGram[$i][11] = 0;
-                        $cronoGram[$i][12] = 0;
-                    } elseif ($mescontrol < $today and $mesFin >= $today) {
-                        $cronoGram[$i][10] = $fin;
-                        $cronoGram[$i][11] = 1;
-                        $cronoGram[$i][12] = $fin - $fin_org;
-                    } elseif ($mescontrol < $today and $mesComp < $today) {
-                        $cronoGram[$i][10] = 0;
-                        $cronoGram[$i][11] = 0;
-                        $cronoGram[$i][12] = 0;
-                    }
-                }
-                $i++;
-            }
-
-            $buscarCrono = DB::table('croning')->get();
-            foreach ($buscarCrono as $Crono) {
-                $mescontrol1 = intval(substr($Crono->fechaReg, 3, 2));
-                if ($Crono->fechaCompromiso == $Crono->fechaCambio) {
-                    $graficOnTime[$mescontrol1 - 1] = $graficOnTime[$mescontrol1 - 1] + 1;
-                } elseif ($Crono->fechaCompromiso != $Crono->fechaCambio) {
-                    $graficasLate[$mescontrol1 - 1] = $graficasLate[$mescontrol1 - 1] + 1;
-                }
-            }
-
-            $paola = $alex = $alexDesc = $paoDesc = [];
-            $dia = date('d/m/Y');
-            $i = $j = 0;
-            function min($da)
-            {
-                $init = strtotime(date('d-m-Y 07:30'));
-                $fin = strtotime(date('d-m-Y '.$da));
-                $dif = $fin - $init;
-                if ($dif > 0) {
-                    $min = round($dif / 60);
-                } else {
-                    $min = 0;
-                }
-
-                return $min;
-            }
-            // engineers similituds
-            $inip = $inia = 0;
-            $paolaT = $alexT = $paolaTdesc = $alexTdesc = [];
-            $todaying = date('d-m-Y');
-            $enginners1 = DB::table('ingactividades')->where('fecha', 'LIKE', $todaying.'%')->get();
-            foreach ($enginners1 as $eng1) {
-                if (intval(strtotime($eng1->fecha)) > intval(strtotime(date('d-m-Y 07:30')))) {
-                    $inicio = (((strtotime($eng1->fecha)) - (strtotime(date('d-m-Y 07:30')))) / 60);
-                } else {
-                    $inicio = 0;
-                }
-                $fin = (((strtotime($eng1->finT)) - (strtotime(date('d-m-Y 07:30')))) / 60);
-                if ($eng1->Id_request == 'Paola S') {
-                    $paolaT[$inip][0] = $inicio;
-                    $paolaT[$inip][1] = $fin;
-                    $paolaTdesc[$inia][0] = $eng1->desciption;
-                    $inip++;
-                } elseif ($eng1->Id_request === 'Alejandro V') {
-                    $alexT[$inip][0] = $inicio;
-                    $alexT[$inip][1] = $fin;
-                    $inip++;
-                }
-            }
-            // weekly activities
-            $buscartateas = DB::table('weekactivities')->get();
-            foreach ($buscartateas as $tat) {
-                if ($tat->id_eng == 'Paola S') {
-                    $paola[$i][0] = min($tat->iniTime);
-                    $paola[$i][1] = min($tat->endTime);
-                    $paoDesc[$i][0] = $tat->actDesc;
-                    $i++;
-                } elseif ($tat->id_eng == 'Alex V') {
-                    $alex[$j][0] = min($tat->iniTime);
-                    $alex[$j][1] = min($tat->endTime);
-                    $alexDesc[$j][0] = $tat->actDesc;
-                    $j++;
-                }
-            }
-            $ingenieros_en_piso = login::select('user')->where('category', 'inge')->get();
-
-            $fullreq = regfull::where('fechaColocacion', 'No Aun')->get();
-            // problems in the floor
-            $problem = errores::where('mostrar_ing', '=', 0)->get();
-            // electical testing
-            $customers = DB::table('workschedule')->select('customer')->groupBy('customer')->get();
-
-            return view('ing', ['customers' => $customers, 'ingenieros_en_piso' => $ingenieros_en_piso, 'problem' => $problem, 'paolaTdesc' => $paolaTdesc, 'alexTdesc' => $alexTdesc, 'paolaT' => $paolaT, 'alexT' => $alexT, 'alex' => $alex, 'alexDesc' => $alexDesc, 'paola' => $paola, 'paoDesc' => $paoDesc,  'fullreq' => $fullreq, 'graficasLate' => $graficasLate, 'graficOnTime' => $graficOnTime, 'cat' => $cat, 'inges' => $inges, 'value' => $value, 'enginners' => $enginners, 'answer' => $answer, 'dias_mes' => $dias_mes, 'cronoGram' => $cronoGram]);
         }
+
+        $i = 0;
+        $inges = $activ = $answer = $enginners = [];
+        $inges = Wo::where('rev', 'LIKE', 'PPAP%')->orwhere('rev', 'LIKE', 'PRIM%')
+            ->orderby('wo', 'desc')->where('count', '!=', '20')->get();
+
+        $i = 0;
+        $enginners = DB::table('ingactividades')->where('count', '<', '4')->orderby('Id_request')->get();
+        foreach ($enginners as $enginner) {
+            $now = Carbon::now();
+            $hours = \Carbon\Carbon::parse($enginner->fecha)->diffInHours(\Carbon\Carbon::now()) ?? 00;
+            if ($hours > 1) {
+                $minutes = \Carbon\Carbon::parse($enginner->fecha)->diffInMinutes(\Carbon\Carbon::now()) ?? 00;
+                $minutes = ($minutes - ($hours * 60));
+            } else {
+                $minutes = \Carbon\Carbon::parse($enginner->fecha)->diffInMinutes(\Carbon\Carbon::now()) ?? 00;
+            }
+            $enginner->times = $hours.'h '.$minutes.'m';
+        }
+
+        $i = 0;
+        $busarResp = DB::table('ppapandprim')->where('count', '<', '2')->get();
+        foreach ($busarResp as $respPPAP) {
+            $answer[$i][0] = $respPPAP->tp;
+            $answer[$i][1] = $respPPAP->client;
+            $answer[$i][2] = $respPPAP->pn;
+            $answer[$i][3] = $respPPAP->REV1;
+            $answer[$i][4] = $respPPAP->REV2;
+            $answer[$i][5] = $respPPAP->cambios;
+            $answer[$i][6] = $respPPAP->fecha;
+            $answer[$i][7] = $respPPAP->eng;
+            $answer[$i][8] = $respPPAP->quality;
+            $answer[$i][9] = $respPPAP->ime;
+            $answer[$i][10] = $respPPAP->test;
+            $answer[$i][11] = $respPPAP->production;
+            $answer[$i][12] = $respPPAP->compras;
+            $answer[$i][13] = $respPPAP->gernete;
+            $i++;
+        }
+        $mont = $request->input('mont');
+        if ($mont == '') {
+            $today = intval(date('m'));
+            $month = date('m');
+        } else {
+            $today = intval(date('m', strtotime('+1 month')));
+            $month = date('m', strtotime('+1 month'));
+        }
+        $day_month = date('t');
+        $year = date('Y');
+        $dias_mes = [];
+        for ($i = 1; $i <= $day_month; $i++) {
+            $dateTime = date_create($i.'-'.$month.'-'.$year);
+            $dayNumber = date_format($dateTime, 'w');
+            if ($dayNumber != 0 && $dayNumber != 6) {
+                $dias_mes[] = $i;
+            }
+        }
+        $cronoGram = [];
+        $graficOnTime = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        $graficasLate = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        $i = 0;
+        $buscarCrono = DB::table('croning')->where('fechaFin', '')->get();
+        foreach ($buscarCrono as $rowCrono) {
+            $cronoGram[$i][0] = $rowCrono->id;
+            $cronoGram[$i][1] = $rowCrono->cliente;
+            $cronoGram[$i][2] = $rowCrono->pn;
+            $cronoGram[$i][3] = $rowCrono->rev;
+            $cronoGram[$i][4] = $rowCrono->fechaReg;
+            $cronoGram[$i][5] = $rowCrono->fechaCompromiso;
+            $cronoGram[$i][6] = $rowCrono->fechaCambio;
+            $cronoGram[$i][7] = $rowCrono->fechaFin;
+            $cronoGram[$i][8] = $rowCrono->quienReg;
+            $cronoGram[$i][9] = $rowCrono->quienCamb;
+            $inicio = intval(substr($rowCrono->fechaReg, 0, 2));
+            $fin = intval(substr($rowCrono->fechaCambio, 0, 2));
+            $fin_org = intval(substr($rowCrono->fechaCompromiso, 0, 2));
+            $mescontrol = intval(substr($rowCrono->fechaReg, 3, 2));
+            $mesFin = intval(substr($rowCrono->fechaCambio, 3, 2));
+            $mesComp = intval(substr($rowCrono->fechaCompromiso, 3, 2));
+            if ($today == intval(substr($rowCrono->fechaReg, 3, 2))) {
+                if ($mescontrol == $mesFin) {
+                    $controles = ($fin - $inicio);
+                    $cronoGram[$i][10] = $inicio + $controles;
+                    $cronoGram[$i][11] = $inicio;
+                    $cronoGram[$i][12] = $fin - $fin_org;
+                } elseif ($mescontrol < $mesFin && $mescontrol == intval(date('m'))) {
+                    $cronoGram[$i][10] = 31;
+                    $cronoGram[$i][11] = $inicio;
+                    $cronoGram[$i][12] = $fin - $fin_org;
+                } elseif ($mescontrol < $mesFin && $mescontrol != intval(date('m'))) {
+                    $cronoGram[$i][10] = $fin;
+                    $cronoGram[$i][11] = 1;
+                    $cronoGram[$i][12] = $fin - $fin_org;
+                }
+            } else {
+                if ($mescontrol > $today) {
+                    $cronoGram[$i][10] = 0;
+                    $cronoGram[$i][11] = 0;
+                    $cronoGram[$i][12] = 0;
+                } elseif ($mescontrol < $today and $mesFin >= $today) {
+                    $cronoGram[$i][10] = $fin;
+                    $cronoGram[$i][11] = 1;
+                    $cronoGram[$i][12] = $fin - $fin_org;
+                } elseif ($mescontrol < $today and $mesComp < $today) {
+                    $cronoGram[$i][10] = 0;
+                    $cronoGram[$i][11] = 0;
+                    $cronoGram[$i][12] = 0;
+                }
+            }
+            $i++;
+        }
+
+        $buscarCrono = DB::table('croning')->get();
+        foreach ($buscarCrono as $Crono) {
+            $mescontrol1 = intval(substr($Crono->fechaReg, 3, 2));
+            if ($Crono->fechaCompromiso == $Crono->fechaCambio) {
+                $graficOnTime[$mescontrol1 - 1] = $graficOnTime[$mescontrol1 - 1] + 1;
+            } elseif ($Crono->fechaCompromiso != $Crono->fechaCambio) {
+                $graficasLate[$mescontrol1 - 1] = $graficasLate[$mescontrol1 - 1] + 1;
+            }
+        }
+
+        $paola = $alex = $alexDesc = $paoDesc = [];
+        $dia = date('d/m/Y');
+        $i = $j = 0;
+        function min($da)
+        {
+            $init = strtotime(date('d-m-Y 07:30'));
+            $fin = strtotime(date('d-m-Y '.$da));
+            $dif = $fin - $init;
+            if ($dif > 0) {
+                $min = round($dif / 60);
+            } else {
+                $min = 0;
+            }
+
+            return $min;
+        }
+        // engineers similituds
+        $inip = $inia = 0;
+        $paolaT = $alexT = $paolaTdesc = $alexTdesc = [];
+        $todaying = date('d-m-Y');
+        $enginners1 = DB::table('ingactividades')->where('fecha', 'LIKE', $todaying.'%')->get();
+        foreach ($enginners1 as $eng1) {
+            if (intval(strtotime($eng1->fecha)) > intval(strtotime(date('d-m-Y 07:30')))) {
+                $inicio = (((strtotime($eng1->fecha)) - (strtotime(date('d-m-Y 07:30')))) / 60);
+            } else {
+                $inicio = 0;
+            }
+            $fin = (((strtotime($eng1->finT)) - (strtotime(date('d-m-Y 07:30')))) / 60);
+            if ($eng1->Id_request == 'Paola S') {
+                $paolaT[$inip][0] = $inicio;
+                $paolaT[$inip][1] = $fin;
+                $paolaTdesc[$inia][0] = $eng1->desciption;
+                $inip++;
+            } elseif ($eng1->Id_request === 'Alejandro V') {
+                $alexT[$inip][0] = $inicio;
+                $alexT[$inip][1] = $fin;
+                $inip++;
+            }
+        }
+        // weekly activities
+        $buscartateas = DB::table('weekactivities')->get();
+        foreach ($buscartateas as $tat) {
+            if ($tat->id_eng == 'Paola S') {
+                $paola[$i][0] = min($tat->iniTime);
+                $paola[$i][1] = min($tat->endTime);
+                $paoDesc[$i][0] = $tat->actDesc;
+                $i++;
+            } elseif ($tat->id_eng == 'Alex V') {
+                $alex[$j][0] = min($tat->iniTime);
+                $alex[$j][1] = min($tat->endTime);
+                $alexDesc[$j][0] = $tat->actDesc;
+                $j++;
+            }
+        }
+        $ingenieros_en_piso = login::select('user')->where('category', 'inge')->get();
+
+        $fullreq = regfull::where('fechaColocacion', 'No Aun')->get();
+        // problems in the floor
+        $problem = errores::where('mostrar_ing', '=', 0)->get();
+        // electical testing
+        $customers = DB::table('workschedule')->select('customer')->groupBy('customer')->get();
+
+        return view('ing', ['customers' => $customers, 'ingenieros_en_piso' => $ingenieros_en_piso, 'problem' => $problem, 'paolaTdesc' => $paolaTdesc, 'alexTdesc' => $alexTdesc, 'paolaT' => $paolaT, 'alexT' => $alexT, 'alex' => $alex, 'alexDesc' => $alexDesc, 'paola' => $paola, 'paoDesc' => $paoDesc,  'fullreq' => $fullreq, 'graficasLate' => $graficasLate, 'graficOnTime' => $graficOnTime, 'cat' => $cat, 'inges' => $inges, 'value' => $value, 'enginners' => $enginners, 'answer' => $answer, 'dias_mes' => $dias_mes, 'cronoGram' => $cronoGram]);
+
     }
 
     public function store(Request $request)

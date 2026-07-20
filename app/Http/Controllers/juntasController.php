@@ -2082,7 +2082,7 @@ class juntasController extends Controller
             }
             $checkDias->addDay(1);
         }
-        $noposible = $value == 'Admin' ? 0 : $noposible;
+        $noposible = $value == 'Admin' or $value == 'Paola A' or $value == 'Angy B' ? 0 : $noposible;
         if ($noposible > 0) {
             return redirect()->back()->with('error', 'Alguno de los días solicitados ya tiene el máximo de vacaciones aprobadas en su área.
         Por favor, revise con su supervisor y elija otras fechas.');
