@@ -13,17 +13,14 @@
     <script>
         //grafica ppaps
        // $jesp=$nanp=$bp=$jcp=$psp=$alv=$asp=$jg
+       const registrosArrays = {!! json_encode($registrosArray) !!};
+       const registrosMensual = {!! json_encode($registrosMensual) !!};
      const datosPpap = {!! json_encode($datosPpap) !!};
      const todas = {!! json_encode($todas) !!};
     </script>
 
     <script>
                 //grafica trabajos
-            const buenos = {!! json_encode($porcentaje) !!};
-            const bien = {!! json_encode($b) !!};
-            const malos= {!! json_encode($m) !!};
-            const mothLess12 = {!! json_encode($last12Months) !!};
-                const compGoals = {!! json_encode($thisYearGoals) !!};
                 const timesByPlaning = {!! json_encode($retasoPorPlan) !!};
                 const timesByFirmas = {!! json_encode($registoPorFirmas) !!};
     </script>
@@ -66,12 +63,12 @@
                  <div class="card-body" style="overflow-y: auto; height: 480px;">
                 <div style="display: flex; gap: 20px;">
                     <div id="donaMes">
-                        <label for="paretoTime">{{ __('Record for the last month') }}: {{$porcentaje}} %</label>
+                        <label for="paretoTime">{{ __('Record for the last month') }}: <span id="porcentaje_mes"></span> %</label>
                         <canvas id="cakes" width="320" height="200" ></canvas>
                     </div>
                  <div id="barraYear" >
                      <label for="paretoTime"> </label>
-                     <label for="registros"></label>
+                     <label for="cakes2"></label>
                      <canvas id="cakes2" width="400" height="300" ></canvas>
                  </div>
                     <div id="paretoTime" style="overflow-y: auto; height: 350px;">
@@ -85,7 +82,7 @@
                                     <th>{{ __('Completion Date') }}</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="tabla_registros en el mes">
                         @foreach ($registrosmes as $registro  )
                             <tr style="text-align: center;color: black;">
                                 <td>{{$registro->customer}}</td>

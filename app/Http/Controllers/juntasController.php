@@ -1144,6 +1144,7 @@ class juntasController extends Controller
     {
         $monthYear = date('m-Y');
         $lastMonth = date('m-Y', strtotime('-1 months'));
+
         $datosPpap = $todas = $actividades = $actividadesLastMonth = [];
         $personaIng = login::select('user')->where('category', 'inge')->get();
         $datos = ['Soporte en piso', 'Seguimiento PPAP', 'Otro', 'Juntas', 'Documentacion', 'Comida', 'Colocacion de full size'];
@@ -1203,30 +1204,8 @@ class juntasController extends Controller
 
         // work Schedule dounut
 
-        $porcentaje = $b = $m = $total = 0;
-        $porcentajemes1 = $porcentajemes = 0;
-        $last12Months = $thisYearGoals = $registrosArray = $buenos = $malos = [];
-        $registrosmes = $retasoPorPlan = [];
-        $registrosArray = workScreduleModel::getWorkScheduleCompleted(date('Y'));
-
-        foreach ($registrosArray as $registro => $valor) {
-            if ($valor[0] == 0) {
-                $thisYearGoals[$registro] = 0;
-            } else {
-                $thisYearGoals[$registro] = round($valor[0] * 100 / ($valor[1] + $valor[0]), 2);
-                $buenos[$registro] = $valor[0];
-                $malos[$registro] = $valor[1];
-            }
-        }
-
-        $mesGrafica = intval(carbon::now()->sub(1, 'month')->format('m'));
-        $porcentaje = $thisYearGoals[$mesGrafica];
-        $b = $buenos[$mesGrafica] ?? 0;
-        $m = $malos[$mesGrafica] ?? 0;
-        $mes = date('m', strtotime('-1 month'));
-        $registrosmes = workScreduleModel::where('CompletionDate', 'LIKE', date('Y').'-'.$mes.'-%')
-            ->orderBy('CompletionDate', 'DESC')
-            ->get();
+        $registrosArray = workScreduleModel::getWorkScheduleCompleted();
+        $registrosMensual = workScreduleModel::getWorkScheduleCompletedMonthly();
 
         // work Schedule dounut final
 
@@ -1364,6 +1343,8 @@ class juntasController extends Controller
         }
 
         return view('juntas.ing', [
+            'registrosMensual' => $registrosMensual,
+            'registrosArray' => $registrosArray,
             'registoPorFirmas' => $registoPorFirmas,
             'retasoPorPlan' => $retasoPorPlan,
             'ingependinses' => $ingependinses,
@@ -1372,15 +1353,9 @@ class juntasController extends Controller
             'enproceso' => $enproceso,
             'totalprim' => $totalprim,
             'totalppap' => $totalppap,
-            'registrosmes' => $registrosmes,
-            'b' => $b,
-            'm' => $m,
-            'porcentajemes' => $porcentajemes,
-            'porcentajemes1' => $porcentajemes1,
+
             'registroPPAP' => $registroPPAP,
-            'thisYearGoals' => $thisYearGoals,
-            'last12Months' => $last12Months,
-            'porcentaje' => $porcentaje,
+
             'todas' => $todas,
             'datosPpap' => $datosPpap,
             'actividadesLastMonth' => $actividadesLastMonth,

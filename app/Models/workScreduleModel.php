@@ -52,36 +52,44 @@ class workScreduleModel extends Model
         return workScreduleModel::where('status', '!=', 'Completed')->get();
     }
 
-    public static function getWorkScheduleCompleted($year)
+    public static function getWorkScheduleCompleted($fecha = '2026-06-01')
     {
-        $datos = [];
-        for ($i = 1; $i <= 12; $i++) {
-            $datos[$i] = [0, 0]; // [buenos, malos]
-        }
-        $last12MonthsfirstDay = Carbon::now()->subMonths(12)->startOfMonth()->format('Y-m-d');
-        $lastMonthlastDay = Carbon::now()->subMonth()->endOfMonth()->format('Y-m-d');
+
+        $last12MonthsfirstDay = carbon::parse($fecha)->subMonths(12)->startOfMonth()->format('Y-m-d');
+        $lastMonthlastDay = carbon::parse($fecha)->endOfMonth()->format('Y-m-d');
         $registros = workScreduleModel::selectRaw('
         SUM(CASE WHEN commitmentDate >= CompletionDate THEN 1 ELSE 0 END) as buenos,
-        SUM(CASE WHEN commitmentDate < CompletionDate THEN 1 ELSE 0 END) as malos,
-        FORMAT(commitmentDate, "yyyy-MM") as mes
-
-    ')
+        SUM(CASE WHEN commitmentDate < CompletionDate THEN 1 ELSE 0 END) as malos,     
+        MONTH(CompletionDate) as mes,
+        YEAR(CompletionDate) as anio')
             ->whereBetween('CompletionDate', [$last12MonthsfirstDay, $lastMonthlastDay])
             ->where('status', 'Completed')
-            ->groupBy('mes')
-            ->orderBy('mes', 'DESC')
+            ->groupBy('anio', 'mes')
+            ->orderBy('CompletionDate', 'ASC')
             ->get();
-        // dd($registros);
-        foreach ($registros as $registro) {
-            $mes = (int) date('m', strtotime($registro->CompletionDate));
-            if ($registro->commitmentDate >= $registro->CompletionDate) {
-                $datos[$mes][0]++; // buenos
-            } else {
-                $datos[$mes][1]++; // malos
-            }
-        }
-        // dd($last12MonthsfirstDay, $lastMonthlastDay, $registros, $datos);
+        //   dd($registros);
 
-        return $datos;
+        return $registros;
+    }
+
+    public static function getWorkScheduleCompletedMonthly($fecha = '2026-06-01')
+    {
+
+        $incio_mes = Carbon::parse($fecha)->startOfMonth()->format('Y-m-d');
+        $fin_mes = Carbon::parse($fecha)->endOfMonth()->format('Y-m-d');
+
+        $registros = workScreduleModel::selectRaw('
+        SUM(CASE WHEN commitmentDate >= CompletionDate THEN 1 ELSE 0 END) as buenos,
+        SUM(CASE WHEN commitmentDate < CompletionDate THEN 1 ELSE 0 END) as malos,     
+        MONTH(CompletionDate) as mes,
+        YEAR(CompletionDate) as anio')
+            ->whereBetween('CompletionDate', [$incio_mes, $fin_mes])
+            ->where('status', 'Completed')
+            ->groupBy('anio', 'mes')
+            ->orderBy('CompletionDate', 'ASC')
+            ->get();
+        //   dd($registros);
+
+        return $registros;
     }
 }
