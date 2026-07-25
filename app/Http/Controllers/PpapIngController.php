@@ -1204,10 +1204,8 @@ class PpapIngController extends Controller
                 });
             }
 
-            // 1. Eliminar registros previos
-            Corte::where('np', $pnInput)
-                ->where('cutStatus', '!=', 'Cortado')
-                ->delete();
+            // 1. Ya NO eliminamos registros con ->delete()
+            // En su lugar, actualizaremos o crearemos según corresponda.
 
             // 2. Obtener órdenes de trabajo
             $registroWO = Wo::where('NumPart', $pnInput)
@@ -1253,12 +1251,23 @@ class PpapIngController extends Controller
 
                     if (str_starts_with($cons, 'C')) {
                         $consClean = str_replace(['.', '-', ' '], '', $cons);
-                        $codigo = substr($wo, 2).substr($consClean, 5);
+                        $codigo = $wo.'-'.substr($consClean, 5);
                     } else {
-                        $codigo = substr($wo, 2).$cons;
+                        $codigo = $wo.'-'.$cons;
                     }
 
-                    Corte::firstOrCreate(
+                    // 3. Buscar el registro existente en la tabla Corte por 'wo' y 'cons'
+                    $corteExistente = Corte::where('wo', $wo)
+                        ->where('cons', $cons)
+                        ->first();
+
+                    // 4. Si el registro ya existe Y su estatus es 'Cortado', NO lo modificamos
+                    if ($corteExistente && $corteExistente->cutStatus === 'Cortado') {
+                        continue; // Salta a la siguiente iteración sin hacer nada
+                    }
+
+                    // 5. Si no existe OR existe pero su estatus NO es 'Cortado', actualiza o crea
+                    Corte::updateOrCreate(
                         [
                             'wo' => $wo,
                             'cons' => $cons,
@@ -1286,6 +1295,7 @@ class PpapIngController extends Controller
                         ]
                     );
                 }
+
             }
 
             return redirect()->back()->with('success', "Se han procesado {$rowCount} registros correctamente.");
