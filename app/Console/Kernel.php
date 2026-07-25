@@ -23,16 +23,16 @@ class Kernel extends ConsoleKernel
 
         $schedule->job(new \App\Jobs\VacacionesRegistrosJob)->cron('5 2,5,7,9 * * *');
 
-        $schedule->job(new \App\Jobs\reportemaquinasdecorte)
-            ->everyTenMinutes()
-            ->between('08:00', '16:00')
-            ->days([1, 2, 3, 4, 5, 6]) // Lunes a Sábado
-            ->timezone('America/Mexico_City')
-            ->appendOutputTo(storage_path('logs/schedule.log')) // Crea un log específico
-            ->onFailure(function () {
-                Log::error('El job de reporte de máquinas falló.');
-            });
-
+        /*  $schedule->job(new \App\Jobs\reportemaquinasdecorte)
+              ->everyTenMinutes()
+              ->between('08:00', '16:00')
+              ->days([1, 2, 3, 4, 5, 6]) // Lunes a Sábado
+              ->timezone('America/Mexico_City')
+              ->appendOutputTo(storage_path('logs/schedule.log')) // Crea un log específico
+              ->onFailure(function () {
+                  Log::error('El job de reporte de máquinas falló.');
+              });
+          */
         // $schedule->job(new \App\Jobs\accionesCorrectivasJob)->dailyAt('07:00');
         // Data base backup
         $schedule->command('backup:database')
@@ -45,7 +45,7 @@ class Kernel extends ConsoleKernel
         $schedule->job(new \App\Jobs\AddWeek)->cron('15 5,6,7 * * *');
 
         // $schedule->job(new \App\Jobs\updateRoutingsTimes)->cron('1 21,22,23 * * *');
-        $schedule->job(new \App\Jobs\updateRoutingsTimes)->everyTenMinutes();
+        $schedule->job(new \App\Jobs\updateRoutingsTimes)->everyMinute();   // everyTenMinutes();
 
         $schedule->job(new \App\Jobs\respolados)->cron('1 6,18 * * *');
         // weekly list assistence

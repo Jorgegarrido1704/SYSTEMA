@@ -64,7 +64,7 @@ class updateRoutingsTimes implements ShouldQueue
         }
 
         // Ejecutar todo el proceso masivo en una transacción SQL única por seguridad y rendimiento
-        DB::transaction(function () use ($deledataPN, $worksToDelete, $corte, $twistMm, $setSealTime, $plugIn, $routingBoardTime, $tinSet, $setHeadShrink, $burnHeatGun, $setSplice, $applySpleceInMachine, $loomingTime, $NoRequeridas) {
+        DB::transaction(function () use ($deledataPN, $worksToDelete, $corte, $twistMm, $plugIn, $routingBoardTime, $setHeadShrink, $burnHeatGun, $loomingTime, $NoRequeridas) {
 
             // Limpieza masiva inicial
             routingModel::whereIn('pn_routing', $deledataPN)
@@ -113,8 +113,8 @@ class updateRoutingsTimes implements ShouldQueue
                             'posible_stations' => 'FB036',
                             'work_description' => $dataLabelCorte,
                             'QtyTimes' => 1,
-                            'timePerProcess' => $tiempoCorte,
-                            'setUp_routing' => 300,
+                            'timePerProcess' => 6.48, // $tiempoCorte,
+                            'setUp_routing' => 180, // 300
                         ];
                     }
 
@@ -185,7 +185,7 @@ class updateRoutingsTimes implements ShouldQueue
                                 'work_description' => "Routing Wire in {$df}",
                                 'QtyTimes' => 1,
                                 'timePerProcess' => Arr::random($routingBoardTime),
-                                'setUp_routing' => 30,
+                                'setUp_routing' => 60,
                             ];
                         }
                     }
@@ -217,7 +217,7 @@ class updateRoutingsTimes implements ShouldQueue
                                 'work_description' => "Routing Wire in {$dt}",
                                 'QtyTimes' => 1,
                                 'timePerProcess' => Arr::random($routingBoardTime),
-                                'setUp_routing' => 30,
+                                'setUp_routing' => 60,
                             ];
                         }
                     }
@@ -276,40 +276,41 @@ class updateRoutingsTimes implements ShouldQueue
                         'work_description' => $prefijo.' '.implode(' , ', $info['labels']),
                         'QtyTimes' => 1,
                         'timePerProcess' => $info['tiempo'],
-                        'setUp_routing' => 300,
+                        'setUp_routing' => 180,
                     ];
                 }
 
                 $sealsGlobales = array_merge($terminalesSello1, $terminalesSello2);
                 foreach ($sealsGlobales as $term => $qty) {
-                    $bulkInserts[] = ['pn_routing' => $np, 'work_routing' => '10381', 'posible_stations' => 'Pend', 'work_description' => $term, 'QtyTimes' => $qty, 'timePerProcess' => Arr::random($setSealTime), 'setUp_routing' => 300];
+                    $bulkInserts[] = ['pn_routing' => $np, 'work_routing' => '10381', 'posible_stations' => 'Pend', 'work_description' => $term, 'QtyTimes' => $qty, 'timePerProcess' => 2.65, 'setUp_routing' => 180]; // Arr::random($setSealTime)
                 }
 
                 foreach ($terminalesConteo1 as $term => $qty) {
-                    $bulkInserts[] = ['pn_routing' => $np, 'work_routing' => '10081', 'posible_stations' => 'FB-081', 'work_description' => $term, 'QtyTimes' => $qty, 'timePerProcess' => 4.084, 'setUp_routing' => 300];
+                    $bulkInserts[] = ['pn_routing' => $np, 'work_routing' => '10081', 'posible_stations' => 'FB-081', 'work_description' => $term, 'QtyTimes' => $qty, 'timePerProcess' => 6.03, 'setUp_routing' => 180];
                 }
                 foreach ($terminalesConteo2 as $term => $qty) {
-                    $bulkInserts[] = ['pn_routing' => $np, 'work_routing' => '10081', 'posible_stations' => 'FB-081', 'work_description' => $term, 'QtyTimes' => $qty, 'timePerProcess' => 3.084, 'setUp_routing' => 300];
+                    $bulkInserts[] = ['pn_routing' => $np, 'work_routing' => '10081', 'posible_stations' => 'FB-081', 'work_description' => $term, 'QtyTimes' => $qty, 'timePerProcess' => 6.03, 'setUp_routing' => 180];
                 }
 
                 if ($totalSoldar > 0) {
-                    $bulkInserts[] = ['pn_routing' => $np, 'work_routing' => '10431', 'posible_stations' => 'Pend', 'work_description' => 'set tin point', 'QtyTimes' => $totalSoldar, 'timePerProcess' => Arr::random($tinSet), 'setUp_routing' => 300];
+                    $bulkInserts[] = ['pn_routing' => $np, 'work_routing' => '10431', 'posible_stations' => 'Pend', 'work_description' => 'set tin point', 'QtyTimes' => $totalSoldar, 'timePerProcess' => 11, 'setUp_routing' => 180]; // Arr::random($tinSet)
                 }
 
                 if ($cantidadMangas > 0) {
-                    $bulkInserts[] = ['pn_routing' => $np, 'work_routing' => '10361', 'posible_stations' => 'Pend', 'work_description' => 'Set HeadShrink in Terminals ', 'QtyTimes' => $cantidadMangas, 'timePerProcess' => Arr::random($setHeadShrink), 'setUp_routing' => 300];
-                    $bulkInserts[] = ['pn_routing' => $np, 'work_routing' => '10401', 'posible_stations' => 'Pend', 'work_description' => 'Burn Heatshrirnk w/headgun in Terminals ', 'QtyTimes' => $cantidadMangas, 'timePerProcess' => Arr::random($burnHeatGun), 'setUp_routing' => 300];
+                    $bulkInserts[] = ['pn_routing' => $np, 'work_routing' => '10361', 'posible_stations' => 'Pend', 'work_description' => 'Set HeadShrink in Terminals ', 'QtyTimes' => $cantidadMangas, 'timePerProcess' => Arr::random($setHeadShrink), 'setUp_routing' => 180];
+                    $bulkInserts[] = ['pn_routing' => $np, 'work_routing' => '10401', 'posible_stations' => 'Pend', 'work_description' => 'Burn Heatshrirnk w/headgun in Terminals ', 'QtyTimes' => $cantidadMangas, 'timePerProcess' => Arr::random($burnHeatGun), 'setUp_routing' => 180];
                 }
 
                 foreach ($tipoSplice as $key => $value) {
                     $QtySpliceA = intval($value / 2) + intval($value % 2);
                     $QtySpliceB = intval($value / 2);
-                    $timpoSetSplice = ($QtySpliceA * Arr::random($setSplice)) * Arr::random($setSplice);
+                    // $timpoSetSplice = ($QtySpliceA * Arr::random($setSplice)) * Arr::random($setSplice);
+                    $timpoSetSplice = 26.75;
 
-                    $bulkInserts[] = ['pn_routing' => $np, 'work_routing' => '10341', 'posible_stations' => 'Pend', 'work_description' => "Create set for splice {$QtySpliceA} : {$QtySpliceB}", 'QtyTimes' => 1, 'timePerProcess' => $timpoSetSplice, 'setUp_routing' => 300];
-                    $bulkInserts[] = ['pn_routing' => $np, 'work_routing' => '10301', 'posible_stations' => 'FB110', 'work_description' => 'splice set apply with machine', 'QtyTimes' => 1, 'timePerProcess' => Arr::random($applySpleceInMachine), 'setUp_routing' => 300];
-                    $bulkInserts[] = ['pn_routing' => $np, 'work_routing' => '10361', 'posible_stations' => 'Pend', 'work_description' => 'Set HeadShrink in splice ', 'QtyTimes' => 1, 'timePerProcess' => Arr::random($setHeadShrink), 'setUp_routing' => 300];
-                    $bulkInserts[] = ['pn_routing' => $np, 'work_routing' => '10401', 'posible_stations' => 'Pend', 'work_description' => 'Burn Heatshrirnk w/headgun in Splice ', 'QtyTimes' => 1, 'timePerProcess' => Arr::random($burnHeatGun), 'setUp_routing' => 300];
+                    $bulkInserts[] = ['pn_routing' => $np, 'work_routing' => '10341', 'posible_stations' => 'Pend', 'work_description' => "Create set for splice {$QtySpliceA} : {$QtySpliceB}", 'QtyTimes' => 1, 'timePerProcess' => $timpoSetSplice, 'setUp_routing' => 180];
+                    $bulkInserts[] = ['pn_routing' => $np, 'work_routing' => '10301', 'posible_stations' => 'FB110', 'work_description' => 'splice set apply with machine', 'QtyTimes' => 1, 'timePerProcess' => 22.46, 'setUp_routing' => 180]; // Arr::random($applySpleceInMachine)
+                    $bulkInserts[] = ['pn_routing' => $np, 'work_routing' => '10361', 'posible_stations' => 'Pend', 'work_description' => 'Set HeadShrink in splice ', 'QtyTimes' => 1, 'timePerProcess' => Arr::random($setHeadShrink), 'setUp_routing' => 180];
+                    $bulkInserts[] = ['pn_routing' => $np, 'work_routing' => '10401', 'posible_stations' => 'Pend', 'work_description' => 'Burn Heatshrirnk w/headgun in Splice ', 'QtyTimes' => 1, 'timePerProcess' => Arr::random($burnHeatGun), 'setUp_routing' => 180];
                 }
 
                 // --- D. TABLA DATOS (LOOM PROCESS) CON QUERY BUILDER ---
