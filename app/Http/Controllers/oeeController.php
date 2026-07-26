@@ -87,7 +87,6 @@ class oeeController extends Controller
                 } else {
                     $runningTotal += $diffTimeMinutes;
                     $runnigGrantotal += $diffTimeMinutes;
-                    $totalCortes += 1;
 
                     // Determinar el bloque sutilmente usando rangos de tiempo
                     foreach ($horasBase as $horaInicio) {
@@ -129,6 +128,16 @@ class oeeController extends Controller
         $resultadoPorMaquina['total'] = [
             'tiempo_total_funcionando' => round($runnigGrantotal, 2),
         ];
+        $cortes = DB::connection('toi')
+            ->table('lecturas')
+            ->where('maquina', $maquina)
+            ->where('estado', 'RUN')
+            ->whereBetween('fecha', [$fechaDelDia.' 07:30:00', $fechaDelDia.' 15:30:00'])
+            ->orderBy('fecha', 'ASC')
+            ->orderBy('id', 'ASC')
+            ->count();
+
+        $totalCortes = $cortes > 0 ? round($cortes / 2) : 1;
         $productividad = round($runnigGrantotal / ((450 * 5) - $registrosparos) * 100, 2);
         $resultadoPorMaquina['registrosparos'] = ['tiempo_total_detenido' => round($registrosparos, 2)];
         $disponibilidad = round(((450 * 5) - $registrosparos) / (450 * 5) * 100, 2);
