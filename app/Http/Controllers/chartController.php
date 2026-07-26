@@ -72,6 +72,7 @@ class ChartController extends Controller
         $running = 0;
         $lastTiempo = null;
         $lasStatus = null;
+        $ultimoEstado = null;
 
         foreach ($colection as $row) {
             $estatus = $row->estado;

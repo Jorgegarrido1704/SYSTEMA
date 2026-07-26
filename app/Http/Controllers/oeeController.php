@@ -23,19 +23,23 @@ class oeeController extends Controller
     public function appJointtiemposCompletos(Request $request)
     {
         $fechaDelDia = $request->input('fecha') ?? Carbon::now()->format('Y-m-d');
+        $maquina = $request->input('maquina') ?? '';
         $runnigGrantotal = 0;
         $stopGrantotal = 0;
         $totalCortes = 0;
+        $query = DB::connection('toi')->table('lecturas');
 
-        $coleccionGeneral = DB::connection('toi')
-            ->table('lecturas')
+        if ($maquina != '') {
+            $query->where('maquina', $maquina);
+        }
+
+        $coleccionGeneral = $query
             ->whereBetween('fecha', [$fechaDelDia.' 07:30:00', $fechaDelDia.' 15:30:00'])
             ->orderBy('maquina', 'ASC')
             ->orderBy('fecha', 'ASC')
             ->orderBy('id', 'ASC')
             ->get()
-            ->groupBy('maquina'); // Agrupamos por máquina en Laravel
-
+            ->groupBy('maquina');
         $resultadoPorMaquina = [];
         // registro de paros de corte
         $registrosdeParospordia = DB::connection('toi')->table('cutting_machine_stops')->selectRaw('sum(time_min) as paros')->where('fecha', $fechaDelDia)->get();
