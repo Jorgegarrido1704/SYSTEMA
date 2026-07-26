@@ -81,7 +81,7 @@ class oeeController extends Controller
                 $diffTimeSeconds = abs($fechaActual - $lastTiempo);
                 $diffTimeMinutes = round($diffTimeSeconds / 60, 2);
 
-                if ($lasStatus == 'STOP' && $diffTimeSeconds > 10) {
+                if ($lasStatus == 'STOP' && $diffTimeSeconds > 6) {
                     $parosTotales += $diffTimeMinutes;
                     $stopGrantotal += $diffTimeMinutes;
                 } else {
