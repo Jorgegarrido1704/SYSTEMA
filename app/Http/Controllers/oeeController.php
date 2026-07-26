@@ -28,9 +28,13 @@ class oeeController extends Controller
         $stopGrantotal = 0;
         $totalCortes = 0;
         $query = DB::connection('toi')->table('lecturas');
+        $query2 = DB::connection('toi')->table('cutting_machine_stops');
+        $query3 = DB::connection('toi')->table('calidad_corte_oee');
 
         if ($maquina != '') {
             $query->where('maquina', $maquina);
+            $query2->where('maquina', $maquina);
+            $query3->where('maquina', $maquina);
         }
 
         $coleccionGeneral = $query
@@ -42,11 +46,12 @@ class oeeController extends Controller
             ->groupBy('maquina');
         $resultadoPorMaquina = [];
         // registro de paros de corte
-        $registrosdeParospordia = DB::connection('toi')->table('cutting_machine_stops')->selectRaw('sum(time_min) as paros')->where('fecha', $fechaDelDia)->get();
+
+        $registrosdeParospordia = $query2->selectRaw('sum(time_min) as paros')->where('fecha', $fechaDelDia)->get();
         $registrosparos = $registrosdeParospordia[0]->paros != null ? $registrosdeParospordia[0]->paros : 0;
 
         // registro fallas calidad
-        $fallasCalidad = DB::connection('toi')->table('calidad_corte_oee')->selectRaw('sum(qty_errores) as paros')->where('fecha', $fechaDelDia)->get();
+        $fallasCalidad = $query3->selectRaw('sum(qty_errores) as paros')->where('fecha', $fechaDelDia)->get();
         $totalFallasCalidad = $fallasCalidad[0]->paros != null ? $fallasCalidad[0]->paros : 0;
 
         foreach ($coleccionGeneral as $nombreMaquina => $lecturas) {
