@@ -288,6 +288,7 @@
                         const graficaOee = document.getElementById("graficaDisponibilidad");
                         const graficaRendimiento = document.getElementById("graficaRendimiento");
                         const graficaCalidad = document.getElementById("graficaCalidad");
+                        console.log("Datos recibidos de todas las máquinas:", data);
 
                         // remove all child nodes
                         while (graficaOee.firstChild) {
