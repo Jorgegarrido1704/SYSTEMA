@@ -939,7 +939,7 @@ class rrhhController extends Controller
                 $domingo = $diasSemana['domingo'].' TE:'.$row->extDomingo.' TT:'.$row->tt_domingo;
                 // sumar direrenciasde tiempos
                 $diferencias_de_tiempos = DB::table('relogchecador')
-                    ->select(DB::raw('SUM(TIMESTAMPDIFF(SECOND, horaEntrada, horaSalida)) as totalSegundos'))
+                    ->select(DB::raw('SUM(TIMESTAMPDIFF(SECOND, entrada, salida)) as totalSegundos'))
                     ->where('employeeNumber', $row->id_empleado)
                     ->whereBetween('fechaRegistro', [$datestart, $datefin])
                     ->get();
