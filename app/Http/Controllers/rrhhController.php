@@ -890,6 +890,7 @@ class rrhhController extends Controller
             // Datos
             $asistencias = DB::table('assistence')
                 ->where('week', $week)
+                ->where('yearOfAssistence', Carbon::now()->year)
                 ->where('lider', $l->employeeLider)
                 ->get();
 
@@ -912,7 +913,7 @@ class rrhhController extends Controller
                 foreach (range('A', 'Z') as $col) {
                     $sheet->getColumnDimension($col)->setAutoSize(true);
                 }
-
+                $diasSemana = [];
                 $diasSemana = [
                     'lunes' => strtoupper(str_replace('-', '', $row->lunes)),
                     'martes' => strtoupper(str_replace('-', '', $row->martes)),
