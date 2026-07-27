@@ -937,6 +937,18 @@ class rrhhController extends Controller
                 $viernes = $diasSemana['viernes'].' TE:'.$row->extViernes.' TT:'.$row->tt_viernes;
                 $sabado = $diasSemana['sabado'].' TE:'.$row->extSabado.' TT:'.$row->tt_sabado;
                 $domingo = $diasSemana['domingo'].' TE:'.$row->extDomingo.' TT:'.$row->tt_domingo;
+                // sumar direrenciasde tiempos
+                $diferencias_de_tiempos = DB::table('relogchecador')
+                    ->select(DB::raw('SUM(TIMESTAMPDIFF(SECOND, horaEntrada, horaSalida)) as totalSegundos'))
+                    ->where('employeeNumber', $row->id_empleado)
+                    ->whereBetween('fechaRegistro', [$datestart, $datefin])
+                    ->get();
+
+                $totalSegundos = 0;
+                if (! empty($diferencias_de_tiempos)) {
+                    $totalSegundos = $diferencias_de_tiempos[0]->totalSegundos;
+                    $totalHours = gmdate('H:i', $totalSegundos);
+                }
 
                 $sheet->setCellValue('A'.$t, $row->name);
                 $sheet->setCellValue('B'.$t, substr($row->id_empleado, 1));
@@ -954,7 +966,7 @@ class rrhhController extends Controller
                 $sheet->setCellValue('N'.$t, $row->extSabado);
                 $sheet->setCellValue('O'.$t, $diasSemana['domingo']);
                 $sheet->setCellValue('P'.$t, $row->extDomingo);
-                $sheet->setCellValue('Q'.$t, '48');
+                $sheet->setCellValue('Q'.$t, $totalHours ?? 'No Info');
                 $sheet->setCellValue('R'.$t, $row->extras);
                 $sheet->setCellValue('S'.$t, '0');
                 $incidencias = '';
