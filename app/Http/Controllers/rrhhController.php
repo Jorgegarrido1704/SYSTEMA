@@ -947,7 +947,7 @@ class rrhhController extends Controller
                 $totalSegundos = 0;
                 if (! empty($diferencias_de_tiempos)) {
                     $totalSegundos = $diferencias_de_tiempos[0]->totalSegundos;
-                    $totalHours = gmdate('H:i', $totalSegundos);
+                    $totalHours = round(($totalSegundos / 3600), 2);
                 }
 
                 $sheet->setCellValue('A'.$t, $row->name);
