@@ -49,7 +49,7 @@ class Kernel extends ConsoleKernel
 
         $schedule->job(new \App\Jobs\respolados)->cron('1 6,18 * * *');
         // weekly list assistence
-        $schedule->job(new \App\Jobs\reporteGeneral)->dailyAt('06:30');
+        $schedule->job(new \App\Jobs\reporteGeneral)->dailyAt('06:32');
         // $schedule->job(new \App\Jobs\reporteGeneral())->everyMinute()->between('07:00', '20:00');
 
         // acciones correctivas recordatorio de lunes a sabado a las 5:00 am
