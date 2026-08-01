@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -25,13 +24,32 @@ class ChartController extends Controller
         $fechaDelDia = $request->input('fecha') ?? \Carbon\Carbon::now()->format('Y-m-d');
         $maquina = $request->input('maquina') ?? 'M1';
 
-        $colection = DB::connection('toi')
+        $colections = DB::connection('toi')
             ->table('lecturas')
+            ->selectRaw('
+                    COUNT(CASE WHEN fecha BETWEEN ? AND ? THEN 1 END) as total8,
+                    COUNT(CASE WHEN fecha BETWEEN ? AND ? THEN 1 END) as total9,
+                    COUNT(CASE WHEN fecha BETWEEN ? AND ? THEN 1 END) as total10,
+                    COUNT(CASE WHEN fecha BETWEEN ? AND ? THEN 1 END) as total11,
+                    COUNT(CASE WHEN fecha BETWEEN ? AND ? THEN 1 END) as total12,
+                    COUNT(CASE WHEN fecha BETWEEN ? AND ? THEN 1 END) as total13,
+                    COUNT(CASE WHEN fecha BETWEEN ? AND ? THEN 1 END) as total14,
+                    COUNT(CASE WHEN fecha BETWEEN ? AND ? THEN 1 END) as total15,
+                    COUNT(*) as total_general
+                ', [
+                $fechaDelDia.' 07:30:00', $fechaDelDia.' 08:30:00',
+                $fechaDelDia.' 08:30:00', $fechaDelDia.' 09:30:00',
+                $fechaDelDia.' 09:30:00', $fechaDelDia.' 10:30:00',
+                $fechaDelDia.' 10:30:00', $fechaDelDia.' 11:30:00',
+                $fechaDelDia.' 11:30:00', $fechaDelDia.' 12:30:00',
+                $fechaDelDia.' 12:30:00', $fechaDelDia.' 13:30:00',
+                $fechaDelDia.' 13:30:00', $fechaDelDia.' 14:30:00',
+                $fechaDelDia.' 14:30:00', $fechaDelDia.' 15:30:00',
+            ])
+            ->where('estado', 'RUN')
             ->where('maquina', $maquina)
             ->whereBetween('fecha', [$fechaDelDia.' 07:30:00', $fechaDelDia.' 15:30:00'])
-            ->orderBy('fecha', 'ASC')
-            ->orderBy('id', 'ASC')
-            ->get();
+            ->first();
         // subgroups per hour of day
         $stop = [];
         $stop['07:30:00'] = 0;
@@ -52,14 +70,7 @@ class ChartController extends Controller
         $run['13:30:00'] = 0;
         $run['14:30:00'] = 0;
 
-        $cortes = DB::connection('toi')
-            ->table('lecturas')
-            ->where('maquina', $maquina)
-            ->where('estado', 'RUN')
-            ->whereBetween('fecha', [$fechaDelDia.' 07:30:00', $fechaDelDia.' 15:30:00'])
-            ->orderBy('fecha', 'ASC')
-            ->orderBy('id', 'ASC')
-            ->count();
+        $cortes = $colections->total_general ?? 0;
 
         $registroParos = DB::connection('toi')
             ->table('cutting_machine_stops')
@@ -69,72 +80,28 @@ class ChartController extends Controller
 
         $qtyCortes = $cortes > 0 ? round($cortes / 2) : 0;
         $paros = 0;
-        $running = 0;
+        $running = round((($colections->total_general * 6.48) / 2) / 60, 2) ?? 0;
         $lastTiempo = null;
         $lasStatus = null;
-        $ultimoEstado = null;
+        $ultimoEstado = 'RUN';
 
-        foreach ($colection as $row) {
-            $estatus = $row->estado;
-            $fechaActual = strtotime($row->fecha);
+        $run['07:30:00'] = round((($colections->total8 * 6.48) / 2) / 60, 2);
+        $run['08:30:00'] = round((($colections->total9 * 6.48) / 2) / 60, 2);
+        $run['09:30:00'] = round((($colections->total10 * 6.48) / 2) / 60, 2);
+        $run['10:30:00'] = round((($colections->total11 * 6.48) / 2) / 60, 2);
+        $run['11:30:00'] = round((($colections->total12 * 6.48) / 2) / 60, 2);
+        $run['12:30:00'] = round((($colections->total13 * 6.48) / 2) / 60, 2);
+        $run['13:30:00'] = round((($colections->total14 * 6.48) / 2) / 60, 2);
+        $run['14:30:00'] = round((($colections->total15 * 6.48) / 2) / 60, 2);
 
-            if ($lastTiempo === null) {
-                $lastTiempo = $fechaActual;
-                $lasStatus = $estatus;
-
-                continue;
-            }
-
-            $diffTimeSeconds = abs($fechaActual - $lastTiempo);
-            $diffTimeMinutes = round($diffTimeSeconds / 60, 2);
-            $hora = Carbon::parse($row->fecha)->format('H:i:s');
-            if ($lasStatus == 'STOP' && $diffTimeSeconds > 6) {
-                $paros += $diffTimeMinutes;
-
-            } else {
-                $running += $diffTimeMinutes;
-                switch (Carbon::parse($row->fecha)->format('H:i:s')) {
-                    case Carbon::parse($row->fecha)->format('H:i:s') > '07:29:59' && Carbon::parse($row->fecha)->format('H:i:s') < '08:30:00':
-                        $run['07:30:00'] += $diffTimeMinutes;
-                        break;
-                    case Carbon::parse($row->fecha)->format('H:i:s') > '08:29:59' && Carbon::parse($row->fecha)->format('H:i:s') < '09:30:00':
-                        $run['08:30:00'] += $diffTimeMinutes;
-                        break;
-                    case Carbon::parse($row->fecha)->format('H:i:s') > '09:29:59' && Carbon::parse($row->fecha)->format('H:i:s') < '10:30:00':
-                        $run['09:30:00'] += $diffTimeMinutes;
-                        break;
-                    case Carbon::parse($row->fecha)->format('H:i:s') > '10:29:59' && Carbon::parse($row->fecha)->format('H:i:s') < '11:30:00':
-                        $run['10:30:00'] += $diffTimeMinutes;
-                        break;
-                    case Carbon::parse($row->fecha)->format('H:i:s') > '11:29:59' && Carbon::parse($row->fecha)->format('H:i:s') < '12:30:00':
-                        $run['11:30:00'] += $diffTimeMinutes;
-                        break;
-                    case Carbon::parse($row->fecha)->format('H:i:s') > '12:29:59' && Carbon::parse($row->fecha)->format('H:i:s') < '13:30:00':
-                        $run['12:30:00'] += $diffTimeMinutes;
-                        break;
-                    case Carbon::parse($row->fecha)->format('H:i:s') > '13:29:59' && Carbon::parse($row->fecha)->format('H:i:s') < '14:30:00':
-                        $run['13:30:00'] += $diffTimeMinutes;
-                        break;
-                    case Carbon::parse($row->fecha)->format('H:i:s') > '14:29:59' && Carbon::parse($row->fecha)->format('H:i:s') <= '15:30:00':
-                        $run['14:30:00'] += $diffTimeMinutes;
-                        break;
-                }
-
-            }
-            $stop['07:30:00'] = 60 - $run['07:30:00'];
-            $stop['08:30:00'] = 60 - $run['08:30:00'];
-            $stop['09:30:00'] = 60 - $run['09:30:00'];
-            $stop['10:30:00'] = 60 - $run['10:30:00'];
-            $stop['11:30:00'] = 60 - $run['11:30:00'];
-            $stop['12:30:00'] = 60 - $run['12:30:00'];
-            $stop['13:30:00'] = 60 - $run['13:30:00'];
-            $stop['14:30:00'] = 60 - $run['14:30:00'];
-
-            $lastTiempo = $fechaActual;
-            $lasStatus = $estatus;
-            $ultimoEstado = $row->estado;
-
-        }
+        $stop['07:30:00'] = 60 - $run['07:30:00'];
+        $stop['08:30:00'] = 60 - $run['08:30:00'];
+        $stop['09:30:00'] = 60 - $run['09:30:00'];
+        $stop['10:30:00'] = 60 - $run['10:30:00'];
+        $stop['11:30:00'] = 60 - $run['11:30:00'];
+        $stop['12:30:00'] = 60 - $run['12:30:00'];
+        $stop['13:30:00'] = 60 - $run['13:30:00'];
+        $stop['14:30:00'] = 60 - $run['14:30:00'];
 
         $paros = round($paros, 2);
         $running = round($running, 2);
