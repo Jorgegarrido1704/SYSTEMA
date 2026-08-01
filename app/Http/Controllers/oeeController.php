@@ -128,9 +128,7 @@ class oeeController extends Controller
         $resultadoPorMaquina['total'] = [
             'tiempo_total_funcionando' => round($runnigGrantotal, 2),
         ];
-        $cortes = DB::connection('toi')
-            ->table('lecturas')
-            ->where('maquina', $maquina)
+        $cortes = $query
             ->where('estado', 'RUN')
             ->whereBetween('fecha', [$fechaDelDia.' 07:30:00', $fechaDelDia.' 15:30:00'])
             ->orderBy('fecha', 'ASC')
