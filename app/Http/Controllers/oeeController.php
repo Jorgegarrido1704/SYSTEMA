@@ -30,8 +30,9 @@ class oeeController extends Controller
         $query = DB::connection('toi')->table('lecturas');
         $query2 = DB::connection('toi')->table('cutting_machine_stops');
         $query3 = DB::connection('toi')->table('calidad_corte_oee');
-
+        $totalMaquinas=5;
         if ($maquina != '') {
+            $totalMaquinas = 1;
             $query->where('maquina', $maquina);
             $query2->where('maquina', $maquina);
             $query3->where('maquina', $maquina);
@@ -136,9 +137,10 @@ class oeeController extends Controller
             ->count();
 
         $totalCortes = $cortes > 0 ? round($cortes / 2) : 1;
-        $productividad = round($runnigGrantotal / ((450 * 5) - $registrosparos) * 100, 2);
+        $tiempoCorriendo = $totalCortes > 0 ? round(($totalCortes * 6.48) / 60, 2) : 0;
+        $productividad = round($runnigGrantotal / ((450 * $totalMaquinas) - $registrosparos) * 100, 2);
         $resultadoPorMaquina['registrosparos'] = ['tiempo_total_detenido' => round($registrosparos, 2)];
-        $disponibilidad = round(((450 * 5) - $registrosparos) / (450 * 5) * 100, 2);
+        $disponibilidad = round(((450 * $totalMaquinas) - $registrosparos) / (450 * $totalMaquinas) * 100, 2);
         $totalCortes = $totalCortes > 0 ? $totalCortes : 1; //
         $porcentajeCalidad = round((($totalCortes - $totalFallasCalidad) / $totalCortes) * 100, 2);
 
