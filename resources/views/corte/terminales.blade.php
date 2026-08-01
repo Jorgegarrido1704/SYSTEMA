@@ -20,7 +20,7 @@
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
                                                     <div class="text-s font-weight-bold text-black text-uppercase mb-1">
-                                                     <strong> 720 </strong> {{ __('Terminals') }} {{ __('per hour / tooling') }}</div>
+                                                     <strong> 560 </strong> {{ __('Terminals') }} {{ __('per hour / tooling') }}</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -399,7 +399,7 @@ function fetchTerminalDataTabla() {
             document.getElementById('total-conteo').textContent = sumaTerminales;
             document.getElementById('total-paro').textContent = sumaParo + ' min';
             // 720 * ((8 )-(sumaParo/60).toFixed(2)) * 16 / (720 * 8  * 16)
-            const performance = (sumaTerminales/(720 * ((8  * 12) - sumaParo/60))*100).toFixed(2);
+            const performance = (sumaTerminales/(560 * ((7.5  * 12) - sumaParo/60))*100).toFixed(2);
             document.getElementById('Performance').textContent = performance + '%';
         })
         .catch(error => console.error('Error al obtener datos:', error));
