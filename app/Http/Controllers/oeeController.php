@@ -30,7 +30,7 @@ class oeeController extends Controller
         $query = DB::connection('toi')->table('lecturas');
         $query2 = DB::connection('toi')->table('cutting_machine_stops');
         $query3 = DB::connection('toi')->table('calidad_corte_oee');
-        $totalMaquinas=5;
+        $totalMaquinas = 5;
         if ($maquina != '') {
             $totalMaquinas = 1;
             $query->where('maquina', $maquina);
