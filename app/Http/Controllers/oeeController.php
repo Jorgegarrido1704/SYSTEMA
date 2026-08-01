@@ -138,9 +138,9 @@ class oeeController extends Controller
 
         $totalCortes = $cortes > 0 ? round($cortes / 2) : 1;
         $tiempoCorriendo = $totalCortes > 0 ? round(($totalCortes * 6.48) / 60, 2) : 0;
-        $productividad = round($runnigGrantotal / ((450 * $totalMaquinas) - $registrosparos) * 100, 2);
+        $productividad = round($tiempoCorriendo / ((450 * $totalMaquinas) - $registrosparos) * 100, 2);
         $resultadoPorMaquina['registrosparos'] = ['tiempo_total_detenido' => round($registrosparos, 2)];
-        $disponibilidad = round(((450 * $totalMaquinas) - $registrosparos) / (450 * $totalMaquinas) * 100, 2);
+        $disponibilidad = round((((450 * $totalMaquinas) - $registrosparos) / (450 * $totalMaquinas)) * 100, 2);
         $totalCortes = $totalCortes > 0 ? $totalCortes : 1; //
         $porcentajeCalidad = round((($totalCortes - $totalFallasCalidad) / $totalCortes) * 100, 2);
 
