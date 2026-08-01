@@ -154,6 +154,7 @@
                  <table class="table table-striped table-bordered"  cellspacing="0" width="100%">
                         <thead>
                             <tr>
+                                <th>{{ __('Status') }}</th>
                                 <th>{{__('Customer') }}</th>
                                 <th>{{ __('Part Number') }}</th>
                                 <th>{{__('Revision') }}</th>
