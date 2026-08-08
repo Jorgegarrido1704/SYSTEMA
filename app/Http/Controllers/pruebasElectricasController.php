@@ -36,6 +36,7 @@ class pruebasElectricasController extends Controller
         COALESCE(specialWire, 0)
       ) as total')
                 ->where('pn', '=', $rack->pn)
+                ->orderBy('total', 'ASC')
                 ->get();
             foreach ($woks as $wok) {
                 $rack->total += $wok->total;
@@ -45,14 +46,25 @@ class pruebasElectricasController extends Controller
         }
 
         // $arneses = regPar::where('ensaPar', '!=', 0)->orWhere('loomPar', '!=', 0)->orWhere('eng', '!=', 0)->orWhere('specialWire', '!=', 0)->orderBy('pn', 'asc')->get();
-        $arneseses = regPar::whereRaw(
+        $arneseses = regPar::selectRaw('*,
+        (
+        COALESCE(ensaPar, 0) +
+        COALESCE(testPar, 0) +
+        COALESCE(loomPar, 0) +
+        COALESCE(preCalidad, 0) +
+        COALESCE(eng, 0) +
+        COALESCE(fallasCalidad, 0) +
+        COALESCE(specialWire, 0)
+      ) as total
+        ')->whereRaw(
             'COALESCE(ensaPar, 0) +
         COALESCE(loomPar, 0) +
         COALESCE(preCalidad, 0) +
         COALESCE(eng, 0) +
         COALESCE(fallasCalidad, 0) +
         COALESCE(specialWire, 0) > 0'
-        )->orderBy('pn', 'asc')->get();
+        )->orderBy('total', 'asc')
+            ->get();
         foreach ($arneseses as $arnes) {
             if (! electricalTesting::where('pn', $arnes->pn)->where('status_of_order', '=', 'In rack')->exists()) {
                 $arneses[] = $arnes;
