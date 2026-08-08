@@ -36,7 +36,7 @@ class pruebasElectricasController extends Controller
         COALESCE(specialWire, 0)
       ) as total')
                 ->where('pn', '=', $rack->pn)
-                ->orderBy('total', 'ASC')
+                ->orderBy('total', 'asc')
                 ->get();
             foreach ($woks as $wok) {
                 $rack->total += $wok->total;
@@ -44,7 +44,8 @@ class pruebasElectricasController extends Controller
             }
 
         }
-
+        // ordenar $ra cks por total de menor a mayor
+        $racks = $racks->sortBy('total');
         // $arneses = regPar::where('ensaPar', '!=', 0)->orWhere('loomPar', '!=', 0)->orWhere('eng', '!=', 0)->orWhere('specialWire', '!=', 0)->orderBy('pn', 'asc')->get();
         $arneseses = regPar::selectRaw('*,
         (
