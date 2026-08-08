@@ -55,6 +55,9 @@ class pruebasElectricasController extends Controller
         COALESCE(fallasCalidad, 0) +
         COALESCE(specialWire, 0) > 0'
         )->orderBy('preCalidad', 'desc')
+            ->orderBy('fallasCalidad', 'desc')
+            ->orderBy('loomPar', 'desc')
+            ->orderBy('ensaPar', 'desc')
             ->get();
         foreach ($arneseses as $arnes) {
             if (! electricalTesting::where('pn', $arnes->pn)->where('status_of_order', '=', 'In rack')->exists()) {
