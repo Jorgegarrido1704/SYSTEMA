@@ -74,7 +74,7 @@
                         onmouseover=showEng();>{{ __('engineering') }}</a>
                         @if($cat=='inge' || $value=='Admin')
                     <ul class="submenu" id="engsub" style="display:none;">
-                        @if($value == 'Nancy A' || $value == 'Jesus_C' || $value == 'Admin' || $value == 'Isabel E' || $value == 'Martin A')
+                        @if($value == 'Nancy A' || $value == 'Jesus_C' || $value == 'Admin' || $value == 'Isabel E' || $value == 'Martin A' || $value == 'Rafael R')
                             <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('UpdateWorkFiles') }}">{{ __('UpdateWorkFiles') }}</a></li>
                         @endif
                         @if($value == 'Nancy A' || $value == 'Jesus_C' || $value == 'Admin' || $value == 'Isabel E' || $value == 'Paola S' || $value == 'Jose Luis' )
