@@ -1016,11 +1016,11 @@ class caliController extends generalController
             } else {
                 if (personalBergsModel::where('employeeName', '=', $row->Responsable)->exists()) {
                     $lider = personalBergsModel::select('employeeLider')->where('employeeName', '=', $row->Responsable)->first();
-                    $sheet->setCellValue('E'.$t, $lider->employeeLider);
+                    $sheet->setCellValue('F'.$t, $lider->employeeLider);
                 } else {
-                    $sheet->setCellValue('E'.$t, '');
+                    $sheet->setCellValue('F'.$t, '');
                 }
-                $sheet->setCellValue('F'.$t, $row->total);
+                $sheet->setCellValue('G'.$t, $row->total);
             }
 
             $t++;
