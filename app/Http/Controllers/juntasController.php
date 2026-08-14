@@ -2670,9 +2670,12 @@ class juntasController extends Controller
             return redirect()->route('login');
         }
         // 1. In Progress Schedules
-        $inprogres = workScreduleModel::selectRaw('color, count(*) as total')
+        $inprogres = workScreduleModel::selectRaw('
+         SUM(CASE WHEN color = "green" THEN 1 ELSE 0 END) as ppap,
+         SUM(CASE WHEN color = "yellow" THEN 1 ELSE 0 END) as prim
+        ')
             ->whereNull('documentsApproved')
-            ->groupBy('color')
+
             ->get();
 
         // 2. Completed General Schedules (Fixed case-sensitivity for column names if needed)
