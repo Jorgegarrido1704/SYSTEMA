@@ -2684,9 +2684,9 @@ class juntasController extends Controller
             ->where('status', 'Completed')
             ->whereNotNull('documentsApproved')
             ->whereNull('UpOrderDate')     // cleaner Laravel way for checking null
-            ->groupBy('color')
+
             ->get();
-         dd($totalgeneral, $inprogres);
+        dd($totalgeneral, $inprogres);
         // 3. Fixed Wo Query
         $registros = Wo::selectRaw("
             SUM(CASE WHEN rev LIKE '%PPAP%' THEN 1 ELSE 0 END) as ppap,
