@@ -10,6 +10,7 @@ use App\Models\listaCalidad;
 use App\Models\Maintanance;
 use App\Models\material;
 use App\Models\personalBergsModel;
+use App\Models\Po;
 use App\Models\registoLogin;
 use App\Models\regPar;
 use App\Models\regParTime;
@@ -986,14 +987,14 @@ class caliController extends generalController
         $sheet = $spreadsheet->getActiveSheet();
 
         // Encabezados (Establecer de una vez)
-        $headers = ['Fecha', 'Número de parte', 'Código', 'Responsable', 'Lider', 'Cuenta'];
+        $headers = ['Fecha', 'Cliente', 'Número de parte', 'Código', 'Responsable', 'Lider', 'Cuenta'];
         $sheet->fromArray($headers, null, 'A1');
 
         // Estilo: Auto-size y negritas en cabecera
-        foreach (range('A', 'E') as $columnID) {
+        foreach (range('A', 'F') as $columnID) {
             $sheet->getColumnDimension($columnID)->setAutoSize(true);
         }
-        $sheet->getStyle('A1:E1')->getFont()->setBold(true);
+        $sheet->getStyle('A1:F1')->getFont()->setBold(true);
 
         // 4. Llenado de datos
         $t = 2;
@@ -1004,13 +1005,14 @@ class caliController extends generalController
             } catch (\Exception $e) {
                 $fechaExcel = $row->fecha;
             }
-
+            $cliente = Po::select('client')->where('pn', '=', $row->pn)->first()->client ?? 'Desconocido';
             $sheet->setCellValue('A'.$t, $fechaExcel);
-            $sheet->setCellValue('B'.$t, $row->pn);
-            $sheet->setCellValue('C'.$t, $row->codigo);
-            $sheet->setCellValue('D'.$t, $row->Responsable == 'No Specific' ? '' : $row->Responsable);
+            $sheet->setCellValue('B'.$t, $cliente);
+            $sheet->setCellValue('C'.$t, $row->pn);
+            $sheet->setCellValue('D'.$t, $row->codigo);
+            $sheet->setCellValue('E'.$t, $row->Responsable == 'No Specific' ? '' : $row->Responsable);
             if ($row->Responsable == 'No Specific') {
-                $sheet->setCellValue('E'.$t, '');
+                $sheet->setCellValue('F'.$t, '');
             } else {
                 if (personalBergsModel::where('employeeName', '=', $row->Responsable)->exists()) {
                     $lider = personalBergsModel::select('employeeLider')->where('employeeName', '=', $row->Responsable)->first();
@@ -1018,10 +1020,9 @@ class caliController extends generalController
                 } else {
                     $sheet->setCellValue('E'.$t, '');
                 }
-
+                $sheet->setCellValue('F'.$t, $row->total);
             }
 
-            $sheet->setCellValue('F'.$t, $row->total);
             $t++;
         }
 
