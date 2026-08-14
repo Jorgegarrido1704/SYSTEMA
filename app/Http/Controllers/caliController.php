@@ -991,10 +991,10 @@ class caliController extends generalController
         $sheet->fromArray($headers, null, 'A1');
 
         // Estilo: Auto-size y negritas en cabecera
-        foreach (range('A', 'F') as $columnID) {
+        foreach (range('A', 'G') as $columnID) {
             $sheet->getColumnDimension($columnID)->setAutoSize(true);
         }
-        $sheet->getStyle('A1:F1')->getFont()->setBold(true);
+        $sheet->getStyle('A1:G1')->getFont()->setBold(true);
 
         // 4. Llenado de datos
         $t = 2;
