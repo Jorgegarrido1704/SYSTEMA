@@ -2696,7 +2696,7 @@ class juntasController extends Controller
         */
         $totales = $registros[0]->ppap + $registros[0]->prim + $totalgeneral[0]->total + $totalgeneral[1]->total ?? 0 + $inprogres[0]->total + $inprogres[1]->total ?? 0;
         $totalesPPAP = $registros[0]->ppap + $inprogres[0]->total + $totalgeneral[0]->total;
-        $totalesPRIM = $registros[0]->prim + $inprogres[1]->total ?? 0 + $totalgeneral[1]->total ?? 0;
+        $totalesPRIM = $registros[0]->prim + $inprogres[1]->total + $totalgeneral[1]->total ?? 0;
         $pendppaping = $inprogres[0]->total;
         $pendpriming = $inprogres[1]->total ?? 0;
         $pendbajarppap = $totalgeneral[0]->total;
