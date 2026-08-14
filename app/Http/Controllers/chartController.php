@@ -102,6 +102,8 @@ class ChartController extends Controller
         $run['12:30:00'] = round((($colections->total13 * 6.48) / 2) / 60, 2);
         $run['13:30:00'] = round((($colections->total14 * 6.48) / 2) / 60, 2);
         $run['14:30:00'] = round((($colections->total15 * 6.48) / 2) / 60, 2);
+        $run['15:30:00'] = round((($colections->total16 * 6.48) / 2) / 60, 2);
+        $run['16:30:00'] = round((($colections->total17 * 6.48) / 2) / 60, 2);
 
         $stop['07:30:00'] = 60 - $run['07:30:00'];
         $stop['08:30:00'] = 60 - $run['08:30:00'];
@@ -111,6 +113,9 @@ class ChartController extends Controller
         $stop['12:30:00'] = 60 - $run['12:30:00'];
         $stop['13:30:00'] = 60 - $run['13:30:00'];
         $stop['14:30:00'] = 60 - $run['14:30:00'];
+        $stop['15:30:00'] = 60 - $run['15:30:00'];
+        $stop['16:30:00'] = 60 - $run['16:30:00'];
+        $stop['17:30:00'] = 60 - $run['17:30:00'];
 
         $paros = round($paros, 2);
         $running = round($running, 2);
