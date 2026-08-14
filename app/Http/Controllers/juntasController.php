@@ -2675,17 +2675,18 @@ class juntasController extends Controller
          SUM(CASE WHEN color = "yellow" THEN 1 ELSE 0 END) as prim
         ')
             ->whereNull('documentsApproved')
-
             ->get();
 
         // 2. Completed General Schedules (Fixed case-sensitivity for column names if needed)
-        $totalgeneral = workScreduleModel::selectRaw('color, count(*) as total')
+        $totalgeneral = workScreduleModel::selectRaw('
+         SUM(CASE WHEN color = "green" THEN 1 ELSE 0 END) as ppap,
+         SUM(CASE WHEN color = "yellow" THEN 1 ELSE 0 END) as prim')
             ->where('status', 'Completed')
             ->whereNotNull('documentsApproved')
             ->whereNull('UpOrderDate')     // cleaner Laravel way for checking null
             ->groupBy('color')
             ->get();
-        // dd($totalgeneral, $inprogres);
+         dd($totalgeneral, $inprogres);
         // 3. Fixed Wo Query
         $registros = Wo::selectRaw("
             SUM(CASE WHEN rev LIKE '%PPAP%' THEN 1 ELSE 0 END) as ppap,
