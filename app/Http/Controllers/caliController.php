@@ -1020,9 +1020,8 @@ class caliController extends generalController
                 } else {
                     $sheet->setCellValue('F'.$t, '');
                 }
-                $sheet->setCellValue('G'.$t, $row->total);
             }
-
+             $sheet->setCellValue('G'.$t, $row->total);
             $t++;
         }
 
