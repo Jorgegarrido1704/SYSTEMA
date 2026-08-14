@@ -551,7 +551,7 @@
          <div class="col-lg-3 mb-4">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h5 class="m-0 font-weight-bold text-primary">{{ __('Quality Testing Control Data') }}</h5>
+                    <h5 class="m-0 font-weight-bold text-primary">{{ __('Quality FTQ Report') }}</h5>
                 </div>
 
                             <div class="card-body" style="overflow-y: auto; height: 360px;">
@@ -572,7 +572,7 @@
                                                                     </div>
                                                                     <input type="submit" class="btn btn-primary"   value="{{ __('Download Excel File') }}">
                                                                 </form>
-                                                              
+
 
                              </div>
 
