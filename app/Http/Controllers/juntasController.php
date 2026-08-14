@@ -2686,7 +2686,7 @@ class juntasController extends Controller
             ->whereNull('UpOrderDate')     // cleaner Laravel way for checking null
 
             ->get();
-        dd($totalgeneral, $inprogres);
+       // dd($totalgeneral, $inprogres);
         // 3. Fixed Wo Query
         $registros = Wo::selectRaw("
             SUM(CASE WHEN rev LIKE '%PPAP%' THEN 1 ELSE 0 END) as ppap,
@@ -2698,14 +2698,14 @@ class juntasController extends Controller
         $totalgeneral[0]->total//ppap + $totalgeneral[1]->total // prim
         // + $inprogres[0]->total // ppap + $inprogres[1]->total // prim;
         */
-        $reg1ppap = $registros[0]->ppap ?? 0;
-        $reg1prim = $registros[0]->prim ?? 0;
-        $totalgenppap = $totalgeneral[0]->total ?? 0;
-        $totalgenprim = $totalgeneral[1]->total ?? 0;
-        $inprogresppap = $inprogres[0]->total ?? 0;
-        $inprogresprim = $inprogres[1]->total ?? 0;
-        $registroppap = $registros[0]->ppap ?? 0;
-        $registroprim = $registros[0]->prim ?? 0;
+        $reg1ppap = $registros->ppap ?? 0;
+        $reg1prim = $registros->prim ?? 0;
+        $totalgenppap = $totalgeneral->ppap ?? 0;
+        $totalgenprim = $totalgeneral->prim ?? 0;
+        $inprogresppap = $inprogres->ppap ?? 0;
+        $inprogresprim = $inprogres->prim ?? 0;
+        $registroppap = $registros->ppap ?? 0;
+        $registroprim = $registros->prim ?? 0;
 
         $totales = $reg1ppap + $reg1prim + $totalgenppap + $totalgenprim + $inprogresppap + $inprogresprim;
         $totalesPPAP = $reg1ppap + $inprogresppap + $totalgenppap ?? 0;
