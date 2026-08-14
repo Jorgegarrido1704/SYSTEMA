@@ -35,6 +35,8 @@ class ChartController extends Controller
                     COUNT(CASE WHEN fecha BETWEEN ? AND ? THEN 1 END) as total13,
                     COUNT(CASE WHEN fecha BETWEEN ? AND ? THEN 1 END) as total14,
                     COUNT(CASE WHEN fecha BETWEEN ? AND ? THEN 1 END) as total15,
+                    COUNT(CASE WHEN fecha BETWEEN ? AND ? THEN 1 END) as total16,
+                    COUNT(CASE WHEN fecha BETWEEN ? AND ? THEN 1 END) as total17,
                     COUNT(*) as total_general
                 ', [
                 $fechaDelDia.' 07:30:00', $fechaDelDia.' 08:30:00',
@@ -45,6 +47,8 @@ class ChartController extends Controller
                 $fechaDelDia.' 12:30:00', $fechaDelDia.' 13:30:00',
                 $fechaDelDia.' 13:30:00', $fechaDelDia.' 14:30:00',
                 $fechaDelDia.' 14:30:00', $fechaDelDia.' 15:30:00',
+                $fechaDelDia.' 15:30:00', $fechaDelDia.' 16:30:00',
+                $fechaDelDia.' 16:30:00', $fechaDelDia.' 17:30:00',
             ])
             ->where('estado', 'RUN')
             ->where('maquina', $maquina)
@@ -60,6 +64,9 @@ class ChartController extends Controller
         $stop['12:30:00'] = 0;
         $stop['13:30:00'] = 0;
         $stop['14:30:00'] = 0;
+        $stop['15:30:00'] = 0;
+        $stop['16:30:00'] = 0;
+        $stop['17:30:00'] = 0;
         $run = [];
         $run['07:30:00'] = 0;
         $run['08:30:00'] = 0;
@@ -69,9 +76,11 @@ class ChartController extends Controller
         $run['12:30:00'] = 0;
         $run['13:30:00'] = 0;
         $run['14:30:00'] = 0;
+        $run['15:30:00'] = 0;
+        $run['16:30:00'] = 0;
+        $run['17:30:00'] = 0;
 
         $cortes = $colections->total_general ?? 0;
-
         $registroParos = DB::connection('toi')
             ->table('cutting_machine_stops')
             ->where('maquina', $maquina)
