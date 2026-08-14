@@ -10,7 +10,7 @@ use App\Models\listaCalidad;
 use App\Models\Maintanance;
 use App\Models\material;
 use App\Models\personalBergsModel;
-use App\Models\Po;
+use App\Models\precios;
 use App\Models\registoLogin;
 use App\Models\regPar;
 use App\Models\regParTime;
@@ -1005,7 +1005,7 @@ class caliController extends generalController
             } catch (\Exception $e) {
                 $fechaExcel = $row->fecha;
             }
-            $cliente = Po::select('client')->where('pn', '=', $row->pn)->first()->client ?? 'Desconocido';
+            $cliente = precios::select('client')->where('pn', '=', $row->pn)->first()->client ?? 'Desconocido';
             $sheet->setCellValue('A'.$t, $fechaExcel);
             $sheet->setCellValue('B'.$t, $cliente);
             $sheet->setCellValue('C'.$t, $row->pn);
