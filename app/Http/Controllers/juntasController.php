@@ -2694,15 +2694,24 @@ class juntasController extends Controller
         $totalgeneral[0]->total//ppap + $totalgeneral[1]->total // prim
         // + $inprogres[0]->total // ppap + $inprogres[1]->total // prim;
         */
-        $totales = $registros[0]->ppap + $registros[0]->prim + $totalgeneral[0]->total + $totalgeneral[1]->total ?? 0 + $inprogres[0]->total + $inprogres[1]->total ?? 0;
-        $totalesPPAP = $registros[0]->ppap + $inprogres[0]->total + $totalgeneral[0]->total;
-        $totalesPRIM = $registros[0]->prim + $inprogres[1]->total + $totalgeneral[1]->total ?? 0;
-        $pendppaping = $inprogres[0]->total;
-        $pendpriming = $inprogres[1]->total ?? 0;
-        $pendbajarppap = $totalgeneral[0]->total;
-        $pendbajarprim = $totalgeneral[1]->total ?? 0;
-        $enproduccionppap = $registros[0]->ppap;
-        $enproduccionprim = $registros[0]->prim;
+        $reg1ppap = $registros[0]->ppap ?? 0;
+        $reg1prim = $registros[0]->prim ?? 0;
+        $totalgenppap = $totalgeneral[0]->total ?? 0;
+        $totalgenprim = $totalgeneral[1]->total ?? 0;
+        $inprogresppap = $inprogres[0]->total ?? 0;
+        $inprogresprim = $inprogres[1]->total ?? 0;
+        $registroppap = $registros[0]->ppap ?? 0;
+        $registroprim = $registros[0]->prim ?? 0;
+
+        $totales = $reg1ppap + $reg1prim + $totalgenppap + $totalgenprim + $inprogresppap + $inprogresprim;
+        $totalesPPAP = $reg1ppap + $inprogresppap + $totalgenppap ?? 0;
+        $totalesPRIM = $reg1prim + $inprogresprim + $totalgenprim ?? 0;
+        $pendppaping = $inprogresppap ?? 0;
+        $pendpriming = $inprogresprim ?? 0;
+        $pendbajarppap = $totalgenppap ?? 0;
+        $pendbajarprim = $totalgenprim ?? 0;
+        $enproduccionppap = $reg1ppap ?? 0;
+        $enproduccionprim = $reg1prim ?? 0;
 
         if ($value == 'Julio R') {
             $checher = ['', 'readonly'];
