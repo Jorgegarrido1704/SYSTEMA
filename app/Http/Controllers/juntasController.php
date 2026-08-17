@@ -2405,7 +2405,7 @@ class juntasController extends Controller
             ->limit(3)
             ->get();
 
-        dd($topFaltas);
+      //  dd($topFaltas);
 
         return view('juntas.hr', ['vacas' => $vacas, 'promaus' => $promaus, 'diaActual' => $diaActual,
             'faltantes' => $faltantes,

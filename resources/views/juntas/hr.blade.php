@@ -438,10 +438,10 @@
     var topFaltasChart = new Chart(topFaltas, {
         type: 'bar',
         data: {
-            labels: @json($topFaltas['labels']),
+            labels: @json($topFaltas->pluck('lider')),
             datasets: [{
                 label: '{{ __("Missing Assitence Records") }}',
-                data: @json($topFaltas['data']),
+                data: @json($topFaltas->pluck('total')),
                 backgroundColor: 'rgba(255, 99, 132, 0.2)',
                 borderColor: 'rgba(255, 99, 132, 1)',
                 borderWidth: 1
