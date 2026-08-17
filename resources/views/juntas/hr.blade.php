@@ -403,6 +403,15 @@
             </div>
         </div>
     </div>
+    <div class="col-lg-4 col-md-6 mb-4">
+        <div class="card shadow mb-5">
+            <div class="card-header py-3">
+                <h5 class="m-1 font-weight-bold text-primary">{{ __('Top missing Assitence Records') }} {{ __('in') }} {{ date('Y-m') }}</h5>
+            </div>
+            <div class="card-body" style=" max-height: 550px;" >
+                <canvas id="topFaltas" style=" height: 400px;"></canvas>
+            </div>
+        </div>
      <div class="col-lg-4 col-md-4 mb-8">
         <div class="card shadow mb-5">
             <div class="card-header py-3">
@@ -425,6 +434,46 @@
 </div>
 
 <script>
+    var topFaltas = document.getElementById('topFaltas').getContext('2d');
+    var topFaltasChart = new Chart(topFaltas, {
+        type: 'bar',
+        data: {
+            labels: @json($topFaltas['labels']),
+            datasets: [{
+                label: '{{ __("Missing Assitence Records") }}',
+                data: @json($topFaltas['data']),
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                datalabels: {
+                    color: 'black',
+                    anchor: 'end',
+                    align: 'top',
+                    formatter: function(value) {
+                        return value;
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1
+                    }
+                }
+            }
+        }
+    });
+
+
 
     function openTab(tabClass) {
     // 1. Escondemos ABSOLUTAMENTE TODO lo que sea "tab-content"

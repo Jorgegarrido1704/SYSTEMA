@@ -2289,7 +2289,7 @@ class juntasController extends Controller
 
         $disponibilidadPrimesTurno1 = assistence::selectRaw('
         ROUND(AVG(CASE WHEN '.$diaActual.' IN ("OK", "R") THEN 100 ELSE 0 END), 2) as disponibilidad
-     ')
+        ')
             ->join('personalberg', function ($join) {
                 $join->on('assistence.shift', '=', DB::raw('personalberg.employeeShift COLLATE utf8mb4_unicode_ci'));
             })
@@ -2390,16 +2390,32 @@ class juntasController extends Controller
         $ultimoAccidente = carbon::parse('2025-11-03');
         $withoutAccidents = carbon::now()->diffInDays($ultimoAccidente);
 
+        $topFaltas = assistence::select('lider', DB::raw('count(*) as total'))
+            ->where('lunes', '=', 'F')
+            ->orWhere('martes', '=', 'F')
+            ->orWhere('miercoles', '=', 'F')
+            ->orWhere('jueves', '=', 'F')
+            ->orWhere('viernes', '=', 'F')
+            ->orWhere('sabado', '=', 'F')
+            ->orWhere('domingo', '=', 'F')
+            ->whereBetween('week', [Carbon::now()->subWeeks(4)->weekOfYear, Carbon::now()->weekOfYear])
+            ->where('yearOfAssistence', '=', Carbon::now()->year)
+            ->groupBy('lider')
+            ->orderby('total', 'DESC')
+            ->limit(3)
+            ->get();
+
+        dd($topFaltas);
+
         return view('juntas.hr', ['vacas' => $vacas, 'promaus' => $promaus, 'diaActual' => $diaActual,
             'faltantes' => $faltantes,
             'registrosDeAsistencia' => $registrosDeAsistencia, 'value' => session('user'), 'cat' => session('categoria'),
             'promedioCorrectoVacciones' => $promedioCorrectoVacciones,
             'porcentajaVacaciones' => $porcentajaVacaciones, 'headcount' => $headcount,
             'withoutAccidents' => $withoutAccidents, 'firstShift' => $firstShift, 'secondShift' => $secondShift,
-
             'genero' => $genero, 'tipoTrabajado' => $tipoTrabajado, 'ausentismoPrimesTurno' => $ausentismoPrimesTurno, 'ausentismoSecondShift' => $ausentismoSecondShift,
             'disponibilidadPrimesTurno' => $disponibilidadPrimesTurno, 'disponibilidadSecondShift' => $disponibilidadSecondShift,
-        ]);
+            'topFaltas' => $topFaltas, ]);
     }
 
     public function DatosRh(Request $request)
