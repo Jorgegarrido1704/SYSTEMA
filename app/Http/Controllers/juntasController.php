@@ -2404,8 +2404,36 @@ class juntasController extends Controller
             ->orderby('total', 'DESC')
             ->limit(3)
             ->get();
+        $topPermisos = assistence::select('lider', DB::raw('count(*) as total'))
+            ->whereIn('lunes', ['PCS', 'PSS', 'TSP'])
+            ->orWhereIn('martes', ['PCS', 'PSS', 'TSP'])
+            ->orWhereIn('miercoles', ['PCS', 'PSS', 'TSP'])
+            ->orWhereIn('jueves', ['PCS', 'PSS', 'TSP'])
+            ->orWhereIn('viernes', ['PCS', 'PSS', 'TSP'])
+            ->orWhereIn('sabado', ['PCS', 'PSS', 'TSP'])
+            ->orWhereIn('domingo', ['PCS', 'PSS', 'TSP'])
+            ->whereBetween('week', [Carbon::now()->subWeeks(4)->weekOfYear, Carbon::now()->weekOfYear])
+            ->where('yearOfAssistence', '=', Carbon::now()->year)
+            ->groupBy('lider')
+            ->orderby('total', 'DESC')
+            ->limit(3)
+            ->get();
+        $topVacaciones = assistence::select('lider', DB::raw('count(*) as total'))
+            ->where('lunes', '=', 'V')
+            ->orWhere('martes', '=', 'V')
+            ->orWhere('miercoles', '=', 'V')
+            ->orWhere('jueves', '=', 'V')
+            ->orWhere('viernes', '=', 'V')
+            ->orWhere('sabado', '=', 'V')
+            ->orWhere('domingo', '=', 'V')
+            ->whereBetween('week', [Carbon::now()->subWeeks(4)->weekOfYear, Carbon::now()->weekOfYear])
+            ->where('yearOfAssistence', '=', Carbon::now()->year)
+            ->groupBy('lider')
+            ->orderby('total', 'DESC')
+            ->limit(3)
+            ->get();
 
-      //  dd($topFaltas);
+        //  dd($topFaltas);
 
         return view('juntas.hr', ['vacas' => $vacas, 'promaus' => $promaus, 'diaActual' => $diaActual,
             'faltantes' => $faltantes,
@@ -2415,7 +2443,7 @@ class juntasController extends Controller
             'withoutAccidents' => $withoutAccidents, 'firstShift' => $firstShift, 'secondShift' => $secondShift,
             'genero' => $genero, 'tipoTrabajado' => $tipoTrabajado, 'ausentismoPrimesTurno' => $ausentismoPrimesTurno, 'ausentismoSecondShift' => $ausentismoSecondShift,
             'disponibilidadPrimesTurno' => $disponibilidadPrimesTurno, 'disponibilidadSecondShift' => $disponibilidadSecondShift,
-            'topFaltas' => $topFaltas, ]);
+            'topVacaciones' => $topVacaciones, 'topFaltas' => $topFaltas, 'topPermisos' => $topPermisos]);
     }
 
     public function DatosRh(Request $request)

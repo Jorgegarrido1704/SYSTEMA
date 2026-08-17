@@ -406,12 +406,33 @@
     <div class="col-lg-4 col-md-6 mb-4">
         <div class="card shadow mb-5">
             <div class="card-header py-3">
-                <h5 class="m-1 font-weight-bold text-primary">{{ __('Top missing Assitence Records') }} {{ __('in') }} {{ date('Y-m') }}</h5>
+                <h5 class="m-1 font-weight-bold text-primary">{{ __('Top missing Assitence Records') }} {{ __('in the last 4 weeks') }} </h5>
             </div>
             <div class="card-body" style=" max-height: 550px;" >
                 <canvas id="topFaltas" style=" height: 400px;"></canvas>
             </div>
         </div>
+    </div>
+    <div class="col-lg-4 col-md-6 mb-4">
+        <div class="card shadow mb-5">
+            <div class="card-header py-3">
+                <h5 class="m-1 font-weight-bold text-primary">{{ __('Top Permissions Records') }} {{ __('in the last 4 weeks') }} </h5>
+            </div>
+            <div class="card-body" style=" max-height: 550px;" >
+                <canvas id="topPermisos" style=" height: 400px;"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-6 mb-4">
+        <div class="card shadow mb-5">
+            <div class="card-header py-3">
+                <h5 class="m-1 font-weight-bold text-primary">{{ __('Top Vacations Records') }} {{ __('in the last 4 weeks') }} </h5>
+            </div>
+            <div class="card-body" style=" max-height: 550px;" >
+                <canvas id="topVacaciones" style=" height: 400px;"></canvas>
+            </div>
+        </div>
+    </div>
      <div class="col-lg-4 col-md-4 mb-8">
         <div class="card shadow mb-5">
             <div class="card-header py-3">
@@ -472,7 +493,82 @@
             }
         }
     });
-
+ var    topPermisos = document.getElementById('topPermisos').getContext('2d');
+    var topPermisosChart = new Chart(topPermisos, {
+        type: 'bar',
+        data: {
+            labels: @json($topPermisos->pluck('lider')),
+            datasets: [{
+                label: '{{ __("Missing Assitence Records") }}',
+                data: @json($topPermisos->pluck('total')),
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                datalabels: {
+                    color: 'black',
+                    anchor: 'end',
+                    align: 'top',
+                    formatter: function(value) {
+                        return value;
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1
+                    }
+                }
+            }
+        }
+    });
+     var topVacaciones = document.getElementById('topVacaciones').getContext('2d');
+    var topVacacionesChart = new Chart(topVacaciones, {
+        type: 'bar',
+        data: {
+            labels: @json($topVacaciones->pluck('lider')),
+            datasets: [{
+                label: '{{ __("Missing Assitence Records") }}',
+                data: @json($topVacaciones->pluck('total')),
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                datalabels: {
+                    color: 'black',
+                    anchor: 'end',
+                    align: 'top',
+                    formatter: function(value) {
+                        return value;
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1
+                    }
+                }
+            }
+        }
+    });
 
 
     function openTab(tabClass) {
