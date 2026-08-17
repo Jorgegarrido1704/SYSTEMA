@@ -501,8 +501,8 @@
             datasets: [{
                 label: '{{ __("Missing Assitence Records") }}',
                 data: @json($topPermisos->pluck('total')),
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                borderColor: 'rgba(255, 99, 132, 1)',
+                backgroundColor: 'rgba(111, 185, 227, 0.2)',
+                borderColor: 'rgba(111, 185, 227, 1)',
                 borderWidth: 1
             }]
         },
@@ -539,8 +539,8 @@
             datasets: [{
                 label: '{{ __("Missing Assitence Records") }}',
                 data: @json($topVacaciones->pluck('total')),
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                borderColor: 'rgba(255, 99, 132, 1)',
+                backgroundColor: 'rgba(221, 227, 111, 0.2)',
+                borderColor: 'rgba(221, 227, 111, 1)',
                 borderWidth: 1
             }]
         },
