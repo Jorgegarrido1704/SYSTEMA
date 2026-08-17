@@ -74,7 +74,7 @@
                                     <div class="card border-left-danger shadow h-100 py-2">
                                         <div class="card-body">
                                             <div class="row no-gutters align-items-center">
-                                                <div class="col mr-2">
+                                                <div class="col mr-2" id='cortesCuenta'>
                                                     <div class=" font-weight-bold text-warning text-uppercase mb-1">
                                                      <strong><span id="cortesCuenta"></span> </strong> {{ __('Quantity of wires') }}</div>
                                                 </div>
@@ -225,7 +225,21 @@
                 document.getElementById('workingTime').textContent = data.running;
                 document.getElementById('maquina1').textContent = maquina;
                 document.getElementById('parosTime').textContent = (total_de_paros).toFixed(2);
-                document.getElementById('cortesCuenta').textContent = data.cortes;
+                if(data.cortes !== null && data.cortes > 0 && data.cortes < 400){
+                     document.getElementById('cortesCuenta').textContent = `  <div class=" font-weight-bold text-danger text-uppercase mb-1">
+                                                     <strong><span>${data.cortes}</span> </strong> {{ __('Quantity of wires') }}</div>`;
+                }else if(data.cortes !== null && data.cortes > 400 && data.cortes < 2000){
+                     document.getElementById('cortesCuenta').textContent = `  <div class=" font-weight-bold text-warning text-uppercase mb-1">
+                                                     <strong><span>${data.cortes}</span> </strong> {{ __('Quantity of wires') }}</div>`;
+                     }else if (data.cortes !== null && data.cortes > 2000){
+                     document.getElementById('cortesCuenta').textContent = `  <div class=" font-weight-bold text-success text-uppercase mb-1">
+                                                     <strong><span>${data.cortes}</span> </strong> {{ __('Quantity of wires') }}</div>`;
+                     }else{
+                     document.getElementById('cortesCuenta').textContent = `  <div class=" font-weight-bold text-danger text-uppercase mb-1">
+                                                     <strong><span>0</span> </strong> {{ __('Quantity of wires') }}</div>`;
+                     }
+
+
 
 
                 if (data.estado !== null) {
