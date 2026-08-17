@@ -144,7 +144,7 @@
 
                                     <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h5 class="m-0 font-weight-bold text-primary">Report Issue</h5>
+                                    <h5 class="m-0 font-weight-bold text-primary">{{__('Report Issue') }}</h5>
                                     <div class="dropdown no-arrow">
                                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -256,7 +256,7 @@
                             <!-- AREAS -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h5 class="m-0 font-weight-bold text-primary">Table of Works </h5>
+                                    <h5 class="m-0 font-weight-bold text-primary">{{ __('Pending Works') }} </h5>
                                 </div>
                                 <div class="card-body" style="overflow-y: auto; height: 360px;" id="tableChange">
                                     <div class="row" >
@@ -266,7 +266,7 @@
                                             #En_proceso{color: rgb(120, 184, 120);}
 
                                         </style>
-                                        <table>
+                                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                             <thead>
                                                 <th>Fecha de solicitud</th>
                                                 <th>Cliente</th>
