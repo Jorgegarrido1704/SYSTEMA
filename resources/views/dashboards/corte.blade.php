@@ -75,8 +75,7 @@
                                         <div class="card-body">
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2" id='cortesCuenta'>
-                                                    <div class=" font-weight-bold text-warning text-uppercase mb-1">
-                                                     <strong><span id="cortesCuenta"></span> </strong> {{ __('Quantity of wires') }}</div>
+                                                  
                                                 </div>
                                             </div>
                                         </div>
