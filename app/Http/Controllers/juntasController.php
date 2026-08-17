@@ -2424,15 +2424,13 @@ class juntasController extends Controller
             ->get();
         $topVacaciones = assistence::select('lider', DB::raw('count(*) as total'))
             ->where(function ($query) {
-                $query ->where('lunes', '=', 'V')
-            ->orWhere('martes', '=', 'V')
-            ->orWhere('miercoles', '=', 'V')
-            ->orWhere('jueves', '=', 'V')
-            ->orWhere('viernes', '=', 'V')
-            ->orWhere('sabado', '=', 'V');
+                $query->where('lunes', '=', 'V')
+                    ->orWhere('martes', '=', 'V')
+                    ->orWhere('miercoles', '=', 'V')
+                    ->orWhere('jueves', '=', 'V')
+                    ->orWhere('viernes', '=', 'V')
+                    ->orWhere('sabado', '=', 'V');
             })
-
-
 
             ->whereBetween('week', [Carbon::now()->subWeeks(4)->weekOfYear, Carbon::now()->weekOfYear])
             ->where('yearOfAssistence', '=', Carbon::now()->year)
