@@ -2391,12 +2391,14 @@ class juntasController extends Controller
         $withoutAccidents = carbon::now()->diffInDays($ultimoAccidente);
 
         $topFaltas = assistence::select('lider', DB::raw('count(*) as total'))
-            ->where('lunes', '=', 'F')
-            ->orWhere('martes', '=', 'F')
-            ->orWhere('miercoles', '=', 'F')
-            ->orWhere('jueves', '=', 'F')
-            ->orWhere('viernes', '=', 'F')
-            ->orWhere('sabado', '=', 'F')
+            ->where(function ($query) {
+                $query->where('lunes', 'F')
+                    ->orWhere('martes', 'F')
+                    ->orWhere('miercoles', 'F')
+                    ->orWhere('jueves', 'F')
+                    ->orWhere('viernes', 'F')
+                    ->orWhere('sabado', 'F');
+            })
 
             ->whereBetween('week', [Carbon::now()->subWeeks(4)->weekOfYear, Carbon::now()->weekOfYear])
             ->where('yearOfAssistence', '=', Carbon::now()->year)
@@ -2405,12 +2407,14 @@ class juntasController extends Controller
             ->limit(3)
             ->get();
         $topPermisos = assistence::select('lider', DB::raw('count(*) as total'))
-            ->whereIn('lunes', ['PCS', 'PSS', 'TSP'])
-            ->orWhereIn('martes', ['PCS', 'PSS', 'TSP'])
-            ->orWhereIn('miercoles', ['PCS', 'PSS', 'TSP'])
-            ->orWhereIn('jueves', ['PCS', 'PSS', 'TSP'])
-            ->orWhereIn('viernes', ['PCS', 'PSS', 'TSP'])
-            ->orWhereIn('sabado', ['PCS', 'PSS', 'TSP'])
+            ->where(function ($query) {
+                $query->whereIn('lunes', ['PCS', 'PSS', 'TSP'])
+                    ->orWhereIn('martes', ['PCS', 'PSS', 'TSP'])
+                    ->orWhereIn('miercoles', ['PCS', 'PSS', 'TSP'])
+                    ->orWhereIn('jueves', ['PCS', 'PSS', 'TSP'])
+                    ->orWhereIn('viernes', ['PCS', 'PSS', 'TSP'])
+                    ->orWhereIn('sabado', ['PCS', 'PSS', 'TSP']);
+            })
 
             ->whereBetween('week', [Carbon::now()->subWeeks(4)->weekOfYear, Carbon::now()->weekOfYear])
             ->where('yearOfAssistence', '=', Carbon::now()->year)
@@ -2419,12 +2423,16 @@ class juntasController extends Controller
             ->limit(3)
             ->get();
         $topVacaciones = assistence::select('lider', DB::raw('count(*) as total'))
-            ->where('lunes', '=', 'V')
+            ->where(function ($query) {
+                $query ->where('lunes', '=', 'V')
             ->orWhere('martes', '=', 'V')
             ->orWhere('miercoles', '=', 'V')
             ->orWhere('jueves', '=', 'V')
             ->orWhere('viernes', '=', 'V')
-            ->orWhere('sabado', '=', 'V')
+            ->orWhere('sabado', '=', 'V');
+            })
+
+
 
             ->whereBetween('week', [Carbon::now()->subWeeks(4)->weekOfYear, Carbon::now()->weekOfYear])
             ->where('yearOfAssistence', '=', Carbon::now()->year)
