@@ -38,9 +38,8 @@
                                     <div class="card border-left-danger shadow h-100 py-2">
                                         <div class="card-body">
                                             <div class="row no-gutters align-items-center">
-                                                <div class="col mr-2">
-                                                    <div class="text-s font-weight-bold text-success text-uppercase mb-1">
-                                                    <strong> <span id="workingTime"></span> Min </strong> {{ __('working Time') }}</div>
+                                                <div class="col mr-2" id="workingTime">
+
                                                 </div>
                                             </div>
                                         </div>
@@ -50,9 +49,8 @@
                                     <div class="card border-left-danger shadow h-100 py-2">
                                         <div class="card-body">
                                             <div class="row no-gutters align-items-center">
-                                                <div class="col mr-2">
-                                                    <div class=" font-weight-bold text-danger text-uppercase mb-1">
-                                                     <strong><span id="parosTime"></span> Min </strong> {{ __('Downtime') }}</div>
+                                                <div class="col mr-2" id="parosTime">
+
                                                 </div>
                                             </div>
                                         </div>
@@ -62,9 +60,8 @@
                                     <div class="card border-left-danger shadow h-100 py-2">
                                         <div class="card-body">
                                             <div class="row no-gutters align-items-center">
-                                                <div class="col mr-2">
-                                                    <div class=" font-weight-bold text-danger text-uppercase mb-1">
-                                                     <strong><span id="quality_bads"></span> {{ __(('Pzs')) }} </strong> {{ __('Quality issue') }}</div>
+                                                <div class="col mr-2" id="quality_bads">
+
                                                 </div>
                                             </div>
                                         </div>
@@ -221,21 +218,41 @@
                 disponibilidad = (data.tiempo_total_turno * 0.9).toFixed(2) - total_de_paros;
 
               //  document.getElementById('mc1').textContent = (data.running / disponibilidad * 100).toFixed(2);
-                document.getElementById('workingTime').textContent = data.running;
                 document.getElementById('maquina1').textContent = maquina;
-                document.getElementById('parosTime').textContent = (total_de_paros).toFixed(2);
+
+                $total_de_paros = (total_de_paros).toFixed(2);
+                    if(total_de_paros > 180){
+                      document.getElementById('parosTime').innerHTML =   ` <div class=" font-weight-bold text-danger text-uppercase mb-1">
+                                                     <strong>${total_de_paros}<span ></span> Min </strong> {{ __('Downtime') }}</div>`;
+                    }else if(total_de_paros > 60 && total_de_paros < 180){
+
+                      document.getElementById('parosTime').innerHTML =   ` <div class=" font-weight-bold text-warning text-uppercase mb-1">
+                                                     <strong>${total_de_paros}<span ></span> Min </strong> {{ __('Downtime') }}</div>`;
+                    }else{
+
+                      document.getElementById('parosTime').innerHTML =   ` <div class=" font-weight-bold text-success text-uppercase mb-1">
+                                                     <strong>${total_de_paros}<span ></span> Min </strong> {{ __('Downtime') }}</div>`;
+                    }
                     if(data.cortes !== null && data.cortes > 0 && data.cortes < 400){
                         document.getElementById('cortesCuenta').innerHTML = `  <div class=" font-weight-bold text-danger text-uppercase mb-1">
                                                         <strong><span>${data.cortes}</span> </strong> {{ __('Quantity of wires') }}</div>`;
+                        document.getElementById('workingTime').innerHTML = `  <div class="text-s font-weight-bold text-danger text-uppercase mb-1">
+                                                    <strong> <span >${data.running}</span> Min </strong> {{ __('working Time') }}</div>`;
                     }else if(data.cortes !== null && data.cortes > 400 && data.cortes < 2000){
                         document.getElementById('cortesCuenta').innerHTML = `  <div class=" font-weight-bold text-warning text-uppercase mb-1">
                                                         <strong><span>${data.cortes}</span> </strong> {{ __('Quantity of wires') }}</div>`;
+                                                         document.getElementById('workingTime').innerHTML = `  <div class="text-s font-weight-bold text-warning text-uppercase mb-1">
+                                                    <strong> <span >${data.running}</span> Min </strong> {{ __('working Time') }}</div>`;
                         }else if (data.cortes !== null && data.cortes > 2000){
                         document.getElementById('cortesCuenta').innerHTML = `  <div class=" font-weight-bold text-success text-uppercase mb-1">
                                                         <strong><span>${data.cortes}</span> </strong> {{ __('Quantity of wires') }}</div>`;
+                                                         document.getElementById('workingTime').innerHTML = `  <div class="text-s font-weight-bold text-success text-uppercase mb-1">
+                                                    <strong> <span >${data.running}</span> Min </strong> {{ __('working Time') }}</div>`;
                         }else{
                         document.getElementById('cortesCuenta').innerHTML = `  <div class=" font-weight-bold text-danger text-uppercase mb-1">
                                                         <strong><span>0</span> </strong> {{ __('Quantity of wires') }}</div>`;
+                                                         document.getElementById('workingTime').innerHTML = `  <div class="text-s font-weight-bold text-danger text-uppercase mb-1">
+                                                    <strong> <span >${data.running}</span> Min </strong> {{ __('working Time') }}</div>`;
                      }
 
 
@@ -337,7 +354,18 @@
                         let canvasRendimiento = document.getElementById("rendimientoChart");
                         let canvasCalidad = document.getElementById("calidadChart");
                         let total_fallas_calidas = document.getElementById("quality_bads");
-                        total_fallas_calidas.textContent = data.totalFallasCalidad ?? 0;
+                        let FallasCalidad = data.totalFallasCalidad ?? 0;
+                        if (FallasCalidad > 100) {
+                           total_fallas_calidas.innerHTML = `<div class=" font-weight-bold text-danger text-uppercase mb-1">
+                                                     <strong>${FallasCalidad}<span ></span> Pzs </strong> {{ __('Quality issue') }}</div>`;
+                        } else if(FallasCalidad > 0 && FallasCalidad <= 100){
+                            total_fallas_calidas.innerHTML = `<div class=" font-weight-bold text-warning text-uppercase mb-1">
+                                                     <strong>${FallasCalidad}<span ></span> Pzs </strong> {{ __('Quality issue') }}</div>`;
+                        }else{
+                            total_fallas_calidas.innerHTML = `<div class=" font-weight-bold text-success text-uppercase mb-1">
+                                                     <strong>${FallasCalidad}<span ></span> Pzs </strong> {{ __('Quality issue') }}</div>`;
+                        }
+                       
                         let oee_porcentaje = document.getElementById("oee_porcentaje");
                         oee_porcentaje.textContent = data.oee??0;
 
