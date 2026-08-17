@@ -50,7 +50,7 @@
 
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h5 class="m-0 font-weight-bold text-primary">{{ __('Update BOM') }} </h5>
+                                    <h5 class="m-0 font-weight-bold text-primary">{{ __('Update labels') }} </h5>
 
                                 </div>
 
