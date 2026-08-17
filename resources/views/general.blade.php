@@ -246,13 +246,7 @@
                                     </div>
                                 </div>
                             </div>
-                    </div>
-
-                    <!-- Content Row -->
-                    <div class="row">
-
-                        <!--table of works -->
-                        <div class="col-lg-6 mb-4">
+                               <div class="col-lg-6 mb-4">
                             <!-- AREAS -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
@@ -296,6 +290,13 @@
                                 </div>
                             </div>
                         </div>
+
+                    </div>
+
+                    <!-- Content Row -->
+                    <div class="row">
+
+                        <!--table of works -->
 
 
                         <!-- Column 2 -->
