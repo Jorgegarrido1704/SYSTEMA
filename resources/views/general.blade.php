@@ -220,7 +220,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="quien" class="form-label">Quien solicita</label>
-                                                    <input type="text" id="quien" name="quien" class="form-input" readonly value="{{ $cat }}" required>
+                                                    <input type="text" id="quien" name="quien" class="form-input" readonly value="{{ $value }}" required>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="area" class="form-label">Area que solicita</label>
