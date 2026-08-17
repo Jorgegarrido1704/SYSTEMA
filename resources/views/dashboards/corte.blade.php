@@ -34,8 +34,20 @@
                       </div>
                                  <div class="col-xl-1 col-md-1 mb-4">
                                   </div>
+                                   <div class="col-xl-1 col-md-1 mb-2">
+                                    <div class="card border-left-primary shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2" >
+                                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                        <strong>{{ __('Targer daily') }} 5277</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                  <div class="col-xl-2 col-md-2 mb-2">
-                                    <div class="card border-left-danger shadow h-100 py-2">
+                                    <div class="card border-left-primary shadow h-100 py-2">
                                         <div class="card-body">
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2" id="workingTime">
@@ -46,7 +58,7 @@
                                     </div>
                                 </div>
                                 <div class="col-xl-2 col-md-2 mb-2">
-                                    <div class="card border-left-danger shadow h-100 py-2">
+                                    <div class="card border-left-primary shadow h-100 py-2">
                                         <div class="card-body">
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2" id="parosTime">
@@ -57,7 +69,7 @@
                                     </div>
                                 </div>
                                 <div class="col-xl-2 col-md-2 mb-2">
-                                    <div class="card border-left-danger shadow h-100 py-2">
+                                    <div class="card border-left-primary shadow h-100 py-2">
                                         <div class="card-body">
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2" id="quality_bads">
@@ -68,7 +80,7 @@
                                     </div>
                                 </div>
                                 <div class="col-xl-2 col-md-2 mb-2">
-                                    <div class="card border-left-danger shadow h-100 py-2">
+                                    <div class="card border-left-primary shadow h-100 py-2">
                                         <div class="card-body">
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2" id='cortesCuenta'>
@@ -81,7 +93,7 @@
                                 <!-- Maquina 1 -->
 
 
-                                <div class="col-xl-2 col-md-2 mb-2">
+                                <div class="col-xl-1 col-md-1 mb-2">
                                     <div class="card border-left-primary shadow h-100 py-2">
                                         <div class="card-body">
                                             <div class="row no-gutters align-items-center">
@@ -365,7 +377,7 @@
                             total_fallas_calidas.innerHTML = `<div class=" font-weight-bold text-success text-uppercase mb-1">
                                                      <strong>${FallasCalidad}<span ></span> Pzs </strong> {{ __('Quality issue') }}</div>`;
                         }
-                       
+
                         let oee_porcentaje = document.getElementById("oee_porcentaje");
                         oee_porcentaje.textContent = data.oee??0;
 
