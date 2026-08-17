@@ -2397,7 +2397,7 @@ class juntasController extends Controller
             ->orWhere('jueves', '=', 'F')
             ->orWhere('viernes', '=', 'F')
             ->orWhere('sabado', '=', 'F')
-           
+
             ->whereBetween('week', [Carbon::now()->subWeeks(4)->weekOfYear, Carbon::now()->weekOfYear])
             ->where('yearOfAssistence', '=', Carbon::now()->year)
             ->groupBy('lider')
