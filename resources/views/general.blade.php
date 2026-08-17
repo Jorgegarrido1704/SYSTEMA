@@ -162,10 +162,11 @@
                                     </div>
                                     </div>
                                     <div class="card-body" style="overflow-y: auto; height: 360px;" id='work'>
-                                        <div class="row" >
+
                                             <form  action="{{ route('maintananceGen')}}" method="POST">
                                                 @csrf
-                                                    <div class="form-group">
+                                                <div class="row" >
+                                                    <div class="col-md-6">
                                                         <label for="nom_equipo" class="form-label">Equipo:</label>
                                                         <select id="nom_equipo" name="nom_equipo" class="form-select" required>
                                                             <option value=""></option>
@@ -214,29 +215,33 @@
                                                             <option value='MCUT-8'>MCUT-8</option>
                                                             </select>
                                                     </div>
-                                                    <div class="form-group">
+                                                    <div class="col-md-6">
                                                         <label for="dano" class="form-label">Daño del equipo</label>
                                                         <input type="text" id="dano" name="dano" class="form-input" required>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="quien" class="form-label">Quien solicita</label>
-                                                    <input type="text" id="quien" name="quien" class="form-input" readonly value="{{ $value }}" required>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="area" class="form-label">Area que solicita</label>
-                                                    <select name="area" id="area" class="form-select" required>
-                                                        <option value=""></option>
-                                                        <option value="Corte">Corte</option>
-                                                        <option value="Liberacion">Liberacion</option>
-                                                        <option value="Ensamble">Ensable</option>
-                                                        <option value="Loom">Loom</option>
-                                                        <option value="Pruebas Electricas">Pruebas Electricas</option>
-                                                    </select>
-                                                </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                            <label for="quien" class="form-label">Quien solicita</label>
+                                                            <input type="text" id="quien" name="quien" class="form-input" readonly value="{{ $value }}" required>
+                                                    </div>
 
-                                                <input type="submit" id="submit" value="Send">
+                                                    <div class="col-md-6">
+                                                            <label for="area" class="form-label">Area que solicita</label>
+                                                            <select name="area" id="area" class="form-select" required>
+                                                                <option value=""></option>
+                                                                <option value="Corte">Corte</option>
+                                                                <option value="Liberacion">Liberacion</option>
+                                                                <option value="Ensamble">Ensable</option>
+                                                                <option value="Loom">Loom</option>
+                                                                <option value="Pruebas Electricas">Pruebas Electricas</option>
+                                                            </select>
+                                                    </div>
+
+                                                    <div class="col-md-12">
+                                                        <button type="submit" class="btn btn-primary">{{ __('Send') }}</button>
+                                                    </div>
+                                                </div>
                                                 </form>
-                                    </div>
+
 
                                     </div>
                                 </div>
