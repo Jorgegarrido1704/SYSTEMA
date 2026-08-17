@@ -347,7 +347,38 @@
         </div>
     </div>
 
-    <div class="col-lg-6 col-md-6 mb-8">
+
+    <div class="col-lg-4 col-md-6 mb-4">
+        <div class="card shadow mb-5">
+            <div class="card-header py-3">
+                <h5 class="m-1 font-weight-bold text-primary">{{ __('Top missing Assitence Records') }} {{ __('in the last 4 weeks') }} </h5>
+            </div>
+            <div class="card-body" style=" max-height: 550px;" >
+                <canvas id="topFaltas" style=" height: 400px;"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-6 mb-4">
+        <div class="card shadow mb-5">
+            <div class="card-header py-3">
+                <h5 class="m-1 font-weight-bold text-primary">{{ __('Top Permissions Records') }} {{ __('in the last 4 weeks') }} </h5>
+            </div>
+            <div class="card-body" style=" max-height: 550px;" >
+                <canvas id="topPermisos" style=" height: 400px;"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-6 mb-4">
+        <div class="card shadow mb-5">
+            <div class="card-header py-3">
+                <h5 class="m-1 font-weight-bold text-primary">{{ __('Top Vacations Records') }} {{ __('in the last 4 weeks') }} </h5>
+            </div>
+            <div class="card-body" style=" max-height: 550px;" >
+                <canvas id="topVacaciones" style=" height: 400px;"></canvas>
+            </div>
+        </div>
+    </div>
+      <div class="col-lg-6 col-md-6 mb-8">
         <div class="card shadow mb-5">
             <div class="card-header py-3">
                 <h5 class="m-1 font-weight-bold text-primary">{{ __('Graphics') }}</h5>
@@ -400,36 +431,6 @@
             </div>
             <div class="card-body" style=" max-height: 550px;" >
                 <canvas id="vacations" style=" height: 400px;"></canvas>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-4 col-md-6 mb-4">
-        <div class="card shadow mb-5">
-            <div class="card-header py-3">
-                <h5 class="m-1 font-weight-bold text-primary">{{ __('Top missing Assitence Records') }} {{ __('in the last 4 weeks') }} </h5>
-            </div>
-            <div class="card-body" style=" max-height: 550px;" >
-                <canvas id="topFaltas" style=" height: 400px;"></canvas>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-4 col-md-6 mb-4">
-        <div class="card shadow mb-5">
-            <div class="card-header py-3">
-                <h5 class="m-1 font-weight-bold text-primary">{{ __('Top Permissions Records') }} {{ __('in the last 4 weeks') }} </h5>
-            </div>
-            <div class="card-body" style=" max-height: 550px;" >
-                <canvas id="topPermisos" style=" height: 400px;"></canvas>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-4 col-md-6 mb-4">
-        <div class="card shadow mb-5">
-            <div class="card-header py-3">
-                <h5 class="m-1 font-weight-bold text-primary">{{ __('Top Vacations Records') }} {{ __('in the last 4 weeks') }} </h5>
-            </div>
-            <div class="card-body" style=" max-height: 550px;" >
-                <canvas id="topVacaciones" style=" height: 400px;"></canvas>
             </div>
         </div>
     </div>
