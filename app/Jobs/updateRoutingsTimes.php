@@ -55,7 +55,7 @@ class updateRoutingsTimes implements ShouldQueue
         // 1. Obtener los PNs que están pendientes (Cambiado de 'Pendinete' a 'Pendiente' si es necesario corregir typos)
         $deledataPN = maintainRoutings::where('routing_status', 'Pendiente')
             ->orderBy('id', 'DESC')
-            ->limit(30)
+            ->limit(35)
             ->pluck('pn')
             ->toArray();
 
@@ -103,8 +103,9 @@ class updateRoutingsTimes implements ShouldQueue
                     // LÓGICA 1: Registro de Corte (10001)
                     if ($tamano > 0) {
                         $totalCircuitsCorte++;
-                        $randomTiempoCorte = Arr::random($corte);
-                        $tiempoCorte = $tamano * $randomTiempoCorte;
+                       // $randomTiempoCorte = Arr::random($corte);
+                        $tiempoCorte = $tamano * $randomTiempoCorte; // 0.006325 por millimetro
+                        $tiempoCorte = $tamano * 0.006325;
                         $dataLabelCorte = "Cutting cons {$cons} // Tipo:{$tipo}// AWG: {$aws}// Color: {$color}";
 
                         $bulkInserts[] = [
@@ -113,15 +114,16 @@ class updateRoutingsTimes implements ShouldQueue
                             'posible_stations' => 'FB036',
                             'work_description' => $dataLabelCorte,
                             'QtyTimes' => 1,
-                            'timePerProcess' => 6.48, // $tiempoCorte,
+                            'timePerProcess' =>  $tiempoCorte,//6.48
                             'setUp_routing' => 180, // 300
                         ];
                     }
 
                     // LÓGICA 2: Twist (10061)
                     if ($tamano > 0 && (strpos($cons, 'T') === 0)) {
-                        $randomTiempoTwist = Arr::random($twistMm);
-                        $tiempoTwist = $tamano * $randomTiempoTwist;
+                      //  $randomTiempoTwist = Arr::random($twistMm);
+                       // $tiempoTwist = $tamano * $randomTiempoTwist;
+                         $tiempoTwist = $tamano * 0.008253;
                         $verificacion = 'Twist '.explode('-', $cons)[0];
 
                         if (! isset($agrupadoTwist[$verificacion])) {
@@ -167,7 +169,12 @@ class updateRoutingsTimes implements ShouldQueue
                         }
 
                         $terminalesConteo1[$termClean1] = ($terminalesConteo1[$termClean1] ?? 0) + 1;
-
+                           /* 
+                           terminales en banco = 2.23
+                           terminales en manual  = 8.96
+                           terminales en canon = 6.9
+                           termina general = 5.94
+                           */
                         if (strpos($termClean1, 'T3-') === false && strpos($termClean1, 'T4-') === false && ! in_array($termClean1, $NoRequeridas)) {
                             $bulkInserts[] = [
                                 'pn_routing' => $np,
@@ -175,7 +182,7 @@ class updateRoutingsTimes implements ShouldQueue
                                 'posible_stations' => 'pend',
                                 'work_description' => "Plug {$termClean1} Terminal in {$df}",
                                 'QtyTimes' => 1,
-                                'timePerProcess' => Arr::random($plugIn),
+                                'timePerProcess' => 4.79,//Arr::random($plugIn),
                                 'setUp_routing' => 60,
                             ];
                             $bulkInserts[] = [
@@ -184,7 +191,7 @@ class updateRoutingsTimes implements ShouldQueue
                                 'posible_stations' => 'pend',
                                 'work_description' => "Routing Wire in {$df}",
                                 'QtyTimes' => 1,
-                                'timePerProcess' => Arr::random($routingBoardTime),
+                                'timePerProcess' =>  1.43,//Arr::random($routingBoardTime),
                                 'setUp_routing' => 60,
                             ];
                         }
@@ -207,7 +214,7 @@ class updateRoutingsTimes implements ShouldQueue
                                 'posible_stations' => 'pend',
                                 'work_description' => "Plug {$termClean2} Terminal in {$dt}",
                                 'QtyTimes' => 1,
-                                'timePerProcess' => Arr::random($plugIn),
+                                'timePerProcess' => 4.79,//Arr::random($plugIn),
                                 'setUp_routing' => 60,
                             ];
                             $bulkInserts[] = [
@@ -216,7 +223,7 @@ class updateRoutingsTimes implements ShouldQueue
                                 'posible_stations' => 'pend',
                                 'work_description' => "Routing Wire in {$dt}",
                                 'QtyTimes' => 1,
-                                'timePerProcess' => Arr::random($routingBoardTime),
+                                'timePerProcess' => 1.43,
                                 'setUp_routing' => 60,
                             ];
                         }
@@ -286,10 +293,10 @@ class updateRoutingsTimes implements ShouldQueue
                 }
 
                 foreach ($terminalesConteo1 as $term => $qty) {
-                    $bulkInserts[] = ['pn_routing' => $np, 'work_routing' => '10081', 'posible_stations' => 'FB-081', 'work_description' => $term, 'QtyTimes' => $qty, 'timePerProcess' => 6.03, 'setUp_routing' => 180];
+                    $bulkInserts[] = ['pn_routing' => $np, 'work_routing' => '10081', 'posible_stations' => 'FB-081', 'work_description' => $term, 'QtyTimes' => $qty, 'timePerProcess' => 5.94, 'setUp_routing' => 180];
                 }
                 foreach ($terminalesConteo2 as $term => $qty) {
-                    $bulkInserts[] = ['pn_routing' => $np, 'work_routing' => '10081', 'posible_stations' => 'FB-081', 'work_description' => $term, 'QtyTimes' => $qty, 'timePerProcess' => 6.03, 'setUp_routing' => 180];
+                    $bulkInserts[] = ['pn_routing' => $np, 'work_routing' => '10081', 'posible_stations' => 'FB-081', 'work_description' => $term, 'QtyTimes' => $qty, 'timePerProcess' => 5.94, 'setUp_routing' => 180];
                 }
 
                 if ($totalSoldar > 0) {
@@ -297,8 +304,8 @@ class updateRoutingsTimes implements ShouldQueue
                 }
 
                 if ($cantidadMangas > 0) {
-                    $bulkInserts[] = ['pn_routing' => $np, 'work_routing' => '10361', 'posible_stations' => 'Pend', 'work_description' => 'Set HeadShrink in Terminals ', 'QtyTimes' => $cantidadMangas, 'timePerProcess' => Arr::random($setHeadShrink), 'setUp_routing' => 180];
-                    $bulkInserts[] = ['pn_routing' => $np, 'work_routing' => '10401', 'posible_stations' => 'Pend', 'work_description' => 'Burn Heatshrirnk w/headgun in Terminals ', 'QtyTimes' => $cantidadMangas, 'timePerProcess' => Arr::random($burnHeatGun), 'setUp_routing' => 180];
+                    $bulkInserts[] = ['pn_routing' => $np, 'work_routing' => '10361', 'posible_stations' => 'Pend', 'work_description' => 'Set HeadShrink in Terminals ', 'QtyTimes' => $cantidadMangas, 'timePerProcess' => 6.325, 'setUp_routing' => 180]; //Arr::random($setHeadShrink)
+                    $bulkInserts[] = ['pn_routing' => $np, 'work_routing' => '10401', 'posible_stations' => 'Pend', 'work_description' => 'Burn Heatshrirnk w/headgun in Terminals ', 'QtyTimes' => $cantidadMangas, 'timePerProcess' => 6.325, 'setUp_routing' => 180]; //Arr::random($burnHeatGun)
                 }
 
                 foreach ($tipoSplice as $key => $value) {
@@ -307,10 +314,10 @@ class updateRoutingsTimes implements ShouldQueue
                     // $timpoSetSplice = ($QtySpliceA * Arr::random($setSplice)) * Arr::random($setSplice);
                     $timpoSetSplice = 26.75;
 
-                    $bulkInserts[] = ['pn_routing' => $np, 'work_routing' => '10341', 'posible_stations' => 'Pend', 'work_description' => "Create set for splice {$QtySpliceA} : {$QtySpliceB}", 'QtyTimes' => 1, 'timePerProcess' => $timpoSetSplice, 'setUp_routing' => 180];
-                    $bulkInserts[] = ['pn_routing' => $np, 'work_routing' => '10301', 'posible_stations' => 'FB110', 'work_description' => 'splice set apply with machine', 'QtyTimes' => 1, 'timePerProcess' => 22.46, 'setUp_routing' => 180]; // Arr::random($applySpleceInMachine)
-                    $bulkInserts[] = ['pn_routing' => $np, 'work_routing' => '10361', 'posible_stations' => 'Pend', 'work_description' => 'Set HeadShrink in splice ', 'QtyTimes' => 1, 'timePerProcess' => Arr::random($setHeadShrink), 'setUp_routing' => 180];
-                    $bulkInserts[] = ['pn_routing' => $np, 'work_routing' => '10401', 'posible_stations' => 'Pend', 'work_description' => 'Burn Heatshrirnk w/headgun in Splice ', 'QtyTimes' => 1, 'timePerProcess' => Arr::random($burnHeatGun), 'setUp_routing' => 180];
+                    $bulkInserts[] = ['pn_routing' => $np, 'work_routing' => '10341', 'posible_stations' => 'Pend', 'work_description' => "Create set for splice {$QtySpliceA} : {$QtySpliceB}", 'QtyTimes' => 1, 'timePerProcess' => 36, 'setUp_routing' => 180];
+                    $bulkInserts[] = ['pn_routing' => $np, 'work_routing' => '10301', 'posible_stations' => 'FB110', 'work_description' => 'splice set apply with machine', 'QtyTimes' => 1, 'timePerProcess' => 18.71, 'setUp_routing' => 180]; // Arr::random($applySpleceInMachine)
+                    $bulkInserts[] = ['pn_routing' => $np, 'work_routing' => '10361', 'posible_stations' => 'Pend', 'work_description' => 'Set HeadShrink in splice ', 'QtyTimes' => 1, 'timePerProcess' => 6.325, 'setUp_routing' => 180];
+                    $bulkInserts[] = ['pn_routing' => $np, 'work_routing' => '10401', 'posible_stations' => 'Pend', 'work_description' => 'Burn Heatshrirnk w/headgun in Splice ', 'QtyTimes' => 1, 'timePerProcess' => 6.325, 'setUp_routing' => 180];
                 }
 
                 // --- D. TABLA DATOS (LOOM PROCESS) CON QUERY BUILDER ---
@@ -338,28 +345,30 @@ class updateRoutingsTimes implements ShouldQueue
                 foreach ($buscarLoom as $d) {
                     $item = $d->item;
                     $qty = floatval($d->qty);
-                    $timeRand = Arr::random($loomingTime);
+                    $timeRand = 10.62;//Arr::random($loomingTime);
 
                     if ($item === 'TAPE-835') {
-                        $tapingTotal835 += ($timeRand * 1.2 * $qty) * 1.15;
+                        $tapingTotal835 += ($timeRand *  $qty) ;
                     } elseif (strpos($item, 'LTP') === 0) {
-                        $loomingTotal835 += ($timeRand * 1.2) * $qty;
-                        $normalTaping835 += ($timeRand * 1.2) * $qty;
+                        $loomingTotal835 += ($timeRand ) * $qty;
+                        $normalTaping835 += ($timeRand ) * $qty;
                         $loomingTotal25 += $timeRand * $qty;
                     }
 
                     if ($item === 'TAPE-25') {
-                        $normalTaping25 += ($timeRand * $qty) * 1.25;
+                        $normalTaping25 += (18.41 * $qty) ;
                     }
                     if (strpos($item, 'LW-') === 0) {
-                        $totalLabeling += ($qty * 5);
+                        $totalLabeling += ($qty * 8.61);//5
                     }
                     if (strpos($item, 'LSL') === 0 && strpos($item, '-') !== false) {
-                        $braidTotal += ($timeRand * $qty) * 1.33;
+                        $braidTotal += (33.8 * $qty) ;
                     }
                     if (strpos($item, 'PA') === 0 && strpos($item, '-') !== false) {
-                        $totalTies += ($qty * 5.3 * 1.15);
+                        $totalTies += ($qty * 15);
                     }
+                    //copleas
+                    //malla =163.27
                 }
 
                 // Inserciones de la sección Loom
@@ -367,29 +376,29 @@ class updateRoutingsTimes implements ShouldQueue
                     $tappingandlooming = ($loomingTotal835 + $tapingTotal835) * 1.1;
                     $normalTaping835 *= 1.55;
                     if ($loomingTotal835 > 0) {
-                        $bulkInserts[] = ['pn_routing' => $np, 'work_routing' => '11000', 'posible_stations' => 'Pend', 'work_description' => 'looming', 'QtyTimes' => 1, 'timePerProcess' => max(30, round($loomingTotal835)), 'setUp_routing' => 150];
+                        $bulkInserts[] = ['pn_routing' => $np, 'work_routing' => '11000', 'posible_stations' => 'Pend', 'work_description' => 'looming', 'QtyTimes' => 1, 'timePerProcess' =>  round($loomingTotal835,2), 'setUp_routing' => 150];
                     }
                     if ($tappingandlooming > 0) {
-                        $bulkInserts[] = ['pn_routing' => $np, 'work_routing' => '11001', 'posible_stations' => 'Pend', 'work_description' => 'Taping/Looming', 'QtyTimes' => 1, 'timePerProcess' => max(30, round($tappingandlooming)), 'setUp_routing' => 150];
+                        $bulkInserts[] = ['pn_routing' => $np, 'work_routing' => '11001', 'posible_stations' => 'Pend', 'work_description' => 'Taping/Looming', 'QtyTimes' => 1, 'timePerProcess' =>  round($tappingandlooming,2), 'setUp_routing' => 150];
                     }
                     if ($normalTaping835 > 0) {
-                        $bulkInserts[] = ['pn_routing' => $np, 'work_routing' => '10901', 'posible_stations' => 'Pend', 'work_description' => 'Taping Body/Assembly', 'QtyTimes' => 1, 'timePerProcess' => max(30, round($normalTaping835)), 'setUp_routing' => 150];
+                        $bulkInserts[] = ['pn_routing' => $np, 'work_routing' => '10901', 'posible_stations' => 'Pend', 'work_description' => 'Taping Body/Assembly/loom', 'QtyTimes' => 1, 'timePerProcess' =>  round($normalTaping835,2), 'setUp_routing' => 150];
                     }
                 }
 
                 if ($loomingTotal25 <= 0 && $normalTaping25 > 0) {
                     $normalTaping25 = round(($normalTaping25 * 2.5), 2);
-                    $bulkInserts[] = ['pn_routing' => $np, 'work_routing' => '10901', 'posible_stations' => 'Pend', 'work_description' => 'Taping Body/Assembly', 'QtyTimes' => 1, 'timePerProcess' => max(30, round($normalTaping25)), 'setUp_routing' => 150];
+                    $bulkInserts[] = ['pn_routing' => $np, 'work_routing' => '10901', 'posible_stations' => 'Pend', 'work_description' => 'Taping Body/Assembly', 'QtyTimes' => 1, 'timePerProcess' =>  round($normalTaping25,2), 'setUp_routing' => 150];
                 }
 
                 if ($totalLabeling > 0) {
-                    $bulkInserts[] = ['pn_routing' => $np, 'work_routing' => '11050', 'posible_stations' => 'Pend', 'work_description' => 'labeling', 'QtyTimes' => 1, 'timePerProcess' => max(30, round($totalLabeling)), 'setUp_routing' => 150];
+                    $bulkInserts[] = ['pn_routing' => $np, 'work_routing' => '11050', 'posible_stations' => 'Pend', 'work_description' => 'labeling', 'QtyTimes' => 1, 'timePerProcess' =>  round($totalLabeling,2), 'setUp_routing' => 150];
                 }
                 if ($braidTotal > 0) {
-                    $bulkInserts[] = ['pn_routing' => $np, 'work_routing' => '11101', 'posible_stations' => 'Pend', 'work_description' => 'Braiding', 'QtyTimes' => 1, 'timePerProcess' => max(30, round($braidTotal)), 'setUp_routing' => 150];
+                    $bulkInserts[] = ['pn_routing' => $np, 'work_routing' => '11101', 'posible_stations' => 'Pend', 'work_description' => 'Braiding', 'QtyTimes' => 1, 'timePerProcess' => round($braidTotal,2), 'setUp_routing' => 150];
                 }
                 if ($totalTies > 0) {
-                    $bulkInserts[] = ['pn_routing' => $np, 'work_routing' => '10801', 'posible_stations' => 'Pend', 'work_description' => 'Add Ties', 'QtyTimes' => 1, 'timePerProcess' => max(30, round($totalTies)), 'setUp_routing' => 150];
+                    $bulkInserts[] = ['pn_routing' => $np, 'work_routing' => '10801', 'posible_stations' => 'Pend', 'work_description' => 'Add Ties', 'QtyTimes' => 1, 'timePerProcess' =>  round($totalTies,2), 'setUp_routing' => 150];
                 }
             }
 
