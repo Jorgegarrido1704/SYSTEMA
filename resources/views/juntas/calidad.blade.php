@@ -302,7 +302,7 @@
                 <div class="card-header py-3">
                     <h5 class="m-0 font-weight-bold text-primary">{{ __('Porcentaje of the harness per famalies') }}</h5>
                 </div>
-                <div class="card-body" style="overflow-y: auto; height: 560px;" >
+                <div class="card-body" style="overflow-y: auto; height: 380px;" >
                     <div class="row">
                         <div class="col-lg-4 col-lx-4">
                              <table class="table table-striped table-bordered">
