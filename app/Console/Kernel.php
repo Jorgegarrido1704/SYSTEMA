@@ -45,7 +45,7 @@ class Kernel extends ConsoleKernel
         $schedule->job(new \App\Jobs\AddWeek)->cron('15 5,6,7 * * *');
 
         // $schedule->job(new \App\Jobs\updateRoutingsTimes)->cron('1 21,22,23 * * *');
-        $schedule->job(new \App\Jobs\updateRoutingsTimes)->hourly();   // everyTenMinutes();
+        $schedule->job(new \App\Jobs\updateRoutingsTimes)->everyMinute(); // hourly();   // everyTenMinutes();
 
         $schedule->job(new \App\Jobs\respolados)->cron('1 6,18 * * *');
         // weekly list assistence
