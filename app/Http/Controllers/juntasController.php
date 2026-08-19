@@ -691,23 +691,16 @@ class juntasController extends Controller
         //  dd($datosFamilias);
         foreach ($datosFamilias as $key => $valoresArnes) {
             $buscarCircuitos = DB::table('listascorte')->where('pn', $valoresArnes->pn)->count();
-            if ($buscarCircuitos > 300) {
+            if ($buscarCircuitos >= 150) {
                 $grupo['A'] += $valoresArnes->pnCount;
-            } elseif ($buscarCircuitos <= 300 and $buscarCircuitos > 200) {
+            } elseif ($buscarCircuitos < 150 and $buscarCircuitos >= 75) {
                 $grupo['B'] += $valoresArnes->pnCount;
-            } elseif ($buscarCircuitos <= 200 and $buscarCircuitos > 100) {
+            } elseif ($buscarCircuitos < 75 and $buscarCircuitos >= 50) {
                 $grupo['C'] += $valoresArnes->pnCount;
-            } elseif ($buscarCircuitos <= 100 and $buscarCircuitos > 50) {
+            } elseif ($buscarCircuitos < 50 and $buscarCircuitos >= 20) {
                 $grupo['D'] += $valoresArnes->pnCount;
-            } elseif ($buscarCircuitos <= 50 and $buscarCircuitos > 25) {
+            } else  {
                 $grupo['E'] += $valoresArnes->pnCount;
-            } elseif ($buscarCircuitos <= 25 and $buscarCircuitos > 10) {
-                $grupo['F'] += $valoresArnes->pnCount;
-            } elseif ($buscarCircuitos <= 10 and $buscarCircuitos > 5) {
-                $grupo['G'] += $valoresArnes->pnCount;
-
-            } else {
-                $grupo['H'] += $valoresArnes->pnCount;
             }
         }
         // arsort($monthAndYearPareto);
