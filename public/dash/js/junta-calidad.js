@@ -516,16 +516,13 @@ var GruposFamilias = new Chart(familiasGrupos, {
                 label: 'Códigos de error más comunes',
                 data: grupoValues,
                 backgroundColor:[
-  'rgba(200, 48, 28, 1)',
+  
   'rgba(200, 94, 28, 1)',
   'rgba(200, 117, 28, 1)',
   'rgba(200, 131, 28, 1)',
   'rgba(210, 150, 28, 1)',
   'rgba(200, 154, 28, 1)',
-  'rgba(194, 200, 28, 1)',
-  'rgba(188, 200, 28, 1)',
-  'rgba(171, 200, 28, 1)',
-  'rgba(151, 200, 28, 1)'
+ 
 ],
                 fill: false, // Evita rellenar el área debajo de la línea
                 borderWidth: 4
@@ -553,8 +550,8 @@ var GruposFamilias = new Chart(familiasGrupos, {
                 ticks: {
                     beginAtZero: true,
                     min: 1,
-                    max: 10000,
-                    stepSize: 500,
+                    max: 250,
+                    stepSize: 50,
                 },
                 gridLines: {
                     color: '#e3e3e3',
