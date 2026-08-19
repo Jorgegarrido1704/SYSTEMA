@@ -2040,7 +2040,7 @@ class juntasController extends Controller
 
         for ($i = 0; $i < $revDias; $i++) {
             // si es domingo
-            if (Carbon::parse($checkDias)->dayOfWeek == 0) {
+            if (Carbon::parse($checkDias)->dayOfWeek == 0 or Carbon::parse($checkDias)->dayOfWeek == 6) {
                 $revDias++;
             } else {
                 $datosVacaciones = DB::table('registro_vacaciones')
@@ -2105,7 +2105,7 @@ class juntasController extends Controller
         for ($i = 0; $i < $diasT; $i++) {
 
             // Check if the date is a weekend
-            if (Carbon::parse($returnDate)->dayOfWeek == 0) {
+            if (Carbon::parse($returnDate)->dayOfWeek == 0 or Carbon::parse($returnDate)->dayOfWeek == 6) {
                 $diasT++;
             } else {
                 if (($diasReg - ($currentYear + $lastyear)) > 0) {

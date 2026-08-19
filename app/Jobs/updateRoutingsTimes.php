@@ -104,7 +104,7 @@ class updateRoutingsTimes implements ShouldQueue
                     if ($tamano > 0) {
                         $totalCircuitsCorte++;
                        // $randomTiempoCorte = Arr::random($corte);
-                        $tiempoCorte = $tamano * $randomTiempoCorte; // 0.006325 por millimetro
+                       // $tiempoCorte = $tamano * $randomTiempoCorte; // 0.006325 por millimetro
                         $tiempoCorte = $tamano * 0.006325;
                         $dataLabelCorte = "Cutting cons {$cons} // Tipo:{$tipo}// AWG: {$aws}// Color: {$color}";
 
