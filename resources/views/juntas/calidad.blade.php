@@ -315,45 +315,30 @@
                                 <tbody>
                                     <tr>
                                         <td>{{ __('Harness') }} A</td>
-                                        <td>{{ __('MORE THAN') }} 300</td>
+                                        <td>{{ __('MORE THAN') }} 150</td>
                                         <td>{{$grupo['A']}}</td>
                                     </tr>
                                     <tr>
                                         <td>{{ __('Harness') }} B</td>
-                                        <td>{{ __('BETWEEN') }} 200 {{ __('AND') }} 300</td>
+                                        <td>{{ __('BETWEEN') }} 150 {{ __('AND') }} 76</td>
                                         <td>{{$grupo['B']}}</td>
                                     </tr>
                                     <tr>
                                         <td>{{ __('Harness') }} C</td>
-                                        <td>{{ __('BETWEEN') }} 100 {{ __('AND') }} 199</td>
+                                        <td>{{ __('BETWEEN') }} 75 {{ __('AND') }} 51</td>
                                         <td>{{$grupo['C']}}</td>
                                     </tr>
                                     <tr>
                                         <td>{{ __('Harness') }} D</td>
-                                        <td>{{ __('BETWEEN') }} 50 {{ __('AND') }} 99</td>
+                                        <td>{{ __('BETWEEN') }} 50 {{ __('AND') }} 21</td>
                                         <td>{{$grupo['D']}}</td>
                                     </tr>
                                      <tr>
                                         <td>{{ __('Harness') }} E</td>
-                                        <td>{{ __('BETWEEN') }} 25 {{ __('AND') }} 49</td>
+                                        <td>{{ __('BETWEEN') }} 20 {{ __('AND') }} 1</td>
                                         <td>{{$grupo['E']}}</td>
                                     </tr>
-                                    <tr>
-                                        <td>{{ __('Harness') }} F</td>
-                                        <td>{{ __('BETWEEN') }} 10 {{ __('AND') }} 24</td>
-                                        <td>{{$grupo['F']}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>{{ __('Harness') }} G</td>
-                                        <td>{{ __('BETWEEN') }} 5 {{ __('AND') }} 9</td>
-                                        <td>{{$grupo['G']}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>{{ __('Harness') }} H</td>
-                                        <td>{{ __('LESS THAN') }} 5</td>
-                                        <td>{{$grupo['H']}}</td>
-                                    </tr>
-
+                                   
                                 </tbody>
                             </table>
                         </div>
