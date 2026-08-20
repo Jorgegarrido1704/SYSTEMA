@@ -2719,6 +2719,7 @@ class juntasController extends Controller
          SUM(CASE WHEN color = "yellow" THEN 1 ELSE 0 END) as prim
         ')
             ->whereNull('documentsApproved')
+            ->where('Status', '!=', 'CANCELLED')
             ->get();
 
         // 2. Completed General Schedules (Fixed case-sensitivity for column names if needed)
@@ -2728,7 +2729,7 @@ class juntasController extends Controller
             ->where('status', 'Completed')
             ->whereNotNull('documentsApproved')
             ->whereNull('UpOrderDate')     // cleaner Laravel way for checking null
-
+            ->where('Status', '!=', 'CANCELLED')
             ->get();
         // dd($totalgeneral, $inprogres);
         // 3. Fixed Wo Query
