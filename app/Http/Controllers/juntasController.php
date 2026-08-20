@@ -2729,7 +2729,7 @@ class juntasController extends Controller
             ->where('status', 'Completed')
             ->whereNotNull('documentsApproved')
             ->whereNull('UpOrderDate')     // cleaner Laravel way for checking null
-            ->where('Status', '!=', 'CANCELLED')
+            ->where('Status', '!=', 'CANCELLED') 
             ->get();
         // dd($totalgeneral, $inprogres);
         // 3. Fixed Wo Query
@@ -2805,7 +2805,7 @@ class juntasController extends Controller
             $color = 'green';
             $tipo = 'PPAP';
         }
-        $inprogres = workScreduleModel::whereNull('documentsApproved')->where('color', $color)->get();
+        $inprogres = workScreduleModel::whereNull('documentsApproved')->where('color', $color) ->where('Status', '!=', 'CANCELLED') ->get();
         foreach ($inprogres as $inp) {
             $receiptDate = Carbon::parse($inp->receiptDate)->startOfDay();
             $days = $receiptDate->diffInWeekDays(Carbon::now()->startOfDay());
@@ -2816,6 +2816,7 @@ class juntasController extends Controller
 
         // 2. Completed General Schedules (Fixed case-sensitivity for column names if needed)
         $totalgeneral = workScreduleModel::where('status', 'Completed')
+        ->where('Status', '!=', 'CANCELLED') 
             ->whereNotNull('documentsApproved')
             ->whereNull('UpOrderDate')     // cleaner Laravel way for checking null
             ->where('color', $color)
