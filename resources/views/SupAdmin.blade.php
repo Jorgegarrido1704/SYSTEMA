@@ -20,6 +20,23 @@
 
                     </div>
                     <div class="row">
+                        <!-- Reactive Orders Area -->
+                        <div class="card shadow mb-4 col-lg-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Reactive Orders</h6>
+                            </div>
+                            <div class="card-body" style="overflow-y: auto; height: 360px;">
+                                <form action="{{ route('reactivacion_wo') }}" method="GET" class="form-inline">
+                                    <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                        <label for="work_order_reactive">Work Order</label>
+                                        <input type="text" class="form-control" name="work_order_reactive" id="work_order_reactive"  maxlength="6"  minlength="6" required >
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+
+                        <!--end reactive orders area-->
                         <!-- Shipping Area -->
                         <div class="card shadow mb-4 col-lg-4">
                             <div class="card-header py-3">

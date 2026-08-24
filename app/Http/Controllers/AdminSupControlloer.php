@@ -358,4 +358,35 @@ class AdminSupControlloer extends Controller
             'global' => ['demanda_diaria' => Pedido::hoy()->count()],
         ]);
     }
+
+    public function reactivacion_wo(Request $request)
+    {
+        $input = $request->all();
+        $request->validate([
+            'work_order_reactive' => ['required', 'max:6'],
+        ]);
+        $work_order_reactive = $input['work_order_reactive'];
+        $datos_work = DB::table('retiradad')->where('wo', $work_order_reactive)->first();
+        foreach ($datos_work as $reg_pre) {
+            DB::table('po')->where('po', $reg_pre->sono)->delete();
+            DB::table('registro')->Insert([
+                'wo' => $reg_pre->wo,
+                'cliente' => $reg_pre->cliente,
+                'NumPart' => $reg_pre->np,
+                'rev' => '-',
+                'po' => $reg_pre->sono,
+                'Qty' => $reg_pre->qty,
+                'orday' => $reg_pre->fechaing,
+                'reqday' => $reg_pre->fechaout,
+                'info' => $reg_pre->codigo,
+                'description' => 'Orden Reactivada',
+                'price' => 0.01,
+
+            ]);
+
+        }
+
+        return redirect()->route('SupAdmin')->with('success', 'WO reactivado correctamente.');
+
+    }
 }
