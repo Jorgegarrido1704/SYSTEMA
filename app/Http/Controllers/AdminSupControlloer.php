@@ -363,30 +363,32 @@ class AdminSupControlloer extends Controller
     {
         $input = $request->all();
         $request->validate([
-            'work_order_reactive' => ['required', 'max:6'],
+            'work_order_reactive' => 'required',
         ]);
         $work_order_reactive = $input['work_order_reactive'];
+      //  dd($work_order_reactive);
         $datos_work = DB::table('retiradad')->where('wo', $work_order_reactive)->first();
-        foreach ($datos_work as $reg_pre) {
-            DB::table('po')->where('po', $reg_pre->sono)->delete();
+   
+          //  dd($datos_work->sono);
+            DB::table('po')->where('po','=', $datos_work->sono)->delete();
             DB::table('registro')->Insert([
-                'wo' => $reg_pre->wo,
-                'cliente' => $reg_pre->cliente,
-                'NumPart' => $reg_pre->np,
+                'wo' => $datos_work->wo,
+                'cliente' => $datos_work->cliente,
+                'NumPart' => $datos_work->np,
                 'rev' => '-',
-                'po' => $reg_pre->sono,
-                'Qty' => $reg_pre->qty,
-                'orday' => $reg_pre->fechaing,
-                'reqday' => $reg_pre->fechaout,
-                'info' => $reg_pre->codigo,
+                'po' => $datos_work->sono,
+                'Qty' => $datos_work->qty,
+                'orday' => $datos_work->fechaing,
+                'reqday' => $datos_work->fechaout,
+                'info' => $datos_work->codigo,
                 'description' => 'Orden Reactivada',
                 'price' => 0.01,
 
             ]);
 
-        }
+        
 
-        return redirect()->route('SupAdmin')->with('success', 'WO reactivado correctamente.');
+        return redirect()->back()->with('success', 'WO reactivado correctamente.');
 
     }
 }
