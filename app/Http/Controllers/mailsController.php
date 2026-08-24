@@ -71,7 +71,7 @@ class mailsController extends Controller
             $registroFirmas = PPAPandPRIM::where('count', '=', 1)->where('compras', '=', '')->orderby('id', 'desc')->get();
         } elseif ($value == 'Juan O' or $value == 'David V') {
             $registroFirmas = PPAPandPRIM::where('count', '=', 1)->where('production', '=', '')->orderby('id', 'desc')->get();
-        } elseif ($value == 'Estela G' or $value == 'Gamboa J' or $value == 'Grecia D') {
+        } elseif ($value == 'Estela G' or $value == 'Gamboa J' or $value == 'Alan P') {
             $registroFirmas = PPAPandPRIM::where('count', '=', 1)->where('gernete', '=', '')->orderby('id', 'desc')->get();
         } else {
             $registroFirmas = [];
@@ -186,6 +186,7 @@ class mailsController extends Controller
                 'jcrodriguez@mx.bergstrominc.com',
                 'lramos@mx.bergstrominc.com',
                 'emedina@mx.bergstrominc.com',
+                'evillegas@mx.bergstrominc.com',
                 'drocha@mx.bergstrominc.com',
                 'enunez@mx.bergstrominc.com',
                 'fsuarez@mx.bergstrominc.com',
@@ -194,7 +195,6 @@ class mailsController extends Controller
                 'dflores@mx.bergstrominc.com',
                 'jrodriguez@mx.bergstrominc.com',
                 'jgamboa@mx.bergstrominc.com',
-                'jguillen@mx.bergstrominc.com',
                 'ediaz@mx.bergstrominc.com',
                 'dmartinez@mx.bergstrominc.com',
 
@@ -228,7 +228,7 @@ class mailsController extends Controller
             'dflores@mx.bergstrominc.com',
             'jrodriguez@mx.bergstrominc.com',
             'jgamboa@mx.bergstrominc.com',
-            'jguillen@mx.bergstrominc.com',
+
             'ediaz@mx.bergstrominc.com',
             'dmartinez@mx.bergstrominc.com',
         ];
