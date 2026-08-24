@@ -67,7 +67,8 @@ class Kernel extends ConsoleKernel
             });
 
         // weekly list assistence
-        $schedule->job(new \App\Jobs\reporteGeneral)->dailyAt('06:32')
+        $schedule->job(new \App\Jobs\reporteGeneral)->cron('45 6,9,13,17 * * 1-5')
+         ->timezone('America/Mexico_City')
             ->onFailure(function () {
                 Log::error('El job de reporte general falló.');
             });
