@@ -373,11 +373,14 @@ class AdminSupControlloer extends Controller
         DB::table('po')->where('po', '=', $datos_work->sono)->delete();
         DB::table('corte')->where('wo', '=', $datos_work->wo)->delete();
         DB::table('carga_congelada')->where('wo', '=', $datos_work->wo)->delete();
+        DB::table('shrink')->where('wo', '=', $datos_work->wo)->delete();
+        $rev = explode('R', $datos_work->codigo)[1];
+
         DB::table('registro')->Insert([
             'wo' => $datos_work->wo,
             'cliente' => $datos_work->cliente,
             'NumPart' => $datos_work->np,
-            'rev' => '-',
+            'rev' => $rev ?? '-',
             'po' => $datos_work->sono,
             'Qty' => $datos_work->qty,
             'orday' => $datos_work->fechaing,
