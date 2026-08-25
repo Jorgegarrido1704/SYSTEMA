@@ -366,27 +366,26 @@ class AdminSupControlloer extends Controller
             'work_order_reactive' => 'required',
         ]);
         $work_order_reactive = $input['work_order_reactive'];
-      //  dd($work_order_reactive);
+        //  dd($work_order_reactive);
         $datos_work = DB::table('retiradad')->where('wo', $work_order_reactive)->first();
-   
-          //  dd($datos_work->sono);
-            DB::table('po')->where('po','=', $datos_work->sono)->delete();
-            DB::table('registro')->Insert([
-                'wo' => $datos_work->wo,
-                'cliente' => $datos_work->cliente,
-                'NumPart' => $datos_work->np,
-                'rev' => '-',
-                'po' => $datos_work->sono,
-                'Qty' => $datos_work->qty,
-                'orday' => $datos_work->fechaing,
-                'reqday' => $datos_work->fechaout,
-                'info' => $datos_work->codigo,
-                'description' => 'Orden Reactivada',
-                'price' => 0.01,
 
-            ]);
-
-        
+        //  dd($datos_work->sono);
+        DB::table('po')->where('po', '=', $datos_work->sono)->delete();
+        DB::table('corte')->where('wo', '=', $datos_work->wo)->delete();
+        DB::table('carga_congelada')->where('wo', '=', $datos_work->wo)->delete();
+        DB::table('registro')->Insert([
+            'wo' => $datos_work->wo,
+            'cliente' => $datos_work->cliente,
+            'NumPart' => $datos_work->np,
+            'rev' => '-',
+            'po' => $datos_work->sono,
+            'Qty' => $datos_work->qty,
+            'orday' => $datos_work->fechaing,
+            'reqday' => $datos_work->fechaout,
+            'info' => $datos_work->codigo,
+            'description' => 'Orden Reactivada',
+            'price' => 0.01,
+        ]);
 
         return redirect()->back()->with('success', 'WO reactivado correctamente.');
 
