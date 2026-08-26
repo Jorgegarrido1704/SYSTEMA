@@ -204,8 +204,9 @@ var dat = {!! json_encode($datosP) !!};
                                         <tbody id="liberarBody">
                                     @foreach($porLiberar as $liberar)
                                     <tr>
-                                        <td>{{$liberar->partNumber}}</td>
+                                        <td>{{$liberar->pn}}</td>
                                         <td>{{$liberar->wo}}</td>
+                                        <td>
                                     <form action="{{route('codeBarPlan')}}" method="GET">
                                         <div class="form-group">
                                             <div class="form-group">
@@ -215,6 +216,7 @@ var dat = {!! json_encode($datosP) !!};
                                             <button class="btn btn-success" type="submit"> {{ __('Liberate') }}</button>
                                             </div>
                                     </form>
+                                        </td>
                                     </tr>
                                     @endforeach
                                         </tbody>
