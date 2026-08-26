@@ -193,18 +193,33 @@ var dat = {!! json_encode($datosP) !!};
                                     <h5 class="m-0 font-weight-bold text-primary">{{ __('Liberate Order') }}</h5>
                                 </div>
                                 <div class="card-body" style="overflow-y: auto; height: 360px;">
+                                    <table class="table table-bordered">
+                                        <thead class= "thead-light">
+                                            <tr>
+                                                <th>{{ __('Part Number') }}</th>
+                                                <th>{{ __('WO') }}</th>
+                                                <th>{{ __('Freedom') }}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="liberarBody">
+                                    @foreach($porLiberar as $liberar)
+                                    <tr>
+                                        <td>{{$liberar->partNumber}}</td>
+                                        <td>{{$liberar->wo}}</td>
                                     <form action="{{route('codeBarPlan')}}" method="GET">
                                         <div class="form-group">
-                                            <label for="wo_scan" class="form-label">{{ __('Scan WO') }}</label>
+                                            <div class="form-group">
+                                            <input type="hidden" name="wo_scan" id="wo_scan" class="form-control" value={{$liberar->wo}}>
                                             </div>
                                             <div class="form-group">
-                                            <input type="text" name="wo_scan" id="wo_scan" class="form-control" autofocus>
-                                            </div>
-                                            <div class="form-group">
-                                            <button class="btn btn-primary" type="submit"> {{ __('Liberate') }}</button>
+                                            <button class="btn btn-success" type="submit"> {{ __('Liberate') }}</button>
                                             </div>
 
                                     </form>
+                                    </tr>
+                                    @endforeach
+                                        </tbody>
+                                    </table>
 
 
                                 </div>

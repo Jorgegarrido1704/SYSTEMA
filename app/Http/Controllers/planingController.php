@@ -276,8 +276,9 @@ class planingController extends Controller
             $answer[$i][13] = $respPPAP->gernete;
             $i++;
         }
+        $porLiberar = regPar::where('planpar', '>', 0)->count();
 
-        return view('planing', ['answer' => $answer, 'des' => $des, 'value' => $value, 'cat' => $cat, 'post' => $post, 'datosP' => $datosP]);
+        return view('planing', ['answer' => $answer, 'des' => $des, 'value' => $value, 'cat' => $cat, 'post' => $post, 'datosP' => $datosP, 'porLiberar' => $porLiberar]);
     }
 
     public function pos(Request $request)
