@@ -471,10 +471,10 @@ class planingController extends Controller
                     } else {
                         if ((($np == $noloom) or in_array($np, $panel))) {
                             $update = DB::table('registro')->where('wo', $wo)->update(['donde' => 'En espera de cables especiales', 'count' => 15]);
-                            $regcorte->ensaPar = $qty_reg;
+                            $regcorte->specialWire = $qty_reg;
                         } else {
                             $update = DB::table('registro')->where('wo', $wo)->update(['donde' => 'En espera de corte', 'count' => 2]);
-                            $regcorte->cortPar = $qty_reg;
+                            $regcorte->precut = $qty_reg;
                         }
                     }
                     $regcorte->codeBar = $info;
