@@ -2,62 +2,73 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\File;
 
 class ExcelReportService
 {
     public function generateWorkOrderReport(): string
     {
-        date_default_timezone_set("America/Mexico_City");
-        $todays = date("d-m-Y");
+        date_default_timezone_set('America/Mexico_City');
+        $todays = date('d-m-Y');
 
-        $spreadsheet = new Spreadsheet();
+        $spreadsheet = new Spreadsheet;
         $sheet = $spreadsheet->getActiveSheet();
-        $sheet->setTitle('Work order ' . $todays);
+        $sheet->setTitle('Work order '.$todays);
 
         // Encabezados
         $headers = [
             'Part Number',
             'Work Order',
             'Original Quantity',
+            'Planned',
+            'Pre cutting',
+            'To be cut',
             'Cutting',
+            'Pre terminal',
+            'To be terminal',
             'Terminals',
+            'Pre assembly',
+            'To be assembly',
             'Assembly',
+            'Pre looming',
+            'To be looming',
             'Looming',
             'Pre testing',
             'Testing',
             'Quality Errors',
             'PPAP\'s/Alejandro M.',
-            'Shipping',
-            'Shipped',
+            'Pre packing',
+            'To be packed',
             'Time in process',
             'Order Date',
-            'Shorts'
+            'Shorts',
         ];
 
         $column = 'A';
         foreach ($headers as $header) {
-            $sheet->setCellValue($column . '1', $header);
+            $sheet->setCellValue($column.'1', $header);
             $column++;
         }
 
         $rowNumber = 2;
-        $workOrders = DB::table('registroparcial')->orderByDesc('pn')->get();
+        $workOrders = DB::table('registroparcial')->where('auditoria', '=', '0')->orderByDesc('pn')->get();
 
         foreach ($workOrders as $order) {
-            $shipped = $order->orgQty - ($order->cortPar + $order->libePar + $order->ensaPar + $order->loomPar + $order->testPar + $order->embPar + $order->eng + $order->fallasCalidad + $order->preCalidad);
 
             $reg = DB::table('registro')->where('info', $order->codeBar)->first();
 
             $faltantes = '';
             if ($reg) {
-                $faltantesRows = DB::table('issuesfloor')->where('actionOfComment','!=','Issue Fixed')->where('actionOfComment','!=','Ok')->where('id_tiempos', $reg->id)->get();
+                // diferencia en horas
+                $diferencia = carbon($reg->tiempototal)->diffInHours(carbon($reg->fecha));
+
+                $faltantesRows = DB::table('issuesfloor')->where('actionOfComment', '!=', 'Issue Fixed')->where('actionOfComment', '!=', 'Ok')->where('id_tiempos', $reg->id)->get();
                 foreach ($faltantesRows as $faltante) {
-                    $faltantes .= ' //' . $faltante->comment_issue . ' // ' . $faltante->date . ' // ' . $faltante->responsable . "\n";
+                    $faltantes .= ' //'.$faltante->comment_issue.' // '.$faltante->date.' // '.$faltante->responsable."\n";
                 }
             }
 
@@ -65,16 +76,25 @@ class ExcelReportService
                 $order->pn,
                 $order->wo,
                 $order->orgQty,
+                $order->planPar,
+                $order->precut,
+                $order->tobecut,
                 $order->cortPar,
+                $order->preterm,
+                $order->tobeterm,
                 $order->libePar,
+                $order->preassembly,
+                $order->tobeassembly,
                 $order->ensaPar,
+                $order->preloom,
+                $order->tobeloom,
                 $order->loomPar,
                 $order->preCalidad,
                 $order->testPar,
                 $order->fallasCalidad,
                 $order->eng,
+                $order->preemba,
                 $order->embPar,
-                $shipped,
                 $reg->tiempototal ?? '',
                 $reg->reqday ?? '',
                 $faltantes,
@@ -82,20 +102,20 @@ class ExcelReportService
 
             $column = 'A';
             foreach ($data as $cell) {
-                $sheet->setCellValue($column . $rowNumber, $cell);
+                $sheet->setCellValue($column.$rowNumber, $cell);
                 $column++;
             }
             $rowNumber++;
         }
 
         $directory = storage_path('app/reports');
-        if (!File::exists($directory)) {
+        if (! File::exists($directory)) {
             File::makeDirectory($directory, 0755, true);
         }
 
         // Guardar archivo en storage (ruta storage/app/reports)
-        $fileName = 'Reporte_General_' . $todays . '.xlsx';
-        $filePath = storage_path('app/reports/' . $fileName);
+        $fileName = 'Reporte_General_'.$todays.'.xlsx';
+        $filePath = storage_path('app/reports/'.$fileName);
 
         $writer = new Xlsx($spreadsheet);
         $writer->save($filePath);

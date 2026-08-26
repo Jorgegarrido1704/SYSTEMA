@@ -10,20 +10,10 @@ class regPar extends Model
     use HasFactory;
 
     protected $fillable = [
-        'pn',
-        'wo',
-        'orgQty',
-        'cortPar',
-        'libePar',
-        'ensaPar',
-        'preCalidad',
-        'loomPar',
-        'testPar',
-        'embPar',
-        'eng',
-        'codeBar',
-        'fallasCalidad',
-        'specialWire',
+        'pn', 'wo', 'orgQty', 'planpar', 'precut', 'tobecut', 'cortPar', 'preterm',
+        'tobeterm', 'libePar', 'preassembly', 'tobeaseembly', 'ensaPar', 'preCalidad',
+        'preloom', 'tobeloom', 'loomPar', 'testPar', 'preemba', 'embPar', 'eng', 'codeBar',
+        'fallasCalidad', 'specialWire', 'auditoria',
 
     ];
 
