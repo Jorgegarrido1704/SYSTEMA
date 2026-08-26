@@ -214,7 +214,6 @@ var dat = {!! json_encode($datosP) !!};
                                             <div class="form-group">
                                             <button class="btn btn-success" type="submit"> {{ __('Liberate') }}</button>
                                             </div>
-
                                     </form>
                                     </tr>
                                     @endforeach
