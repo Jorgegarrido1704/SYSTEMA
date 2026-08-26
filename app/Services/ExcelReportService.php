@@ -76,7 +76,7 @@ class ExcelReportService
                 $order->pn,
                 $order->wo,
                 $order->orgQty,
-                $order->planPar,
+                $order->planpar,
                 $order->precut,
                 $order->tobecut,
                 $order->cortPar,
