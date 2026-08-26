@@ -11,7 +11,7 @@ class regPar extends Model
 
     protected $fillable = [
         'pn', 'wo', 'orgQty', 'planpar', 'precut', 'tobecut', 'cortPar', 'preterm',
-        'tobeterm', 'libePar', 'preassembly', 'tobeaseembly', 'ensaPar', 'preCalidad',
+        'tobeterm', 'libePar', 'preassembly', 'tobeassembly', 'ensaPar', 'preCalidad',
         'preloom', 'tobeloom', 'loomPar', 'testPar', 'preemba', 'embPar', 'eng', 'codeBar',
         'fallasCalidad', 'specialWire', 'auditoria',
 
