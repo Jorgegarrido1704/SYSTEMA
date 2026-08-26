@@ -373,7 +373,7 @@ class AdminSupControlloer extends Controller
         DB::table('po')->where('po', '=', $datos_work->sono)->delete();
         DB::table('corte')->where('wo', '=', $datos_work->wo)->delete();
         DB::table('carga_congelada')->where('wo', '=', $datos_work->wo)->delete();
-       
+
         $rev = explode('R', $datos_work->codigo)[1];
 
         DB::table('registro')->Insert([
@@ -389,6 +389,7 @@ class AdminSupControlloer extends Controller
             'description' => 'Orden Reactivada',
             'price' => 0.01,
         ]);
+        DB::table('retiradad')->where('wo', $work_order_reactive)->delete();
 
         return redirect()->back()->with('success', 'WO reactivado correctamente.');
 
