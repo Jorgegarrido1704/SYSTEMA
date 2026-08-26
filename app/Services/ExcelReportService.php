@@ -64,8 +64,7 @@ class ExcelReportService
             $faltantes = '';
             if ($reg) {
                 // diferencia en horas
-                $diferencia = carbon($reg->tiempototal)->diffInHours(carbon($reg->fecha));
-
+                $diferencia = Carbon::now()->diffInHours(Carbon::parse($reg->fecha));
                 $faltantesRows = DB::table('issuesfloor')->where('actionOfComment', '!=', 'Issue Fixed')->where('actionOfComment', '!=', 'Ok')->where('id_tiempos', $reg->id)->get();
                 foreach ($faltantesRows as $faltante) {
                     $faltantes .= ' //'.$faltante->comment_issue.' // '.$faltante->date.' // '.$faltante->responsable."\n";
