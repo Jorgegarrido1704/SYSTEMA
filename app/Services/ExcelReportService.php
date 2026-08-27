@@ -114,6 +114,25 @@ class ExcelReportService
             }
             $rowNumber++;
         }
+        // new sheet
+        $sheet1 = $spreadsheet->createSheet();
+        $sheet1->setTitle('Moviments'.$todays);
+
+        $sheet1->setCellValue('A1', 'Work Order');
+        $sheet1->setCellValue('B1', 'Operation');
+        $sheet1->setCellValue('C1', 'Quantity');
+        $sheet1->setCellValue('D1', 'Date');
+        $t = 2;
+        $todayNow = date('Y-m-d 00:00:00');
+        $todaylast = date('Y-m-d 23:59:59');
+        $moviments = DB::table('registroparcialtiempos')->whereBetween('fechaReg', [$todayNow, $todaylast])->get();
+        foreach ($moviments as $mov) {
+            $sheet1->setCellValue('A'.$t, $mov->codeBar);
+            $sheet1->setCellValue('B'.$t, $mov->area);
+            $sheet1->setCellValue('C'.$t, $mov->qtyPar);
+            $sheet1->setCellValue('D'.$t, $mov->fechaReg);
+            $t++;
+        }
 
         $directory = storage_path('app/reports');
         if (! File::exists($directory)) {
