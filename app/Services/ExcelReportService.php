@@ -44,6 +44,7 @@ class ExcelReportService
             'PPAP\'s/Alejandro M.',
             'Pre packing',
             'To be packed',
+            'Shipped',
             'Time in process',
             'Order Date',
             'Shorts',
@@ -71,7 +72,10 @@ class ExcelReportService
                     $faltantes .= ' //'.$faltante->comment_issue.' // '.$faltante->date.' // '.$faltante->responsable."\n";
                 }
             }
-
+            $shipped = $order->orgQty -
+               ($order->planpar + $order->precut + $order->tobecut + $order->cortPar + $order->preterm + $order->tobeterm + $order->libePar +
+                $order->preassembly + $order->tobeassembly + $order->ensaPar + $order->preloom + $order->tobeloom + $order->loomPar +
+                $order->preCalidad + $order->testPar + $order->fallasCalidad + $order->eng + $order->preemba + $order->embPar);
             $data = [
                 $order->pn,
                 $order->wo,
@@ -95,6 +99,7 @@ class ExcelReportService
                 $order->eng,
                 $order->preemba,
                 $order->embPar,
+                $shipped,
                 $reg->tiempototal ?? '',
                 $reg->reqday ?? '',
                 $faltantes,
