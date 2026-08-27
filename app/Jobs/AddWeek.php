@@ -90,7 +90,7 @@ class AddWeek implements ShouldQueue
                 } elseif ($registroEmpleado->tyoeWorker == 'Servicio comprado') {
                     $registro = 'SCE';
                 } elseif ($registroEmpleado->employeeShift == 'secondShift') {
-                    $registro = 'N';
+                    $registro = '-';
                 } else {
                     $registro = 'F';
                 }
