@@ -125,7 +125,7 @@ class ExcelReportService
         $t = 2;
         $todayNow = date('Y-m-d 00:00:00');
         $todaylast = date('Y-m-d 23:59:59');
-        $moviments = DB::table('registroparcialtiempos')->whereBetween('fechaReg', [$todayNow, $todaylast])->get();
+        $moviments = DB::table('registroparcialtiempo')->whereBetween('fechaReg', [$todayNow, $todaylast])->get();
         foreach ($moviments as $mov) {
             $sheet1->setCellValue('A'.$t, $mov->codeBar);
             $sheet1->setCellValue('B'.$t, $mov->area);
