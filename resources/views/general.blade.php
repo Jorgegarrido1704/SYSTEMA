@@ -437,24 +437,24 @@
                  </div>
                  <script>
                     async function selectBraid() {
-                        const braid = document.getElementById('braid').value
-    // Si el input está vacío, puedes decidir no enviar nada o enviar la fecha de hoy
-    if(!braid) return;
-                         try {
-        const response = await fetch('/getBraid?braid=' + braid);
+                                            const braid = document.getElementById('braid').value
+                        // Si el input está vacío, puedes decidir no enviar nada o enviar la fecha de hoy
+                        if(!braid) return;
+                                            try {
+                            const response = await fetch('/getBraid?braid=' + braid);
 
-        // Si el servidor responde con error (500, 404, etc) saltará al catch
-        if (!response.ok) {
-            throw new Error(`Error en el servidor: ${response.status}`);
-        }
-        const data = await response.json();
-        console.log(data);
+                            // Si el servidor responde con error (500, 404, etc) saltará al catch
+                            if (!response.ok) {
+                                throw new Error(`Error en el servidor: ${response.status}`);
+                            }
+                            const data = await response.json();
+                            console.log(data);
 
-                    }
-                    catch (error) {
-                        console.error(error);
-                    }
-                    }
-                    </script>
+                                        }
+                                        catch (error) {
+                                            console.error(error);
+                                        }
+                                        }
+                                        </script>
 
                     @endsection
