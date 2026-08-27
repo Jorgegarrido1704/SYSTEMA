@@ -67,7 +67,7 @@ Route::controller(PoController::class)->group(function () {
 Route::post('getPnDetails', [getPnDetailsController::class, 'getPnDetails'])->name('getPnDetails');
 
 Route::controller(generalController::class)->group(function () {
-    Route::get('/general', generalController::class);
+    Route::get('/general', [generalController::class, 'general'])->name('general');
     Route::post('/codigo', [generalController::class, 'codigo'])->name('codigo');
     Route::post('/Bom', [generalController::class, 'Bom'])->name('Bom');
     Route::post('/desviation', [generalController::class, 'desviation'])->name('desviation');

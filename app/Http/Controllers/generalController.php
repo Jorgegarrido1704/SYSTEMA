@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Mail;
 
 class generalController extends Controller
 {
-    public function __invoke()
+    public function general()
     {
 
         $value = session('user');
