@@ -22,6 +22,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
+use App\Services\ExcelReportService;
 
 class juntasController extends Controller
 {
@@ -1021,14 +1022,13 @@ class juntasController extends Controller
                 $tableContent .= '<tr>';
                 $tableContent .= '<td>'.$row->pn.'</td>';
                 $tableContent .= '<td>'.$row->wo.'</td>';
-                $tableContent .= '<td>'.$row->orgQty.'</td>';
-                $tableContent .= '<td>'.$row->cortPar.'</td>';
-                $tableContent .= '<td>'.$row->libePar.'</td>';
-                $tableContent .= '<td>'.$row->ensaPar.'</td>';
-                $tableContent .= '<td>'.$row->loomPar.'</td>';
-                $tableContent .= '<td>'.$row->preCalidad.'</td>';
-                $tableContent .= '<td>'.$row->testPar.'</td>';
-                $tableContent .= '<td>'.$row->embPar.'</td>';
+                $tableContent .= '<td>'.$row->orgQty .'</td>';
+                $tableContent .= '<td>'.$row->cortPar+ $row->precut+$row->tobecut.'</td>';
+                $tableContent .= '<td>'.$row->libePar+$row->preterm+$row->tobeterm.'</td>';
+                $tableContent .= '<td>'.$row->ensaPar+$row->preassembly+$row->tobeassembly.'</td>';
+                $tableContent .= '<td>'.$row->loomPar+$row->preloom+$row->tobeloom.'</td>';
+                $tableContent .= '<td>'.$row->preCalidad +$row->testPart+$row->fallasCalidad.'</td>';
+                $tableContent .= '<td>'.$row->embPar +$row->preemba.'</td>';
                 $tableContent .= '<td>'.$row->eng.'</td>';
                 $tableContent .= '</tr>';
                 $pnReg[$i] = $row->pn;
@@ -1130,7 +1130,12 @@ class juntasController extends Controller
             'tableReg' => $tableReg,
         ]);
     }
-
+    public function Descargar_reporte_estaciones(ExcelReportService $reportService)
+        {
+            set_time_limit(120); // 2 minutos, ajusta según necesites
+            $filePath = $reportService->generateWorkOrderReport();
+            return response()->download($filePath)->deleteFileAfterSend(true);
+        }
     public function ing_junta()
     {
         $monthYear = date('m-Y');

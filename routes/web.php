@@ -157,6 +157,8 @@ Route::controller(caliController::class)->group(function () {
     Route::get('/calidad/rechazos', [caliController::class, 'calidad_producto_no_conforme'])->name('calidad.calidad_producto_no_conforme');
     Route::get('/calidad/cerrarFalla/{id}/{accion}', [caliController::class, 'cerrarFalla'])->name('calidad.cerrarFalla');
     Route::get('/calidad/ftqPorCliente/{customer}', [caliController::class, 'ftqPorCliente'])->name('calidad.ftqPorCliente');
+    Route::get('/wo_search_progress/{wo}', [caliController::class, 'wo_search_progress'])->name('wo_search_progress');
+
 });
 Route::controller(BossCaliController::class)->group(function () {
     Route::get('/BossCali', BossCaliController::class);
@@ -232,6 +234,7 @@ Route::controller(juntasController::class)->group(function () {
     Route::POST('/juntas/jsonSeguimientos', [juntasController::class, 'jsonSeguimientos'])->name('jsonSeguimientos');
     Route::POST('/update_materials/{id}', [juntasController::class, 'update_materials'])->name('update_materials');
     Route::POST('/update_kits/{id}', [juntasController::class, 'update_kits'])->name('update_kits');
+    Route::get('/Descargar_reporte_estaciones',[juntasController::class,'Descargar_reporte_estaciones'])->name('Descargar_reporte_estaciones');
 });
 
 Route::controller(SaludController::class)->group(function () {

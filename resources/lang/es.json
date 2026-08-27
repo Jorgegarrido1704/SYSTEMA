@@ -371,8 +371,11 @@
     "Accept Orders": "Aceptar ordenes",
     "Work Not Started": "Trabajo no iniciado",
     "Work In Progress": "Trabajo en progreso",
-    "Move": "Mover"
-
-
+    "Move": "Mover",
+    "Search WO": "Buscar WO",
+    "Cutting": "Corte",
+    "Testing": "Pruebas",
+    "Engineering": "Ingenieria"
+ 
 
 }

@@ -171,7 +171,7 @@
                             </div>
 
                         <!-- Second Column for WO by Area and Shipping Area -->
-                        <div class="col-lg-3 mb-4">
+                        <div class="col-lg-2 mb-4">
                             <!-- WO by Area -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
@@ -197,75 +197,23 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-3 mb-4">
+                        <div class="col-lg-4 mb-4">
                             <!-- Shipping Area -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
                                     <h6 class="m-0 font-weight-bold text-primary">{{__('Quality Inspection Report') }}</h6>
                                 </div>
-                                                    <div class="card-body" style="overflow-y: auto; height: 360px;">
-                                                                <form action="{{ route('excel_calidad')}}" method="GET" >
+                                <div class="card-body" style="overflow-y: auto; height: 360px;">
+                                                            <div class="input-group mb-3">
+                                                                <label class="input-group-text" for="wo_search">{{ __('WO') }}</label>
+                                                                <input class="form-control" type="text" id="wo_search" name="wo_search" placeholder="000000" min_length="6" max_length="6" onchange="searchWO(this.value)">
+                                                            </div>
+                                                            <div id=tables_work_orders></div>
+                                                                
+                                                           
 
-                                                                    <div class="form-group">
-                                                                        <label for="text">{{ __('Start date') }}:</label>
-                                                                        <input type="date" class="form-control" name="de" id="de" required >
-                                                                        <span id="errorMessage" style="color: red; display: none;">{{ __('Weekends are not allowed!') }}</span>
-                                                                        <input type="hidden" name="di" id="di">
-
-                                                                    </div>
-                                                                    <div class="form-group">
-                                                                        <label for="text">{{ __('End date') }}:</label>
-                                                                        <input type="date" class="form-control" name="a" id="a" required>
-                                                                        <span id="errorMessage1" style="color: red; display: none;">{{ __('Weekends are not allowed!') }}</span>
-                                                                        <input type="hidden" name="df" id="df">
-                                                                    </div>
-                                                                    <input type="submit" class="btn btn-primary"   value="Descargar Excel">
-                                                                </form>
-                                                                <script>
-                                                                    document.getElementById('de').addEventListener('change', function() {
-                                                                        var de = document.getElementById('de').value;
-                                                                        const errorMessage = document.getElementById('errorMessage');
-                                                                        const selectedDate = new Date(de);
-                                                                            const dayOfWeek = selectedDate.getDay(); // 0 is Sunday, 6 is Saturday
-
-                                                                            if (dayOfWeek === 6 || dayOfWeek === 5) {
-                                                                                errorMessage.style.display = 'inline';
-                                                                                alert('Weekends are not allowed!');
-                                                                                document.getElementById('de').value='';
-                                                                            } else {
-                                                                                errorMessage.style.display = 'none';
-                                                                        deA= de.slice(0,4);
-                                                                        dem=de.slice(5,7);
-                                                                        deD=de.slice(8,10);
-                                                                        de=deD+"-"+dem+"-"+deA+" 00:00";
-                                                                        document.getElementById('di').value=de;
-                                                                        console.log('De fecha:', de);}
-                                                                        });
-
-                                                                    document.getElementById('a').addEventListener('change', function() {
-                                                                        var a = document.getElementById('a').value;
-                                                                        const errorMessage1 = document.getElementById('errorMessage1');
-                                                                        const selectedDate1 = new Date(a);
-                                                                            const dayOfWeek1 = selectedDate1.getDay(); // 0 is Sunday, 6 is Saturday
-
-                                                                            if (dayOfWeek1 === 6 || dayOfWeek1 === 5) {
-                                                                                errorMessage1.style.display = 'inline';
-                                                                                alert('Weekends are not allowed!');
-                                                                                document.getElementById('a').value='';
-                                                                            } else {
-                                                                                errorMessage1.style.display = 'none';
-
-                                                                        aA= a.slice(0,4);
-                                                                        am=a.slice(5,7);
-                                                                        aD=a.slice(8,10);
-                                                                        a=aD+"-"+am+"-"+aA+" 23:59";
-                                                                        document.getElementById('df').value=a;
-                                                                           console.log('A fecha:', a);}
-                                                                        });
-                                                                </script>
-
-                                                    </div>
-                                                </div>
+                                </div>
+                            </div>
                         </div>
 
 
@@ -319,6 +267,52 @@
         </div>
 
         <script>
+            function searchWO(wo) {
+                const order=wo;
+                var url = '/wo_search_progress/'+wo;
+                var table= document.getElementById('tables_work_orders');
+                table.innerHTML='';
+                // change workOrder for w
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                       
+                    let html = `
+                    <table class="table table-bordered table-hover" id="reworkTable" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>{{ __('Area') }}</th>
+                                <th>{{ __('Qty') }}</th>
+                                <th>{{ __('Date') }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                    `;
+
+                    data.forEach(item => {
+                        html += `
+                            <tr>
+                                <td>${item.area}</td>
+                                <td>${item.qtyPar}</td>
+                                <td>${item.fechaReg}</td>
+                            </tr>
+                        `;
+                    });
+
+                    html += `
+                        </tbody>
+                    </table>
+                    `;
+                    table.innerHTML = html;
+
+                       
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
+
+
             function updateInfoCalidad() {
                 var wo = document.getElementById('workElectrical').value;
                 var url= @json(route('informationWo'));

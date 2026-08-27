@@ -14,14 +14,16 @@
                     <div class="row">
 
                         <!-- Table and Graph -->
-                        <div class="col-xl-7 col-lg-7">
+                        <div class="col-xl-12 col-lg-12">
                             <div class="card shadow mb-4">
 
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h5 class="m-0 font-weight-bold text-primary">Part Numbers</h5>
+                                    <h5 class="m-0 font-weight-bold text-primary">{{ __('Part Numbers') }}</h5>
+                                    <button class='btn btn-primary'><a href="{{ route('Descargar_reporte_estaciones') }}" class="btn btn-primary">
+                                                                Descargar Reporte de Work Orders </a> </button>
                                     <div class="dropdown no-arrow">
-                                        <label for="buscarWo" class="form-label">Search</label>
+                                        <label for="buscarWo" class="form-label">{{ __('Search WO') }}</label>
                                         <input type="text" name="buscarWo" id="buscarWo" class="form-control " onchange="mostrarWo(this.value)">
                                     </div>
                                 </div>
@@ -30,17 +32,16 @@
                                     <table class="table">
                                         <thead>
                                             <tr>
-                                                <th>PN</th>
-                                                <th>WO</th>
-                                                <th>Qty Order</th>
-                                                <th>Cutting</th>
-                                                <th>Terminals</th>
-                                                <th>Assembly</th>
-                                                <th>Lomming</th>
-                                                <th>Pre Quality</th>
-                                                <th>Testing</th>
-                                                <th>Shipping</th>
-                                                <th>Waiting Ing</th>
+                                                <th>{{ __('Part Number') }}</th>
+                                                <th>{{ __('WO') }}</th>
+                                                <th>{{ __('Qty') }}</th>
+                                                <th>{{ __('Cutting') }}</th>
+                                                <th>{{ __('Terminals') }}</th>
+                                                <th>{{ __('Assembly') }}</th>
+                                                <th>{{ __('Looming') }}</th>
+                                                <th>{{ __('Testing') }}</th>
+                                                <th>{{ __('Packing') }}</th>
+                                                <th>{{ __('Engineering') }}</th>
                                             </tr>
                                         </thead>
                                         <tbody id="table-harness">  </tbody>

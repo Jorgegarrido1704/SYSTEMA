@@ -51,9 +51,11 @@ class caliController extends generalController
                 $cal->pn = $reg->NumPart ?? '';
             }
 
-            return view('cali', ['cat' => $cat, 'value' => $value, 'calidad' => $calidad, 'preorder' => $preorder, 'personal' => $personal, 'employee' => $employee, 'fallas' => $fallas]);
+            return view('cali', ['cat' => $cat, 'value' => $value, 'calidad' => $calidad, 'preorder' => $preorder,
+             'personal' => $personal, 'employee' => $employee, 'fallas' => $fallas]);
         }
     }
+
 
     public function baja(Request $request)
     {
@@ -93,6 +95,13 @@ class caliController extends generalController
                 'cambioestados' => $cambioestados,
             ]);
         }
+    }
+
+
+
+    public function wo_search_progress($wo){
+        $busquieda= regParTime::select('area','qtyPar','fechaReg')->where('codeBar', $wo)->orderBy('id', 'DESC')->get();
+        return json_encode($busquieda);
     }
 
     public function saveData(Request $request)
@@ -395,7 +404,7 @@ class caliController extends generalController
                 }
                 $upPartial = DB::table('registroparcial')->where('codeBar', '=', $info)->update(['testPar' => $test - $ok, 'embPar' => $emba + $ok]);
                 $regTimePar = new regParTime;
-                $regTimePar->codeBar = $info;
+                $regTimePar->codeBar = $wo;
                 $regTimePar->qtyPar = $total;
                 $regTimePar->area = $value;
                 $regTimePar->fechaReg = $today;
