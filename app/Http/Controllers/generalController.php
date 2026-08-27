@@ -140,11 +140,11 @@ class generalController extends Controller
             $fulls[$i][4] = $full->Cuantos;
             $fulls[$i][5] = $full->estatus;
             $i++;
-
+        }
             return view('general', ['fulls' => $fulls, 'cat' => $cat, 'value' => $value, 'registros' => $registros,
                 'paros' => $paros, 'desviations' => $desviations, 'materials' => $materials,
                 'previo' => $previo, 'iniciar' => $iniciar]);
-        }
+        
     }
 
     public function responseCodigo(request $request)
