@@ -116,7 +116,7 @@ class ExcelReportService
         }
         // new sheet
         $sheet1 = $spreadsheet->createSheet();
-        $sheet1->setTitle('Moviments'.$todays);
+        $sheet1->setTitle('Moviments '.$todays);
 
         $sheet1->setCellValue('A1', 'Work Order');
         $sheet1->setCellValue('B1', 'Operation');
