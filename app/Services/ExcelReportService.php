@@ -23,6 +23,7 @@ class ExcelReportService
         // Encabezados
         $headers = [
             'Part Number',
+            'Customer',
             'Work Order',
             'Original Quantity',
             'Planned',
@@ -78,6 +79,7 @@ class ExcelReportService
                 $order->preCalidad + $order->testPar + $order->fallasCalidad + $order->eng + $order->preemba + $order->embPar);
             $data = [
                 $order->pn,
+                $reg->cliente,
                 $order->wo,
                 $order->orgQty,
                 $order->planpar,
