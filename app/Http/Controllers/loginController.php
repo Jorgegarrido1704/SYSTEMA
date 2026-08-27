@@ -51,7 +51,7 @@ class loginController extends Controller
                     return redirect('/admin');
                 } elseif ($categoria == 'cali') {
                     return redirect('/calidad');
-                } elseif ($categoria == 'ensa' || $categoria == 'emba' || $categoria == 'libe' || $categoria == 'cort' || $categoria == 'loom') {
+                } elseif ($categoria == 'ensa' || $categoria == 'emba' || $categoria == 'libe' || $categoria == 'cort' || $categoria == 'loom' || $categoria == 'libe') {
                     return redirect('/general');
                 } elseif ($categoria == 'plan') {
                     return redirect('/planing');

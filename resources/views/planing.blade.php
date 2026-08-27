@@ -132,100 +132,102 @@ var dat = {!! json_encode($datosP) !!};
                             </div>
                         </div>
 
+                        <div class="col-xl-3 col-lg-4"> 
+                            <div class="row">   
+                                <div class="col-xl-12 col-lg-2">
+                                    <div class="card shadow mb-4">
+                                            <!-- printer code -->
+                                        <div
+                                            class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                            <h5 class="m-0 font-weight-bold text-primary">{{ __('Print BarCode') }}</h5>
 
-                        <div class="col-xl-2 col-lg-2">
-                            <div class="card shadow mb-4">
-                                    <!-- printer code -->
-                                <div
-                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h5 class="m-0 font-weight-bold text-primary">{{ __('Print BarCode') }}</h5>
+                                        </div>
 
-                                </div>
+                                        <div class="card-body" style="overflow-y: auto; height: 180px;">
+                                            <div class="chart-pie pt-4 pb-2">
+                                                <div class="form-container">
+                                                <form action="{{route('planning')}}" method="GET">
+                                                    <div>
+                                                        <label for="wo">{{ __('Insert WO') }}</label>
+                                                        <input type="text" name="wo" id="wo"  autofocus >
+                                                    </div>
 
-                                <div class="card-body" style="overflow-y: auto; height: 360px;">
-                                    <div class="chart-pie pt-4 pb-2">
-                                        <div class="form-container">
-                                        <form action="{{route('planning')}}" method="GET">
-                                            <div>
-                                                <label for="wo">{{ __('Insert WO') }}</label>
-                                                <input type="text" name="wo" id="wo"  autofocus >
+                                                    <input type="submit" name="enviar" id="enviar" value="{{ __('Print') }}">
+                                                </form>
+                                                </div>
                                             </div>
 
-                                            <input type="submit" name="enviar" id="enviar" value="{{ __('Print') }}">
-                                        </form>
                                         </div>
                                     </div>
-
                                 </div>
-                            </div>
-                        </div>
 
-                         <div class=" col-xl-2 col-lg-2 mb-2" >
-                            <!-- AREAS -->
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h5 class="m-0 font-weight-bold text-primary">{{ __('Print Lebels') }}</h5>
-                                </div>
-                                <div class="card-body" style="overflow-y: auto; height: 360px;">
-                                    <div class="form-container">
-                                    <form action="{{route('planning')}}" method="GET">
-                                        <div>
-                                            <label for="tren1">{{ __('Insert WO') }}</label>
-                                            @if (!empty($labels))
-                                            <input type="text" name="wola" id="wola" value={{$labels}} required >
-                                            @else
-                                            <input type="text" name="wola" id="wola" required >
-                                            @endif
+                                <div class=" col-xl-12 col-lg-2 mb-2" >
+                                    <!-- AREAS -->
+                                    <div class="card shadow mb-4">
+                                        <div class="card-header py-3">
+                                            <h5 class="m-0 font-weight-bold text-primary">{{ __('Print Lebels') }}</h5>
+                                        </div>
+                                        <div class="card-body" style="overflow-y: auto; height: 180px;">
+                                            <div class="form-container">
+                                            <form action="{{route('planning')}}" method="GET">
+                                                <div>
+                                                    <label for="tren1">{{ __('Insert WO') }}</label>
+                                                    @if (!empty($labels))
+                                                    <input type="text" name="wola" id="wola" value={{$labels}} required >
+                                                    @else
+                                                    <input type="text" name="wola" id="wola" required >
+                                                    @endif
+                                                </div>
+
+                                                <input type="submit" name="enviar" id="enviar" value="{{ __('Print') }}">
+                                            </form>
                                         </div>
 
-                                        <input type="submit" name="enviar" id="enviar" value="{{ __('Print') }}">
-                                    </form>
-                                </div>
-
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                            <div class=" col-xl-2 col-lg-2 mb-2" >
-                            <!-- AREAS -->
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h5 class="m-0 font-weight-bold text-primary">{{ __('Liberate Order') }}</h5>
-                                </div>
-                                <div class="card-body" style="overflow-y: auto; height: 360px;">
-                                    <table class="table table-bordered">
-                                        <thead class= "thead-light">
+                            <div class=" col-xl-3 col-lg-2 mb-2" >
+                                    <!-- AREAS -->
+                                    <div class="card shadow mb-4">
+                                        <div class="card-header py-3">
+                                            <h5 class="m-0 font-weight-bold text-primary">{{ __('Liberate Order') }}</h5>
+                                        </div>
+                                        <div class="card-body" style="overflow-y: auto; height: 380px;">
+                                            <table class="table table-bordered">
+                                                <thead class= "thead-light">
+                                                    <tr>
+                                                        <th>{{ __('Part Number') }}</th>
+                                                        <th>{{ __('WO') }}</th>
+                                                        <th>{{ __('Freedom') }}</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="liberarBody">
+                                            @foreach($porLiberar as $liberar)
                                             <tr>
-                                                <th>{{ __('Part Number') }}</th>
-                                                <th>{{ __('WO') }}</th>
-                                                <th>{{ __('Freedom') }}</th>
+                                                <td>{{$liberar->pn}}</td>
+                                                <td>{{$liberar->wo}}</td>
+                                                <td>
+                                            <form action="{{route('codeBarPlan',['wo'=>$liberar->wo])}}" method="GET">
+                                                <div class="form-group">
+                                                    
+                                                    <div class="form-group">
+                                                    <button class="btn btn-success" type="submit"> {{ __('Liberate') }}</button>
+                                                    </div>
+                                            </form>
+                                                </td>
                                             </tr>
-                                        </thead>
-                                        <tbody id="liberarBody">
-                                    @foreach($porLiberar as $liberar)
-                                    <tr>
-                                        <td>{{$liberar->pn}}</td>
-                                        <td>{{$liberar->wo}}</td>
-                                        <td>
-                                    <form action="{{route('codeBarPlan')}}" method="GET">
-                                        <div class="form-group">
-                                            <div class="form-group">
-                                            <input type="hidden" name="wo_scan" id="wo_scan" class="form-control" value={{$liberar->wo}}>
-                                            </div>
-                                            <div class="form-group">
-                                            <button class="btn btn-success" type="submit"> {{ __('Liberate') }}</button>
-                                            </div>
-                                    </form>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                        </tbody>
-                                    </table>
+                                            @endforeach
+                                                </tbody>
+                                            </table>
 
 
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                       
 
                     </div>
 

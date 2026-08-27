@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\assistence;
 use App\Models\desviation;
 use App\Models\errores;
 use App\Models\KitsAlmcen;
 use App\Models\Maintanance;
 use App\Models\material;
+use carbon\Carbon;
 use App\Models\ParosProd;
 use App\Models\regfull;
 use App\Models\registo_mant;
 use App\Models\registoLogin;
+use App\Models\regPar;
 use App\Models\regParTime;
 use App\Models\specialWireModel;
 use App\Models\Wo;
@@ -23,178 +24,126 @@ class generalController extends Controller
 {
     public function __invoke()
     {
-        $week = date('W');
+
         $value = session('user');
         $cat = session('categoria');
         if ($cat == '' or $value == '') {
             return view('login');
-        } else {
+        }
 
-            $registros = [];
-            $buscauser = DB::select("SELECT category FROM login WHERE user='$value'");
-            foreach ($buscauser as $rowuser) {
-                $categoria = $rowuser->category;
-            }
-            if ($categoria == 'ensa') {
-                $buscarporid = DB::select('SELECT * FROM registro INNER JOIN registroparcial ON registro.info=registroparcial.codeBar WHERE ensaPar>0  ORDER BY NumPart');
-                $registros = [];
-                $i = 0;
-                foreach ($buscarporid as $idrow) {
-                    $registros[$i][0] = $idrow->id;
-                    $registros[$i][1] = $idrow->NumPart;
-                    $registros[$i][2] = $idrow->rev;
-                    $registros[$i][3] = $idrow->wo;
-                    $registros[$i][4] = $idrow->ensaPar;
-                    $registros[$i][5] = $idrow->paro;
-                    $registros[$i][6] = $idrow->tiempototal;
-                    $i++;
-                }
-            } elseif ($categoria == 'emba') {
-                $buscarporid = DB::select('SELECT * FROM registro INNER JOIN registroparcial ON registro.info=registroparcial.codeBar WHERE embPar>0  ORDER BY NumPart');
-                $registros = [];
-                $i = 0;
-                foreach ($buscarporid as $idrow) {
-                    $registros[$i][0] = $idrow->id;
-                    $registros[$i][1] = $idrow->NumPart;
-                    $registros[$i][2] = $idrow->rev;
-                    $registros[$i][3] = $idrow->wo;
-                    $registros[$i][4] = $idrow->embPar;
-                    $registros[$i][5] = $idrow->paro;
-                    $registros[$i][6] = $idrow->tiempototal;
-                    $i++;
-                }
-            } elseif ($categoria == 'libe') {
-                $buscarporid = DB::select('SELECT * FROM registro INNER JOIN registroparcial ON registro.info=registroparcial.codeBar WHERE libePar>0  ORDER BY NumPart');
-                $registros = [];
-                $i = 0;
-                foreach ($buscarporid as $idrow) {
-                    $registros[$i][0] = $idrow->id;
-                    $registros[$i][1] = $idrow->NumPart;
-                    $registros[$i][2] = $idrow->rev;
-                    $registros[$i][3] = $idrow->wo;
-                    $registros[$i][4] = $idrow->libePar;
-                    $registros[$i][5] = $idrow->paro;
-                    $registros[$i][6] = $idrow->tiempototal;
-                    $i++;
-                }
-            } elseif ($categoria == 'loom') {
-                $buscarporid = DB::select('SELECT * FROM registro INNER JOIN registroparcial ON registro.info=registroparcial.codeBar WHERE loomPar>0  ORDER BY NumPart');
-                $registros = [];
-                $i = 0;
-                foreach ($buscarporid as $idrow) {
-                    $registros[$i][0] = $idrow->id;
-                    $registros[$i][1] = $idrow->NumPart;
-                    $registros[$i][2] = $idrow->rev;
-                    $registros[$i][3] = $idrow->wo;
-                    $registros[$i][4] = $idrow->loomPar;
-                    $registros[$i][5] = $idrow->paro;
-                    $registros[$i][6] = $idrow->tiempototal;
-                    $i++;
-                }
-            } elseif ($categoria == 'cort') {
-                $buscarporid = DB::select('SELECT * FROM registro INNER JOIN registroparcial ON registro.info=registroparcial.codeBar WHERE cortPar>0  ORDER BY NumPart');
-                $registros = [];
-                $i = 0;
-                foreach ($buscarporid as $idrow) {
-                    $registros[$i][0] = $idrow->id;
-                    $registros[$i][1] = $idrow->NumPart;
-                    $registros[$i][2] = $idrow->rev;
-                    $registros[$i][3] = $idrow->wo;
-                    $registros[$i][4] = $idrow->cortPar;
-                    $registros[$i][5] = $idrow->paro;
-                    $registros[$i][6] = $idrow->tiempototal;
-                    $i++;
-                }
-            }
-            $assit = assistence::leader($value)->get();
+        $registros =$previo=$iniciar =[];
+        $qry = '';
 
-            $buscarparo = DB::table('registro_paro')->select('fecha', 'equipo', 'nombreEquipo', 'dano', 'atiende', 'id')->where('finHora', '=', '')->where('quien', '=', $value)->get();
-            $i = 0;
-            $paros = [];
-            foreach ($buscarparo as $rowparo) {
-                $paros[$i][0] = $rowparo->fecha;
-                $paros[$i][1] = $rowparo->equipo;
-                $paros[$i][2] = $rowparo->nombreEquipo;
-                $paros[$i][3] = $rowparo->dano;
-                if ($rowparo->atiende != 'Nadie aun') {
-                    $paros[$i][4] = 'En Proceso';
-                } elseif ($rowparo->atiende == 'Nadie aun') {
-                    $paros[$i][4] = 'En espera';
-                }
-                $paros[$i][5] = $rowparo->id;
-                $i++;
-            }
-            $buscardesv = DB::table('desvation')->select('*')->where('quien', '=', $value)->get();
-            $i = 0;
-            $desviations = [];
-            foreach ($buscardesv as $rowdes) {
-                $desviations[$i][0] = $rowdes->id;
-                $desviations[$i][1] = $rowdes->Mafec;
-                $desviations[$i][2] = $rowdes->porg;
-                $desviations[$i][3] = $rowdes->psus;
-                $desviations[$i][4] = $rowdes->cliente;
-                if ($rowdes->fcom == '') {
-                    $desviations[$i][5] = 'Sin Firmar';
-                } else {
-                    $desviations[$i][5] = 'Firmada';
-                }
-                if ($rowdes->fing == '') {
-                    $desviations[$i][6] = 'Sin Firmar';
-                } else {
-                    $desviations[$i][6] = 'Firmada';
-                }
-                if ($rowdes->fcal == '') {
-                    $desviations[$i][7] = 'Sin Firmar';
-                } else {
-                    $desviations[$i][7] = 'Firmada';
-                }
-                if ($rowdes->fpro == '') {
-                    $desviations[$i][8] = 'Sin Firmar';
-                } else {
-                    $desviations[$i][8] = 'Firmada';
-                }
-                if ($rowdes->fimm == '') {
-                    $desviations[$i][9] = 'Sin Firmar';
-                } else {
-                    $desviations[$i][9] = 'Firmada';
-                }
-                $desviations[$i][10] = $rowdes->fecha;
+        if ($cat == 'ensa') {
+            $previo = regPar::select('wo', 'pn','preassembly as qty')->where('preassembly', '>', 0)->get();
+            $iniciar = regPar::select('wo', 'pn','tobeassembly as qty')->WHERE('tobeassembly', '>', 0)->get();
+            $registros = regPar::select('wo', 'pn','ensaPar as qty')->WHERE('ensaPar', '>', 0)->get();
+        } elseif ($cat == 'emba') {
+            $previo = regPar::select('wo', 'pn','preemba as qty')->WHERE('preemba', '>', 0)->get();
+            $iniciar = regPar::select('wo', 'pn','embPar as qty')->WHERE('embPar', '<', 0)->get();
+            $registros = regPar::select('wo', 'pn','embPar as qty')->WHERE('embPar', '>', 0)->get();
+        } elseif ($cat == 'libe') {
+            $previo = regPar::select('wo', 'pn','preterm as qty')->WHERE('preterm', '>', 0)->get();
+            $iniciar = regPar::select('wo', 'pn','tobeterm as qty')->WHERE('tobeterm', '>', 0)->get();
+            $registros = regPar::select('wo', 'pn','libePar as qty')->WHERE('libePar', '>', 0)->get();
+        } elseif ($cat == 'loom') {
+            $previo = regPar::select('wo', 'pn','preloom as qty')->WHERE('preloom', '>', 0)->get();
+            $iniciar = regPar::select('wo', 'pn','tobeloom as qty')->WHERE('tobeloom', '>', 0)->get();
+            $registros = regPar::select('wo', 'pn','loomPar as qty')->WHERE('loomPar', '>', 0)->get();
+        } elseif ($cat == 'cort') {
+            $previo = regPar::select('wo', 'pn','precut as qty')->WHERE('precut', '>', 0)->get();
+            $iniciar = regPar::select('wo', 'pn','tobecut as qty')->WHERE('tobecut', '>', 0)->get();
+            $registros = regPar::select('wo', 'pn','cortPar as qty')->WHERE('cortPar', '>', 0)->get();
+        }
 
-                $i++;
+        $buscarparo = DB::table('registro_paro')->select('fecha', 'equipo', 'nombreEquipo', 'dano', 'atiende', 'id')->where('finHora', '=', '')->where('quien', '=', $value)->get();
+        $i = 0;
+        $paros = [];
+        foreach ($buscarparo as $rowparo) {
+            $paros[$i][0] = $rowparo->fecha;
+            $paros[$i][1] = $rowparo->equipo;
+            $paros[$i][2] = $rowparo->nombreEquipo;
+            $paros[$i][3] = $rowparo->dano;
+            if ($rowparo->atiende != 'Nadie aun') {
+                $paros[$i][4] = 'En Proceso';
+            } elseif ($rowparo->atiende == 'Nadie aun') {
+                $paros[$i][4] = 'En espera';
             }
-            $buscarreqM = DB::table('material')->select('*')->where('who', '=', $value)->get();
-            $i = 0;
-            $materials = [];
-            foreach ($buscarreqM as $rowMat) {
-                $materials[$i][0] = $rowMat->folio;
-                $materials[$i][1] = $rowMat->description;
-                $materials[$i][2] = $rowMat->note;
-                $materials[$i][3] = $rowMat->qty;
-                if ($rowMat->aprovadaComp != '' and $rowMat->negada == '') {
-                    $materials[$i][4] = 'Aprovada por Compras';
-                } elseif ($rowMat->aprovadaComp == '' and $rowMat->negada == '') {
-                    $materials[$i][4] = 'En espera de respuesta';
-                } elseif ($rowMat->aprovadaComp == '' and $rowMat->negada != '') {
-                    $materials[$i][4] = 'cancelada';
-                } elseif ($rowMat->aprovadaComp != '' and $rowMat->negada != '') {
-                    $materials[$i][4] = 'cancelada';
-                }
-                $i++;
+            $paros[$i][5] = $rowparo->id;
+            $i++;
+        }
+        $buscardesv = DB::table('desvation')->select('*')->where('quien', '=', $value)->get();
+        $i = 0;
+        $desviations = [];
+        foreach ($buscardesv as $rowdes) {
+            $desviations[$i][0] = $rowdes->id;
+            $desviations[$i][1] = $rowdes->Mafec;
+            $desviations[$i][2] = $rowdes->porg;
+            $desviations[$i][3] = $rowdes->psus;
+            $desviations[$i][4] = $rowdes->cliente;
+            if ($rowdes->fcom == '') {
+                $desviations[$i][5] = 'Sin Firmar';
+            } else {
+                $desviations[$i][5] = 'Firmada';
             }
-            $fulls = [];
-            $i = 0;
-            $buscarfull = DB::table('registrofull')->where('estatus', '!=', 'finalizado')->get();
-            foreach ($buscarfull as $full) {
-                $fulls[$i][0] = $full->fechaSolicitud;
-                $fulls[$i][1] = $full->np;
-                $fulls[$i][2] = $full->rev;
-                $fulls[$i][3] = $full->cliente;
-                $fulls[$i][4] = $full->Cuantos;
-                $fulls[$i][5] = $full->estatus;
-                $i++;
+            if ($rowdes->fing == '') {
+                $desviations[$i][6] = 'Sin Firmar';
+            } else {
+                $desviations[$i][6] = 'Firmada';
             }
+            if ($rowdes->fcal == '') {
+                $desviations[$i][7] = 'Sin Firmar';
+            } else {
+                $desviations[$i][7] = 'Firmada';
+            }
+            if ($rowdes->fpro == '') {
+                $desviations[$i][8] = 'Sin Firmar';
+            } else {
+                $desviations[$i][8] = 'Firmada';
+            }
+            if ($rowdes->fimm == '') {
+                $desviations[$i][9] = 'Sin Firmar';
+            } else {
+                $desviations[$i][9] = 'Firmada';
+            }
+            $desviations[$i][10] = $rowdes->fecha;
 
-            return view('general', ['fulls' => $fulls, 'cat' => $cat, 'value' => $value, 'registros' => $registros, 'week' => $week, 'assit' => $assit, 'paros' => $paros, 'desviations' => $desviations, 'materials' => $materials]);
+            $i++;
+        }
+        $buscarreqM = DB::table('material')->select('*')->where('who', '=', $value)->get();
+        $i = 0;
+        $materials = [];
+        foreach ($buscarreqM as $rowMat) {
+            $materials[$i][0] = $rowMat->folio;
+            $materials[$i][1] = $rowMat->description;
+            $materials[$i][2] = $rowMat->note;
+            $materials[$i][3] = $rowMat->qty;
+            if ($rowMat->aprovadaComp != '' and $rowMat->negada == '') {
+                $materials[$i][4] = 'Aprovada por Compras';
+            } elseif ($rowMat->aprovadaComp == '' and $rowMat->negada == '') {
+                $materials[$i][4] = 'En espera de respuesta';
+            } elseif ($rowMat->aprovadaComp == '' and $rowMat->negada != '') {
+                $materials[$i][4] = 'cancelada';
+            } elseif ($rowMat->aprovadaComp != '' and $rowMat->negada != '') {
+                $materials[$i][4] = 'cancelada';
+            }
+            $i++;
+        }
+        $fulls = [];
+        $i = 0;
+        $buscarfull = DB::table('registrofull')->where('estatus', '!=', 'finalizado')->get();
+        foreach ($buscarfull as $full) {
+            $fulls[$i][0] = $full->fechaSolicitud;
+            $fulls[$i][1] = $full->np;
+            $fulls[$i][2] = $full->rev;
+            $fulls[$i][3] = $full->cliente;
+            $fulls[$i][4] = $full->Cuantos;
+            $fulls[$i][5] = $full->estatus;
+            $i++;
+
+            return view('general', ['fulls' => $fulls, 'cat' => $cat, 'value' => $value, 'registros' => $registros,
+                'paros' => $paros, 'desviations' => $desviations, 'materials' => $materials,
+                'previo' => $previo, 'iniciar' => $iniciar]);
         }
     }
 
@@ -210,211 +159,144 @@ class generalController extends Controller
 
     }
 
-    public function codigo(request $request)
-    {
+    public function previos( $wo, $status) {
+         $cat = session('categoria');
+        $value = session('user');
+        if ($cat == '' or $value == '') {  return view('login');   }
+        if($status=='accept'){
+         if ($cat == 'ensa') {
+            regPar::where('wo', $wo)->update(['tobeassembly' => DB::raw('preassembly + tobeassembly'),'preassembly'  => 0]);
+        } elseif ($cat == 'emba') {
+             regPar::where('wo', $wo)->update(['embPar' => DB::raw('preemba + embPar'),'preemba'  => 0]);
+        } elseif ($cat == 'libe') {
+            regPar::where('wo', $wo)->update(['tobeterm' => DB::raw('preterm + tobeterm'),'preterm'  => 0]);
+        } elseif ($cat == 'loom') {
+            regPar::where('wo', $wo)->update(['tobeloom' => DB::raw('preloom + tobeloom'),'preloom'  => 0]);
+        } elseif ($cat == 'cort') {
+            regPar::where('wo', $wo)->update(['tobecut' => DB::raw('precut + tobecut'),'precut'  => 0]);
+        }
+         
+        }else if($status =='decline'){
+         if ($cat == 'ensa') {
+             regPar::where('wo', $wo)->update(['libePar' => DB::raw('preassembly + libePar'),'preassembly'  => 0]);
+        } elseif ($cat == 'emba') {
+            regPar::where('wo', $wo)->update(['testPar' => DB::raw('preemba + testPar'),'preemba'  => 0]);
+        } elseif ($cat == 'libe') {
+            regPar::where('wo', $wo)->update(['cortPar' => DB::raw('cortPar + preterm'),'preterm'  => 0]);
+        } elseif ($cat == 'loom') {
+             regPar::where('wo', $wo)->update(['ensaPar' => DB::raw('preloom + ensaPar'),'preloom'  => 0]);
+        } elseif ($cat == 'cort') {
+             regPar::where('wo', $wo)->update(['planpar' => DB::raw('precut'),'precut'  => 0]);
+        }
+        }
+        $registroTiempo = new regParTime;
+                    $registroTiempo->codeBar = $wo;
+                    $registroTiempo->qtyPar = 0;
+                    $registroTiempo->area = $value.'/'.$cat.'/'.$status;
+                    $registroTiempo->fechaReg = carbon::now()->toDateTimeString();
+                    $registroTiempo->save();
+        return redirect()->back()->with('success', 'Se acceptaron correctamente los previos');
+
+    }
+    
+    public function iniciar_work (request $request,$wo){
         $cat = session('categoria');
         $value = session('user');
-        if ($cat == '' or $value == '') {
-            return view('login');
-        } else {
-            $donde = $resp = '';
-            $sesion = session('user');
-            $sesionBus = DB::table('login')->select('category')->where('user', $sesion)->limit(1)->first();
-            $donde = $sesionBus->category;
-            $cantidad = $request->input('cantidad');
-            $codigo = $request->input('code-bar');
-            $codigo = str_replace("'", '-', $codigo);
-
-            $todays = date('d-m-Y H:i');
-            $buscar = DB::select("SELECT count,wo,donde,NumPart,rev,Qty,po,cliente FROM registro WHERE info='$codigo'");
-            if (! $buscar) {
-                return redirect('general')->with('response', 'Record not found');
-            } else {
-                foreach ($buscar as $rowb) {
-                    $count = $rowb->count;
-                    $area = $rowb->donde;
-                    $pnReg = $rowb->NumPart;
-                    $rev = $rowb->rev;
-                    $wo = $rowb->wo;
-                    $orgQty = $rowb->Qty;
-                    $cli = $rowb->cliente;
-                    $poReg = $rowb->po;
-                    $revp = substr($rev, 0, 4);
-                }
-            }
-
-            function upRegistros($count, $codigo, $process, $todays, $place, $upCant, $donde, $sesion, $reg)
-            {
-                if ($reg == 'si') {
-                    $registroTiempo = new regParTime;
-                    $registroTiempo->codeBar = $codigo;
-                    $registroTiempo->qtyPar = $upCant;
-                    $registroTiempo->area = $sesion.'/'.$donde;
-                    $registroTiempo->fechaReg = $todays;
+        $qty= $request->input('qty');
+        if ($cat == '' or $value == '') {  return view('login');   }
+       
+         if ($cat == 'ensa') {
+            regPar::where('wo', $wo)->update(['ensaPar' => DB::raw('ensaPar + '.$qty),'tobeassembly'  => DB::raw('tobeassembly - '.$qty)]);
+         }elseif ($cat == 'libe') {
+            regPar::where('wo', $wo)->update(['libePar' => DB::raw('libePar +'.$qty),'tobeterm'  => DB::raw('tobeterm - '.$qty)]);
+        } elseif ($cat == 'loom') {
+            regPar::where('wo', $wo)->update(['loomPar' => DB::raw('loomPar + '.$qty),'tobeloom'  => DB::raw('tobeloom - '.$qty)]);
+        } elseif ($cat == 'cort') {
+            regPar::where('wo', $wo)->update(['cortPar' => DB::raw('cortPar + '.$qty),'tobecut'  => DB::raw('tobecut - '.$qty)]);
+        }
+        $registroTiempo = new regParTime;
+                    $registroTiempo->codeBar = $wo;
+                    $registroTiempo->qtyPar = $qty;
+                    $registroTiempo->area = $value.'/'.$cat.'/para iniciar';
+                    $registroTiempo->fechaReg = carbon::now()->toDateTimeString();
                     $registroTiempo->save();
-                }
-                $update = DB::table('registro')->where('info', $codigo)->update(['count' => $count, 'donde' => $process]);
-                $updatetime = DB::table('timesharn')->where('bar', $codigo)->update([$place => $todays]);
-            }
-            if ($count === 1) {
-                return redirect('general')->with('response', 'Plannig Station, Harness Not update');
-            }
 
-            $buscarCantidad = DB::table('registroparcial')->where('codeBar', '=', $codigo)->get();
-            if (empty($buscarCantidad)) {
-                $resp = 'Recod not found';
-            } else {
-                foreach ($buscarCantidad as $buscarCantidades) {
-                    $cortPar = $buscarCantidades->cortPar;
-                    $libePar = $buscarCantidades->libePar;
-                    $ensaPar = $buscarCantidades->ensaPar;
-                    $loomPar = $buscarCantidades->loomPar;
-                    $testPar = $buscarCantidades->testPar;
-                    $embPar = $buscarCantidades->embPar;
-                    $preCalidad = $buscarCantidades->preCalidad;
-                    $engPar = $buscarCantidades->eng;
-                    $fallasCalidad = $buscarCantidades->fallasCalidad;
-                    $specialWire = $buscarCantidades->specialWire;
-                    $totalPar = $cortPar + $libePar + $ensaPar + $loomPar + $testPar + $embPar + $preCalidad + $engPar + $fallasCalidad + $specialWire;
-                }
-            }
-            if ($cantidad <= 0 or $cantidad == null) {
-                $resp = 'Quantity not valid';
+         return redirect()->back()->with('success', 'Se acceptaron correctamente los previos');
+    }
+    
+    public function registrar_work (request $request,$wo){
+        $cat = session('categoria');
+        $value = session('user');
+        if ($cat == '' or $value == '') {  return view('login');   }
+        $qty= $request->input('qty');
+        
 
-                return redirect('general')->with('response', $resp);
-            }
+             if ($cat == 'ensa') {
+            regPar::where('wo', $wo)->update(['preloom' => DB::raw('preloom + '.$qty),'ensaPar'  => DB::raw('ensaPar - '.$qty)]);
+           
+        } elseif ($cat == 'emba') {
+             regPar::where('wo', $wo)->update(['embPar' => DB::raw(' embPar -'.$qty)]);
+        } elseif ($cat == 'libe') {
+            regPar::where('wo', $wo)->update(['preassembly' => DB::raw('preassembly +'.$qty),'libePar'  => DB::raw('libePar - '.$qty)]);
 
-            if ($count === 2 or $count === 4 or $count === 6 or $count === 8 or $count === 15) {
-                if ($donde === 'loom' and $count === 8) {
-                    $resp = 'Looming Process';
-                    upRegistros(9, $codigo, 'Looming Process', $todays, 'loom', '', $donde, $sesion, 'no');
-                } elseif ($count === 8 or $count === 9) {
-                    $resp = 'Looming Process';
-                } elseif ($donde === 'ensa' and ($count === 6 or $count === 15)) {
-                    $resp = 'Assembly Process';
-                    upRegistros(7, $codigo, 'Assembly Process', $todays, 'ensa', '', $donde, $sesion, 'no');
-                } elseif ($count === 6 or $count === 7 or $count === 15) {
-                    $resp = 'Assembly Process';
-                } elseif (($donde === 'libe') and $count === 4) {
-                    $buscarinfo = DB::table('registro_pull')->where('wo', substr($wo, 2))
-                        ->orWhere('wo', $wo)->get();
-                    if (count($buscarinfo) <= 0) {
-                        $resp = 'Pull test not found';
-                    } else {
-                        $resp = 'Terminals Process';
-                    }
-                    upRegistros(5, $codigo, 'Terminals Process', $todays, 'term', '', $donde, $sesion, 'no');
-                } elseif ($count === 4 or $count === 5) {
-                    $resp = 'Terminals Process';
-                } elseif (($donde === 'cort') and $count == 2) {
-                    $resp = 'Cuttining Process';
-                    upRegistros(3, $codigo, 'Cutting Process', $todays, 'cut', '', $donde, $sesion, 'no');
-                } elseif ($count === 2 or $count === 3) {
-                    $resp = 'Cutting Process';
-                }
+        } elseif ($cat == 'loom') {
+            regPar::where('wo', $wo)->update(['preCalidad' => DB::raw('preCalidad + '.$qty),'loomPar'  => DB::raw('loomPar - '.$qty)]);
+        } elseif ($cat == 'cort') {
+            regPar::where('wo', $wo)->update(['preterm' => DB::raw('preterm + '.$qty),'cortPar'  => DB::raw('cortPar - '.$qty)]);
+        }
+         $cuentas = regPar::where('wo', $wo)->first();
+      
+         $corte = $cuentas->cortPar+$cuentas->precut+$cuentas->tobecut;
+         $libe = $cuentas->libePar+$cuentas->preterm+$cuentas->tobeterm;
+         $emb = $cuentas->embPar+$cuentas->preemba;
+         $ensa = $cuentas->ensaPar+$cuentas->preloom+$cuentas->tobeloom +$cuentas->specialWire;
+         $loom = $cuentas->loomPar+$cuentas->preCalidad+$cuentas->tobeloom;
+         $calidad = $cuentas->testPar+$cuentas->fallasCalidad;
+         $eng = $cuentas->eng;
+          $donde = '';
+            $count = 6;
+        if(($corte + $libe +  $ensa + $loom + $calidad + $emb) == 0 ){
+            $donde = 'Terminado';
+            $count = 20;
+        }elseif(($corte + $libe +  $ensa + $loom + $calidad  ) == 0 AND $emb > 0){
+            $donde = 'En embarque';
+            $count = 12;
+        }elseif(($corte + $libe +  $ensa + $loom    ) == 0 AND $calidad > 0){
+            $donde = 'En Calidad';
+            $count = 10;
+        }elseif(($corte + $libe +  $ensa) == 0 AND $loom > 0){
+            $donde = 'En Loom';
+            $count = 8;
+        }elseif(($corte + $libe) == 0 AND $ensa > 0){
+            $donde = 'En Ensamble';
+            $count = 6;
+        }else if($corte == 0 AND $libe > 0){
+            $donde = 'En Libe';
+            $count = 4;
+        }else if($corte > 0){
+            $donde = 'En Corte';
+            $count = 2;
+        }
+         Wo::where('wo', $wo)->update(['donde'=>$donde,'count'=>$count,]);
+      
 
-                return redirect('general')->with('response', $resp);
-            } elseif ($count == 13 or $count == 14 or $count == 18 or $count == 16 or $count == 17) {
-                if ($count == 13) {
-                    $resp = 'waiting for engineering Assembly';
-                } elseif ($count == 14) {
-                    $resp = 'waiting for engineering Looming';
-                } elseif ($count == 18) {
-                    $resp = 'waiting for engineering Quality';
-                } elseif ($count == 16) {
-                    $resp = 'waiting for engineering Terminals';
-                } elseif ($count == 17) {
-                    $resp = 'waiting for engineering cutting';
-                }
 
-                return redirect('general')->with('response', $resp);
-            } elseif ($revp == 'PRIM' or $revp == 'PPAP') {
-                if ($count == 7) {
-                    $resp = 'waiting for engineering Assembly';
-                    upRegistros(13, $codigo, $resp, $todays, 'ensaF', $ensaPar, $donde, $sesion, 'si');
-                    $update = DB::table('registroparcial')->where('codeBar', '=', $codigo)->update(['ensaPar' => '0', 'eng' => $ensaPar]);
-                } elseif ($count == 5) {
-                    $resp = 'waiting for engineering terminals';
-                    upRegistros(16, $codigo, $resp, $todays, 'termF', $libePar, $donde, $sesion, 'si');
-                    $update = DB::table('registroparcial')->where('codeBar', '=', $codigo)->update(['libePar' => '0', 'eng' => $libePar]);
-                } elseif ($count == 3) {
-                    $resp = 'waiting for engineering Cutting';
-                    upRegistros(17, $codigo, $resp, $todays, 'cutF', $cortPar, $donde, $sesion, 'si');
-                    $update = DB::table('registroparcial')->where('codeBar', '=', $codigo)->update(['cortPar' => '0', 'eng' => $cortPar]);
-                } elseif ($count == 9) {
-                    $resp = 'waiting for engineering Looming';
-                    upRegistros(14, $codigo, $resp, $todays, 'loomF', $loomPar, $donde, $sesion, 'si');
-                    $update = DB::table('registroparcial')->where('codeBar', '=', $codigo)->update(['loomPar' => '0', 'eng' => $loomPar]);
-                } elseif ($count == 12) {
-                    $update = DB::table('registroparcial')->where('codeBar', '=', $codigo)->update(['embPar' => '0']);
-                    upRegistros(20, $codigo, 'Harness Finished', $todays, 'embaF', $embPar, $donde, $sesion, 'si');
-                    $tiempoUp = DB::table('tiempos')->where('info', $codigo)->update(['embarque' => $todays]);
-                }
+        $registroTiempo = new regParTime;
+                    $registroTiempo->codeBar = $wo;
+                    $registroTiempo->qtyPar = $qty;
+                    $registroTiempo->area = $value.'/'.$cat.'/ Faniaizado';
+                    $registroTiempo->fechaReg = carbon::now()->toDateTimeString();
+                    $registroTiempo->save();
 
-                return redirect('general')->with('response', $resp);
-            } elseif ($cantidad >= 0) {
-                if (($donde === 'loom' and $loomPar > 0 and $count !== 8)) {
-                    if ($cantidad >= ($loomPar)) {
-                        $nuevo = $preCalidad + $loomPar;
-                        $update = DB::table('registroparcial')->where('codeBar', '=', $codigo)->update(['loomPar' => '0', 'preCalidad' => $nuevo]);
-                        upRegistros(10, $codigo, 'Waiting for testing acceptance', $todays, 'loomF', $loomPar, $donde, $sesion, 'si');
-                        if ($cortPar == 0 and $libePar == 0 and $ensaPar == 0) {
-                            $tiempoUp = DB::table('tiempos')->where('info', $codigo)->update(['loom' => $todays]);
-                        }
-                    } elseif ($cantidad < ($loomPar) and (substr($rev, 0, 4) != 'PRIM' or substr($rev, 0, 4) != 'PPAP')) {
-                        $restoAnt = $loomPar - $cantidad;
-                        $nuevo = $preCalidad + $cantidad;
-                        $update = DB::table('registroparcial')->where('codeBar', '=', $codigo)->update(['loomPar' => $restoAnt, 'preCalidad' => $nuevo]);
-                        upRegistros(9, $codigo, 'parcial Looming', $todays, 'loomF', $cantidad, $donde, $sesion, 'si');
-                    }
-                } elseif (($donde === 'ensa' and $ensaPar > 0 and ($count !== 6 or $count !== 15))) {
-                    $noloom = '';
-                    $nolooms = specialWireModel::where('partNumber', '=', $pnReg)->first();
-                    if (! empty($nolooms)) {
-                        $noloom = $nolooms->PartNumber;
-                    }
-                    if ($pnReg == $noloom) {
-                        if ($cantidad < ($ensaPar) and (substr($rev, 0, 4) != 'PRIM' or substr($rev, 0, 4) != 'PPAP')) {
-                            $restoAnt = $ensaPar - $cantidad;
-                            $nuevo = $preCalidad + $cantidad;
-                            $update = DB::table('registroparcial')->where('codeBar', '=', $codigo)->update(['ensaPar' => $restoAnt, 'preCalidad' => $nuevo]);
-                            upRegistros(7, $codigo, 'Assembly Partial', $todays, 'ensaF', $cantidad, $donde, $sesion, 'si');
-                        } elseif ($cantidad >= ($ensaPar)) {
-                            $restoAnt = $ensaPar - $cantidad;
-                            $nuevo = $preCalidad + $cantidad;
-                            $update = DB::table('registroparcial')->where('codeBar', '=', $codigo)->update(['ensaPar' => $restoAnt, 'precalidad' => $nuevo]);
-                            upRegistros(10, $codigo, 'Pre Quality', $todays, 'ensaF', $cantidad, $donde, $sesion, 'si');
-                        }
-                    } else {
-                        if ($cantidad < ($ensaPar) and (substr($rev, 0, 4) != 'PRIM' or substr($rev, 0, 4) != 'PPAP')) {
-                            $restoAnt = $ensaPar - $cantidad;
-                            $nuevo = $loomPar + $cantidad;
-                            $update = DB::table('registroparcial')->where('codeBar', '=', $codigo)->update(['ensaPar' => $restoAnt, 'loomPar' => $nuevo]);
-                            upRegistros(7, $codigo, 'Assembly Partial', $todays, 'ensaF', $cantidad, $donde, $sesion, 'si');
-                        } elseif ($cantidad >= ($ensaPar)) {
-                            $nuevo = $loomPar + $ensaPar;
-                            $update = DB::table('registroparcial')->where('codeBar', '=', $codigo)->update(['ensaPar' => '0', 'loomPar' => $nuevo]);
-                            upRegistros(8, $codigo, 'Looming Process', $todays, 'ensaF', $ensaPar, $donde, $sesion, 'si');
-                            if ($cortPar == 0 and $libePar == 0) {
-                                $tiempoUp = DB::table('tiempos')->where('info', $codigo)->update(['ensamble' => $todays]);
-                            }
-                        }
-                    }
-                } elseif ((($donde === 'libe') and $libePar > 0 and $count !== 4)) {
-                    if ($cantidad < ($libePar) and (substr($rev, 0, 4) != 'PRIM' or substr($rev, 0, 4) != 'PPAP')) {
-                        $restoAnt = $libePar - $cantidad;
-                        $nuevo = $ensaPar + $cantidad;
-                        $update = DB::table('registroparcial')->where('codeBar', '=', $codigo)->update(['libePar' => $restoAnt, 'ensaPar' => $nuevo]);
+         return redirect()->back()->with('success', 'Se acceptaron correctamente los previos');
 
-                        upRegistros(5, $codigo, 'parcial Terminals', $todays, 'ensaF', $cantidad, $donde, $sesion, 'si');
-                    } elseif ($cantidad >= ($libePar)) {
-                        $restoAnt = 0;
-                        $nuevo = $ensaPar + $libePar;
-                        $update = DB::table('registroparcial')->where('codeBar', '=', $codigo)->update(['libePar' => $restoAnt, 'ensaPar' => $nuevo]);
-                        upRegistros(6, $codigo, 'Assembly Process', $todays, 'ensaF', $libePar, $donde, $sesion, 'si');
-                        if ($cortPar == 0) {
-                            $tiempoUp = DB::table('tiempos')->where('info', $codigo)->update(['liberacion' => $todays]);
-                        }
+
+
+    }
+
+    public function codigo(request $request)
+    {
+      
                         $buscarinfo = DB::table('registro_pull')->where('wo', substr($wo, 2))
                             ->orWhere('wo', $wo)->get();
                         if (count($buscarinfo) <= 0) {
@@ -440,62 +322,10 @@ class generalController extends Controller
                             ];
                             Mail::to($recipients)->send(new \App\Mail\pull\pullError($subject, $content));
                         }
-                    }
-                } elseif ((($donde === 'cort') and $cortPar > 0 and $count !== 2)) {
-                    if ($cantidad < $cortPar and (substr($rev, 0, 4) != 'PRIM' or substr($rev, 0, 4) != 'PPAP')) {
-                        $restoAnt = $cortPar - $cantidad;
-                        $nuevo = $libePar + $cantidad;
-                        $update = DB::table('registroparcial')->where('codeBar', '=', $codigo)->update(['cortPar' => $restoAnt, 'libePar' => $nuevo]);
-                        upRegistros(3, $codigo, 'Waitting for Terminals', $todays, 'cutF', $cantidad, $donde, $sesion, 'si');
-                    } elseif ($cantidad >= ($cortPar)) {
-                        $restoAnt = 0;
-                        $nuevo = $libePar + $cortPar;
-                        $update = DB::table('registroparcial')->where('codeBar', '=', $codigo)->update(['cortPar' => $restoAnt, 'libePar' => $nuevo]);
-                        upRegistros(4, $codigo, 'Terminals Process', $todays, 'cutF', $cortPar, $donde, $sesion, 'si');
-                        $tiempoUp = DB::table('tiempos')->where('info', $codigo)->update(['corte' => $todays]);
-                    }
-                } elseif ($donde === 'emba' and $embPar > 0) {
-                    if ($cantidad >= ($embPar) and $embPar < $totalPar) {
-                        $resp = 'Partial Shipped';
-                        $nuevo = $preCalidad + $embPar;
-                        $update = DB::table('registroparcial')->where('codeBar', '=', $codigo)->update(['embPar' => '0']);
-                        upRegistros(12, $codigo, 'Partial Shipped', $todays, 'embaF', $embPar, $donde, $sesion, 'si');
-                    } elseif ($cantidad < ($embPar)) {
-                        $resp = 'Partial Shipped';
-                        $restoAnt = $embPar - $cantidad;
-                        DB::table('registroparcial')->where('codeBar', '=', $codigo)->update(['embPar' => $restoAnt]);
-                        upRegistros(12, $codigo, 'Partial Shipped', $todays, 'embaF', $cantidad, $donde, $sesion, 'si');
-                    } elseif ($cantidad >= $embPar and $embPar >= $totalPar) {
-                        $resp = 'shipped Harness Finished';
-                        $update = DB::table('registroparcial')->where('codeBar', '=', $codigo)->update(['embPar' => '0']);
-                        upRegistros(20, $codigo, 'Harness Finished', $todays, 'embaF', $embPar, $donde, $sesion, 'si');
-                        $tiempoUp = DB::table('tiempos')->where('info', $codigo)->update(['embarque' => $todays]);
-                    }
-
-                    return redirect('general')->with('response', $resp);
-                }
-
-                if ($resp == null or $resp == '') {
-                    $buscarCantidad = DB::table('registroparcial')->where('codeBar', '=', $codigo)->get();
-                    if (empty($buscarCantidad)) {
-                        $resp = 'Recod not found';
-                    } else {
-                        foreach ($buscarCantidad as $buscarCantidades) {
-                            $cortPar = $buscarCantidades->cortPar;
-                            $libePar = $buscarCantidades->libePar;
-                            $ensaPar = $buscarCantidades->ensaPar;
-                            $loomPar = $buscarCantidades->loomPar;
-                            $testPar = $buscarCantidades->testPar;
-                            $embPar = $buscarCantidades->embPar;
-                        }
-                    }
-
-                    $resp = "Cutting: $cortPar, Terminals: $libePar, Assembly: $ensaPar, Looming: $loomPar, Testing: $testPar, Shipping: $embPar";
-                }
-            }
+                 
 
             return redirect('general')->with('response', $resp);
-        }
+        
     }
 
     public function Bom(Request $request)

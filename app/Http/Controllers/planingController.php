@@ -433,65 +433,24 @@ class planingController extends Controller
         }
     }
 
-    public function codeBarPlan(request $request)
+    public function codeBarPlan(request $request,$wo)
     {
+                      $value = session('user');
+        $cat = session('categoria');
+        if ($value == '' or $cat == '') { return view('login'); }
         $tiempos = date('d-m-Y H:i');
-        $wo = $request->input('wo_scan');
+      
         if ($wo != '') {
-            $bucar_wo = DB::table('registro')->where('wo', $wo)->first();
-            if (! empty($bucar_wo)) {
-                $np = $bucar_wo->NumPart;
-                $info = $bucar_wo->info;
-                $count = $bucar_wo->count;
-                $qty_reg = $bucar_wo->Qty;
-                $rev = $bucar_wo->rev;
-                if ($count < 2) {
-                    $noloom = '';
-                    $registrosNoLoom = specialWireModel::where('partNumber', '=', $np)->orderBy('id', 'desc')->first();
-                    if (! empty($registrosNoLoom)) {
-                        $noloom = $registrosNoLoom->PartNumber;
-                    }
-                    $panel = ['0031539-4', '0031539-100', '26013301', '0031539-104', '0032192-70', '0032192-175', '0032192-77'];
-                    $regcorte = new regPar;
-                    $regcorte->pn = $np;
-                    $regcorte->wo = $wo;
-                    $regcorte->orgQty = $qty_reg;
-                    if (substr($rev, 0, 4) == 'PPAP' or substr($rev, 0, 4) == 'PRIM') {
-                        if ((($np == $noloom) or in_array($np, $panel))) {
-                            $update = DB::table('registro')->where('wo', $wo)->update(['donde' => 'En espera Ingenieria // cables especiales', 'count' => 13]);
-                        } else {
-                            $update = DB::table('registro')->where('wo', $wo)->update(['donde' => 'En espera de Ingenieria // Corte', 'count' => 17]);
-                        }
-                        try {
-                            workScreduleModel::where('pn', $np)->orderby('id', 'desc')->first()->update(['UpOrderDate' => carbon::now()->format('Y-m-d')]);
-                        } catch (\Exception $e) {
-                            Log::info($e);
-                        }
-
-                        $regcorte->eng = $qty_reg;
-                    } else {
-                        if ((($np == $noloom) or in_array($np, $panel))) {
-                            $update = DB::table('registro')->where('wo', $wo)->update(['donde' => 'En espera de cables especiales', 'count' => 15]);
-                            $regcorte->specialWire = $qty_reg;
-                        } else {
+                        $registros=regPar::select('codeBar')-> where('wo', $wo)->first();   
+                         
                             $update = DB::table('registro')->where('wo', $wo)->update(['donde' => 'En espera de corte', 'count' => 2]);
-                            $regcorte->precut = $qty_reg;
+                            $updateTime = DB::table('tiempos')->where('info', $registros->codeBar)->update(['planeacion' => $tiempos]);
+                            $updateCantidad = DB::table('registroparcial')->where('wo', '=', $wo)->update(['precut' => DB::raw('planpar'), 'planpar' => 0]);
+                            return redirect('planing')->with('response', 'Record updated');
                         }
-                    }
-                    $regcorte->codeBar = $info;
-                    $regcorte->save();
-
-                    $updateTime = DB::table('tiempos')->where('info', $info)->update(['planeacion' => $tiempos]);
-
-                    return redirect('/planing');
-                } else {
+                else {
                     return redirect('planing')->with('response', 'Record not found');
                 }
-            } else {
-                return redirect('planing')->with('response', 'Record not found');
-            }
-        } else {
-            return redirect('planing')->with('response', 'Record not found');
-        }
     }
+          
 }

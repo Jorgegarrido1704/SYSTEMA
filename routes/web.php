@@ -80,7 +80,12 @@ Route::controller(generalController::class)->group(function () {
     Route::post('/regfull', [generalController::class, 'regfull'])->name('regfull');
     Route::post('/problemas_general', [generalController::class, 'problemas_general'])->name('problemas_general');
     Route::get('/getBraid', [generalController::class, 'getBraid'])->name('getBraid');
+    Route::get('/previos/{wo}/{status}',[generalController::class, 'previos'])->name('previos');
+     Route::POST('/iniciar_work/{wo}',[generalController::class, 'iniciar_work'])->name('iniciar_work');
+      Route::POST('/registrar_work/{wo}',[generalController::class, 'registrar_work'])->name('registrar_work');
 });
+
+
 Route::controller(pruebasElectricasController::class)->group(function () {
     Route::get('/pruebasElectricas', 'pruebasElecticas')->name('pruebasElecticas');
     Route::get('/dispatchElecticalTest', [pruebasElectricasController::class, 'dispatchElecticalTest'])->name('dispatchElecticalTest');
@@ -178,7 +183,7 @@ Route::controller(planingController::class)->group(function () {
 
     Route::get('/planing', [planingController::class, 'planning'])->name('planning');
     Route::get('/pos', [planingController::class, 'pos'])->name('pos');
-    Route::get('/codeBarPlan', [planingController::class, 'codeBarPlan'])->name('codeBarPlan');
+    Route::get('/codeBarPlan/{wo}', [planingController::class, 'codeBarPlan'])->name('codeBarPlan');
 });
 
 Route::controller(AdminSupControlloer::class)->group(function () {

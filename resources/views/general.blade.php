@@ -24,42 +24,125 @@
  </div>
  <div class="row">
     <!-- Escanner -->
-    <div class="col-xl-12 col-lg-4" >
+    <div class="col-xl-4 col-lg-4" >
         <div class="card shadow mb-4">
 
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" style="max-height: 25px">
-                <h6 class="m-0 font-weight-bold text-primary">{{__('Barcode Scanner') }}</h6>
+                <h6 class="m-0 font-weight-bold text-primary">{{__('Accept Orders') }}</h6>
 
             </div>
 
             <!-- table Body -->
-            <div class="card-body" style=" height: 180px;">
-                <div class="chart-pie pt-4 pb-2">
-                    <form action="{{ route('codigo') }}" method="POST">
-                        @csrf
-                        <div class="form-group" style="display: flex; flex-wrap: wrap; gap: 15px; align-items: center;">
-                            <!-- Cantidad -->
-                            <div class="input-group" style="flex: 1; min-width: 150px;">
-                                <label for="cantidad" class="form-label" style="padding-right: 10px;"><b>Qty scanned</b></label>
-                                <input type="number" class="form-control" name="cantidad" id="cantidad" value="0" min="0" step="1" required>
-                            </div>
+            <div class="card-body" style=" height: 380px; overflow-y: scroll">
+                @if($previo->count() > 0)
+                <table class="table table-bordered table-sm table-striped" id="previo" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>{{ __('Part Number') }}</th>
+                            <th>{{ __('WO') }}</th>
+                            <th>{{ __('Qty') }}</th>
+                            <th>{{ __('Accept') }}</th>
+                            <th>{{ __('Decline') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($previo as $item)
+                        <tr>
+                            <td>{{ $item->pn }}</td>
+                            <td>{{ $item->wo }}</td>
+                            <td>{{ $item->qty }}</td>
+                            <td><a href="{{ route('previos', ['wo'=>$item->wo ,'status'=>'accept']) }}" class="btn btn-success">{{ __('Accept') }}</a></td>
+                            <td><a href="{{ route('previos', ['wo'=>$item->wo,'status'=>'decline']) }}" class="btn btn-danger">{{ __('Decline') }}</a></td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                @endif
 
-                            <!-- Código de Barras -->
-                            <div class="input-group" style="flex: 2; min-width: 200px;">
-                                <label for="code-bar" class="form-label" style="padding-right: 10px;"><b>Scan Your Code</b></label>
-                                <input type="text" class="form-control" name="code-bar" id="code-bar" placeholder="Enter code here" required>
-                            </div>
+            </div>
+        </div>
+    </div>
+     <div class="col-xl-4 col-lg-4" >
+        <div class="card shadow mb-4">
 
-                            <!-- Botón de Enviar -->
-                            <div style="flex: 0 0 auto;">
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                            </div>
-                        </div>
-                    </form>
-                    <hr>
-                    <br>
-                    <h3 align="center">{{ session('response') }}</h3>
-                </div>
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" style="max-height: 25px">
+                <h6 class="m-0 font-weight-bold text-primary">{{__('Work Not Started') }}</h6>
+
+            </div>
+
+            <!-- table Body -->
+              <div class="card-body" style=" height: 380px; overflow-y: scroll">
+                @if($iniciar->count() > 0)
+                <table class="table table-bordered table-sm table-striped" id="previo" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>{{ __('Part Number') }}</th>
+                            <th>{{ __('WO') }}</th>
+                            <th>{{ __('Qty') }}</th>
+                            <th>{{ __('Start') }}</th>
+                           
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($iniciar as $item)
+                        <tr>
+                            <td>{{ $item->pn }}</td>
+                            <td>{{ $item->wo }}</td>
+                            <form action="{{ route('iniciar_work',['wo'=>$item->wo]) }}" method="POST">
+                                @csrf
+                               
+                            <td><input type="number" name="qty" id="qty" value="{{ $item->qty }}" min="0" max="{{ $item->qty }}" required></td>
+                             <td><button type="submit" class="btn btn-warning">{{ __('Move') }}</button></td>
+                            </form>
+                           
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                @endif
+
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4 col-lg-4" >
+        <div class="card shadow mb-4">
+
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" style="max-height: 25px">
+                <h6 class="m-0 font-weight-bold text-primary">{{__('Work In Progress') }}</h6>
+
+            </div>
+
+            <!-- table Body -->
+             <div class="card-body" style=" height: 380px; overflow-y: scroll">
+                @if($registros->count() > 0)
+                <table class="table table-bordered table-sm table-striped" id="registrar_work" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>{{ __('Part Number') }}</th>
+                            <th>{{ __('WO') }}</th>
+                            <th>{{ __('Qty') }}</th>
+                            <th>{{ __('Finish') }}</th>
+                           
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($registros as $item)
+                        <tr>
+                            <td>{{ $item->pn }}</td>
+                            <td>{{ $item->wo }}</td>
+                            <form action="{{ route('registrar_work',['wo'=>$item->wo]) }}" method="POST">
+                                @csrf
+                               
+                            <td><input type="number" name="qty" id="qty" value="{{ $item->qty }}" min="0" max="{{ $item->qty }}" required></td>
+                             <td><button type="submit" class="btn btn-danger">{{ __('Finish') }}</button></td>
+                            </form>
+                           
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                @endif
+
             </div>
         </div>
     </div>
