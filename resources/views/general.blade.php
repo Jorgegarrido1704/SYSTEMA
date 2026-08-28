@@ -24,6 +24,26 @@
  </div>
  <div class="row">
     <!-- Escanner -->
+     <div class="col-xl-12 col-lg-12" >
+        <div class="card shadow mb-4">
+
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" style="max-height: 25px">
+                <h6 class="m-0 font-weight-bold text-primary">{{__('Where is the order?') }}</h6>
+
+            </div>
+
+            <!-- table Body -->
+            <div class="card-body" style=" height: 180px; ">
+                <div class='input-group mb-3'>
+                    <label class="input-group-text" for="controlWoSearch">Select</label>
+                    <input class="form-control" type="text" id="controlWoSearch" name="controlWoSearch" placeholder="WO" max_length="6" onchange="whereIsTheOrder(this.value)">
+                </div>
+                <div id='WhereIsTheOrder'></div>
+
+
+            </div>
+        </div>
+    </div>
     <div class="col-xl-4 col-lg-4" >
         <div class="card shadow mb-4">
 
@@ -80,7 +100,7 @@
                             <th>{{ __('WO') }}</th>
                             <th>{{ __('Qty') }}</th>
                             <th>{{ __('Start') }}</th>
-                           
+
                         </tr>
                     </thead>
                     <tbody>
@@ -90,11 +110,11 @@
                             <td>{{ $item->wo }}</td>
                             <form action="{{ route('iniciar_work',['wo'=>$item->wo]) }}" method="POST">
                                 @csrf
-                               
+
                             <td><input type="number" name="qty" id="qty" value="{{ $item->qty }}" min="0" max="{{ $item->qty }}" required></td>
                              <td><button type="submit" class="btn btn-warning">{{ __('Move') }}</button></td>
                             </form>
-                           
+
                         </tr>
                         @endforeach
                     </tbody>
@@ -122,7 +142,7 @@
                             <th>{{ __('WO') }}</th>
                             <th>{{ __('Qty') }}</th>
                             <th>{{ __('Finish') }}</th>
-                           
+
                         </tr>
                     </thead>
                     <tbody>
@@ -132,11 +152,11 @@
                             <td>{{ $item->wo }}</td>
                             <form action="{{ route('registrar_work',['wo'=>$item->wo]) }}" method="POST">
                                 @csrf
-                               
+
                             <td><input type="number" name="qty" id="qty" value="{{ $item->qty }}" min="0" max="{{ $item->qty }}" required></td>
                              <td><button type="submit" class="btn btn-danger">{{ __('Finish') }}</button></td>
                             </form>
-                           
+
                         </tr>
                         @endforeach
                     </tbody>
@@ -436,6 +456,63 @@
 
                  </div>
                  <script>
+                    function whereIsTheOrder(wo){
+
+                        
+                        var    url = '/whereIsTheOrder/' + wo;
+                        fetch(url)
+                         .then(response => response.json())
+                     .then(data => {
+                        console.log(data)
+                        var plan=data.planpar;
+                        var cut=parseInt(data.cortPar)+parseInt(data.precut)+parseInt(data.tobecut);
+                        var term=parseInt(data.libePar)+parseInt(data.preterm)+parseInt(data.tobeterm);
+                        var assem=parseInt(data.ensaPar)+parseInt(data.preassembly)+parseInt(data.tobeassembly)+parseInt(data.specialWire);
+                        var loom=parseInt(data.loomPar)+parseInt(data.preloom)+parseInt(data.tobeloom);
+                        var test=parseInt(data.testPar)+parseInt(data.fallasCalidad)+parseInt(data.preCalidad);
+                        var pack=parseInt(data.preemba)+parseInt(data.embPar);
+                        var eng = data.eng;
+                        let html =`
+                        <table class="table table-bordered table-hover" id="WhereIsTheOrder" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>{{ __('Part Number') }}</th>
+                                    <th>{{ __('WO') }}</th>
+                                    <th>{{ __('Planning') }}</th>
+                                    <th>{{ __('Cutting') }}</th>
+                                    <th>{{ __('Terminals') }}</th>
+                                    <th>{{ __('Assembly') }}</th>
+                                    <th>{{ __('Looming') }}</th>
+                                    <th>{{ __('Testing') }}</th>
+                                    <th>{{ __('Packing') }}</th>    
+                                    <th>{{ __('Enginner') }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>${data.pn}</td>
+                                    <td>${data.wo}</td>
+                                    <td>${plan}</td>
+                                    <td>${cut}</td>
+                                    <td>${term}</td>
+                                    <td>${assem}</td>
+                                    <td>${loom}</td>
+                                    <td>${test}</td>
+                                    <td>${pack}</td>
+                                    <td>${eng}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+`
+                        document.getElementById('WhereIsTheOrder').innerHTML = html;
+                      })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+                        
+                        
+                    }
+
                     async function selectBraid() {
                                             const braid = document.getElementById('braid').value
                         // Si el input está vacío, puedes decidir no enviar nada o enviar la fecha de hoy

@@ -81,8 +81,10 @@ Route::controller(generalController::class)->group(function () {
     Route::post('/problemas_general', [generalController::class, 'problemas_general'])->name('problemas_general');
     Route::get('/getBraid', [generalController::class, 'getBraid'])->name('getBraid');
     Route::get('/previos/{wo}/{status}',[generalController::class, 'previos'])->name('previos');
-     Route::POST('/iniciar_work/{wo}',[generalController::class, 'iniciar_work'])->name('iniciar_work');
-      Route::POST('/registrar_work/{wo}',[generalController::class, 'registrar_work'])->name('registrar_work');
+    Route::POST('/iniciar_work/{wo}',[generalController::class, 'iniciar_work'])->name('iniciar_work');
+    Route::POST('/registrar_work/{wo}',[generalController::class, 'registrar_work'])->name('registrar_work');
+    Route::get('/whereIsTheOrder/{wo}',[generalController::class, 'whereIsTheOrder'])->name('whereIsTheOrder');
+
 });
 
 
@@ -200,7 +202,7 @@ Route::controller(AdminSupControlloer::class)->group(function () {
     Route::get('/removeVacations', [AdminSupControlloer::class, 'removeVacations'])->name('removeVacations');
     Route::get('/datosVsm', [AdminSupControlloer::class, 'datosVsm'])->name('datosVsm');
     Route::get('/reactivacion_wo', [AdminSupControlloer::class, 'reactivacion_wo'])->name('reactivacion_wo');
-    
+
 
 });
 

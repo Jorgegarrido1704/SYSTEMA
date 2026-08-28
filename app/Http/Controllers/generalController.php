@@ -147,6 +147,13 @@ class generalController extends Controller
         
     }
 
+    public function whereIsTheOrder($wo){
+        $donde=regPar::where('wo','=',$wo)->first();
+        
+        return json_encode($donde);
+
+    }
+
     public function responseCodigo(request $request)
     {
         $cat = session('categoria');
