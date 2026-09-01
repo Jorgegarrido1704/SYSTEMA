@@ -16,13 +16,13 @@ use App\Models\registroVacacionesModel;
 use App\Models\tiempos;
 use App\Models\Wo;
 use App\Models\workScreduleModel;
+use App\Services\ExcelReportService;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
-use App\Services\ExcelReportService;
 
 class juntasController extends Controller
 {
@@ -462,6 +462,7 @@ class juntasController extends Controller
         // Initialize
         $pareto = [];
         $totalGood = $totalBad = 0;
+        $clients_ftq = ['BERGSTROM', 'UTILIMASTER', 'TICO MANUFACTURING', 'SHYFT'];
 
         // Get current weekday (1 = Monday, 7 = Sunday)
         $weekday = date('N');
@@ -578,6 +579,7 @@ class juntasController extends Controller
             DB::raw("(SUM(CASE WHEN codigo = 'TODO BIEN' THEN 1 ELSE 0 END) * 100.0 / COUNT(client)) as promedio")
         )
             ->where('fecha', 'LIKE', "%-$monthAndYear%")
+            ->whereIn('client', $clients_ftq)
             ->groupBy('client')
             ->orderBy('promedio', 'ASC')
             ->get();
@@ -675,7 +677,7 @@ class juntasController extends Controller
             'C' => 0,
             'D' => 0,
             'E' => 0,
-          
+
         ];
         // $dataYear = '2026';
         $dataMonth = '01';
@@ -698,7 +700,7 @@ class juntasController extends Controller
                 $grupo['C'] += $valoresArnes->pnCount;
             } elseif ($buscarCircuitos < 50 and $buscarCircuitos >= 20) {
                 $grupo['D'] += $valoresArnes->pnCount;
-            } else  {
+            } else {
                 $grupo['E'] += $valoresArnes->pnCount;
             }
         }
@@ -854,6 +856,7 @@ class juntasController extends Controller
 
         }
         arsort($supIssue);
+
         // dd($supIssue);
         return view('juntas.calidad', ['codigoErrores' => $codigoErrores, 'grupo' => $grupo, 'top3registrosCalidas' => $top3registrosCalidas,
 
@@ -1022,13 +1025,13 @@ class juntasController extends Controller
                 $tableContent .= '<tr>';
                 $tableContent .= '<td>'.$row->pn.'</td>';
                 $tableContent .= '<td>'.$row->wo.'</td>';
-                $tableContent .= '<td>'.$row->orgQty .'</td>';
-                $tableContent .= '<td>'.$row->cortPar+ $row->precut+$row->tobecut.'</td>';
-                $tableContent .= '<td>'.$row->libePar+$row->preterm+$row->tobeterm.'</td>';
-                $tableContent .= '<td>'.$row->ensaPar+$row->preassembly+$row->tobeassembly.'</td>';
-                $tableContent .= '<td>'.$row->loomPar+$row->preloom+$row->tobeloom.'</td>';
-                $tableContent .= '<td>'.$row->preCalidad +$row->testPart+$row->fallasCalidad.'</td>';
-                $tableContent .= '<td>'.$row->embPar +$row->preemba.'</td>';
+                $tableContent .= '<td>'.$row->orgQty.'</td>';
+                $tableContent .= '<td>'.$row->cortPar + $row->precut + $row->tobecut.'</td>';
+                $tableContent .= '<td>'.$row->libePar + $row->preterm + $row->tobeterm.'</td>';
+                $tableContent .= '<td>'.$row->ensaPar + $row->preassembly + $row->tobeassembly.'</td>';
+                $tableContent .= '<td>'.$row->loomPar + $row->preloom + $row->tobeloom.'</td>';
+                $tableContent .= '<td>'.$row->preCalidad + $row->testPart + $row->fallasCalidad.'</td>';
+                $tableContent .= '<td>'.$row->embPar + $row->preemba.'</td>';
                 $tableContent .= '<td>'.$row->eng.'</td>';
                 $tableContent .= '</tr>';
                 $pnReg[$i] = $row->pn;
@@ -1130,12 +1133,15 @@ class juntasController extends Controller
             'tableReg' => $tableReg,
         ]);
     }
+
     public function Descargar_reporte_estaciones(ExcelReportService $reportService)
-        {
-            set_time_limit(120); // 2 minutos, ajusta según necesites
-            $filePath = $reportService->generateWorkOrderReport();
-            return response()->download($filePath)->deleteFileAfterSend(true);
-        }
+    {
+        set_time_limit(120); // 2 minutos, ajusta según necesites
+        $filePath = $reportService->generateWorkOrderReport();
+
+        return response()->download($filePath)->deleteFileAfterSend(true);
+    }
+
     public function ing_junta()
     {
         $monthYear = date('m-Y');
@@ -2734,7 +2740,7 @@ class juntasController extends Controller
             ->where('status', 'Completed')
             ->whereNotNull('documentsApproved')
             ->whereNull('UpOrderDate')     // cleaner Laravel way for checking null
-            ->where('Status', '!=', 'CANCELLED') 
+            ->where('Status', '!=', 'CANCELLED')
             ->get();
         // dd($totalgeneral, $inprogres);
         // 3. Fixed Wo Query
@@ -2810,7 +2816,7 @@ class juntasController extends Controller
             $color = 'green';
             $tipo = 'PPAP';
         }
-        $inprogres = workScreduleModel::whereNull('documentsApproved')->where('color', $color) ->where('Status', '!=', 'CANCELLED') ->get();
+        $inprogres = workScreduleModel::whereNull('documentsApproved')->where('color', $color)->where('Status', '!=', 'CANCELLED')->get();
         foreach ($inprogres as $inp) {
             $receiptDate = Carbon::parse($inp->receiptDate)->startOfDay();
             $days = $receiptDate->diffInWeekDays(Carbon::now()->startOfDay());
@@ -2821,7 +2827,7 @@ class juntasController extends Controller
 
         // 2. Completed General Schedules (Fixed case-sensitivity for column names if needed)
         $totalgeneral = workScreduleModel::where('status', 'Completed')
-        ->where('Status', '!=', 'CANCELLED') 
+            ->where('Status', '!=', 'CANCELLED')
             ->whereNotNull('documentsApproved')
             ->whereNull('UpOrderDate')     // cleaner Laravel way for checking null
             ->where('color', $color)
