@@ -428,8 +428,7 @@
                                 <div class="card-body">
                                     <div class="table-responsive" id="resps">
                                     </div>
-                                    @if(isset($resps) && !empty($resps))
-
+                                 
                                     <table class="table">
                                         <thead>
                                             <tr>
@@ -437,18 +436,13 @@
                                                 <th>QTY</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            @foreach ($resps as $row)
-                                                <tr>
-                                                    <td>{{ $row[0] }}</td>
-                                                    <td>{{ $row[1] }}</td>
-                                                </tr>
-                                            @endforeach
+                                        <tbody id="tbody_items">
+                                           <tr>
+                                                <td colspan="2" class="text-center">No data available</td>
+                                            </tr>
                                         </tbody>
                                     </table>
-                                @else
-                                    <p>No results found.</p>
-                                @endif
+                               
                                 </div>
                             </div>
                         </div>
@@ -539,27 +533,15 @@
                                                 .then(response => response.json())
                                             .then(data => {
                                                 console.log(data)
-                                                let html =`
-                                                <table class="table table-bordered table-hover" id="WhereIsTheOrder" cellspacing="0">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>{{ __('Item') }}</th>
-                                                            <th>{{ __('Qty') }}</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        `;
-                                                         html += data.map(data => `
+                                             
+                                                        let html = data.map(data => `
                                                         <tr>
                                                             <td>${data.item}</td>
                                                             <td>${data.qty}</td>
                                                         </tr>
                                                         `);
-                                                         html +=`
-                                                    </tbody>
-                                                </table>
-                                                        `;
-                                                        document.getElementById('resps').innerHTML = html;
+                                                        
+                                                        document.getElementById('tbody_items').innerHTML = html;
                                                     })
                                                     .catch(error => {
                                                         console.error('Error:', error);
