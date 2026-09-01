@@ -1313,7 +1313,7 @@ class rrhhController extends Controller
         $value = session('user');
         $cat = session('categoria');
         $personal = [];
-        if ($value == null) {
+        if ($value == null or $value == '') {
             return redirect()->route('login');
         } elseif ($value == 'Admin' or $value == 'Paola A') {
             $personal = personalBergsModel::where('status', 'Activo')->get();

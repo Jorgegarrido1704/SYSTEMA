@@ -49,8 +49,13 @@
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-                        @yield('contenido')
+                    @if(session('error'))
+                        <div class="alert alert-danger" role="alert">
+                            {{ session('error') }}
+                        </div>
+                    @endif
 
+                    @yield('contenido')
 
                 </div>
                 <!-- /.container-fluid -->
@@ -368,7 +373,7 @@
                                                     <div class="form-group">
                                                     <input type="submit" id="submit" class="btn btn-primary" value="solicitar">
                                                     </div>
-                                               
+
                                                     </form>
 
 
