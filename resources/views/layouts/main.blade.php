@@ -53,6 +53,10 @@
                         <div class="alert alert-danger" role="alert">
                             {{ session('error') }}
                         </div>
+                    @elseif(session('success'))
+                        <div class="alert alert-success" role="alert">
+                            {{ session('success') }}
+                        </div>
                     @endif
 
                     @yield('contenido')

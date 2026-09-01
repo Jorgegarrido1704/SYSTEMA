@@ -1318,19 +1318,19 @@ class rrhhController extends Controller
         } elseif ($value == 'Admin' or $value == 'Paola A') {
             $personal = personalBergsModel::where('status', 'Activo')->get();
         } else {
-            $lider = personalBergsModel::select('employeeName')->where('user', $value)->first();
+            $lider = personalBergsModel::select('employeeName')->where('user', '=', $value)->first();
             if (empty($lider)) {
-                return back()->with('error', 'No tienes personal asignado');
+                return back()->with('error', 'No tienes personal asignado en tu puesto, contacta a tu supervisor para que te asigne personal');
             }
-            $sublider = personalBergsModel::select('employeeNumber', 'employeeName', 'employeeShift', 'employeeSchedule')->where('employeeLider', $lider->employeeName)->where('status', 'Activo')->get();
+            $sublider = personalBergsModel::select('employeeNumber', 'employeeName', 'employeeShift', 'employeeSchedule')->where('employeeLider', '=', $lider->employeeName)->where('status', '=', 'Activo')->get();
             foreach ($sublider as $s) {
-                $personas = personalBergsModel::select('employeeNumber', 'employeeName', 'employeeShift', 'employeeSchedule')->where('status', 'Activo')->where('employeeLider', $s->employeeName)->get();
+                $personas = personalBergsModel::select('employeeNumber', 'employeeName', 'employeeShift', 'employeeSchedule')->where('status', '=', 'Activo')->where('employeeLider', '=', $s->employeeName)->get();
                 foreach ($personas as $p) {
                     $personal = collect($personal)->push($p);
                 }
             }
             if (empty($personal)) {
-                return back()->with('error', 'No tienes personal asignado');
+                return back()->with('error', 'No tienes personal asignado, contacta a tu supervisor para que te asigne personal');
             }
 
         }
