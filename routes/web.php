@@ -69,7 +69,7 @@ Route::post('getPnDetails', [getPnDetailsController::class, 'getPnDetails'])->na
 Route::controller(generalController::class)->group(function () {
     Route::get('/general', [generalController::class, 'general'])->name('general');
     Route::post('/codigo', [generalController::class, 'codigo'])->name('codigo');
-    Route::post('/Bom', [generalController::class, 'Bom'])->name('Bom');
+    Route::get('/Bom/{bom}', [generalController::class, 'Bom'])->name('Bom');
     Route::post('/desviation', [generalController::class, 'desviation'])->name('desviation');
     Route::post('/maintananceGen', [generalController::class, 'maintananceGen'])->name('maintananceGen');
     Route::post('/assistence', [generalController::class, 'assistence'])->name('assistence');
@@ -80,13 +80,12 @@ Route::controller(generalController::class)->group(function () {
     Route::post('/regfull', [generalController::class, 'regfull'])->name('regfull');
     Route::post('/problemas_general', [generalController::class, 'problemas_general'])->name('problemas_general');
     Route::get('/getBraid', [generalController::class, 'getBraid'])->name('getBraid');
-    Route::get('/previos/{wo}/{status}',[generalController::class, 'previos'])->name('previos');
-    Route::POST('/iniciar_work/{wo}',[generalController::class, 'iniciar_work'])->name('iniciar_work');
-    Route::POST('/registrar_work/{wo}',[generalController::class, 'registrar_work'])->name('registrar_work');
-    Route::get('/whereIsTheOrder/{wo}',[generalController::class, 'whereIsTheOrder'])->name('whereIsTheOrder');
+    Route::get('/previos/{wo}/{status}', [generalController::class, 'previos'])->name('previos');
+    Route::POST('/iniciar_work/{wo}', [generalController::class, 'iniciar_work'])->name('iniciar_work');
+    Route::POST('/registrar_work/{wo}', [generalController::class, 'registrar_work'])->name('registrar_work');
+    Route::get('/whereIsTheOrder/{wo}', [generalController::class, 'whereIsTheOrder'])->name('whereIsTheOrder');
 
 });
-
 
 Route::controller(pruebasElectricasController::class)->group(function () {
     Route::get('/pruebasElectricas', 'pruebasElecticas')->name('pruebasElecticas');
@@ -203,7 +202,6 @@ Route::controller(AdminSupControlloer::class)->group(function () {
     Route::get('/datosVsm', [AdminSupControlloer::class, 'datosVsm'])->name('datosVsm');
     Route::get('/reactivacion_wo', [AdminSupControlloer::class, 'reactivacion_wo'])->name('reactivacion_wo');
 
-
 });
 
 Route::controller(globalInventario::class)->group(function () {
@@ -236,7 +234,7 @@ Route::controller(juntasController::class)->group(function () {
     Route::POST('/juntas/jsonSeguimientos', [juntasController::class, 'jsonSeguimientos'])->name('jsonSeguimientos');
     Route::POST('/update_materials/{id}', [juntasController::class, 'update_materials'])->name('update_materials');
     Route::POST('/update_kits/{id}', [juntasController::class, 'update_kits'])->name('update_kits');
-    Route::get('/Descargar_reporte_estaciones',[juntasController::class,'Descargar_reporte_estaciones'])->name('Descargar_reporte_estaciones');
+    Route::get('/Descargar_reporte_estaciones', [juntasController::class, 'Descargar_reporte_estaciones'])->name('Descargar_reporte_estaciones');
 });
 
 Route::controller(SaludController::class)->group(function () {

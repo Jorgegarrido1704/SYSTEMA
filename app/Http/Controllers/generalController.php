@@ -340,49 +340,22 @@ class generalController extends Controller
 
     }
 
-    public function Bom(Request $request)
+    public function Bom($bom)
     {
-        $boms = $request->input('partnum');
+
         $value = session('user');
-        if ($value == 'Brando O') {
-            $results = DB::table('datos')
-                ->select('item', 'qty')
-                ->where('part_num', '=', $boms)
-                ->where(function ($query) {
-                    $query->where('item', 'LIKE', '%T1-%')
-                        ->orWhere('item', 'LIKE', '%T2-%')
-                        ->orWhere('item', 'LIKE', '%T3-%')
-                        ->orWhere('item', 'LIKE', '%T4-%')
-                        ->orWhere('item', 'LIKE', '%T5-%')
-                        ->orWhere('item', 'LIKE', '%TA2-%')
-                        ->orWhere('item', 'LIKE', '%DA2-%')
-                        ->orWhere('item', 'LIKE', '%EA2-%')
-                        ->orWhere('item', 'LIKE', '%YA2-%');
-                })
-                ->get();
+        if ($value == '') {
+            return view('login');
         } else {
-            $results = DB::table('datos')->select('item', 'qty')->where('part_num', $boms)->get();
+            $results = DB::table('datos')->select('item', 'qty')->where('part_num', $bom)->get();
         }
         $resps = [];
         foreach ($results as $rest) {
-            $resps[] = [$rest->item, $rest->qty];
+            $resps[] = ['item' => $rest->item, 'qty' => $rest->qty];
         }
 
-        $invokeController = new generalController;
-        $invokeResult = $invokeController->__invoke();
+        return response()->json($resps);
 
-        // Extract the values from the invoke result
-        $value = $invokeResult->getData()['value'];
-        $registros = $invokeResult->getData()['registros'];
-        $week = $invokeResult->getData()['week'];
-        $assit = $invokeResult->getData()['assit'];
-        $paros = $invokeResult->getData()['paros'];
-        $desviations = $invokeResult->getData()['desviations'];
-        $materials = $invokeResult->getData()['materials'];
-        $cat = $invokeResult->getData()['cat'];
-
-        // Return the view with the retrieved values
-        return view('general', ['cat' => $cat, 'value' => $value, 'registros' => $registros, 'resps' => $resps, 'week' => $week, 'assit' => $assit, 'paros' => $paros, 'desviations' => $desviations, 'materials' => $materials]);
     }
 
     public function desviation(Request $request)

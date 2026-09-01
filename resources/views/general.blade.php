@@ -409,10 +409,9 @@
                                 <div class="card-header py-3" align="center">
                                     <div class="row">
                                         <div class="col-6">
-                                            <h5 class="m-0 font-weight-bold text-primary">Boms Filter <form action="{{ route('Bom') }}" method="POST">
-                                                @csrf
-                                                <input type="text" name="partnum" id="partnum" >
-                                            </form> </h5>
+                                            <h5 class="m-0 font-weight-bold text-primary">Boms Filter
+                                                <input type="text" class="form-control" name="partnum" id="partnum" onchange="SearchBom(this.value)" >
+                                             </h5>
                                         </div>
                                         <div class="col-6">
                                             <h6 class="m-0 font-weight-bold text-primary">{{ __('Part Number W/braid') }}</h6>
@@ -458,7 +457,7 @@
                  <script>
                     function whereIsTheOrder(wo){
 
-                        
+
                         var    url = '/whereIsTheOrder/' + wo;
                         fetch(url)
                          .then(response => response.json())
@@ -484,7 +483,7 @@
                                     <th>{{ __('Assembly') }}</th>
                                     <th>{{ __('Looming') }}</th>
                                     <th>{{ __('Testing') }}</th>
-                                    <th>{{ __('Packing') }}</th>    
+                                    <th>{{ __('Packing') }}</th>
                                     <th>{{ __('Enginner') }}</th>
                                 </tr>
                             </thead>
@@ -503,14 +502,14 @@
                                 </tr>
                             </tbody>
                         </table>
-`
-                        document.getElementById('WhereIsTheOrder').innerHTML = html;
-                      })
-                    .catch(error => {
-                        console.error('Error:', error);
-                    });
-                        
-                        
+                                `;
+                                document.getElementById('WhereIsTheOrder').innerHTML = html;
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                            });
+
+
                     }
 
                     async function selectBraid() {
@@ -532,6 +531,42 @@
                                             console.error(error);
                                         }
                                         }
-                    </script>
+
+                
+                                        function SearchBom(bom){
+                                                var url = '/Bom/' + bom;
+                                                fetch(url)
+                                                .then(response => response.json())
+                                            .then(data => {
+                                                console.log(data)
+                                                let html =`
+                                                <table class="table table-bordered table-hover" id="WhereIsTheOrder" cellspacing="0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>{{ __('Item') }}</th>
+                                                            <th>{{ __('Qty') }}</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        `;
+                                                         html += data.map(data => `
+                                                        <tr>
+                                                            <td>${data.item}</td>
+                                                            <td>${data.qty}</td>
+                                                        </tr>
+                                                        `);
+                                                         html +=`
+                                                    </tbody>
+                                                </table>
+                                                        `;
+                                                        document.getElementById('resps').innerHTML = html;
+                                                    })
+                                                    .catch(error => {
+                                                        console.error('Error:', error);
+                                                    });
+
+                                        }
+
+                </script>
 
   @endsection
