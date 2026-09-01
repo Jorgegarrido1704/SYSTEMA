@@ -299,7 +299,7 @@ class generalController extends Controller
         $registroTiempo = new regParTime;
         $registroTiempo->codeBar = $wo;
         $registroTiempo->qtyPar = $qty;
-        $registroTiempo->area = $value.'/'.$cat.'/ Faniaizado';
+        $registroTiempo->area = $value.'/'.$cat.'/ Finalizado';
         $registroTiempo->fechaReg = carbon::now()->toDateTimeString();
         $registroTiempo->save();
 
