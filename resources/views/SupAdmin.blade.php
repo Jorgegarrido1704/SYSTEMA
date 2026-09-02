@@ -251,15 +251,24 @@
                                             <tr>
                                                 <th>PN</th>
                                                 <th>WO</th>
-                                                <th>Return Plannig</th>
-                                                <th>Cutting</th>
-                                                <th>Terminals</th>
-                                                <th>Assembly</th>
-                                                <th>Lomming</th>
-                                                <th>Pre Testing</th>
-                                                <th>Testing</th>
-                                                <th>Shipping</th>
-                                                <th>ENG</th>
+                                                <th>Plannig</th>
+                                                <th>pre cut</th>
+                                                <th>to be cut</th>
+                                                <th>cut</th>
+                                                <th>pre term</th>
+                                                <th>to be term</th>
+                                                <th>term</th>
+                                                <th>pre assem</th>
+                                                <th>to be assem</th>
+                                                <th>asse</th>
+                                                <th>pre lomm</th>
+                                                <th>to be lomm</th>
+                                                <th>loom</th>
+                                                <th>pre test</th>
+                                                <th>test</th>
+                                                <th>pre ship</th>
+                                                <th>shipping</th>
+                                                <th>eng</th>
                                             </tr>
                                         </thead>
                                         <tbody id="table-harness">  </tbody>

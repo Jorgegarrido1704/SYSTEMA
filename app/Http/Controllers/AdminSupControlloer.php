@@ -57,13 +57,22 @@ class AdminSupControlloer extends Controller
                 $tableContent .= '<tr><form method="GET" id="form'.$i.'" name="form[]">';
                 $tableContent .= '<td>'.$row->pn.'</td>';
                 $tableContent .= '<td>'.$row->wo.'</td>';
-                $tableContent .= '<td><input type="checkbox" id="plan'.$i.'" name="plan[]" ></td>';
-                $tableContent .= '<td><input type="number" min="0" id="cortPar'.$i.'" name="cortPar[]" value="'.$row->cortPar.'" required ></td>';
+                $tableContent .= '<td><input type="number" min="0"  id="plan'.$i.'" name="plan[]" value="'.$row->planpar.'" required ></td>';
+                $tableContent .= '<td><input type="number" min="0"  id="precut'.$i.'" name="precut[]" value="'.$row->precut.'" required ></td>';
+                $tableContent .= '<td><input type="number" min="0"  id="tobecut'.$i.'" name="tobecut[]" value="'.$row->tobecut.'" required ></td>';
+                $tableContent .= '<td><input type="number" min="0"  id="cortPar'.$i.'" name="cortPar[]" value="'.$row->cortPar.'" required ></td>';
+                $tableContent .= '<td><input type="number" min="0"  id="preterm'.$i.'" name="preterm[]" value="'.$row->preterm.'" required ></td>';
+                $tableContent .= '<td><input type="number" min="0" id="tobeterm'.$i.'" name="tobeterm[]" value="'.$row->tobeterm.'" required ></td>';
                 $tableContent .= '<td><input type="number" min="0" id="libePar'.$i.'" name="libePar[]" value="'.$row->libePar.'" required ></td>';
+                $tableContent .= '<td><input type="number" min="0" id="preassembly'.$i.'" name="preassembly[]" value="'.$row->preassembly.'" required ></td>';
+                $tableContent .= '<td><input type="number" min="0" id="tobeassembly'.$i.'" name="tobeassembly[]" value="'.$row->tobeassembly.'" required ></td>';
                 $tableContent .= '<td><input type="number" min="0" id="ensaPar'.$i.'" name="ensaPar[]" value="'.$row->ensaPar.'" required ></td>';
+                $tableContent .= '<td><input type="number" min="0" id="preloom'.$i.'" name="preloom[]" value="'.$row->preloom.'" required ></td>';
+                $tableContent .= '<td><input type="number" min="0" id="tobeloom'.$i.'" name="tobeloom[]" value="'.$row->tobeloom.'" required ></td>';
                 $tableContent .= '<td><input type="number" min="0" id="loomPar'.$i.'" name="loomPar[]" value="'.$row->loomPar.'" required ></td>';
                 $tableContent .= '<td><input type="number" min="0" id="preCalidad'.$i.'" name="preCalidad[]" value="'.$row->preCalidad.'" required ></td>';
                 $tableContent .= '<td><input type="number" min="0" id="testPar'.$i.'" name="testPar[]" value="'.$row->testPar.'" required ></td>';
+                $tableContent .= '<td><input type="number" min="0" id="preemba'.$i.'" name="preemba[]" value="'.$row->preemba.'" required ></td>';
                 $tableContent .= '<td><input type="number" min="0" id="embPar'.$i.'" name="embPar[]" value="'.$row->embPar.'" required ></td>';
                 $tableContent .= '<td><input type="number" min="0" id="eng'.$i.'" name="eng[]" value="'.$row->eng.'" required ></td>';
                 $tableContent .= '<td><input type="hidden" id="wo'.$i.'" name="wo[]" value="'.$row->wo.'" >
@@ -176,35 +185,47 @@ class AdminSupControlloer extends Controller
         try {
             // Validate the incoming request data
             $wo = $request->input('wo');
+            $precut = $request->input('precut');
+            $tobecut = $request->input('tobecut');
             $corte = $request->input('corte');
+            $preterm = $request->input('preterm');
+            $tobeterm = $request->input('tobeterm');
             $liber = $request->input('liber');
+            $preassembly = $request->input('preassembly');
+            $tobeassembly = $request->input('tobeassembly');
             $ensa = $request->input('ensa');
+            $preloom = $request->input('preloom');
+            $tobeloom = $request->input('tobeloom');
             $loom = $request->input('loom');
             $pre = $request->input('pre');
             $cali = $request->input('cali');
+            $preemba = $request->input('preemba');
             $emba = $request->input('emba');
             $eng = $request->input('eng');
             $plan = $request->input('plan');
-            $buscar = DB::table('registro')->select('info')->where('wo', $wo)->first();
 
-            // Extract the validated data
-            if ($plan == 1) {
-                DB::table('tiempos')->where('info', $buscar->info)->update(['planeacion' => '']);
-                DB::table('registro')->where('wo', $wo)->update(['count' => 1, 'donde' => 'Plannig']);
-
-                DB::table('registroparcial')->where('wo', $wo)->delete();
-            } else {
+            
                 DB::table('registroparcial')->where('wo', $wo)->update([
-                    'cortPar' => $corte,
+                'planpar' => $plan,
+                    'precut' => $precut,
+                    'tobecut' => $tobecut,
+                'cortPar' => $corte,
+                    'preterm' => $preterm,
+                    'tobeterm' => $tobeterm,
                     'libePar' => $liber,
+                    'preassembly' => $preassembly,
+                    'tobeassembly' => $tobeassembly,
                     'ensaPar' => $ensa,
+                    'preloom' => $preloom,
+                    'tobeloom' => $tobeloom,
                     'loomPar' => $loom,
                     'preCalidad' => $pre,
                     'testPar' => $cali,
+                    'preemba' => $preemba,
                     'embPar' => $emba,
                     'eng' => $eng,
                 ]);
-            }
+            
 
             return response()->json(['success' => 'Data received and saved successfully']);
         } catch (\Exception $e) {
