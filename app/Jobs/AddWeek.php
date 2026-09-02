@@ -49,6 +49,7 @@ class AddWeek implements ShouldQueue
             '2026-12-25', ];
         if (in_array($dates, $hollyDays)) {
             assistence::where('week', '=', $week)
+            ->where('yearOfAssistence', '=', $year)
                 ->whereIn($day, ['-', '', null, ' '])
                 ->update([$day => 'PCS']);
         }
@@ -83,11 +84,11 @@ class AddWeek implements ShouldQueue
                   or $registroEmpleado->employeeNumber == 'i2158' or $registroEmpleado->employeeNumber == 'i2215'
                   or $registroEmpleado->employeeNumber == 'i2071') {
                     $registro = 'HE';
-                } elseif ($registroEmpleado->tyoeWorker == 'Practicante') {
+                } elseif ($registroEmpleado->typeWorker == 'Practicante') {
                     $registro = 'PCT';
-                } elseif ($registroEmpleado->tyoeWorker == 'Asimilado') {
+                } elseif ($registroEmpleado->typeWorker == 'Asimilado') {
                     $registro = 'ASM';
-                } elseif ($registroEmpleado->tyoeWorker == 'Servicio comprado') {
+                } elseif ($registroEmpleado->typeWorker == 'Servicio comprado') {
                     $registro = 'SCE';
                 } elseif ($registroEmpleado->employeeShift == 'secondShift') {
                     $registro = '-';
@@ -97,6 +98,7 @@ class AddWeek implements ShouldQueue
 
                 assistence::where('week', '=', $week)
                     ->where('id_empleado', '=', $registroEmpleado->employeeNumber)
+                    ->where('yearOfAssistence', '=', $year)
                     ->whereIn($day, ['-', '', null, ' ', 'F'])
                     ->update([$day => $registro]);
             }
