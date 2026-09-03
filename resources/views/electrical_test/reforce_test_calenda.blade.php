@@ -90,20 +90,57 @@ Swal.fire({
         </div>
     @endfor
 </div>
-
 <script>
     const fechasSeleccionadas = {!! json_encode($fechas_seleccionadas) !!};
-    console.log(fechasSeleccionadas);
-    alert(fechasSeleccionadas);
-    fechasSeleccionadas.forEach(fecha => {
-        const celda = document.getElementById(fecha);
+
+    fechasSeleccionadas.forEach(item => {
+        const celda = document.getElementById(item.fecha);
         if (celda) {
-            celda.style.backgroundColor = '#28a745'; // Verde
-            celda.style.color = 'white'; // Texto blanco
+            celda.style.backgroundColor = '#28a745';
+            celda.style.color = 'white';
+            celda.style.cursor = 'pointer';
+
+            // Atributos para el popover de Bootstrap
+            celda.setAttribute('data-bs-toggle', 'popover'); // Bootstrap 5
+            celda.setAttribute('data-toggle', 'popover');    // Bootstrap 4 (por si acaso)
+            celda.setAttribute('data-bs-trigger', 'hover');
+            celda.setAttribute('data-trigger', 'hover');
+            celda.setAttribute('data-bs-html', 'true');
+            celda.setAttribute('data-html', 'true');
+            celda.setAttribute('data-bs-placement', 'top');
+            celda.setAttribute('data-placement', 'top');
+            celda.setAttribute('title', item.titulo);
+            celda.setAttribute('data-bs-content', item.detalle + '<br><small>' + item.fecha + '</small>');
+            celda.setAttribute('data-content', item.detalle + '<br><small>' + item.fecha + '</small>');
         }
     });
 
+    // Inicializar popovers (Bootstrap 5)
+    document.addEventListener('DOMContentLoaded', function () {
+        var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+        popoverTriggerList.forEach(function (el) {
+            new bootstrap.Popover(el);
+        });
+    });
+
+    // Si tu proyecto usa jQuery + Bootstrap 4 en vez de BS5, descomentá esto:
+    // $(function () {
+    //     $('[data-toggle="popover"]').popover();
+    // });
 </script>
+
+<style>
+    .popover {
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    }
+    .popover-header {
+        background-color: #28a745;
+        color: #fff;
+        font-weight: bold;
+        border-radius: 12px 12px 0 0;
+    }
+</style>
 
 
 @endsection

@@ -193,9 +193,11 @@ class pruebasElectricasController extends Controller
         $mes = Carbon::now()->format('m');
         $mes = intval($mes);
         $fechas_seleccionadas = [
-            '2026-09-10',
-            '2026-10-15',
-            '2026-11-20',
+            [
+                'fecha' => '2026-09-10',
+                'titulo' => 'Vacaciones',
+                'detalle' => 'Juan Pérez - 5 días aprobados',
+            ],
         ];
 
         return view('electrical_test.reforce_test_calenda', ['value' => $value, 'cat' => $cat, 'mes' => $mes, 'fechas_seleccionadas' => $fechas_seleccionadas]);
