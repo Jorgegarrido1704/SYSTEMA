@@ -83,6 +83,8 @@
                         @endif
                         @if(  $value == 'Admin' || $value == 'Jose Luis' )
                         <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('pruebasElecticas') }}">{{ __('Electrical Tests') }}</a></li>
+                        <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('calendarizacion_pruebas_electricas') }}">{{ __('Electrical Tests Calendar') }}</a></li>
+
                         @endif
                         <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('graffWorksEng') }}">{{ __('Engineer Scheduleeng') }}</a>
                         </li>

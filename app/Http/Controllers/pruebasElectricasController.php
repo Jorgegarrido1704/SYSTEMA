@@ -7,6 +7,7 @@ use App\Models\materialPruebasElectricas;
 use App\Models\regPar;
 use App\Models\Wo;
 use App\Models\workScreduleModel;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -180,5 +181,23 @@ class pruebasElectricasController extends Controller
         }
 
         return response()->json(['success' => false, 'message' => 'Invalid field']);
+    }
+
+    public function calendarizacion_pruebas_electricas()
+    {
+        $cat = session('categoria');
+        $value = session('user');
+        if ($value == '') {
+            return redirect('/');
+        }
+        $mes = Carbon::now()->format('m');
+        $mes = intval($mes);
+        $fechas_seleccionadas = [
+            '2026-09-10',
+            '2026-10-15',
+            '2026-11-20',
+        ];
+
+        return view('electrical_test.reforce_test_calenda', ['value' => $value, 'cat' => $cat, 'mes' => $mes, 'fechas_seleccionadas' => $fechas_seleccionadas]);
     }
 }

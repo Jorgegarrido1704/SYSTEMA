@@ -49,27 +49,27 @@ class AddWeek implements ShouldQueue
             '2026-12-25', ];
         if (in_array($dates, $hollyDays)) {
             assistence::where('week', '=', $week)
-            ->where('yearOfAssistence', '=', $year)
+                ->where('yearOfAssistence', '=', $year)
                 ->whereIn($day, ['-', '', null, ' '])
                 ->update([$day => 'PCS']);
-        }
+        } else {
 
-        $registrosEmpleados = personalBergsModel::where('status', '!=', 'Baja')->where('typeWorker', '!=', 'Corporativo')
-            ->orderBy('employeeArea', 'ASC')->get();
+            $registrosEmpleados = personalBergsModel::where('status', '!=', 'Baja')->where('typeWorker', '!=', 'Corporativo')
+                ->orderBy('employeeArea', 'ASC')->get();
 
-        foreach ($registrosEmpleados as $registroEmpleado) {
-            $registro = '';
-            if (assistence::where('week', '=', $week)->where('id_empleado', '=', $registroEmpleado->employeeNumber)
-                ->where('yearOfAssistence', '=', $year)->count() == 0) {
-                assistence::insert([
-                    'id_empleado' => $registroEmpleado->employeeNumber,
-                    'week' => $week,
-                    'lider' => $registroEmpleado->employeeLider,
-                    'name' => $registroEmpleado->employeeName,
-                    'yearOfAssistence' => $year,
-                    'shift' => $registroEmpleado->employeeShift,
-                ]);
-            }else if (carbon::now()->format('H') > 6) {
+            foreach ($registrosEmpleados as $registroEmpleado) {
+                $registro = '';
+                if (assistence::where('week', '=', $week)->where('id_empleado', '=', $registroEmpleado->employeeNumber)
+                    ->where('yearOfAssistence', '=', $year)->count() == 0) {
+                    assistence::insert([
+                        'id_empleado' => $registroEmpleado->employeeNumber,
+                        'week' => $week,
+                        'lider' => $registroEmpleado->employeeLider,
+                        'name' => $registroEmpleado->employeeName,
+                        'yearOfAssistence' => $year,
+                        'shift' => $registroEmpleado->employeeShift,
+                    ]);
+                }
                 if (registroVacacionesModel::where('id_empleado', '=', $registroEmpleado->employeeNumber)->where('fecha_de_solicitud', '=', $dates)->exists()) {
                     $registro = 'V';
                 } elseif (relogChecadorModel::where('employeeNumber', '=', $registroEmpleado->employeeNumber)
@@ -100,6 +100,7 @@ class AddWeek implements ShouldQueue
                     ->where('yearOfAssistence', '=', $year)
                     ->whereIn($day, ['-', '', null, ' ', 'F'])
                     ->update([$day => $registro]);
+
             }
         }
     }

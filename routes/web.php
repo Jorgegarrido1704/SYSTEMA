@@ -94,6 +94,7 @@ Route::controller(pruebasElectricasController::class)->group(function () {
     Route::get('/searchMaterial', [pruebasElectricasController::class, 'searchMaterialPruebas'])->name('searchMaterialPruebas');
     Route::post('/addMaterial', [pruebasElectricasController::class, 'addMaterial'])->name('testingMaterialRequeriment.addMaterial');
     Route::post('/updatematerial', [pruebasElectricasController::class, 'updatematerial'])->name('updatematerialPruebasELectricas');
+    Route::get('/calendarizacion_pruebas_electricas', [pruebasElectricasController::class, 'calendarizacion_pruebas_electricas'])->name('calendarizacion_pruebas_electricas');
 });
 
 Route::controller(PpapIngController::class)->group(function () {
