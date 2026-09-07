@@ -71,8 +71,20 @@
                             <td>{{ $item->pn }}</td>
                             <td>{{ $item->wo }}</td>
                             <td>{{ $item->qty }}</td>
-                            <td><a href="{{ route('previos', ['wo'=>$item->wo ,'status'=>'accept']) }}" class="btn btn-success">{{ __('Accept') }}</a></td>
-                            <td><a href="{{ route('previos', ['wo'=>$item->wo,'status'=>'decline']) }}" class="btn btn-danger">{{ __('Decline') }}</a></td>
+                            <td>
+    <a href="{{ route('previos', ['wo'=>$item->wo ,'status'=>'accept']) }}"
+       class="btn btn-success btn-previo"
+       data-wo="{{ $item->wo }}">
+       {{ __('Accept') }}
+    </a>
+</td>
+<td>
+    <a href="{{ route('previos', ['wo'=>$item->wo,'status'=>'decline']) }}"
+       class="btn btn-danger btn-previo"
+       data-wo="{{ $item->wo }}">
+       {{ __('Decline') }}
+    </a>
+</td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -428,7 +440,7 @@
                                 <div class="card-body">
                                     <div class="table-responsive" id="resps">
                                     </div>
-                                 
+
                                     <table class="table">
                                         <thead>
                                             <tr>
@@ -442,13 +454,30 @@
                                             </tr>
                                         </tbody>
                                     </table>
-                               
+
                                 </div>
                             </div>
                         </div>
 
                  </div>
                  <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        document.querySelectorAll('.btn-previo').forEach(function (btn) {
+                            btn.addEventListener('click', function (e) {
+                                if (btn.dataset.clicked) {
+                                    e.preventDefault();
+                                    return false;
+                                }
+                                btn.dataset.clicked = 'true';
+                                btn.classList.add('disabled');
+                                btn.innerHTML = '{{ __("Procesando...") }}';
+                                // dejamos que la navegación siga su curso normalmente
+                            });
+                        });
+                    });
+
+
+
                     function whereIsTheOrder(wo){
 
 
@@ -526,21 +555,21 @@
                                         }
                                         }
 
-                
+
                                         function SearchBom(bom){
                                                 var url = '/Bom/' + bom;
                                                 fetch(url)
                                                 .then(response => response.json())
                                             .then(data => {
                                                 console.log(data)
-                                             
+
                                                         let html = data.map(data => `
                                                         <tr>
                                                             <td>${data.item}</td>
                                                             <td>${data.qty}</td>
                                                         </tr>
                                                         `);
-                                                        
+
                                                         document.getElementById('tbody_items').innerHTML = html;
                                                     })
                                                     .catch(error => {
