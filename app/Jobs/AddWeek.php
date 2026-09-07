@@ -69,8 +69,7 @@ class AddWeek implements ShouldQueue
                         'yearOfAssistence' => $year,
                         'shift' => $registroEmpleado->employeeShift,
                     ]);
-                }
-                if (registroVacacionesModel::where('id_empleado', '=', $registroEmpleado->employeeNumber)->where('fecha_de_solicitud', '=', $dates)->exists()) {
+                } elseif (registroVacacionesModel::where('id_empleado', '=', $registroEmpleado->employeeNumber)->where('fecha_de_solicitud', '=', $dates)->exists()) {
                     $registro = 'V';
                 } elseif (relogChecadorModel::where('employeeNumber', '=', $registroEmpleado->employeeNumber)
                     ->where('fechaRegistro', '=', $dates)->exists()) {
