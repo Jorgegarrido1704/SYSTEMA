@@ -471,7 +471,7 @@
                                 btn.dataset.clicked = 'true';
                                 btn.classList.add('disabled');
                                 btn.innerHTML = '{{ __("Procesando...") }}';
-                                // dejamos que la navegación siga su curso normalmente
+                               
                             });
                         });
                     });
