@@ -3,7 +3,9 @@
 @section('contenido')
  <!-- Page Heading -->
  <script>
-    const routeMostrarWo = @json(route('mostrarWOJ'));
+   const routeMostrarWo = @json(route('datosOrdenes'));
+    const updateDatos = @json(route('altaDatos'));
+    const routeQualityIssues = @json(route('qualityIssues'));
 </script>
 <script src="{{ asset('dash/js/mostrarWo.js')}}"></script>
 
