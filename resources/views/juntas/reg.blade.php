@@ -186,7 +186,7 @@
                             </div>
                         </div>
  <script>
-   const routeMostrarWo = @json(route('datosOrdenes'));
+   const routeMostrarWo = @json(route('datosOrdenesGeneral'));
    function mostrarWo(workOrder) {
     $.ajax({
         url: routeMostrarWo,

@@ -84,6 +84,7 @@ Route::controller(generalController::class)->group(function () {
     Route::POST('/iniciar_work/{wo}', [generalController::class, 'iniciar_work'])->name('iniciar_work');
     Route::POST('/registrar_work/{wo}', [generalController::class, 'registrar_work'])->name('registrar_work');
     Route::get('/whereIsTheOrder/{wo}', [generalController::class, 'whereIsTheOrder'])->name('whereIsTheOrder');
+    Route::get('/datosOrdenesGeneral', [generalController::class, 'datosOrdenesGeneral'])->name('datosOrdenesGeneral');
 
 });
 

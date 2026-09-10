@@ -45,9 +45,8 @@ class AdminSupControlloer extends Controller
             $i = $ok = $nog = 0;
 
             $buscar = DB::table('registroparcial')
-                ->orWhere('pn', 'like', $buscarWo.'%')
+                ->orWhere('pn', 'like', '%'.$buscarWo.'%')
                 ->orWhere('wo', 'like', '%'.$buscarWo.'%')
-                ->orWhere('pn', 'like', '%'.$buscarWo)
                 ->get();
 
             $i = 0; // Initialize $i if it's not initialized
@@ -204,28 +203,26 @@ class AdminSupControlloer extends Controller
             $eng = $request->input('eng');
             $plan = $request->input('plan');
 
-            
-                DB::table('registroparcial')->where('wo', $wo)->update([
+            DB::table('registroparcial')->where('wo', $wo)->update([
                 'planpar' => $plan,
-                    'precut' => $precut,
-                    'tobecut' => $tobecut,
+                'precut' => $precut,
+                'tobecut' => $tobecut,
                 'cortPar' => $corte,
-                    'preterm' => $preterm,
-                    'tobeterm' => $tobeterm,
-                    'libePar' => $liber,
-                    'preassembly' => $preassembly,
-                    'tobeassembly' => $tobeassembly,
-                    'ensaPar' => $ensa,
-                    'preloom' => $preloom,
-                    'tobeloom' => $tobeloom,
-                    'loomPar' => $loom,
-                    'preCalidad' => $pre,
-                    'testPar' => $cali,
-                    'preemba' => $preemba,
-                    'embPar' => $emba,
-                    'eng' => $eng,
-                ]);
-            
+                'preterm' => $preterm,
+                'tobeterm' => $tobeterm,
+                'libePar' => $liber,
+                'preassembly' => $preassembly,
+                'tobeassembly' => $tobeassembly,
+                'ensaPar' => $ensa,
+                'preloom' => $preloom,
+                'tobeloom' => $tobeloom,
+                'loomPar' => $loom,
+                'preCalidad' => $pre,
+                'testPar' => $cali,
+                'preemba' => $preemba,
+                'embPar' => $emba,
+                'eng' => $eng,
+            ]);
 
             return response()->json(['success' => 'Data received and saved successfully']);
         } catch (\Exception $e) {
