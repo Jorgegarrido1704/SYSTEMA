@@ -2,11 +2,7 @@
 
 @section('contenido')
  <!-- Page Heading -->
- <script>
-   const routeMostrarWo = @json(route('datosOrdenes'));
 
-</script>
-<script src="{{ asset('dash/js/mostrarWo1.js')}}"></script>
 
 
  <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -189,7 +185,33 @@
                                 </div>
                             </div>
                         </div>
+ <script>
+   const routeMostrarWo = @json(route('datosOrdenes'));
+   function mostrarWo(workOrder) {
+    $.ajax({
+        url: routeMostrarWo,
+        method: "GET",
+        data: { buscarWo: workOrder },
+        dataType: "json",
+        success: function (response) {
+            ok = response.paretos[0];
+            nog = response.paretos[1];
+            paretos = response.paretos[2] + "%";
+            $("#table-harness").html(response.tableContent);
+            $("#table-retiradas").html(response.tableReg);
+            $("#table-ftq").html(response.tableftq);
+            $("#tok").html(ok);
+            $("#tng").html(nog);
+            $("#tftq").html(paretos);
+            $("#table-pulltest").html(response.pullTest);
+        },
+        error: function (xhr, status, error) {
+            console.error(error);
+        },
+    });
+}
 
+</script>
 
 
                     @endsection
