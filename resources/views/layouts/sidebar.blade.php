@@ -163,8 +163,11 @@
                         <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('oee.indexEoo') }}">{{ __('OEE') }}</a></li>
 
                     </ul>
-
                 </li>
+                @if( $value=='Admin'  )
+                <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('calidad') }}">{{ __('Quality') }}</a></li>
+                <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('planning') }}">{{ __('planning') }}</a></li>
+                @endif
             </ul>
         </li>
 
