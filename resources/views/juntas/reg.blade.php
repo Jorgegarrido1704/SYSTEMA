@@ -5,7 +5,7 @@
  <script>
     const routeMostrarWo = @json(route('mostrarWOJ'));
 </script>
-<script src="{{ asset('dash/js/mostrarWo.js')}}"></script>
+<script src="{{ asset('/dash/js/mostrarWo.js')}}"></script>
 
 
  <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -32,16 +32,26 @@
                                     <table class="table">
                                         <thead>
                                             <tr>
-                                                <th>{{ __('Part Number') }}</th>
-                                                <th>{{ __('WO') }}</th>
-                                                <th>{{ __('Qty') }}</th>
-                                                <th>{{ __('Cutting') }}</th>
-                                                <th>{{ __('Terminals') }}</th>
-                                                <th>{{ __('Assembly') }}</th>
-                                                <th>{{ __('Looming') }}</th>
-                                                <th>{{ __('Testing') }}</th>
-                                                <th>{{ __('Packing') }}</th>
-                                                <th>{{ __('Engineering') }}</th>
+                                                <th>PN</th>
+                                                <th>WO</th>
+                                                <th>Plannig</th>
+                                                <th>pre cut</th>
+                                                <th>to be cut</th>
+                                                <th>cut</th>
+                                                <th>pre term</th>
+                                                <th>to be term</th>
+                                                <th>term</th>
+                                                <th>pre assem</th>
+                                                <th>to be assem</th>
+                                                <th>asse</th>
+                                                <th>pre lomm</th>
+                                                <th>to be lomm</th>
+                                                <th>loom</th>
+                                                <th>pre test</th>
+                                                <th>test</th>
+                                                <th>pre ship</th>
+                                                <th>shipping</th>
+                                                <th>eng</th>
                                             </tr>
                                         </thead>
                                         <tbody id="table-harness">  </tbody>
