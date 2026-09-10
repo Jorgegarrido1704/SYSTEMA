@@ -1016,8 +1016,8 @@ class juntasController extends Controller
             $buscarWo = 0;
         } else {
             $buscar = DB::table('registroparcial')
-                ->orwhere('pn', 'like', $buscarWo.'%')
-                ->orWhere('pn', 'like', '%'.$buscarWo)
+                ->orwhere('pn', 'like', '%'.$buscarWo.'%')
+                ->orWhere('wo', 'like', '%'.$buscarWo.'%')
                 ->orderBy('pn', 'asc')
                 ->orderBy('wo', 'asc')
                 ->get();
