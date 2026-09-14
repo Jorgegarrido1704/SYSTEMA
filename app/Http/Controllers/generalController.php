@@ -179,8 +179,8 @@ class generalController extends Controller
                 regPar::where('wo', $wo)->update(['tobeassembly' => DB::raw('preassembly + tobeassembly'), 'preassembly' => 0]);
             } elseif ($cat == 'emba') {
                 regPar::where('wo', $wo)->update(['embPar' => DB::raw('preemba + embPar'), 'preemba' => 0]);
-            } elseif ($cat == 'libe') {
-                regPar::where('wo', $wo)->update(['tobeterm' => DB::raw('preterm + tobeterm'), 'preterm' => 0]);
+                /* } elseif ($cat == 'libe') {
+                     regPar::where('wo', $wo)->update(['tobeterm' => DB::raw('preterm + tobeterm'), 'preterm' => 0]);*/
             } elseif ($cat == 'loom') {
                 regPar::where('wo', $wo)->update(['tobeloom' => DB::raw('preloom + tobeloom'), 'preloom' => 0]);
             } elseif ($cat == 'cort') {
@@ -189,11 +189,11 @@ class generalController extends Controller
 
         } elseif ($status == 'decline') {
             if ($cat == 'ensa') {
-                regPar::where('wo', $wo)->update(['libePar' => DB::raw('preassembly + libePar'), 'preassembly' => 0]);
+                regPar::where('wo', $wo)->update(['libePar' => DB::raw('preassembly + cortPar'), 'preassembly' => 0]);
             } elseif ($cat == 'emba') {
                 regPar::where('wo', $wo)->update(['testPar' => DB::raw('preemba + testPar'), 'preemba' => 0]);
-            } elseif ($cat == 'libe') {
-                regPar::where('wo', $wo)->update(['cortPar' => DB::raw('cortPar + preterm'), 'preterm' => 0]);
+                /*    } elseif ($cat == 'libe') {
+                        regPar::where('wo', $wo)->update(['cortPar' => DB::raw('cortPar + preterm'), 'preterm' => 0]);*/
             } elseif ($cat == 'loom') {
                 regPar::where('wo', $wo)->update(['ensaPar' => DB::raw('preloom + ensaPar'), 'preloom' => 0]);
             } elseif ($cat == 'cort') {
@@ -249,7 +249,7 @@ class generalController extends Controller
                 $tableContent .= '<td>'.$row->preemba.'</td>';
                 $tableContent .= '<td>'.$row->embPar.'</td>';
                 $tableContent .= '<td>'.$row->eng.'</td>';
-                
+
                 $tableContent .= '</tr>';
                 $pnReg[$i] = $row->pn;
                 $i++;
@@ -364,8 +364,8 @@ class generalController extends Controller
 
         if ($cat == 'ensa') {
             regPar::where('wo', $wo)->update(['ensaPar' => DB::raw('ensaPar + '.$qty), 'tobeassembly' => DB::raw('tobeassembly - '.$qty)]);
-        } elseif ($cat == 'libe') {
-            regPar::where('wo', $wo)->update(['libePar' => DB::raw('libePar +'.$qty), 'tobeterm' => DB::raw('tobeterm - '.$qty)]);
+            /* } elseif ($cat == 'libe') {
+                 regPar::where('wo', $wo)->update(['libePar' => DB::raw('libePar +'.$qty), 'tobeterm' => DB::raw('tobeterm - '.$qty)]);*/
         } elseif ($cat == 'loom') {
             regPar::where('wo', $wo)->update(['loomPar' => DB::raw('loomPar + '.$qty), 'tobeloom' => DB::raw('tobeloom - '.$qty)]);
         } elseif ($cat == 'cort') {
@@ -395,13 +395,13 @@ class generalController extends Controller
 
         } elseif ($cat == 'emba') {
             regPar::where('wo', $wo)->update(['embPar' => DB::raw(' embPar -'.$qty)]);
-        } elseif ($cat == 'libe') {
-            regPar::where('wo', $wo)->update(['preassembly' => DB::raw('preassembly +'.$qty), 'libePar' => DB::raw('libePar - '.$qty)]);
-
+            /* } elseif ($cat == 'libe') {
+                 regPar::where('wo', $wo)->update(['preassembly' => DB::raw('preassembly +'.$qty), 'libePar' => DB::raw('libePar - '.$qty)]);
+*/
         } elseif ($cat == 'loom') {
             regPar::where('wo', $wo)->update(['preCalidad' => DB::raw('preCalidad + '.$qty), 'loomPar' => DB::raw('loomPar - '.$qty)]);
         } elseif ($cat == 'cort') {
-            regPar::where('wo', $wo)->update(['preterm' => DB::raw('preterm + '.$qty), 'cortPar' => DB::raw('cortPar - '.$qty)]);
+            regPar::where('wo', $wo)->update(['preassembly' => DB::raw('preassembly + '.$qty), 'cortPar' => DB::raw('cortPar - '.$qty)]);
         }
         $cuentas = regPar::where('wo', $wo)->first();
 
