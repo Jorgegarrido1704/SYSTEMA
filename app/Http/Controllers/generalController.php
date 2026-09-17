@@ -189,7 +189,7 @@ class generalController extends Controller
 
         } elseif ($status == 'decline') {
             if ($cat == 'ensa') {
-                regPar::where('wo', $wo)->update(['libePar' => DB::raw('preassembly + cortPar'), 'preassembly' => 0]);
+                regPar::where('wo', $wo)->update(['cortPar' => DB::raw('preassembly + cortPar'), 'preassembly' => 0]);
             } elseif ($cat == 'emba') {
                 regPar::where('wo', $wo)->update(['testPar' => DB::raw('preemba + testPar'), 'preemba' => 0]);
                 /*    } elseif ($cat == 'libe') {
