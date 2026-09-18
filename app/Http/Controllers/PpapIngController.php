@@ -232,7 +232,13 @@ class PpapIngController extends Controller
         $cuenta = $request->input('count');
         $info = $request->input('info');
         $today = date('d-m-Y H:i');
-        $regpart = regPar::where('codeBar', $info)->update(['eng' => 0, 'cortPar' => 0, 'libePar' => 0, 'ensaPar' => 0, 'loomPar' => 0, 'testPar' => 0, 'embPar' => 0, 'preCalidad' => 0, 'fallasCalidad' => 0, 'specialWire' => 0]);
+        $regpart = regPar::where('codeBar', $info)->update([
+            'planpar' => 0, 'precut' => 0, 'tobecut' => 0, 'cortPar' => 0, 'preterm' => 0,
+            'tobeterm' => 0, 'libePar' => 0, 'preassembly' => 0, 'tobeassembly' => 0, 'ensaPar' => 0, 'preCalidad' => 0,
+            'preloom' => 0, 'tobeloom' => 0, 'loomPar' => 0, 'testPar' => 0, 'preemba' => 0, 'embPar' => 0, 'eng' => 0,
+            'fallasCalidad' => 0, 'specialWire' => 0,
+
+        ]);
         $datosRegistro = Wo::select('Qty')->where('info', $info)->first();
         $eng = $datosRegistro->Qty;
         function upRegistro($count, $donde, $info, $area, $idIng, $today, $mas, $newQty, $value)
@@ -245,19 +251,19 @@ class PpapIngController extends Controller
             $regIng->codigo = $value;
             $regIng->area = $area;
             $regIng->save();
-            $updateCantidad = DB::table('registroparcial')->where('codeBar', '=', $info)->update(['eng' => 0, $mas => $newQty]);
+            $updateCantidad = DB::table('registroparcial')->where('codeBar', '=', $info)->update([$mas => $newQty]);
         }
 
-        if ($cuenta == 17) {
-            upRegistro(16, 'Ingenieria// liberacion', $info, 'corte', $idIng, $today, 'eng', $eng, $value);
+        if ($cuenta == 17 || $cuenta == 2 || $cuenta == 3) {
+            upRegistro(16, 'Ingenieria// Ensamble', $info, 'corte', $idIng, $today, 'ensaPar', $eng, $value);
         } elseif ($cuenta == 19 || $cuenta == 8 || $cuenta == 9) {
             upRegistro(10, 'En espera de calidad', $info, 'calidad', $idIng, $today, 'preCalidad', $eng, $value);
         } elseif ($cuenta == 14) {
-            upRegistro(19, 'Ingenieria // pruebas electricas', $info, 'loom', $idIng, $today, 'eng', $eng, $value);
+            upRegistro(19, 'Ingenieria // pruebas electricas', $info, 'loom', $idIng, $today, 'preCalidad', $eng, $value);
         } elseif ($cuenta == 13 || $cuenta == 6 || $cuenta == 7) {
-            upRegistro(14, 'Ingenieria // loom', $info, 'ensamble', $idIng, $today, 'eng', $eng, $value);
+            upRegistro(14, 'Ingenieria // loom', $info, 'ensamble', $idIng, $today, 'loomPar', $eng, $value);
         } elseif ($cuenta == 16 || $cuenta == 4 || $cuenta == 5) {
-            upRegistro(13, 'Ingenieria // ensamble', $info, 'liberacion', $idIng, $today, 'eng', $eng, $value);
+            upRegistro(13, 'Ingenieria // ensamble', $info, 'liberacion', $idIng, $today, 'ensaPar', $eng, $value);
         } elseif ($cuenta == 18) {
             upRegistro(12, 'En espera de embarque', $info, 'calidad', $idIng, $today, 'embPar', $eng, $value);
             $count = 12;
