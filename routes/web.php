@@ -27,6 +27,7 @@ use App\Http\Controllers\pruebasElectricasController;
 use App\Http\Controllers\RegistroController;
 use App\Http\Controllers\rrhhController;
 use App\Http\Controllers\SaludController;
+use App\Http\Controllers\VSM_and_simulation;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -203,7 +204,16 @@ Route::controller(AdminSupControlloer::class)->group(function () {
     Route::get('/removeVacations', [AdminSupControlloer::class, 'removeVacations'])->name('removeVacations');
     Route::get('/datosVsm', [AdminSupControlloer::class, 'datosVsm'])->name('datosVsm');
     Route::get('/reactivacion_wo', [AdminSupControlloer::class, 'reactivacion_wo'])->name('reactivacion_wo');
+    Route::get('/schedule_map',[AdminSupControlloer::class, 'index_schedule'])->name('index_schedule');
+    Route::get('/vsmData',[AdminSupControlloer::class, 'vsmData'])->name('vsmData');
+    
+});
 
+
+Route::controller(VSM_and_simulation::class)->group(function () {
+    Route::get('/simulacion', 'simuladorIndex')->name('simulacion_index');
+    Route::get('/simulacion/buscarPn', 'buscarPn')->name('simulacion_buscarPn');
+    Route::post('/simulacion/simular', 'simular')->name('simulacion_simular');
 });
 
 Route::controller(globalInventario::class)->group(function () {

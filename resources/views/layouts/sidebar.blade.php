@@ -123,6 +123,8 @@
                     onmouseover=showSchedule();>{{ __('Value Stream Mapping') }}</a>
                     <ul class="submenu" id="schedule" style="display:none;">
                         <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('timeLine') }}">{{ __('Time Study') }}</a></li>
+                         <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('index_schedule') }}">{{ __('Schedule') }}</a></li>
+                         <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('simulacion_index') }}">{{ __('Simulation') }}</a></li>
                     </ul>
                 </li>
                 @endif
