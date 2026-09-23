@@ -312,6 +312,7 @@ class PpapIngController extends Controller
                 'ediaz@mx.bergstrominc.com',
                 'dmartinez@mx.bergstrominc.com',
                 'jgarrido@mx.bergstrominc.com',
+                'naldan@mx.bergstrominc.com',
 
             ];
             Mail::to($recipients)->send(new \App\Mail\ppapcontrol\salidanpi($subject, $content));
