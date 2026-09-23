@@ -125,11 +125,11 @@
                                     </thead>
                                     <tbody>
                                         @foreach($arneses as $arnes)
-                                            @if($arnes->testPar>0 or $arnes->preCalidad>0)
+                                            @if(($arnes->testPar + $arnes->preCalidad) > 0)
                                             <tr style="background-color: rgba(255, 26, 26, 0.8); color: white;">
-                                            @elseif($arnes->ensaPar>0)
+                                            @elseif(($arnes->ensaPar + $arnes->preassembly + $arnes->tobeassembly )>0)
                                             <tr style="background-color: rgba(223, 134, 0, 0.25);">
-                                                @elseif($arnes->loomPar>0)
+                                                @elseif(($arnes->loomPar +$arnes->tobeloom + $arnes->preloom )>0)
                                                 <tr style="background-color: rgba(255, 47, 47, 0.259);">
                                                 @elseif($arnes->specialWire>0)
                                                 <tr style="background-color: #87770c;">
@@ -139,7 +139,8 @@
                                                 <td>{{ $arnes->pn }}</td>
                                                 <td>{{ $arnes->wo }}</td>
                                                 <td>{{ $arnes->orgQty }}</td>
-                                                <td>{{ $arnes->cortPar + $arnes->libePar + $arnes->ensaPar + $arnes->loomPar+
+                                                <td>{{ $arnes->cortPar + $arnes->libePar + $arnes->ensaPar + $arnes->loomPar+$arnes->tobeloom + $arnes->preloom
+                                                +$arnes->preassembly + $arnes->tobeassembly+
                                                     $arnes->preCalidad + $arnes->eng
                                                     + $arnes->fallasCalidad+ $arnes->specialWire}}</td>
                                                 <td><form action="{{ route('dispatchElecticalTest') }}" method="GET">
