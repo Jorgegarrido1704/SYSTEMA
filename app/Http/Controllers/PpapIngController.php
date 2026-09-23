@@ -466,12 +466,10 @@ class PpapIngController extends Controller
                     'Jruiz@mx.bergstrominc.com',
                     'jrodriguez@mx.bergstrominc.com',
                     'vpichardo@mx.bergstrominc.com',
-                    'jgamboa@mx.bergstrominc.com',
                     'egaona@mx.bergstrominc.com',
                     'jolaes@mx.bergstrominc.com',
                     'dvillalpando@mx.bergstrominc.com',
                     'jamoreno@mx.bergstrominc.com',
-                    'jguillen@mx.bergstrominc.com',
                     'maleman@mx.bergstrominc.com',
                     'fgomez@mx.bergstrominc.com',
                     'lmireles@mx.bergstrominc.com',
@@ -481,7 +479,8 @@ class PpapIngController extends Controller
                     'jcrodriguez@mx.bergstrominc.com',
                     'jcervera@mx.bergstrominc.com',
                     'apreciado@mx.bergstrominc.com',
-                    'imartinez@mx.bergstrominc.com',
+                    'rramirez@mx.bergstrominc.com',
+
                 ];
                 Mail::to($recipients)->send(new \App\Mail\firmasNPIEmail($accion, 'New product Introduction - '.$pn));
 
