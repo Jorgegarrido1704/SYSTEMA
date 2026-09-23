@@ -29,9 +29,13 @@ class pruebasElectricasController extends Controller
             $woks = regPar::select('orgQty')
                 ->selectRaw('(
         COALESCE(ensaPar, 0) +
-        COALESCE(testPar, 0) +
+            COALESCE(preassembly,0) +
+            COALESCE(tobeassembly,0) +
         COALESCE(loomPar, 0) +
+        COALESCE(preloom, 0) +
+        COALESCE(tobeloom, 0) +
         COALESCE(preCalidad, 0) +
+        COALESCE(preemba,0)+
         COALESCE(eng, 0) +
         COALESCE(fallasCalidad, 0) +
         COALESCE(specialWire, 0)
@@ -50,8 +54,13 @@ class pruebasElectricasController extends Controller
         // $arneses = regPar::where('ensaPar', '!=', 0)->orWhere('loomPar', '!=', 0)->orWhere('eng', '!=', 0)->orWhere('specialWire', '!=', 0)->orderBy('pn', 'asc')->get();
         $arneseses = regPar::whereRaw(
             'COALESCE(ensaPar, 0) +
+            COALESCE(preassembly,0) +
+            COALESCE(tobeassembly,0) +
         COALESCE(loomPar, 0) +
+        COALESCE(preloom, 0) +
+        COALESCE(tobeloom, 0) +
         COALESCE(preCalidad, 0) +
+        COALESCE(preemba,0)+
         COALESCE(eng, 0) +
         COALESCE(fallasCalidad, 0) +
         COALESCE(specialWire, 0) > 0'
