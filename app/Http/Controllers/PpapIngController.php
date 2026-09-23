@@ -373,7 +373,7 @@ class PpapIngController extends Controller
         $activiad = $request->input('act');
         $desc = $request->input('info');
         $eng = $request->input('Inge');
-        if (DB::table('login')->where('user', '=', $eng)->doesntExist()()) {
+        if (DB::table('login')->where('user', '=', $eng)->doesntExist()) {
             return redirect()->back()->with('error', 'No existe el usuario');
         }
         $today = date('d-m-Y H:i');
