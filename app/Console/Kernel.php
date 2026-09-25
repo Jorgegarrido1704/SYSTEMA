@@ -68,14 +68,14 @@ class Kernel extends ConsoleKernel
 
         // weekly list assistence
         $schedule->job(new \App\Jobs\reporteGeneral)->cron('45 6,9,13,17 * * 1-5')
-         ->timezone('America/Mexico_City')
+            ->timezone('America/Mexico_City')
             ->onFailure(function () {
                 Log::error('El job de reporte general falló.');
             });
         // $schedule->job(new \App\Jobs\reporteGeneral())->everyMinute()->between('07:00', '20:00');
 
         // acciones correctivas recordatorio de lunes a sabado a las 5:00 am
-        $schedule->job(new \App\Jobs\accionesCorrectivasJob)->cron('21 4,7 * * *')
+        $schedule->job(new \App\Jobs\accionesCorrectivasJob)->cron('21 4,7 * * 1-5')
             ->onFailure(function () {
                 Log::error('El job de acciones correctivas falló.');
             });
