@@ -394,7 +394,7 @@ class generalController extends Controller
             regPar::where('wo', $wo)->update(['preloom' => DB::raw('preloom + '.$qty), 'ensaPar' => DB::raw('ensaPar - '.$qty)]);
 
         } elseif ($cat == 'emba') {
-            regPar::where('wo', $wo)->update(['embPar' => DB::raw(' embPar -'.$qty)]);
+            regPar::where('wo', $wo)->update(['shipped' => BD::raw('shipped + '.$qty), 'embPar' => DB::raw(' embPar -'.$qty)]);
             /* } elseif ($cat == 'libe') {
                  regPar::where('wo', $wo)->update(['preassembly' => DB::raw('preassembly +'.$qty), 'libePar' => DB::raw('libePar - '.$qty)]);
 */

@@ -73,10 +73,6 @@ class ExcelReportService
                     $faltantes .= ' //'.$faltante->comment_issue.' // '.$faltante->date.' // '.$faltante->responsable."\n";
                 }
             }
-            $shipped = $order->orgQty -
-               ($order->planpar + $order->precut + $order->tobecut + $order->cortPar + $order->preterm + $order->tobeterm + $order->libePar +
-                $order->preassembly + $order->tobeassembly + $order->ensaPar + $order->preloom + $order->tobeloom + $order->loomPar +
-                $order->preCalidad + $order->testPar + $order->fallasCalidad + $order->eng + $order->preemba + $order->embPar);
             $data = [
                 $order->pn,
                 $reg->cliente,
@@ -101,7 +97,7 @@ class ExcelReportService
                 $order->eng,
                 $order->preemba,
                 $order->embPar,
-                $shipped,
+                $order->shipped,
                 $reg->tiempototal ?? '',
                 $reg->reqday ?? '',
                 $faltantes,
