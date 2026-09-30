@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('contenido')
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -69,7 +69,7 @@ details.pn-det summary { cursor: pointer; font-size: 12px; font-weight: 600; col
 <div class="sim-root">
 
   <div class="sim-header">
-    <h2>🧮 Simulador de demanda semanal</h2>
+    <h2>🧮 Simulador de demanda semanal</h2> <button class="btn-secondary" onclick="descargarExcel()">⬇ Descargar Excel</button>
     <div class="sim-status">
       <span class="sim-dot" id="sim-dot"></span>
       <span id="sim-status-txt">Pega la lista de demanda para simular</span>
@@ -285,8 +285,9 @@ function barras(items, scaleMax, valFn, labelFn, metaFn){
       </div>`;
   }).join('');
 }
-
+let ultimosResultados = [];
 function pintarTodo(resultados){
+    ultimosResultados = resultados;
   // Resumen global
   const maxGlobal = Math.max(100, ...resultados.map(r => r.data.utilizacion_max));
   $('resumen-panel').style.display = 'block';
@@ -344,6 +345,76 @@ function pintarTodo(resultados){
         </div>
       </div>`;
   }).join('');
+}
+
+function fmtFecha(d){ return pad(d.getDate()) + '/' + pad(d.getMonth()+1) + '/' + d.getFullYear(); }
+
+function descargarExcel(){
+  if (!ultimosResultados.length) { alert('Primero simula la lista de demanda.'); return; }
+
+  const resumen = [], areas = [], detalle = [];
+
+  ultimosResultados.forEach(({ semana: s, data }) => {
+    const fin = new Date(s.lunes); fin.setDate(fin.getDate() + 4);
+    const semanaTxt = fmtFecha(s.lunes) + ' - ' + fmtFecha(fin);
+    const cubre = data.utilizacion_max < 100 ? 'SÍ' : 'NO';
+
+    // Hoja 1: una fila por semana
+    const fila = {
+      'Semana': semanaTxt,
+      'Días laborales': s.dias,
+      'Horas disponibles': +(s.dias * (parseFloat($('cfg-horas').value) || 0)).toFixed(1),
+      'Piezas': s.total,
+      'Números de parte': Object.keys(s.pns).length,
+      'Cuello de botella': data.cuello_botella,
+      'Utilización máx. %': data.utilizacion_max,
+      '¿Cubre la demanda?': cubre,
+    };
+    data.resumen_areas.forEach(a => { fila[a.area + ' %'] = a.utilizacion_pct; });
+    resumen.push(fila);
+
+    // Hoja 2: área por semana
+    data.resumen_areas.forEach(a => areas.push({
+      'Semana': semanaTxt,
+      'Área': a.area,
+      'Requerido (min)': +(+a.requerido_min).toFixed(1),
+      'Capacidad (min)': +(+a.capacidad_min).toFixed(1),
+      'Disponible (min)': +(+a.disponible_min).toFixed(1),
+      'Utilización %': a.utilizacion_pct,
+    }));
+
+    // Hoja 3: PN por semana
+    const tiempos = {};
+    (data.items || []).forEach(it => tiempos[it.pn] = it.tiempo_total_min);
+    const sinRuteo = data.pn_sin_ruteo || [];
+    Object.entries(s.pns).sort((a, b) => b[1] - a[1]).forEach(([pn, qty]) => detalle.push({
+      'Semana': semanaTxt,
+      'Número de parte': pn,
+      'Cantidad': qty,
+      'Tiempo total (min)': tiempos[pn] != null ? +(+tiempos[pn]).toFixed(1) : '',
+      'Sin ruteo': sinRuteo.includes(pn) ? 'SÍ' : '',
+    }));
+  });
+
+  // Hoja 4: demanda original
+  const { registros } = parsearLista();
+  const demanda = registros.map(r => ({
+    'Número de parte': r.pn, 'Fecha': fmtFecha(r.fecha), 'Cantidad': r.qty,
+  }));
+
+  const wb = XLSX.utils.book_new();
+  const add = (nombre, filas) => {
+    const ws = XLSX.utils.json_to_sheet(filas);
+    const cols = Object.keys(filas[0] || {}).map(k => ({ wch: Math.max(k.length, 14) + 2 }));
+    ws['!cols'] = cols;
+    XLSX.utils.book_append_sheet(wb, ws, nombre);
+  };
+  add('Resumen semanal', resumen);
+  add('Áreas por semana', areas);
+  add('PN por semana', detalle);
+  add('Demanda original', demanda);
+
+  XLSX.writeFile(wb, 'simulacion_demanda_' + isoKey(new Date()) + '.xlsx');
 }
 </script>
 
