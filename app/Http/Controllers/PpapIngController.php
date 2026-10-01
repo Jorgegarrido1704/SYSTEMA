@@ -241,6 +241,9 @@ class PpapIngController extends Controller
         ]);
         $datosRegistro = Wo::select('Qty')->where('info', $info)->first();
         $eng = $datosRegistro->Qty;
+        if ($eng < 1) {
+            $eng = 1;
+        }
         function upRegistro($count, $donde, $info, $area, $idIng, $today, $mas, $newQty, $value)
         {
             $updateTiempo = DB::table('tiempos')->where('info', $info)->update([$area => $today]);
