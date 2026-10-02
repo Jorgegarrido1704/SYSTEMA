@@ -173,10 +173,7 @@
                                 </tr>
                             </tbody>
 
-                        @foreach($issue_turno as $ftq)
-
-
-                        @endforeach
+                        </table>
 
                     @endif
                 </div>
