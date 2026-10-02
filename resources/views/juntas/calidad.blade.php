@@ -149,8 +149,41 @@
 
             </div>
         </div>
+          <!-- Top porcentaje de incidencias by customer -->
+        <div class="col-xl-2 col-md-2 mb-4">
+             <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h5 class="m-0 font-weight-bold text-primary">{{ __('Issues by shift') }}</h5>
+                </div>
+                <div class="card-body" style="overflow-y: auto; height: 360px;">
+                    @if(!empty($issue_turno))
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                                <th>{{ __('Shift') }}</th>
+                                <th>{{ __('Qty') }}</th>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{ __('First Shift') }}</td>
+                                    <td>{{ $issue_turno[0] }}|| {{($issue_turno[0] / array_sum($issue_turno) * 100) }}%</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ __('Second Shift') }}</td>
+                                    <td>{{ $issue_turno[1] }} || {{($issue_turno[1] / array_sum($issue_turno) * 100) }}%</td>
+                                </tr>
+                            </tbody>
+
+                        @foreach($issue_turno as $ftq)
+
+
+                        @endforeach
+
+                    @endif
+                </div>
+             </div>
+        </div>
         <!-- Top porcentaje de incidencias by customer -->
-        <div class="col-xl-6 col-md-6 mb-4">
+        <div class="col-xl-4 col-md-4 mb-4">
              <div class="card shadow mb-4">
                 <div class="card-header py-3">
                     <h5 class="m-0 font-weight-bold text-primary">{{ __('FTQ by Customer') }}</h5>
@@ -338,7 +371,7 @@
                                         <td>{{ __('BETWEEN') }} 20 {{ __('AND') }} 1</td>
                                         <td>{{$grupo['E']}}</td>
                                     </tr>
-                                   
+
                                 </tbody>
                             </table>
                         </div>

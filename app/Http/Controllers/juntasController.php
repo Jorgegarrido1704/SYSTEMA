@@ -482,6 +482,7 @@ class juntasController extends Controller
 
         // Generate the dates we want to check
         $datesToCheck = [];
+        $issue_turno = [0, 0]; // Initialize issue counts for first and second shifts
         for ($i = 1; $i <= $daysBack; $i++) {
             $datesToCheck[] = date('d-m-Y', strtotime("-$i days"));
         }
@@ -511,10 +512,16 @@ class juntasController extends Controller
             ->count();
         $totalm = count($buscarValoresMes);
         foreach ($buscarValoresMes as $rows) {
-            $supRes = personalBergsModel::select('employeeLider')->where('employeeName', $rows->Responsable)->first();
+            $supRes = personalBergsModel::select('employeeLider', 'employeeShift')->where('employeeName', $rows->Responsable)->first();
             // dd($supRes);
+
             if ($supRes == null) {
-                $supRes = personalBergsModel::select('employeeLider')->where('employeeName', 'VERA VILLEGAS EFRAIN')->first();
+                $supRes = personalBergsModel::select('employeeLider', 'employeeShift')->where('employeeName', 'VERA VILLEGAS EFRAIN')->first();
+            }
+            if ($supRes->employeeShift == 'firstShift') {
+                $issues_turno[0] += 1;
+            } else {
+                $issues_turno[1] += 1;
             }
             $supRes->employeeLider = explode(' ', $supRes->employeeLider)[0].' '.explode(' ', $supRes->employeeLider)[2];
             $rows->Responsable = explode(' ', $rows->Responsable)[0].' '.explode(' ', $rows->Responsable)[2];
@@ -864,7 +871,7 @@ class juntasController extends Controller
             'empleados' => $top5,  'hoyb' => $hoyb, 'hoymal' => $hoymal, 'parhoy' => $parhoy, 'gultyY' => $gultyY, 'gulty' => $gulty,
             'datosHoy' => $datosHoy, 'totalm' => $totalm, 'totalb' => $totalb, 'monthAndYearPareto' => $monthAndYearPareto,
             'datosT' => $datosT, 'datosS' => $datosS, 'datosF' => $datosF, 'labelQ' => $labelQ, 'colorQ' => $colorQ, 'value' => $value,
-            'cat' => $cat, 'datos' => $datos, 'pareto' => $pareto, 'Qdays' => $Qdays, 'ftqBycustomer' => $ftqBycustomer]);
+            'cat' => $cat, 'datos' => $datos, 'pareto' => $pareto, 'Qdays' => $Qdays, 'ftqBycustomer' => $ftqBycustomer, 'issue_turno' => $issue_turno]);
     }
 
     public function litas_junta($id)
