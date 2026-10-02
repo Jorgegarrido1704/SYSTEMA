@@ -1116,7 +1116,7 @@ class PpapIngController extends Controller
                 DB::rollBack();
             }
 
-            \Log::error('Error en updateBomfile: '.$e->getMessage(), ['exception' => $e]);
+            //   \Log::error('Error en updateBomfile: '.$e->getMessage(), ['exception' => $e]);
 
             return redirect()->back()->with('error', 'Error crítico en el proceso: '.$e->getMessage());
         }
