@@ -519,9 +519,9 @@ class juntasController extends Controller
                 $supRes = personalBergsModel::select('employeeLider', 'employeeShift')->where('employeeName', 'VERA VILLEGAS EFRAIN')->first();
             }
             if ($supRes->employeeShift == 'firstShift') {
-                $issues_turno[0] += 1;
+                $issue_turno[0] += 1;
             } else {
-                $issues_turno[1] += 1;
+                $issue_turno[1] += 1;
             }
             $supRes->employeeLider = explode(' ', $supRes->employeeLider)[0].' '.explode(' ', $supRes->employeeLider)[2];
             $rows->Responsable = explode(' ', $rows->Responsable)[0].' '.explode(' ', $rows->Responsable)[2];
