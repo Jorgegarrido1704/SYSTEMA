@@ -452,33 +452,33 @@ class generalController extends Controller
     public function codigo(request $request)
     {
 
-        $buscarinfo = DB::table('registro_pull')->where('wo', substr($wo, 2))
-            ->orWhere('wo', $wo)->get();
-        if (count($buscarinfo) <= 0) {
-            $subject = 'Urgente se necesita pull test para  NP: '.$pnReg.' con Work Order:'.$wo;
-            $date = date('d-m-Y');
-            $time = date('H:i');
-            $content['inicio'] = 'Buen día, Les comparto que el día '.$date.' a las '.$time;
-            $content['cuerpo'] = 'Salió de liberacion el número de parte: '.$pnReg.' Con Work order: '.$wo;
-            $content['final'] = ' Se solicita de su apoyo para revisar el motivo por el cual no se realizo la prueba de pull';
-            $recipients = [
-                'jcervera@mx.bergstrominc.com',
-                'jcrodriguez@mx.bergstrominc.com',
-                'jguillen@mx.bergstrominc.com',
-                'jolaes@mx.bergstrominc.com',
-                'dvillalpando@mx.bergstrominc.com',
-                'lramos@mx.bergstrominc.com',
-                'emedina@mx.bergstrominc.com',
-                'jgarrido@mx.bergstrominc.com',
-                'jlopez@mx.bergstrominc.com',
-                'scastillo@mx.bergstrominc.com',
-                'rramirez@mx.bergstrominc.com',
-                'drocha@mx.bergstrominc.com',
-            ];
-            Mail::to($recipients)->send(new \App\Mail\pull\pullError($subject, $content));
-        }
+        /* $buscarinfo = DB::table('registro_pull')->where('wo', substr($wo, 2))
+             ->orWhere('wo', $wo)->get();
+         if (count($buscarinfo) <= 0) {
+             $subject = 'Urgente se necesita pull test para  NP: '.$pnReg.' con Work Order:'.$wo;
+             $date = date('d-m-Y');
+             $time = date('H:i');
+             $content['inicio'] = 'Buen día, Les comparto que el día '.$date.' a las '.$time;
+             $content['cuerpo'] = 'Salió de liberacion el número de parte: '.$pnReg.' Con Work order: '.$wo;
+             $content['final'] = ' Se solicita de su apoyo para revisar el motivo por el cual no se realizo la prueba de pull';
+             $recipients = [
+                 'jcervera@mx.bergstrominc.com',
+                 'jcrodriguez@mx.bergstrominc.com',
+                 'jguillen@mx.bergstrominc.com',
+                 'jolaes@mx.bergstrominc.com',
+                 'dvillalpando@mx.bergstrominc.com',
+                 'lramos@mx.bergstrominc.com',
+                 'emedina@mx.bergstrominc.com',
+                 'jgarrido@mx.bergstrominc.com',
+                 'jlopez@mx.bergstrominc.com',
+                 'scastillo@mx.bergstrominc.com',
+                 'rramirez@mx.bergstrominc.com',
+                 'drocha@mx.bergstrominc.com',
+             ];
+             Mail::to($recipients)->send(new \App\Mail\pull\pullError($subject, $content));
+         }*/
 
-        return redirect('general')->with('response', $resp);
+        return redirect('general')->with('response', 'resp');
 
     }
 
