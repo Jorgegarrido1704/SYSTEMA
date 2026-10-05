@@ -37,6 +37,8 @@ class ChartController extends Controller
                     COUNT(CASE WHEN fecha BETWEEN ? AND ? THEN 1 END) as total15,
                     COUNT(CASE WHEN fecha BETWEEN ? AND ? THEN 1 END) as total16,
                     COUNT(CASE WHEN fecha BETWEEN ? AND ? THEN 1 END) as total17,
+                    COUNT(CASE WHEN fecha BETWEEN ? AND ? THEN 1 END) as total18,
+                    COUNT(CASE WHEN fecha BETWEEN ? AND ? THEN 1 END) as total19,
                     COUNT(*) as total_general
                 ', [
                 $fechaDelDia.' 07:30:00', $fechaDelDia.' 08:30:00',
@@ -49,10 +51,12 @@ class ChartController extends Controller
                 $fechaDelDia.' 14:30:00', $fechaDelDia.' 15:30:00',
                 $fechaDelDia.' 15:30:00', $fechaDelDia.' 16:30:00',
                 $fechaDelDia.' 16:30:00', $fechaDelDia.' 17:30:00',
+                $fechaDelDia.' 17:30:00', $fechaDelDia.' 18:30:00',
+                $fechaDelDia.' 18:30:00', $fechaDelDia.' 19:30:00',
             ])
             ->where('estado', 'RUN')
             ->where('maquina', $maquina)
-            ->whereBetween('fecha', [$fechaDelDia.' 07:30:00', $fechaDelDia.' 15:30:00'])
+            ->whereBetween('fecha', [$fechaDelDia.' 07:30:00', $fechaDelDia.' 19:30:00'])
             ->first();
         // subgroups per hour of day
         $stop = [];
@@ -67,6 +71,9 @@ class ChartController extends Controller
         $stop['15:30:00'] = 0;
         $stop['16:30:00'] = 0;
         $stop['17:30:00'] = 0;
+        $stop['18:30:00'] = 0;
+        $stop['19:30:00'] = 0;
+
         $run = [];
         $run['07:30:00'] = 0;
         $run['08:30:00'] = 0;
@@ -79,6 +86,8 @@ class ChartController extends Controller
         $run['15:30:00'] = 0;
         $run['16:30:00'] = 0;
         $run['17:30:00'] = 0;
+        $run['18:30:00'] = 0;
+        $run['19:30:00'] = 0;
 
         $cortes = $colections->total_general ?? 0;
         $registroParos = DB::connection('toi')
@@ -104,6 +113,9 @@ class ChartController extends Controller
         $run['14:30:00'] = round((($colections->total15 * 6.48) / 2) / 60, 2);
         $run['15:30:00'] = round((($colections->total16 * 6.48) / 2) / 60, 2);
         $run['16:30:00'] = round((($colections->total17 * 6.48) / 2) / 60, 2);
+        $run['17:30:00'] = round((($colections->total18 * 6.48) / 2) / 60, 2);
+        $run['18:30:00'] = round((($colections->total19 * 6.48) / 2) / 60, 2);
+        $run['19:30:00'] = round((($colections->total20 * 6.48) / 2) / 60, 2);
 
         $stop['07:30:00'] = 60 - $run['07:30:00'];
         $stop['08:30:00'] = 60 - $run['08:30:00'];
@@ -116,6 +128,8 @@ class ChartController extends Controller
         $stop['15:30:00'] = 60 - $run['15:30:00'];
         $stop['16:30:00'] = 60 - $run['16:30:00'];
         $stop['17:30:00'] = 60 - $run['17:30:00'];
+        $stop['18:30:00'] = 60 - $run['18:30:00'];
+        $stop['19:30:00'] = 60 - $run['19:30:00'];
 
         $paros = round($paros, 2);
         $running = round($running, 2);
@@ -126,11 +140,11 @@ class ChartController extends Controller
         if ($fechaDelDia === date('Y-m-d') and date('H:i:s') < '15:30:01') {
 
             $tiempoAhora = strtotime($fechaDelDia.' '.date('H:i:s'));
-        } elseif ($fechaDelDia === date('Y-m-d') and date('H:i:s') > '15:30:00') {
+        } elseif ($fechaDelDia === date('Y-m-d') and date('H:i:s') > '17:30:00') {
 
-            $tiempoAhora = strtotime($fechaDelDia.' 15:30:00');
+            $tiempoAhora = strtotime($fechaDelDia.' 17:30:00');
         } else {
-            $tiempoAhora = strtotime($fechaDelDia.' 15:30:00');
+            $tiempoAhora = strtotime($fechaDelDia.' 17:30:00');
         }
 
         $diferenciaDeTiempo = abs($tiempoAhora - $TiempoInicial);
