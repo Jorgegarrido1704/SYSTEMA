@@ -35,4 +35,17 @@ class Wo extends Model
     protected $table = 'registro'; // Adjust the table name if it's different
 
     public $timestamps = false;
+
+   function getWoByCodeBar($info)
+    {
+          return $this->JOIN('retiradad')
+        ->where(function ($query) use ($info) {
+            $query->where('retiradad.wo', 'LIKE', "%{$info}%")
+                  ->orWhere('retiradad.np', 'LIKE', "%{$info}%")
+                  ->orWhere($this->NumPart, 'LIKE', "%{$info}%")
+                  ->orWhere($this->wo, 'LIKE', "%{$info}%");
+        })
+        ->get();
+    }
+   
 }
