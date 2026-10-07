@@ -202,7 +202,8 @@
 
         async function getCorte(maquina) {
             const fechaInput = document.getElementById('fecha').value;
-            const turnoActual = document.getElementById('turnoActual').value;
+            var turnoActual = document.getElementById('turnoActual').value;
+            alert("Turno actual: " + turnoActual + " Máquina: " + maquina + " Fecha: " + fechaInput);
             // Si el input está vacío, puedes decidir no enviar nada o enviar la fecha de hoy
             if (!fechaInput) return;
 
@@ -499,7 +500,6 @@
         setInterval(() => getCorte(maquinaActual), 60000*3);
 
         function CambiarTurno(turno) {
-            alert("Turno cambiado a: " + turno);
             document.getElementById('turnoActual').value = turno;
             getCorte(maquinaActual);
         }
