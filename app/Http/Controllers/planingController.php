@@ -47,9 +47,11 @@ class planingController extends Controller
                
                 $buscarIguales = DB::table('registro')
                     ->where('NumPart', 'LIKE', '%'.$sono.'%')
+                    ->orWhere('wo', 'LIKE', '%'.$sono.'%')
                     ->orderBy('NumPart', 'asc')->get();
                 $desiguales = DB::table('retiradad')
                     ->where('np', 'LIKE', '%'.$sono.'%')
+                    ->orWhere('wo', 'LIKE', '%'.$sono.'%')
                     ->orderBy('np', 'asc')->get();
             } elseif (empty($sono)) {
                 $buscarIguales = DB::table('registro')
