@@ -1918,7 +1918,7 @@ class juntasController extends Controller
             $empleados[$rows->employeeName][8] = Carbon::parse($lastyearBirth)->addMonths(6)->format('Y-m-d');
             $empleados[$rows->employeeName][9] = $rows->lastYear;
         }
-        $diasAviles = [];
+
         if (Carbon::now()->month > 6) {
             $newYear = $currentYear + 1;
             $InicioYear = Carbon::createFromDate($currentYear, 7, 1);
@@ -1957,7 +1957,7 @@ class juntasController extends Controller
                 }
 
                 $carbonFecha = Carbon::parse($fecha);
-                if ($carbonFecha->dayOfWeek == 6) {
+                if ($carbonFecha->dayOfWeek == 5) {
                     $fecha = $carbonFecha->addDays(2)->toDateString(); // convertir a string
                 } else {
                     $fecha = $carbonFecha->addDays(1)->toDateString(); // convertir a string
