@@ -44,8 +44,7 @@ class planingController extends Controller
         } else {
             $sono = $request->input('sono');
             if (! empty($sono)) {
-                $wo = Wo::getWoByCodeBar($sono);
-                dd($wo);
+               
                 $buscarIguales = DB::table('registro')
                     ->where('NumPart', 'LIKE', '%'.$sono.'%')
                     ->orderBy('NumPart', 'asc')->get();
