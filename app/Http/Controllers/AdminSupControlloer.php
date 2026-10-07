@@ -513,13 +513,14 @@ class AdminSupControlloer extends Controller
 
     }
 
-    public function finalizar_wo($wo)
+    public function finalizar_wo(Request $request, )
     {
         $value = session('user');
         $cat = session('categoria');
         if ($cat == '' || $value == '') {
             return redirect('/login');
         }
+        $wo = $request->input('finish_work_order');
         $work = Wo::where('wo', $wo)->update(['count' => '20']);
 
         return redirect()->back()->with('success', 'WO finalizada correctamente.');

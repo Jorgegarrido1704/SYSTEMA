@@ -206,7 +206,7 @@ Route::controller(AdminSupControlloer::class)->group(function () {
     Route::get('/reactivacion_wo', [AdminSupControlloer::class, 'reactivacion_wo'])->name('reactivacion_wo');
     Route::get('/schedule_map', [AdminSupControlloer::class, 'index_schedule'])->name('index_schedule');
     Route::get('/vsmData', [AdminSupControlloer::class, 'vsmData'])->name('vsmData');
-    Route::get('/finalizar_wo/{wo}', 'finalizar_wo')->name('finalizar_wo');
+    Route::get('/finalizar_wo', 'finalizar_wo')->name('finalizar_wo');
 
 });
 
