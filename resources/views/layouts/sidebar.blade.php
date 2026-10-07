@@ -60,8 +60,10 @@
                                         <a class="nav-link" href="/SupAdmin">
                                             @elseif($cat == 'mante')
                                                  <a class="nav-link" href="/mantainence">
-                                        @else
-                                            <a class="nav-link" href="/general">
+                                                @elseif($cat == 'herra')
+                                                    <a class="nav-link" href="/herramentales">
+                                                    @else
+                                                        <a class="nav-link" href="/general">
             @endif
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>{{__('Home')}}</span></a>
