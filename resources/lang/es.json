@@ -379,7 +379,10 @@
     "Electrical Tests Calendar":"Calendario de pruebas electricas",
     "Choose a shift": "Elige un turno",
     "Shift 1": "Turno 1",
-    "Shift 2": "Turno 2"
+    "Shift 2": "Turno 2",
+    "Reactive and Finish Orders":"Reactivar y finalizar ordenes",
+    "Finish Work Order":"Finalizar orden",
+    "Reactivate Work Order":"Reactivar orden"
 
 
 }

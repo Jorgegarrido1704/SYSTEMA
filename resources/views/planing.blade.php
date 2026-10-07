@@ -396,38 +396,32 @@ var dat = {!! json_encode($datosP) !!};
 
                     </div>
                     <div class="row">
-                        <div class="col-lg-6 col-xl-6 mb-6">
-                            <!-- AREAS -->
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h5 class="m-0 font-weight-bold text-primary">Registros por mes</h5>
-                                </div>
-                                <div class="card-body" style="overflow-y: auto; height: 360px;" id="tableChange">
-                                    <canvas id="planning"></canvas>
-
-
-                                </div>
+                       <div class="card shadow mb-4 col-lg-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">{{ __('Reactive and Finish Orders')}}</h6>
                             </div>
-                        </div>
-                       <!-- <div class="col-lg-6 mb-4" style="max-width: 33.33%">
-                             AREAS
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h5 class="m-0 font-weight-bold text-primary">Table of Works </h5>
-                                </div>
-                                <div class="card-body" style="overflow-y: auto; height: 360px;" id="tableChange">
-                                    <div class="row" >
+                            <div class="card-body" style="overflow-y: auto; height: 360px;">
+                                <div class="row">
+                                    <div class="col-lg-12 mb-4">
+                                        <form action="{{ route('reactivacion_wo') }}" method="GET" class="form-inline">
+                                            <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                                <label for="work_order_reactive">{{ __('Reactivate Work Order') }}</label>
+                                                <input type="text" class="form-control" name="work_order_reactive" id="work_order_reactive"  maxlength="6"  minlength="6" required >
+                                            </div>
 
-
+                                        </form>
+                                    </div>
+                                    <div class="col-lg-12 mb-4">
+                                        <form action="{{ route('finalizar_wo') }}" method="GET" class="form-inline">
+                                            <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                                <label for="work_order_reactive">{{ __('Finish Work Order')}}</label>
+                                                <input type="text" class="form-control" name="work_order_reactive" id="work_order_reactive"  maxlength="6"  minlength="6" required >
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
-                        </div>-->
-
-
-
-
-
+                        </div>
                     </div>
                     <script>
                         function obtenerInformacion() {

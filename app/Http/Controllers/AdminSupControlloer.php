@@ -6,7 +6,6 @@ use App\Mail\solicitudVacacionesMail;
 use App\Models\calidadRegistro;
 use App\Models\personalBergsModel;
 use App\Models\registoLogin;
-use App\Models\regPar;
 use App\Models\routingModel;
 use carbon\Carbon;
 use Illuminate\Http\Request;
@@ -263,9 +262,9 @@ class AdminSupControlloer extends Controller
 
     public function vsmData(Request $request)
     {
-       
+
         $pnFiltro = trim((string) $request->query('pn', ''));
- 
+
         // Une cada orden activa con su ruteo de tiempos por área.
         // Si una orden (pn) no tiene ruteo cargado en tiemposderuteo, no aparecerá
         // en este join (usa leftJoin + reporte aparte si necesitas detectar esos casos).
@@ -282,74 +281,73 @@ class AdminSupControlloer extends Controller
                 DB::raw('(r.orgQty * t.processtime) as tiempo_proceso_min'),
                 DB::raw('(r.orgQty * t.processtime + t.setupTime) as tiempo_total_min')
             );
- 
+
         if ($pnFiltro !== '') {
             $query->where('r.pn', 'like', "%{$pnFiltro}%");
         }
- 
+
         $detalle = $query->get();
- 
+
         // ── Desglose por ÁREA (work) ──
         $porArea = $detalle->groupBy('work')->map(function ($rows, $work) {
             return [
-                'area'              => $work,
-                'ordenes'           => $rows->count(),
-                'piezas_totales'    => (float) $rows->sum('orgQty'),
-                'tiempo_proceso_min'=> round((float) $rows->sum('tiempo_proceso_min'), 2),
-                'tiempo_setup_min'  => round((float) $rows->sum('setupTime'), 2),
-                'tiempo_total_min'  => round((float) $rows->sum('tiempo_total_min'), 2),
+                'area' => $work,
+                'ordenes' => $rows->count(),
+                'piezas_totales' => (float) $rows->sum('orgQty'),
+                'tiempo_proceso_min' => round((float) $rows->sum('tiempo_proceso_min'), 2),
+                'tiempo_setup_min' => round((float) $rows->sum('setupTime'), 2),
+                'tiempo_total_min' => round((float) $rows->sum('tiempo_total_min'), 2),
             ];
         })->values();
- 
+
         // ── Desglose por ARNÉS (pn) ──
         $porArnes = $detalle->groupBy('pn')->map(function ($rows, $pn) {
             // orgQty se repite una vez por cada área (misma orden, 6 filas).
             // Para no duplicarlo, tomamos un solo orgQty por registro_id (por orden) y sumamos.
             $orgQtyTotal = $rows->groupBy('registro_id')
-                ->map(fn($g) => $g->first()->orgQty)
+                ->map(fn ($g) => $g->first()->orgQty)
                 ->sum();
- 
+
             return [
-                'pn'                => $pn,
-                'ordenes'           => $rows->pluck('wo')->unique()->values(),
-                'orgQty_total'      => (float) $orgQtyTotal,
-                'tiempo_proceso_min'=> round((float) $rows->sum('tiempo_proceso_min'), 2),
-                'tiempo_setup_min'  => round((float) $rows->sum('setupTime'), 2),
-                'tiempo_total_min'  => round((float) $rows->sum('tiempo_total_min'), 2),
-                'areas'             => $rows->map(fn($r) => [
+                'pn' => $pn,
+                'ordenes' => $rows->pluck('wo')->unique()->values(),
+                'orgQty_total' => (float) $orgQtyTotal,
+                'tiempo_proceso_min' => round((float) $rows->sum('tiempo_proceso_min'), 2),
+                'tiempo_setup_min' => round((float) $rows->sum('setupTime'), 2),
+                'tiempo_total_min' => round((float) $rows->sum('tiempo_total_min'), 2),
+                'areas' => $rows->map(fn ($r) => [
                     'area' => $r->work,
                     'tiempo_total_min' => round($r->tiempo_total_min, 2),
                 ])->values(),
             ];
         })->values();
- 
+
         // ── Totales generales ──
         $totalGeneral = [
-            'ordenes_totales'   => $detalle->pluck('registro_id')->unique()->count(),
+            'ordenes_totales' => $detalle->pluck('registro_id')->unique()->count(),
             'arneses_distintos' => $detalle->pluck('pn')->unique()->count(),
-            'tiempo_proceso_min'=> round((float) $detalle->sum('tiempo_proceso_min'), 2),
-            'tiempo_setup_min'  => round((float) $detalle->sum('setupTime'), 2),
-            'tiempo_total_min'  => round((float) $detalle->sum('tiempo_total_min'), 2),
+            'tiempo_proceso_min' => round((float) $detalle->sum('tiempo_proceso_min'), 2),
+            'tiempo_setup_min' => round((float) $detalle->sum('setupTime'), 2),
+            'tiempo_total_min' => round((float) $detalle->sum('tiempo_total_min'), 2),
         ];
         $totalGeneral['tiempo_total_horas'] = round($totalGeneral['tiempo_total_min'] / 60, 2);
- 
+
         // Órdenes activas cuyo pn NO tiene ruteo cargado (para detectar huecos de catálogo)
         $pnSinRuteo = DB::table('registroparcial as r')
             ->leftJoin('tiemposderuteo as t', 'r.pn', '=', 't.pn')
             ->whereNull('t.pn')
-            ->when($pnFiltro !== '', fn($q) => $q->where('r.pn', 'like', "%{$pnFiltro}%"))
+            ->when($pnFiltro !== '', fn ($q) => $q->where('r.pn', 'like', "%{$pnFiltro}%"))
             ->distinct()
             ->pluck('r.pn');
- 
+
         return response()->json([
-            'filtro'        => $pnFiltro,
+            'filtro' => $pnFiltro,
             'total_general' => $totalGeneral,
-            'por_area'      => $porArea,
-            'por_arnes'     => $porArnes,
-            'pn_sin_ruteo'  => $pnSinRuteo,
+            'por_area' => $porArea,
+            'por_arnes' => $porArnes,
+            'pn_sin_ruteo' => $pnSinRuteo,
         ]);
     }
-    
 
     public function timeLine(Request $request)
     {
@@ -512,6 +510,19 @@ class AdminSupControlloer extends Controller
         DB::table('retiradad')->where('wo', $work_order_reactive)->delete();
 
         return redirect()->back()->with('success', 'WO reactivado correctamente.');
+
+    }
+
+    public function finalizar_wo($wo)
+    {
+        $value = session('user');
+        $cat = session('categoria');
+        if ($cat == '' || $value == '') {
+            return redirect('/login');
+        }
+        $work = Wo::where('wo', $wo)->update(['count' => '20']);
+
+        return redirect()->back()->with('success', 'WO finalizada correctamente.');
 
     }
 }
