@@ -4,18 +4,18 @@
  <!-- Page Heading -->
  <div class="d-sm-flex align-items-center justify-content-between mb-4"> </div>
  <div class="row">
-            <ul class="nav nav-underline">
-            <li class="nav-item">
-                <a class="nav-link disabled text-success" aria-current="page" href="#">{{ __('Choose a shift') }}</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-primary" onclick="CambiarTurno('1')">{{ __('Shift 1') }}</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-warning" onclick="CambiarTurno('2')">{{ __('Shift 2') }}</a>
-                <input type="hidden" id="turnoActual" value="1">
-            </li>
+           <ul class="nav nav-underline" id="tabsTurno">
+                <li class="nav-item">
+                    <a class="nav-link disabled text-success" href="#">{{ __('Choose a shift') }}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-primary active" href="#" data-turno="1" aria-current="page">{{ __('Shift 1') }}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-warning" href="#" data-turno="2">{{ __('Shift 2') }}</a>
+                </li>
             </ul>
+<input type="hidden" id="turnoActual" value="1">
     <div class="col-xl-12 col-md-12 mb-4">
         <ul class="list-group list-group-horizontal justify-content-center">
             <li class="list-group-item"><button type="button" class="btn btn-primary" onclick="cambiarMaquina('M1')">MCUT-1</button></li>
