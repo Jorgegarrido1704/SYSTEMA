@@ -193,6 +193,23 @@
 
             </div>
     <script>
+            document.querySelectorAll('#tabsTurno .nav-link[data-turno]').forEach(tab => {
+                tab.addEventListener('click', function (e) {
+                    e.preventDefault();
+
+                    // Quitar "active" de todos y ponerlo en el seleccionado
+                    document.querySelectorAll('#tabsTurno .nav-link').forEach(t => {
+                        t.classList.remove('active');
+                        t.removeAttribute('aria-current');
+                    });
+                    this.classList.add('active');
+                    this.setAttribute('aria-current', 'page');
+
+                    // Tu lógica existente
+                    CambiarTurno(this.dataset.turno);
+                });
+            });
+
         let maquinaActual = 'M1'; // Valor inicial, puedes cambiarlo según tus necesidades
 
         function cambiarMaquina(nuevaMaquina) {
