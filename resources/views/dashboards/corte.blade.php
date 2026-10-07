@@ -4,6 +4,18 @@
  <!-- Page Heading -->
  <div class="d-sm-flex align-items-center justify-content-between mb-4"> </div>
  <div class="row">
+            <ul class="nav nav-underline">
+            <li class="nav-item">
+                <a class="nav-link disabled text-success" aria-current="page" href="#">{{ __('Choose a shift') }}</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-primary" onclick="CambiarTurno('1')">{{ __('Shift 1') }}</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-warning" onclick="CambiarTurno('2')">{{ __('Shift 2') }}</a>
+                <input type="hidden" id="turnoActual" value="1">
+            </li>
+            </ul>
     <div class="col-xl-12 col-md-12 mb-4">
         <ul class="list-group list-group-horizontal justify-content-center">
             <li class="list-group-item"><button type="button" class="btn btn-primary" onclick="cambiarMaquina('M1')">MCUT-1</button></li>
@@ -190,11 +202,12 @@
 
         async function getCorte(maquina) {
             const fechaInput = document.getElementById('fecha').value;
+            const turnoActual = document.getElementById('turnoActual').value;
             // Si el input está vacío, puedes decidir no enviar nada o enviar la fecha de hoy
             if (!fechaInput) return;
 
             try {
-                const response = await fetch('/chart/getDatacorte?fecha=' + fechaInput + '&maquina=' + maquina);
+                const response = await fetch('/chart/getDatacorte?fecha=' + fechaInput + '&maquina=' + maquina + '&turno=' + turnoActual);
 
                 // Si el servidor responde con error (500, 404, etc) saltará al catch
                 if (!response.ok) {
@@ -484,6 +497,13 @@
 
         getCorte(maquinaActual);
         setInterval(() => getCorte(maquinaActual), 60000*3);
+
+        function CambiarTurno(turno) {
+            alert("Turno cambiado a: " + turno);
+            document.getElementById('turnoActual').value = turno;
+            getCorte(maquinaActual);
+        }
+
     </script>
 
  @endsection
