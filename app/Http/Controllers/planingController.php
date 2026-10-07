@@ -57,18 +57,9 @@ class planingController extends Controller
                 $desiguales = DB::table('retiradad')
                     ->orderBy('np', 'asc')->limit(50)->get();
             }
-            foreach ($buscarIguales as $pos) {
-                $post[$i][0] = $pos->NumPart;
-                $post[$i][1] = $pos->rev;
-                $post[$i][2] = $pos->po;
-                $post[$i][3] = $pos->Qty;
-                $post[$i][4] = $pos->fecha;
-                $post[$i][5] = $pos->donde;
-                $post[$i][6] = $pos->wo;
-                $i++;
-            }
+           
             foreach ($desiguales as $rowdes) {
-                $des[$j][0] = $rowdes->np;
+                
                 $rev = substr($rowdes->codigo, -4);
                 $pos = strpos($rev, 'R');
                 if ($pos !== false) {
@@ -76,16 +67,8 @@ class planingController extends Controller
                 } else {
                     $rev = '-';
                 }
-                $des[$j][1] = $rev;
-                $des[$j][2] = $rowdes->sono;
-                $des[$j][3] = $rowdes->qty;
-                $des[$j][4] = $rowdes->fechaing;
-                if ($rowdes->wo != '') {
-                    $des[$j][5] = $rowdes->wo;
-                } else {
-                    $des[$j][5] = 'Ya se fue';
-                }
-                $j++;
+                $rowdes->rev = $rev;
+                
             }
 
             $codigoant = $request->input('wo');
@@ -279,7 +262,7 @@ class planingController extends Controller
         }
         $porLiberar = regPar::where('planpar', '>', 0)->get();
 
-        return view('planing', ['answer' => $answer, 'des' => $des, 'value' => $value, 'cat' => $cat, 'post' => $post, 'datosP' => $datosP, 'porLiberar' => $porLiberar]);
+        return view('planing', ['answer' => $answer, 'desiguales' => $desiguales, 'value' => $value, 'cat' => $cat, 'buscarIguales' => $buscarIguales, 'datosP' => $datosP, 'porLiberar' => $porLiberar]);
     }
 
     public function pos(Request $request)

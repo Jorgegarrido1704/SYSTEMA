@@ -103,25 +103,25 @@ var dat = {!! json_encode($datosP) !!};
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($post as $po )
+                                                @foreach ($buscarIguales as $po )
                                                 <tr style="background-color: #6ff693">
-                                                    <td>{{$po[0]}}</td>
-                                                    <td>{{$po[1]}}</td>
-                                                    <td>{{$po[6]}}</td>
-                                                    <td>{{$po[2]}}</td>
-                                                    <td>{{$po[3]}}</td>
-                                                    <td>{{$po[4]}}</td>
-                                                    <td>{{$po[5]}}</td>
+                                                    <td>{{$po->NumPart}}</td>
+                                                    <td>{{$po->rev}}</td>
+                                                    <td>{{$po->wo}}</td>
+                                                    <td>{{$po->po}}</td>
+                                                    <td>{{$po->Qty}}</td>
+                                                    <td>{{$po->fecha}}</td>
+                                                    <td>{{$po->donde}}</td>
                                                 </tr>
                                                 @endforeach
-                                                @foreach ($des as $d )
+                                                @foreach ($desiguales as $d )
                                                 <tr style="background-color: #ebc4a3">
-                                                    <td>{{$d[0]}}</td>
-                                                    <td>{{$d[1]}}</td>
-                                                    <td>{{$d[5]}}</td>
-                                                    <td>{{$d[2]}}</td>
-                                                    <td>{{$d[3]}}</td>
-                                                    <td>{{$d[4]}}</td>
+                                                    <td>{{$d->np}}</td>
+                                                    <td>{{$d->rev}}</td>
+                                                    <td>{{$d->wo}}</td>
+                                                    <td>{{$d->sono}}</td>
+                                                    <td>{{$d->qty}}</td>
+                                                    <td>{{$d->fechaing}}</td>
                                                     <td>{{__('Already delivered')}}</td>
                                                 </tr>
                                                 @endforeach
