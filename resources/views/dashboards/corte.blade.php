@@ -203,7 +203,7 @@
         async function getCorte(maquina) {
             const fechaInput = document.getElementById('fecha').value;
             var turnoActual = document.getElementById('turnoActual').value;
-            alert("Turno actual: " + turnoActual + " Máquina: " + maquina + " Fecha: " + fechaInput);
+            //alert("Turno actual: " + turnoActual + " Máquina: " + maquina + " Fecha: " + fechaInput);
             // Si el input está vacío, puedes decidir no enviar nada o enviar la fecha de hoy
             if (!fechaInput) return;
 
