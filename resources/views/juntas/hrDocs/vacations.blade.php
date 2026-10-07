@@ -109,62 +109,36 @@ Swal.fire({
 </div>
 <!-- First Period -->
 <div class="row">
-    @php
-    $encabezados = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie'];
-    @endphp
-
     @foreach ($diasAviles as $mes => $dias)
-        @php
-            // Solo lunes a viernes (si ya vienen filtrados, no afecta)
-            $habiles = collect($dias)
-                ->filter(fn($d) => \Carbon\Carbon::create($anio, $mes, $d['dia'])->isWeekday())
-                ->values();
-
-            // Cuántas celdas vacías van antes del primer día hábil (0 = lunes)
-            $offset = $habiles->isEmpty()
-                ? 0
-                : \Carbon\Carbon::create($anio, $mes, $habiles->first()['dia'])->dayOfWeekIso - 1;
-
-            $celdas = collect(array_fill(0, $offset, null))->concat($habiles);
-        @endphp
-
-        <div class="col-lg-2 col-lx-2 mb-2">
-            <div class="card shadow mb-5">
-                <div class="card-header py-3">
-                    <h5 class="m-0 font-weight-bold text-primary">
-                        {{ \Carbon\Carbon::create($anio, $mes, 1)->locale('es')->translatedFormat('F') }}
-                    </h5>
-                </div>
-                <div class="card-body" style="overflow-y: auto;">
-                    <table class="table table-bordered" width="100%" cellspacing="0">
-                        <thead>
-                            <tr>
-                                @foreach ($encabezados as $enc)
-                                    <th>{{ $enc }}</th>
-                                @endforeach
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($celdas->chunk(5) as $semana)
-                                <tr>
-                                    @foreach ($semana as $dia)
-                                        @if ($dia)
-                                            <td class="vacation-cell" id="{{ $dia['vacas'] }}">{{ $dia['dia'] }}</td>
-                                        @else
-                                            <td></td>
-                                        @endif
-                                    @endforeach
-                                    {{-- Completa la última semana --}}
-                                    @for ($i = $semana->count(); $i < 5; $i++)
-                                        <td></td>
-                                    @endfor
-                                </tr>
+    <div class="col-lg-2 col-lx-2 mb-2">
+        <div class="card shadow mb-5">
+            <div class="card-header py-3">
+                <h5 class="m-0 font-weight-bold text-primary">{{ \Carbon\Carbon::create()->month($mes)->format('F') }}</h5>
+            </div>
+            <div class="card-body" style="overflow-y: auto;">
+                <table class="table table-bordered" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            @foreach (collect($dias)->take(5) as $dia)
+                                <td>{{ $dia['Dia'] }}</td>
                             @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($dias as $index => $dia)
+                            @if ($index % 5 === 0)
+                                <tr>
+                            @endif
+                            <td class="vacation-cell" id="{{ $dia['vacas'] }}">{{ $dia['dia'] }}</td>
+                            @if (($index + 1) % 5 === 0 || $index + 1 === count($dias))
+                                </tr>
+                            @endif
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
+    </div>
     @endforeach
 </div>
 <script>
