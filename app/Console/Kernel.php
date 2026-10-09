@@ -75,7 +75,7 @@ class Kernel extends ConsoleKernel
         // $schedule->job(new \App\Jobs\reporteGeneral())->everyMinute()->between('07:00', '20:00');
 
         // acciones correctivas recordatorio de lunes a sabado a las 5:00 am
-        $schedule->job(new \App\Jobs\accionesCorrectivasJob)->cron('21 4,7 * * 1-5')
+        $schedule->job(new \App\Jobs\accionesCorrectivasJob)->cron('21 7,8 * * 1-5')
             ->onFailure(function () {
                 Log::error('El job de acciones correctivas falló.');
             });
