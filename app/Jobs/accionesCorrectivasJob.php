@@ -23,6 +23,7 @@ class accionesCorrectivasJob implements ShouldQueue
 
     public function handle(): void
     {
+        $hoy = Carbon::now()->format('Y-m-d');
         $accioness = accionesCorrectivas::where('status', 'LIKE', 'etapa 1%')->where('ultimoEmail', '<', Carbon::now()->format('Y-m-d'))
             ->get();
         $verificaciones = accionesCorrectivas::where('status', 'LIKE', 'etapa 2%')->where('ultimoEmail', '<', Carbon::now()->format('Y-m-d'))
@@ -76,23 +77,37 @@ class accionesCorrectivasJob implements ShouldQueue
         $subacciones = sub_acciones_model::where('statusSubAccion', 'Open')->where('lastEmail', '<', Carbon::now()->format('Y-m-d'))->get();
         foreach ($subacciones as $subaccion) {
 
-            // $mailto = personalBergsModel::select('email', 'employeeLider')->where('employeeName', $acciones->resposableAccion)->first();
+            $mailto = personalBergsModel::select('email', 'employeeLider')->where('employeeName', $subaccion->resposableAccion)->first();
             $mailaddress = [
                 'jgarrido@mx.bergstrominc.com',
                 'maleman@mx.bergstrominc.com',
+                $mailto->email ?? null,
             ];
-            /* if ($mailto) {
-                 $mailaddress[] = $mailto->email;
-             }*/
 
-            if (Carbon::parse($subaccion->fechaFinSubAccion)->addWeekDays(3)->isPast()) {
+            if (Carbon::parse($subaccion->fechaFinSubAccion)->subWeekDays(5)->isFuture()) {
                 $subject = 'recoleccion de evidencia planes de accion';
-                Mail::to($mailaddress)->send(new recordatorioSubacciones($subaccion, $subject));
+                if (carbon::parse($subaccion->lastEmail)->addWeekDays(5)->isPast()) {
 
+                    Mail::to($mailaddress)->send(new recordatorioSubacciones($subaccion, $subject));
+                    sub_acciones_model::where('id', $subaccion->id)->update([
+                        'lastEmail' => Carbon::now()->format('Y-m-d'),
+                    ]);
+                }
+
+            } elseif (Carbon::parse($subaccion->fechaFinSubAccion)->subWeekDays(5)->isPast()) {
+                $subject = 'recoleccion de evidencia planes de accion';
+                if (carbon::parse($subaccion->fechaFinSubAccion)->isPast()) {
+                    $jefemail = personalBergsModel::select('email')->where('employeeName', $mailto->employeeLider)->first();
+                    if ($jefemail) {
+                        $mailaddress[] = $jefemail->email;
+                    }
+                }
+                Mail::to($mailaddress)->send(new recordatorioSubacciones($subaccion, $subject));
                 sub_acciones_model::where('id', $subaccion->id)->update([
-                    'lastEmail' => Carbon::now()->format('Y-m-d')
+                    'lastEmail' => Carbon::now()->format('Y-m-d'),
                 ]);
             }
+
         }
 
     }
