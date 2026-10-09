@@ -326,7 +326,7 @@ if (Error) {
                                                                 <td id="empleado">{{$as['name']}}</td>
                                                                 <td id="{{ $as['lunes'] }}"><select style="max-width: 45px" name="lun[]" id="lun"   {{ $diasRegistro[0] }} >
                                                                                                 <option value="{{$as['lunes']}}" selected>{{$as['lunes']}}</option>
-                                                                                                <option value="PSS">PSS</option>    
+                                                                                                <option value="PSS">PSS</option>
                                                                                                 <option value="PCS">PCS</option>
                                                                                                 <option value="INC">INC</option>
                                                                                                 <option value="SUS">SUS</option>
@@ -334,23 +334,75 @@ if (Error) {
                                                                                                 <option value="TSP">TSP</option>
                                                                                             </select> </td>
                                                                 <td >TE:<input type="number" style="max-width: 45px" name="extra_lun[]" id="extra_lun" value="{{$as['extLunes']}}"  min="0" max="30" step="0.5" {{ $tt[1] }}>
-                                                            <hr>TT:<input type="number" style="max-width: 45px" name="tt_lunes[]" id="tt_lunes" value="{{$as['tt_lunes']}}"  min="0" max="30" step="0.5" {{ $tt[1] }}></td>
-                                                                <td id="{{ $as['martes'] }}"><input type="text" style="max-width: 45px" name="mar[]" id="mar" value="{{$as['martes']}}" minlength="1" maxlength="3"   {{ $diasRegistro[1] }}></td>
+                                                                 <hr>TT:<input type="number" style="max-width: 45px" name="tt_lunes[]" id="tt_lunes" value="{{$as['tt_lunes']}}"  min="0" max="30" step="0.5" {{ $tt[1] }}></td>
+
+                                                                 <td id="{{ $as['martes'] }}"><select style="max-width: 45px" name="mar[]" id="mar" value="{{$as['martes']}}" >
+                                                                     <option value="{{$as['martes']}}" selected>{{$as['martes']}}</option>
+                                                                                                <option value="PSS">PSS</option>
+                                                                                                <option value="PCS">PCS</option>
+                                                                                                <option value="INC">INC</option>
+                                                                                                <option value="SUS">SUS</option>
+                                                                                                <option value="PCT">PCT</option>
+                                                                                                <option value="TSP">TSP</option>
+                                                                                                </select>      </td>
                                                                 <td>TE:<input type="number" style="max-width: 45px" name="extra_mar[]" id="extra_mar" value="{{$as['extMartes']}}"  min="0" max="30" step="0.5" {{ $tt[2] }}>
                                                                 <hr>TT:<input type="number" style="max-width: 45px" name="tt_martes[]" id="tt_martes" value="{{$as['tt_martes']}}"  min="0" max="30" step="0.5" {{ $tt[2] }}></td>
-                                                                <td id="{{ $as['miercoles'] }}"><input type="text" style="max-width: 45px" name="mie[]" id="mie" value="{{$as['miercoles']}}" minlength="1" maxlength="3"   {{ $diasRegistro[2] }}></td>
+
+                                                                <td id="{{ $as['miercoles'] }}"><select style="max-width: 45px" name="mie[]" id="mie" value="{{$as['miercoles']}}" >
+                                                                     <option value="{{$as['miercoles']}}" selected>{{$as['miercoles']}}</option>
+                                                                                                <option value="PSS">PSS</option>
+                                                                                                <option value="PCS">PCS</option>
+                                                                                                <option value="INC">INC</option>
+                                                                                                <option value="SUS">SUS</option>
+                                                                                                <option value="PCT">PCT</option>
+                                                                                                <option value="TSP">TSP</option>
+                                                                                                </select>      </td>
                                                                 <td>TE:<input type="number" style="max-width: 45px" name="extra_mie[]" id="extra_mie" value="{{$as['extMiercoles']}}" min="0" max="30" step="0.5"  {{ $tt[3] }}>
                                                                 <hr>TT:<input type="number" style="max-width: 45px" name="tt_miercoles[]" id="tt_miercoles" value="{{$as['tt_miercoles']}}"  min="0" max="30" step="0.5" {{ $tt[3] }}></td>
-                                                                <td id="{{ $as['jueves'] }}"><input type="text" style="max-width: 45px" name="jue[]" id="jue" value="{{$as['jueves']}}" minlength="1" maxlength="3"  {{ $diasRegistro[3] }}></td>
+
+                                                                <td id="{{ $as['jueves'] }}"><select style="max-width: 45px" name="jue[]" id="jue" value="{{$as['jueves']}}" >
+                                                                     <option value="{{$as['jueves']}}" selected>{{$as['jueves']}}</option>
+                                                                                                <option value="PSS">PSS</option>
+                                                                                                <option value="PCS">PCS</option>
+                                                                                                <option value="INC">INC</option>
+                                                                                                <option value="SUS">SUS</option>
+                                                                                                <option value="PCT">PCT</option>
+                                                                                                <option value="TSP">TSP</option>
+                                                                                                </select>      </td>
                                                                 <td>TE:<input type="number" style="max-width: 45px" name="extra_jue[]" id="extra_jue" value="{{$as['extJueves']}}"  min="0" max="30" step="0.5" {{ $tt[4] }}>
                                                                 <hr>TT:<input type="number" style="max-width: 45px" name="tt_jueves[]" id="tt_jueves" value="{{$as['tt_jueves']}}"  min="0" max="30" step="0.5" {{ $tt[4] }}></td>
-                                                                <td id="{{ $as['viernes'] }}"><input type="text" style="max-width: 45px" name="vie[]" id="vie" value="{{$as['viernes']}}"minlength="1" maxlength="3"   {{ $diasRegistro[4] }}></td>
+                                                                <td id="{{ $as['viernes'] }}"><select style="max-width: 45px" name="vie[]" id="vie" value="{{$as['viernes']}}" >
+                                                                    <option value="{{$as['viernes']}}" selected>{{$as['viernes']}}</option>
+                                                                                                <option value="PSS">PSS</option>
+                                                                                                <option value="PCS">PCS</option>
+                                                                                                <option value="INC">INC</option>
+                                                                                                <option value="SUS">SUS</option>
+                                                                                                <option value="PCT">PCT</option>
+                                                                                                <option value="TSP">TSP</option>
+                                                                                                </select>      </td>
                                                                 <td>TE:<input type="number" style="max-width: 45px" name="extra_vie[]" id="extra_vie" value="{{$as['extViernes']}}"  min="0" max="30" step="0.5" {{ $tt[4] }}>
                                                                 <hr>TT:<input type="number" style="max-width: 45px" name="tt_viernes[]" id="tt_viernes" value="{{$as['tt_viernes']}}"  min="0" max="30" step="0.5" {{ $tt[4] }}></td>
-                                                                <td id="{{ $as['sabado'] }}"><input type="text" style="max-width: 45px" name="sab[]" id="sab" value="{{$as['sabado']}}" minlength="1" maxlength="3"  {{ $diasRegistro[4] }}></td>
+
+                                                                <td id="{{ $as['sabado'] }}"><select style="max-width: 45px" name="sab[]" id="sab" value="{{$as['sabado']}}" >
+                                                                    <option value="{{$as['sabado']}}" selected>{{$as['sabado']}}</option>
+                                                                                                <option value="PSS">PSS</option>
+                                                                                                <option value="PCS">PCS</option>
+                                                                                                <option value="INC">INC</option>
+                                                                                                <option value="SUS">SUS</option>
+                                                                                                <option value="PCT">PCT</option>
+                                                                                                <option value="TSP">TSP</option>
+                                                                                                </select>      </td>
                                                                 <td>TE:<input type="number" style="max-width: 45px" name="extra_sab[]" id="extra_sab" value="{{$as['extSabado']}}"  min="0" max="30" step="0.5" {{ $tt[4] }}>
                                                                 <hr>TT:<input type="number" style="max-width: 45px" name="tt_sabado[]" id="tt_sabado" value="{{$as['tt_sabado']}}"  min="0" max="30" step="0.5" {{ $tt[4] }}></td>
-                                                                <td id="{{ $as['domingo'] }}"><input type="text" style="max-width: 45px" name="dom[]" id="dom" value="{{$as['domingo']}}" minlength="1" maxlength="3"  {{ $diasRegistro[4] }}></td>
+                                                                <td id="{{ $as['domingo'] }}"><select style="max-width: 45px" name="dom[]" id="dom" value="{{$as['domingo']}}" >
+                                                                    <option value="{{$as['domingo']}}" selected>{{$as['domingo']}}</option>
+                                                                                                <option value="PSS">PSS</option>
+                                                                                                <option value="PCS">PCS</option>
+                                                                                                <option value="INC">INC</option>
+                                                                                                <option value="SUS">SUS</option>
+                                                                                                <option value="PCT">PCT</option>
+                                                                                                <option value="TSP">TSP</option>
+                                                                                                </select>      </td>
                                                                 <td>TE:<input type="number" style="max-width: 45px" name="extra_dom[]" id="extra_dom" value="{{$as['extDomingo']}}"  min="0" max="30" step="0.5" {{ $tt[4] }}>
                                                                 <hr>TT:<input type="number" style="max-width: 45px" name="tt_domingo[]" id="tt_domingo" value="{{$as['tt_domingo']}}"  min="0" max="30" step="0.5" {{ $tt[4] }}></td>
                                                                 <td><input type="text" style="max-width: 45px" name="bono_asistencia[]" id="bono_asistencia" value="{{$as['bonoAsistencia']}}"   disabled></td>
