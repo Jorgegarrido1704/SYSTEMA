@@ -332,7 +332,7 @@ if (Error) {
                                                                                                 <option value="SUS">SUS</option>
                                                                                                 <option value="PCT">PCT</option>
                                                                                                 <option value="TSP">TSP</option>
-                                                                                            </select> {{ $diasRegistro[0] }} ></td>
+                                                                                            </select> </td>
                                                                 <td >TE:<input type="number" style="max-width: 45px" name="extra_lun[]" id="extra_lun" value="{{$as['extLunes']}}"  min="0" max="30" step="0.5" {{ $tt[1] }}>
                                                             <hr>TT:<input type="number" style="max-width: 45px" name="tt_lunes[]" id="tt_lunes" value="{{$as['tt_lunes']}}"  min="0" max="30" step="0.5" {{ $tt[1] }}></td>
                                                                 <td id="{{ $as['martes'] }}"><input type="text" style="max-width: 45px" name="mar[]" id="mar" value="{{$as['martes']}}" minlength="1" maxlength="3"   {{ $diasRegistro[1] }}></td>
