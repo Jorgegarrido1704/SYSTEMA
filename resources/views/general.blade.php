@@ -72,19 +72,19 @@
                             <td>{{ $item->wo }}</td>
                             <td>{{ $item->qty }}</td>
                             <td>
-    <a href="{{ route('previos', ['wo'=>$item->wo ,'status'=>'accept']) }}"
-       class="btn btn-success btn-previo"
-       data-wo="{{ $item->wo }}">
-       {{ __('Accept') }}
-    </a>
-</td>
-<td>
-    <a href="{{ route('previos', ['wo'=>$item->wo,'status'=>'decline']) }}"
-       class="btn btn-danger btn-previo"
-       data-wo="{{ $item->wo }}">
-       {{ __('Decline') }}
-    </a>
-</td>
+                        <a href="{{ route('previos', ['wo'=>$item->wo ,'status'=>'accept']) }}"
+                        class="btn btn-success btn-previo"
+                        data-wo="{{ $item->wo }}">
+                        {{ __('Accept') }}
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{{ route('previos', ['wo'=>$item->wo,'status'=>'decline']) }}"
+                        class="btn btn-danger btn-previo"
+                        data-wo="{{ $item->wo }}">
+                        {{ __('Decline') }}
+                        </a>
+                    </td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -471,7 +471,7 @@
                                 btn.dataset.clicked = 'true';
                                 btn.classList.add('disabled');
                                 btn.innerHTML = '{{ __("Procesando...") }}';
-                               
+
                             });
                         });
                     });
