@@ -104,9 +104,11 @@ class accionesCorrectivasJob implements ShouldQueue
             } elseif (Carbon::parse($subaccion->fechaFinSubAccion)->subWeekDays(5)->isPast()) {
                 $subject = 'recoleccion de evidencia planes de accion';
                 if (carbon::parse($subaccion->fechaFinSubAccion)->isPast()) {
-                    $jefemail = personalBergsModel::select('email')->where('employeeName', $mailto->employeeLider)->first();
-                    if ($jefemail && $jefemail->email) {
-                        $mailaddress[] = $jefemail->email;
+                    if ($mailto && $mailto->employeeLider) {
+                        $jefemail = personalBergsModel::select('email')->where('employeeName', $mailto->employeeLider)->first();
+                        if ($jefemail && $jefemail->email) {
+                            $mailaddress[] = $jefemail->email;
+                        }
                     }
                 }
                 Mail::to($mailaddress)->send(new recordatorioSubacciones($subaccion, $subject));
