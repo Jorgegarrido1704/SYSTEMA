@@ -19,7 +19,7 @@
                                 <select class="form-control" name="personalIng" id="personalIng" required>
                                     <option value="" disabled selected>Selecciona un empleado...</option>
                                     @foreach ($empleados as $empleado)
-                                        <option value="{{ $empleado->employeeNumber }}">{{ $empleado->employeeName }}</option>
+                                        <option value="{{ $empleado->employeeNumber }}">{{ $empleado->employeeNumber }} - {{ $empleado->employeeName }}</option>
                                     @endforeach
                                 </select>
                             </div>
