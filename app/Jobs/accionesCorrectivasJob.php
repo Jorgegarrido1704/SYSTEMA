@@ -78,11 +78,18 @@ class accionesCorrectivasJob implements ShouldQueue
         foreach ($subacciones as $subaccion) {
 
             $mailto = personalBergsModel::select('email', 'employeeLider')->where('employeeName', $subaccion->resposableAccion)->first();
-            $mailaddress = [
-                'jgarrido@mx.bergstrominc.com',
-                'maleman@mx.bergstrominc.com',
-                $mailto->email ?? null,
-            ];
+            if ($mailto) {
+                $mailaddress = [
+                    'jgarrido@mx.bergstrominc.com',
+                    'maleman@mx.bergstrominc.com',
+                    $mailto->email ?? null,
+                ];
+            } else {
+                $mailaddress = [
+                    'jgarrido@mx.bergstrominc.com',
+                    'maleman@mx.bergstrominc.com',
+                ];
+            }
 
             if (Carbon::parse($subaccion->fechaFinSubAccion)->subWeekDays(5)->isFuture()) {
                 $subject = 'recoleccion de evidencia planes de accion';
