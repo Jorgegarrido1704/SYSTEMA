@@ -23,141 +23,117 @@ class oeeController extends Controller
     public function appJointtiemposCompletos(Request $request)
     {
         $fechaDelDia = $request->input('fecha') ?? Carbon::now()->format('Y-m-d');
+        $turno = (int) ($request->input('turno') ?? 1);
         $maquina = $request->input('maquina') ?? '';
-        $runnigGrantotal = 0;
-        $stopGrantotal = 0;
-        $totalCortes = 0;
-        $query = DB::connection('toi')->table('lecturas');
-        $query2 = DB::connection('toi')->table('cutting_machine_stops');
-        $query3 = DB::connection('toi')->table('calidad_corte_oee');
-        $totalMaquinas = 5;
-        if ($maquina != '') {
-            $totalMaquinas = 1;
-            $query->where('maquina', $maquina);
-            $query2->where('maquina', $maquina);
-            $query3->where('maquina', $maquina);
+
+        // Ajusta a tus nombres reales de máquinas
+        $maquinas = $maquina !== '' ? [$maquina] : ['M1', 'M2', 'M3', 'M4', 'M5'];
+
+        $inicio = $turno === 1
+            ? Carbon::parse($fechaDelDia.' 07:30:00')
+            : Carbon::parse($fechaDelDia)->subDay()->setTime(19, 30, 0);
+        $fin = $inicio->copy()->addHours(12);
+
+        $minutosTurno = 690; // 720 - 30 min de descanso
+
+        $selects = [];
+        $bindings = [];
+        $horas = [];
+        for ($i = 0; $i < 12; $i++) {
+            $desde = $inicio->copy()->addHours($i);
+            $hasta = $desde->copy()->addHour();
+
+            $selects[] = "COUNT(CASE WHEN fecha >= ? AND fecha < ? THEN 1 END) as h{$i}";
+            $bindings[] = $desde->format('Y-m-d H:i:s');
+            $bindings[] = $hasta->format('Y-m-d H:i:s');
+            $horas[$i] = $desde->format('H:i:s');
         }
 
-        $coleccionGeneral = $query
-            ->whereBetween('fecha', [$fechaDelDia.' 07:30:00', $fechaDelDia.' 15:30:00'])
-            ->orderBy('maquina', 'ASC')
-            ->orderBy('fecha', 'ASC')
-            ->orderBy('id', 'ASC')
+        // Una sola consulta agrupada por máquina
+        $filas = DB::connection('toi')
+            ->table('lecturas')
+            ->selectRaw('maquina, '.implode(', ', $selects).', COUNT(*) as total_general', $bindings)
+            ->where('estado', 'RUN')
+            ->whereIn('maquina', $maquinas)
+            ->where('fecha', '>=', $inicio->format('Y-m-d H:i:s'))
+            ->where('fecha', '<', $fin->format('Y-m-d H:i:s'))
+            ->groupBy('maquina')
             ->get()
-            ->groupBy('maquina');
+            ->keyBy('maquina');
+
         $resultadoPorMaquina = [];
-        // registro de paros de corte
+        $runningTotal = 0;
+        $cortesTotal = 0;
 
-        $registrosdeParospordia = $query2->selectRaw('sum(time_min) as paros')->where('fecha', $fechaDelDia)->get();
-        $registrosparos = $registrosdeParospordia[0]->paros != null ? $registrosdeParospordia[0]->paros : 0;
+        foreach ($maquinas as $m) {
+            $row = $filas->get($m); // null si la máquina no tuvo lecturas
 
-        // registro fallas calidad
-        $fallasCalidad = $query3->selectRaw('sum(qty_errores) as paros')->where('fecha', $fechaDelDia)->get();
-        $totalFallasCalidad = $fallasCalidad[0]->paros != null ? $fallasCalidad[0]->paros : 0;
-
-        foreach ($coleccionGeneral as $nombreMaquina => $lecturas) {
-
-            $horasBase = ['07:30:00', '08:30:00', '09:30:00', '10:30:00', '11:30:00', '12:30:00', '13:30:00', '14:30:00'];
-            $run = array_fill_keys($horasBase, 0);
-            $stop = array_fill_keys($horasBase, 0);
-
-            $parosTotales = 0;
-            $runningTotal = 0;
-
-            $lastTiempo = null;
-            $lasStatus = null;
-
-            foreach ($lecturas as $row) {
-                $estatus = $row->estado;
-                $fechaActual = strtotime($row->fecha);
-                $horaFormateada = Carbon::parse($row->fecha)->format('H:i:s');
-
-                if ($lastTiempo === null) {
-                    $lastTiempo = $fechaActual;
-                    $lasStatus = $estatus;
-
-                    continue;
-                }
-
-                $diffTimeSeconds = abs($fechaActual - $lastTiempo);
-                $diffTimeMinutes = round($diffTimeSeconds / 60, 2);
-
-                if ($lasStatus == 'STOP' && $diffTimeSeconds > 6) {
-                    $parosTotales += $diffTimeMinutes;
-                    $stopGrantotal += $diffTimeMinutes;
-                } else {
-                    $runningTotal += $diffTimeMinutes;
-                    $runnigGrantotal += $diffTimeMinutes;
-
-                    // Determinar el bloque sutilmente usando rangos de tiempo
-                    foreach ($horasBase as $horaInicio) {
-                        $limiteInicio = Carbon::parse($horaInicio)->subSecond()->format('H:i:s'); // ej. 07:29:59
-                        $limiteFin = Carbon::parse($horaInicio)->addHour()->format('H:i:s');     // ej. 08:30:00
-
-                        // Ajuste para el último bloque
-                        if ($horaInicio === '14:30:00') {
-                            $limiteFin = '15:30:01';
-                        }
-
-                        if ($horaFormateada > $limiteInicio && $horaFormateada <= $limiteFin) {
-                            $run[$horaInicio] += $diffTimeMinutes;
-                            break;
-                        }
-                    }
-                }
-
-                // Calcular el complemento para STOP por cada hora recorriendo el bloque
-                foreach ($horasBase as $horaInicio) {
-                    $stop[$horaInicio] = max(0, 60 - $run[$horaInicio]);
-                }
-
-                $lastTiempo = $fechaActual;
-                $lasStatus = $estatus;
+            $run = [];
+            $stop = [];
+            foreach ($horas as $i => $hora) {
+                $conteo = $row ? (int) $row->{"h{$i}"} : 0;
+                $min = round((($conteo * 6.48) / 2) / 60, 2);
+                $run[$hora] = min($min, 60);
+                $stop[$hora] = round(60 - $run[$hora], 2);
             }
 
-            // Guardamos los datos procesados de esta máquina
-            $resultadoPorMaquina[$nombreMaquina] = [
-                'tiempo_funcionando_total' => round($runningTotal, 2),
-                'tiempo_detenido_total' => round($parosTotales, 2),
+            $totalLecturas = $row ? (int) $row->total_general : 0;
+            $running = min(round((($totalLecturas * 6.48) / 2) / 60, 2), $minutosTurno);
+            $cortes = $totalLecturas > 0 ? round($totalLecturas / 2) : 0;
 
+            $resultadoPorMaquina[$m] = [
+                'tiempo_funcionando_total' => $running,
+                'tiempo_detenido_total' => round(max(0, $minutosTurno - $running), 2),
+                'oee' => round(($running / $minutosTurno) * 100, 2),
+                'cortes' => $cortes,
                 'desglose_por_hora' => [
                     'funcionando' => $run,
                     'detenido' => $stop,
                 ],
             ];
+
+            $runningTotal += $running;
+            $cortesTotal += $cortes;
         }
+
+        $planTotal = $minutosTurno * count($maquinas);
+
+        // Paros registrados y fallas de calidad
+        $qParos = DB::connection('toi')->table('cutting_machine_stops')->where('fecha', $fechaDelDia);
+        $qCal = DB::connection('toi')->table('calidad_corte_oee')->where('fecha', $fechaDelDia);
+        if ($maquina !== '') {
+            $qParos->where('maquina', $maquina);
+            $qCal->where('maquina', $maquina);
+        }
+        $registrosparos = (float) ($qParos->sum('time_min') ?? 0);
+        $totalFallasCalidad = (float) ($qCal->sum('qty_errores') ?? 0);
+
+        $oee = $planTotal > 0 ? round(($runningTotal / $planTotal) * 100, 2) : 0;
+
+        $disponibilidad = $planTotal > 0
+            ? round((($planTotal - $registrosparos) / $planTotal) * 100, 2)
+            : 0;
+
+        $porcentajeCalidad = $cortesTotal > 0
+            ? round((($cortesTotal - $totalFallasCalidad) / $cortesTotal) * 100, 2)
+            : 100;
+
         $resultadoPorMaquina['total'] = [
-            'tiempo_total_funcionando' => round($runnigGrantotal, 2),
+            'tiempo_total_funcionando' => round($runningTotal, 2),
         ];
-        $cortes = $query
-            ->where('estado', 'RUN')
-            ->whereBetween('fecha', [$fechaDelDia.' 07:30:00', $fechaDelDia.' 15:30:00'])
-            ->orderBy('fecha', 'ASC')
-            ->orderBy('id', 'ASC')
-            ->count();
+        $resultadoPorMaquina['registrosparos'] = [
+            'tiempo_total_detenido' => round($registrosparos, 2),
+        ];
 
-        $totalCortes = $cortes > 0 ? round($cortes / 2) : 1;
-        $tiempoCorriendo = $totalCortes > 0 ? round(($totalCortes * 6.48) / 60, 2) : 0;
-        $productividad = round($tiempoCorriendo / ((450 * $totalMaquinas) - $registrosparos) * 100, 2);
-        $resultadoPorMaquina['registrosparos'] = ['tiempo_total_detenido' => round($registrosparos, 2)];
-        $disponibilidad = round((((450 * $totalMaquinas) - $registrosparos) / (450 * $totalMaquinas)) * 100, 2);
-        $totalCortes = $totalCortes > 0 ? $totalCortes : 1; //
-        $porcentajeCalidad = round((($totalCortes - $totalFallasCalidad) / $totalCortes) * 100, 2);
-
-        $oee = (($porcentajeCalidad / 100) * ($disponibilidad / 100) * ($productividad / 100));
-        $oee = round($oee * 100, 2);
-
-        $datos = [
+        return response()->json([
             'resultadoPorMaquina' => $resultadoPorMaquina,
-            'disponibilidad' => $disponibilidad,
-            'productividad' => $productividad,
+            'turno' => $turno,
             'oee' => $oee,
+            'disponibilidad' => $disponibilidad,
             'porcentajeCalidad' => $porcentajeCalidad,
-            'totalCortes' => $totalCortes,
+            'totalCortes' => $cortesTotal,
             'totalFallasCalidad' => $totalFallasCalidad,
-        ];
-
-        return response()->json($datos);
+        ]);
     }
 
     public function appJointtiemposCalidad(Request $request)
