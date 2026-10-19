@@ -152,7 +152,7 @@ class ChartController extends Controller
             $diferenciaDeTiempoMinutes = $diferenciaDeTiempoMinutes > 240 ? $diferenciaDeTiempoMinutes - 30 : $diferenciaDeTiempoMinutes; // Evitar división por cero
 
             if ($diferenciaDeTiempoMinutes > 0) {
-                dd($running, $diferenciaDeTiempoMinutes);
+                // dd($running, $diferenciaDeTiempoMinutes);
                 $oee = round(($running / $diferenciaDeTiempoMinutes) * 100, 2);
             } else {
                 $oee = 0;
