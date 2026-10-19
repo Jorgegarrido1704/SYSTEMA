@@ -254,7 +254,7 @@ class PpapIngController extends Controller
             $regIng->codigo = $value;
             $regIng->area = $area;
             $regIng->save();
-            $updateCantidad = DB::table('registroparcial')->where('codeBar', '=', $info)->update([$mas => $newQty]);
+            $updateCantidad = DB::table('registroparcial')->where('codeBar', '=', $info)->update([$mas => RAW('orgQty')]);
         }
 
         if ($cuenta == 17 || $cuenta == 2 || $cuenta == 3) {
