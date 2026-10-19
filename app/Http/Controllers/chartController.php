@@ -147,8 +147,8 @@ class ChartController extends Controller
                 $tiempoAhora = strtotime($fechaDelDia.' 19:30:00');
             }
 
-            $diferenciaDeTiempo = abs($tiempoAhora - $TiempoInicial);
-            $diferenciaDeTiempoMinutes = round($diferenciaDeTiempo / 60, 2);
+            //  $diferenciaDeTiempo = abs($tiempoAhora - $TiempoInicial);
+            $diferenciaDeTiempoMinutes = 720;
             $diferenciaDeTiempoMinutes = $diferenciaDeTiempoMinutes > 240 ? $diferenciaDeTiempoMinutes - 30 : $diferenciaDeTiempoMinutes; // Evitar división por cero
 
             if ($diferenciaDeTiempoMinutes > 0) {
@@ -277,7 +277,7 @@ class ChartController extends Controller
                 $tiempoAhora = strtotime($fechaDelDia.' 17:30:00');
             }
 
-            $diferenciaDeTiempo = abs($tiempoAhora - $TiempoInicial);
+            // $diferenciaDeTiempo = abs($tiempoAhora - $TiempoInicial);
             $diferenciaDeTiempoMinutes = 720;
             $diferenciaDeTiempoMinutes = $diferenciaDeTiempoMinutes > 240 ? $diferenciaDeTiempoMinutes - 30 : $diferenciaDeTiempoMinutes; // Evitar división por cero
 
