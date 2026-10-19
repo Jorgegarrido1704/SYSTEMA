@@ -100,23 +100,23 @@ class ChartController extends Controller
 
             $qtyCortes = $cortes > 0 ? round($cortes / 2) : 0;
             $paros = 0;
-            $running = round((($colections->total_general * 6.48) / 2) / 60, 2) ?? 0;
+            $running = round((($colections->total_general * 6.48) / 2) / 60, 2) > 720 ? round((($colections->total_general * 4.48) / 2) / 60, 2) : round((($colections->total_general * 6.48) / 2) / 60, 2) ?? 0;
             $lastTiempo = null;
             $lasStatus = null;
             $ultimoEstado = 'RUN';
 
-            $run['07:30:00'] = round((($colections->total8 * 6.48) / 2) / 60, 2);
-            $run['08:30:00'] = round((($colections->total9 * 6.48) / 2) / 60, 2);
-            $run['09:30:00'] = round((($colections->total10 * 6.48) / 2) / 60, 2);
-            $run['10:30:00'] = round((($colections->total11 * 6.48) / 2) / 60, 2);
-            $run['11:30:00'] = round((($colections->total12 * 6.48) / 2) / 60, 2);
-            $run['12:30:00'] = round((($colections->total13 * 6.48) / 2) / 60, 2);
-            $run['13:30:00'] = round((($colections->total14 * 6.48) / 2) / 60, 2);
-            $run['14:30:00'] = round((($colections->total15 * 6.48) / 2) / 60, 2);
-            $run['15:30:00'] = round((($colections->total16 * 6.48) / 2) / 60, 2);
-            $run['16:30:00'] = round((($colections->total17 * 6.48) / 2) / 60, 2);
-            $run['17:30:00'] = round((($colections->total18 * 6.48) / 2) / 60, 2);
-            $run['18:30:00'] = round((($colections->total19 * 6.48) / 2) / 60, 2);
+            $run['07:30:00'] = round((($colections->total8 * 6.48) / 2) / 60, 2) > 60 ? 60 : round((($colections->total8 * 6.48) / 2) / 60, 2);
+            $run['08:30:00'] = round((($colections->total9 * 6.48) / 2) / 60, 2) > 60 ? 60 : round((($colections->total9 * 6.48) / 2) / 60, 2);
+            $run['09:30:00'] = round((($colections->total10 * 6.48) / 2) / 60, 2) > 60 ? 60 : round((($colections->total10 * 6.48) / 2) / 60, 2);
+            $run['10:30:00'] = round((($colections->total11 * 6.48) / 2) / 60, 2) > 60 ? 60 : round((($colections->total11 * 6.48) / 2) / 60, 2);
+            $run['11:30:00'] = round((($colections->total12 * 6.48) / 2) / 60, 2) > 60 ? 60 : round((($colections->total12 * 6.48) / 2) / 60, 2);
+            $run['12:30:00'] = round((($colections->total13 * 6.48) / 2) / 60, 2) > 60 ? 60 : round((($colections->total13 * 6.48) / 2) / 60, 2);
+            $run['13:30:00'] = round((($colections->total14 * 6.48) / 2) / 60, 2) > 60 ? 60 : round((($colections->total14 * 6.48) / 2) / 60, 2);
+            $run['14:30:00'] = round((($colections->total15 * 6.48) / 2) / 60, 2) > 60 ? 60 : round((($colections->total15 * 6.48) / 2) / 60, 2);
+            $run['15:30:00'] = round((($colections->total16 * 6.48) / 2) / 60, 2) > 60 ? 60 : round((($colections->total16 * 6.48) / 2) / 60, 2);
+            $run['16:30:00'] = round((($colections->total17 * 6.48) / 2) / 60, 2) > 60 ? 60 : round((($colections->total17 * 6.48) / 2) / 60, 2);
+            $run['17:30:00'] = round((($colections->total18 * 6.48) / 2) / 60, 2) > 60 ? 60 : round((($colections->total18 * 6.48) / 2) / 60, 2);
+            $run['18:30:00'] = round((($colections->total19 * 6.48) / 2) / 60, 2) > 60 ? 60 : round((($colections->total19 * 6.48) / 2) / 60, 2);
 
             $stop['07:30:00'] = 60 - $run['07:30:00'];
             $stop['08:30:00'] = 60 - $run['08:30:00'];
@@ -137,14 +137,14 @@ class ChartController extends Controller
             //  Normalize time calculation to handle time strings accurately
             $TiempoInicial = strtotime($fechaDelDia.' 07:30:00');
 
-            if ($fechaDelDia === date('Y-m-d') and date('H:i:s') < '15:30:01') {
+            if ($fechaDelDia === date('Y-m-d') and date('H:i:s') < '19:30:01') {
 
                 $tiempoAhora = strtotime($fechaDelDia.' '.date('H:i:s'));
-            } elseif ($fechaDelDia === date('Y-m-d') and date('H:i:s') > '17:30:00') {
+            } elseif ($fechaDelDia === date('Y-m-d') and date('H:i:s') > '19:30:00') {
 
-                $tiempoAhora = strtotime($fechaDelDia.' 17:30:00');
+                $tiempoAhora = strtotime($fechaDelDia.' 19:30:00');
             } else {
-                $tiempoAhora = strtotime($fechaDelDia.' 17:30:00');
+                $tiempoAhora = strtotime($fechaDelDia.' 19:30:00');
             }
 
             $diferenciaDeTiempo = abs($tiempoAhora - $TiempoInicial);
@@ -230,23 +230,23 @@ class ChartController extends Controller
 
             $qtyCortes = $cortes > 0 ? round($cortes / 2) : 0;
             $paros = 0;
-            $running = round((($colections->total_general * 6.48) / 2) / 60, 2) ?? 0;
+            $running = round((($colections->total_general * 6.48) / 2) / 60, 2) > 720 ? round((($colections->total_general * 4.48) / 2) / 60, 2) : round((($colections->total_general * 6.48) / 2) / 60, 2) ?? 0;
             $lastTiempo = null;
             $lasStatus = null;
             $ultimoEstado = 'RUN';
 
-            $run['19:30:00'] = round((($colections->total19 * 6.48) / 2) / 60, 2);
-            $run['20:30:00'] = round((($colections->total20 * 6.48) / 2) / 60, 2);
-            $run['21:30:00'] = round((($colections->total21 * 6.48) / 2) / 60, 2);
-            $run['22:30:00'] = round((($colections->total22 * 6.48) / 2) / 60, 2);
-            $run['23:30:00'] = round((($colections->total23 * 6.48) / 2) / 60, 2);
-            $run['00:30:00'] = round((($colections->total0 * 6.48) / 2) / 60, 2);
-            $run['01:30:00'] = round((($colections->total1 * 6.48) / 2) / 60, 2);
-            $run['02:30:00'] = round((($colections->total2 * 6.48) / 2) / 60, 2);
-            $run['03:30:00'] = round((($colections->total3 * 6.48) / 2) / 60, 2);
-            $run['04:30:00'] = round((($colections->total4 * 6.48) / 2) / 60, 2);
-            $run['05:30:00'] = round((($colections->total5 * 6.48) / 2) / 60, 2);
-            $run['06:30:00'] = round((($colections->total6 * 6.48) / 2) / 60, 2);
+            $run['19:30:00'] = round((($colections->total19 * 6.48) / 2) / 60, 2) > 60 ? 60 : round((($colections->total19 * 6.48) / 2) / 60, 2);
+            $run['20:30:00'] = round((($colections->total20 * 6.48) / 2) / 60, 2) > 60 ? 60 : round((($colections->total20 * 6.48) / 2) / 60, 2);
+            $run['21:30:00'] = round((($colections->total21 * 6.48) / 2) / 60, 2) > 60 ? 60 : round((($colections->total21 * 6.48) / 2) / 60, 2);
+            $run['22:30:00'] = round((($colections->total22 * 6.48) / 2) / 60, 2) > 60 ? 60 : round((($colections->total22 * 6.48) / 2) / 60, 2);
+            $run['23:30:00'] = round((($colections->total23 * 6.48) / 2) / 60, 2) > 60 ? 60 : round((($colections->total23 * 6.48) / 2) / 60, 2);
+            $run['00:30:00'] = round((($colections->total0 * 6.48) / 2) / 60, 2) > 60 ? 60 : round((($colections->total0 * 6.48) / 2) / 60, 2);
+            $run['01:30:00'] = round((($colections->total1 * 6.48) / 2) / 60, 2) > 60 ? 60 : round((($colections->total1 * 6.48) / 2) / 60, 2);
+            $run['02:30:00'] = round((($colections->total2 * 6.48) / 2) / 60, 2) > 60 ? 60 : round((($colections->total2 * 6.48) / 2) / 60, 2);
+            $run['03:30:00'] = round((($colections->total3 * 6.48) / 2) / 60, 2) > 60 ? 60 : round((($colections->total3 * 6.48) / 2) / 60, 2);
+            $run['04:30:00'] = round((($colections->total4 * 6.48) / 2) / 60, 2) > 60 ? 60 : round((($colections->total4 * 6.48) / 2) / 60, 2);
+            $run['05:30:00'] = round((($colections->total5 * 6.48) / 2) / 60, 2) > 60 ? 60 : round((($colections->total5 * 6.48) / 2) / 60, 2);
+            $run['06:30:00'] = round((($colections->total6 * 6.48) / 2) / 60, 2) > 60 ? 60 : round((($colections->total6 * 6.48) / 2) / 60, 2);
 
             $stop['19:30:00'] = 60 - $run['19:30:00'];
             $stop['20:30:00'] = 60 - $run['20:30:00'];
@@ -278,7 +278,7 @@ class ChartController extends Controller
             }
 
             $diferenciaDeTiempo = abs($tiempoAhora - $TiempoInicial);
-            $diferenciaDeTiempoMinutes = round($diferenciaDeTiempo / 60, 2);
+            $diferenciaDeTiempoMinutes = 720;
             $diferenciaDeTiempoMinutes = $diferenciaDeTiempoMinutes > 240 ? $diferenciaDeTiempoMinutes - 30 : $diferenciaDeTiempoMinutes; // Evitar división por cero
 
             if ($diferenciaDeTiempoMinutes > 0) {
