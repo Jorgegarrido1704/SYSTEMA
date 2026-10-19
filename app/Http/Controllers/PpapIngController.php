@@ -248,13 +248,14 @@ class PpapIngController extends Controller
         {
             $updateTiempo = DB::table('tiempos')->where('info', $info)->update([$area => $today]);
             $updateInge = DB::table('registro')->where('id', '=', $idIng)->update(['count' => $count, 'donde' => $donde]);
+            $datos = regPar::select('orgQty')->where('codeBar', $info)->first();
             $regIng = new ppapIng;
             $regIng->info = $info;
             $regIng->fecha = $today;
             $regIng->codigo = $value;
             $regIng->area = $area;
             $regIng->save();
-            $updateCantidad = DB::table('registroparcial')->where('codeBar', '=', $info)->update([$mas => RAW('orgQty')]);
+            $updateCantidad = DB::table('registroparcial')->where('codeBar', '=', $info)->update([$mas => $datos->orgQty]);
         }
 
         if ($cuenta == 17 || $cuenta == 2 || $cuenta == 3) {
