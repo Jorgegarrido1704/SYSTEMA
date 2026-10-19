@@ -34,13 +34,13 @@ class accionesCorrectivasJob implements ShouldQueue
                 'jgarrido@mx.bergstrominc.com',
                 'maleman@mx.bergstrominc.com',
             ];
-            if ($mailto) {
+            if ($mailto && $mailto->email) {
                 $mailaddress[] = $mailto->email;
             }
 
             if (Carbon::parse($verificacion->fechaAccion)->addWeekDays(3)->isPast()) {
                 $leaderMailto = personalBergsModel::select('email')->where('employeeName', $mailto->employeeLider)->first();
-                if ($leaderMailto) {
+                if ($leaderMailto && $leaderMailto->email) {
                     $mailaddress[] = $leaderMailto->email;
                 }
             }
