@@ -259,7 +259,7 @@ class PpapIngController extends Controller
         }
 
         if ($cuenta == 17 || $cuenta == 2 || $cuenta == 3) {
-            upRegistro(16, 'Ingenieria// Ensamble', $info, 'corte', $idIng, $today, 'ensaPar', $eng, $value);
+            upRegistro(13, 'Ingenieria// Ensamble', $info, 'corte', $idIng, $today, 'ensaPar', $eng, $value);
         } elseif ($cuenta == 19 || $cuenta == 8 || $cuenta == 9) {
             upRegistro(10, 'En espera de calidad', $info, 'calidad', $idIng, $today, 'preCalidad', $eng, $value);
         } elseif ($cuenta == 14) {
