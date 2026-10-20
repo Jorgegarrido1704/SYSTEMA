@@ -53,53 +53,94 @@ class AddWeek implements ShouldQueue
                 ->whereIn($day, ['-', '', null, ' '])
                 ->update([$day => 'PCS']);
         } else {
+            if (carbon::now()->hour >= 6 && carbon::now()->hour <= 10) {
+                $registrosEmpleados = personalBergsModel::where('employeeShift', '=', 'firstShift')->where('status', '!=', 'Baja')->where('typeWorker', '!=', 'Corporativo')
+                    ->orderBy('employeeArea', 'ASC')->get();
 
-            $registrosEmpleados = personalBergsModel::where('status', '!=', 'Baja')->where('typeWorker', '!=', 'Corporativo')
-                ->orderBy('employeeArea', 'ASC')->get();
+                foreach ($registrosEmpleados as $registroEmpleado) {
+                    $registro = '';
+                    if (assistence::where('week', '=', $week)->where('id_empleado', '=', $registroEmpleado->employeeNumber)
+                        ->where('yearOfAssistence', '=', $year)->count() == 0) {
+                        assistence::insert([
+                            'id_empleado' => $registroEmpleado->employeeNumber,
+                            'week' => $week,
+                            'lider' => $registroEmpleado->employeeLider,
+                            'name' => $registroEmpleado->employeeName,
+                            'yearOfAssistence' => $year,
+                            'shift' => $registroEmpleado->employeeShift,
+                        ]);
+                    }
+                    if (registroVacacionesModel::where('id_empleado', '=', $registroEmpleado->employeeNumber)->where('fecha_de_solicitud', '=', $dates)->exists()) {
+                        $registro = 'V';
+                    } elseif (relogChecadorModel::where('employeeNumber', '=', $registroEmpleado->employeeNumber)
+                        ->where('fechaRegistro', '=', $dates)->exists()) {
+                        $registro = 'OK';
 
-            foreach ($registrosEmpleados as $registroEmpleado) {
-                $registro = '';
-                if (assistence::where('week', '=', $week)->where('id_empleado', '=', $registroEmpleado->employeeNumber)
-                    ->where('yearOfAssistence', '=', $year)->count() == 0) {
-                    assistence::insert([
-                        'id_empleado' => $registroEmpleado->employeeNumber,
-                        'week' => $week,
-                        'lider' => $registroEmpleado->employeeLider,
-                        'name' => $registroEmpleado->employeeName,
-                        'yearOfAssistence' => $year,
-                        'shift' => $registroEmpleado->employeeShift,
-                    ]);
-                } elseif (registroVacacionesModel::where('id_empleado', '=', $registroEmpleado->employeeNumber)->where('fecha_de_solicitud', '=', $dates)->exists()) {
-                    $registro = 'V';
-                } elseif (relogChecadorModel::where('employeeNumber', '=', $registroEmpleado->employeeNumber)
-                    ->where('fechaRegistro', '=', $dates)->exists()) {
-                    $registro = 'OK';
+                    } elseif ($today == 6 || $today == 7) {
+                        $registro = 'N/A';
+                    } elseif ($registroEmpleado->employeeNumber == 'i2047' or $registroEmpleado->employeeNumber == 'i2116'
+                    or $registroEmpleado->employeeNumber == 'i2117' or $registroEmpleado->employeeNumber == 'i2214'
+                    or $registroEmpleado->employeeNumber == 'i2158' or $registroEmpleado->employeeNumber == 'i2215'
+                    or $registroEmpleado->employeeNumber == 'i2071') {
+                        $registro = 'HE';
+                    } elseif ($registroEmpleado->typeWorker == 'Practicante') {
+                        $registro = 'PCT';
+                    } elseif ($registroEmpleado->typeWorker == 'Asimilado') {
+                        $registro = 'ASM';
+                    } elseif ($registroEmpleado->typeWorker == 'Servicio comprado') {
+                        $registro = 'SCE';
+                    } else {
+                        $registro = 'F';
+                    }
 
-                } elseif ($today == 6 || $today == 7) {
-                    $registro = 'N/A';
-                } elseif ($registroEmpleado->employeeNumber == 'i2047' or $registroEmpleado->employeeNumber == 'i2116'
-                 or $registroEmpleado->employeeNumber == 'i2117' or $registroEmpleado->employeeNumber == 'i2214'
-                  or $registroEmpleado->employeeNumber == 'i2158' or $registroEmpleado->employeeNumber == 'i2215'
-                  or $registroEmpleado->employeeNumber == 'i2071') {
-                    $registro = 'HE';
-                } elseif ($registroEmpleado->typeWorker == 'Practicante') {
-                    $registro = 'PCT';
-                } elseif ($registroEmpleado->typeWorker == 'Asimilado') {
-                    $registro = 'ASM';
-                } elseif ($registroEmpleado->typeWorker == 'Servicio comprado') {
-                    $registro = 'SCE';
-                } elseif ($registroEmpleado->employeeShift == 'secondShift') {
-                    $registro = '-';
-                } else {
-                    $registro = 'F';
+                    assistence::where('week', '=', $week)
+                        ->where('id_empleado', '=', $registroEmpleado->employeeNumber)
+                        ->where('yearOfAssistence', '=', $year)
+                        ->whereIn($day, ['-', '', null, ' ', 'F'])
+                        ->update([$day => $registro]);
+
                 }
+            } elseif (carbon::now()->hour >= 18 && carbon::now()->hour <= 20) {
+                $registrosEmpleados = personalBergsModel::where('employeeShift', '=', 'secondShift')->where('status', '!=', 'Baja')->where('typeWorker', '!=', 'Corporativo')
+                    ->orderBy('employeeArea', 'ASC')->get();
 
-                assistence::where('week', '=', $week)
-                    ->where('id_empleado', '=', $registroEmpleado->employeeNumber)
-                    ->where('yearOfAssistence', '=', $year)
-                    ->whereIn($day, ['-', '', null, ' ', 'F'])
-                    ->update([$day => $registro]);
+                foreach ($registrosEmpleados as $registroEmpleado) {
+                    $registro = '';
+                    if (assistence::where('week', '=', $week)->where('id_empleado', '=', $registroEmpleado->employeeNumber)
+                        ->where('yearOfAssistence', '=', $year)->count() == 0) {
+                        assistence::insert([
+                            'id_empleado' => $registroEmpleado->employeeNumber,
+                            'week' => $week,
+                            'lider' => $registroEmpleado->employeeLider,
+                            'name' => $registroEmpleado->employeeName,
+                            'yearOfAssistence' => $year,
+                            'shift' => $registroEmpleado->employeeShift,
+                        ]);
+                    }
+                    if (registroVacacionesModel::where('id_empleado', '=', $registroEmpleado->employeeNumber)->where('fecha_de_solicitud', '=', $dates)->exists()) {
+                        $registro = 'V';
+                    } elseif (relogChecadorModel::where('employeeNumber', '=', $registroEmpleado->employeeNumber)
+                        ->where('fechaRegistro', '=', $dates)->exists()) {
+                        $registro = 'N';
+                    } elseif ($today == 6 || $today == 7) {
+                        $registro = 'N/A';
+                    } elseif ($registroEmpleado->typeWorker == 'Practicante') {
+                        $registro = 'PCT';
+                    } elseif ($registroEmpleado->typeWorker == 'Asimilado') {
+                        $registro = 'ASM';
+                    } elseif ($registroEmpleado->typeWorker == 'Servicio comprado') {
+                        $registro = 'SCE';
+                    } else {
+                        $registro = 'F';
+                    }
 
+                    assistence::where('week', '=', $week)
+                        ->where('id_empleado', '=', $registroEmpleado->employeeNumber)
+                        ->where('yearOfAssistence', '=', $year)
+                        ->whereIn($day, ['-', '', null, ' ', 'F'])
+                        ->update([$day => $registro]);
+
+                }
             }
         }
     }
