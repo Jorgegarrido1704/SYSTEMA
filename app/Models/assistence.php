@@ -79,7 +79,7 @@ class assistence extends Model
         if ($leader == 'Admin' or $leader == 'Paola A' or $leader == 'Angy B') {
             return $query->where('week', $week)->where('yearOfAssistence', $year)->OrderBy($diaActual, 'ASC')->OrderBy($diaActual, 'ASC');
         } else {
-            return $query->where('week', $week)->where('yearOfAssistence', $year)->where('lider', 'LIKE', '%'.$leader.'%')->where('shift', $shift)->OrderBy($diaActual, 'ASC')->OrderBy($diaActual, 'ASC');
+            return $query->where('week', $week)->where('yearOfAssistence', $year)->where('lider', 'LIKE', '%'.$leader.'%')->OrderBy($diaActual, 'ASC')->OrderBy($diaActual, 'ASC');
         }
     }
 
@@ -97,7 +97,7 @@ class assistence extends Model
         if ($leader == 'Admin' or $leader == 'Paola A' or $leader == 'Angy B') {
             return $query->where('week', $week)->where('yearOfAssistence', $year)->OrderBy($diaActual, 'ASC')->OrderBy($diaActual, 'ASC');
         } else {
-            return $query->where('week', $week)->where('yearOfAssistence', $year)->where('lider', 'LIKE', '%'.$leader.'%')->where('shift', $shift)->OrderBy($diaActual, 'ASC')->OrderBy($diaActual, 'ASC');
+            return $query->where('week', $week)->where('yearOfAssistence', $year)->where('lider', 'LIKE', '%'.$leader.'%')->OrderBy($diaActual, 'ASC')->OrderBy($diaActual, 'ASC');
         }
     }
 }
