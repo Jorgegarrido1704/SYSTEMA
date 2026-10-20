@@ -53,13 +53,14 @@ class rrhhController extends Controller
 
         $diaNum = carbon::now()->dayOfWeek; //
         $datosRHWEEKLastWeek = [];
+        if (carbon::now()->dayOfWeek == 1) {
 
-        if ($value == 'Admin' or $cat == 'RRHH') {
-            $datosRHWEEKLastWeek = assistence::LeaderLastWeek($value)->OrderBy('lider', 'desc')->get();
-        } else {
-            $datosRHWEEKLastWeek = assistence::LeaderLastWeek($laeder, $cat)->OrderBy('lider', 'desc')->get();
+            if ($value == 'Admin' or $cat == 'RRHH') {
+                $datosRHWEEKLastWeek = assistence::LeaderLastWeek($value)->OrderBy('lider', 'desc')->get();
+            } else {
+                $datosRHWEEKLastWeek = assistence::LeaderLastWeek($laeder, $cat)->OrderBy('lider', 'desc')->get();
+            }
         }
-
         if ($diaNum == 5 or $diaNum == 6 or $diaNum == 7) {
             $diasRegistro[4] = '';
             $tt[4] = '';
