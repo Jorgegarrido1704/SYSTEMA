@@ -404,9 +404,7 @@ class generalController extends Controller
             regPar::where('wo', $wo)
                 ->where('embPar', '>=', $qty)
                 ->update(['shipped' => DB::raw('shipped + '.$qty), 'embPar' => DB::raw('embPar -'.$qty)]);
-            /* } elseif ($cat == 'libe') {
-                 regPar::where('wo', $wo)->update(['preassembly' => DB::raw('preassembly +'.$qty), 'libePar' => DB::raw('libePar - '.$qty)]);
-            */
+
         } elseif ($cat == 'loom') {
             regPar::where('wo', $wo)
                 ->where('loomPar', '>=', $qty)
@@ -424,6 +422,14 @@ class generalController extends Controller
         $ensa = $cuentas->ensaPar + $cuentas->preassembly + $cuentas->tobeassembly + $cuentas->specialWire;
         $loom = $cuentas->loomPar + $cuentas->preloom + $cuentas->tobeloom;
         $calidad = $cuentas->testPar + $cuentas->fallasCalidad + $cuentas->preCalidad;
+        $shipped = $cuentas->shipped;
+        $orgqty = $cuentas->orgQty;
+
+        if ($orgqty > ($corte + $libe + $ensa + $loom + $calidad + $emb + $shipped)) {
+            $diff = $orgqty - ($corte + $libe + $ensa + $loom + $calidad + $emb + $shipped);
+            regPar::where('wo', $wo)->update(['shipped' => DB::raw('shipped + '.$diff)]);
+        }
+
         $eng = $cuentas->eng;
         $donde = '';
         $count = 6;
