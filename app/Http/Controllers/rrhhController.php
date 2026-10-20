@@ -53,22 +53,18 @@ class rrhhController extends Controller
 
         $diaNum = carbon::now()->dayOfWeek; //
         $datosRHWEEKLastWeek = [];
-        if (($diaNum == 1) and (carbon::now()->format('H:i') < '10:00' or carbon::now()->format('H:i') > '19:00')) {
-            if ($value == 'Admin' or $cat == 'RRHH') {
-                $datosRHWEEKLastWeek = assistence::LeaderLastWeek($value)->OrderBy('lider', 'desc')->get();
-            } else {
-                $datosRHWEEKLastWeek = assistence::LeaderLastWeek($laeder, $cat)->OrderBy('lider', 'desc')->get();
-            }
+
+        if ($value == 'Admin' or $cat == 'RRHH') {
+            $datosRHWEEKLastWeek = assistence::LeaderLastWeek($value)->OrderBy('lider', 'desc')->get();
+        } else {
+            $datosRHWEEKLastWeek = assistence::LeaderLastWeek($laeder, $cat)->OrderBy('lider', 'desc')->get();
         }
 
         if ($diaNum == 5 or $diaNum == 6 or $diaNum == 7) {
             $diasRegistro[4] = '';
             $tt[4] = '';
-
-        } elseif (carbon::now()->format('H:i') < '09:20' or carbon::now()->format('H:i') > '19:00') {
+        } else {
             $diasRegistro[$diaNum - 1] = '';
-        }
-        if ((carbon::now()->format('H:i') < '12:00' or carbon::now()->format('H:i') > '19:00') and $diaNum >= 2) {
             $tt[$diaNum - 1] = '';
         }
 
@@ -138,17 +134,17 @@ class rrhhController extends Controller
                 'tiempoPorTiempo' => $validated['tt_lunes'][$index] + $validated['tt_martes'][$index] + $validated['tt_miercoles'][$index] + $validated['tt_jueves'][$index] + $validated['tt_viernes'][$index] + $validated['tt_sabado'][$index] + $validated['tt_domingo'][$index] ?? 0,
             ];
 
-            $permitido =
-                    (Carbon::now()->lte(Carbon::parse('09:25')) && $cat != 'RRHH' && $value != 'Admin') ||
-                    $cat == 'RRHH' ||
-                    $value == 'Admin';
-
-            if ($permitido) {
-                assistence::where('id_empleado', $id_empleado)
-                    ->where('week', $week)
-                    ->where('yearOfAssistence', $year)
-                    ->update($updateData);
-            }
+            /*   $permitido =
+                       (Carbon::now()->lte(Carbon::parse('09:25')) && $cat != 'RRHH' && $value != 'Admin') ||
+                       $cat == 'RRHH' ||
+                       $value == 'Admin';
+               */
+            //  if ($permitido) {
+            assistence::where('id_empleado', $id_empleado)
+                ->where('week', $week)
+                ->where('yearOfAssistence', $year)
+                ->update($updateData);
+            // }
         }
         // send a job to update rotacion
         UpdateRotacionJob::dispatch();
