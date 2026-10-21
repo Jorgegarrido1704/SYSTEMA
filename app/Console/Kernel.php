@@ -49,7 +49,7 @@ class Kernel extends ConsoleKernel
             ->appendOutputTo(storage_path('logs/backup.log'));
         // creacion de listas de asistencia y registros
         // $schedule->job(new \App\Jobs\AddWeek)->dailyAt('08:15');
-        $schedule->job(new \App\Jobs\AddWeek)->cron('15 6,7,19,20 * * *')
+        $schedule->job(new \App\Jobs\AddWeek)->cron('15 6,7,8,19,20 * * *')
             ->onFailure(function () {
                 Log::error('El job de creación de listas de asistencia y registros falló.');
             });
