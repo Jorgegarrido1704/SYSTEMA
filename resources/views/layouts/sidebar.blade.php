@@ -84,7 +84,7 @@
                         <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('workState') }}">{{ __('Work Scheduled') }}</a></li>
                         <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('ganttGraph') }}">{{ __('Gantt Work Graph') }}</a></li>
                         @endif
-                        @if(  $value == 'Admin' || $value == 'Jose Luis' )
+                        @if(  $value == 'Admin' || $value == 'Jose Luis' || $value == 'Bruno Perez' )
                         <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('pruebasElecticas') }}">{{ __('Electrical Tests') }}</a></li>
                         <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('calendarizacion_pruebas_electricas') }}">{{ __('Electrical Tests Calendar') }}</a></li>
 
@@ -173,7 +173,7 @@
                 <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('calidad') }}">{{ __('Quality') }}</a></li>
                 <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('planning') }}">{{ __('planning') }}</a></li>
                 @endif
-                 @if( $value=='Admin'  )
+                 @if( $value=='Admin' || $value =='Carlos R' || $value == 'Jose Luis' || $value == 'Bruno Perez'  )
                 <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('auditorias.cvts_orders') }}">{{ __('CVTS Orders Audit') }}</a></li>
                  @endif
             </ul>

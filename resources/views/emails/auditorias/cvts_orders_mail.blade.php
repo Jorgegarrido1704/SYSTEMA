@@ -12,12 +12,11 @@
     </style>
 </head>
 <body>
-    <h2>Daily CVTS Order Report</h2>
-
     <p><strong>Good day all,  </strong> </p>
+    <br>
     <p><strong>I'm sharing in this email the results of the station auditory. </strong> </p>
     <p><strong>Each Friday, I will attach a file with the record of every week since we start with this process.</strong></p>
-    <br><br><br>
+    <br><br>
     <table>
         <thead>
             <tr>
@@ -41,10 +40,9 @@
             </tr>
         @endfor
         </tbody>
-
     </table>
 
-    <p><strong>Effectivity Rate: {{ $results }} </strong> </p>
+    <p><strong>Effectivity Rate: {{ $results }} %</strong> </p>
     <p><strong>Please do not hesitate to let me know if you have any questions.   </strong> </p>
     <br>
    <p><strong>Regards.   </strong> </p>
