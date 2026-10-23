@@ -23,6 +23,7 @@ use App\Http\Controllers\oeeController;
 use App\Http\Controllers\planingController;
 use App\Http\Controllers\PoController;
 use App\Http\Controllers\PpapIngController;
+use App\Http\Controllers\auditoriasController;
 use App\Http\Controllers\pruebasElectricasController;
 use App\Http\Controllers\RegistroController;
 use App\Http\Controllers\rrhhController;
@@ -214,6 +215,12 @@ Route::controller(VSM_and_simulation::class)->group(function () {
     Route::get('/simulacion', 'simuladorIndex')->name('simulacion_index');
     Route::get('/simulacion/buscarPn', 'buscarPn')->name('simulacion_buscarPn');
     Route::post('/simulacion/simular', 'simular')->name('simulacion_simular');
+});
+
+Route::controller(auditoriasController::class)->group(function () {
+    Route::get('/auditorias/CVTS', 'cvts_orders')->name('auditorias.cvts_orders');
+    Route::get('/auditoria/woinfo',[auditoriasController::class, 'jsonDatosWo'])->name('auditorias.jsonDatosWo');
+    Route::get('/auditoria/saveinfo','safeData')->name('auditorias.safeData');
 });
 
 Route::controller(globalInventario::class)->group(function () {
