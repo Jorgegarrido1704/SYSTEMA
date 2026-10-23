@@ -43,6 +43,6 @@ class auditoriasController extends Controller
         $resultados= round(($cuenta/$cuantos)*100,2);
         Mail::to('jgarrido@mx.bergstrominc.com')->send(new cvts_orders($data, $resultados,'Auditorias CVTS ordenes.'));
 
-        return redirect()->back()->wiht(['success'=>'Registro guardado exitosamente']);
+        return redirect()->back()->with(['success'=>'Registro guardado exitosamente']);
     }
 }
