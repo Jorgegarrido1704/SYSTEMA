@@ -53,7 +53,7 @@
         html +=`  <tr>
                                             <td><input type="text" name="work_order[]" id="work_order${i}"  onchange="workInfo(this.value,${i})"></td>
                                             <td><input type="text" name="part_number[]" id="part_number${i}"  readonly></td>
-                                            <td><select name="physically_located[]" id="physically_located${i}" required>
+                                            <td><select name="physically_located[]" id="physically_located${i}" required onchange="status(${i})>
                                                     <option value="" disabled selected>Select</option>
                                                     <option value="Plannig">Plannig</option>
                                                     <option value="Cutting">Cutting</option>
