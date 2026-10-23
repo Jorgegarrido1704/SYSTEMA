@@ -49,11 +49,11 @@
         const formato = document.getElementById('formato')
         var html='';
         
-      for(i=1;i<=2;i++){
+      for(i=1;i<=8;i++){
         html +=`  <tr>
                                             <td><input type="text" name="work_order[]" id="work_order${i}"  onchange="workInfo(this.value,${i})"></td>
                                             <td><input type="text" name="part_number[]" id="part_number${i}"  readonly></td>
-                                            <td><select name="physically_located[]" id="physically_located${i}" required onchange="status(${i})>
+                                            <td><select name="physically_located[]" id="physically_located${i}" required >
                                                     <option value="" disabled selected>Select</option>
                                                     <option value="Plannig">Plannig</option>
                                                     <option value="Cutting">Cutting</option>
@@ -88,7 +88,7 @@
             var loom = data[0].loomPar+data[0].preloom+data[0].tobeloom
             var plan = data[0].planpar;
             var test = data[0].preCalidad+data[0].testPar;
-            var options = '<option value="" disabled selected>Select</option>';
+            var options = '<option value=""  selected>Select</option>';
             if(plan >0){
                 options +=  '<option value="Planning" >Planning</option>';
             }
