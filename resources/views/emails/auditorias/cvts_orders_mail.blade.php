@@ -2,6 +2,14 @@
 <html>
 <head>
     <title>Daily CVTS Order Report</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            }
+            th, td {
+                text-align: center;
+            }
+    </style>
 </head>
 <body>
     <h2>Daily CVTS Order Report</h2>
