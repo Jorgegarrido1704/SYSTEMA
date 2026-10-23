@@ -173,7 +173,7 @@
                 <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('calidad') }}">{{ __('Quality') }}</a></li>
                 <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('planning') }}">{{ __('planning') }}</a></li>
                 @endif
-                 @if( $value=='Admin' || $value =='Carlos R' || $value == 'Jose Luis' || $value == 'Bruno P'  )
+                 @if( $value=='Admin' || $value == 'Jorge G' || $value =='Carlos R' || $value == 'Jose Luis' || $value == 'Bruno P'  )
                 <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('auditorias.cvts_orders') }}">{{ __('CVTS Orders Audit') }}</a></li>
                  @endif
             </ul>
