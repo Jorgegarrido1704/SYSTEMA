@@ -67,7 +67,7 @@
                                         <div class="card-body" style="overflow-y: auto; height: 190px;">
                                             <form action="{{ route('change_order_qty') }}" method="GET" class="form-inline">
                                                 <div class="row">
-                                                    <div class="col-lg-4">
+                                                    <div class="col-lg-4 mb-4">
                                                         <div class="form-group">
                                                          <label for="change_qty">{{ __('Work Order')}}</label>
                                                         </div>
@@ -75,7 +75,7 @@
                                                             <input type="text" class="form-control" name="change_qty" id="change_qty"  maxlength="6"  minlength="6" required >
                                                         </div>
                                                     </div>
-                                                    <div class="col-lg-4">
+                                                    <div class="col-lg-4 mb-4">
                                                         <div class="form-group">
                                                             <label for="qty_in_order">{{ __('Qty in Order')}}</label>
                                                         </div>
@@ -83,7 +83,7 @@
                                                             <input type="number" class="form-control" name="qty_in_order" id="qty_in_order"  min="0"  required >
                                                         </div>
                                                     </div>
-                                                    <div class="col-lg-2">
+                                                    <div class="col-lg-2 mb-4">
                                                         <div class="form-group">  
                                                             <button class="submit btn btn-primary"> Enviar</button>
                                                         </div>
