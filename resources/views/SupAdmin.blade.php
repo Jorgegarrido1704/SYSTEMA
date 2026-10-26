@@ -68,18 +68,18 @@
                                             <form action="{{ route('change_order_qty') }}" method="GET" class="form-inline">
                                                 <div class="row">
                                                     <div class="col-4 mb-4">
-                                                        <div class="form-group">
+                                                        <div >
                                                          <label for="change_qty">{{ __('Work Order')}}</label>
                                                         </div>
-                                                        <div class="form-group">
+                                                        <div >
                                                             <input type="text" class="form-control" name="change_qty" id="change_qty"  maxlength="6"  minlength="6" required >
                                                         </div>
                                                     </div>
                                                     <div class="col-4 mb-4">
-                                                        <div class="form-group">
+                                                        <div >
                                                             <label for="qty_in_order">{{ __('Qty in Order')}}</label>
                                                         </div>
-                                                        <div class="form-group">
+                                                        <div >
                                                             <input type="number" class="form-control" name="qty_in_order" id="qty_in_order"  min="0"  required >
                                                         </div>
                                                     </div>
