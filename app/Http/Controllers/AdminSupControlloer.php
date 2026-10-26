@@ -524,7 +524,7 @@ class AdminSupControlloer extends Controller
         }
         $wo = $request->input('change_qty');
         $qty =$request->input('qty_in_order');
-        $work = Wo::select('po')->where('wo', $wo);
+        $work = Wo::select('po')->where('wo', $wo)->first();
         $po =$work->po;
         Wo::where('wo', $wo)->update(['Qty'=> $qty]);
         Po::where('po',$po)->update(['qty'=> $qty]);

@@ -15,7 +15,7 @@ class Wo extends Model
         'Cliente',
         'rev',
         'wo',
-        'po',
+        'x',
         'Qty',
         'Barcode',
         'info',
