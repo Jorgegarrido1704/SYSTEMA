@@ -397,34 +397,77 @@ var dat = {!! json_encode($datosP) !!};
                     </div>
                     <div class="row">
                         <!-- Reactive Orders Area -->
-                        <div class="card shadow mb-4 col-lg-4">
+                         <div class="card shadow mb-4 col-lg-4">
                             <div class="row">
-                                <div class="col-lg-12 mb-4">
+                                <div class="col-lg-6 mb-2">
                                     <div class="card shadow mb-4">
                                         <div class="card-header py-3">
                                             <h6 class="m-0 font-weight-bold text-primary">{{ __('Reactive and Finish Orders')}}</h6>
                                         </div>
-                                        <div class="card-body" style="overflow-y: auto; height: 160px;">          
-                                                    <form action="{{ route('reactivacion_wo') }}" method="GET" class="form-inline">
-                                                        <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                                                            <label for="work_order_reactive">{{ __('Reactivate Work Order') }}</label>
-                                                            <input type="text" class="form-control" name="work_order_reactive" id="work_order_reactive"  maxlength="6"  minlength="6" required >
+                                        <div class="card-body" style="overflow-y: auto; height: 130px;">
+                                                    <form action="{{ route('reactivacion_wo') }}" method="GET" >
+                                                        <div class='row'>
+                                                            <div class="col-lg-5">
+                                                                <label for="work_order_reactive">{{ __('Reactivate Work Order') }}</label>
+                                                            </div>
+                                                            <div class='col-lg-5'>  
+                                                                <input type="text" class="form-control" name="work_order_reactive" id="work_order_reactive"  maxlength="6"  minlength="6" required >
+                                                            </div>
                                                         </div>
                                                     </form>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-12 mb-4">
+                                <div class="col-lg-6 mb-2">
                                     <div class="card shadow mb-4">
                                         <div class="card-header py-3">
-                                            <h6 class="m-0 font-weight-bold text-primary"></h6>
+                                            <h6 class="m-0 font-weight-bold text-primary">{{ __('Finish Work Order')}}</h6>
                                         </div>
-                                        <div class="card-body" style="overflow-y: auto; height: 160px;">  
-                                            <form action="{{ route('finalizar_wo') }}" method="GET" class="form-inline">
-                                                <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                                                    <label for="finish_work_order">{{ __('Finish Work Order')}}</label>
-                                                    <input type="text" class="form-control" name="finish_work_order" id="finish_work_order"  maxlength="6"  minlength="6" required >
+                                        <div class="card-body" style="overflow-y: auto; height: 130px;">
+                                            <form action="{{ route('finalizar_wo') }}" method="GET" >
+                                                <div class ='row'>
+                                                    <div class="form-group col-lg-5 ">
+                                                        <label for="finish_work_order">{{ __('Finish Work Order')}}</label>
+                                                    </div>
+                                                    <div class='form-group col-lg-5'>    
+                                                        <input type="text" class="form-control" name="finish_work_order" id="finish_work_order"  maxlength="6"  minlength="6" required >
+                                                    </div>
                                                 </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 mb-2">
+                                    <div class="card shadow mb-4">
+                                        <div class="card-header py-3">
+                                            <h6 class="m-0 font-weight-bold text-primary">{{ __('Change Qty')}}</h6>
+                                        </div>
+                                        <div class="card-body" style="overflow-y: auto; height: 190px;">
+                                            <form action="{{ route('change_order_qty') }}" method="GET" >
+                                                <div class="row">
+                                                    <div class="col-lg-5 mb-4">
+                                                        <div >
+                                                         <label for="change_qty">{{ __('Work Order')}}</label>
+                                                        </div>
+                                                        <div >
+                                                            <input type="text" class="form-control" name="change_qty" id="change_qty"  maxlength="6"  minlength="6" required >
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-5 mb-4">
+                                                        <div >
+                                                            <label for="qty_in_order">{{ __('Qty in Order')}}</label>
+                                                        </div>
+                                                        <div >
+                                                            <input type="number" class="form-control " name="qty_in_order" id="qty_in_order"  min="0"  required >
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-2 mb-4">
+                                                        <div >  
+                                                            <button class="submit btn btn-primary"> Enviar</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
                                             </form>
                                         </div>
                                     </div>
