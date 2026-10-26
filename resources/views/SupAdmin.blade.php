@@ -63,7 +63,7 @@
                                                     <input type="text" class="form-control" name="change_qty" id="change_qty"  maxlength="6"  minlength="6" required >
                                                       <label for="qty_in_order">{{ __('Qty in Order')}}</label>
                                                     <input type="number" class="form-control" name="qty_in_order" id="qty_in_order"  min="0"  required >
-                                                    <button class="submit"> Enviar</button>
+                                                    <button class="submit btn btn-primary"> Enviar</button>
                                                 </div>
 
                                             </form>
