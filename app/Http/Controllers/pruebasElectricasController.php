@@ -203,12 +203,12 @@ class pruebasElectricasController extends Controller
         $mes = intval($mes);
         $fechas_seleccionadas = [
             [
-                'fecha' => '2026-09-10',
+                'fecha' => '2026-11-10',
                 'titulo' => 'Vacaciones',
                 'detalle' => 'Juan Pérez - 5 días aprobados',
             ],
         ];
 
-        return view('electrical_test.reforce_test_calenda', ['value' => $value, 'cat' => $cat, 'mes' => $mes, 'fechas_seleccionadas' => $fechas_seleccionadas]);
+        return view('electrica-l_test.reforce_test_calenda', ['value' => $value, 'cat' => $cat, 'mes' => $mes, 'fechas_seleccionadas' => $fechas_seleccionadas]);
     }
 }

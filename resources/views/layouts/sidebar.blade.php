@@ -84,16 +84,20 @@
                         <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('workState') }}">{{ __('Work Scheduled') }}</a></li>
                         <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('ganttGraph') }}">{{ __('Gantt Work Graph') }}</a></li>
                         @endif
-                        @if(  $value == 'Admin' || $value == 'Jose Luis' || $value == 'Bruno Perez' )
-                        <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('pruebasElecticas') }}">{{ __('Electrical Tests') }}</a></li>
-                        <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('calendarizacion_pruebas_electricas') }}">{{ __('Electrical Tests Calendar') }}</a></li>
 
-                        @endif
                         <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('graffWorksEng') }}">{{ __('Engineer Scheduleeng') }}</a>
                         </li>
                     </ul>
                         @endif
                 </li>
+                        @if(  $value == 'Admin' || $value == 'Jose Luis' || $value == 'Bruno P' )
+                            <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('pruebasElecticas') }}"
+                                onmouseover=showPE();>{{ __('Electrical Tests') }}</a></li>
+                            <ul class="submenu" id="PE" style="display:none;">
+                                <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('calendarizacion_pruebas_electricas') }}">{{ __('Electrical Tests Calendar') }}</a></li>
+                            </ul>
+                        @endif
+
                 <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('rhDashBoard') }}"
                     onmouseover=showRRHH();>{{ __('HR') }}</a></li>
                      <ul class="submenu" id="RRHH" style="display:none;">
@@ -103,9 +107,7 @@
                         <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('datosPersonal') }}">{{ __('Personal Data') }}</a></li>
                         <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('rhvacations') }}">{{ __('Vacations') }}</a></li>
                         @endif
-
                         <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('personalShift') }}">{{ __('Personal Shift') }}</a></li>
-
                     </ul>
 
                 <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('seguimientos') }}"
@@ -154,7 +156,7 @@
                     </ul>
                 </li>
 
-                @if($value=='Valeria P' || $value=='Admin' || $value=='Jose Luis' || $value=='Jesus_C' )
+                @if($value=='Valeria P' || $value=='Admin' || $value=='Jose Luis' || $value=='Bruno P' )
                 <li class="submenu" id="engsub"><a style="color:white;" href="{{ route('testingMaterialRequeriment') }}">{{ __('Requeriment Materials Testing') }}</a></li>
                 @endif
                  <li class="submenu" id="submenu"><a style="color:white;" href="#"
@@ -187,6 +189,14 @@
 <script>
     function showStatistic() {
         var statisticMenu = document.getElementById("statistic");
+        if (statisticMenu.style.display === "none" || statisticMenu.style.display === "") {
+            statisticMenu.style.display = "block";
+        } else {
+            statisticMenu.style.display = "none";
+        }
+    }
+    function showPE() {
+        var statisticMenu = document.getElementById("PE");
         if (statisticMenu.style.display === "none" || statisticMenu.style.display === "") {
             statisticMenu.style.display = "block";
         } else {

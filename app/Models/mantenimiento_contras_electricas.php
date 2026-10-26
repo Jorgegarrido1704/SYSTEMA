@@ -16,6 +16,7 @@ class mantenimiento_contras_electricas extends Model
         'reparacion',
         'estatus',
         'fecha_programada',
+        'descripcion_trabajo',
     ];
 
     public $timestamps = true;
