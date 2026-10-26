@@ -26,7 +26,7 @@
                                         <div class="card-header py-3">
                                             <h6 class="m-0 font-weight-bold text-primary">{{ __('Reactive and Finish Orders')}}</h6>
                                         </div>
-                                        <div class="card-body" style="overflow-y: auto; height: 110px;">
+                                        <div class="card-body" style="overflow-y: auto; height: 130px;">
                                                     <form action="{{ route('reactivacion_wo') }}" method="GET" class="form-inline">
                                                         <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-4">
                                                             <label for="work_order_reactive">{{ __('Reactivate Work Order') }}</label>
@@ -41,7 +41,7 @@
                                         <div class="card-header py-3">
                                             <h6 class="m-0 font-weight-bold text-primary">{{ __('Finish Work Order')}}</h6>
                                         </div>
-                                        <div class="card-body" style="overflow-y: auto; height: 110px;">
+                                        <div class="card-body" style="overflow-y: auto; height: 130px;">
                                             <form action="{{ route('finalizar_wo') }}" method="GET" class="form-inline">
                                                 <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-4">
                                                     <label for="finish_work_order">{{ __('Finish Work Order')}}</label>
@@ -56,7 +56,7 @@
                                         <div class="card-header py-3">
                                             <h6 class="m-0 font-weight-bold text-primary">{{ __('Change Qty')}}</h6>
                                         </div>
-                                        <div class="card-body" style="overflow-y: auto; height: 110px;">
+                                        <div class="card-body" style="overflow-y: auto; height: 190px;">
                                             <form action="{{ route('change_order_qty') }}" method="GET" class="form-inline">
                                                 <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-4">
                                                     <label for="change_qty">{{ __('Work Order')}}</label>
