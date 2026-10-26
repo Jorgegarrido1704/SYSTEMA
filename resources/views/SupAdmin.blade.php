@@ -66,12 +66,28 @@
                                         </div>
                                         <div class="card-body" style="overflow-y: auto; height: 190px;">
                                             <form action="{{ route('change_order_qty') }}" method="GET" class="form-inline">
-                                                <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                                                    <label for="change_qty">{{ __('Work Order')}}</label>
-                                                    <input type="text" class="form-control" name="change_qty" id="change_qty"  maxlength="6"  minlength="6" required >
-                                                      <label for="qty_in_order">{{ __('Qty in Order')}}</label>
-                                                    <input type="number" class="form-control" name="qty_in_order" id="qty_in_order"  min="0"  required >
-                                                    <button class="submit btn btn-primary"> Enviar</button>
+                                                <div class="row">
+                                                    <div class="col-lg-4">
+                                                        <div class="form-group">
+                                                         <label for="change_qty">{{ __('Work Order')}}</label>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <input type="text" class="form-control" name="change_qty" id="change_qty"  maxlength="6"  minlength="6" required >
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <div class="form-group">
+                                                            <label for="qty_in_order">{{ __('Qty in Order')}}</label>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <input type="number" class="form-control" name="qty_in_order" id="qty_in_order"  min="0"  required >
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        <div class="form-group">  
+                                                            <button class="submit btn btn-primary"> Enviar</button>
+                                                        </div>
+                                                    </div>
                                                 </div>
 
                                             </form>
