@@ -7,6 +7,7 @@ use App\Models\calidadRegistro;
 use App\Models\personalBergsModel;
 use App\Models\registoLogin;
 use App\Models\routingModel;
+use App\Models\Wo;
 use carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -513,7 +514,7 @@ class AdminSupControlloer extends Controller
 
     }
 
-    public function finalizar_wo(Request $request, )
+    public function finalizar_wo(Request $request)
     {
         $value = session('user');
         $cat = session('categoria');
