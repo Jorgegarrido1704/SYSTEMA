@@ -65,7 +65,7 @@
                                             <h6 class="m-0 font-weight-bold text-primary">{{ __('Change Qty')}}</h6>
                                         </div>
                                         <div class="card-body" style="overflow-y: auto; height: 190px;">
-                                            <form action="{{ route('change_order_qty') }}" method="GET" class="form-inline">
+                                            <form action="{{ route('change_order_qty') }}" method="GET" >
                                                 <div class="row">
                                                     <div class="col-lg-4 mb-4">
                                                         <div >
