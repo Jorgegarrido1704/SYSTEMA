@@ -28,9 +28,13 @@
                                         </div>
                                         <div class="card-body" style="overflow-y: auto; height: 130px;">
                                                     <form action="{{ route('reactivacion_wo') }}" method="GET" class="form-inline">
-                                                        <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                                                            <label for="work_order_reactive">{{ __('Reactivate Work Order') }}</label>
-                                                            <input type="text" class="form-control" name="work_order_reactive" id="work_order_reactive"  maxlength="6"  minlength="6" required >
+                                                        <div class='row'>
+                                                            <div class="col-lg-6">
+                                                                <label for="work_order_reactive">{{ __('Reactivate Work Order') }}</label>
+                                                            </div>
+                                                            <div class='col-lg-6'>  
+                                                                <input type="text" class="form-control" name="work_order_reactive" id="work_order_reactive"  maxlength="6"  minlength="6" required >
+                                                            </div>
                                                         </div>
                                                     </form>
                                         </div>
