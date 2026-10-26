@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Mail\solicitudVacacionesMail;
-use App\Models\calidadRegistro;
 use App\Models\personalBergsModel;
 use App\Models\registoLogin;
 use App\Models\routingModel;
@@ -389,26 +388,6 @@ class AdminSupControlloer extends Controller
         }
 
         return redirect('/SupAdmin');
-    }
-
-    public function qualityIssues(Request $request)
-    {
-        try {
-            $partNumberQuality = $request->input('buscarQualityIssues');
-
-            $buscar = calidadRegistro::where('pn', $partNumberQuality)
-                ->limit(100)->orderBy('id', 'desc')->get();
-
-            return response()->json([
-                'pullTest' => $pullTest,
-                'paretos' => $paretos,
-                'tableftq' => $tableftq,
-                'tableContent' => $tableContent,
-                'tableReg' => $tableReg,
-            ]);
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
-        }
     }
 
     public function removeVacations(Request $request)
