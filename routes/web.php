@@ -208,6 +208,7 @@ Route::controller(AdminSupControlloer::class)->group(function () {
     Route::get('/schedule_map', [AdminSupControlloer::class, 'index_schedule'])->name('index_schedule');
     Route::get('/vsmData', [AdminSupControlloer::class, 'vsmData'])->name('vsmData');
     Route::get('/finalizar_wo', 'finalizar_wo')->name('finalizar_wo');
+    Route::get('/change_order_qty','change_order_qty')->name('change_order_qty');
 
 });
 

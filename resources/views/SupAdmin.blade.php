@@ -51,6 +51,23 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-lg-12 mb-2">
+                                    <div class="card shadow mb-4">
+                                        <div class="card-header py-3">
+                                            <h6 class="m-0 font-weight-bold text-primary">{{ __('Change Qty')}}</h6>
+                                        </div>
+                                        <div class="card-body" style="overflow-y: auto; height: 110px;">
+                                            <form action="{{ route('change_order_qty') }}" method="GET" class="form-inline">
+                                                <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                                    <label for="change_qty">{{ __('Work Order')}}</label>
+                                                    <input type="text" class="form-control" name="change_qty" id="change_qty"  maxlength="6"  minlength="6" required >
+                                                      <label for="qty_in_order">{{ __('Qty in Order')}}</label>
+                                                    <input type="number" class="form-control" name="qty_in_order" id="qty_in_order"  min="0"  required >
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <!-- END Reactive Orders Area -->

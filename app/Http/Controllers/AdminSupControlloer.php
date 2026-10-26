@@ -7,6 +7,8 @@ use App\Models\personalBergsModel;
 use App\Models\registoLogin;
 use App\Models\routingModel;
 use App\Models\Wo;
+use App\Models\po;
+use App\Models\regPar;
 use carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -15,6 +17,13 @@ use Illuminate\Support\Facades\Mail;
 class AdminSupControlloer extends Controller
 {
     //
+    function logins(Request $request){
+         $value = session('user');
+        $cat = session('categoria');
+        if ($cat != 'SupAdmin') {
+            return redirect('/login');
+        }
+    }
     public function index_admin(Request $request)
     {
         if (session('categoria') != 'SupAdmin') {
@@ -504,6 +513,25 @@ class AdminSupControlloer extends Controller
         $work = Wo::where('wo', $wo)->update(['count' => '20']);
 
         return redirect()->back()->with('success', 'WO finalizada correctamente.');
+
+    }
+    public function change_order_qty(Request $request)
+    {
+        $value = session('user');
+        $cat = session('categoria');
+        if ($cat == '' || $value == '') {
+            return redirect('/login');
+        }
+        $wo = $request->input('change_qty');
+        $qty =$request->input('qty_in_order');
+        $work = Wo::selct('po')->where('wo', $wo);
+        $po =$work->po;
+        Wo::where('wo', $wo)->update(['Qty'=> $qty]);
+        Po::where('po',$po)->update(['qty'=> $qty]);
+        regPar::where('wo', $wo)->update(['orgQty'=> $qty,'planpar'=>$qty]);
+
+        return redirect()->back()->with('success', 'WO finalizada correctamente.');
+
 
     }
 }
