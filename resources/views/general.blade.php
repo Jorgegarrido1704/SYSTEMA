@@ -548,7 +548,16 @@
                             }
                             const data = await response.json();
                             console.log(data);
+                                        let html ='';
+                                        document.getElementById('tbody_items').innerHTML = html;
+                                         html = data.map(data => `
+                                                        <tr>
+                                                            <td>${data.part_num}</td>
+                                                            <td>${data.qty}</td>
+                                                        </tr>
+                                                        `);
 
+                                                        document.getElementById('tbody_items').innerHTML = html;
                                         }
                                         catch (error) {
                                             console.error(error);
@@ -562,8 +571,9 @@
                                                 .then(response => response.json())
                                             .then(data => {
                                                 console.log(data)
-
-                                                        let html = data.map(data => `
+                                                let html ='';
+                                                    document.getElementById('tbody_items').innerHTML = html;
+                                                        html = data.map(data => `
                                                         <tr>
                                                             <td>${data.item}</td>
                                                             <td>${data.qty}</td>
