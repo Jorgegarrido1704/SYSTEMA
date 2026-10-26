@@ -32,7 +32,7 @@
                                                             <div class="col-lg-5">
                                                                 <label for="work_order_reactive">{{ __('Reactivate Work Order') }}</label>
                                                             </div>
-                                                            <div class='col-lg-3'>  
+                                                            <div class='col-lg-5'>  
                                                                 <input type="text" class="form-control" name="work_order_reactive" id="work_order_reactive"  maxlength="6"  minlength="6" required >
                                                             </div>
                                                         </div>
@@ -51,7 +51,7 @@
                                                     <div class="form-group col-lg-5 ">
                                                         <label for="finish_work_order">{{ __('Finish Work Order')}}</label>
                                                     </div>
-                                                    <div class='form-group col-lg-3'>    
+                                                    <div class='form-group col-lg-5'>    
                                                         <input type="text" class="form-control" name="finish_work_order" id="finish_work_order"  maxlength="6"  minlength="6" required >
                                                     </div>
                                                 </div>
@@ -67,7 +67,7 @@
                                         <div class="card-body" style="overflow-y: auto; height: 190px;">
                                             <form action="{{ route('change_order_qty') }}" method="GET" >
                                                 <div class="row">
-                                                    <div class="col-lg-4 mb-4">
+                                                    <div class="col-lg-5 mb-4">
                                                         <div >
                                                          <label for="change_qty">{{ __('Work Order')}}</label>
                                                         </div>
@@ -75,7 +75,7 @@
                                                             <input type="text" class="form-control" name="change_qty" id="change_qty"  maxlength="6"  minlength="6" required >
                                                         </div>
                                                     </div>
-                                                    <div class="col-lg-4 mb-4">
+                                                    <div class="col-lg-5 mb-4">
                                                         <div >
                                                             <label for="qty_in_order">{{ __('Qty in Order')}}</label>
                                                         </div>
