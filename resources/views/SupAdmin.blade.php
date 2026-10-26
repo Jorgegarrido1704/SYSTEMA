@@ -32,7 +32,7 @@
                                                             <div class="col-lg-5">
                                                                 <label for="work_order_reactive">{{ __('Reactivate Work Order') }}</label>
                                                             </div>
-                                                            <div class='col-lg-4'>  
+                                                            <div class='col-lg-3'>  
                                                                 <input type="text" class="form-control" name="work_order_reactive" id="work_order_reactive"  maxlength="6"  minlength="6" required >
                                                             </div>
                                                         </div>
@@ -47,9 +47,13 @@
                                         </div>
                                         <div class="card-body" style="overflow-y: auto; height: 130px;">
                                             <form action="{{ route('finalizar_wo') }}" method="GET" class="form-inline">
-                                                <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                                                    <label for="finish_work_order">{{ __('Finish Work Order')}}</label>
-                                                    <input type="text" class="form-control" name="finish_work_order" id="finish_work_order"  maxlength="6"  minlength="6" required >
+                                                <div class ='row'>
+                                                    <div class="form-group col-lg-5 ">
+                                                        <label for="finish_work_order">{{ __('Finish Work Order')}}</label>
+                                                    </div>
+                                                    <div class='form-group col-lg-3'>    
+                                                        <input type="text" class="form-control" name="finish_work_order" id="finish_work_order"  maxlength="6"  minlength="6" required >
+                                                    </div>
                                                 </div>
                                             </form>
                                         </div>
