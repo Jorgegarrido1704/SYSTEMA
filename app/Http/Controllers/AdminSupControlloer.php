@@ -524,7 +524,8 @@ class AdminSupControlloer extends Controller
         }
         $wo = $request->input('change_qty');
         $qty =$request->input('qty_in_order');
-        $work = Wo::select('po')->where('wo', $wo)->first();
+        $work = Wo::select('po')->where('wo', $wo)->where('count','=','1')->first();
+        if(empty($work)) { return redirect()->back()->with('error', 'Orden no esta en planeacion.');}
         $po =$work->po;
         Wo::where('wo', $wo)->update(['Qty'=> $qty]);
         Po::where('po',$po)->update(['qty'=> $qty]);
