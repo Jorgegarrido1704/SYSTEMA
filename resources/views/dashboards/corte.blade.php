@@ -52,7 +52,7 @@
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2" >
                                                     <div class=" font-weight-bold text-primary text-uppercase mb-1">
-                                                        <strong>{{ __('Daily Goal') }} {{ $targets }}</strong> </div>
+                                                        <strong>{{ __('Daily Goal') }} <span id ="targets">0</span></strong> </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -239,7 +239,7 @@
                 registroParos.innerHTML = '';
                 let total_de_paros = 0;
                 let disponibilidad = 0;
-
+                document.getElementById('targets').innerHTML=data.targets;
                 if (data.registroParos !== null) {
                     registroParos.innerHTML = ``;
                     // en una tabla
