@@ -9,6 +9,7 @@ use App\Models\routingModel;
 use App\Models\Wo;
 use App\Models\po;
 use App\Models\regPar;
+use App\Models\cortes_maquina_corte;
 use carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -17,13 +18,7 @@ use Illuminate\Support\Facades\Mail;
 class AdminSupControlloer extends Controller
 {
     //
-    function logins(Request $request){
-         $value = session('user');
-        $cat = session('categoria');
-        if ($cat != 'SupAdmin') {
-            return redirect('/login');
-        }
-    }
+  
     public function index_admin(Request $request)
     {
         if (session('categoria') != 'SupAdmin') {
@@ -534,5 +529,20 @@ class AdminSupControlloer extends Controller
         return redirect()->back()->with('success', 'WO finalizada correctamente.');
 
 
+    }
+
+    public function Add_cort_perDay(Request $request)
+    {
+        $registro_corte = new cortes_maquina_corte();
+        $registro_corte->M1 = $request->input('m1');
+        $registro_corte->M2 = $request->input('m2');
+        $registro_corte->M3 = $request->input('m3');
+        $registro_corte->M4 = $request->input('m4');
+        $registro_corte->M5 = $request->input('m5');
+        $registro_corte->M6 = $request->input('m6');
+        $registro_corte->M7 = $request->input('m7');
+        $registro_corte->save();
+
+        return redirect()->back()->with('success','Se han agregado correctamente');
     }
 }

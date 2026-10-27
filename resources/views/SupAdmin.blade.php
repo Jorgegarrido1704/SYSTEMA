@@ -487,15 +487,52 @@
                             <!-- AREAS -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h5 class="m-0 font-weight-bold text-primary">Table of Works </h5>
+                                    <h5 class="m-0 font-weight-bold text-primary">{{ __('Add cutting goal')}} </h5>
                                 </div>
-                                <div class="card-body" style="overflow-y: auto; height: 360px;" id="tableChange">
+                                <div class="card-body" style="overflow-y: auto; height: 360px;" >
+                                    <form action="{{ route('Add_cort_perDay') }}" method="GET">
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                <label class="form-control" id="m1">M1</label>
+                                                <input type="number" class="form-control" id="m1" name="m1" value="0" min="0" required>
+                                            </div>  
+                                             <div class="col-lg-4">
+                                                <label class="form-control" id="m2">M2</label>
+                                                <input type="number" class="form-control" id="m2" name="m2" value="0" min="0" required>
+                                            </div>    
+                                             <div class="col-lg-4">
+                                                <label class="form-control" id="m3">M3</label>
+                                                <input type="number" class="form-control" id="m3" name="m3" value="0" min="0" required>
+                                            </div>    
+                                             <div class="col-lg-4">
+                                                <label class="form-control" id="m4">M4</label>
+                                                <input type="number" class="form-control" id="m4" name="m4" value="0" min="0" required>
+                                            </div>    
+                                             <div class="col-lg-4">
+                                                <label class="form-control" id="m5">M5</label>
+                                                <input type="number" class="form-control" id="m5" name="m5" value="0" min="0" required>
+                                            </div>    
+                                             <div class="col-lg-4">
+                                                <label class="form-control" id="m6">M6</label>
+                                                <input type="number" class="form-control" id="m6" name="m6" value="0" min="0" required>
+                                            </div>    
+                                             <div class="col-lg-4">
+                                                <label class="form-control" id="m7">M7</label>
+                                                <input type="number" class="form-control" id="m7" name="m7" value="0" min="0" required>
+                                            </div>    
+                                             <div class="col-lg-4">
+                                                <label class="form-control" ></label>
+                                                <button class="btn btn-primary submit">{{ __('Save') }}</button>
+                                            </div>       
+                                        </div>
 
-                                    </div>
+                                    </form>
+
+                                    
                                 </div>
                             </div>
                         </div>
-
+                </div>
 
 
                     @endsection
