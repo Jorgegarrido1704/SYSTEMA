@@ -32,8 +32,7 @@ class ChartController extends Controller
        
         $targets = cortes_maquina_corte::select($maquina)->where('fecha_de_trabajo', $fechaDelDia)
         ->where('turno','=',$turnoActual)->first();
-      
-
+        
         if ($turnoActual == 1) {
             $colections = DB::connection('toi')
                 ->table('lecturas')
