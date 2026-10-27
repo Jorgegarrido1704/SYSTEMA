@@ -239,7 +239,7 @@
                 registroParos.innerHTML = '';
                 let total_de_paros = 0;
                 let disponibilidad = 0;
-                //document.getElementById('targets').innerHTML=data.targets;
+                document.getElementById('targets').innerHTML=data.targets;
                 if (data.registroParos !== null) {
                     registroParos.innerHTML = ``;
                     // en una tabla
