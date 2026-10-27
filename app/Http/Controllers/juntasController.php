@@ -1335,7 +1335,7 @@ class juntasController extends Controller
         $enproceso = count($registros);
         $totalgeneral += $i;
         $registoPorFirmas = [];
-
+                        $retasoPorPlan = [];
         $yearsignatires = carbon::now()->format('m') < 2 ? carbon::now()->subYear()->format('Y') : carbon::now()->format('Y');
         $monthsignatires = carbon::now()->format('m') < 2 ? 12 : carbon::now()->subMonth()->format('m');
 
