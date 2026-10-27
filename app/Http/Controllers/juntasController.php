@@ -599,8 +599,7 @@ class juntasController extends Controller
         $lastweek = date('W', strtotime('-1 weeks'));
         $weekYear = date('Y');
 
-        $resultados = DB::table('regsitrocalidad')
-            ->selectRaw("
+        $resultados = calidadRegistro::selectRaw("
         SUM(CASE WHEN YEAR(STR_TO_DATE(fecha, '%d-%m-%Y')) = ?
                  AND codigo = 'TODO BIEN' THEN 1 ELSE 0 END) as yearGood,
         SUM(CASE WHEN YEAR(STR_TO_DATE(fecha, '%d-%m-%Y')) = ?
