@@ -52,7 +52,7 @@
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2" >
                                                     <div class=" font-weight-bold text-primary text-uppercase mb-1">
-                                                        <strong>{{ __('Daily Goal') }} {{ __('Pending') }}</strong> </div>
+                                                        <strong>{{ __('Daily Goal') }} {{ $targets }}</strong> </div>
                                                 </div>
                                             </div>
                                         </div>

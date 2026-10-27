@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+use App\Models\cortes_maquina_corte;
 
 class ChartController extends Controller
 {
@@ -22,9 +24,13 @@ class ChartController extends Controller
     {
 
         $fechaDelDia = $request->input('fecha') ?? \Carbon\Carbon::now()->format('Y-m-d');
+        $targets = cortes_maquina_corte::where('fecha_de_trabajo', $fechaDelDia)->get();
         $fechaAyer = \Carbon\Carbon::parse($fechaDelDia)->subDay()->format('Y-m-d');
         $turnoActual = $request->input('turno') ?? 1;
+       
         $maquina = $request->input('maquina') ?? 'M1';
+       
+         $targets = cortes_maquina_corte::select($maquina)->where('fecha_de_trabajo', $fechaDelDia)->where('turno')->first();
         if ($turnoActual == 1) {
             $colections = DB::connection('toi')
                 ->table('lecturas')
@@ -299,6 +305,7 @@ class ChartController extends Controller
             'estado' => $ultimoEstado,
             'stop' => $stop,
             'run' => $run,
+            'target' => $targets,
         ];
 
         return response()->json($datos);
