@@ -30,8 +30,8 @@ class ChartController extends Controller
        
         $maquina = $request->input('maquina') ?? 'M1';
        
-         $targets = cortes_maquina_corte::select($maquina)->where('fecha_de_trabajo', $fechaDelDia)->where('turno')->first();
-         if($targets->count() == 0) { $targets = 0;}
+      //   $targets = cortes_maquina_corte::select($maquina)->where('fecha_de_trabajo', $fechaDelDia)->where('turno')->first();
+      //   if($targets->count() == 0) { $targets = 0;}
 
         if ($turnoActual == 1) {
             $colections = DB::connection('toi')
@@ -307,7 +307,7 @@ class ChartController extends Controller
             'estado' => $ultimoEstado,
             'stop' => $stop,
             'run' => $run,
-            'target' => $targets,
+           // 'target' => $targets,
         ];
 
         return response()->json($datos);
