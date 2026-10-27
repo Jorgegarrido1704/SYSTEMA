@@ -165,7 +165,11 @@
                             <tbody>
                                 <tr>
                                     <td>{{ __('First Shift') }}</td>
-                                    <td><strong>{{ $issue_turno[0] }}|| @php round($issue_turno[0] / array_sum($issue_turno) * 100, 2)??0 @endphp %</strong></td>
+                                    <td><strong>{{ $issue_turno[0] }}|| @php if($issue_turno[0]>0 and array_sum($issue_turno)>0 ){
+                                            round($issue_turno[1] / array_sum($issue_turno) * 100, 2);
+                                    }else {
+                                        0
+                                    } @endphp %</strong></td>
                                 </tr>
                                 <tr>
                                     <td>{{ __('Second Shift') }}</td>
