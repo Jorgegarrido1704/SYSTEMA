@@ -492,38 +492,49 @@
                                 <div class="card-body" style="overflow-y: auto; height: 360px;" >
                                     <form action="{{ route('Add_cort_perDay') }}" method="GET">
                                         <div class="row">
-                                            <div class="col-lg-4">
+                                            <div class="col-lg-3 mt-2">
                                                 <label class="form-control" id="m1">M1</label>
                                                 <input type="number" class="form-control" id="m1" name="m1" value="0" min="0" required>
                                             </div>  
-                                             <div class="col-lg-4">
+                                             <div class="col-lg-3 mt-2">
                                                 <label class="form-control" id="m2">M2</label>
                                                 <input type="number" class="form-control" id="m2" name="m2" value="0" min="0" required>
                                             </div>    
-                                             <div class="col-lg-4">
+                                             <div class="col-lg-3 mt-2">
                                                 <label class="form-control" id="m3">M3</label>
                                                 <input type="number" class="form-control" id="m3" name="m3" value="0" min="0" required>
                                             </div>    
-                                             <div class="col-lg-4">
+                                             <div class="col-lg-3 mt-2">
                                                 <label class="form-control" id="m4">M4</label>
                                                 <input type="number" class="form-control" id="m4" name="m4" value="0" min="0" required>
                                             </div>    
-                                             <div class="col-lg-4">
+                                             <div class="col-lg-3 mt-2">
                                                 <label class="form-control" id="m5">M5</label>
                                                 <input type="number" class="form-control" id="m5" name="m5" value="0" min="0" required>
                                             </div>    
-                                             <div class="col-lg-4">
+                                             <div class="col-lg-3 mt-2">
                                                 <label class="form-control" id="m6">M6</label>
                                                 <input type="number" class="form-control" id="m6" name="m6" value="0" min="0" required>
                                             </div>    
-                                             <div class="col-lg-4">
+                                             <div class="col-lg-3 mt-2">
                                                 <label class="form-control" id="m7">M7</label>
                                                 <input type="number" class="form-control" id="m7" name="m7" value="0" min="0" required>
                                             </div>    
-                                             <div class="col-lg-4">
-                                                <label class="form-control" ></label>
+                                             <div class="col-lg-3 mt-2">
+                                                <label class="form-control" id="fecha_de_trabajo">{{__('Work date')}}</label>
+                                                <input type="date" class="form-control" id="fecha_de_trabajo" name="fecha_de_trabajo" required>
+                                            </div> 
+                                             <div class="col-lg-3 mt-2">
+                                                <label class="form-control" id="shift">{{__('Shift')}}</label>
+                                                <select class="form-control" id="shift" name="shift" required>
+                                                    <option value="1">{{ __('firstShift') }}</option>
+                                                    <option value="2">{{ __('secondShift') }}</option>
+                                                </select>
+                                            </div>  
+                                             <div class="col-lg-4 mt-3">
+                                                 <label ></label>
                                                 <button class="btn btn-primary submit">{{ __('Save') }}</button>
-                                            </div>       
+                                            </div>      
                                         </div>
 
                                     </form>

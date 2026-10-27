@@ -541,6 +541,7 @@ class AdminSupControlloer extends Controller
         $registro_corte->M5 = $request->input('m5');
         $registro_corte->M6 = $request->input('m6');
         $registro_corte->M7 = $request->input('m7');
+        $registro_corte->fecha_de_trabajo = $request->input('fecha_de_trabajo');
         $registro_corte->save();
 
         return redirect()->back()->with('success','Se han agregado correctamente');

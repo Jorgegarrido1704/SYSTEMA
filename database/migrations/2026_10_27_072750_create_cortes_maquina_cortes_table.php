@@ -20,6 +20,8 @@ return new class extends Migration
             $table->integer('M5')->default(0);
             $table->integer('M6')->default(0);
             $table->integer('M7')->default(0);
+            $table->date('fecha_de_trabajo')->nullable();
+            $table->integer('turno')->default(1);
             $table->timestamps();
         });
     }
