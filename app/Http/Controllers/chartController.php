@@ -30,7 +30,8 @@ class ChartController extends Controller
        
         $maquina = $request->input('maquina') ?? 'M1';
        
-        $targets = cortes_maquina_corte::select($maquina)->where('fecha_de_trabajo', $fechaDelDia)->where('turno')->first();
+        $targets = cortes_maquina_corte::select($maquina)->where('fecha_de_trabajo', $fechaDelDia)
+        ->where('turno','=',$turnoActual)->first();
       
 
         if ($turnoActual == 1) {
