@@ -24,7 +24,7 @@ class ChartController extends Controller
     {
 
         $fechaDelDia = $request->input('fecha') ?? \Carbon\Carbon::now()->format('Y-m-d');
-        $targets = cortes_maquina_corte::where('fecha_de_trabajo', $fechaDelDia)->get();
+        
         $fechaAyer = \Carbon\Carbon::parse($fechaDelDia)->subDay()->format('Y-m-d');
         $turnoActual = $request->input('turno') ?? 1;
        
