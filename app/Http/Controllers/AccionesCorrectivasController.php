@@ -50,7 +50,9 @@ class AccionesCorrectivasController extends Controller
             }
             $accion->resposableAccion = explode('/', $accion->resposableAccion)[1] ?? $accion->resposableAccion;
         }
-        $personal = personalBergsModel::select('employeeName')->where('email', '!=', null)->where('status', '!=', 'Baja')->get();
+        $personal = personalBergsModel::select('employeeName')->where('email', '!=', null)->where('status', '!=', 'Baja')
+        ->orderBy('employeeName','ASC')->get();
+       
 
         return view('accionesCorrectiva.index', [
             'cat' => $cat,
