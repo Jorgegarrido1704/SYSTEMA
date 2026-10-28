@@ -114,7 +114,7 @@
                             @foreach($accionesActivas as $accion)
                                 <tr>
                                     <td><a href="{{ route('accionesCorrectivas.show', $accion->folioAccion) }}">{{ $accion->folioAccion  }}</a></td>
-                                    <td>{{ $accion->fechaAccion}}</td>
+                                    <td><input type="date" class="form-group" value="{{ $accion->fechaAccion}}"></td>
                                     <td>{{ $accion->Afecta }}</td>
                                     <td>{{ $accion->origenAccion }}</td>
                                     <td>{{ $accion->resposableAccion }}</td>
