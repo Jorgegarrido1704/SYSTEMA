@@ -302,7 +302,7 @@ Route::controller(AccionesCorrectivasController::class)->group(function () {
     Route::GET('/acciones-correctivas/statusSubAccion/{id}/{folio}', [AccionesCorrectivasController::class, 'statusSubAccion'])->name('accionesCorrectivas.statusSubAccion');
     Route::GET('/acciones-correctivas/cerrarAcciones/{folio}', [AccionesCorrectivasController::class, 'cerrarAcciones'])->name('accionesCorrectivas.cerrarAcciones');
     Route::GET('/acciones-correctivas/excelAcciones/estadisticasAcciones', [AccionesCorrectivasController::class, 'estadisticasAcciones'])->name('accionesCorrectivas.estadisticasAcciones');
-
+    Route::get('/acciones-correctivas/modifiaciones/{valor}/{id}','changes_in_actions')->name('changes_in_actions');
 });
 
 Route::controller(mailsController::class)->group(function () {

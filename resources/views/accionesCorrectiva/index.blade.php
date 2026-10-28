@@ -38,7 +38,6 @@
                                 <option value="Comercio internacional">Comercio internacional</option>
                                 <option value="Ingenieria">Ingenieria</option>
                                 <option value="Nuevos productos">Nuevos productos (NPI)</option>
-
                             </select>
                         </div>
                 </div>
@@ -114,12 +113,54 @@
                             @foreach($accionesActivas as $accion)
                                 <tr>
                                     <td><a href="{{ route('accionesCorrectivas.show', $accion->folioAccion) }}">{{ $accion->folioAccion  }}</a></td>
-                                    <td><input type="date" class="form-group" value="{{ $accion->fechaAccion}}"></td>
+                                   @if ($value=='Admin' || $value == 'Martin A')
+                                    <td><input type="date" class="form-group" id="fechaAccion_{{ $accion->folioAccion }}" value="{{ date('Y-m-d', strtotime($accion->fechaAccion))}}" onchange="cambios(this.value,this.id)" required></td>
+                                    <td><select class="form-control" id="Afecta_{{ $accion->folioAccion }}" name="Afecta" onchange="cambios(this.value,this.id)" required>
+                                            <option value="{{ $accion->Afecta }}"  selected>{{ $accion->Afecta }}</option>
+                                            <option value="Logistica">Logistica</option>
+                                            <option value="Operaciones">Operaciones</option>
+                                            <option value="Produccion">Produccion</option>
+                                            <option value="Calidad">Calidad</option>
+                                            <option value="Atencion a clientes">Atencion a clientes</option>
+                                            <option value="Planeacion">Planeacion</option>
+                                            <option value="Embarques">Embarques</option>
+                                            <option value="Compras">Compras</option>
+                                            <option value="Almacen de marteria prima">Almacen de marteria prima</option>
+                                            <option value="Mantenimiento">Mantenimiento</option>
+                                            <option value="Recursos humanos">Recursos humanos</option>
+                                            <option value="Seguridad e higiene">Seguridad e higiene</option>
+                                            <option value="Comercio internacional">Comercio internacional</option>
+                                            <option value="Ingenieria">Ingenieria</option>
+                                            <option value="Nuevos productos">Nuevos productos (NPI)</option>
+                                        </select></td>
+                                    <td> <select class="form-control" id="origenAccion_{{ $accion->folioAccion }}" onchange="cambios(this.value,this.id)"  required>
+                                            <option value="{{ $accion->origenAccion }}" >{{ $accion->origenAccion }}</option>
+                                            <option value="Auditoria Interna">Auditoria Interna</option>
+                                            <option value="Auditoria Externa">Auditoria Externa</option>
+                                            <option value="Revision de la Direccion">Revision de la Direccion</option>
+                                            <option value="Proceso">Proceso</option>
+                                            <option value="Proveedor">Proveedor</option>
+                                            <option value="Cliente">Cliente</option>
+                                            <option value="Analisis de Indicadores">Analisis de Indicadores</option>
+                                            <option value="Gestion de Riesgo">Gestion de Riesgo</option>
+                                            <option value="otro" >Otro</option>
+                                                </select></td>
+                                    <td> <select class="form-control"  id="resposableAccion_{{ $accion->folioAccion }}" onchange="cambios(this.value,this.id)" required>
+                                            <option value="{{ $accion->resposableAccion }}"  selected>{{ $accion->resposableAccion }}</option>
+                                            @foreach($personal as $p)
+                                            <option value="{{ $p->employeeName }}">{{ $p->employeeName }}</option>
+                                            @endforeach
+                                            </select></td>
+                                    <td>{{ $accion->status }}</td>
+                                  <!--  <td>{{ $accion->faltanDias }}</td> -->
+                                  @else
+                                   <td>{{ $accion->folioAccion }}</td>
                                     <td>{{ $accion->Afecta }}</td>
                                     <td>{{ $accion->origenAccion }}</td>
                                     <td>{{ $accion->resposableAccion }}</td>
                                     <td>{{ $accion->status }}</td>
                                   <!--  <td>{{ $accion->faltanDias }}</td> -->
+                                  @endif
                                 </tr>
                             @endforeach
                         @endif
@@ -178,5 +219,29 @@
             </div>
     </div>
  </div>
+
+ <script>
+    function cambios(valor, id) {
+    const url = `/acciones-correctivas/modifiaciones/${encodeURIComponent(valor)}/${encodeURIComponent(id)}`;
+
+    fetch(url, {
+        headers: { 'Accept': 'application/json' }
+    })
+    .then(async response => {
+        const data = await response.json();
+        if (!response.ok) {
+            throw new Error(data.error || "HTTP error " + response.status);
+        }
+        return data;
+    })
+    .then(data => {
+       // console.log(data);
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        alert('Error: ' + error.message);
+    });
+}
+ </script>
 @endsection
 

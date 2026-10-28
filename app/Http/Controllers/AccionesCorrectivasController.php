@@ -119,6 +119,25 @@ class AccionesCorrectivasController extends Controller
         return redirect()->route('accionesCorrectivas.index')->with('success', 'Acción correctiva creada exitosamente.');
     }
 
+    public function changes_in_actions($valor, $id)
+{
+    $user = session('user');
+
+    if (!in_array($user, ['Admin', 'Martin A'])) {
+        return response()->json(['error' => 'Usted no está autorizado'], 403);
+    }
+    $ids=explode('_', $id)[1];
+    $campo = explode('_', $id)[0];
+
+    accionesCorrectivas::where('folioAccion','=',$ids)->update([$campo => $valor]);
+
+    return response()->json([
+        'id'    => $ids,
+        'campo' => $campo,
+        'valor'=> $valor,
+    ]);
+}
+
     public function show($id)
     {
         $cat = session('categoria');
