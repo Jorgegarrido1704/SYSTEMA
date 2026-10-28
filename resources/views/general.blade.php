@@ -588,6 +588,13 @@
 
                                         }
 
+                var timeout = 150*1000;
+                window.addEventListener('load'){
+                    setTimeout(() => {
+                        window.reload;
+                    }, timeout);
+                }
+
                 </script>
 
   @endsection
