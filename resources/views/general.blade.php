@@ -588,12 +588,10 @@
 
                                         }
 
-                var timeout = 150*1000;
-                window.addEventListener('load'){
-                    setTimeout(() => {
-                        window.reload;
-                    }, timeout);
-                }
+                 setTimeout(function () {
+                            location.reload();
+                            }, 60 * 1000);
+
 
                 </script>
 
