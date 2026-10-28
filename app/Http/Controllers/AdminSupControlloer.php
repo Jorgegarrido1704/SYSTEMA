@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Mail\solicitudVacacionesMail;
+use App\Models\cortes_maquina_corte;
 use App\Models\personalBergsModel;
+use App\Models\po;
 use App\Models\registoLogin;
+use App\Models\regPar;
 use App\Models\routingModel;
 use App\Models\Wo;
-use App\Models\po;
-use App\Models\regPar;
-use App\Models\cortes_maquina_corte;
 use carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Mail;
 class AdminSupControlloer extends Controller
 {
     //
-  
+
     public function index_admin(Request $request)
     {
         if (session('categoria') != 'SupAdmin') {
@@ -510,6 +510,7 @@ class AdminSupControlloer extends Controller
         return redirect()->back()->with('success', 'WO finalizada correctamente.');
 
     }
+
     public function change_order_qty(Request $request)
     {
         $value = session('user');
@@ -518,22 +519,23 @@ class AdminSupControlloer extends Controller
             return redirect('/login');
         }
         $wo = $request->input('change_qty');
-        $qty =$request->input('qty_in_order');
-        $work = Wo::select('po')->where('wo', $wo)->where('count','=','1')->first();
-        if(empty($work)) { return redirect()->back()->with('error', 'Orden no esta en planeacion.');}
-        $po =$work->po;
-        Wo::where('wo', $wo)->update(['Qty'=> $qty]);
-        Po::where('po',$po)->update(['qty'=> $qty]);
-        regPar::where('wo', $wo)->update(['orgQty'=> $qty,'planpar'=>$qty]);
+        $qty = $request->input('qty_in_order');
+        $work = Wo::select('po')->where('wo', $wo)->where('count', '=', '1')->first();
+        if (empty($work)) {
+            return redirect()->back()->with('error', 'Orden no esta en planeacion.');
+        }
+        $po = $work->po;
+        Wo::where('wo', $wo)->update(['Qty' => $qty]);
+        Po::where('po', $po)->update(['qty' => $qty]);
+        regPar::where('wo', $wo)->update(['orgQty' => $qty, 'planpar' => $qty]);
 
         return redirect()->back()->with('success', 'WO finalizada correctamente.');
-
 
     }
 
     public function Add_cort_perDay(Request $request)
     {
-        $registro_corte = new cortes_maquina_corte();
+        $registro_corte = new cortes_maquina_corte;
         $registro_corte->M1 = $request->input('m1');
         $registro_corte->M2 = $request->input('m2');
         $registro_corte->M3 = $request->input('m3');
@@ -542,8 +544,9 @@ class AdminSupControlloer extends Controller
         $registro_corte->M6 = $request->input('m6');
         $registro_corte->M7 = $request->input('m7');
         $registro_corte->fecha_de_trabajo = $request->input('fecha_de_trabajo');
+        $registro_corte->turno = $request->input('shift');
         $registro_corte->save();
 
-        return redirect()->back()->with('success','Se han agregado correctamente');
+        return redirect()->back()->with('success', 'Se han agregado correctamente');
     }
 }
