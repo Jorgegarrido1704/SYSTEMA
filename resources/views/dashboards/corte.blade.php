@@ -239,7 +239,8 @@
                 registroParos.innerHTML = '';
                 let total_de_paros = 0;
                 let disponibilidad = 0;
-                document.getElementById('targets').innerHTML=Object.values(data.target);
+                var target= Object.value(data.target);
+                document.getElementById('targets').innerHTML=target;
                 if (data.registroParos !== null) {
                     registroParos.innerHTML = ``;
                     // en una tabla
@@ -284,17 +285,17 @@
                     }else if(data.cortes !== null && data.cortes > 400 && data.cortes < 2000){
                         document.getElementById('cortesCuenta').innerHTML = `  <div class=" font-weight-bold text-warning text-uppercase mb-1">
                                                         <strong><span>${data.cortes}</span> </strong> {{ __('Quantity of wires') }}</div>`;
-                                                         document.getElementById('workingTime').innerHTML = `  <div class="text-s font-weight-bold text-warning text-uppercase mb-1">
+                        document.getElementById('workingTime').innerHTML = `  <div class="text-s font-weight-bold text-warning text-uppercase mb-1">
                                                     <strong> <span >${data.running}</span> Min </strong> {{ __('working Time') }}</div>`;
                         }else if (data.cortes !== null && data.cortes > 2000){
                         document.getElementById('cortesCuenta').innerHTML = `  <div class=" font-weight-bold text-success text-uppercase mb-1">
                                                         <strong><span>${data.cortes}</span> </strong> {{ __('Quantity of wires') }}</div>`;
-                                                         document.getElementById('workingTime').innerHTML = `  <div class="text-s font-weight-bold text-success text-uppercase mb-1">
+                        document.getElementById('workingTime').innerHTML = `  <div class="text-s font-weight-bold text-success text-uppercase mb-1">
                                                     <strong> <span >${data.running}</span> Min </strong> {{ __('working Time') }}</div>`;
                         }else{
                         document.getElementById('cortesCuenta').innerHTML = `  <div class=" font-weight-bold text-danger text-uppercase mb-1">
                                                         <strong><span>0</span> </strong> {{ __('Quantity of wires') }}</div>`;
-                                                         document.getElementById('workingTime').innerHTML = `  <div class="text-s font-weight-bold text-danger text-uppercase mb-1">
+                        document.getElementById('workingTime').innerHTML = `  <div class="text-s font-weight-bold text-danger text-uppercase mb-1">
                                                     <strong> <span >${data.running}</span> Min </strong> {{ __('working Time') }}</div>`;
                      }
 
