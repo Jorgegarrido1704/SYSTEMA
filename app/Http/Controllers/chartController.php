@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\cortes_maquina_corte;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
-use App\Models\cortes_maquina_corte;
 
 class ChartController extends Controller
 {
@@ -22,294 +22,112 @@ class ChartController extends Controller
 
     public function getDatacorte(Request $request)
     {
-
-        $fechaDelDia = $request->input('fecha') ?? \Carbon\Carbon::now()->format('Y-m-d');
-        
-        $fechaAyer = \Carbon\Carbon::parse($fechaDelDia)->subDay()->format('Y-m-d');
-        $turnoActual = $request->input('turno') ?? 1;
-       
+        $fechaDelDia = $request->input('fecha') ?? Carbon::now()->format('Y-m-d');
+        $fechaAyer = Carbon::parse($fechaDelDia)->subDay()->format('Y-m-d');
+        $turnoActual = (int) ($request->input('turno') ?? 1);
         $maquina = $request->input('maquina') ?? 'M1';
-       
-        $targets = cortes_maquina_corte::select($maquina)->where('fecha_de_trabajo', $fechaDelDia)
-        ->where('turno','=',$turnoActual)->first();
-        
-        if ($turnoActual == 1) {
-            $colections = DB::connection('toi')
-                ->table('lecturas')
-                ->selectRaw('
-                    COUNT(CASE WHEN fecha BETWEEN ? AND ? THEN 1 END) as total8,
-                    COUNT(CASE WHEN fecha BETWEEN ? AND ? THEN 1 END) as total9,
-                    COUNT(CASE WHEN fecha BETWEEN ? AND ? THEN 1 END) as total10,
-                    COUNT(CASE WHEN fecha BETWEEN ? AND ? THEN 1 END) as total11,
-                    COUNT(CASE WHEN fecha BETWEEN ? AND ? THEN 1 END) as total12,
-                    COUNT(CASE WHEN fecha BETWEEN ? AND ? THEN 1 END) as total13,
-                    COUNT(CASE WHEN fecha BETWEEN ? AND ? THEN 1 END) as total14,
-                    COUNT(CASE WHEN fecha BETWEEN ? AND ? THEN 1 END) as total15,
-                    COUNT(CASE WHEN fecha BETWEEN ? AND ? THEN 1 END) as total16,
-                    COUNT(CASE WHEN fecha BETWEEN ? AND ? THEN 1 END) as total17,
-                    COUNT(CASE WHEN fecha BETWEEN ? AND ? THEN 1 END) as total18,
-                    COUNT(CASE WHEN fecha BETWEEN ? AND ? THEN 1 END) as total19,
-                    COUNT(*) as total_general
-                ', [
-                    $fechaDelDia.' 07:30:00', $fechaDelDia.' 08:30:00',
-                    $fechaDelDia.' 08:30:00', $fechaDelDia.' 09:30:00',
-                    $fechaDelDia.' 09:30:00', $fechaDelDia.' 10:30:00',
-                    $fechaDelDia.' 10:30:00', $fechaDelDia.' 11:30:00',
-                    $fechaDelDia.' 11:30:00', $fechaDelDia.' 12:30:00',
-                    $fechaDelDia.' 12:30:00', $fechaDelDia.' 13:30:00',
-                    $fechaDelDia.' 13:30:00', $fechaDelDia.' 14:30:00',
-                    $fechaDelDia.' 14:30:00', $fechaDelDia.' 15:30:00',
-                    $fechaDelDia.' 15:30:00', $fechaDelDia.' 16:30:00',
-                    $fechaDelDia.' 16:30:00', $fechaDelDia.' 17:30:00',
-                    $fechaDelDia.' 17:30:00', $fechaDelDia.' 18:30:00',
-                    $fechaDelDia.' 18:30:00', $fechaDelDia.' 19:30:00',
-                ])
-                ->where('estado', 'RUN')
-                ->where('maquina', $maquina)
-                ->whereBetween('fecha', [$fechaDelDia.' 07:30:00', $fechaDelDia.' 19:30:00'])
-                ->first();
-            // subgroups per hour of day
-            $stop = [];
-            $stop['07:30:00'] = 0;
-            $stop['08:30:00'] = 0;
-            $stop['09:30:00'] = 0;
-            $stop['10:30:00'] = 0;
-            $stop['11:30:00'] = 0;
-            $stop['12:30:00'] = 0;
-            $stop['13:30:00'] = 0;
-            $stop['14:30:00'] = 0;
-            $stop['15:30:00'] = 0;
-            $stop['16:30:00'] = 0;
-            $stop['17:30:00'] = 0;
-            $stop['18:30:00'] = 0;
-            $stop['19:30:00'] = 0;
 
-            $run = [];
-            $run['07:30:00'] = 0;
-            $run['08:30:00'] = 0;
-            $run['09:30:00'] = 0;
-            $run['10:30:00'] = 0;
-            $run['11:30:00'] = 0;
-            $run['12:30:00'] = 0;
-            $run['13:30:00'] = 0;
-            $run['14:30:00'] = 0;
-            $run['15:30:00'] = 0;
-            $run['16:30:00'] = 0;
-            $run['17:30:00'] = 0;
-            $run['18:30:00'] = 0;
-            $run['19:30:00'] = 0;
-
-            $cortes = $colections->total_general ?? 0;
-            $registroParos = DB::connection('toi')
-                ->table('cutting_machine_stops')
-                ->where('maquina', $maquina)
-                ->where('fecha', $fechaDelDia)
-                ->get();
-
-            $qtyCortes = $cortes > 0 ? round($cortes / 2) : 0;
-            $paros = 0;
-            $running = round((($colections->total_general * 6.48) / 2) / 60, 2) > 720 ? round((($colections->total_general * 4.48) / 2) / 60, 2) : round((($colections->total_general * 6.48) / 2) / 60, 2) ?? 0;
-            $lastTiempo = null;
-            $lasStatus = null;
-            $ultimoEstado = 'RUN';
-
-            $run['07:30:00'] = round((($colections->total8 * 6.48) / 2) / 60, 2) > 60 ? 60 : round((($colections->total8 * 6.48) / 2) / 60, 2);
-            $run['08:30:00'] = round((($colections->total9 * 6.48) / 2) / 60, 2) > 60 ? 60 : round((($colections->total9 * 6.48) / 2) / 60, 2);
-            $run['09:30:00'] = round((($colections->total10 * 6.48) / 2) / 60, 2) > 60 ? 60 : round((($colections->total10 * 6.48) / 2) / 60, 2);
-            $run['10:30:00'] = round((($colections->total11 * 6.48) / 2) / 60, 2) > 60 ? 60 : round((($colections->total11 * 6.48) / 2) / 60, 2);
-            $run['11:30:00'] = round((($colections->total12 * 6.48) / 2) / 60, 2) > 60 ? 60 : round((($colections->total12 * 6.48) / 2) / 60, 2);
-            $run['12:30:00'] = round((($colections->total13 * 6.48) / 2) / 60, 2) > 60 ? 60 : round((($colections->total13 * 6.48) / 2) / 60, 2);
-            $run['13:30:00'] = round((($colections->total14 * 6.48) / 2) / 60, 2) > 60 ? 60 : round((($colections->total14 * 6.48) / 2) / 60, 2);
-            $run['14:30:00'] = round((($colections->total15 * 6.48) / 2) / 60, 2) > 60 ? 60 : round((($colections->total15 * 6.48) / 2) / 60, 2);
-            $run['15:30:00'] = round((($colections->total16 * 6.48) / 2) / 60, 2) > 60 ? 60 : round((($colections->total16 * 6.48) / 2) / 60, 2);
-            $run['16:30:00'] = round((($colections->total17 * 6.48) / 2) / 60, 2) > 60 ? 60 : round((($colections->total17 * 6.48) / 2) / 60, 2);
-            $run['17:30:00'] = round((($colections->total18 * 6.48) / 2) / 60, 2) > 60 ? 60 : round((($colections->total18 * 6.48) / 2) / 60, 2);
-            $run['18:30:00'] = round((($colections->total19 * 6.48) / 2) / 60, 2) > 60 ? 60 : round((($colections->total19 * 6.48) / 2) / 60, 2);
-
-            $stop['07:30:00'] = 60 - $run['07:30:00'];
-            $stop['08:30:00'] = 60 - $run['08:30:00'];
-            $stop['09:30:00'] = 60 - $run['09:30:00'];
-            $stop['10:30:00'] = 60 - $run['10:30:00'];
-            $stop['11:30:00'] = 60 - $run['11:30:00'];
-            $stop['12:30:00'] = 60 - $run['12:30:00'];
-            $stop['13:30:00'] = 60 - $run['13:30:00'];
-            $stop['14:30:00'] = 60 - $run['14:30:00'];
-            $stop['15:30:00'] = 60 - $run['15:30:00'];
-            $stop['16:30:00'] = 60 - $run['16:30:00'];
-            $stop['17:30:00'] = 60 - $run['17:30:00'];
-            $stop['18:30:00'] = 60 - $run['18:30:00'];
-
-            $paros = round($paros, 2);
-            $running = round($running, 2);
-
-            //  Normalize time calculation to handle time strings accurately
-            $TiempoInicial = strtotime($fechaDelDia.' 07:30:00');
-
-            if ($fechaDelDia === date('Y-m-d') and date('H:i:s') < '19:30:01') {
-
-                $tiempoAhora = strtotime($fechaDelDia.' '.date('H:i:s'));
-            } elseif ($fechaDelDia === date('Y-m-d') and date('H:i:s') > '19:30:00') {
-
-                $tiempoAhora = strtotime($fechaDelDia.' 19:30:00');
-            } else {
-                $tiempoAhora = strtotime($fechaDelDia.' 19:30:00');
-            }
-
-            //  $diferenciaDeTiempo = abs($tiempoAhora - $TiempoInicial);
-            $diferenciaDeTiempoMinutes = 720;
-            $diferenciaDeTiempoMinutes = $diferenciaDeTiempoMinutes > 240 ? $diferenciaDeTiempoMinutes - 30 : $diferenciaDeTiempoMinutes; // Evitar división por cero
-
-            if ($diferenciaDeTiempoMinutes > 0) {
-                // dd($running, $diferenciaDeTiempoMinutes);
-                $oee = round(($running / $diferenciaDeTiempoMinutes) * 100, 2);
-            } else {
-                $oee = 0;
-            }
-        } elseif ($turnoActual == 2) {
-
-            $colections = DB::connection('toi')
-                ->table('lecturas')
-                ->selectRaw('
-                    COUNT(CASE WHEN fecha BETWEEN ? AND ? THEN 1 END) as total19,
-                    COUNT(CASE WHEN fecha BETWEEN ? AND ? THEN 1 END) as total20,
-                    COUNT(CASE WHEN fecha BETWEEN ? AND ? THEN 1 END) as total21,
-                    COUNT(CASE WHEN fecha BETWEEN ? AND ? THEN 1 END) as total22,
-                    COUNT(CASE WHEN fecha BETWEEN ? AND ? THEN 1 END) as total23,
-                    COUNT(CASE WHEN fecha BETWEEN ? AND ? THEN 1 END) as total0,
-                    COUNT(CASE WHEN fecha BETWEEN ? AND ? THEN 1 END) as total1,
-                    COUNT(CASE WHEN fecha BETWEEN ? AND ? THEN 1 END) as total2,
-                    COUNT(CASE WHEN fecha BETWEEN ? AND ? THEN 1 END) as total3,
-                    COUNT(CASE WHEN fecha BETWEEN ? AND ? THEN 1 END) as total4,
-                    COUNT(CASE WHEN fecha BETWEEN ? AND ? THEN 1 END) as total5,
-                    COUNT(CASE WHEN fecha BETWEEN ? AND ? THEN 1 END) as total6,
-                    COUNT(*) as total_general
-                ', [
-                    $fechaAyer.' 19:30:00', $fechaAyer.' 20:30:00',
-                    $fechaAyer.' 20:30:00', $fechaAyer.' 21:30:00',
-                    $fechaAyer.' 21:30:00', $fechaAyer.' 22:30:00',
-                    $fechaAyer.' 22:30:00', $fechaAyer.' 23:30:00',
-                    $fechaAyer.' 23:30:00', $fechaDelDia.' 00:30:00',
-                    $fechaDelDia.' 00:30:00', $fechaDelDia.' 01:30:00',
-                    $fechaDelDia.' 01:30:00', $fechaDelDia.' 02:30:00',
-                    $fechaDelDia.' 02:30:00', $fechaDelDia.' 03:30:00',
-                    $fechaDelDia.' 03:30:00', $fechaDelDia.' 04:30:00',
-                    $fechaDelDia.' 04:30:00', $fechaDelDia.' 05:30:00',
-                    $fechaDelDia.' 05:30:00', $fechaDelDia.' 06:30:00',
-                    $fechaDelDia.' 06:30:00', $fechaDelDia.' 07:30:00',
-                ])
-                ->where('estado', 'RUN')
-                ->where('maquina', $maquina)
-                ->whereBetween('fecha', [$fechaAyer.' 19:30:00', $fechaDelDia.' 07:30:00'])
-                ->first();
-            // subgroups per hour of day
-            $stop = [];
-            $stop['19:30:00'] = 0;
-            $stop['20:30:00'] = 0;
-            $stop['21:30:00'] = 0;
-            $stop['22:30:00'] = 0;
-            $stop['23:30:00'] = 0;
-            $stop['00:30:00'] = 0;
-            $stop['01:30:00'] = 0;
-            $stop['02:30:00'] = 0;
-            $stop['03:30:00'] = 0;
-            $stop['04:30:00'] = 0;
-            $stop['05:30:00'] = 0;
-            $stop['06:30:00'] = 0;
-
-            $run = [];
-            $run['19:30:00'] = 0;
-            $run['20:30:00'] = 0;
-            $run['21:30:00'] = 0;
-            $run['22:30:00'] = 0;
-            $run['23:30:00'] = 0;
-            $run['00:30:00'] = 0;
-            $run['01:30:00'] = 0;
-            $run['02:30:00'] = 0;
-            $run['03:30:00'] = 0;
-            $run['04:30:00'] = 0;
-            $run['05:30:00'] = 0;
-            $run['06:30:00'] = 0;
-
-            $cortes = $colections->total_general ?? 0;
-            $registroParos = DB::connection('toi')
-                ->table('cutting_machine_stops')
-                ->where('maquina', $maquina)
-                ->where('fecha', $fechaDelDia)
-                ->get();
-
-            $qtyCortes = $cortes > 0 ? round($cortes / 2) : 0;
-            $paros = 0;
-            $running = round((($colections->total_general * 6.48) / 2) / 60, 2) > 720 ? round((($colections->total_general * 4.48) / 2) / 60, 2) : round((($colections->total_general * 6.48) / 2) / 60, 2) ?? 0;
-            $lastTiempo = null;
-            $lasStatus = null;
-            $ultimoEstado = 'RUN';
-
-            $run['19:30:00'] = round((($colections->total19 * 6.48) / 2) / 60, 2) > 60 ? 60 : round((($colections->total19 * 6.48) / 2) / 60, 2);
-            $run['20:30:00'] = round((($colections->total20 * 6.48) / 2) / 60, 2) > 60 ? 60 : round((($colections->total20 * 6.48) / 2) / 60, 2);
-            $run['21:30:00'] = round((($colections->total21 * 6.48) / 2) / 60, 2) > 60 ? 60 : round((($colections->total21 * 6.48) / 2) / 60, 2);
-            $run['22:30:00'] = round((($colections->total22 * 6.48) / 2) / 60, 2) > 60 ? 60 : round((($colections->total22 * 6.48) / 2) / 60, 2);
-            $run['23:30:00'] = round((($colections->total23 * 6.48) / 2) / 60, 2) > 60 ? 60 : round((($colections->total23 * 6.48) / 2) / 60, 2);
-            $run['00:30:00'] = round((($colections->total0 * 6.48) / 2) / 60, 2) > 60 ? 60 : round((($colections->total0 * 6.48) / 2) / 60, 2);
-            $run['01:30:00'] = round((($colections->total1 * 6.48) / 2) / 60, 2) > 60 ? 60 : round((($colections->total1 * 6.48) / 2) / 60, 2);
-            $run['02:30:00'] = round((($colections->total2 * 6.48) / 2) / 60, 2) > 60 ? 60 : round((($colections->total2 * 6.48) / 2) / 60, 2);
-            $run['03:30:00'] = round((($colections->total3 * 6.48) / 2) / 60, 2) > 60 ? 60 : round((($colections->total3 * 6.48) / 2) / 60, 2);
-            $run['04:30:00'] = round((($colections->total4 * 6.48) / 2) / 60, 2) > 60 ? 60 : round((($colections->total4 * 6.48) / 2) / 60, 2);
-            $run['05:30:00'] = round((($colections->total5 * 6.48) / 2) / 60, 2) > 60 ? 60 : round((($colections->total5 * 6.48) / 2) / 60, 2);
-            $run['06:30:00'] = round((($colections->total6 * 6.48) / 2) / 60, 2) > 60 ? 60 : round((($colections->total6 * 6.48) / 2) / 60, 2);
-
-            $stop['19:30:00'] = 60 - $run['19:30:00'];
-            $stop['20:30:00'] = 60 - $run['20:30:00'];
-            $stop['21:30:00'] = 60 - $run['21:30:00'];
-            $stop['22:30:00'] = 60 - $run['22:30:00'];
-            $stop['23:30:00'] = 60 - $run['23:30:00'];
-            $stop['00:30:00'] = 60 - $run['00:30:00'];
-            $stop['01:30:00'] = 60 - $run['01:30:00'];
-            $stop['02:30:00'] = 60 - $run['02:30:00'];
-            $stop['03:30:00'] = 60 - $run['03:30:00'];
-            $stop['04:30:00'] = 60 - $run['04:30:00'];
-            $stop['05:30:00'] = 60 - $run['05:30:00'];
-            $stop['06:30:00'] = 60 - $run['06:30:00'];
-
-            $paros = round($paros, 2);
-            $running = round($running, 2);
-
-            //  Normalize time calculation to handle time strings accurately
-            $TiempoInicial = strtotime($fechaDelDia.' 07:30:00');
-
-            if ($fechaDelDia === date('Y-m-d') and date('H:i:s') < '15:30:01') {
-
-                $tiempoAhora = strtotime($fechaDelDia.' '.date('H:i:s'));
-            } elseif ($fechaDelDia === date('Y-m-d') and date('H:i:s') > '17:30:00') {
-
-                $tiempoAhora = strtotime($fechaDelDia.' 17:30:00');
-            } else {
-                $tiempoAhora = strtotime($fechaDelDia.' 17:30:00');
-            }
-
-            // $diferenciaDeTiempo = abs($tiempoAhora - $TiempoInicial);
-            $diferenciaDeTiempoMinutes = 720;
-            $diferenciaDeTiempoMinutes = $diferenciaDeTiempoMinutes > 240 ? $diferenciaDeTiempoMinutes - 30 : $diferenciaDeTiempoMinutes; // Evitar división por cero
-
-            if ($diferenciaDeTiempoMinutes > 0) {
-                $oee = round(($running / $diferenciaDeTiempoMinutes) * 100, 2);
-            } else {
-                $oee = 0;
-            }
+        // Seguridad: $maquina se usa como nombre de columna en select()
+        if (! preg_match('/^\w+$/', $maquina)) {
+            return response()->json(['error' => 'Máquina inválida'], 422);
         }
 
-        $datos = [
-            'paros' => $paros,
+        // ---- Target (número, o 0 si no hay registro) ----
+        $targetRow = cortes_maquina_corte::select($maquina)
+            ->where('fecha_de_trabajo', $fechaDelDia)
+            ->where('turno', $turnoActual)
+            ->first();
+        $target = $targetRow->{$maquina} ?? 0;
+
+        // ---- Inicio del turno ----
+        // Turno 1: hoy 07:30 -> 19:30 | Turno 2: ayer 19:30 -> hoy 07:30
+        $inicio = $turnoActual === 2
+            ? Carbon::parse($fechaAyer.' 19:30:00')
+            : Carbon::parse($fechaDelDia.' 07:30:00');
+        $fin = $inicio->copy()->addHours(12);
+
+        // ---- Generar las 12 franjas de una hora ----
+        $slots = [];   // [label => [desde, hasta]]
+        $bindings = [];
+        $selects = [];
+        for ($i = 0; $i < 12; $i++) {
+            $desde = $inicio->copy()->addHours($i);
+            $hasta = $desde->copy()->addHour();
+
+            $slots["h{$i}"] = $desde->format('H:i:s');
+            $selects[] = "COUNT(CASE WHEN fecha BETWEEN ? AND ? THEN 1 END) as h{$i}";
+            $bindings[] = $desde->format('Y-m-d H:i:s');
+            $bindings[] = $hasta->format('Y-m-d H:i:s');
+        }
+        $selects[] = 'COUNT(*) as total_general';
+
+        $colections = DB::connection('toi')
+            ->table('lecturas')
+            ->selectRaw(implode(', ', $selects), $bindings)
+            ->where('estado', 'RUN')
+            ->where('maquina', $maquina)
+            ->whereBetween('fecha', [$inicio->format('Y-m-d H:i:s'), $fin->format('Y-m-d H:i:s')])
+            ->first();
+
+        $totalGeneral = (int) ($colections->total_general ?? 0);
+
+        // ---- Run / Stop por hora ----
+        $run = [];
+        $stop = [];
+        foreach ($slots as $campo => $label) {
+            $lecturas = (int) ($colections->{$campo} ?? 0);
+            $minutos = round((($lecturas * 6.48) / 2) / 60, 2);
+            $minutos = min($minutos, 60);
+
+            $run[$label] = $minutos;
+            $stop[$label] = round(60 - $minutos, 2);
+        }
+
+        // ---- Registro de paros ----
+        $paros = DB::connection('toi')
+            ->table('cutting_machine_stops')
+            ->where('maquina', $maquina);
+
+        if ($turnoActual === 2) {
+            // Parte nocturna del día anterior + madrugada del día actual
+            // (asume que 'hora' es tipo TIME o string 'H:i:s')
+            $paros->where(function ($q) use ($fechaAyer, $fechaDelDia) {
+                $q->where(function ($q2) use ($fechaAyer) {
+                    $q2->where('fecha', $fechaAyer)->where('hora', '>=', '19:30:00');
+                })->orWhere(function ($q2) use ($fechaDelDia) {
+                    $q2->where('fecha', $fechaDelDia)->where('hora', '<', '07:30:00');
+                });
+            });
+        } else {
+            $paros->where('fecha', $fechaDelDia);
+        }
+        $registroParos = $paros->get();
+
+        // ---- Totales ----
+        $qtyCortes = $totalGeneral > 0 ? round($totalGeneral / 2) : 0;
+
+        $running = round((($totalGeneral * 6.48) / 2) / 60, 2);
+        if ($running > 720) {
+            $running = round((($totalGeneral * 4.48) / 2) / 60, 2);
+        }
+
+        // 12 h de turno - 30 min de descanso
+        $tiempoTotalTurno = 690;
+        $oee = $tiempoTotalTurno > 0
+            ? round(($running / $tiempoTotalTurno) * 100, 2)
+            : 0;
+
+        return response()->json([
+            'paros' => 0,
             'running' => $running,
             'OEE' => $oee,
-            'tiempo_total_turno' => $diferenciaDeTiempoMinutes,
+            'tiempo_total_turno' => $tiempoTotalTurno,
             'cortes' => $qtyCortes,
             'registroParos' => $registroParos,
-            'estado' => $ultimoEstado,
+            'estado' => 'RUN',
             'stop' => $stop,
             'run' => $run,
-            'target' => $targets,
-        ];
-
-        return response()->json($datos);
+            'target' => $target,
+        ]);
     }
 }

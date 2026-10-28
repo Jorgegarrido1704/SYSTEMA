@@ -224,133 +224,122 @@
             // Si el input está vacío, puedes decidir no enviar nada o enviar la fecha de hoy
             if (!fechaInput) return;
 
-            try {
-                const response = await fetch('/chart/getDatacorte?fecha=' + fechaInput + '&maquina=' + maquina + '&turno=' + turnoActual);
+           try {
+                        const response = await fetch('/chart/getDatacorte?fecha=' + fechaInput + '&maquina=' + maquina + '&turno=' + turnoActual);
 
-                // Si el servidor responde con error (500, 404, etc) saltará al catch
-                if (!response.ok) {
-                    throw new Error(`Error en el servidor: ${response.status}`);
-                }
-
-                const data = await response.json();
-                console.log(data);
-
-                const registroParos = document.getElementById('regostroParos');
-                registroParos.innerHTML = '';
-                let total_de_paros = 0;
-                let disponibilidad = 0;
-                var target= Object.value(data.target);
-                document.getElementById('targets').innerHTML=target;
-                if (data.registroParos !== null) {
-                    registroParos.innerHTML = ``;
-                    // en una tabla
-                    for (let i = 0; i < data.registroParos.length; i++) {
-                        const paro = data.registroParos[i];
-                        total_de_paros += paro.time_min;
-
-                        const fila = document.createElement('tr');
-                        fila.innerHTML = `
-                            <td>${paro.maquina}-</td>
-                            <td>-${paro.motive}-</td>
-                            <td>-${paro.time_min} min-</td>
-                            <td>-${paro.hora}</td>
-                        `;
-                        registroParos.appendChild(fila);
-                    }
-                }
-
-                disponibilidad = (data.tiempo_total_turno * 0.9).toFixed(2) - total_de_paros;
-
-              //  document.getElementById('mc1').textContent = (data.running / disponibilidad * 100).toFixed(2);
-                document.getElementById('maquina1').textContent = maquina;
-
-                $total_de_paros = (total_de_paros).toFixed(2);
-                    if(total_de_paros > 180){
-                      document.getElementById('parosTime').innerHTML =   ` <div class=" font-weight-bold text-danger text-uppercase mb-1">
-                                                     <strong>${total_de_paros}<span ></span> Min </strong> {{ __('Downtime') }}</div>`;
-                    }else if(total_de_paros > 60 && total_de_paros < 180){
-
-                      document.getElementById('parosTime').innerHTML =   ` <div class=" font-weight-bold text-warning text-uppercase mb-1">
-                                                     <strong>${total_de_paros}<span ></span> Min </strong> {{ __('Downtime') }}</div>`;
-                    }else{
-
-                      document.getElementById('parosTime').innerHTML =   ` <div class=" font-weight-bold text-success text-uppercase mb-1">
-                                                     <strong>${total_de_paros}<span ></span> Min </strong> {{ __('Downtime') }}</div>`;
-                    }
-                    if(data.cortes !== null && data.cortes > 0 && data.cortes < 400){
-                        document.getElementById('cortesCuenta').innerHTML = `  <div class=" font-weight-bold text-danger text-uppercase mb-1">
-                                                        <strong><span>${data.cortes}</span> </strong> {{ __('Quantity of wires') }}</div>`;
-                        document.getElementById('workingTime').innerHTML = `  <div class="text-s font-weight-bold text-danger text-uppercase mb-1">
-                                                    <strong> <span >${data.running}</span> Min </strong> {{ __('working Time') }}</div>`;
-                    }else if(data.cortes !== null && data.cortes > 400 && data.cortes < 2000){
-                        document.getElementById('cortesCuenta').innerHTML = `  <div class=" font-weight-bold text-warning text-uppercase mb-1">
-                                                        <strong><span>${data.cortes}</span> </strong> {{ __('Quantity of wires') }}</div>`;
-                        document.getElementById('workingTime').innerHTML = `  <div class="text-s font-weight-bold text-warning text-uppercase mb-1">
-                                                    <strong> <span >${data.running}</span> Min </strong> {{ __('working Time') }}</div>`;
-                        }else if (data.cortes !== null && data.cortes > 2000){
-                        document.getElementById('cortesCuenta').innerHTML = `  <div class=" font-weight-bold text-success text-uppercase mb-1">
-                                                        <strong><span>${data.cortes}</span> </strong> {{ __('Quantity of wires') }}</div>`;
-                        document.getElementById('workingTime').innerHTML = `  <div class="text-s font-weight-bold text-success text-uppercase mb-1">
-                                                    <strong> <span >${data.running}</span> Min </strong> {{ __('working Time') }}</div>`;
-                        }else{
-                        document.getElementById('cortesCuenta').innerHTML = `  <div class=" font-weight-bold text-danger text-uppercase mb-1">
-                                                        <strong><span>0</span> </strong> {{ __('Quantity of wires') }}</div>`;
-                        document.getElementById('workingTime').innerHTML = `  <div class="text-s font-weight-bold text-danger text-uppercase mb-1">
-                                                    <strong> <span >${data.running}</span> Min </strong> {{ __('working Time') }}</div>`;
-                     }
-
-
-
-
-                if (data.estado !== null) {
-                    document.getElementById('mc1Estado').innerHTML = ``;
-                    if (data.estado == 'RUN') {
-                        document.getElementById('mc1Estado').innerHTML = `<i class="fas fa-Pallet  fa-3x text-success"></i>`;
-                    } else {
-                        document.getElementById('mc1Estado').innerHTML = `<i class="fas fa-Pallet  fa-3x text-danger"></i>`;
-                    }
-                }
-
-                // Gráfica hora por hora
-                const horaporo = document.getElementById('hora_por_hora'); // Evita espacios en el id
-
-                const horaXhora = new Chart(horaporo, {
-                    type: 'line',
-                    data: {
-                        labels: Object.keys(data.stop), // Ej: ["07:00", "08:00", "09:00", ...]
-                        datasets: [
-                            {
-                                label: 'Not Working',
-                                data: Object.values(data.stop), // Ej: [5, 8, 6, ...]
-                                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                                borderColor: 'rgba(255, 99, 132, 1)',
-                                borderWidth: 2,
-                                fill: true,
-                                tension: 0.1
-                            },
-                            {
-                                label: 'Running',
-                                data: Object.values(data.run), // Ej: [2, 1, 3, ...]
-                                borderColor: 'rgba(54, 162, 235, 1)',
-                                borderWidth: 3,
-                                fill: true,
-                                tension: 0.5
-                            }
-                        ]
-                    },
-                    options: {
-                        responsive: true,
-                        scales: {
-                            y: {
-                                beginAtZero: true
-                            }
+                        if (!response.ok) {
+                            throw new Error(`Error en el servidor: ${response.status}`);
                         }
-                    }
-                });
 
-            } catch (error) {
-                console.error("Hubo un problema al obtener el corte:", error);
-            }
+                        const data = await response.json();
+                        console.log(data);
+
+                        // ---- Target ----
+                        // El controlador ahora devuelve un número (o 0 si no hay registro)
+                        document.getElementById('targets').innerHTML = data.target ?? 0;
+
+                        // ---- Tabla de paros ----
+                        const registroParos = document.getElementById('regostroParos');
+                        registroParos.innerHTML = '';
+                        let total_de_paros = 0;
+
+                        if (Array.isArray(data.registroParos)) {
+                            data.registroParos.forEach(paro => {
+                                total_de_paros += Number(paro.time_min) || 0;
+
+                                const fila = document.createElement('tr');
+                                fila.innerHTML = `
+                                    <td>${paro.maquina}-</td>
+                                    <td>-${paro.motive}-</td>
+                                    <td>-${paro.time_min} min-</td>
+                                    <td>-${paro.hora}</td>
+                                `;
+                                registroParos.appendChild(fila);
+                            });
+                        }
+
+                        total_de_paros = Number(total_de_paros.toFixed(2));
+
+                        document.getElementById('maquina1').textContent = maquina;
+
+                        // ---- Helper para colores (rojo / amarillo / verde) ----
+                        const colorPor = (valor, rojoHasta, amarilloHasta) =>
+                            valor < rojoHasta ? 'text-danger' : (valor < amarilloHasta ? 'text-warning' : 'text-success');
+
+                        // Paros: más tiempo parado = peor
+                        const colorParos = total_de_paros >= 180 ? 'text-danger'
+                                        : total_de_paros > 60 ? 'text-warning'
+                                        : 'text-success';
+
+                        document.getElementById('parosTime').innerHTML = `
+                            <div class="font-weight-bold ${colorParos} text-uppercase mb-1">
+                                <strong>${total_de_paros} Min </strong> {{ __('Downtime') }}
+                            </div>`;
+
+                        // Cortes y tiempo trabajado: más cortes = mejor
+                        const cortes = Number(data.cortes) || 0;
+                        const colorCortes = colorPor(cortes, 400, 2000);
+
+                        document.getElementById('cortesCuenta').innerHTML = `
+                            <div class="font-weight-bold ${colorCortes} text-uppercase mb-1">
+                                <strong><span>${cortes}</span></strong> {{ __('Quantity of wires') }}
+                            </div>`;
+
+                        document.getElementById('workingTime').innerHTML = `
+                            <div class="text-s font-weight-bold ${colorCortes} text-uppercase mb-1">
+                                <strong><span>${data.running}</span> Min </strong> {{ __('working Time') }}
+                            </div>`;
+
+                        // ---- Estado de la máquina ----
+                        if (data.estado) {
+                            const colorEstado = data.estado === 'RUN' ? 'text-success' : 'text-danger';
+                            document.getElementById('mc1Estado').innerHTML =
+                                `<i class="fas fa-Pallet fa-3x ${colorEstado}"></i>`;
+                        }
+
+                        // ---- Gráfica hora por hora ----
+                        const horaporo = document.getElementById('hora_por_hora');
+
+                        // Destruir la gráfica anterior para evitar "Canvas is already in use"
+                        if (window.horaXhora) {
+                            window.horaXhora.destroy();
+                        }
+
+                        window.horaXhora = new Chart(horaporo, {
+                            type: 'line',
+                            data: {
+                                labels: Object.keys(data.stop),
+                                datasets: [
+                                    {
+                                        label: 'Not Working',
+                                        data: Object.values(data.stop),
+                                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                        borderColor: 'rgba(255, 99, 132, 1)',
+                                        borderWidth: 2,
+                                        fill: true,
+                                        tension: 0.1
+                                    },
+                                    {
+                                        label: 'Running',
+                                        data: Object.values(data.run),
+                                        borderColor: 'rgba(54, 162, 235, 1)',
+                                        borderWidth: 3,
+                                        fill: true,
+                                        tension: 0.5
+                                    }
+                                ]
+                            },
+                            options: {
+                                responsive: true,
+                                scales: {
+                                    y: { beginAtZero: true }
+                                }
+                            }
+                        });
+
+                    } catch (error) {
+                        console.error("Hubo un problema al obtener el corte:", error);
+                    }
 
             try {
                 let fecha = document.getElementById("fecha").value;
