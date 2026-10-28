@@ -24,6 +24,8 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
+
+
 class PpapIngController extends Controller
 {
     public function __invoke(Request $request)
@@ -47,12 +49,12 @@ class PpapIngController extends Controller
         $enginners = DB::table('ingactividades')->where('count', '<', '4')->orderby('Id_request')->get();
         foreach ($enginners as $enginner) {
             $now = Carbon::now();
-            $hours = \Carbon\Carbon::parse($enginner->fecha)->diffInHours(\Carbon\Carbon::now()) ?? 00;
+            $hours = Carbon::parse($enginner->fecha)->diffInHours(Carbon::now()) ?? 00;
             if ($hours > 1) {
                 $minutes = \Carbon\Carbon::parse($enginner->fecha)->diffInMinutes(\Carbon\Carbon::now()) ?? 00;
                 $minutes = ($minutes - ($hours * 60));
             } else {
-                $minutes = \Carbon\Carbon::parse($enginner->fecha)->diffInMinutes(\Carbon\Carbon::now()) ?? 00;
+                $minutes = Carbon::parse($enginner->fecha)->diffInMinutes(Carbon::now()) ?? 00;
             }
             $enginner->times = $hours.'h '.$minutes.'m';
         }
@@ -319,9 +321,12 @@ class PpapIngController extends Controller
                 'naldan@mx.bergstrominc.com',
 
             ];
+            try{
             Mail::to($recipients)->send(new \App\Mail\ppapcontrol\salidanpi($subject, $content));
+            }catch( \Exception $e){
+                return redirect ()->back()->with('error', 'error al enviar email');
+            }
         }
-
         return redirect('/ing');
     }
 
