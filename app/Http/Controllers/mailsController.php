@@ -61,17 +61,17 @@ class mailsController extends Controller
     {
         $value = session('user');
         $cat = session('categoria');
-        if ($value == 'Rocio F' or $value == 'Fatima S') {
+        if ($value == 'J salazar' or $value == 'Fatima S') {
             $registroFirmas = PPAPandPRIM::where('count', '=', 1)->where('ime', '=', '')->orderby('id', 'desc')->get();
         } elseif ($value == 'Edward M' or $value == 'Luis R' or $value == 'Goretti Ro') {
             $registroFirmas = PPAPandPRIM::where('count', '=', 1)->where('quality', '=', '')->orderby('id', 'desc')->get();
-        } elseif ($value == 'Jose Luis') {
+        } elseif ($value == 'Jose Luis' or $value == 'Bruno P') {
             $registroFirmas = PPAPandPRIM::where('count', '=', 1)->where('test', '=', '')->orderby('id', 'desc')->get();
-        } elseif ($value == 'Valeria P' or $value == 'Julio R') {
+        } elseif ($value == 'Dafne F' or $value == 'Julio R') {
             $registroFirmas = PPAPandPRIM::where('count', '=', 1)->where('compras', '=', '')->orderby('id', 'desc')->get();
         } elseif ($value == 'Juan O' or $value == 'David V') {
             $registroFirmas = PPAPandPRIM::where('count', '=', 1)->where('production', '=', '')->orderby('id', 'desc')->get();
-        } elseif ($value == 'Estela G' or $value == 'Gamboa J' or $value == 'Alan P') {
+        } elseif ($value == 'MGUZMAN'  or $value == 'Alan P') {
             $registroFirmas = PPAPandPRIM::where('count', '=', 1)->where('gernete', '=', '')->orderby('id', 'desc')->get();
         } else {
             $registroFirmas = [];

@@ -28,7 +28,7 @@
                                                 <th>publish date</th>
                                                 <th>Enginner </th>
                                                 <th>Sign by quality</th>
-                                                <th>Sign by imex</th>
+                                                <th>Sign by immex</th>
                                                 <th>Sign by testing</th>
                                                 <th>Sign by production</th>
                                                 <th>Sign by purchase</th>

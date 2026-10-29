@@ -205,13 +205,9 @@ class pruebasElectricasController extends Controller
         }
         $mes = Carbon::now()->format('m');
         $mes = intval($mes);
-        $fechas_seleccionadas = [
-            [
-                'fecha' => '2026-11-10',
-                'titulo' => 'Vacaciones',
-                'detalle' => 'Juan Pérez - 5 días aprobados',
-            ],
-        ];
+        $fechas_seleccionadas = mantenimiento_contras_electricas::select('pn','fecha_programada')->where('estatus','=','Pendiente')->get();
+       if ($fechas_seleccionadas->isEmpty()) {
+        $fechas_seleccionadas = [];}
 
         return view('electrical_test.reforce_test_calenda', ['value' => $value, 'cat' => $cat, 'mes' => $mes, 'fechas_seleccionadas' => $fechas_seleccionadas]);
     }
