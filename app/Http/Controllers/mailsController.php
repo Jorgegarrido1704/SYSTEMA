@@ -135,7 +135,7 @@ class mailsController extends Controller
     {
         $id = $request->input('id');
         $value = session('user');
-        if ($value == 'Rocio F' or $value == 'Fatima S') {
+        if ($value == 'J Salazar' or $value == 'J salazar' or $value == 'Fatima S') {
             PPAPandPRIM::where('id', '=', $id)->update(['ime' => carbon::now()->format('d-m-y H:i')]);
         } elseif ($value == 'Edward M' or $value == 'Luis R' or $value == 'Goretti Ro') {
             PPAPandPRIM::where('id', '=', $id)->update(['quality' => carbon::now()->format('d-m-y H:i')]);
