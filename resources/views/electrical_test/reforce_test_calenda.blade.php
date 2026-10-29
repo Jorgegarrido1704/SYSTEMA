@@ -103,9 +103,12 @@ Swal.fire({
 </div>
 <script>
     const fechasSeleccionadas = {!! json_encode($fechas_seleccionadas) !!};
-
+    console.log(fechasSeleccionadas);
     fechasSeleccionadas.forEach(item => {
-        const celda = document.getElementById(item.fecha);
+       let fecha_fix_it = new Date(item.fecha_programada)
+            .toISOString()
+            .slice(0, 10);
+        const celda = document.getElementById(fecha_fix_it);
         if (celda) {
             celda.style.backgroundColor = '#28a745';
             celda.style.color = 'white';
@@ -120,9 +123,9 @@ Swal.fire({
             celda.setAttribute('data-html', 'true');
             celda.setAttribute('data-bs-placement', 'top');
             celda.setAttribute('data-placement', 'top');
-            celda.setAttribute('title', item.titulo);
-            celda.setAttribute('data-bs-content', item.detalle + '<br><small>' + item.fecha + '</small>');
-            celda.setAttribute('data-content', item.detalle + '<br><small>' + item.fecha + '</small>');
+           // celda.setAttribute('title', item.titulo);
+            celda.setAttribute('data-bs-content', item.pn + '<br><small>' + fecha_fix_it + '</small>');
+            celda.setAttribute('data-content', item.pn + '<br><small>' + fecha_fix_it + '</small>');
         }
     });
 

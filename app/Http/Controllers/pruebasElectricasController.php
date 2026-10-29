@@ -205,10 +205,11 @@ class pruebasElectricasController extends Controller
         }
         $mes = Carbon::now()->format('m');
         $mes = intval($mes);
-        $fechas_seleccionadas = mantenimiento_contras_electricas::select('pn','fecha_programada')->where('estatus','=','Pendiente')->get();
+        $fechas_seleccionadas = mantenimiento_contras_electricas::select('pn','fecha_programada')
+        ->where('estatus','=','Pendiente')->get();
        if ($fechas_seleccionadas->isEmpty()) {
         $fechas_seleccionadas = [];}
-
+   // dd($fechas_seleccionadas);
         return view('electrical_test.reforce_test_calenda', ['value' => $value, 'cat' => $cat, 'mes' => $mes, 'fechas_seleccionadas' => $fechas_seleccionadas]);
     }
     public function cargar_seis_meses(){
@@ -218,9 +219,11 @@ class pruebasElectricasController extends Controller
         $fecha=Carbon::parse($ultima_fecha->fecha_programada);
       
         $datos =Po::select('pn')->distinct()->where('id', '>', DB::table('po')->max('id')-2500)->get();
-    //      dd($datos);
+        $cuenta =0;
         foreach ($datos as $dato) {
-        $fecha=$fecha->addWeekday();
+            $cuenta +=1;
+            if ($cuenta > 3) { $cuenta = 0; 
+        $fecha=$fecha->addWeekday(); }
         $nuevo_mantenimiiento = new mantenimiento_contras_electricas();
         $nuevo_mantenimiiento->pn=$dato->pn;
         $nuevo_mantenimiiento->fecha_programada=$fecha;
