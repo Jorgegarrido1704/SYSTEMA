@@ -61,7 +61,7 @@ class mailsController extends Controller
     {
         $value = session('user');
         $cat = session('categoria');
-        if ($value == 'J salazar' or $value == 'Fatima S') {
+        if ($value == 'J Salazar' or $value == 'Fatima S') {
             $registroFirmas = PPAPandPRIM::where('count', '=', 1)->where('ime', '=', '')->orderby('id', 'desc')->get();
         } elseif ($value == 'Edward M' or $value == 'Luis R' or $value == 'Goretti Ro') {
             $registroFirmas = PPAPandPRIM::where('count', '=', 1)->where('quality', '=', '')->orderby('id', 'desc')->get();
