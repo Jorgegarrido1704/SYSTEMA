@@ -2,7 +2,6 @@
 
 @section('contenido')
 
-<script src="{{ asset('dash/js/vacaciones.js') }}"></script>
 
 @if (session('error'))
 <script>
@@ -19,6 +18,7 @@ Swal.fire({
 
 <div class="d-sm-flex align-items-center justify-content-between mb-4">  </div>
 
+    
 @push('scripts')
 
 
@@ -28,6 +28,17 @@ Swal.fire({
     $year = $year ?? now()->year;
     $diasSemana = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
 @endphp
+
+<div class="row">
+        <div class="col-lg-12">
+           
+            @if($value=="Admin")
+           
+            <button class="btn btn-primary"><a href="{{ route('pruebas.cargar_seis_meses') }}" style="color: #fff">Cargar proximos 6 meses</a></button>
+            @endif
+        </div>
+    </div>
+
 
 <div class="row">
     @for ($mes ; $mes <= 12; $mes++)

@@ -5,11 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\electricalTesting;
 use App\Models\materialPruebasElectricas;
 use App\Models\regPar;
+use App\Models\po;
+use App\Models\mantenimiento_contras_electricas;
 use App\Models\Wo;
 use App\Models\workScreduleModel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class pruebasElectricasController extends Controller
 {
@@ -209,6 +213,28 @@ class pruebasElectricasController extends Controller
             ],
         ];
 
-        return view('electrica-l_test.reforce_test_calenda', ['value' => $value, 'cat' => $cat, 'mes' => $mes, 'fechas_seleccionadas' => $fechas_seleccionadas]);
+        return view('electrical_test.reforce_test_calenda', ['value' => $value, 'cat' => $cat, 'mes' => $mes, 'fechas_seleccionadas' => $fechas_seleccionadas]);
     }
+    public function cargar_seis_meses(){
+        $value = session('user');
+        if ($value != 'Admin') { return redirect('/'); }
+        $ultima_fecha=mantenimiento_contras_electricas::select('fecha_programada')->orderby('id','desc')->first();
+        $fecha=Carbon::parse($ultima_fecha->fecha_programada);
+      
+        $datos =Po::select('pn')->distinct()->where('id', '>', DB::table('po')->max('id')-2500)->get();
+    //      dd($datos);
+        foreach ($datos as $dato) {
+        $fecha=$fecha->addWeekday();
+        $nuevo_mantenimiiento = new mantenimiento_contras_electricas();
+        $nuevo_mantenimiiento->pn=$dato->pn;
+        $nuevo_mantenimiiento->fecha_programada=$fecha;
+        $nuevo_mantenimiiento->save();
+        }
+       
+              return redirect()->back()->with(['error','Se reconosio la carga']);
+      
+        
+
+
+    } 
 }
