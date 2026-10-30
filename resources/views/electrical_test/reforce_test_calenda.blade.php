@@ -104,30 +104,59 @@ Swal.fire({
 <script>
     const fechasSeleccionadas = {!! json_encode($fechas_seleccionadas) !!};
     console.log(fechasSeleccionadas);
-    fechasSeleccionadas.forEach(item => {
-       let fecha_fix_it = new Date(item.fecha_programada)
-            .toISOString()
-            .slice(0, 10);
-        const celda = document.getElementById(fecha_fix_it);
-        if (celda) {
-            celda.style.backgroundColor = '#28a745';
-            celda.style.color = 'white';
-            celda.style.cursor = 'pointer';
+    // Agrupar números de parte por fecha
+const fechasAgrupadas = {};
 
-            // Atributos para el popover de Bootstrap
-            celda.setAttribute('data-bs-toggle', 'popover'); // Bootstrap 5
-            celda.setAttribute('data-toggle', 'popover');    // Bootstrap 4 (por si acaso)
-            celda.setAttribute('data-bs-trigger', 'hover');
-            celda.setAttribute('data-trigger', 'hover');
-            celda.setAttribute('data-bs-html', 'true');
-            celda.setAttribute('data-html', 'true');
-            celda.setAttribute('data-bs-placement', 'top');
-            celda.setAttribute('data-placement', 'top');
-           // celda.setAttribute('title', item.titulo);
-            celda.setAttribute('data-bs-content', item.pn + '<br><small>' + fecha_fix_it + '</small>');
-            celda.setAttribute('data-content', item.pn + '<br><small>' + fecha_fix_it + '</small>');
-        }
-    });
+fechasSeleccionadas.forEach(item => {
+
+    let fecha_fix_it = new Date(item.fecha_programada)
+        .toISOString()
+        .slice(0, 10);
+
+    if (!fechasAgrupadas[fecha_fix_it]) {
+        fechasAgrupadas[fecha_fix_it] = [];
+    }
+
+    fechasAgrupadas[fecha_fix_it].push(item.pn);
+
+});
+
+// Pintar calendario
+Object.keys(fechasAgrupadas).forEach(fecha_fix_it => {
+
+    const celda = document.getElementById(fecha_fix_it);
+
+    if (celda) {
+
+        celda.style.backgroundColor = '#28a745';
+        celda.style.color = 'white';
+        celda.style.cursor = 'pointer';
+
+        // Unir números de parte separados por coma
+        const numerosParte = fechasAgrupadas[fecha_fix_it].join(', ');
+
+        // Configurar Popover
+        celda.setAttribute('data-bs-toggle', 'popover');
+        celda.setAttribute('data-toggle', 'popover');
+        celda.setAttribute('data-bs-trigger', 'hover');
+        celda.setAttribute('data-trigger', 'hover');
+        celda.setAttribute('data-bs-html', 'true');
+        celda.setAttribute('data-html', 'true');
+        celda.setAttribute('data-bs-placement', 'top');
+        celda.setAttribute('data-placement', 'top');
+
+        celda.setAttribute(
+            'data-bs-content',
+            `<strong>${numerosParte}</strong><br><small>${fecha_fix_it}</small>`
+        );
+
+        celda.setAttribute(
+            'data-content',
+            `<strong>${numerosParte}</strong><br><small>${fecha_fix_it}</small>`
+        );
+    }
+
+});
 
     // Inicializar popovers (Bootstrap 5)
     document.addEventListener('DOMContentLoaded', function () {
