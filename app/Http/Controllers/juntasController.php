@@ -2021,7 +2021,7 @@ class juntasController extends Controller
         $noposible = $repetidosDias = 0;
         $email = null;
         $supervisor = '';
-        if ($lider == 'GUILLEN MIRANDA JUAN JOSE' or $lider == 'AGUILAR HERNANDEZ ANA PAOLA' or $lider == 'RAMOS CEDEÑO LUIS ALBERTO'
+        if ( $lider == 'AGUILAR HERNANDEZ ANA PAOLA' or $lider == 'RAMOS CEDEÑO LUIS ALBERTO'
             or $lider == 'GAMBOA RIOS JORGE ALEJANDRO' or $lider == 'Jose de Jesus Cervera Lopez' or $lider == 'VILLALPANDO RODRIGUEZ DAVID'
             or $lider == 'OLAES FRAGA JUAN JOSE' or $lider == 'FANDIÑO TORRES ROCIO' or $lider == 'Hector Cano'
             or $lider == 'GUTIERREZ MARTINEZ DANIEL EMMANUEL' or $lider = 'GONZALEZ CHAVEZ ANGEL DE JESUS'
@@ -2059,7 +2059,7 @@ class juntasController extends Controller
                     ->where('fecha_de_solicitud', '=', $checkDias->toDateString())
                     ->where('id_empleado', '=', $pesonal)
                     ->count();
-                if ($datosVacaciones > 2) {
+                if ($datosVacaciones > 8) {
                     $noposible += 1;
                 }
                 if ($diasRepetidos > 0) {
