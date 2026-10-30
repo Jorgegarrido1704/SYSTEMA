@@ -209,7 +209,7 @@ class pruebasElectricasController extends Controller
         ->where('estatus','=','Pendiente')->get();
        if ($fechas_seleccionadas->isEmpty()) {
         $fechas_seleccionadas = [];}
-   // dd($fechas_seleccionadas);
+    // dd($fechas_seleccionadas);
         return view('electrical_test.reforce_test_calenda', ['value' => $value, 'cat' => $cat, 'mes' => $mes, 'fechas_seleccionadas' => $fechas_seleccionadas]);
     }
     public function cargar_seis_meses(){
@@ -236,4 +236,54 @@ class pruebasElectricasController extends Controller
 
 
     } 
+    public function guardarTrabajoRealizados(Request $request)
+        {
+            $request->validate([
+                'fecha_programada' => 'required|date',
+                'numeros_parte' => 'required|array|min:1',
+                'numeros_parte.*' => 'required|string',
+                'trabajo_realizado' => 'required|string|max:5000',
+            ]);
+
+            try {
+
+                $actualizados = DB::transaction(function () use ($request) {
+
+                    return mantenimiento_contras_electricas::whereDate(
+                        'fecha_programada',
+                        $request->fecha_programada
+                    )
+                    ->whereIn('pn', $request->numeros_parte)
+                    ->where(function ($query) {
+                        $query->whereNull('estatus')
+                            ->orWhere('estatus', '!=', 'Finalizado');
+                    })
+                    ->update([
+                        'reparacion' => $request->trabajo_realizado,
+                        'estatus' => 'Finalizado',
+                    ]);
+
+                });
+
+                if ($actualizados == 0) {
+                    return redirect()->back()->with(
+                        'error',
+                        'No se actualizaron registros. Verifica que los números de parte estén pendientes.'
+                    );
+                }
+
+                return redirect()->back()->with(
+                    'success',
+                    "Se finalizaron correctamente {$actualizados} mantenimientos."
+                );
+
+            } catch (\Exception $e) {
+
+                return redirect()->back()->with(
+                    'error',
+                    'Error al guardar: ' . $e->getMessage()
+                );
+
+            }
+        }
 }

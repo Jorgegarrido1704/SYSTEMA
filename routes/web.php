@@ -99,6 +99,7 @@ Route::controller(pruebasElectricasController::class)->group(function () {
     Route::post('/updatematerial', [pruebasElectricasController::class, 'updatematerial'])->name('updatematerialPruebasELectricas');
     Route::get('/calendarizacion_pruebas_electricas', [pruebasElectricasController::class, 'calendarizacion_pruebas_electricas'])->name('calendarizacion_pruebas_electricas');
     Route::get('/cargar_seis_meses','cargar_seis_meses')->name('pruebas.cargar_seis_meses');
+    Route::POST('/guardarTrabajoRealizados','guardarTrabajoRealizados')->name('guardarTrabajoRealizados');
     });
 
 Route::controller(PpapIngController::class)->group(function () {
