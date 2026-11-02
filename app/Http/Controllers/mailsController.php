@@ -71,7 +71,7 @@ class mailsController extends Controller
             $registroFirmas = PPAPandPRIM::where('count', '=', 1)->where('compras', '=', '')->orderby('id', 'desc')->get();
         } elseif ($value == 'Juan O' or $value == 'David V') {
             $registroFirmas = PPAPandPRIM::where('count', '=', 1)->where('production', '=', '')->orderby('id', 'desc')->get();
-        } elseif ($value == 'MGUZMAN'  or $value == 'Alan P') {
+        } elseif ($value == 'MGUZMAN' or $value == 'Alan P') {
             $registroFirmas = PPAPandPRIM::where('count', '=', 1)->where('gernete', '=', '')->orderby('id', 'desc')->get();
         } else {
             $registroFirmas = [];
@@ -145,7 +145,7 @@ class mailsController extends Controller
             PPAPandPRIM::where('id', '=', $id)->update(['compras' => carbon::now()->format('d-m-y H:i')]);
         } elseif ($value == 'Juan O' or $value == 'David V') {
             PPAPandPRIM::where('id', '=', $id)->update(['production' => carbon::now()->format('d-m-y H:i')]);
-        } elseif ($value == 'Estela G' or $value == 'Gamboa J') {
+        } elseif ($value == 'MGUZMAN' or $value == 'Alan P') {
             PPAPandPRIM::where('id', '=', $id)->update(['gernete' => carbon::now()->format('d-m-y H:i')]);
         }
         if (PPAPandPRIM::where('id', '=', $id)->where('ime', '!=', '')->where('quality', '!=', '')->where('test', '!=', '')->where('compras', '!=', '')->where('production', '!=', '')->where('gernete', '!=', '')->update(['count' => 2])) {
