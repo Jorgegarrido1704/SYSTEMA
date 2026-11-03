@@ -132,8 +132,8 @@ var dat = {!! json_encode($datosP) !!};
                             </div>
                         </div>
 
-                        <div class="col-xl-3 col-lg-4"> 
-                            <div class="row">   
+                        <div class="col-xl-3 col-lg-4">
+                            <div class="row">
                                 <div class="col-xl-12 col-lg-2">
                                     <div class="card shadow mb-4">
                                             <!-- printer code -->
@@ -212,7 +212,7 @@ var dat = {!! json_encode($datosP) !!};
                                                 <td>
                                             <form action="{{route('codeBarPlan',['wo'=>$liberar->wo])}}" method="GET">
                                                 <div class="form-group">
-                                                    
+
                                                     <div class="form-group">
                                                     <button class="btn btn-success" type="submit"> {{ __('Liberate') }}</button>
                                                     </div>
@@ -227,7 +227,7 @@ var dat = {!! json_encode($datosP) !!};
                                     </div>
                                 </div>
                             </div>
-                       
+
 
                     </div>
 
@@ -254,7 +254,7 @@ var dat = {!! json_encode($datosP) !!};
                                                 <div class="col-lg-3 col-xl-3 mb-4">
                                                     <div class="form-group">
                                                         <label class="po-label" for="client">{{ __('Customer') }}</label>
-                                                        <input type="text" id="client" name="client" class="form-control" required>
+                                                        <input type="text" id="client" name="client" class="form-control" readonly required>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-1 col-xl-1 mb-4">
@@ -284,13 +284,13 @@ var dat = {!! json_encode($datosP) !!};
                                                 <div class="col-lg-6 col-xl-6 mb-4">
                                                     <div class="form-group">
                                                         <label class="po-label" for="Description">{{ __('Description') }}</label>
-                                                        <input type="text" id="Description" name="Description" class="form-control">
+                                                        <input type="text" id="Description" name="Description" class="form-control" readonly required>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6 col-xl-6 mb-4">
                                                     <div class="form-group">
                                                         <label class="po-label" for="Enviar">{{ __('Send To') }}</label>
-                                                        <input type="text" id="Enviar" name="Enviar" class="form-control">
+                                                        <input type="text" id="Enviar" name="Enviar" class="form-control " readonly required>
                                                     </div>
                                                 </div>
 
@@ -410,7 +410,7 @@ var dat = {!! json_encode($datosP) !!};
                                                             <div class="col-lg-5">
                                                                 <label for="work_order_reactive">{{ __('Reactivate Work Order') }}</label>
                                                             </div>
-                                                            <div class='col-lg-5'>  
+                                                            <div class='col-lg-5'>
                                                                 <input type="text" class="form-control" name="work_order_reactive" id="work_order_reactive"  maxlength="6"  minlength="6" required >
                                                             </div>
                                                         </div>
@@ -429,7 +429,7 @@ var dat = {!! json_encode($datosP) !!};
                                                     <div class="form-group col-lg-5 ">
                                                         <label for="finish_work_order">{{ __('Finish Work Order')}}</label>
                                                     </div>
-                                                    <div class='form-group col-lg-5'>    
+                                                    <div class='form-group col-lg-5'>
                                                         <input type="text" class="form-control" name="finish_work_order" id="finish_work_order"  maxlength="6"  minlength="6" required >
                                                     </div>
                                                 </div>
@@ -462,7 +462,7 @@ var dat = {!! json_encode($datosP) !!};
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-2 mb-4">
-                                                        <div >  
+                                                        <div >
                                                             <button class="submit btn btn-primary"> Enviar</button>
                                                         </div>
                                                     </div>
