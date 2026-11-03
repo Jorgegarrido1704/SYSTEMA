@@ -482,7 +482,7 @@ var dat = {!! json_encode($datosP) !!};
 
                             if (pn && pn.trim() !== '') {
                                 var xhr = new XMLHttpRequest();
-                                xhr.open('POST', "{{ route('getPnDetails') }}", true);
+                                xhr.open('GET', "{{ route('getPnDetails') }}?pn=" + pn, true);
                                 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
                                 // Add CSRF token to request headers
