@@ -10,34 +10,56 @@ class getPnDetailsController extends Controller
 {
     public function getPnDetails(Request $request)
     {
-        // Assuming you have a 'pn' field in the request
         $pn = $request->input('pn');
 
-        // Query the database to fetch details based on the part number
+        // Validar número de parte
+        if (empty($pn)) {
+            return response()->json([
+                'error' => 'Part number is required',
+            ], 400);
+        }
+
+        // Obtener información del número de parte
         $pnDetail = precios::where('pn', $pn)->first();
-        foreach ($pnDetail as $detail) {
-            $client = $detail->client;
-            $desc = $detail->desc;
-            $rev = $detail->rev;
-            $price = $detail->price;
-            $send = $detail->send;
+
+        if (! $pnDetail) {
+            return response()->json([
+                'error' => 'Part number not found',
+            ], 404);
         }
-        $latestRev = Wo::select('rev')->where('NumPart', $pn)->orderBy('id', 'desc')->first();
-        if (empty($latestRev)) {
-            $color = strpos($latestRev->rev, 'PPAP') !== false ? 'blue' : (strpos($latestRev->rev, 'PRIM') !== false ? 'blue' : 'white');
-        } else {
-            $color = 'white';
+
+        $client = $pnDetail->client;
+        $desc = $pnDetail->desc;
+        $rev = $pnDetail->rev;
+        $price = $pnDetail->price;
+        $send = $pnDetail->send;
+
+        // Obtener última revisión de Work Orders
+        $latestRev = Wo::select('rev')
+            ->where('NumPart', $pn)
+            ->orderBy('id', 'desc')
+            ->first();
+
+        // Determinar color
+        $color = 'white';
+
+        if ($latestRev && ! empty($latestRev->rev)) {
+
+            if (
+                strpos($latestRev->rev, 'PPAP') !== false ||
+                strpos($latestRev->rev, 'PRIM') !== false
+            ) {
+                $color = 'blue';
+            }
         }
-        $pnDetails = [
+
+        return response()->json([
             'client' => $client,
             'desc' => $desc,
             'rev' => $rev,
             'price' => $price,
             'send' => $send,
             'color' => $color,
-        ];
-
-        // Return the details as JSON response
-        return response()->json($pnDetails);
+        ]);
     }
 }

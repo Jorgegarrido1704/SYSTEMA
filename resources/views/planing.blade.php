@@ -489,23 +489,51 @@ var dat = {!! json_encode($datosP) !!};
                                 var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
                                 xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken);
 
-                                xhr.onload = function() {
-                                    if (xhr.status >= 200 && xhr.status < 400) {
-                                        try {
-                                            var respuesta = JSON.parse(xhr.responseText);
-                                            console.log(respuesta);
-                                            document.getElementById('client').value = respuesta.client || '';
-                                            respuesta.rev = respuesta.rev.replace('PPAP ', '').replace('PRIM ', '');
-                                            document.getElementById('Rev1').value = respuesta.rev || '';
-                                            document.getElementById('Rev').value = respuesta.rev || '';
-                                            document.getElementById('Description').value = respuesta.desc || '';
-                                            document.getElementById('Uprice').value = respuesta.price || '';
-                                            document.getElementById('Enviar').value = respuesta.send || '';
-                                            document.getElementById('ChangeOrders').style.backgroundColor = respuesta.color || '#e0e0e0';
-                                            document.getElementById('ChangeOrders').style.color = respuesta.color === 'white' ? 'black' : 'white';
-                                        } catch (error) {
-                                            console.error('Error parsing JSON response:', error);
-                                        }
+
+xhr.onload = function() {
+
+    try {
+
+        var respuesta = JSON.parse(xhr.responseText);
+
+        if (xhr.status !== 200) {
+            console.error('Error:', respuesta.error);
+
+            document.getElementById('client').value = '';
+            document.getElementById('Rev1').value = '';
+            document.getElementById('Rev').value = '';
+            document.getElementById('Description').value = '';
+            document.getElementById('Uprice').value = '';
+            document.getElementById('Enviar').value = '';
+
+            return;
+        }
+
+        document.getElementById('client').value = respuesta.client || '';
+
+        let revision = respuesta.rev || '';
+
+        revision = revision
+            .replace('PPAP ', '')
+            .replace('PRIM ', '');
+
+        document.getElementById('Rev1').value = revision;
+        document.getElementById('Rev').value = revision;
+        document.getElementById('Description').value = respuesta.desc || '';
+        document.getElementById('Uprice').value = respuesta.price || '';
+        document.getElementById('Enviar').value = respuesta.send || '';
+
+        document.getElementById('ChangeOrders').style.backgroundColor =
+            respuesta.color || 'white';
+
+        document.getElementById('ChangeOrders').style.color =
+            respuesta.color === 'white' ? 'black' : 'white';
+
+    } catch (error) {
+        console.error('Error parsing JSON:', error);
+    }
+};
+
                                     } else {
                                         console.error('Error in XMLHttpRequest. Status:', xhr.status);
                                     }
