@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\precios;
 use App\Models\Wo;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class getPnDetailsController extends Controller
 {
@@ -14,7 +14,7 @@ class getPnDetailsController extends Controller
         $pn = $request->input('pn');
 
         // Query the database to fetch details based on the part number
-        $pnDetail = DB::select('SELECT * FROM precios WHERE pn=?', [$pn]);
+        $pnDetail = precios::where('pn', $pn)->first();
         foreach ($pnDetail as $detail) {
             $client = $detail->client;
             $desc = $detail->desc;
