@@ -23,7 +23,11 @@ class getPnDetailsController extends Controller
             $send = $detail->send;
         }
         $latestRev = Wo::select('rev')->where('NumPart', $pn)->orderBy('id', 'desc')->first();
-        $color = strpos($latestRev->rev, 'PPAP') !== false ? 'blue' : (strpos($latestRev->rev, 'PRIM') !== false ? 'blue' : 'white');
+        if (empty($latestRev)) {
+            $color = strpos($latestRev->rev, 'PPAP') !== false ? 'blue' : (strpos($latestRev->rev, 'PRIM') !== false ? 'blue' : 'white');
+        } else {
+            $color = 'white';
+        }
         $pnDetails = [
             'client' => $client,
             'desc' => $desc,
