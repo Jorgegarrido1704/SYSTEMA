@@ -477,82 +477,128 @@ var dat = {!! json_encode($datosP) !!};
                     </div>
                         <!-- END Reactive Orders Area -->
                     <script>
-                        function obtenerInformacion() {
-                            var pn = document.getElementById('pn').value;
 
-                            if (pn && pn.trim() !== '') {
-                                var xhr = new XMLHttpRequest();
-                                xhr.open('POST', "{{ route('getPnDetails') }}", true);
-                                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+function obtenerInformacion() {
 
-                                // Add CSRF token to request headers
-                                var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-                                xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken);
+    var pn = document.getElementById('pn').value.trim();
 
+    if (pn !== '') {
 
-xhr.onload = function() {
+        var xhr = new XMLHttpRequest();
 
-    try {
+        xhr.open('POST', "{{ route('getPnDetails') }}", true);
 
-        var respuesta = JSON.parse(xhr.responseText);
+        xhr.setRequestHeader(
+            'Content-Type',
+            'application/x-www-form-urlencoded'
+        );
 
-        if (xhr.status !== 200) {
-            console.error('Error:', respuesta.error);
+        // CSRF Token
+        var csrfToken = document.querySelector(
+            'meta[name="csrf-token"]'
+        ).getAttribute('content');
 
-            document.getElementById('client').value = '';
-            document.getElementById('Rev1').value = '';
-            document.getElementById('Rev').value = '';
-            document.getElementById('Description').value = '';
-            document.getElementById('Uprice').value = '';
-            document.getElementById('Enviar').value = '';
+        xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken);
 
-            return;
-        }
+        // Procesar respuesta
+        xhr.onload = function() {
 
-        document.getElementById('client').value = respuesta.client || '';
+            try {
 
-        let revision = respuesta.rev || '';
+                var respuesta = JSON.parse(xhr.responseText);
 
-        revision = revision
-            .replace('PPAP ', '')
-            .replace('PRIM ', '');
+                // Validar respuesta del servidor
+                if (xhr.status !== 200) {
 
-        document.getElementById('Rev1').value = revision;
-        document.getElementById('Rev').value = revision;
-        document.getElementById('Description').value = respuesta.desc || '';
-        document.getElementById('Uprice').value = respuesta.price || '';
-        document.getElementById('Enviar').value = respuesta.send || '';
+                    console.error(
+                        'Error:', respuesta.error || xhr.status
+                    );
 
-        document.getElementById('ChangeOrders').style.backgroundColor =
-            respuesta.color || 'white';
+                    limpiarInformacion();
+                    return;
+                }
 
-        document.getElementById('ChangeOrders').style.color =
-            respuesta.color === 'white' ? 'black' : 'white';
+                // Información del número de parte
+                document.getElementById('client').value =
+                    respuesta.client || '';
 
-    } catch (error) {
-        console.error('Error parsing JSON:', error);
+                // Limpiar prefijos de revisión
+                var revision = respuesta.rev || '';
+
+                revision = revision
+                    .replace('PPAP ', '')
+                    .replace('PRIM ', '');
+
+                document.getElementById('Rev1').value = revision;
+                document.getElementById('Rev').value = revision;
+
+                document.getElementById('Description').value =
+                    respuesta.desc || '';
+
+                document.getElementById('Uprice').value =
+                    respuesta.price || '';
+
+                document.getElementById('Enviar').value =
+                    respuesta.send || '';
+
+                // Cambiar colores de ChangeOrders
+                var changeOrders = document.getElementById('ChangeOrders');
+
+                changeOrders.style.backgroundColor =
+                    respuesta.color || 'white';
+
+                changeOrders.style.color =
+                    respuesta.color === 'white' ? 'black' : 'white';
+
+                console.log('PN information loaded:', respuesta);
+
+            } catch (error) {
+
+                console.error('Error processing response:', error);
+                limpiarInformacion();
+
+            }
+        };
+
+        // Error de conexión
+        xhr.onerror = function() {
+
+            console.error('Request failed');
+
+            limpiarInformacion();
+
+        };
+
+        // Enviar número de parte
+        xhr.send('pn=' + encodeURIComponent(pn));
+
+    } else {
+
+        console.error('Invalid part number');
+
+        limpiarInformacion();
+
     }
-};
+}
 
-                                    } else {
-                                        console.error('Error in XMLHttpRequest. Status:', xhr.status);
-                                    }
-                                };
 
-                                xhr.onerror = function() {
-                                    console.error('Request failed');
-                                };
+// Limpiar campos cuando no existe información
+function limpiarInformacion() {
 
-                                xhr.send('pn=' + pn);
-                            } else {
-                                console.error('Invalid part number');
-                                document.getElementById('Rev').value = '';
-                                document.getElementById('Description').value = '';
-                                document.getElementById('Uprice').value = '';
-                                document.getElementById('Enviar').value = '';
-                                document.getElementById('ChangeOrders').style.color = 'black';
-                            }
-                        }
+    document.getElementById('client').value = '';
+    document.getElementById('Rev1').value = '';
+    document.getElementById('Rev').value = '';
+    document.getElementById('Description').value = '';
+    document.getElementById('Uprice').value = '';
+    document.getElementById('Enviar').value = '';
+
+    var changeOrders = document.getElementById('ChangeOrders');
+
+    changeOrders.style.backgroundColor = 'white';
+    changeOrders.style.color = 'black';
+
+}
+
                         function validarPpapPrim() {
                             var ppapCheckbox = document.getElementById('ppap');
                             var primCheckbox = document.getElementById('prim');
