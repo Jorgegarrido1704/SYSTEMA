@@ -626,21 +626,21 @@ class juntasController extends Controller
                  AND WEEK(STR_TO_DATE(fecha, '%d-%m-%Y'), 3) = ?
                  AND codigo != 'TODO BIEN' THEN 1 ELSE 0 END) as weekBad
      ", [
-                $YearParto,
-                $YearParto,   // yearGood, yearBad
-                $YearParto,
-                $month,       // monthGood
-                $YearParto,
-                $month,       // monthBad
-                $lastmonthYear,
-                $lastmonth, // lastmonthGood
-                $lastmonthYear,
-                $lastmonth, // lastmonthBad
-                $weekYear,
-                $lastweek,     // weekGood
-                $weekYear,
-                $lastweek,      // weekBad
-            ])
+            $YearParto,
+            $YearParto,   // yearGood, yearBad
+            $YearParto,
+            $month,       // monthGood
+            $YearParto,
+            $month,       // monthBad
+            $lastmonthYear,
+            $lastmonth, // lastmonthGood
+            $lastmonthYear,
+            $lastmonth, // lastmonthBad
+            $weekYear,
+            $lastweek,     // weekGood
+            $weekYear,
+            $lastweek,      // weekBad
+        ])
             ->first();
 
         // Ahora tienes todos los valores listos:
@@ -1334,7 +1334,7 @@ class juntasController extends Controller
         $enproceso = count($registros);
         $totalgeneral += $i;
         $registoPorFirmas = [];
-                        $retasoPorPlan = [];
+        $retasoPorPlan = [];
         $yearsignatires = carbon::now()->format('m') < 2 ? carbon::now()->subYear()->format('Y') : carbon::now()->format('Y');
         $monthsignatires = carbon::now()->format('m') < 2 ? 12 : carbon::now()->subMonth()->format('m');
 
@@ -2021,11 +2021,11 @@ class juntasController extends Controller
         $noposible = $repetidosDias = 0;
         $email = null;
         $supervisor = '';
-        if ( $lider == 'AGUILAR HERNANDEZ ANA PAOLA' or $lider == 'RAMOS CEDEÑO LUIS ALBERTO'
-            or $lider == 'GAMBOA RIOS JORGE ALEJANDRO' or $lider == 'Jose de Jesus Cervera Lopez' or $lider == 'VILLALPANDO RODRIGUEZ DAVID'
+        if ($lider == 'AGUILAR HERNANDEZ ANA PAOLA' or $lider == 'RAMOS CEDEÑO LUIS ALBERTO'
+            or $lider == 'GAMBOA RIOS JORGE ALEJANDRO' or $lider == 'VILLALPANDO RODRIGUEZ DAVID'
             or $lider == 'OLAES FRAGA JUAN JOSE' or $lider == 'FANDIÑO TORRES ROCIO' or $lider == 'Hector Cano'
             or $lider == 'GUTIERREZ MARTINEZ DANIEL EMMANUEL' or $lider = 'GONZALEZ CHAVEZ ANGEL DE JESUS'
-            or $lider == 'Jorge Arturo Garrido Mares'
+            or $lider == 'Jorge Arturo Garrido Mares' or $lider == 'Jorge Salazar'
         ) {
             $buscarEmails = personalBergsModel::select('email', 'user')->where('employeeName', '=', $lider)->first();
             $email = $buscarEmails->email;
@@ -2069,7 +2069,7 @@ class juntasController extends Controller
             $checkDias->addDay(1);
         }
 
-        if ($value == 'Admin' or $value == 'Paola A' or $value == 'Angy B') {
+        if ($value == 'Admin' or $value == 'Paola A' or $value == 'Angy B' or $value == 'Jhoana Lop') {
             $noposible = 0;
         }
         if ($noposible > 0) {

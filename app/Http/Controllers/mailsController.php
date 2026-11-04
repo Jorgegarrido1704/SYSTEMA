@@ -139,9 +139,9 @@ class mailsController extends Controller
             PPAPandPRIM::where('id', '=', $id)->update(['ime' => carbon::now()->format('d-m-y H:i')]);
         } elseif ($value == 'Edward M' or $value == 'Luis R' or $value == 'Goretti Ro') {
             PPAPandPRIM::where('id', '=', $id)->update(['quality' => carbon::now()->format('d-m-y H:i')]);
-        } elseif ($value == 'Jose Luis') {
+        } elseif ($value == 'Jose Luis' or $value == 'Bruno P') {
             PPAPandPRIM::where('id', '=', $id)->update(['test' => carbon::now()->format('d-m-y H:i')]);
-        } elseif ($value == 'Valeria P' or $value == 'Julio R') {
+        } elseif ($value == 'Dafne F' or $value == 'Julio R') {
             PPAPandPRIM::where('id', '=', $id)->update(['compras' => carbon::now()->format('d-m-y H:i')]);
         } elseif ($value == 'Juan O' or $value == 'David V') {
             PPAPandPRIM::where('id', '=', $id)->update(['production' => carbon::now()->format('d-m-y H:i')]);
