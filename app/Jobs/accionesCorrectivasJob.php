@@ -32,7 +32,8 @@ class accionesCorrectivasJob implements ShouldQueue
             $mailto = personalBergsModel::select('email', 'employeeLider')->where('employeeName', $verificacion->resposableAccion)->first();
             $mailaddress = [
                 'jgarrido@mx.bergstrominc.com',
-                'maleman@mx.bergstrominc.com',
+                'lramos@mx.bergstrominc.com',
+                'emedina@mx.bergstrominc.com',
             ];
             if ($mailto && $mailto->email) {
                 $mailaddress[] = $mailto->email;
@@ -55,7 +56,8 @@ class accionesCorrectivasJob implements ShouldQueue
             $mailto = personalBergsModel::select('email', 'employeeLider')->where('employeeName', $acciones->resposableAccion)->first();
             $mailaddress = [
                 'jgarrido@mx.bergstrominc.com',
-                'maleman@mx.bergstrominc.com',
+                'lramos@mx.bergstrominc.com',
+                'emedina@mx.bergstrominc.com',
             ];
             if ($mailto && $mailto->email) {
                 $mailaddress[] = $mailto->email;
@@ -81,13 +83,15 @@ class accionesCorrectivasJob implements ShouldQueue
             if ($mailto && $mailto->email) {
                 $mailaddress = [
                     'jgarrido@mx.bergstrominc.com',
-                    'maleman@mx.bergstrominc.com',
+                    'lramos@mx.bergstrominc.com',
+                    'emedina@mx.bergstrominc.com',
                     $mailto->email ?? null,
                 ];
             } else {
                 $mailaddress = [
                     'jgarrido@mx.bergstrominc.com',
-                    'maleman@mx.bergstrominc.com',
+                    'lramos@mx.bergstrominc.com',
+                    'emedina@mx.bergstrominc.com',
                 ];
             }
 

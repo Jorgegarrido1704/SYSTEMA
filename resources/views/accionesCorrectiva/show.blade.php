@@ -48,7 +48,7 @@
                                     <div class="card shadow mb-4">
                                         <div class="card-header py-3">
                                             <h6 class="m-0 font-weight-bold text-primary">Descripcion de la contencion</h6>
-                                            @if($value =="Admin" or $value=="Martin A")
+                                            @if($value =="Admin" or $value=="Edward M" or $value=="Luis R")
                                 <form id="eliminarContencionForm" method="POST" action="{{ route('accionesCorrectivas.eliminarCausaRaiz', $registroPorquest->folioAccion) }}" style="display: inline;">
                                     @csrf
                                     <input type="hidden" name="donde" value="contencion">
@@ -59,7 +59,7 @@
                                         </div>
                                         <div class="card-body" style="overflow-y: auto; max-height: 460px;">
                                                 <div class="row">
-                                                    @if($value =="Admin" or $value=="Martin A")
+                                                    @if($value =="Admin" or $value=="Edward M" or $value=="Luis R")
                                                     <form action="{{ route('accionesCorrectivas.guardarContencion', ['id' => $registroPorquest->folioAccion]) }}" method="GET">
                                                         <div class="row">
                                                             <div class="col-6 mb-3">
@@ -94,7 +94,7 @@
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
                                 <h6 class="m-0 font-weight-bold text-primary">Analisis de causa raiz</h6>
-                                @if($value =="Admin" or $value=="Martin A")
+                                @if($value =="Admin" or $value=="Edward M" or $value=="Luis R")
                                 <form id="eliminarCausaRaizForm" method="POST" action="{{ route('accionesCorrectivas.eliminarCausaRaiz', $registroPorquest->folioAccion) }}" style="display: inline;">
                                     @csrf
                                     <input type="hidden" name="donde" value="causaRaiz">
@@ -291,7 +291,7 @@
                                         <h6 class="m-0 font-weight-bold text-primary">
                                             Registro de plan de accion {{$accion->id}}
                                         </h6>
-                                        @if($value =="Admin" or $value=="Martin A")
+                                        @if($value =="Admin" or $value=="Edward M" or $value=="Luis R")
                                         <div class="row">
                                             <div class ="col-6">
                                                 <form id="statusSubAccion_{{$accion->id}}" method="GET" action="{{ route('accionesCorrectivas.statusSubAccion', ['id' => $accion->id, 'folio' => $accion->folioAccion]) }}" style="display: inline;" >
@@ -442,7 +442,7 @@
                 <div class="col-lg-12 mb-4 d-flex justify-content-center">
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            @if($value =="Admin" or $value=="Martin A")
+                            @if($value =="Admin" or $value=="Edward M" or $value=="Luis R")
                         <form action="{{ route('accionesCorrectivas.aceptarAcciones', ['folio' => $registroPorquest->folioAccion, 'validador' => 'Martin Aleman SGC']) }}" method="GET">
                             <button type="submit" class="btn btn-success float-center">Aceptar Acciones</button>
                         </form>
@@ -483,7 +483,7 @@
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
                                 <h6 class="m-0 font-weight-bold text-primary">Medicion de la eficacia de la accion correctiva</h6>
-                                @if($value =="Admin" or $value=="Martin A")
+                                @if($value =="Admin" or $value=="Edward M" or $value=="Luis R")
                                         <form id="denegarEficacia" method="POST" action="{{ route('accionesCorrectivas.eliminarCausaRaiz', $registroPorquest->folioAccion) }}" style="display: inline;">
                                             @csrf
                                             <input type="hidden" name="donde" value="eficacia">
@@ -501,7 +501,7 @@
                     <div class="col-lg-12 mb-4 d-flex justify-content-center">
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            @if($value =="Admin" or $value=="Martin A")
+                            @if($value =="Admin" or $value=="Edward M" or $value=="Luis R")
                         <form action="{{ route('accionesCorrectivas.cerrarAcciones', ['folio' => $registroPorquest->folioAccion]) }}" method="GET">
                             <button type="submit" class="btn btn-primary float-center">Cerrar Accion Correctiva</button>
                         </form>

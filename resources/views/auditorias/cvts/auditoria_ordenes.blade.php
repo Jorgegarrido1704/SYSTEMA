@@ -20,7 +20,7 @@
                 <!-- table Body -->
                 <div class="card-body"style="overflow-y: auto; ">
                     <form action="{{route ('auditorias.safeData')}}" method="GET" >
-                        <table class='table table-resposibe'> 
+                        <table class='table table-resposibe'>
                             <thead>
                                 <tr>
                                     <th>{{ __('Work Order') }}</th>
@@ -44,12 +44,13 @@
 
 <script>
     window.addEventListener("load", cargando);
-    
+    var cuenta_datos = {{ $cuenta_datos }};
+
     function cargando(){
         const formato = document.getElementById('formato')
         var html='';
-        
-      for(i=1;i<=8;i++){
+
+      for(i=1;i<=cuenta_datos;i++){
         html +=`  <tr>
                                             <td><input type="text" name="work_order[]" id="work_order${i}"  onchange="workInfo(this.value,${i})"></td>
                                             <td><input type="text" name="part_number[]" id="part_number${i}"  readonly></td>
@@ -64,7 +65,7 @@
                                                 </select></td>
                                             <td><select name="system_location[]" id="system_location${i}" required onchange="status(${i})"> </select></td>
                                             <td><input type="text" name="status[]"  id="status${i}" readonly></td>
-                                           
+
                                             <td><select name="resposable[]" id="resposable${i}" required>
                                                 <option value="" disabled selected>Select</option>
                                                 @foreach($responsables as $responsable)
@@ -72,7 +73,7 @@
                                                 @endforeach
                                             </select></td>
                                         </tr>    `
-        
+
       }
       formato.innerHTML=html;
     }
@@ -118,7 +119,7 @@
                  document.getElementById('status'+id).value = "NOK";
             }
         }
-  
+
 </script>
 
  @endsection

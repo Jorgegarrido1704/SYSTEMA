@@ -19,8 +19,10 @@ class auditoriasController extends Controller
             return view('login');
         }
         $responsables = personalBergsModel::select('employeeLider')->distinct()->get();
+        $cuenta_datos = regPar::count();
+        $cuenta_datos = $cuenta_datos == 0 ? 0 : round($cuenta_datos / 10);
 
-        return view('auditorias.cvts.auditoria_ordenes', ['value' => $value, 'cat' => $cat, 'responsables' => $responsables]);
+        return view('auditorias.cvts.auditoria_ordenes', ['value' => $value, 'cat' => $cat, 'responsables' => $responsables, 'cuenta_datos' => $cuenta_datos]);
     }
 
     public function jsonDatosWo(Request $request)

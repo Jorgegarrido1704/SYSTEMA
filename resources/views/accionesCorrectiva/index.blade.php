@@ -4,7 +4,7 @@
  <div class="d-sm-flex align-items-center justify-content-between mb-4">  </div>
  <script src="{{ asset('dash/js/accionesCorrectivas.js') }}"></script>
  <div class="row">
-    @if($value=='Admin' or $value=='Martin A')
+    @if($value=='Admin' or $value=='Edward M' or $value=='Luis R' )
     <div class="col-lg-4 mb-4">
         <div class="card shadow mb-4">
             <div class="card-header py-3">
@@ -113,7 +113,7 @@
                             @foreach($accionesActivas as $accion)
                                 <tr>
                                     <td><a href="{{ route('accionesCorrectivas.show', $accion->folioAccion) }}">{{ $accion->folioAccion  }}</a></td>
-                                   @if ($value=='Admin' || $value == 'Martin A')
+                                   @if ($value=='Admin' || $value == 'Edward M' || $value == 'Luis R')
                                     <td><input type="date" class="form-group" id="fechaAccion_{{ $accion->folioAccion }}" value="{{ date('Y-m-d', strtotime($accion->fechaAccion))}}" onchange="cambios(this.value,this.id)" required></td>
                                     <td><select class="form-control" id="Afecta_{{ $accion->folioAccion }}" name="Afecta" onchange="cambios(this.value,this.id)" required>
                                             <option value="{{ $accion->Afecta }}"  selected>{{ $accion->Afecta }}</option>

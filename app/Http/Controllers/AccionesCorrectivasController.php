@@ -32,7 +32,7 @@ class AccionesCorrectivasController extends Controller
         $diasRestantes = [];
         $responsable = personalBergsModel::select('employeeName')->where('user', $value)->first();
 
-        if ($value == 'Admin' or $value == 'Martin A') {
+        if ($value == 'Admin' or $value == 'Edward M' or $value == 'Luis R') {
             $accionesActivas = accionesCorrectivas::where('status', '!=', 'etapa 4 - Accion correctiva finalizada')->orderBy('id_acciones_correctivas', 'ASC')->get();
             $accionesCerradas = accionesCorrectivas::where('status', 'etapa 4 - Accion correctiva finalizada')->orderBy('id_acciones_correctivas', 'DESC')->get();
 
@@ -51,8 +51,7 @@ class AccionesCorrectivasController extends Controller
             $accion->resposableAccion = explode('/', $accion->resposableAccion)[1] ?? $accion->resposableAccion;
         }
         $personal = personalBergsModel::select('employeeName')->where('email', '!=', null)->where('status', '!=', 'Baja')
-        ->orderBy('employeeName','ASC')->get();
-       
+            ->orderBy('employeeName', 'ASC')->get();
 
         return view('accionesCorrectiva.index', [
             'cat' => $cat,
@@ -109,7 +108,8 @@ class AccionesCorrectivasController extends Controller
         $email = personalBergsModel::select('email')->where('employeeName', $resposableAccion)->first();
         $mailaddresses = [
             'jgarrido@mx.bergstrominc.com',
-            'maleman@mx.bergstrominc.com',
+            'lramos@mx.bergstrominc.com',
+            'emedina@mx.bergstrominc.com',
         ];
 
         if ($email && $email->email) {
@@ -122,23 +122,23 @@ class AccionesCorrectivasController extends Controller
     }
 
     public function changes_in_actions($valor, $id)
-{
-    $user = session('user');
+    {
+        $user = session('user');
 
-    if (!in_array($user, ['Admin', 'Martin A'])) {
-        return response()->json(['error' => 'Usted no está autorizado'], 403);
+        if (! in_array($user, ['Admin', 'Edward M', 'Luis R'])) {
+            return response()->json(['error' => 'Usted no está autorizado'], 403);
+        }
+        $ids = explode('_', $id)[1];
+        $campo = explode('_', $id)[0];
+
+        accionesCorrectivas::where('folioAccion', '=', $ids)->update([$campo => $valor]);
+
+        return response()->json([
+            'id' => $ids,
+            'campo' => $campo,
+            'valor' => $valor,
+        ]);
     }
-    $ids=explode('_', $id)[1];
-    $campo = explode('_', $id)[0];
-
-    accionesCorrectivas::where('folioAccion','=',$ids)->update([$campo => $valor]);
-
-    return response()->json([
-        'id'    => $ids,
-        'campo' => $campo,
-        'valor'=> $valor,
-    ]);
-}
 
     public function show($id)
     {
@@ -275,7 +275,8 @@ class AccionesCorrectivasController extends Controller
         $mailto = personalBergsModel::where('employeeName', $acciones->resposableAccion)->first();
         $mailaddresses = [
             'jgarrido@mx.bergstrominc.com',
-            'maleman@mx.bergstrominc.com',
+            'lramos@mx.bergstrominc.com',
+            'emedina@mx.bergstrominc.com',
         ];
 
         if ($mailto && $mailto->email) {
@@ -397,7 +398,8 @@ class AccionesCorrectivasController extends Controller
         $mailto = personalBergsModel::where('employeeName', $acciones->resposableAccion)->first();
         $mailaddresses = [
             'jgarrido@mx.bergstrominc.com',
-            'maleman@mx.bergstrominc.com',
+            'lramos@mx.bergstrominc.com',
+            'emedina@mx.bergstrominc.com',
         ];
 
         if ($mailto && $mailto->email) {
@@ -457,7 +459,8 @@ class AccionesCorrectivasController extends Controller
         $acciones->motivoEliminacion = $motivo;
         $mailaddresses = [
             'jgarrido@mx.bergstrominc.com',
-            'maleman@mx.bergstrominc.com',
+            'lramos@mx.bergstrominc.com',
+            'emedina@mx.bergstrominc.com',
         ];
 
         if ($mailto && $mailto->email) {
@@ -494,7 +497,8 @@ class AccionesCorrectivasController extends Controller
         $acciones->motivoEliminacion = $motivoEliminacion;
         $mailaddresses = [
             'jgarrido@mx.bergstrominc.com',
-            'maleman@mx.bergstrominc.com',
+            'lramos@mx.bergstrominc.com',
+            'emedina@mx.bergstrominc.com',
         ];
 
         if ($mailto && $mailto->email) {
@@ -522,7 +526,8 @@ class AccionesCorrectivasController extends Controller
 
         $mailaddresses = [
             'jgarrido@mx.bergstrominc.com',
-            'maleman@mx.bergstrominc.com',
+            'emedina@mx.bergstrominc.com',
+            'lramos@mx.bergstrominc.com',
         ];
 
         if ($mailto && $mailto->email) {
@@ -552,7 +557,8 @@ class AccionesCorrectivasController extends Controller
 
         $mailaddresses = [
             'jgarrido@mx.bergstrominc.com',
-            'maleman@mx.bergstrominc.com',
+            'lramos@mx.bergstrominc.com',
+            'emedina@mx.bergstrominc.com',
         ];
 
         if ($mailto && $mailto->email) {
@@ -582,7 +588,8 @@ class AccionesCorrectivasController extends Controller
 
             $mailaddresses = [
                 'jgarrido@mx.bergstrominc.com',
-                'maleman@mx.bergstrominc.com',
+                'lramos@mx.bergstrominc.com',
+                'emedina@mx.bergstrominc.com',
             ];
 
             if ($mailto && $mailto->email) {
@@ -610,7 +617,8 @@ class AccionesCorrectivasController extends Controller
 
         $mailaddresses = [
             'jgarrido@mx.bergstrominc.com',
-            'maleman@mx.bergstrominc.com',
+            'lramos@mx.bergstrominc.com',
+            'emedina@mx.bergstrominc.com',
         ];
 
         if ($mailto && $mailto->email) {
