@@ -15,7 +15,7 @@
         <div class="col-xl-12 col-md-6 mb-4">
             <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" style="max-height: 25px">
-                    <h6 class="m-0 font-weight-bold text-primary">{{ ('CVTS Orders Audit') }}</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">{{ ('CVTS Orders Audit') }} Total {{ $cuenta_datos }}</h6>
                 </div>
                 <!-- table Body -->
                 <div class="card-body"style="overflow-y: auto; ">
