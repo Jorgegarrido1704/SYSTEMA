@@ -253,7 +253,7 @@ if (Error) {
                                             <thead>
                                                 <tr>
 
-                                                    @if($cat == "RRHH" or $cat == "SupAdmin")
+                                                    @if($cat == "RRHH" or $cat == "SupAdmin" or $value == 'Jhoana Lop')
                                                         <th>{{ __('Employee') }}</th>
                                                         <th>{{ __('Monday') }}</th><th>{{ __('OverTime') }}</th> <th>{{ __('Tuesday') }}</th><th>{{ __('OverTime') }}</th>
                                                         <th>{{ __('Wednesday') }}</th><th>{{ __('OverTime') }}</th>
