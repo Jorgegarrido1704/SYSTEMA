@@ -2395,7 +2395,7 @@ class juntasController extends Controller
         // dd($vacas);
 
         // Accidentes
-        $ultimoAccidente = carbon::parse('2025-11-03');
+        $ultimoAccidente = carbon::parse('2026-10-06');
         $withoutAccidents = carbon::now()->diffInDays($ultimoAccidente);
 
         $topFaltas = assistence::select('lider', DB::raw('count(*) as total'))
