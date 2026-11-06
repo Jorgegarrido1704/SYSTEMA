@@ -24,8 +24,6 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
-
-
 class PpapIngController extends Controller
 {
     public function __invoke(Request $request)
@@ -321,12 +319,13 @@ class PpapIngController extends Controller
                 'naldan@mx.bergstrominc.com',
 
             ];
-            try{
-            Mail::to($recipients)->send(new \App\Mail\ppapcontrol\salidanpi($subject, $content));
-            }catch( \Exception $e){
-                return redirect ()->back()->with('error', 'error al enviar email');
+            try {
+                Mail::to($recipients)->send(new \App\Mail\ppapcontrol\salidanpi($subject, $content));
+            } catch (\Exception $e) {
+                return redirect()->back()->with('error', 'error al enviar email');
             }
         }
+
         return redirect('/ing');
     }
 
@@ -468,28 +467,27 @@ class PpapIngController extends Controller
                 $accion = PPAPandPRIM::orderby('id', 'desc')->first();
                 $recipients = [
                     'jgarrido@mx.bergstrominc.com',
-                    'rfandino@mx.bergstrominc.com',
+                    'jorgesalazar@mx.bergstrominc.com',
                     'fsuarez@mx.bergstrominc.com',
                     'lramos@mx.bergstrominc.com',
                     'emedina@mx.bergstrominc.com',
                     'drocha@mx.bergstrominc.com',
                     'Jruiz@mx.bergstrominc.com',
                     'jrodriguez@mx.bergstrominc.com',
-                    'vpichardo@mx.bergstrominc.com',
-                    'egaona@mx.bergstrominc.com',
+                    'DFlores@mx.bergstrominc.com',
+                    'mlguzman@mx.bergstrominc.com',
                     'jolaes@mx.bergstrominc.com',
                     'dvillalpando@mx.bergstrominc.com',
                     'jamoreno@mx.bergstrominc.com',
-                    'maleman@mx.bergstrominc.com',
                     'fgomez@mx.bergstrominc.com',
                     'lmireles@mx.bergstrominc.com',
                     'apacheco@mx.bergstrominc.com',
                     'naldan@mx.bergstrominc.com',
                     'psilva@mx.bergstrominc.com',
                     'jcrodriguez@mx.bergstrominc.com',
-                    'jcervera@mx.bergstrominc.com',
                     'apreciado@mx.bergstrominc.com',
                     'rramirez@mx.bergstrominc.com',
+                    'hsuarez@mx.bergstrominc.com',
 
                 ];
                 Mail::to($recipients)->send(new \App\Mail\firmasNPIEmail($accion, 'New product Introduction - '.$pn));
