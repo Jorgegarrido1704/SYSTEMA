@@ -80,7 +80,7 @@ class AddWeek implements ShouldQueue
                         $registro = 'N/A';
                     } elseif ($registroEmpleado->employeeNumber == 'i2047' or $registroEmpleado->employeeNumber == 'i2116'
                     or $registroEmpleado->employeeNumber == 'i2117' or $registroEmpleado->employeeNumber == 'i2214'
-                    or $registroEmpleado->employeeNumber == 'i2158' or $registroEmpleado->employeeNumber == 'i2215'
+                    or $registroEmpleado->employeeNumber == 'i2052' or $registroEmpleado->employeeNumber == 'i2215'
                     or $registroEmpleado->employeeNumber == 'i2071') {
                         $registro = 'HE';
                     } elseif ($registroEmpleado->typeWorker == 'Practicante') {
