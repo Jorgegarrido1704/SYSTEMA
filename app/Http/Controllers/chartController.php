@@ -60,15 +60,23 @@ class ChartController extends Controller
             $bindings[] = $hasta->format('Y-m-d H:i:s');
         }
         $selects[] = 'COUNT(*) as total_general';
-
-        $colections = DB::connection('toi')
-            ->table('lecturas')
-            ->selectRaw(implode(', ', $selects), $bindings)
-            ->where('estado', 'RUN')
-            ->where('maquina', $maquina)
-            ->whereBetween('fecha', [$inicio->format('Y-m-d H:i:s'), $fin->format('Y-m-d H:i:s')])
-            ->first();
-
+        if ($maquina == 'M6') {
+            $colections = DB::connection('toi')
+                ->table('lecturas')
+                ->selectRaw(implode(', ', $selects), $bindings)
+                ->where('estado', 'Corte')
+                ->where('maquina', $maquina)
+                ->whereBetween('fecha', [$inicio->format('Y-m-d H:i:s'), $fin->format('Y-m-d H:i:s')])
+                ->first();
+        } else {
+            $colections = DB::connection('toi')
+                ->table('lecturas')
+                ->selectRaw(implode(', ', $selects), $bindings)
+                ->where('estado', 'RUN')
+                ->where('maquina', $maquina)
+                ->whereBetween('fecha', [$inicio->format('Y-m-d H:i:s'), $fin->format('Y-m-d H:i:s')])
+                ->first();
+        }
         $totalGeneral = (int) ($colections->total_general ?? 0);
 
         // ---- Run / Stop por hora ----
@@ -76,8 +84,13 @@ class ChartController extends Controller
         $stop = [];
         foreach ($slots as $campo => $label) {
             $lecturas = (int) ($colections->{$campo} ?? 0);
-            $minutos = round((($lecturas * 6.48) / 2) / 60, 2);
-            $minutos = min($minutos, 60);
+            if ($maquina == 'M6') {
+                $minutos = round((($lecturas * 6.48)) / 60, 2) ?? 0;
+            } else {
+                $minutos = round((($lecturas * 6.48) / 2) / 60, 2) ?? 0;
+            }
+            $minutos = round((($lecturas * 6.48) / 2) / 60, 2) ?? 0;
+            $minutos = min($minutos, 60) ?? 0;
 
             $run[$label] = $minutos;
             $stop[$label] = round(60 - $minutos, 2);
