@@ -85,7 +85,7 @@ class ChartController extends Controller
         foreach ($slots as $campo => $label) {
             $lecturas = (int) ($colections->{$campo} ?? 0);
             if ($maquina == 'M6') {
-                $minutos = round((($lecturas * 6.48)) / 60, 2) ?? 0;
+                $minutos = round((($totalGeneral * 6.48)) / 60, 2) ?? 0;
             } else {
                 $minutos = round((($lecturas * 6.48) / 2) / 60, 2) ?? 0;
             }
@@ -117,11 +117,19 @@ class ChartController extends Controller
         $registroParos = $paros->get();
 
         // ---- Totales ----
-        $qtyCortes = $totalGeneral > 0 ? round($totalGeneral / 2) : 0;
+        if ($maquina == 'M6') {
 
-        $running = round((($totalGeneral * 6.48) / 2) / 60, 2);
-        if ($running > 720) {
-            $running = round((($totalGeneral * 4.48) / 2) / 60, 2);
+            $qtyCortes = $totalGeneral > 0 ? round($totalGeneral) : 0;
+            $running = round((($totalGeneral * 6.48)) / 60, 2);
+            if ($running > 720) {
+                $running = round((($totalGeneral * 3.48)) / 60, 2);
+            }
+        } else {
+            $qtyCortes = $totalGeneral > 0 ? round($totalGeneral / 2) : 0;
+            $running = round((($totalGeneral * 6.48) / 2) / 60, 2);
+            if ($running > 720) {
+                $running = round((($totalGeneral * 3.48) / 2) / 60, 2);
+            }
         }
 
         // 12 h de turno - 30 min de descanso
