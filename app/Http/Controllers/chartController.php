@@ -89,7 +89,7 @@ class ChartController extends Controller
             } else {
                 $minutos = round((($lecturas * 6.48) / 2) / 60, 2) ?? 0;
             }
-            $minutos = round((($lecturas * 6.48) / 2) / 60, 2) ?? 0;
+
             $minutos = min($minutos, 60) ?? 0;
 
             $run[$label] = $minutos;
