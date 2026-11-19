@@ -22,7 +22,6 @@ use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\URL;
 
 class juntasController extends Controller
 {
@@ -2019,32 +2018,16 @@ class juntasController extends Controller
         $lider = $buscarPersonal->employeeLider;
         $fecha_de_solicitud = $endDate->toDateString();
         $noposible = $repetidosDias = 0;
-        $email = null;
-        $supervisor = '';
-        if ($lider == 'AGUILAR HERNANDEZ ANA PAOLA' or $lider == 'RAMOS CEDEÑO LUIS ALBERTO'
-            or $lider == 'GAMBOA RIOS JORGE ALEJANDRO' or $lider == 'VILLALPANDO RODRIGUEZ DAVID'
-            or $lider == 'OLAES FRAGA JUAN JOSE' or $lider == 'FANDIÑO TORRES ROCIO' or $lider == 'Hector Cano'
-            or $lider == 'GUTIERREZ MARTINEZ DANIEL EMMANUEL' or $lider = 'GONZALEZ CHAVEZ ANGEL DE JESUS'
-            or $lider == 'Jorge Arturo Garrido Mares' or $lider == 'Jorge Salazar'
-        ) {
-            $buscarEmails = personalBergsModel::select('email', 'user')->where('employeeName', '=', $lider)->first();
-            $email = $buscarEmails->email;
-            $supervisor = $buscarEmails->user;
-        } else {
-            $liderInicial = personalBergsModel::select('user', 'email', 'employeeLider')->where('employeeName', '=', $lider)->first();
-            $buscarEmails = personalBergsModel::select('email', 'employeeLider', 'employeeName', 'user')->where('employeeName', '=', $liderInicial->employeeLider)->first();
-            $supervisor = $buscarEmails->user;
-            if ($buscarEmails->email != null or $buscarEmails->email != '') {
-                $email = $buscarEmails->email;
-            } elseif ($liderInicial->email != null or $liderInicial->email != '') {
-                $email = $liderInicial->email;
-            } else {
-                $email = 'jgarrido@mx.bergstrominc.com';
-            }
-
+        $email = ['paguilar@mx.bergstrominc.com', 'mabibarra@mx.bergstrominc.com', 'jlopez@mx.bergstrominc.com'];
+        if (! empty($buscarPersonal->email)) {
+            $email[] = $buscarPersonal->email;
         }
 
-        // revisar si hay disponibilidad de vacaciones en la fecha solicitada
+        $supervisor = '';
+
+        $liderInicial = personalBergsModel::select('user', 'email', 'employeeLider')->where('employeeName', '=', $lider)->first();
+        $supervisor = $liderInicial->user;
+        $email[] = $liderInicial->email;
 
         for ($i = 0; $i < $revDias; $i++) {
             // si es domingo
@@ -2080,7 +2063,6 @@ class juntasController extends Controller
             Por favor, revise con su supervisor y elija otras fechas.');
         }
 
-        // $link = URL::temporarySignedRoute('loginWithoutSession', now()->addMinutes(30), ['user' => 'Juan G']);
         $contend = [
             'asunto' => 'Solicitud de Vacaciones',
             'nombre' => $nombre,
@@ -2150,7 +2132,7 @@ class juntasController extends Controller
 
         registoLogin::create(['fecha' => carbon::now()->format('d-m-Y H:i'), 'userName' => $value, 'action' => 'Solicitud de vacaciones creada para el empleado: '.$nombre.' con folio: '.$folio]);
 
-        Mail::to($email)->send(new solicitudVacacionesMail($contend, 'Solicitud de Vacaciones'));
+        Mail::to($email)->cc('jgarrido@mx.bergstrominc.com')->send(new solicitudVacacionesMail($contend, 'Solicitud de Vacaciones'));
 
         // Mail::to('jguillen@mx.bergstrominc.com')->send(new solicitudVacacionesMail($contend, 'Solicitud de Vacaciones'));
         // Mail::to('jgarrido@mx.bergstrominc.com')->send(new solicitudVacacionesMail($contend, 'Solicitud de Vacaciones'));
