@@ -8,13 +8,12 @@ use App\Models\listasDeCorte;
 use App\Models\po;
 use App\Models\precios;
 use App\Models\regPar;
-use App\Models\specialWireModel;
+use App\Models\regParTime;
 use App\Models\Wo;
 use App\Models\workScreduleModel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class planingController extends Controller
@@ -44,7 +43,7 @@ class planingController extends Controller
         } else {
             $sono = $request->input('sono');
             if (! empty($sono)) {
-               
+
                 $buscarIguales = DB::table('registro')
                     ->where('NumPart', 'LIKE', '%'.$sono.'%')
                     ->orWhere('wo', 'LIKE', '%'.$sono.'%')
@@ -59,9 +58,9 @@ class planingController extends Controller
                 $desiguales = DB::table('retiradad')
                     ->orderBy('np', 'asc')->limit(50)->get();
             }
-           
+
             foreach ($desiguales as $rowdes) {
-                
+
                 $rev = substr($rowdes->codigo, -4);
                 $pos = strpos($rev, 'R');
                 if ($pos !== false) {
@@ -70,7 +69,7 @@ class planingController extends Controller
                     $rev = '-';
                 }
                 $rowdes->rev = $rev;
-                
+
             }
 
             $codigoant = $request->input('wo');
@@ -419,24 +418,30 @@ class planingController extends Controller
         }
     }
 
-    public function codeBarPlan(request $request,$wo)
+    public function codeBarPlan(request $request, $wo)
     {
-                      $value = session('user');
+        $value = session('user');
         $cat = session('categoria');
-        if ($value == '' or $cat == '') { return view('login'); }
+        if ($value == '' or $cat == '') {
+            return view('login');
+        }
         $tiempos = date('d-m-Y H:i');
-      
+
         if ($wo != '') {
-                        $registros=regPar::select('codeBar')-> where('wo', $wo)->first();   
-                         
-                            $update = DB::table('registro')->where('wo', $wo)->update(['donde' => 'En espera de corte', 'count' => 2]);
-                            $updateTime = DB::table('tiempos')->where('info', $registros->codeBar)->update(['planeacion' => $tiempos]);
-                            $updateCantidad = DB::table('registroparcial')->where('wo', '=', $wo)->update(['precut' => DB::raw('planpar'), 'planpar' => 0]);
-                            return redirect('planing')->with('response', 'Record updated');
-                        }
-                else {
-                    return redirect('planing')->with('response', 'Record not found');
-                }
+            $registros = regPar::select('codeBar')->where('wo', $wo)->first();
+            DB::table('registro')->where('wo', $wo)->update(['donde' => 'En espera de corte', 'count' => 2]);
+            DB::table('tiempos')->where('info', $registros->codeBar)->update(['planeacion' => $tiempos]);
+            DB::table('registroparcial')->where('wo', '=', $wo)->update(['precut' => DB::raw('planpar'), 'planpar' => 0]);
+            $registroTiempo = new regParTime;
+            $registroTiempo->codeBar = $wo;
+            $registroTiempo->qtyPar = 0;
+            $registroTiempo->area = $value.'/'.$cat.'/ entregado a corte';
+            $registroTiempo->fechaReg = carbon::now()->toDateTimeString();
+            $registroTiempo->save();
+
+            return redirect('planing')->with('response', 'Record updated');
+        } else {
+            return redirect('planing')->with('response', 'Record not found');
+        }
     }
-          
 }
