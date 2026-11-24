@@ -60,7 +60,7 @@ class ChartController extends Controller
             $bindings[] = $hasta->format('Y-m-d H:i:s');
         }
         $selects[] = 'COUNT(*) as total_general';
-        if ($maquina == 'M6') {
+        if ($maquina == 'M6' || $maquina == 'M2' || $maquina == 'M4' || $maquina == 'M5') {
             $colections = DB::connection('toi')
                 ->table('lecturas')
                 ->selectRaw(implode(', ', $selects), $bindings)
@@ -84,7 +84,7 @@ class ChartController extends Controller
         $stop = [];
         foreach ($slots as $campo => $label) {
             $lecturas = (int) ($colections->{$campo} ?? 0);
-            if ($maquina == 'M6') {
+            if ($maquina == 'M6' || $maquina == 'M2' || $maquina == 'M4' || $maquina == 'M5') {
                 $minutos = round((($totalGeneral * 6.48)) / 60, 2) ?? 0;
             } else {
                 $minutos = round((($lecturas * 6.48) / 2) / 60, 2) ?? 0;
