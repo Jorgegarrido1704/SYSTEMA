@@ -117,7 +117,7 @@ class ChartController extends Controller
         $registroParos = $paros->get();
 
         // ---- Totales ----
-        if ($maquina == 'M6') {
+        if ($maquina == 'M6' || $maquina == 'M2' || $maquina == 'M4' || $maquina == 'M5') {
 
             $qtyCortes = $totalGeneral > 0 ? round($totalGeneral) : 0;
             $running = round((($totalGeneral * 6.48)) / 60, 2);
