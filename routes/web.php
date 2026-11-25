@@ -3,6 +3,7 @@
 use App\Http\Controllers\AccionesCorrectivasController;
 use App\Http\Controllers\AdminSupControlloer;
 use App\Http\Controllers\AlmacenController;
+use App\Http\Controllers\auditoriasController;
 use App\Http\Controllers\BossCaliController;
 use App\Http\Controllers\bossController;
 use App\Http\Controllers\caliController;
@@ -23,7 +24,6 @@ use App\Http\Controllers\oeeController;
 use App\Http\Controllers\planingController;
 use App\Http\Controllers\PoController;
 use App\Http\Controllers\PpapIngController;
-use App\Http\Controllers\auditoriasController;
 use App\Http\Controllers\pruebasElectricasController;
 use App\Http\Controllers\RegistroController;
 use App\Http\Controllers\rrhhController;
@@ -98,9 +98,9 @@ Route::controller(pruebasElectricasController::class)->group(function () {
     Route::post('/addMaterial', [pruebasElectricasController::class, 'addMaterial'])->name('testingMaterialRequeriment.addMaterial');
     Route::post('/updatematerial', [pruebasElectricasController::class, 'updatematerial'])->name('updatematerialPruebasELectricas');
     Route::get('/calendarizacion_pruebas_electricas', [pruebasElectricasController::class, 'calendarizacion_pruebas_electricas'])->name('calendarizacion_pruebas_electricas');
-    Route::get('/cargar_seis_meses','cargar_seis_meses')->name('pruebas.cargar_seis_meses');
-    Route::POST('/guardarTrabajoRealizados','guardarTrabajoRealizados')->name('guardarTrabajoRealizados');
-    });
+    Route::get('/cargar_seis_meses', 'cargar_seis_meses')->name('pruebas.cargar_seis_meses');
+    Route::POST('/guardarTrabajoRealizados', 'guardarTrabajoRealizados')->name('guardarTrabajoRealizados');
+});
 
 Route::controller(PpapIngController::class)->group(function () {
     Route::get('/ing', PpapIngController::class);
@@ -210,8 +210,9 @@ Route::controller(AdminSupControlloer::class)->group(function () {
     Route::get('/schedule_map', [AdminSupControlloer::class, 'index_schedule'])->name('index_schedule');
     Route::get('/vsmData', [AdminSupControlloer::class, 'vsmData'])->name('vsmData');
     Route::get('/finalizar_wo', 'finalizar_wo')->name('finalizar_wo');
-    Route::get('/change_order_qty','change_order_qty')->name('change_order_qty');
-    Route::get('/Add_cort_perDay','Add_cort_perDay')->name('Add_cort_perDay');
+    Route::get('/change_order_qty', 'change_order_qty')->name('change_order_qty');
+    Route::get('/Add_cort_perDay', 'Add_cort_perDay')->name('Add_cort_perDay');
+    Route::get('/cancel_order/', 'cancel_order')->name('cancel_order');
 
 });
 
@@ -223,8 +224,8 @@ Route::controller(VSM_and_simulation::class)->group(function () {
 
 Route::controller(auditoriasController::class)->group(function () {
     Route::get('/auditorias/CVTS', 'cvts_orders')->name('auditorias.cvts_orders');
-    Route::get('/auditoria/woinfo',[auditoriasController::class, 'jsonDatosWo'])->name('auditorias.jsonDatosWo');
-    Route::get('/auditoria/saveinfo','safeData')->name('auditorias.safeData');
+    Route::get('/auditoria/woinfo', [auditoriasController::class, 'jsonDatosWo'])->name('auditorias.jsonDatosWo');
+    Route::get('/auditoria/saveinfo', 'safeData')->name('auditorias.safeData');
 });
 
 Route::controller(globalInventario::class)->group(function () {
@@ -304,7 +305,7 @@ Route::controller(AccionesCorrectivasController::class)->group(function () {
     Route::GET('/acciones-correctivas/statusSubAccion/{id}/{folio}', [AccionesCorrectivasController::class, 'statusSubAccion'])->name('accionesCorrectivas.statusSubAccion');
     Route::GET('/acciones-correctivas/cerrarAcciones/{folio}', [AccionesCorrectivasController::class, 'cerrarAcciones'])->name('accionesCorrectivas.cerrarAcciones');
     Route::GET('/acciones-correctivas/excelAcciones/estadisticasAcciones', [AccionesCorrectivasController::class, 'estadisticasAcciones'])->name('accionesCorrectivas.estadisticasAcciones');
-    Route::get('/acciones-correctivas/modifiaciones/{valor}/{id}','changes_in_actions')->name('changes_in_actions');
+    Route::get('/acciones-correctivas/modifiaciones/{valor}/{id}', 'changes_in_actions')->name('changes_in_actions');
 });
 
 Route::controller(mailsController::class)->group(function () {

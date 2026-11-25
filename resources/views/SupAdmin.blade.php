@@ -32,7 +32,7 @@
                                                             <div class="col-lg-5">
                                                                 <label for="work_order_reactive">{{ __('Reactivate Work Order') }}</label>
                                                             </div>
-                                                            <div class='col-lg-5'>  
+                                                            <div class='col-lg-5'>
                                                                 <input type="text" class="form-control" name="work_order_reactive" id="work_order_reactive"  maxlength="6"  minlength="6" required >
                                                             </div>
                                                         </div>
@@ -51,7 +51,7 @@
                                                     <div class="form-group col-lg-5 ">
                                                         <label for="finish_work_order">{{ __('Finish Work Order')}}</label>
                                                     </div>
-                                                    <div class='form-group col-lg-5'>    
+                                                    <div class='form-group col-lg-5'>
                                                         <input type="text" class="form-control" name="finish_work_order" id="finish_work_order"  maxlength="6"  minlength="6" required >
                                                     </div>
                                                 </div>
@@ -59,7 +59,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-12 mb-2">
+                                <div class="col-lg-6 mb-2">
                                     <div class="card shadow mb-4">
                                         <div class="card-header py-3">
                                             <h6 class="m-0 font-weight-bold text-primary">{{ __('Change Qty')}}</h6>
@@ -84,8 +84,36 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-2 mb-4">
-                                                        <div >  
+                                                        <div >
                                                             <button class="submit btn btn-primary"> Enviar</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                 <div class="col-lg6 mb-2">
+                                    <div class="card shadow mb-4">
+                                        <div class="card-header py-3">
+                                            <h6 class="m-0 font-weight-bold text-primary">{{ __('Change Qty')}}</h6>
+                                        </div>
+                                        <div class="card-body" style="overflow-y: auto; height: 190px;">
+                                            <form action="{{ route('cancel_order') }}" method="GET" >
+                                                <div class="row">
+                                                    <div class="col-lg-5 mb-4">
+                                                        <div >
+                                                         <label for="change_qty">{{ __('cancel_order')}}</label>
+                                                        </div>
+                                                        <div >
+                                                            <input type="text" class="form-control" name="cancel_order" id="cancel_order"  maxlength="6"  minlength="6" required >
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-2 mb-4">
+                                                        <div >
+                                                            <button class="submit btn btn-primary"> {{ __('Send') }}</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -495,51 +523,51 @@
                                             <div class="col-lg-3 mt-2">
                                                 <label class="form-control" id="m1">M1</label>
                                                 <input type="number" class="form-control" id="m1" name="m1" value="0" min="0" required>
-                                            </div>  
+                                            </div>
                                              <div class="col-lg-3 mt-2">
                                                 <label class="form-control" id="m2">M2</label>
                                                 <input type="number" class="form-control" id="m2" name="m2" value="0" min="0" required>
-                                            </div>    
+                                            </div>
                                              <div class="col-lg-3 mt-2">
                                                 <label class="form-control" id="m3">M3</label>
                                                 <input type="number" class="form-control" id="m3" name="m3" value="0" min="0" required>
-                                            </div>    
+                                            </div>
                                              <div class="col-lg-3 mt-2">
                                                 <label class="form-control" id="m4">M4</label>
                                                 <input type="number" class="form-control" id="m4" name="m4" value="0" min="0" required>
-                                            </div>    
+                                            </div>
                                              <div class="col-lg-3 mt-2">
                                                 <label class="form-control" id="m5">M5</label>
                                                 <input type="number" class="form-control" id="m5" name="m5" value="0" min="0" required>
-                                            </div>    
+                                            </div>
                                              <div class="col-lg-3 mt-2">
                                                 <label class="form-control" id="m6">M6</label>
                                                 <input type="number" class="form-control" id="m6" name="m6" value="0" min="0" required>
-                                            </div>    
+                                            </div>
                                              <div class="col-lg-3 mt-2">
                                                 <label class="form-control" id="m7">M7</label>
                                                 <input type="number" class="form-control" id="m7" name="m7" value="0" min="0" required>
-                                            </div>    
+                                            </div>
                                              <div class="col-lg-3 mt-2">
                                                 <label class="form-control" id="fecha_de_trabajo">{{__('Work date')}}</label>
                                                 <input type="date" class="form-control" id="fecha_de_trabajo" name="fecha_de_trabajo" required>
-                                            </div> 
+                                            </div>
                                              <div class="col-lg-3 mt-2">
                                                 <label class="form-control" id="shift">{{__('Shift')}}</label>
                                                 <select class="form-control" id="shift" name="shift" required>
                                                     <option value="1">{{ __('firstShift') }}</option>
                                                     <option value="2">{{ __('secondShift') }}</option>
                                                 </select>
-                                            </div>  
+                                            </div>
                                              <div class="col-lg-4 mt-3">
                                                  <label ></label>
                                                 <button class="btn btn-primary submit">{{ __('Save') }}</button>
-                                            </div>      
+                                            </div>
                                         </div>
 
                                     </form>
 
-                                    
+
                                 </div>
                             </div>
                         </div>

@@ -552,13 +552,14 @@ class AdminSupControlloer extends Controller
         return redirect()->back()->with('success', 'Se han agregado correctamente');
     }
 
-    public function cancel_order($wo)
+    public function cancel_order(Request $request)
     {
         if (empty(session('user'))) {
             return redirect('/');
         }
 
         try {
+            $wo = $request->input('cancel_order');
             DB::transaction(function () use ($wo) {
                 // lockForUpdate evita que otro proceso modifique el registro mientras se elimina
                 $orden = Wo::where('wo', $wo)->lockForUpdate()->first();
