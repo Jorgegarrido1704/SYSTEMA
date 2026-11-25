@@ -15,7 +15,7 @@ class Wo extends Model
         'Cliente',
         'rev',
         'wo',
-        'x',
+        'po',
         'Qty',
         'Barcode',
         'info',
@@ -36,16 +36,15 @@ class Wo extends Model
 
     public $timestamps = false;
 
-   function getWoByCodeBar($info)
+    public function getWoByCodeBar($info)
     {
-          return $this->JOIN('retiradad')
-        ->where(function ($query) use ($info) {
-            $query->where('retiradad.wo', 'LIKE', "%{$info}%")
-                  ->orWhere('retiradad.np', 'LIKE', "%{$info}%")
-                  ->orWhere($this->NumPart, 'LIKE', "%{$info}%")
-                  ->orWhere($this->wo, 'LIKE', "%{$info}%");
-        })
-        ->get();
+        return $this->JOIN('retiradad')
+            ->where(function ($query) use ($info) {
+                $query->where('retiradad.wo', 'LIKE', "%{$info}%")
+                    ->orWhere('retiradad.np', 'LIKE', "%{$info}%")
+                    ->orWhere($this->NumPart, 'LIKE', "%{$info}%")
+                    ->orWhere($this->wo, 'LIKE', "%{$info}%");
+            })
+            ->get();
     }
-   
 }

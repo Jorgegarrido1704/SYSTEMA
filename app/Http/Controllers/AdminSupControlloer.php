@@ -13,7 +13,9 @@ use App\Models\Wo;
 use carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Throwable;
 
 class AdminSupControlloer extends Controller
 {
@@ -548,5 +550,39 @@ class AdminSupControlloer extends Controller
         $registro_corte->save();
 
         return redirect()->back()->with('success', 'Se han agregado correctamente');
+    }
+
+    public function cancel_order($wo)
+    {
+        if (empty(session('user'))) {
+            return redirect('/');
+        }
+
+        try {
+            DB::transaction(function () use ($wo) {
+                // lockForUpdate evita que otro proceso modifique el registro mientras se elimina
+                $orden = Wo::where('wo', $wo)->lockForUpdate()->first();
+
+                if (! $orden) {
+                    throw new \RuntimeException("La WO {$wo} no existe.");
+                }
+
+                // Primero los registros hijos y al final el padre
+                Po::where('po', $orden->po)->delete();
+                regPar::where('wo', $wo)->delete();
+                Wo::where('wo', $wo)->delete();
+
+            });
+
+            return redirect()->back()->with('success', 'Se eliminó la WO');
+
+        } catch (Throwable $e) {
+            Log::error('Error al cancelar WO', [
+                'wo' => $wo,
+                'error' => $e->getMessage(),
+            ]);
+
+            return redirect()->back()->with('error', 'No se pudo eliminar la WO. Intenta de nuevo.');
+        }
     }
 }
