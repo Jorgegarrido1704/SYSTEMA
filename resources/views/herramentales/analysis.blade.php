@@ -160,16 +160,21 @@
         mostrarMensaje('Consultando…');
 
         try {
+           
            function convertirFecha(valor) {
                 if (typeof valor !== 'string') return NaN;
 
                 const partes = valor.trim().match(
-                    /^(\d{4})-(\d{2})-(\d{2})[T\s]+(\d{2}):(\d{2})(?::(\d{2}))?$/
+                    /^(\d{4}-\d{2}-\d{2}|\d{2}-\d{2}-\d{4})[T\s]+(\d{2}):(\d{2})(?::(\d{2}))?$/
                 );
 
                 if (!partes) return NaN;
 
-                const [, anio, mes, dia, hora, minuto, segundo = '0'] = partes;
+                const [, fecha, hora, minuto, segundo = '00'] = partes;
+                const [primero, mes, ultimo] = fecha.split('-');
+                const [anio, dia] = primero.length === 4
+                    ? [primero, ultimo]
+                    : [ultimo, primero];
 
                 return Date.UTC(
                     Number(anio),
