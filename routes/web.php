@@ -339,9 +339,11 @@ Route::controller(herramentalesController::class)->group(function () {
     Route::post('/herramentales/addHerramental', [herramentalesController::class, 'addHerramental'])->name('herramientales.addHerramental');
     Route::get('/toolingMaintenance', [herramentalesController::class, 'toolingMaintenance'])->name('toolingMaintenance');
     Route::get('/toolingAnalysis', [herramentalesController::class, 'toolingAnalysis'])->name('toolingAnalysis');
+    Route::get('/herramentales/tiempos_operador','tiempos_operador')->name('tiempos_operador');
     Route::post('/saveMantTooling', [herramentalesController::class, 'saveMantTooling'])->name('saveMantTooling');
     Route::POST('/filterTooling', [herramentalesController::class, 'filterTooling'])->name('filterTooling');
     Route::post('/herramentales/removeCrimpers', [herramentalesController::class, 'removeCrimpers'])->name('herramientales.removeCrimpers');
+    Route::get('/herramentales/calendario_preventivos','calendarizacion_herrmentales')->name('calendarizacion_herrmentales');
 });
 Route::controller(corteController::class)->group(function () {
     Route::get('/corte', [corteController::class, 'indexCorte'])->name('corte.indexCorte');

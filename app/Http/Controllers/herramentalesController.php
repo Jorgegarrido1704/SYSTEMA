@@ -211,12 +211,6 @@ class herramentalesController extends Controller
             $fechaFin = $hoy->copy()->format('d-m-Y');
         }
 
-        /**
-         * IMPORTANT:
-         * In your screenshot, 'fecha' is YYYY-MM-DD.
-         * In your screenshot, 'inimant' and 'finhora' are DD-MM-YYYY.
-         * We must use different masks for each!
-         */
 
         // 1. Promedio de Espera
         $promedioespera = Maintanance::selectRaw('
@@ -276,6 +270,21 @@ class herramentalesController extends Controller
         ]);
 
     }
+    public function tiempos_operador(Request $request)
+        {
+            $validacion = $request->validate([
+                'fecha_de_revision' => 'nullable|date_format:Y-m-d',
+            ]);
+
+            $fechaDeRevision = $validacion['fecha_de_revision'] ?? now()->toDateString();
+           // dd($fechaDeRevision);
+            $registros = Maintanance::select('atiende', 'nombreEquipo', 'inimant', 'finhora')
+                ->whereDate('fecha', $fechaDeRevision)
+                ->where('area', 'maquina')
+                ->get();
+
+            return response()->json($registros);
+        }
 
     public function filterTooling(Request $request)
     {
@@ -313,5 +322,51 @@ class herramentalesController extends Controller
         ]);
 
         return back()->with('message', 'Crimper removed successfully.');
+    }
+
+    public function calendarizacion_herrmentales()
+    {
+        $cat = session('categoria');
+        $value = session('user');
+        if ($value == '') {
+            return redirect('/');
+        }
+        $mes = Carbon::now()->format('m');
+        $mes = intval($mes);
+        $fechas_seleccionadas = herramentalInfo::select('herramental', 'fecha_reg')
+            ->where('mantenimiento', 'LIKE', 'falta_')->get();
+        if ($fechas_seleccionadas->isEmpty()) {
+            $fechas_seleccionadas = [];
+        }
+
+        // dd($fechas_seleccionadas);
+        return view('electrical_test.reforce_test_calenda', ['value' => $value, 'cat' => $cat, 'mes' => $mes, 'fechas_seleccionadas' => $fechas_seleccionadas]);
+    }
+
+    public function cargar_seis_meses()
+    {
+        $value = session('user');
+        if ($value != 'Admin') {
+            return redirect('/');
+        }
+        $ultima_fecha = mantenimiento_contras_electricas::select('fecha_programada')->orderby('id', 'desc')->first();
+        $fecha = Carbon::parse($ultima_fecha->fecha_programada);
+
+        $datos = Po::select('pn')->distinct()->where('id', '>', DB::table('po')->max('id') - 2500)->get();
+        $cuenta = 0;
+        foreach ($datos as $dato) {
+            $cuenta += 1;
+            if ($cuenta > 3) {
+                $cuenta = 0;
+                $fecha = $fecha->addWeekday();
+            }
+            $nuevo_mantenimiiento = new mantenimiento_contras_electricas;
+            $nuevo_mantenimiiento->pn = $dato->pn;
+            $nuevo_mantenimiiento->fecha_programada = $fecha;
+            $nuevo_mantenimiiento->save();
+        }
+
+        return redirect()->back()->with(['error', 'Se reconosio la carga']);
+
     }
 }

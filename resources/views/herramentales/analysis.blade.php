@@ -118,6 +118,62 @@
 
         </div>
 </div>
+<div class = "row">
+
+                        <div class="col-xl-12 col-md-12 mb-4">
+                            <input class="form-control form-control-lg" type="date" id="fecha_de_revision" name="fecha_de_revision" onchange="relog_data(this.value)">
+                            <table class="table  table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="text-center"><strong>Tecnico herramentales</strong></th>
+                                        <th scope="col" class="text-center"><strong>Equipo usado</strong></th>
+                                        <th scope="col" class="text-center"><strong>Tiempo de incio</strong></th>
+                                        <th scope="col" class="text-center"><strong>Tiempo de fin</strong></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="registro_por_tecnico">        
+                                </tbody>
+                            </table>
+                        </div>
+</div>
+<script>
+
+        const campoFecha = document.getElementById('fecha_de_revision');
+    const resultado = document.getElementById('registro_por_tecnico');
+
+    document.getElementById('consultar-tiempos').addEventListener('click', async () => {
+        resultado.textContent = 'Consultando…';
+
+        const url = new URL(@json(url('/herramentales/tiempos_operador')));
+
+        if (campoFecha.value) {
+            url.searchParams.set('fecha_de_revision', campoFecha.value);
+        }
+
+        try {
+            const response = await fetch(url, {
+                headers: { Accept: 'application/json' },
+            });
+
+            if (!response.ok) {
+                const error = await response.json().catch(() => ({}));
+                throw new Error(error.message ?? `Error HTTP ${response.status}`);
+                console.log(error.message ?? `Error HTTP ${response.status}`);
+            }
+
+            const registros = await response.json();
+
+            resultado.textContent = registros.length
+                ? JSON.stringify(registros, null, 2)
+                : 'No hay registros para esa fecha con el área "maquina".';
+        } catch (error) {
+            resultado.textContent = error.message;
+        }
+    });
+
+
+</script>
+
 
 
  @endsection

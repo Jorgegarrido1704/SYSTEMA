@@ -139,6 +139,7 @@
                     <ul class="submenu" id="herramentales" style="display:none;">
                          @if($value=='Admin' || $cat=='herra')
                         <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('toolingMaintenance') }}">{{ __('Toolings Maintenance') }}</a></li>
+                    <!--    <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('calendarizacion_herrmentales') }}">{{ __('Calendar Crimpers') }}</a></li> -->
                         @endif
                         <li class="submenu" id="submenu"><a style="color:white;" href="{{ route('toolingAnalysis') }}">{{ __('Toolings Analysis') }}</a></li>
 
