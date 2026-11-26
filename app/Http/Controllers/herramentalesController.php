@@ -278,10 +278,11 @@ class herramentalesController extends Controller
 
             $fechaDeRevision = $validacion['fecha_de_revision'] ?? now()->toDateString();
            // dd($fechaDeRevision);
+           $fecha = "STR_TO_DATE(fecha, '%Y-%m-%d %H:%i')";
           $registros = Maintanance::select('atiende', 'nombreEquipo', 'fecha', 'inimant', 'finhora')
-          ->selectRaw('TIMESTAMPDIFF(MINUTE, fecha, TIMESTAMP(DATE(fecha), inimant)) AS minutos_espera')
-            ->selectRaw('TIMESTAMPDIFF(MINUTE, TIMESTAMP(DATE(fecha), inimant), TIMESTAMP(DATE(fecha), finhora)) AS minutos_mantenimiento')
-            ->selectRaw('TIMESTAMPDIFF(MINUTE, fecha, TIMESTAMP(DATE(fecha), finhora)) AS tiempo_total')
+            ->selectRaw('TIMESTAMPDIFF(MINUTE, $fecha, inimant) AS minutos_espera')
+            ->selectRaw('TIMESTAMPDIFF(MINUTE, inimant, finhora) AS minutos_mantenimiento')
+            ->selectRaw('TIMESTAMPDIFF(MINUTE, $fecha, finhora) AS tiempo_total')
             ->where('fecha', 'LIKE', $fechaDeRevision . '%')
             ->where('area', 'maquina')
             ->orderByDesc('id')
