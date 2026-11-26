@@ -161,13 +161,24 @@
 
         try {
            function convertirFecha(valor) {
-                if (typeof valor !== 'string' || !valor.trim()) return NaN;
+                if (typeof valor !== 'string') return NaN;
 
-                const fecha = valor.trim().replace(' ', 'T');
+                const partes = valor.trim().match(
+                    /^(\d{4})-(\d{2})-(\d{2})[T\s]+(\d{2}):(\d{2})(?::(\d{2}))?$/
+                );
 
-                // Agrega Z solo a las fechas que llegan sin zona horaria.
-                const tieneZona = /(?:Z|[+-]\d{2}:?\d{2})$/i.test(fecha);
-                return Date.parse(tieneZona ? fecha : `${fecha}Z`);
+                if (!partes) return NaN;
+
+                const [, anio, mes, dia, hora, minuto, segundo = '0'] = partes;
+
+                return Date.UTC(
+                    Number(anio),
+                    Number(mes) - 1,
+                    Number(dia),
+                    Number(hora),
+                    Number(minuto),
+                    Number(segundo)
+                );
             }
 
             function diffMin(inicio, fin) {
@@ -175,7 +186,7 @@
                 const finMs = convertirFecha(fin);
 
                 if (!Number.isFinite(inicioMs) || !Number.isFinite(finMs)) {
-                    console.warn('No se pudo calcular la duración', { inicio, fin });
+                    console.warn('Valores recibidos:', JSON.stringify({ inicio, fin }));
                     return '—';
                 }
 
