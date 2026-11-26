@@ -202,6 +202,7 @@
                 fila.insertCell().textContent = registro.finhora ?? '—';
                 fila.insertCell().textContent = diffMin(registro.inimant, registro.finhora);
                 fila.insertCell().textContent = diffMin(registro.fecha, registro.finhora);
+                console.log(diffMin(registro.fecha, registro.inimant));
             }
         } catch (error) {
             mostrarMensaje(error.message);
