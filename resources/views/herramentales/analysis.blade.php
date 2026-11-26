@@ -194,14 +194,14 @@
 
             for (const registro of registros) {
                 const fila = tbody.insertRow();
-                fila.insertCell().textContent = registro.atiende ?? '—';
+               fila.insertCell().textContent = registro.atiende ?? '—';
                 fila.insertCell().textContent = registro.nombreEquipo ?? '—';
                 fila.insertCell().textContent = registro.fecha ?? '—';
-                fila.insertCell().textContent = diffMin(registro.fecha,registro.inimant);
+                fila.insertCell().textContent = diffMin(registro.fecha, registro.inimant);
                 fila.insertCell().textContent = registro.inimant ?? '—';
                 fila.insertCell().textContent = registro.finhora ?? '—';
-                fila.insertCell().textContent = diffMin(registro.inimant,registro.finhora);
-                fila.insertCell().textContent =  diffMin(registro.inimant,registro.finhora);
+                fila.insertCell().textContent = diffMin(registro.inimant, registro.finhora);
+                fila.insertCell().textContent = diffMin(registro.fecha, registro.finhora);
             }
         } catch (error) {
             mostrarMensaje(error.message);

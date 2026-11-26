@@ -346,30 +346,5 @@ class herramentalesController extends Controller
         return view('electrical_test.reforce_test_calenda', ['value' => $value, 'cat' => $cat, 'mes' => $mes, 'fechas_seleccionadas' => $fechas_seleccionadas]);
     }
 
-    public function cargar_seis_meses()
-    {
-        $value = session('user');
-        if ($value != 'Admin') {
-            return redirect('/');
-        }
-        $ultima_fecha = mantenimiento_contras_electricas::select('fecha_programada')->orderby('id', 'desc')->first();
-        $fecha = Carbon::parse($ultima_fecha->fecha_programada);
-
-        $datos = Po::select('pn')->distinct()->where('id', '>', DB::table('po')->max('id') - 2500)->get();
-        $cuenta = 0;
-        foreach ($datos as $dato) {
-            $cuenta += 1;
-            if ($cuenta > 3) {
-                $cuenta = 0;
-                $fecha = $fecha->addWeekday();
-            }
-            $nuevo_mantenimiiento = new mantenimiento_contras_electricas;
-            $nuevo_mantenimiiento->pn = $dato->pn;
-            $nuevo_mantenimiiento->fecha_programada = $fecha;
-            $nuevo_mantenimiiento->save();
-        }
-
-        return redirect()->back()->with(['error', 'Se reconosio la carga']);
-
-    }
+    
 }
