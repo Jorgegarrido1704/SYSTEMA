@@ -127,8 +127,12 @@
                                     <tr>
                                         <th scope="col" class="text-center"><strong>Tecnico herramentales</strong></th>
                                         <th scope="col" class="text-center"><strong>Equipo usado</strong></th>
+                                        <th scope="col" class="text-center"><strong>Fecha y hora de solucitud</strong></th>
+                                        <th scope="col" class="text-center"><strong>Tiempo de respuesta a operador</strong></th>
                                         <th scope="col" class="text-center"><strong>Tiempo de incio</strong></th>
                                         <th scope="col" class="text-center"><strong>Tiempo de fin</strong></th>
+                                        <th scope="col" class="text-center"><strong>Tiempo del mantenimineto</strong></th>
+                                        <th scope="col" class="text-center"><strong>Tiempo total</strong></th>
                                     </tr>
                                 </thead>
                                 <tbody id="registro_por_tecnico">        
@@ -181,8 +185,12 @@
                 const fila = tbody.insertRow();
                 fila.insertCell().textContent = registro.atiende ?? '—';
                 fila.insertCell().textContent = registro.nombreEquipo ?? '—';
+                fila.insertCell().textContent = registro.fecha ?? '—';
+                fila.insertCell().textContent = registro.minutos_espera ?? '—';
                 fila.insertCell().textContent = registro.inimant ?? '—';
                 fila.insertCell().textContent = registro.finhora ?? '—';
+                fila.insertCell().textContent = registro.minutos_mantenimiento ?? '—';
+                fila.insertCell().textContent = registro.tiempo_total ?? '—';
             }
         } catch (error) {
             mostrarMensaje(error.message);
