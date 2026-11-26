@@ -160,14 +160,24 @@
         mostrarMensaje('Consultando…');
 
         try {
+           function convertirFecha(valor) {
+                if (typeof valor !== 'string' || !valor.trim()) return NaN;
+
+                const fecha = valor.trim().replace(' ', 'T');
+
+                // Agrega Z solo a las fechas que llegan sin zona horaria.
+                const tieneZona = /(?:Z|[+-]\d{2}:?\d{2})$/i.test(fecha);
+                return Date.parse(tieneZona ? fecha : `${fecha}Z`);
+            }
+
             function diffMin(inicio, fin) {
-                if (!inicio || !fin) return '—';
+                const inicioMs = convertirFecha(inicio);
+                const finMs = convertirFecha(fin);
 
-                // Ambos valores usan el mismo horario y pueden venir con o sin segundos.
-                const inicioMs = Date.parse(inicio.replace(' ', 'T') + 'Z');
-                const finMs = Date.parse(fin.replace(' ', 'T') + 'Z');
-
-                if (!Number.isFinite(inicioMs) || !Number.isFinite(finMs)) return '—';
+                if (!Number.isFinite(inicioMs) || !Number.isFinite(finMs)) {
+                    console.warn('No se pudo calcular la duración', { inicio, fin });
+                    return '—';
+                }
 
                 return Math.trunc((finMs - inicioMs) / 60000);
             }
