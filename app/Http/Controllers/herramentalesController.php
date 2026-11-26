@@ -281,6 +281,7 @@ class herramentalesController extends Controller
             $registros = Maintanance::select('atiende', 'nombreEquipo', 'inimant', 'finhora')
                 ->where('fecha','LIKE', $fechaDeRevision.'%')
                 ->where('area', 'maquina')
+                ->orderBy('id','DESC')
                 ->get();
 
             return response()->json($registros);
