@@ -137,41 +137,59 @@
                         </div>
 </div>
 <script>
-
-        const campoFecha = document.getElementById('fecha_de_revision');
-    const resultado = document.getElementById('registro_por_tecnico');
-
-    document.getElementById('consultar-tiempos').addEventListener('click', async () => {
-        resultado.textContent = 'Consultando…';
-
+    async function relog_data(fecha) {
+        const tbody = document.getElementById('registro_por_tecnico');
         const url = new URL(@json(url('/herramentales/tiempos_operador')));
 
-        if (campoFecha.value) {
-            url.searchParams.set('fecha_de_revision', campoFecha.value);
+        if (fecha) {
+            url.searchParams.set('fecha_de_revision', fecha);
         }
 
+        function mostrarMensaje(mensaje) {
+            tbody.replaceChildren();
+            const celda = tbody.insertRow().insertCell();
+            celda.colSpan = 4;
+            celda.className = 'text-center';
+            celda.textContent = mensaje;
+        }
+
+        mostrarMensaje('Consultando…');
+
         try {
-            const response = await fetch(url, {
+            const respuesta = await fetch(url, {
                 headers: { Accept: 'application/json' },
             });
 
-            if (!response.ok) {
-                const error = await response.json().catch(() => ({}));
-                throw new Error(error.message ?? `Error HTTP ${response.status}`);
-                console.log(error.message ?? `Error HTTP ${response.status}`);
+            if (!respuesta.ok) {
+                const error = await respuesta.json().catch(() => null);
+                throw new Error(
+                    error?.errors?.fecha_de_revision?.[0]
+                    ?? `Error al consultar los registros (HTTP ${respuesta.status}).`
+                );
             }
 
-            const registros = await response.json();
+            const registros = await respuesta.json();
 
-            resultado.textContent = registros.length
-                ? JSON.stringify(registros, null, 2)
-                : 'No hay registros para esa fecha con el área "maquina".';
+            if (registros.length === 0) {
+                mostrarMensaje('No hay registros para la fecha consultada.');
+                return;
+            }
+
+            tbody.replaceChildren();
+
+            for (const registro of registros) {
+                const fila = tbody.insertRow();
+                fila.insertCell().textContent = registro.atiende ?? '—';
+                fila.insertCell().textContent = registro.nombreEquipo ?? '—';
+                fila.insertCell().textContent = registro.inimant ?? '—';
+                fila.insertCell().textContent = registro.finhora ?? '—';
+            }
         } catch (error) {
-            resultado.textContent = error.message;
+            mostrarMensaje(error.message);
         }
-    });
+    }
 
-
+    relog_data(document.getElementById('fecha_de_revision').value);
 </script>
 
 
