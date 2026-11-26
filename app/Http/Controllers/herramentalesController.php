@@ -279,7 +279,7 @@ class herramentalesController extends Controller
             $fechaDeRevision = $validacion['fecha_de_revision'] ?? now()->toDateString();
            // dd($fechaDeRevision);
             $registros = Maintanance::select('atiende', 'nombreEquipo', 'inimant', 'finhora')
-                ->whereDate('fecha', $fechaDeRevision)
+                ->where('fecha','LIKE', $fechaDeRevision.'%')
                 ->where('area', 'maquina')
                 ->get();
 
