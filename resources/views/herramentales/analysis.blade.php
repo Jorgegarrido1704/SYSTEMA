@@ -160,6 +160,17 @@
         mostrarMensaje('Consultando…');
 
         try {
+            function diffMin(inicio, fin) {
+                if (!inicio || !fin) return '—';
+
+                // Ambos valores usan el mismo horario y pueden venir con o sin segundos.
+                const inicioMs = Date.parse(inicio.replace(' ', 'T') + 'Z');
+                const finMs = Date.parse(fin.replace(' ', 'T') + 'Z');
+
+                if (!Number.isFinite(inicioMs) || !Number.isFinite(finMs)) return '—';
+
+                return Math.trunc((finMs - inicioMs) / 60000);
+            }
             const respuesta = await fetch(url, {
                 headers: { Accept: 'application/json' },
             });
@@ -186,11 +197,11 @@
                 fila.insertCell().textContent = registro.atiende ?? '—';
                 fila.insertCell().textContent = registro.nombreEquipo ?? '—';
                 fila.insertCell().textContent = registro.fecha ?? '—';
-                fila.insertCell().textContent = registro.minutos_espera ?? '—';
+                fila.insertCell().textContent = diffMin(registro.fecha,registro.inimant);
                 fila.insertCell().textContent = registro.inimant ?? '—';
                 fila.insertCell().textContent = registro.finhora ?? '—';
-                fila.insertCell().textContent = registro.minutos_mantenimiento ?? '—';
-                fila.insertCell().textContent = registro.tiempo_total ?? '—';
+                fila.insertCell().textContent = diffMin(registro.inimant,registro.finhora);
+                fila.insertCell().textContent =  diffMin(registro.inimant,registro.finhora);
             }
         } catch (error) {
             mostrarMensaje(error.message);
