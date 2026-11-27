@@ -370,3 +370,6 @@ Route::get('/lang/{lang}', function ($lang) {
 
     return back();
 });
+
+Route::post('trabajo-pasos/{paso}/evidencia', [TrabajoPasoController::class, 'evidencia']);
+Route::get('trabajos/{trabajo}/excel', [TrabajoController::class, 'descargar']);
