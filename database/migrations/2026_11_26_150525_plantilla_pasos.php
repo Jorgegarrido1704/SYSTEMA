@@ -6,19 +6,23 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        //
+        Schema::create('plantilla_pasos', function (Blueprint $t) {
+            $t->id();
+            $t->string('proceso')->default('corte');
+            $t->unsignedSmallInteger('orden');
+            $t->string('titulo');
+            $t->text('descripcion');
+            $t->string('imagen_referencia')->nullable();
+            $t->json('condicion')->nullable();
+            $t->boolean('activo')->default(true);
+            $t->timestamps();
+        });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('plantilla_pasos');
     }
 };
