@@ -27,6 +27,12 @@ class TrabajoPasoController extends Controller
     // TrabajoController
     public function descargar(Trabajo $trabajo)
     {
+        abort_unless(
+            $trabajo->excel_path && Storage::disk('public')->exists($trabajo->excel_path),
+            404,
+            'El Excel aún no se ha generado.'
+        );
+
         return Storage::disk('public')->download($trabajo->excel_path);
     }
 }

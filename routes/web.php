@@ -28,6 +28,8 @@ use App\Http\Controllers\pruebasElectricasController;
 use App\Http\Controllers\RegistroController;
 use App\Http\Controllers\rrhhController;
 use App\Http\Controllers\SaludController;
+use App\Http\Controllers\TrabajoController;
+use App\Http\Controllers\TrabajoPasoController;
 use App\Http\Controllers\VSM_and_simulation;
 use Illuminate\Support\Facades\Route;
 
@@ -339,11 +341,11 @@ Route::controller(herramentalesController::class)->group(function () {
     Route::post('/herramentales/addHerramental', [herramentalesController::class, 'addHerramental'])->name('herramientales.addHerramental');
     Route::get('/toolingMaintenance', [herramentalesController::class, 'toolingMaintenance'])->name('toolingMaintenance');
     Route::get('/toolingAnalysis', [herramentalesController::class, 'toolingAnalysis'])->name('toolingAnalysis');
-    Route::get('/herramentales/tiempos_operador','tiempos_operador')->name('tiempos_operador');
+    Route::get('/herramentales/tiempos_operador', 'tiempos_operador')->name('tiempos_operador');
     Route::post('/saveMantTooling', [herramentalesController::class, 'saveMantTooling'])->name('saveMantTooling');
     Route::POST('/filterTooling', [herramentalesController::class, 'filterTooling'])->name('filterTooling');
     Route::post('/herramentales/removeCrimpers', [herramentalesController::class, 'removeCrimpers'])->name('herramientales.removeCrimpers');
-    Route::get('/herramentales/calendario_preventivos','calendarizacion_herrmentales')->name('calendarizacion_herrmentales');
+    Route::get('/herramentales/calendario_preventivos', 'calendarizacion_herrmentales')->name('calendarizacion_herrmentales');
 });
 Route::controller(corteController::class)->group(function () {
     Route::get('/corte', [corteController::class, 'indexCorte'])->name('corte.indexCorte');
@@ -373,3 +375,4 @@ Route::get('/lang/{lang}', function ($lang) {
 
 Route::post('trabajo-pasos/{paso}/evidencia', [TrabajoPasoController::class, 'evidencia']);
 Route::get('trabajos/{trabajo}/excel', [TrabajoController::class, 'descargar']);
+Route::get('trabajos/{trabajo}', [TrabajoController::class, 'show'])->name('trabajos.show');
