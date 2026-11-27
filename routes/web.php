@@ -374,5 +374,5 @@ Route::get('/lang/{lang}', function ($lang) {
 });
 
 Route::post('trabajo-pasos/{paso}/evidencia', [TrabajoPasoController::class, 'evidencia']);
-Route::get('trabajos/{trabajo}/excel', [TrabajoController::class, 'descargar']);
-Route::get('trabajos/{trabajo}', [TrabajoController::class, 'show'])->name('trabajos.show');
+Route::get('/trabajos/{trabajo}/excel', [TrabajoController::class, 'descargar'])->name('trabajos.excel');
+Route::get('/trabajos/{trabajo}', [TrabajoController::class, 'show'])->name('trabajos.show');
