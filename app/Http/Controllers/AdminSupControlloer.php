@@ -451,7 +451,7 @@ class AdminSupControlloer extends Controller
 
         Mail::to($email)->cc('jgarrido@mx.bergstrominc.com')->send(new solicitudVacacionesMail($contend, 'Eliminacion de Vacaciones'));
 
-        return redirect()->route('SupAdmin')->with('success', 'Vacaciones agregadas correctamente.');
+        return redirect()->route('SupAdmin')->with('success', 'Vacaciones Removidas correctamente.');
     }
 
     public function datosVsm(Request $request)
