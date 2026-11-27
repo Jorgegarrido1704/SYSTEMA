@@ -447,9 +447,9 @@ class AdminSupControlloer extends Controller
         registoLogin::create(['fecha' => carbon::now()->format('d-m-Y H:i'), 'userName' => session('user'), 'action' => 'Eliminacion de Vacaciones para el empleado ID: '.$pesonal.' - Folio: VAC-'.$buscarFolio->id]);
         DB::table('registro_vacaciones')->where('id', $buscarFolio->id)->delete();
 
-        $email = 'jgarrido@mx.bergstrominc.com';
+        $email = ['paguilar@mx.bergstrominc.com', 'mabibarra@mx.bergstrominc.com', 'jlopez@mx.bergstrominc.com'];
 
-        Mail::to($email)->send(new solicitudVacacionesMail($contend, 'Eliminacion de Vacaciones'));
+        Mail::to($email)->cc('jgarrido@mx.bergstrominc.com')->send(new solicitudVacacionesMail($contend, 'Eliminacion de Vacaciones'));
 
         return redirect()->route('SupAdmin')->with('success', 'Vacaciones agregadas correctamente.');
     }
