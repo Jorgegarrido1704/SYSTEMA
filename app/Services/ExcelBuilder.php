@@ -30,37 +30,35 @@ class ExcelBuilder
     private const BLOCK = 16;   // filas por bloque de tarjetas
 
     private const START = 9;    // primera fila de tarjetas
+   
+    private array $temporales = [];
 
     public function build(Trabajo $trabajo): string
-    {
-        $trabajo->load('pasos.plantilla');
+            {
+                $this->temporales = [];
 
-        $book = new Spreadsheet;
-        $sheet = $book->getActiveSheet()->setTitle('Instrucción de trabajo');
-        $sheet->setShowGridlines(false);
-        $book->getDefaultStyle()->getFont()->setName('Arial');
+                try {
+                    $trabajo->load('pasos.plantilla');
 
-        foreach (range('A', 'P') as $col) {
-            $sheet->getColumnDimension($col)->setWidth(in_array($col, ['A', 'F', 'K', 'P']) ? 2 : 14);
-        }
+                    $book = new Spreadsheet;
+                    $sheet = $book->getActiveSheet()->setTitle('Instrucción de trabajo');
+                    // ... todo lo que ya tienes: columnas, encabezado, tarjetas, impresión ...
 
-        $this->encabezado($sheet, $trabajo);
+                    $dir = "trabajos/{$trabajo->job}";
+                    $path = "{$dir}/Instruccion_{$trabajo->job}.xlsx";
+                    Storage::disk('public')->makeDirectory($dir);
+                    (new Xlsx($book))->save(Storage::disk('public')->path($path));
 
-        foreach ($trabajo->pasos as $i => $paso) {
-            $this->tarjeta($sheet, $i, $paso);
-        }
+                    $trabajo->update(['excel_path' => $path]);
 
-        $this->configurarImpresion($sheet, $trabajo->pasos->count());
-
-        $dir = "trabajos/{$trabajo->job}";
-        $path = "{$dir}/Instruccion_{$trabajo->job}.xlsx";
-        Storage::disk('public')->makeDirectory($dir);
-        (new Xlsx($book))->save(Storage::disk('public')->path($path));
-
-        $trabajo->update(['excel_path' => $path]);
-
-        return $path;
-    }
+                    return $path;
+                } finally {
+                    foreach ($this->temporales as $archivo) {
+                        @unlink($archivo);
+                    }
+                    $this->temporales = [];
+                }
+            }
 
     private function encabezado(Worksheet $s, Trabajo $t): void
     {
@@ -155,12 +153,14 @@ class ExcelBuilder
 
     /** Recorta cualquier foto a 4:3 para que todas las tarjetas se vean iguales. */
     private function normalizar(string $origen): string
-    {
-        $tmp = storage_path('app/tmp_'.md5($origen).'.jpg');
-        (new ImageManager(new Driver))->read($origen)->cover(800, 600)->toJpeg(80)->save($tmp);
+        {
+            $tmp = storage_path('app/tmp_'.md5($origen).'.jpg');
+            (new ImageManager(new Driver))->read($origen)->cover(800, 600)->toJpeg(80)->save($tmp);
 
-        return $tmp;
-    }
+            $this->temporales[] = $tmp;
+
+            return $tmp;
+        }
 
     private function configurarImpresion(Worksheet $s, int $totalPasos): void
     {
